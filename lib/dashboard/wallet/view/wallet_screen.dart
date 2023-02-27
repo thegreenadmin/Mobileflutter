@@ -147,6 +147,27 @@ class _WalletScreenState extends State<WalletScreen> {
                   ],
                 ),
               ),
+
+              //FOR STORE OWNER
+
+              // Expanded(
+              //   flex: 4,
+              //   child: Column(
+              //     children: [
+              //       Image.asset(
+              //         "assets/addFunds.png",
+              //         scale: 3.5,
+              //       ),
+              //       Text(
+              //         StringConstants.addFundsText,
+              //         style: const TextStyle(
+              //             fontSize: 16,
+              //             color: AppColors.black,
+              //             fontWeight: FontWeight.w500),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           )
         ]),

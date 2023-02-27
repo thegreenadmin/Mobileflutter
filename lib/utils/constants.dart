@@ -24,9 +24,9 @@ class StringConstants {
   static String addToOrderText = "Add to Order";
   static String activeOffersText = "Active Offers";
   static String addOfferText = "Add Offer";
-  static String addANewStore = "Add a new Store";
-  static String addStore = "Add Store";
-
+  static String addANewStoreText = "Add a new Store";
+  static String addStoreText = "Add Store";
+  static String addFundsText = "Add Funds";
   //B
 
   //C
@@ -147,6 +147,7 @@ class StringConstants {
   static String serviceFeesText = "Service fees";
   static String selectLocationText = "Select Location";
   static String storeNameText = "Store Name";
+  static String storeDetailsText = "Store Details";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -203,6 +204,7 @@ class AlertStringConstants {
   static String pleaseEnterLastNameText = "Please enter last name";
   static String pleaseEnterEmailText = "Please enter email";
   static String pleaseEnterPhoneText = "Please enter phone number";
+  static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
   static String pleaseEnterGenderText = "Please enter gender";
   static String pleaseEnterAgeText = "Please enter age";

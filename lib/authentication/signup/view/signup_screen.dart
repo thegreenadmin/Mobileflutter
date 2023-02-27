@@ -33,7 +33,6 @@ class _SignupScreenState extends State<SignupScreen> {
     debugPrint("selectedRegion----" +
         signupController.selectedRegion.value.toString());
     String languageCode = Platform.localeName.split('_')[0];
-    String countryCode = Platform.localeName.split('_')[1];
     await CountryCodes
         .init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
     final Locale? deviceLocale = CountryCodes.getDeviceLocale();
@@ -343,7 +342,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
-                      initialCountryCode: cL.value.countryCode,
                       onCountryChanged: (value) {
                         signupController.selectedCountryCode.value =
                             value.dialCode.toString();

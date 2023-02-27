@@ -91,9 +91,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               ),
                               child: PinCodeTextField(
                                 validator: (value) {
-                                  if (value == null ||
-                                      value.trim().isEmpty ||
-                                      value.length < 4) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseEnterOtpText;
+                                  } else if (value.length < 4) {
                                     return AlertStringConstants.invalidOtpText;
                                   }
 

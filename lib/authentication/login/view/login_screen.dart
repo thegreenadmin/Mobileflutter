@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/controller/login_controller.dart';
-import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -33,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     debugPrint(
         "selectedRegion----" + loginController.selectedRegion.value.toString());
     String languageCode = Platform.localeName.split('_')[0];
-    String countryCode = Platform.localeName.split('_')[1];
+    //String countryCode = Platform.localeName.split('_')[1];
     await CountryCodes
         .init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
     final Locale? deviceLocale = CountryCodes.getDeviceLocale();
@@ -70,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 side: BorderSide(width: 0.0, color: AppColors.blacklight),
                 shape: const CircleBorder(),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.chevron_left,
                 color: AppColors.black,
               ),
@@ -153,7 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          initialCountryCode: cL.value.countryCode,
                           onCountryChanged: (value) {
                             loginController.selectedCountryCode.value =
                                 value.dialCode.toString();

@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Get.to(const HistoryScreen());
                               },
                               constraints: const BoxConstraints(),
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(14.0),
                               shape: const CircleBorder(
                                 side: BorderSide(
                                     width: 1.0, color: AppColors.primary),
@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fillColor: AppColors.white,
                               child: Image.asset(
                                 "assets/union.png",
-                                scale: 1.8,
+                                scale: 2.3,
                               )),
                           width10SizedBox,
                           RawMaterialButton(
@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Get.to(() => const AccountScreen());
                               },
                               constraints: const BoxConstraints(),
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(14.0),
                               shape: const CircleBorder(
                                 side: BorderSide(
                                     width: 1.0, color: AppColors.primary),
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fillColor: AppColors.white,
                               child: Image.asset(
                                 "assets/user.png",
-                                scale: 2,
+                                scale: 2.5,
                               )),
                         ],
                       )

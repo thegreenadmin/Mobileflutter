@@ -50,7 +50,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.addStore,
+                                StringConstants.addStoreText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -78,7 +78,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.personalDetailText,
+                      StringConstants.storeDetailsText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,

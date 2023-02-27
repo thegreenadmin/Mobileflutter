@@ -234,7 +234,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                 Get.to(const AddNewStoreScreen());
               },
               height: 50,
-              text: StringConstants.addANewStore,
+              text: StringConstants.addANewStoreText,
               textColor: AppColors.primary,
               borderRadius: 12,
               fontWeight: FontWeight.w500,
