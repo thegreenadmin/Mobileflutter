@@ -35,29 +35,6 @@ class SplashScreen extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: WidgetConstants.screenWidth,
-            height: 200,
-            child: Image.asset(
-              'assets/mallIcon.png',
-              color: AppColors.white,
-            ),
-          ),
-          Text(
-            StringConstants.appNameText,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 35,
-              color: AppColors.white,
-            ),
-          )
-        ],
-      ),
     ));
   }
 }

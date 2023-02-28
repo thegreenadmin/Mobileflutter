@@ -44,24 +44,39 @@ class Utility {
     return ServerCommunicator().baseUrlWithoutV1 + url;
   }
 
-  static void showAlert(String title, String message) {
-    Get.dialog(AlertDialog(
-        content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-          child: const Text('Good Login'),
-          onPressed: () => Get.back(result: true),
-          // ** result: returns this value up the call stack **
+  static showAlert(
+    String title,
+    String message,
+    String buttonText,
+  ) async {
+    return await Get.dialog(AlertDialog(
+      title: const Text(
+        "Alert!",
+        style: TextStyle(color: AppColors.primary, fontSize: 20),
+      ),
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: AppColors.black,
+          fontSize: 18,
         ),
-        const SizedBox(
-          width: 5,
-        ),
-        ElevatedButton(
-          child: const Text('Bad Login'),
-          onPressed: () => Get.back(result: false),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  textStyle: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold)),
+              child: Text(buttonText),
+              onPressed: () => Get.back(result: true),
+              // ** result: returns this value up the call stack **
+            ),
+          ],
         ),
       ],
-    )));
+    ));
   }
 }

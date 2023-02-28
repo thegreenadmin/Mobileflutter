@@ -36,18 +36,34 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/greenmall420.png"),
-                height300SizedBox,
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    StringConstants.your420MarketPlace,
-                    style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.white),
+                height10SizedBox,
+                const Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                          text: "Your ",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: "Montaga",
+                              color: AppColors.primary)),
+                      TextSpan(
+                          text: "420",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 24,
+                              fontFamily: "Montaga",
+                              color: AppColors.primarydark)),
+                      TextSpan(
+                        text: ' Market Place ',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: "Montaga",
+                            color: AppColors.primary),
+                      ),
+                    ],
                   ),
                 ),
-                height30SizedBox,
+                height300SizedBox,
                 CustomButton(
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
@@ -62,12 +78,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                   borderRadius: 12,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  icon: false,
-                  image: const Icon(
-                    Icons.chevron_right,
-                    color: Colors.white,
-                    size: 24.0,
-                  ),
+                  iconL: false,
                 ),
                 height20SizedBox,
                 CustomButton(
@@ -85,12 +96,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                   borderRadius: 12,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  icon: false,
-                  image: const Icon(
-                    Icons.chevron_right,
-                    color: Colors.white,
-                    size: 24.0,
-                  ),
+                  iconL: false,
                 ),
                 height30SizedBox,
                 Row(

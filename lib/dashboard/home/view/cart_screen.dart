@@ -1,7 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/inbox_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -146,7 +145,7 @@ bottomSheetChangePickupLocation(context) {
                       text: StringConstants.changeText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
-                      icon: false,
+                      iconL: false,
                       fontSize: 16,
                     ),
                   ],
@@ -341,13 +340,72 @@ class _CartScreenState extends State<CartScreen> {
                   }),
               height10SizedBox,
               Text(
-                StringConstants.pickUpLocationText,
+                StringConstants.orderType,
                 style: const TextStyle(
                     color: AppColors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w500),
               ),
               height10SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomButton(
+                    width: WidgetConstants.screenWidth * 0.4,
+                    border: Border.all(color: AppColors.primary),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {},
+                    height: 45,
+                    text: StringConstants.pickupText,
+                    textColor: AppColors.primary,
+                    borderRadius: 12,
+                    fontWeight: FontWeight.w500,
+                    iconL: true,
+                    fontSize: 16,
+                    imageL: const Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.primary,
+                      size: 24.0,
+                    ),
+                  ),
+                  width10SizedBox,
+                  CustomButton(
+                    width: WidgetConstants.screenWidth * 0.4,
+                    border: Border.all(color: AppColors.primary),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {},
+                    height: 45,
+                    text: StringConstants.pickupText,
+                    textColor: AppColors.primary,
+                    borderRadius: 12,
+                    fontWeight: FontWeight.w500,
+                    iconL: true,
+                    fontSize: 16,
+                    imageL: const Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.primary,
+                      size: 24.0,
+                    ),
+                  ),
+                ],
+              ),
+              height20SizedBox,
+              Text(
+                StringConstants.pickUpLocationText,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
+              ),
+              height20SizedBox,
               Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 20),

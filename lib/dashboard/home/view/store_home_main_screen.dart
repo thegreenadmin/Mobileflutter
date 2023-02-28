@@ -102,11 +102,25 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                 ],
                               ),
                               height8SizedBox,
-                              const Text("Store Hours 9:00 am to 9:00PM",
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400))
+                              Row(
+                                children: [
+                                  const Text("Store Hours 9:00 am to 9:00PM",
+                                      style: TextStyle(
+                                          color: AppColors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400)),
+                                  width10SizedBox,
+                                  Image.asset(
+                                    "assets/door.png",
+                                    scale: 2.5,
+                                  ),
+                                  width8SizedBox,
+                                  Image.asset(
+                                    "assets/call.png",
+                                    scale: 2.5,
+                                  )
+                                ],
+                              )
                             ],
                           )
                         ],
@@ -150,6 +164,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             Image.asset("assets/examplee.png"),
             height30SizedBox,
             InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
               onTap: () {
                 Get.to(const StoreHomeScreen());
               },
@@ -184,6 +200,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               thickness: 1,
             ),
             InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
               onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,6 +234,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               thickness: 1,
             ),
             InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
               onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -44,6 +44,17 @@ class SignupController extends GetxController {
     update();
   }
 
+  bool isAdultCheck(String dob) {
+    final dateOfBirth = DateFormat("MM/dd/yyyy").parse(dob);
+    final now = DateTime.now();
+    final eighteenYearsAgo = DateTime(
+      now.year - 18,
+      now.month,
+      now.day + 1, // add day to return true on birthday
+    );
+    return dateOfBirth.isBefore(eighteenYearsAgo);
+  }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -67,7 +78,9 @@ class SignupController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        if (isTermsAccepted.value == false) {
+        if (dateTextController.text.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectAge);
+        } else if (isTermsAccepted.value == false) {
           Utility.showToast(AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
           Get.to(BottomNavigation());

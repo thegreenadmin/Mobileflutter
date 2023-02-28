@@ -178,9 +178,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: StringConstants.sendConfirmationCodeText,
                           borderRadius: 12,
                           fontWeight: FontWeight.w500,
-                          icon: true,
+                          iconR: true,
+                          iconL: false,
                           fontSize: 16,
-                          image: const Icon(
+                          imageR: const Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
                             size: 24.0,

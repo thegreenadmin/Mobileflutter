@@ -349,7 +349,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           text: StringConstants.sendMessageText,
                           borderRadius: 12,
                           fontWeight: FontWeight.w500,
-                          icon: false,
+                          iconL: false,
                           fontSize: 16,
                         ),
                         height40SizedBox,

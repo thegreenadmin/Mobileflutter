@@ -24,9 +24,12 @@ class StringConstants {
   static String addToOrderText = "Add to Order";
   static String activeOffersText = "Active Offers";
   static String addOfferText = "Add Offer";
+  static String activeOrderText = "Active Orders";
   static String addANewStoreText = "Add a new Store";
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
+  static String addCategoriesText = "Add Categories";
+
   //B
 
   //C
@@ -42,6 +45,8 @@ class StringConstants {
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";
   static String changeText = "Change";
+  static String categoriesNameText = "Categories Name";
+  static String completedOrders = "Completed Orders";
 
   //D
   static String deliveryText = "Delivery";
@@ -55,7 +60,8 @@ class StringConstants {
       "Enter mobile number to login your\naccount";
   static String exploreStoreProductText = "Explore Store Product";
   static String enterNameText = "Enter Name";
-  static String enterEin = "EIN/Business ID";
+  static String einBusinessId = "EIN/Business ID";
+  static String editStoreText = "Edit Store";
 
   //F
   static String firstNameText = "First Name";
@@ -109,6 +115,7 @@ class StringConstants {
   static String orderText = "Order";
   static String orderSummaryText = "Order Summary";
   static String offerName = "Offer Name";
+  static String orderType = "Order Type";
 
   //P
   static String profileText = "Profile";
@@ -119,6 +126,10 @@ class StringConstants {
   static String personalDetailText = "Personal Detail";
   static String pickupPackageText = "Pickup Package";
   static String pastOfferText = "Past Offer";
+  static String pastMessagesText = "Past Messages";
+  static String pickupText = "Pickup";
+  static String postalCodeText = "Postal Code";
+
   static String privacyStatementText = "Privacy Statement";
   static String privacyPolicyText = "Privacy Policy";
   static String pickUpLocationText = "Pickup Location";
@@ -136,6 +147,7 @@ class StringConstants {
   static String storeOffersAndDiscountText = "Store offers & Discounts";
   static String submitText = "Submit";
   static String saveText = "Save";
+  static String saveAndAddProductText = "Save and Add Product";
   static String subjectText = "Subject";
   static String seeMoreText = "See More";
   static String sendMessageText = "Send Message";
@@ -148,6 +160,7 @@ class StringConstants {
   static String selectLocationText = "Select Location";
   static String storeNameText = "Store Name";
   static String storeDetailsText = "Store Details";
+  static String switchToStoreText = "Switch to Store";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -163,6 +176,8 @@ class StringConstants {
       "Upload License, State ID, Passport";
   static String uploadText = "Upload";
   static String uploadImageText = "Upload Image";
+  static String uploadCategoriesImageText = " Upload Categories Image";
+
   static String updateText = "Update";
   static String unitPriceText = "Unit price:";
 
@@ -170,6 +185,8 @@ class StringConstants {
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
       "We have sent the code verification to your mobile number ****";
+  static String viewAndUpdateItemsText = "View & Update Items";
+
   //W
   static String websiteText = "Website";
   static String walletText = "Wallet";
@@ -181,6 +198,7 @@ class StringConstants {
 
   //Z
   static String zipCodeText = "Zip Code";
+  static String zoneText = "Zone (State or Province)";
 }
 
 //Bottom Tab bar
@@ -212,11 +230,15 @@ class AlertStringConstants {
   static String pleaseEnterTownOrCityText = "Please enter town or city";
   static String pleaseEnterZipCodeText = "Please enter zip code";
   static String pleaseEnterStateText = "Please enter state";
+  static String pleaseEnterZoneText = "Please enter zone";
   static String pleaseEnterCountryText = "Please enter country";
   static String pleaseEnterSubjectText = "Please enter subject";
   static String pleaseEnterMessageText = "Please enter message";
   static String pleaseEnterStoreNameText = "Please enter store name";
   static String pleaseEnterEinText = "Please enter EIN";
+  static String pleaseEnterPostalCodeText = "Please enter postal code";
+  static String pleaseEnterCategoryNameText = "Please enter category";
   static String pleaseEnterTermsAndConditions =
       "Please agree to terms and condition";
+  static String pleaseSelectAge = "Please select age";
 }

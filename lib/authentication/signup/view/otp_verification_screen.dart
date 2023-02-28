@@ -176,8 +176,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               borderRadius: 12,
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              icon: true,
-                              image: const Icon(
+                              iconR: true,
+                              imageR: const Icon(
                                 Icons.arrow_forward,
                                 color: Colors.white,
                                 size: 24.0,

@@ -12,6 +12,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -443,6 +444,18 @@ class _SignupScreenState extends State<SignupScreen> {
                             formattedDate!;
                         signupController.dateOfEvent.value =
                             date.toIso8601String();
+                        signupController.isAdultCheck(
+                            signupController.dateTextController.text);
+                        bool result = signupController.isAdultCheck(
+                            signupController.dateTextController.text);
+                        if (result) {
+                        } else {
+                          await Utility.showAlert(
+                              "title",
+                              "This app is recommended for 18 above age group.",
+                              "OK");
+                          signupController.dateTextController.clear();
+                        }
                       },
                       child: TextFormField(
                         textInputAction: TextInputAction.done,
@@ -453,12 +466,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontWeight: FontWeight.w400,
                         ),
                         controller: signupController.dateTextController,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAgeText;
-                          }
-                          return null;
-                        },
                         decoration: InputDecoration(
                           labelText: StringConstants.ageText,
                           labelStyle: TextStyle(
@@ -562,9 +569,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       text: StringConstants.signUpText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
-                      icon: true,
+                      iconR: true,
                       fontSize: 16,
-                      image: const Icon(
+                      imageR: const Icon(
                         Icons.arrow_forward,
                         color: Colors.white,
                         size: 24.0,

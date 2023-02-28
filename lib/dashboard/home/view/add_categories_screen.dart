@@ -7,14 +7,14 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddOfferScreen extends StatefulWidget {
-  const AddOfferScreen({super.key});
+class AddCategoriesScreen extends StatefulWidget {
+  const AddCategoriesScreen({super.key});
 
   @override
-  State<AddOfferScreen> createState() => _AddOfferScreenState();
+  State<AddCategoriesScreen> createState() => _AddCategoriesScreenState();
 }
 
-class _AddOfferScreenState extends State<AddOfferScreen> {
+class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +46,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.addOfferText,
+                                StringConstants.addCategoriesText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -71,7 +71,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    StringConstants.uploadImageText,
+                    StringConstants.uploadCategoriesImageText,
                     style: const TextStyle(
                         color: AppColors.black,
                         fontWeight: FontWeight.w600,
@@ -98,7 +98,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                   scale: 2.5,
                                 ),
                                 height6SizedBox,
-                                Text(StringConstants.uploadImageText)
+                                Text(StringConstants.uploadCategoriesImageText)
                               ]),
                         ),
                       ),
@@ -106,7 +106,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                   ),
                   height35SizedBox,
                   Text(
-                    StringConstants.offerName,
+                    StringConstants.categoriesNameText,
                     style: TextStyle(
                         color: AppColors.blacklight,
                         fontSize: 16,
@@ -127,7 +127,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value!.trim().isEmpty) {
-                          return AlertStringConstants.pleaseEnterFirstNameText;
+                          return AlertStringConstants
+                              .pleaseEnterCategoryNameText;
                         }
                         return null;
                       },
@@ -174,7 +175,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                     ),
                     onTap: () {},
                     height: 50,
-                    text: StringConstants.saveText,
+                    text: StringConstants.saveAndAddProductText,
                     borderRadius: 12,
                     fontWeight: FontWeight.w500,
                     iconL: false,

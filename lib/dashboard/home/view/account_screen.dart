@@ -104,7 +104,20 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               const Divider(
                 thickness: 3,
-                height: 20,
+                height: 45,
+              ),
+              Center(
+                child: Text(
+                  StringConstants.switchToStoreText,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              const Divider(
+                thickness: 3,
+                height: 45,
               ),
               Padding(
                 padding:

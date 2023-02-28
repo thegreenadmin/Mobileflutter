@@ -335,7 +335,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     Expanded(
                         flex: 4,
                         child: Text(
-                          StringConstants.zipCodeText,
+                          StringConstants.postalCodeText,
                           style: TextStyle(
                               color: AppColors.blacklight,
                               fontWeight: FontWeight.w400,
@@ -392,22 +392,25 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 style: TextStyle(color: AppColors.blacklight),
                               ),
                               height5SizedBox,
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    foregroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            AppColors.primary),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color: AppColors.primary)))),
-                                child: const Text(
-                                  "Upload",
-                                  style: TextStyle(color: AppColors.white),
+                              SizedBox(
+                                width: 130,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              AppColors.primary),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                              side: const BorderSide(
+                                                  color: AppColors.primary)))),
+                                  child: const Text(
+                                    "Upload",
+                                    style: TextStyle(color: AppColors.white),
+                                  ),
                                 ),
                               )
                             ]),

@@ -149,7 +149,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.enterEin,
+                      StringConstants.einBusinessId,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -176,7 +176,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterEin,
+                          hintText: StringConstants.einBusinessId,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -797,7 +797,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       text: StringConstants.saveText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
-                      icon: false,
+                      iconL: false,
                       fontSize: 16,
                     ),
                     height40SizedBox,

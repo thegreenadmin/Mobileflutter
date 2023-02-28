@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/add_new_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -204,11 +205,17 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                       )
                                     ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: Image.asset(
-                                      "assets/edit.png",
-                                      scale: 2.2,
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(MangeStoreScreen());
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, left: 10),
+                                      child: Image.asset(
+                                        "assets/edit.png",
+                                        scale: 2.8,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -221,8 +228,8 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
           ),
           Positioned(
             bottom: 20,
-            left: 80,
-            right: 80,
+            left: 90,
+            right: 90,
             child: CustomButton(
               border: Border.all(color: AppColors.primary),
               gradient: const LinearGradient(
@@ -238,13 +245,9 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
               textColor: AppColors.primary,
               borderRadius: 12,
               fontWeight: FontWeight.w500,
-              icon: true,
+              iconL: false,
+              iconR: false,
               fontSize: 16,
-              image: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-                size: 24.0,
-              ),
             ),
           ),
         ],

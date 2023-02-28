@@ -6,8 +6,10 @@ import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.
 import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/search_store_owner_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_detail_screen.dart';
 
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';

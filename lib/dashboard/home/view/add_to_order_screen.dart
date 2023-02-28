@@ -355,7 +355,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 text: StringConstants.addToOrderText,
                 borderRadius: 12,
                 fontWeight: FontWeight.w500,
-                icon: false,
+                iconL: false,
                 fontSize: 16,
               ),
             ],

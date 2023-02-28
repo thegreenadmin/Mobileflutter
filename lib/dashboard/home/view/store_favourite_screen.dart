@@ -22,7 +22,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
               itemCount: 6,
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: WidgetConstants.screenHeight / 980,
+                childAspectRatio: (WidgetConstants.screenWidth + 120) /
+                    WidgetConstants.screenHeight,
                 mainAxisSpacing: 0.0,
                 crossAxisSpacing: 0.0,
                 crossAxisCount: 2,
@@ -57,12 +58,34 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                       ),
                     ),
                     height5SizedBox,
-                    const Text(
-                      "Skin toner cosmetic",
-                      style: TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Skin toner cosmetic",
+                          style: TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        height4SizedBox,
+                        Text(
+                          "Lorem Ipsum is simply",
+                          maxLines: 2,
+                          style: TextStyle(
+                              color: AppColors.blacklight,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        height4SizedBox,
+                        const Text(
+                          "Unit price: \$20.00",
+                          style: TextStyle(
+                              color: AppColors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
                   ],
                 );

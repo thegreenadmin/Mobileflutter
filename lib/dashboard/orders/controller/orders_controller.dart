@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 
 class OrdersController extends GetxController {
+
+  RxBool isActiveOrders = false.obs;
+  
   RxList orderList = [
     "Click & Collect",
     "Happy Shop",

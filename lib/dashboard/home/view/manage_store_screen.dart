@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/inbox_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/add_categories_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class InboxScreen extends StatefulWidget {
-  const InboxScreen({Key? key}) : super(key: key);
+class MangeStoreScreen extends StatefulWidget {
+  const MangeStoreScreen({Key? key}) : super(key: key);
 
   @override
-  State<InboxScreen> createState() => _InboxScreenState();
+  State<MangeStoreScreen> createState() => _MangeStoreScreenState();
 }
 
-class _InboxScreenState extends State<InboxScreen> {
-  final InboxController inboxController = Get.put(InboxController());
+class _MangeStoreScreenState extends State<MangeStoreScreen> {
+  final ManageStoreController manageStoreController =
+      Get.put(ManageStoreController());
 
   Container _messageTab() {
     return Container(
@@ -33,17 +36,17 @@ class _InboxScreenState extends State<InboxScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  if (inboxController.isInboxSelected.value == true) {
+                  if (manageStoreController.isMenuSelected.value == true) {
                   } else {
-                    inboxController.isInboxSelected.value =
-                        !inboxController.isInboxSelected.value;
+                    manageStoreController.isMenuSelected.value =
+                        !manageStoreController.isMenuSelected.value;
                   }
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: inboxController.isInboxSelected.value
+                  color: manageStoreController.isMenuSelected.value
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -51,12 +54,12 @@ class _InboxScreenState extends State<InboxScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        StringConstants.messageText,
+                        StringConstants.menuText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: inboxController.isInboxSelected.value
+                          color: manageStoreController.isMenuSelected.value
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -67,17 +70,17 @@ class _InboxScreenState extends State<InboxScreen> {
               ),
               InkWell(
                 onTap: () {
-                  if (inboxController.isInboxSelected.value == false) {
+                  if (manageStoreController.isMenuSelected.value == false) {
                   } else {
-                    inboxController.isInboxSelected.value =
-                        !inboxController.isInboxSelected.value;
+                    manageStoreController.isMenuSelected.value =
+                        !manageStoreController.isMenuSelected.value;
                   }
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: inboxController.isInboxSelected.value
+                  color: manageStoreController.isMenuSelected.value
                       ? AppColors.white
                       : AppColors.primarylight,
                   child: Row(
@@ -85,12 +88,12 @@ class _InboxScreenState extends State<InboxScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        StringConstants.pastMessagesText,
+                        StringConstants.featuredText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: inboxController.isInboxSelected.value
+                          color: manageStoreController.isMenuSelected.value
                               ? AppColors.blacklight
                               : AppColors.primary,
                         ),
@@ -156,13 +159,49 @@ class _InboxScreenState extends State<InboxScreen> {
           padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: Column(children: [
             Center(child: _messageTab()),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  StringConstants.viewAndUpdateItemsText,
+                  style: const TextStyle(
+                      fontSize: 18.0,
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w600),
+                ),
+                InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      Get.to(() => const AddCategoriesScreen());
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.add,
+                          color: AppColors.primary,
+                          size: 18.0,
+                        ),
+                        width2SizedBox,
+                        Text(
+                          StringConstants.addCategoriesText,
+                          style: const TextStyle(
+                              fontSize: 16.0,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ))
+              ],
+            ),
             height20SizedBox,
             Expanded(
               child: Obx(() => ListView.separated(
                   separatorBuilder: (BuildContext context, int index) {
                     return height12SizedBox;
                   },
-                  itemCount: inboxController.inboxList.length,
+                  itemCount: manageStoreController.menuList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
@@ -195,7 +234,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                 const SizedBox(
                                   width: 250,
                                   child: Text(
-                                    "Oh What a fun it is to buy @ Store 1 Oh What a fun it is to buy @ Store 1",
+                                    "Topical medicines",
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         color: AppColors.black,
@@ -203,56 +242,16 @@ class _InboxScreenState extends State<InboxScreen> {
                                   ),
                                 ),
                                 height4SizedBox,
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    RawMaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {},
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16.0, 8.0, 16.0, 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1.0,
-                                            color: AppColors.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(28.0),
-                                      ),
-                                      fillColor: AppColors.primary,
-                                      child: Text(
-                                        StringConstants.seeMoreText,
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    width10SizedBox,
-                                    RawMaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {},
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          18.0, 8.0, 18.0, 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1.0,
-                                            color: AppColors.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(28.0),
-                                      ),
-                                      fillColor: AppColors.white,
-                                      child: Text(
-                                        StringConstants.removeText,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14.0,
-                                            color: AppColors.black),
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                SizedBox(
+                                  width: 250,
+                                  child: Text(
+                                    "12 Product",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: AppColors.blacklight,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                               ],
                             )
                           ],

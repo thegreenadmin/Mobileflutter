@@ -8,14 +8,14 @@ import 'package:thegreenmall/utils/custom_button.dart';
 
 import '../../../utils/sizedbox_constants.dart';
 
-class PersonalInfoEditScreen extends StatefulWidget {
-  const PersonalInfoEditScreen({super.key});
+class StoreDetailEditScreen extends StatefulWidget {
+  const StoreDetailEditScreen({super.key});
 
   @override
-  State<PersonalInfoEditScreen> createState() => _PersonalInfoEditScreenState();
+  State<StoreDetailEditScreen> createState() => _StoreDetailEditScreenState();
 }
 
-class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
+class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
   final PersonalInfoEditController personalInfoEditController =
       Get.put(PersonalInfoEditController());
 
@@ -50,7 +50,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.personalInformationText,
+                                StringConstants.editStoreText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -78,7 +78,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.personalDetailText,
+                      StringConstants.editStoreText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
@@ -86,7 +86,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     ),
                     height15SizedBox,
                     Text(
-                      StringConstants.firstNameText,
+                      StringConstants.storeNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -109,12 +109,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
-                                .pleaseEnterFirstNameText;
+                                .pleaseEnterStoreNameText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.firstNameText,
+                          hintText: StringConstants.storeNameText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -149,7 +149,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.lastNameText,
+                      StringConstants.einBusinessId,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -171,12 +171,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLastNameText;
+                            return AlertStringConstants.pleaseEnterEinText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.lastNameText,
+                          hintText: StringConstants.einBusinessId,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -273,7 +273,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.emailText,
+                      StringConstants.emailIdText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -303,7 +303,72 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.emailText,
+                          hintText: StringConstants.emailIdText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.phoneNumberText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            personalInfoEditController.emailTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterPhoneText;
+                          } else if (!GetUtils.isEmail(value.trim())) {
+                            return AlertStringConstants
+                                .pleaseEnterValidEmailText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.phoneNumberText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -533,7 +598,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.zipCodeText,
+                      StringConstants.postalCodeText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -556,12 +621,13 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterZipCodeText;
+                            return AlertStringConstants
+                                .pleaseEnterPostalCodeText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.zipCodeText,
+                          hintText: StringConstants.postalCodeText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -596,7 +662,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.stateText,
+                      StringConstants.zoneText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -618,12 +684,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterStateText;
+                            return AlertStringConstants.pleaseEnterZoneText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.stateText,
+                          hintText: StringConstants.zoneText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,

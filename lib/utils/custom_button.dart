@@ -9,8 +9,10 @@ class CustomButton extends StatefulWidget {
   Function()? onTap;
   double? height;
   double? width;
-  Widget? image;
-  bool? icon;
+  Widget? imageL;
+  Widget? imageR;
+  bool? iconL;
+  bool? iconR;
   String? text;
   Color? textColor;
   Color? color;
@@ -36,8 +38,10 @@ class CustomButton extends StatefulWidget {
       this.fontSize,
       this.borderRadius,
       this.fontWeight,
-      this.icon,
-      this.image,
+      this.iconL,
+      this.iconR,
+      this.imageL,
+      this.imageR,
       this.textColor,
       this.gradient,
       this.border});
@@ -65,6 +69,7 @@ class CustomButtonState extends State<CustomButton> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (widget.iconL == true) ...[widget.imageL!, width10SizedBox],
               Flexible(
                 child: DefaultTextStyle(
                   style: TextStyle(
@@ -85,7 +90,7 @@ class CustomButtonState extends State<CustomButton> {
                   ),
                 ),
               ),
-              if (widget.icon == true) ...[widget.image!, width10SizedBox],
+              if (widget.iconR == true) ...[widget.imageR!, width10SizedBox],
             ],
           ),
         ));
