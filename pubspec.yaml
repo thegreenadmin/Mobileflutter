@@ -42,6 +42,8 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_switch: ^0.3.2
   dotted_border: ^2.0.0+3
+  google_maps_flutter: ^2.2.4
+  http: ^0.13.5
 
 
 
@@ -112,7 +114,7 @@ flutter:
       - asset: assets/Inter-ExtraBold.ttf
         weight: 700
       - asset: assets/Inter-ExtraLight.ttf
-        weight: 200
+        weight: 100
       - asset: assets/Inter-Light.ttf
         weight: 300
       - asset: assets/Inter-Medium.ttf

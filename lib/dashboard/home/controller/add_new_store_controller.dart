@@ -1,29 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class LoginController extends GetxController {
+class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController phoneTextController = TextEditingController();
-  RxString phoneNumber = "".obs;
-  RxString countryCode = "".obs;
+  TextEditingController firstNameTextController = TextEditingController();
+  TextEditingController lastNameTextController = TextEditingController();
+  TextEditingController nickNameTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController addressLine1TextController = TextEditingController();
+  TextEditingController addressLine2TextController = TextEditingController();
+  TextEditingController townOrCityTextController = TextEditingController();
+  TextEditingController zipCodeTextController = TextEditingController();
+  TextEditingController stateTextController = TextEditingController();
+  TextEditingController countryTextController = TextEditingController();
 
-  Rx<Locale> cL = const Locale("en", "IN").obs;
-  RxString selectedCountryCode = "".obs;
-  RxString selectedRegion = "".obs;
-  RxString sessionId = ''.obs;
-  RxString savedPhoneNumber = ''.obs;
-  RxString userId = ''.obs;
-  RxString token = ''.obs;
-  RxInt profileCompleted = 0.obs;
-  RxBool isUserExist = false.obs;
-  RxString userProfilePic = ''.obs;
-  RxString? fcmToken = "".obs;
   RxBool autoValidate = false.obs;
 
   @override
@@ -44,33 +39,26 @@ class LoginController extends GetxController {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {
-        apiGenerateOtp();
-      } catch (_) {}
+      try {} catch (_) {}
     } else {
       autoValidate.value = true;
     }
   }
 
-  //Login Api
-  Future apiGenerateOtp() async {
-    Map data = {
-      "phone": countryCode.value + phoneNumber.value,
-    };
-    debugPrint("LOGIN BODY********** $data");
+  //Create Store Api
+  Future apiCreateStore() async {
+    Map data = {"store_name": "Demo store 12"};
+    debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
-        "LOGIN URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
+        "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
     UserProvider()
         .postApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
+            ServerCommunicator().baseUrl + ServerCommunicator().createStore,
             showLoading: true)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value!.body}");
+      debugPrint("CREATE STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == 201) {
-        phoneTextController.clear();
         Utility.showMessage(StringConstants.successText, value.body['message']);
-        Get.to(() => const OtpVerificationScreen(),
-            arguments: {"phoneNumber": countryCode.value + phoneNumber.value});
       } else if (value.body["status"] == 409) {
         //User not exist
         Utility.showMessage(StringConstants.alertText, value.body['message']);

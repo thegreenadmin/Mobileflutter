@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/personal_info_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -104,20 +105,30 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               const Divider(
                 thickness: 3,
-                height: 45,
+                height: 30,
               ),
-              Center(
-                child: Text(
-                  StringConstants.switchToStoreText,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      StringConstants.switchToStoreText,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.blacklight,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Image.asset(
+                      "assets/switch.png",
+                      scale: 2.6,
+                    )
+                  ],
                 ),
               ),
               const Divider(
                 thickness: 3,
-                height: 45,
+                height: 30,
               ),
               Padding(
                 padding:
@@ -165,12 +176,10 @@ class _AccountScreenState extends State<AccountScreen> {
                         ],
                       ),
                     ),
-
                     const Divider(
                       height: 40,
                       thickness: 1,
                     ),
-
                     InkWell(
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
@@ -402,57 +411,20 @@ class _AccountScreenState extends State<AccountScreen> {
                             )),
                       ],
                     ),
-
                     height25SizedBox,
-                    InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      },
-                      child: Container(
-                          width: Get.width * 0.90,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            color: AppColors.redlight,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.logout,
-                                color: AppColors.red,
-                                size: 24.0,
-                              ),
-                              Text(StringConstants.logoutText,
-                                  style: const TextStyle(
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16)),
-                            ],
-                          )),
+                    CustomButton(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [AppColors.redlight, AppColors.redlight],
+                      ),
+                      onTap: () {},
+                      height: 50,
+                      textColor: AppColors.red,
+                      text: StringConstants.deleteAccountText,
+                      borderRadius: 12,
+                      fontWeight: FontWeight.w600,
                     ),
-                    // CustomButton(
-                    //   gradient: const LinearGradient(
-                    //     begin: Alignment.topCenter,
-                    //     end: Alignment.bottomCenter,
-                    //     colors: [AppColors.redlight, AppColors.redlight],
-                    //   ),
-                    //   onTap: () {},
-                    //   height: 50,
-                    //   textColor: AppColors.red,
-                    //   text: StringConstants.logoutText,
-                    //   borderRadius: 12,
-                    //   fontWeight: FontWeight.w500,
-                    //   icon: true,
-                    //   fontSize: 16,
-                    //   image: const Icon(
-                    //     Icons.logout,
-                    //     color: AppColors.red,
-                    //     size: 24.0,
-                    //   ),
-                    // ),
                     height25SizedBox,
                   ],
                 ),

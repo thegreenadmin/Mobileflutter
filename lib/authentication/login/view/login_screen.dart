@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:country_codes/country_codes.dart';
 import 'package:devicelocale/devicelocale.dart';
@@ -107,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 30,
                         ),
                         IntlPhoneField(
+                          controller: loginController.phoneTextController,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
@@ -153,40 +153,37 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onCountryChanged: (value) {
-                            loginController.selectedCountryCode.value =
-                                value.dialCode.toString();
-                            loginController.selectedRegion.value = value.name;
-                            print(loginController.selectedCountryCode.value);
-                            print(loginController.selectedRegion.value);
+                            loginController.countryCode.value =
+                                "+${value.dialCode}";
                           },
-                          onChanged: (phone) {},
+                          onChanged: (phone) {
+                            loginController.phoneNumber.value =
+                                phone.number.toString();
+                            loginController.countryCode.value =
+                                phone.countryCode.toString();
+                          },
                         ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        height100SizedBox,
+                        height40SizedBox,
                         CustomButton(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.primary, AppColors.primary],
-                          ),
-                          onTap: () {
-                            loginController.validateAndSubmit();
-                          },
-                          height: 50,
-                          text: StringConstants.sendConfirmationCodeText,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconR: true,
-                          iconL: false,
-                          fontSize: 16,
-                          imageR: const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                            size: 24.0,
-                          ),
-                        ),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [AppColors.primary, AppColors.primary],
+                            ),
+                            onTap: () {
+                              loginController.validateAndSubmit();
+                            },
+                            height: 50,
+                            text: StringConstants.sendConfirmationCodeText,
+                            borderRadius: 12,
+                            fontWeight: FontWeight.w500,
+                            iconR: true,
+                            iconL: false,
+                            fontSize: 16,
+                            imageR: Image.asset(
+                              "assets/arrowright.png",
+                              scale: 3,
+                            )),
                       ],
                     ),
                   ),

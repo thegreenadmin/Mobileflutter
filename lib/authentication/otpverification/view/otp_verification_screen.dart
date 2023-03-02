@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
+import 'package:thegreenmall/authentication/otpverification/controller/otp_verification_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -16,7 +16,8 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  final SignupController signupController = Get.put(SignupController());
+  final OtpVerificationController otpVerificationController =
+      Get.put(OtpVerificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 Get.back();
               },
               style: OutlinedButton.styleFrom(
-                minimumSize: Size.zero, // Set this
+                minimumSize: Size.zero,
                 padding: EdgeInsets.zero,
                 side: BorderSide(width: 0.0, color: AppColors.blacklight),
                 shape: const CircleBorder(),
@@ -50,7 +51,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           child: GestureDetector(
               onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
               child: Form(
-                key: signupController.formKey,
+                key: otpVerificationController.formKey,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -75,7 +76,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             ),
                             height10SizedBox,
                             Text(
-                              "${StringConstants.verificationCodeSentText}78",
+                              StringConstants.verificationCodeSentText +
+                                  otpVerificationController.phoneNumber.value,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColors.blacklight,
@@ -97,7 +99,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                   } else if (value.length < 4) {
                                     return AlertStringConstants.invalidOtpText;
                                   }
-
                                   return null;
                                 },
                                 cursorWidth: 2,
@@ -116,7 +117,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 appContext: context,
                                 keyboardType: TextInputType.number,
                                 length: 4,
-                                controller: signupController.otpTextController,
+                                controller:
+                                    otpVerificationController.otpTextController,
                                 enableActiveFill: false,
                                 blinkWhenObscuring: true,
                                 pinTheme: PinTheme(
@@ -137,6 +139,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             ),
                             height5SizedBox,
                             InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                               onTap: () {
                                 // signupController.apiResendOtp();
                               },
@@ -150,7 +154,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                               fontSize: 15,
                                               color: AppColors.blacklight)),
                                       const TextSpan(
-                                        text: '  Resend',
+                                        text: ' Resend',
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
@@ -163,26 +167,28 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [AppColors.primary, AppColors.primary],
-                              ),
-                              onTap: () {
-                                signupController.validateAndSubmitOtp();
-                              },
-                              height: 50,
-                              text: StringConstants.submitText,
-                              borderRadius: 12,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              iconR: true,
-                              imageR: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 24.0,
-                              ),
-                            ),
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    AppColors.primary,
+                                    AppColors.primary
+                                  ],
+                                ),
+                                onTap: () {
+                                  otpVerificationController
+                                      .validateAndSubmitOtp();
+                                },
+                                height: 50,
+                                text: StringConstants.submitText,
+                                borderRadius: 12,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                iconR: true,
+                                imageR: Image.asset(
+                                  "assets/arrowright.png",
+                                  scale: 3,
+                                )),
                             height25SizedBox
                           ]),
                     ],

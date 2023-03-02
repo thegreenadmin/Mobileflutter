@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.dart';
+import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
+
 import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';

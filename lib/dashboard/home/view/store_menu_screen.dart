@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreMenuScreen extends StatefulWidget {
@@ -16,7 +17,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        height: WidgetConstants.screenHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             child: ListView.separated(

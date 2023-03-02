@@ -22,7 +22,9 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+          child: Stack(
+        children: [
+          Container(
             height: WidgetConstants.screenHeight,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -30,10 +32,10 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/greenmall420.png"),
                 height10SizedBox,
@@ -44,85 +46,98 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                           text: "Your ",
                           style: TextStyle(
                               fontSize: 24,
+                              fontWeight: FontWeight.w400,
                               fontFamily: "Montaga",
-                              color: AppColors.primary)),
+                              color: AppColors.black)),
                       TextSpan(
                           text: "420",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 24,
                               fontFamily: "Montaga",
-                              color: AppColors.primarydark)),
+                              color: AppColors.greenlight)),
                       TextSpan(
                         text: ' Market Place ',
                         style: TextStyle(
                             fontSize: 24,
+                            fontWeight: FontWeight.w400,
                             fontFamily: "Montaga",
-                            color: AppColors.primary),
+                            color: AppColors.black),
                       ),
                     ],
                   ),
                 ),
-                height300SizedBox,
-                CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.primary, AppColors.primary],
-                  ),
-                  onTap: () {
-                    Get.to(const LoginScreen());
-                  },
-                  height: 50,
-                  text: StringConstants.loginYourAccountText,
-                  borderRadius: 12,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                ),
-                height20SizedBox,
-                CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
-                    Get.to(const SignupScreen());
-                  },
-                  height: 50,
-                  textColor: AppColors.primary,
-                  text: StringConstants.createAnAccountText,
-                  borderRadius: 12,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                ),
-                height30SizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      StringConstants.ownAStoreText,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      StringConstants.registerHereText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          fontSize: 16,
-                          color: AppColors.white),
-                    ),
-                  ],
-                )
               ],
-            )),
-      ),
+            ),
+          ),
+          height350SizedBox,
+          Positioned(
+              left: 30,
+              right: 30,
+              bottom: 60,
+              child: Column(
+                children: [
+                  CustomButton(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.primary, AppColors.primary],
+                    ),
+                    onTap: () {
+                      Get.to(const LoginScreen());
+                    },
+                    height: 50,
+                    text: StringConstants.loginYourAccountText,
+                    borderRadius: 12,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    iconL: false,
+                  ),
+                  height20SizedBox,
+                  CustomButton(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {
+                      Get.to(const SignupScreen());
+                    },
+                    height: 50,
+                    textColor: AppColors.primary,
+                    text: StringConstants.createAnAccountText,
+                    borderRadius: 12,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    iconL: false,
+                  ),
+                  height30SizedBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringConstants.ownAStoreText,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        StringConstants.registerHereText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                            fontSize: 16,
+                            color: AppColors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ))
+        ],
+      )),
+      //  ),
     );
   }
 }

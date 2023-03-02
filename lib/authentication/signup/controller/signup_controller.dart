@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
+import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class SignupController extends GetxController {
@@ -12,17 +15,17 @@ class SignupController extends GetxController {
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
-  TextEditingController genderTextController = TextEditingController();
   TextEditingController ageTextController = TextEditingController();
-  TextEditingController passwordTextController = TextEditingController();
-  TextEditingController confirmPasswordTextController = TextEditingController();
   TextEditingController dateTextController = TextEditingController();
   TextEditingController timeTextController = TextEditingController();
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController otpTextController = TextEditingController();
+
+  RxString phoneNumber = "".obs;
+  RxString countryCode = "".obs;
+
   Rx<Locale> cL = const Locale("en", "IN").obs;
-  RxBool obscureText = true.obs;
-  RxBool obscureTextConfirmPass = true.obs;
+
   RxBool isTermsAccepted = false.obs;
   late RxString dateOfEvent = "".obs;
   late RxString timeOfEvent = "".obs;
@@ -34,18 +37,8 @@ class SignupController extends GetxController {
   String? formattedDate;
   RxBool autoValidate = false.obs;
 
-  void toggle() {
-    obscureText.value = !obscureText.value;
-    update();
-  }
-
-  void toggleConfirmPass() {
-    obscureTextConfirmPass.value = !obscureTextConfirmPass.value;
-    update();
-  }
-
   bool isAdultCheck(String dob) {
-    final dateOfBirth = DateFormat("MM/dd/yyyy").parse(dob);
+    final dateOfBirth = DateFormat("yyyy-MM-dd").parse(dob);
     final now = DateTime.now();
     final eighteenYearsAgo = DateTime(
       now.year - 18,
@@ -83,8 +76,7 @@ class SignupController extends GetxController {
         } else if (isTermsAccepted.value == false) {
           Utility.showToast(AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
-          Get.to(BottomNavigation());
-          //Get.to(const OtpVerificationScreen());
+          apiCreateUser();
         }
       } catch (_) {}
     } else {
@@ -95,62 +87,81 @@ class SignupController extends GetxController {
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
-        Get.off(BottomNavigation());
+        apiOtpVerify();
       } catch (_) {}
     } else {
       autoValidate.value = true;
     }
   }
 
-  // //Signup Api
-  // Future apiSignup() async {
-  //   if (nameTextController.text.trim().isEmpty) {
-  //     Utility.showMessage("Alert", "Enter name");
-  //   }
-  //   if (emailTextController.text.trim().isEmpty) {
-  //     Utility.showMessage("Alert", "Enter email");
-  //   } else if (!GetUtils.isEmail(emailTextController.text.trim())) {
-  //     Utility.showMessage("Alert", "Enter valid email ");
-  //   } else if (passwordTextController.text.trim().isEmpty) {
-  //     Utility.showMessage("Alert", "Enter password");
-  //   } else if (passwordTextController.text.trim().length < 6) {
-  //     Utility.showMessage("Alert", "Password must consist of 6 characters");
-  //   } else if (confirmPasswordTextController.text.trim().isEmpty) {
-  //     Utility.showMessage("Alert", "Enter confirm password");
-  //   } else if (passwordTextController.text.trim() != confirmPasswordTextController.text.trim()) {
-  //     Utility.showMessage("Alert", "Confirm password doesn't match");
-  //   } else if (!isTermsAccepted.value) {
-  //     Utility.showMessage("Alert", "Please accept Terms and Privacy policy");
-  //   } else {
-  //     Map data = {
-  //       "name": nameTextController.text.trim(),
-  //       "email": emailTextController.text.trim(),
-  //       "password": passwordTextController.text.trim(),
-  //     };
-  //     debugPrint("SIGNUP BODY********** $data");
-  //     debugPrint("SIGNUP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().signupUrl}");
-  //     UserProvider()
-  //         .postApi(data, ServerCommunicator().baseUrl + ServerCommunicator().signupUrl, showLoading: true)
-  //         .then((value) async {
-  //       if (value != null) {
-  //         if (value.body["code"] == 200 && value.body["status"] == "success") {
-  //           SharedPreferences prefs = await SharedPreferences.getInstance();
-  //           prefs.setString('token', value.body['result']['token'].toString());
-  //           const storage = FlutterSecureStorage();
-  //           await storage.write(key: 'token', value: value.body['result']['token'].toString());
-  //           emailTextController.clear();
-  //           passwordTextController.clear();
-  //           confirmPasswordTextController.clear();
-  //           Get.to(() => const ConnectWearables(isFromProfile: false));
-  //         } else if (value.body["code"] == 400 && value.body["error"] == "error") {
-  //           Utility.showMessage("Alert", value.body['message']);
-  //         } else if (value.body["code"] == 404 && value.body["error"] == "error") {
-  //           Utility.showMessage("Alert", value.body['message']);
-  //         } else {
-  //           Utility.showMessage("Alert", value.body['message'].toString());
-  //         }
-  //       }
-  //     });
-  //   }
-  // }
+  //Create Account User
+  Future apiCreateUser() async {
+    Map data = {
+      "first_name": firstNameTextController.text.trim(),
+      "last_name": lastNameTextController.text.trim(),
+      "email": emailTextController.text.trim(),
+      "phone": countryCode.value + phoneNumber.value,
+      "dob": dateTextController.text.trim()
+    };
+    debugPrint("CREATE USER BODY********** $data");
+    debugPrint(
+        "CREATE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createUser}");
+    UserProvider()
+        .postApi(data,
+            ServerCommunicator().baseUrl + ServerCommunicator().createUser,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("CREATE USER RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201) {
+        countryCode.value = "";
+        phoneNumber.value = "";
+        firstNameTextController.clear();
+        lastNameTextController.clear();
+        emailTextController.clear();
+        dateTextController.clear();
+        isTermsAccepted.value = false;
+        phoneNumberTextController.clear();
+        Utility.showMessage(StringConstants.successText, value.body['message']);
+        Get.back();
+        Get.to(const LoginScreen());
+      } else if (value.body["status"] == 409) {
+        //email must be unique & user already exists
+        Utility.showMessage(StringConstants.alertText, value.body['message']);
+      } else {
+        Utility.showMessage(
+            StringConstants.alertText, value.body['message'].toString());
+      }
+    });
+  }
+
+  //Otp Verify Api
+  Future apiOtpVerify() async {
+    Map data = {
+      "phone": "+918288033489",
+      "otp": otpTextController.text.trim(),
+      "device_id": "1234567",
+      "device_token": "1234567"
+    };
+    debugPrint("OTP VERIFY BODY********** $data");
+    debugPrint(
+        "OTP VERIFY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().otpVerify}");
+    UserProvider()
+        .postApi(
+            data, ServerCommunicator().baseUrl + ServerCommunicator().otpVerify,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201) {
+        Utility.showMessage(StringConstants.successText, value.body['message']);
+        otpTextController.clear();
+        Get.offAll(() => BottomNavigation());
+      } else if (value.body["status"] == 409) {
+        //email must be unique & user already exists
+        Utility.showMessage(StringConstants.alertText, value.body['message']);
+      } else {
+        Utility.showMessage(
+            StringConstants.alertText, value.body['message'].toString());
+      }
+    });
+  }
 }

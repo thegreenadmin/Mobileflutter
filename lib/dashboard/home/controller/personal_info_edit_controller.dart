@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.dart';
 
 class PersonalInfoEditController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -12,6 +14,77 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
+  bottomSheetToAddMoney(context) {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(25), topLeft: Radius.circular(25))),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(bottom: 30),
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      height15SizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              StringConstants.addMoneyToMyWalletText,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Image.asset(
+                                "assets/cross.png",
+                                scale: 3,
+                              ))
+                        ],
+                      ),
+                      height15SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {},
+                        height: 50,
+                        text: StringConstants.okText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          });
+        }).then((value) => {});
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -91,9 +164,14 @@ class _WalletScreenState extends State<WalletScreen> {
                         style: TextStyle(color: AppColors.white, fontSize: 18),
                       ),
                       height12SizedBox,
-                      Image.asset(
-                        "assets/addMoney.png",
-                        scale: 3.5,
+                      InkWell(
+                        onTap: () {
+                          bottomSheetToAddMoney(context);
+                        },
+                        child: Image.asset(
+                          "assets/addMoney.png",
+                          scale: 3.5,
+                        ),
                       ),
                     ],
                   )

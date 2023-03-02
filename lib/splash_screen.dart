@@ -1,26 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_main_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   startTime() async {
-    var _duration = const Duration(seconds: 2);
-    return Timer(_duration, navigationPage);
+    var duration = const Duration(seconds: 2);
+    return Timer(duration, navigationPage);
   }
 
   Future<void> navigationPage() async {
-    // Get.to(() => const SignupScreen());
-    // if (SharedPreferenceStorage.getData('userId') != null) {
-    Get.offAll(() => const OnBoardMainScreen());
+    // if (SharedPreferenceStorage.getData('token') != null) {
+    //   Get.offAll(() => BottomNavigation());
     //   debugPrint("I am in Dashboard");
     // } else {
-    //   debugPrint("I am in register View");
-    //   Get.offNamed('/registerView');
+    //   debugPrint("I am in onboard View");
+    Get.to(() => const OnBoardMainScreen());
     // }
   }
 

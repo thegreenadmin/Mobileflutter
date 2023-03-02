@@ -29,12 +29,15 @@ class StringConstants {
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
   static String addCategoriesText = "Add Categories";
+  static String addMoneyToMyWalletText = "Add money to my wallet";
+  static String alertText = "Alert";
 
   //B
 
   //C
-  static String createAnAccountText = "Create your Account";
+  static String createYourAccountText = "Create your Account";
   static String createAccountText = "Create account";
+  static String createAnAccountText = "Create an account";
   static String createAccountDetailText =
       "Enter your detail to create an\naccount";
   static String cardAndPaymentsText = "Cards & Payments";
@@ -47,9 +50,12 @@ class StringConstants {
   static String changeText = "Change";
   static String categoriesNameText = "Categories Name";
   static String completedOrders = "Completed Orders";
+  static String contactText = "Contact";
+  static String currentMonthText = "Current Month";
 
   //D
   static String deliveryText = "Delivery";
+  static String deleteAccountText = "Delete Account";
   //E
 
   static String emailText = "Email";
@@ -90,7 +96,7 @@ class StringConstants {
   //K
 
   //L
-  static String loginYourAccountText = "Login your Account";
+  static String loginYourAccountText = "Login your account";
   static String loginText = "Login";
   static String lastNameText = "Last Name";
   static String logoutText = "Logout";
@@ -116,6 +122,7 @@ class StringConstants {
   static String orderSummaryText = "Order Summary";
   static String offerName = "Offer Name";
   static String orderType = "Order Type";
+  static String optionsText = "Options";
 
   //P
   static String profileText = "Profile";
@@ -133,14 +140,18 @@ class StringConstants {
   static String privacyStatementText = "Privacy Statement";
   static String privacyPolicyText = "Privacy Policy";
   static String pickUpLocationText = "Pickup Location";
+  static String pastOrdersText = "Past Orders";
   //Q
 
   //R
   static String registerHereText = " Register Here!!";
   static String removeText = "Remove";
+
   //S
   static String signUpText = "Sign up";
   static String skipText = "Skip";
+  static String storeText = "Store";
+  static String successText = "Success";
   static String sendConfirmationCodeText = "Send Confirmation Code";
   static String securityText = "Security";
   static String searchForStoreText = "Search for Store";
@@ -161,13 +172,16 @@ class StringConstants {
   static String storeNameText = "Store Name";
   static String storeDetailsText = "Store Details";
   static String switchToStoreText = "Switch to Store";
+  static String searchText = "Search";
 
   //T
   static String termsOfServiceText = "Terms of service";
+  static String termsAndConditionsText = "Terms & Conditions";
   static String transactionHistoryText = "Transaction History";
   static String townOrCityText = "Town or City";
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String taxText = "Tax";
+  static String okText = "Ok";
 
   //U
   static String usingOurSearchText =
@@ -184,7 +198,7 @@ class StringConstants {
   //V
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
-      "We have sent the code verification to your mobile number ****";
+      "We have sent the code verification to your mobile number ";
   static String viewAndUpdateItemsText = "View & Update Items";
 
   //W

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -110,8 +111,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           LengthLimitingTextInputFormatter(40),
                         ],
                         style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 14,
+                            color: AppColors.black,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400),
                         controller: signupController.firstNameTextController,
                         keyboardType: TextInputType.text,
@@ -126,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           isDense: true,
                           prefixIcon: Image.asset(
                             "assets/profile.png",
-                            scale: 2.5,
+                            scale: 2.8,
                           ),
                           hintText: StringConstants.firstNameText,
                           hintStyle: const TextStyle(color: AppColors.grey),
@@ -174,8 +175,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           LengthLimitingTextInputFormatter(40),
                         ],
                         style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 14,
+                            color: AppColors.black,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400),
                         controller: signupController.lastNameTextController,
                         keyboardType: TextInputType.text,
@@ -188,7 +189,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
                             "assets/profile.png",
-                            scale: 2.4,
+                            scale: 2.8,
                           ),
                           hintText: StringConstants.lastNameText,
                           hintStyle: const TextStyle(color: AppColors.grey),
@@ -236,8 +237,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           LengthLimitingTextInputFormatter(100),
                         ],
                         style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 14,
+                            color: AppColors.black,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400),
                         controller: signupController.emailTextController,
                         keyboardType: TextInputType.text,
@@ -252,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
                             "assets/email.png",
-                            scale: 2.5,
+                            scale: 3,
                           ),
                           hintText: StringConstants.emailText,
                           hintStyle: const TextStyle(color: AppColors.grey),
@@ -294,26 +295,27 @@ class _SignupScreenState extends State<SignupScreen> {
                         )),
                     height15SizedBox,
                     IntlPhoneField(
+                      controller: signupController.phoneNumberTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 14,
+                          color: AppColors.black,
+                          fontSize: 15,
                           fontWeight: FontWeight.w400),
                       showDropdownIcon: false,
                       flagsButtonMargin: const EdgeInsets.all(10),
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        labelText: StringConstants.mobileText,
-                        labelStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blacklight,
-                            decoration: TextDecoration.none),
+                        prefixIcon: Image.asset(
+                          "assets/calling.png",
+                          scale: 2.8,
+                        ),
+                        alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
-                        hintStyle: const TextStyle(color: AppColors.primary),
+                        hintStyle: const TextStyle(
+                            color: AppColors.black, fontSize: 15),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
@@ -344,82 +346,22 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       onCountryChanged: (value) {
-                        signupController.selectedCountryCode.value =
-                            value.dialCode.toString();
-                        signupController.selectedRegion.value = value.name;
-                        print(signupController.selectedCountryCode.value);
-                        print(signupController.selectedRegion.value);
+                        signupController.countryCode.value =
+                            "+${value.dialCode}";
                       },
-                      onChanged: (phone) {},
+                      onChanged: (phone) {
+                        signupController.phoneNumber.value =
+                            phone.number.toString();
+                        signupController.countryCode.value =
+                            phone.countryCode.toString();
+                      },
                     ),
-                    // height15SizedBox,
-                    // TextFormField(
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     inputFormatters: <TextInputFormatter>[
-                    //       LengthLimitingTextInputFormatter(40),
-                    //     ],
-                    //     style: const TextStyle(
-                    //         color: AppColors.primary,
-                    //         fontSize: 14,
-                    //         fontWeight: FontWeight.w400),
-                    //     controller: signupController.genderTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value == null || value.trim().isEmpty) {
-                    //         return AlertStringConstants.pleaseEnterGenderText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //       prefixIcon: Image.asset(
-                    //         "assets/gender.png",
-                    //         scale: 2.4,
-                    //       ),
-                    //       hintText: StringConstants.genderText,
-                    //       hintStyle: const TextStyle(color: AppColors.grey),
-                    //       labelText: StringConstants.genderText,
-                    //       labelStyle: const TextStyle(
-                    //           fontSize: 16,
-                    //           fontWeight: FontWeight.w500,
-                    //           color: AppColors.primary,
-                    //           decoration: TextDecoration.none),
-                    //       fillColor: Colors.white,
-                    //       border: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(12.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height15SizedBox,
                     InkWell(
                       onTap: () async {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
-                        print("Hello date" + date.toString());
+
                         date = (await showDatePicker(
                           helpText: "Select a Date",
                           builder: (BuildContext context, Widget? child) {
@@ -438,12 +380,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           firstDate: DateTime.utc(1200, 1, 1),
                           lastDate: DateTime.now(),
                         ))!;
-                        final DateFormat formatter = DateFormat('MM/dd/yyyy');
+                        final DateFormat formatter = DateFormat('yyyy-MM-dd');
                         formattedDate = formatter.format(date);
                         signupController.dateTextController.text =
                             formattedDate!;
                         signupController.dateOfEvent.value =
                             date.toIso8601String();
+
                         signupController.isAdultCheck(
                             signupController.dateTextController.text);
                         bool result = signupController.isAdultCheck(
@@ -461,10 +404,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         textInputAction: TextInputAction.done,
                         enabled: false,
                         style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
                         controller: signupController.dateTextController,
                         decoration: InputDecoration(
                           labelText: StringConstants.ageText,
@@ -508,7 +450,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           prefixIcon: Image.asset(
                             "assets/calendar.png",
-                            scale: 2.4,
+                            scale: 2.8,
                           ),
                         ),
                       ),
@@ -546,7 +488,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         const Flexible(
                           flex: 9,
                           child: Text(
-                            "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.",
+                            "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.",
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -557,34 +499,40 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height30SizedBox,
                     CustomButton(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.primary, AppColors.primary],
-                      ),
-                      onTap: () {
-                        signupController.validateAndSubmit();
-                      },
-                      height: 50,
-                      text: StringConstants.signUpText,
-                      borderRadius: 12,
-                      fontWeight: FontWeight.w500,
-                      iconR: true,
-                      fontSize: 16,
-                      imageR: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                        size: 24.0,
-                      ),
-                    ),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {
+                          signupController.validateAndSubmit();
+                        },
+                        height: 50,
+                        text: StringConstants.signUpText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconR: true,
+                        fontSize: 16,
+                        imageR: Image.asset(
+                          "assets/arrowright.png",
+                          scale: 3,
+                        )),
                     height20SizedBox,
-                    Center(
-                      child: Text(
-                        StringConstants.loginYourAccountText,
-                        style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                    InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () {
+                        Get.back();
+                        Get.to(const LoginScreen());
+                      },
+                      child: Center(
+                        child: Text(
+                          StringConstants.loginYourAccountText,
+                          style: const TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                     height20SizedBox,

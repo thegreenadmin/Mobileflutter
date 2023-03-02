@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/personal_info_edit_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -16,8 +16,8 @@ class AddNewStoreScreen extends StatefulWidget {
 }
 
 class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
-  final PersonalInfoEditController personalInfoEditController =
-      Get.put(PersonalInfoEditController());
+  final AddNewStoreController addNewStoreController =
+      Get.put(AddNewStoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: personalInfoEditController.formKey,
+            key: addNewStoreController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -104,7 +104,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.firstNameTextController,
+                            addNewStoreController.firstNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -167,7 +167,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.lastNameTextController,
+                            addNewStoreController.lastNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -229,7 +229,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.nickNameTextController,
+                            addNewStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -290,8 +290,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.emailTextController,
+                        controller: addNewStoreController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -355,8 +354,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.emailTextController,
+                        controller: addNewStoreController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -428,8 +426,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: personalInfoEditController
-                            .addressLine1TextController,
+                        controller:
+                            addNewStoreController.addressLine1TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -490,8 +488,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: personalInfoEditController
-                            .addressLine2TextController,
+                        controller:
+                            addNewStoreController.addressLine2TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -553,7 +551,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.townOrCityTextController,
+                            addNewStoreController.townOrCityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -616,8 +614,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.zipCodeTextController,
+                        controller: addNewStoreController.zipCodeTextController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -678,8 +675,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.stateTextController,
+                        controller: addNewStoreController.stateTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -740,8 +736,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.countryTextController,
+                        controller: addNewStoreController.countryTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -791,7 +786,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        personalInfoEditController.validateAndSubmit();
+                        addNewStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveText,

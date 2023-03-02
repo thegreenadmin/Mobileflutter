@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/view/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_home_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -13,6 +15,183 @@ class StoreHomeMainScreen extends StatefulWidget {
 }
 
 class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
+  RxInt selectedIndex = 0.obs;
+
+  RxList horizontalTabList = [
+    StringConstants.storeText,
+    StringConstants.menuText,
+    StringConstants.favoriteText,
+    StringConstants.optionsText,
+  ].obs;
+
+  Padding horizontalTabs() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        height: 18,
+        width: WidgetConstants.screenWidth,
+        child: ListView.separated(
+            separatorBuilder: (BuildContext context, int index) {
+              return width40SizedBox;
+            },
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: horizontalTabList.length,
+            itemBuilder: (_, i) {
+              return InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      selectedIndex.value = i;
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        horizontalTabList[i],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: selectedIndex.value == i
+                              ? FontWeight.w500
+                              : FontWeight.w400,
+                          color: selectedIndex.value == i
+                              ? AppColors.primary
+                              : AppColors.blacklight,
+                        ),
+                      ),
+                      i != 3
+                          ? height0SizedBox
+                          : PopupMenuButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: selectedIndex.value == i
+                                    ? AppColors.primary
+                                    : AppColors.blacklight,
+                                size: 22,
+                              ),
+                              onSelected: (String value) async {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              },
+                              itemBuilder: (context) =>
+                                  createOptionsPopUpList(Get.context)!,
+                            )
+                    ],
+                  ));
+            }),
+      ),
+    );
+  }
+
+  List<PopupMenuEntry<String>>? createOptionsPopUpList(context) {
+    return List.generate(4, (index) {
+      if (index == 0) {
+        return PopupMenuItem<String>(
+          value: StringConstants.previousText,
+          child: Column(
+            children: [
+              SizedBox(
+                width: 130,
+                child: GestureDetector(
+                  onTap: () async {
+                    Get.back();
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.previousText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      if (index == 1) {
+        return PopupMenuItem<String>(
+          value: StringConstants.contactText,
+          child: SizedBox(
+            width: 130,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.contactText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      if (index == 2) {
+        return PopupMenuItem<String>(
+          value: StringConstants.storePolicyText,
+          child: SizedBox(
+            width: 130,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.storePolicyText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      if (index == 3) {
+        return PopupMenuItem<String>(
+          value: StringConstants.termsAndConditionsText,
+          child: SizedBox(
+            width: 130,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.termsAndConditionsText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      return null!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,140 +310,23 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           ],
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                          text: StringConstants.welcomeToText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 22)),
-                      const TextSpan(
-                        text: ' click & collect',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                            color: AppColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            height30SizedBox,
-            Image.asset("assets/examplee.png"),
-            height30SizedBox,
-            InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                Get.to(const StoreHomeScreen());
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        "assets/storeproduct.png",
-                        color: AppColors.primary,
-                        scale: 2.4,
-                      ),
-                      width18SizedBox,
-                      Text(StringConstants.exploreStoreProductText,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                  Image.asset(
-                    "assets/arrowForward.png",
-                    scale: 3.4,
-                    color: AppColors.blacklight,
-                  )
-                ],
-              ),
-            ),
-            const Divider(
-              height: 40,
-              thickness: 1,
-            ),
-            InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        "assets/terms.png",
-                        color: AppColors.primary,
-                        scale: 2.5,
-                      ),
-                      width18SizedBox,
-                      Text(StringConstants.storeOffersAndDiscountText,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                  Image.asset(
-                    "assets/arrowForward.png",
-                    scale: 3.4,
-                    color: AppColors.blacklight,
-                  )
-                ],
-              ),
-            ),
-            const Divider(
-              height: 40,
-              thickness: 1,
-            ),
-            InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        "assets/privacy.png",
-                        color: AppColors.primary,
-                        scale: 2.5,
-                      ),
-                      width18SizedBox,
-                      Text(StringConstants.storePolicyText,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                  Image.asset(
-                    "assets/arrowForward.png",
-                    scale: 3.4,
-                    color: AppColors.blacklight,
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          horizontalTabs(),
+          const Divider(
+            thickness: 1,
+          ),
+          selectedIndex.value == 0
+              ? const Expanded(child: StoreHomeScreen())
+              : selectedIndex.value == 1
+                  ? const Expanded(child: StoreMenuScreen())
+                  : selectedIndex.value == 2
+                      ? const Expanded(child: StoreFavouriteScreen())
+                      : selectedIndex.value == 3
+                          ? const Expanded(child: StoreFavouriteScreen())
+                          : const Expanded(child: StoreHomeScreen())
+        ],
       ),
     );
   }

@@ -90,7 +90,10 @@ class CustomButtonState extends State<CustomButton> {
                   ),
                 ),
               ),
-              if (widget.iconR == true) ...[widget.imageR!, width10SizedBox],
+              if (widget.iconR == true) ...[
+                width8SizedBox,
+                widget.imageR!,
+              ],
             ],
           ),
         ));

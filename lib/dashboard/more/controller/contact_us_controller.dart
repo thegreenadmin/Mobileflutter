@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/authentication/signup/view/otp_verification_screen.dart';
 
 class ContactUsController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

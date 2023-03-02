@@ -9,6 +9,9 @@ class HistoryController extends GetxController {
     "Happy Shop",
     "Ambrosia Store"
   ].obs;
+
+  RxBool isCurrentMonthSelected = false.obs;
+
   @override
   void onInit() {
     super.onInit();
