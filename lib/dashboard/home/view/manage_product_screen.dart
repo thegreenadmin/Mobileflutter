@@ -179,7 +179,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         "storeId": manageStoreController.storeId.value
                       })!
                           .then((value) =>
-                              manageStoreController.getCategoriesApi());
+                              manageStoreController.apiGetCategoriesList());
                     },
                     child: Row(
                       children: [

@@ -75,7 +75,6 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Column(
           children: [
-            height25SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

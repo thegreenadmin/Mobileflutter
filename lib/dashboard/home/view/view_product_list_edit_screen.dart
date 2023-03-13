@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -17,7 +17,9 @@ class ViewProductListEditScreen extends StatefulWidget {
 }
 
 class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
-  final AccountController accountController = Get.put(AccountController());
+
+  final ManageStoreController manageStoreController =
+      Get.put(ManageStoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: accountController.formKey,
+            key: manageStoreController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -153,7 +155,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.firstNameTextController,
+                        controller:
+                            manageStoreController.firstNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -215,7 +218,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.lastNameTextController,
+                        controller:
+                            manageStoreController.lastNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -276,7 +280,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -337,7 +342,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -398,7 +404,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -460,7 +467,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -522,7 +530,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -585,7 +594,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -648,7 +658,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
+                        controller:
+                            manageStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -709,7 +720,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        accountController.validateAndSubmit();
+                      //  manageStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveText,
