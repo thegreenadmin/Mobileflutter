@@ -29,6 +29,9 @@ class ManageStoreController extends GetxController {
   RxString storeLocation = "".obs;
   RxString categoryName = "".obs;
 
+  RxString categoryDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString categoryId = "".obs;
+
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
 
@@ -52,7 +55,6 @@ class ManageStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",

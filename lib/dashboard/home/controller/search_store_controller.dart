@@ -66,7 +66,7 @@ class SearchStoreController extends GetxController {
     super.onInit();
     firstName!.value = Get.arguments["firstName"] ?? "";
     lastName!.value = Get.arguments["lastName"] ?? "";
-    getStoreListApi();
+    apiGetStoreList();
   }
 
   bool validateAndSave() {
@@ -82,7 +82,7 @@ class SearchStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        updateStoreDetailApi();
+        apiUpdateStoreDetail();
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -90,7 +90,7 @@ class SearchStoreController extends GetxController {
   }
 
   //Get Store List Api
-  Future getStoreListApi() async {
+  Future apiGetStoreList() async {
     storeList.clear();
     isLoading.value = true;
     debugPrint(
@@ -123,7 +123,7 @@ class SearchStoreController extends GetxController {
   }
 
   //Get particular store api
-  Future getStoreApi() async {
+  Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
     Map<String, String> headers = {
@@ -163,7 +163,7 @@ class SearchStoreController extends GetxController {
         countryId!.value =
             storeAddresses[0]["state"]['country']['country_id'] ?? "";
         storeAddressId!.value = storeAddresses[0]["store_address_id"] ?? "";
-        await getCountriesApi();
+        await apiGetCountries();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -171,7 +171,7 @@ class SearchStoreController extends GetxController {
   }
 
   //Update Store Details Api
-  Future updateStoreDetailApi() async {
+  Future apiUpdateStoreDetail() async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
     Map<String, String> headers = {
@@ -215,7 +215,7 @@ class SearchStoreController extends GetxController {
         Utility.showToast(value.body['message']);
         Get.back();
         Get.back();
-        getStoreListApi();
+        apiGetStoreList();
         storeNameTextController.clear();
         einTextController.clear();
         nickNameTextController.clear();
@@ -238,7 +238,7 @@ class SearchStoreController extends GetxController {
   }
 
   //Get Countries Api
-  Future getCountriesApi() async {
+  Future apiGetCountries() async {
     countriesList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
@@ -260,7 +260,7 @@ class SearchStoreController extends GetxController {
             getCountriesModel.data!.countries as Iterable<CountriesList>);
         //for (int i = 0; i < countriesList.length; i++) {
         //}
-        getStatesApi();
+        apiGetState();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -268,7 +268,7 @@ class SearchStoreController extends GetxController {
   }
 
   //Get States Api
-  Future getStatesApi() async {
+  Future apiGetState() async {
     statesList.clear();
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");

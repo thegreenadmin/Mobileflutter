@@ -49,7 +49,7 @@ class Categories {
   String? categoryId;
   String? parentCategoryId;
   String? categoryName;
-  Image? image;
+  Images? image;
   int? totalProducts;
 
   Categories(
@@ -63,7 +63,7 @@ class Categories {
     categoryId = json['category_id'];
     parentCategoryId = json['parent_category_id'];
     categoryName = json['category_name'];
-    image = json['image'] != null ? Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
     totalProducts = json['total_products'];
   }
 
@@ -80,13 +80,13 @@ class Categories {
   }
 }
 
-class Image {
+class Images {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Image({this.orignalUrl, this.dynamicUrl});
+  Images({this.orignalUrl, this.dynamicUrl});
 
-  Image.fromJson(Map<String, dynamic> json) {
+  Images.fromJson(Map<String, dynamic> json) {
     orignalUrl = json['orignal_url'];
     dynamicUrl = json['dynamic_url'];
   }

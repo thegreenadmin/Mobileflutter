@@ -200,6 +200,7 @@ class StringConstants {
   static String searchText = "Search";
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
+  static String selectTypeText = "Select Type";
 
   //T
   static String termsOfServiceText = "Terms of service";

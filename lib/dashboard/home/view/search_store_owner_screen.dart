@@ -141,7 +141,8 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                               .addressListIndex!.value]
                                           .addressLine1!;
 
-                                  await searchStoreController.getStoreApi();
+                                  await searchStoreController
+                                      .apiGetParticularStore();
 
                                   await Get.to(
                                       () => const ManageStoreMainScreen());
@@ -388,7 +389,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
               ),
               onTap: () {
                 Get.to(const AddNewStoreScreen())!
-                    .then((value) => searchStoreController.getStoreListApi());
+                    .then((value) => searchStoreController.apiGetStoreList());
               },
               height: 50,
               text: StringConstants.addANewStoreText,
