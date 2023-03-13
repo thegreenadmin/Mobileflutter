@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -84,6 +86,40 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
+                    ),
+                    height15SizedBox,
+                    Text(
+                      StringConstants.storeImageText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height10SizedBox,
+                    DottedBorder(
+                      color: AppColors.blacklight,
+                      strokeWidth: 1,
+                      dashPattern: const [4, 4],
+                      child: Container(
+                        width: WidgetConstants.screenWidth ,
+                        padding: const EdgeInsets.only(
+                            top: 35, bottom: 35),
+                        color: AppColors.primarylight,
+                        child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/upload.png",
+                                scale: 2.5,
+                              ),
+                              height6SizedBox,
+                              Text(StringConstants
+                                  .uploadCategoriesImageText)
+                            ]),
+                      ),
                     ),
                     height15SizedBox,
                     Text(
@@ -785,6 +821,280 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               });
                             },
                           )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.storeTimingText,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20),
+                    ),
+                    height15SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Obx(() => SizedBox(
+                              height: 20,width: 20,
+                              child: Radio(
+                                value: 0,
+                                groupValue:addNewStoreController.radioGroupValue.value,
+                                activeColor: AppColors.primary,
+                                onChanged: (value){
+                                  addNewStoreController.radioGroupValue.value= value?.toInt()??0;
+                                },
+                              ),
+                            ),),
+                            width6SizedBox,
+                            Text(StringConstants.customTimeText,
+                              overflow: TextOverflow.visible,
+                              style: TextStyle(
+                                  color: AppColors.blacklight,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        width30SizedBox,
+                        width20SizedBox,
+                        Row(
+                          children: [
+                            Obx(() => SizedBox( height: 20,width: 20,
+                              child: Radio(
+                                value:1,
+                                groupValue:addNewStoreController.radioGroupValue.value,
+                                activeColor: AppColors.primary,
+                                onChanged: (value){
+                                  addNewStoreController.radioGroupValue.value= value?.toInt()??0;
+                                },
+                              ),
+                            ),), width6SizedBox,
+                            Text(StringConstants.twentyFourSevenText,
+                              overflow: TextOverflow.visible,
+                              style: TextStyle(
+                                  color: AppColors.blacklight,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.openingTime,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  controller: addNewStoreController.openingTimeTextController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants.pleaseSelectOpeningTimeText;
+                                    }
+                                    return null;
+                                  },
+                                  onTap: ()async{
+                                    TimeOfDay date = TimeOfDay.now();
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    date = (
+                                        await showTimePicker(
+                                          helpText: "Select Time",
+                                          initialTime: TimeOfDay.now(),
+                                          context: context,
+                                          builder: (context, child) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith(
+                                                colorScheme: const ColorScheme.light(
+                                                    primary: AppColors.primary),
+                                                buttonTheme: const ButtonThemeData(
+                                                    textTheme: ButtonTextTheme.primary),
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
+                                        )
+                                    )!;
+
+                                    addNewStoreController.openingTimeTextController.text =
+                                        date.format(context).toString();
+
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: StringConstants.openingTime,
+                                    hintStyle: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                    fillColor: Colors.white,
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.closingTime,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  controller: addNewStoreController.closingTimeTextController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants.pleaseSelectClosingTimeText;
+                                    }
+                                    return null;
+                                  },
+                                  onTap: ()async{
+                                    TimeOfDay date = TimeOfDay.now();
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    date = (
+                                        await showTimePicker(
+                                          helpText: "Select Time",
+                                          initialTime: TimeOfDay.now(),
+                                          context: context,
+                                          builder: (context, child) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith(
+                                                colorScheme: const ColorScheme.light(
+                                                    primary: AppColors.primary),
+                                                buttonTheme: const ButtonThemeData(
+                                                    textTheme: ButtonTextTheme.primary),
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
+                                        )
+                                    )!;
+
+                                    addNewStoreController.closingTimeTextController.text =
+                                        date.format(context).toString();
+
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: StringConstants.closingTime,
+                                    hintStyle: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                    fillColor: Colors.white,
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.workingDaysText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    MultiCustomDropDown(
+                      onChanged: (v){
+
+                      },
+                      controller:addNewStoreController.workingDaysTextController,
+                      hintText: StringConstants.selectedDaysText,
+                      title: StringConstants.selectedDaysText,
+                      list: const ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+                    ),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

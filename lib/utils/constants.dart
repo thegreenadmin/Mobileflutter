@@ -49,6 +49,7 @@ class StringConstants {
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
   static String countryText = "Country";
+  static String closingTime = "Closing Time";
   static String cityText = "City";
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
@@ -60,6 +61,7 @@ class StringConstants {
   static String contactText = "Contact";
   static String currentMonthText = "Current Month";
   static String contentsAndStrainsText = "Contents and Strains";
+  static String customTimeText = "Custom Time";
 
   //D
   static String deliveryText = "Delivery";
@@ -144,6 +146,7 @@ class StringConstants {
   static String offerName = "Offer Name";
   static String orderType = "Order Type";
   static String optionsText = "Options";
+  static String openingTime = "Opening Time";
 
   //P
   static String profileText = "Profile";
@@ -194,13 +197,16 @@ class StringConstants {
   static String serviceFeesText = "Service fees";
   static String selectLocationText = "Select Location";
   static String storeNameText = "Store Name";
+  static String storeImageText = "Store Image";
   static String storeDetailsText = "Store Details";
+  static String storeTimingText = "Store Timing";
   static String switchToStoreText = "Switch to Store";
   static String switchToCustomerText = "Switch to Customer";
   static String searchText = "Search";
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
   static String selectTypeText = "Select Type";
+  static String selectedDaysText = "Select Days";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -212,6 +218,7 @@ class StringConstants {
   static String okText = "Ok";
   static String theImageMustBeAtleaseText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
+  static String twentyFourSevenText = "24x7";
 
   //U
   static String usingOurSearchText =
@@ -243,6 +250,7 @@ class StringConstants {
   static String walletText = "Wallet";
   static String welcomeToText = "Welcome to";
   static String weightText = "Weight";
+  static String workingDaysText = "Working Days";
 
   //X
 
@@ -252,6 +260,8 @@ class StringConstants {
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";
+
+
 }
 
 //Bottom Tab bar
@@ -282,6 +292,8 @@ class AlertStringConstants {
   static String pleaseEnterAddressText = "Please enter address";
   static String pleaseEnterTownOrCityText = "Please enter town or city";
   static String pleaseEnterZipCodeText = "Please enter zip code";
+  static String pleaseSelectOpeningTimeText = "Please select opening time";
+  static String pleaseSelectClosingTimeText = "Please select closing time";
   static String pleaseEnterStateText = "Please enter state";
   static String pleaseEnterZoneText = "Please enter zone";
   static String pleaseEnterCountryText = "Please enter country";
@@ -299,6 +311,8 @@ class AlertStringConstants {
   static String pleaseSelectAge = "Please select age";
   static String pleaseEnterContentAndStrainText = "Please contents and strains";
   static String pleaseEnterWorkerText = "Please enter worker name";
+
+
 }
 
 class Role {
