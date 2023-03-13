@@ -16,14 +16,7 @@ class LoginController extends GetxController {
   Rx<Locale> cL = const Locale("en", "IN").obs;
   RxString selectedCountryCode = "".obs;
   RxString selectedRegion = "".obs;
-  RxString sessionId = ''.obs;
-  RxString savedPhoneNumber = ''.obs;
-  RxString userId = ''.obs;
-  RxString token = ''.obs;
-  RxInt profileCompleted = 0.obs;
-  RxBool isUserExist = false.obs;
-  RxString userProfilePic = ''.obs;
-  RxString? fcmToken = "".obs;
+
   RxBool autoValidate = false.obs;
 
   @override
@@ -42,6 +35,7 @@ class LoginController extends GetxController {
     }
   }
 
+// Fields Validation Method
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
@@ -68,18 +62,17 @@ class LoginController extends GetxController {
       debugPrint("LOGIN RESPONSE *******${value!.body}");
       if (value.body["status"] == 201) {
         phoneTextController.clear();
-        Utility.showMessage(StringConstants.successText, value.body['message']);
+        Utility.showToast(value.body['message']);
         Get.to(() => const OtpVerificationScreen(),
             arguments: {"phoneNumber": countryCode.value + phoneNumber.value});
       } else if (value.body["status"] == 409) {
         //User not exist
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
+        Utility.showToast(value.body['message']);
       } else if (value.body["status"] == 400) {
         //Phone Number is not valid
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
+        Utility.showToast(value.body['message']);
       } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
+        Utility.showToast(value.body['message']);
       }
     });
   }

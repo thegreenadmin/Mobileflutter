@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/personal_info_edit.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -35,13 +34,14 @@ class _OffersScreenState extends State<OffersScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "Hi, Julia Adrew",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            Obx(() => Text(
+                                  "Hi, ${offersController.firstName!.value}",
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
+                                )),
+                            height4SizedBox,
                             Text(
                               StringConstants.offersText,
                               style: const TextStyle(

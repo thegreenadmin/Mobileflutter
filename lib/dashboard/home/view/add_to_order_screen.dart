@@ -131,8 +131,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: NetworkImage(
-                    'https://picsum.photos/250?image=9',
+                  image: AssetImage(
+                    "assets/inboxexample.png",
                   ),
                 ),
               ),
@@ -169,11 +169,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: AppColors.primary, width: 1)),
+                                    color: AppColors.white, width: 1)),
                             child: const CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: NetworkImage(
-                                  'https://picsum.photos/250?image=9'),
+                              backgroundImage: AssetImage(
+                                "assets/inboxexample.png",
+                              ),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -182,7 +183,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Click & Collect",
+                                "Ambrosia Store",
                                 style: TextStyle(
                                     color: AppColors.white,
                                     fontSize: 20,

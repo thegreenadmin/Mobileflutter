@@ -61,7 +61,7 @@ class OnBoardThreeState extends State<OnBoardThree> {
                     ),
                     height10SizedBox,
                     Text(
-                      StringConstants.usingOurSearchText,
+                    StringConstants.usingOurToolsToCreateText,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,

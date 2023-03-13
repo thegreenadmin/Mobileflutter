@@ -8,10 +8,15 @@ class ServerCommunicator {
   String createUser = 'user/create';
   String createStore = 'store/create';
   String createStoreUser = 'store/user/create';
+  String countries = 'utils/countries';
+  String createStoreCategory = 'store/category/create';
+  String categoryList = 'store/category/list';
 
 //D
 //E
 //F
+  String fileUpload = 'file/upload/single';
+
 //G
   String generateOtp = 'user/otp/generate';
 //H
@@ -23,13 +28,21 @@ class ServerCommunicator {
 //N
 //O
   String otpVerify = 'user/otp/verify';
-
 //P
 //Q
 //R
 //S
+  String states = 'utils/states';
+  String storeList = 'store/list';
+  String storeDetails = 'store/details';
+  String storeDetailsEdit = 'store/details/edit';
+
 //T
 //U
+  String userDetail = 'user/details';
+  String updateUser = 'user/details/update';
+  String userStore = 'store/list';
+
 //V
 //W
 //X

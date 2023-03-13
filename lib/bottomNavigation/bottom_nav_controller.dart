@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
@@ -28,8 +29,10 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) {
+    // print(index);
     selectedIndex.value = index;
     if (selectedIndex.value == 0) {
+      // print(index);
       try {
         HomeController controller = Get.find<HomeController>();
         controller.onInit();
@@ -41,23 +44,27 @@ class BottomNavController extends GetxController {
         WalletController controller = Get.find<WalletController>();
         controller.onInit();
       } catch (e) {
+        print("11" + index.toString());
         //Pass
       }
     } else if (selectedIndex.value == 2) {
+      // print(index);
+      try {
+        OrdersController controller = Get.find<OrdersController>();
+        controller.onInit();
+      } catch (e) {
+        //Pass
+      }
+    } else if (selectedIndex.value == 3) {
+      //  print(index);
       try {
         OffersController controller = Get.find<OffersController>();
         controller.onInit();
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 3) {
-      try {
-        MoreController controller = Get.find<MoreController>();
-        controller.onInit();
-      } catch (e) {
-        //Pass
-      }
     } else if (selectedIndex.value == 4) {
+      print(index);
       try {
         MoreController controller = Get.find<MoreController>();
         controller.onInit();

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -104,7 +105,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            addNewStoreController.firstNameTextController,
+                            addNewStoreController.storeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -166,8 +167,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.lastNameTextController,
+                        controller: addNewStoreController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -290,7 +290,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: addNewStoreController.emailTextController,
+                        controller:
+                            addNewStoreController.storeEmailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -354,14 +355,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: addNewStoreController.emailTextController,
+                        controller:
+                            addNewStoreController.storePhoneTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPhoneText;
-                          } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
                           }
                           return null;
                         },
@@ -657,66 +656,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.stateText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewStoreController.stateTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterStateText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.stateText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
                     height20SizedBox,
                     Text(
                       StringConstants.countryText,
@@ -726,58 +665,126 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.done,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewStoreController.countryTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterCountryText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.countryText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                    Obx(() => addNewStoreController.countriesList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<CountriesList>(
+                            isExpanded: true,
+                            value: addNewStoreController.countriesList.last,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: 'Organisation Type',
+                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            items: addNewStoreController.countriesList
+                                .map<DropdownMenuItem<CountriesList>>(
+                                    (CountriesList value) {
+                              return DropdownMenuItem<CountriesList>(
+                                value: value,
+                                child: Text(value.countryName.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (CountriesList? newValue) {
+                              setState(() {
+                                addNewStoreController.countryDropdownValue
+                                    .value = newValue!.countryName.toString();
+                                addNewStoreController.countryId!.value =
+                                    newValue.countryId.toString();
+                                addNewStoreController.apiGetStates();
+                                print(addNewStoreController.countryId!.value);
+                              });
+                            },
+                          )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.zoneText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    Obx(() => addNewStoreController.statesList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<StatesList>(
+                            isExpanded: true,
+                            value: addNewStoreController.statesList.last,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: 'Organisation Type',
+                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                            items: addNewStoreController.statesList
+                                .map<DropdownMenuItem<StatesList>>(
+                                    (StatesList value) {
+                              return DropdownMenuItem<StatesList>(
+                                value: value,
+                                child: Text(value.stateName.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (StatesList? newValue) {
+                              setState(() {
+                                addNewStoreController.stateDropdownValue.value =
+                                    newValue!.stateName.toString();
+                                addNewStoreController.stateId.value =
+                                    newValue.stateId.toString();
+                                debugPrint(addNewStoreController.stateId.value);
+                              });
+                            },
+                          )),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

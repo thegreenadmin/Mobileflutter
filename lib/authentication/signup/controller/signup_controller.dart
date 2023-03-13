@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class SignupController extends GetxController {
@@ -15,11 +15,13 @@ class SignupController extends GetxController {
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
+  TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController ageTextController = TextEditingController();
   TextEditingController dateTextController = TextEditingController();
-  TextEditingController timeTextController = TextEditingController();
-  TextEditingController phoneNumberTextController = TextEditingController();
-  TextEditingController otpTextController = TextEditingController();
+
+  RxString firstName = "".obs;
+  RxString lastName = "".obs;
+  RxString email = "".obs;
 
   RxString phoneNumber = "".obs;
   RxString countryCode = "".obs;
@@ -37,6 +39,103 @@ class SignupController extends GetxController {
   String? formattedDate;
   RxBool autoValidate = false.obs;
 
+  void ageAlertDailogue(
+    context,
+  ) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Image.asset("assets/greenmall420.png"),
+            height10SizedBox,
+            Text(
+              "${StringConstants.alertText}!",
+              style: const TextStyle(
+                  color: AppColors.primarydark,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Text(
+              "The greenmall application is recommended for 18 above age group only!",
+              style: TextStyle(
+                  color: AppColors.blacklight,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 100.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Okay",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 100.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(color: AppColors.primary),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.primary),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
+
+// Method to check user above 18 or not!
   bool isAdultCheck(String dob) {
     final dateOfBirth = DateFormat("yyyy-MM-dd").parse(dob);
     final now = DateTime.now();
@@ -58,18 +157,12 @@ class SignupController extends GetxController {
     }
   }
 
-  bool otpValidateAndSave() {
-    final form = formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+// Fields Validation Method
   void validateAndSubmit() async {
     if (validateAndSave()) {
+      SharedPreferenceStorage.setData("firstName", firstName.value.trim());
+      SharedPreferenceStorage.setData("lastName", lastName.value.trim());
+      SharedPreferenceStorage.setData("email", email.value.trim());
       try {
         if (dateTextController.text.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseSelectAge);
@@ -84,17 +177,7 @@ class SignupController extends GetxController {
     }
   }
 
-  void validateAndSubmitOtp() async {
-    if (otpValidateAndSave()) {
-      try {
-        apiOtpVerify();
-      } catch (_) {}
-    } else {
-      autoValidate.value = true;
-    }
-  }
-
-  //Create Account User
+  //Create Account User Api
   Future apiCreateUser() async {
     Map data = {
       "first_name": firstNameTextController.text.trim(),
@@ -113,54 +196,52 @@ class SignupController extends GetxController {
         .then((value) async {
       debugPrint("CREATE USER RESPONSE *******${value!.body}");
       if (value.body["status"] == 201) {
-        countryCode.value = "";
-        phoneNumber.value = "";
+        // countryCode.value = "";
+        // phoneNumber.value = "";
+
+        await apiGenerateOtp();
+      } else if (value.body["status"] == 409) {
+        //email must be unique & user already exists
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Login Api
+  Future apiGenerateOtp() async {
+    Map data = {
+      "phone": countryCode.value + phoneNumber.value,
+    };
+    debugPrint("LOGIN BODY********** $data");
+    debugPrint(
+        "LOGIN URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
+    UserProvider()
+        .postApi(data,
+            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("LOGIN RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201) {
+        phoneNumberTextController.clear();
+        Utility.showToast(value.body['message']);
+        Get.to(() => const OtpVerificationScreen(),
+            arguments: {"phoneNumber": countryCode.value + phoneNumber.value});
         firstNameTextController.clear();
         lastNameTextController.clear();
         emailTextController.clear();
         dateTextController.clear();
         isTermsAccepted.value = false;
         phoneNumberTextController.clear();
-        Utility.showMessage(StringConstants.successText, value.body['message']);
-        Get.back();
-        Get.to(const LoginScreen());
       } else if (value.body["status"] == 409) {
-        //email must be unique & user already exists
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
+        //User not exist
+        Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == 400) {
+        //Phone Number is not valid
+        Utility.showToast(value.body['message']);
       } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
-      }
-    });
-  }
-
-  //Otp Verify Api
-  Future apiOtpVerify() async {
-    Map data = {
-      "phone": "+918288033489",
-      "otp": otpTextController.text.trim(),
-      "device_id": "1234567",
-      "device_token": "1234567"
-    };
-    debugPrint("OTP VERIFY BODY********** $data");
-    debugPrint(
-        "OTP VERIFY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().otpVerify}");
-    UserProvider()
-        .postApi(
-            data, ServerCommunicator().baseUrl + ServerCommunicator().otpVerify,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201) {
-        Utility.showMessage(StringConstants.successText, value.body['message']);
-        otpTextController.clear();
-        Get.offAll(() => BottomNavigation());
-      } else if (value.body["status"] == 409) {
-        //email must be unique & user already exists
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
-      } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
+        Utility.showToast(value.body['message']);
       }
     });
   }

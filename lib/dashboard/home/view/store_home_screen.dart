@@ -24,10 +24,16 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                  child: Image.asset(
+                "assets/bag.png",
+                scale: 3,
+              )),
+              height5SizedBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -39,12 +45,12 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                             style: TextStyle(
                                 color: AppColors.blacklight,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 22)),
+                                fontSize: 20)),
                         const TextSpan(
-                          text: ' click & collect',
+                          text: ' Ambrosia Store',
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 22,
+                              fontSize: 20,
                               color: AppColors.primary),
                         ),
                       ],
@@ -76,18 +82,31 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          height: 180,
-                          width: 180,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset(
-                              "assets/example.png",
-                              fit: BoxFit.cover,
-                            ),
-                          )),
+                        height: 180,
+                        width: 180,
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Image.asset(
+                                'assets/example.png',
+                                fit: BoxFit.fill,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  "assets/fav.png",
+                                  scale: 3,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       height8SizedBox,
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

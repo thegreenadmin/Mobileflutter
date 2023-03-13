@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/personal_info_edit_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-
 import '../../../utils/sizedbox_constants.dart';
 
 class StoreDetailEditScreen extends StatefulWidget {
@@ -16,8 +17,8 @@ class StoreDetailEditScreen extends StatefulWidget {
 }
 
 class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
-  final PersonalInfoEditController personalInfoEditController =
-      Get.put(PersonalInfoEditController());
+  final SearchStoreController searchStoreController =
+      Get.put(SearchStoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: personalInfoEditController.formKey,
+            key: searchStoreController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -104,7 +105,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.firstNameTextController,
+                            searchStoreController.storeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -166,8 +167,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.lastNameTextController,
+                        controller: searchStoreController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -229,7 +229,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.nickNameTextController,
+                            searchStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -290,8 +290,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.emailTextController,
+                        controller: searchStoreController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -355,15 +354,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.emailTextController,
+                        controller: searchStoreController.phoneTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPhoneText;
-                          } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
                           }
                           return null;
                         },
@@ -428,8 +423,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: personalInfoEditController
-                            .addressLine1TextController,
+                        controller:
+                            searchStoreController.addressLine1TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -490,8 +485,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: personalInfoEditController
-                            .addressLine2TextController,
+                        controller:
+                            searchStoreController.addressLine2TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -553,7 +548,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.townOrCityTextController,
+                            searchStoreController.townOrCityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -617,7 +612,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            personalInfoEditController.zipCodeTextController,
+                            searchStoreController.postalCodeTextController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -662,68 +657,6 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.zoneText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.stateTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterZoneText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.zoneText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
                       StringConstants.countryText,
                       style: TextStyle(
                           color: AppColors.blacklight,
@@ -731,59 +664,126 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.done,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            personalInfoEditController.countryTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterCountryText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.countryText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                    Obx(() => searchStoreController.countriesList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<CountriesList>(
+                            isExpanded: true,
+                            value: searchStoreController.countriesList.last,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: 'Organisation Type',
+                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            items: searchStoreController.countriesList
+                                .map<DropdownMenuItem<CountriesList>>(
+                                    (CountriesList value) {
+                              return DropdownMenuItem<CountriesList>(
+                                value: value,
+                                child: Text(value.countryName.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (CountriesList? newValue) {
+                              setState(() {
+                                searchStoreController.countryDropdownValue
+                                    .value = newValue!.countryName.toString();
+                                searchStoreController.countryId!.value =
+                                    newValue.countryId.toString();
+                                searchStoreController.getStatesApi();
+                                print(searchStoreController.countryId!.value);
+                              });
+                            },
+                          )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.zoneText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    Obx(() => searchStoreController.statesList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<StatesList>(
+                            isExpanded: true,
+                            value: searchStoreController.statesList.last,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: 'Organisation Type',
+                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                            items: searchStoreController.statesList
+                                .map<DropdownMenuItem<StatesList>>(
+                                    (StatesList value) {
+                              return DropdownMenuItem<StatesList>(
+                                value: value,
+                                child: Text(value.stateName.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (StatesList? newValue) {
+                              setState(() {
+                                searchStoreController.stateDropdownValue.value =
+                                    newValue!.stateName.toString();
+                                searchStoreController.stateId.value =
+                                    newValue.stateId.toString();
+                                print(searchStoreController.stateId.value);
+                              });
+                            },
+                          )),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
@@ -792,7 +792,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        personalInfoEditController.validateAndSubmit();
+                        searchStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.updateText,

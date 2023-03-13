@@ -12,6 +12,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -105,6 +106,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height25SizedBox,
                     TextFormField(
+                        onChanged: (value) {
+                          signupController.firstName.value = value;
+                        },
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -169,6 +173,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         )),
                     height15SizedBox,
                     TextFormField(
+                        onChanged: (value) {
+                          signupController.lastName.value = value;
+                        },
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -231,6 +238,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         )),
                     height15SizedBox,
                     TextFormField(
+                        onChanged: (value) {
+                          signupController.email.value = value;
+                        },
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -249,6 +259,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             return AlertStringConstants
                                 .pleaseEnterValidEmailText;
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
@@ -356,12 +367,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             phone.countryCode.toString();
                       },
                     ),
-                    height15SizedBox,
+                    height8SizedBox,
                     InkWell(
                       onTap: () async {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
-
                         date = (await showDatePicker(
                           helpText: "Select a Date",
                           builder: (BuildContext context, Widget? child) {
@@ -380,6 +390,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           firstDate: DateTime.utc(1200, 1, 1),
                           lastDate: DateTime.now(),
                         ))!;
+
                         final DateFormat formatter = DateFormat('yyyy-MM-dd');
                         formattedDate = formatter.format(date);
                         signupController.dateTextController.text =
@@ -393,10 +404,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             signupController.dateTextController.text);
                         if (result) {
                         } else {
-                          await Utility.showAlert(
-                              "title",
-                              "This app is recommended for 18 above age group.",
-                              "OK");
+                          signupController.ageAlertDailogue(Get.context);
                           signupController.dateTextController.clear();
                         }
                       },

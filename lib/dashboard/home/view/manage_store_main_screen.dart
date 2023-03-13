@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/my_store_screen.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
+
+class ManageStoreMainScreen extends StatefulWidget {
+  const ManageStoreMainScreen({super.key});
+
+  @override
+  State<ManageStoreMainScreen> createState() => _ManageStoreMainScreenState();
+}
+
+class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
+  final SearchStoreController searchStoreController =
+      Get.put(SearchStoreController());
+
+  RxInt selectedIndex = 0.obs;
+
+  RxList horizontalTabList = [
+    StringConstants.myStoreText,
+    StringConstants.manageStoreText,
+  ].obs;
+
+  Padding horizontalTabs() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        height: 20,
+        width: WidgetConstants.screenWidth,
+        child: Center(
+          child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) {
+                return width0SizedBox;
+              },
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: horizontalTabList.length,
+              itemBuilder: (_, i) {
+                return InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      setState(() {
+                        selectedIndex.value = i;
+                      });
+                    },
+                    child: SizedBox(
+                      width: WidgetConstants.screenWidth * 0.45,
+                      child: Text(
+                        horizontalTabList[i],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: selectedIndex.value == i
+                              ? FontWeight.w500
+                              : FontWeight.w400,
+                          color: selectedIndex.value == i
+                              ? AppColors.primary
+                              : AppColors.blacklight,
+                        ),
+                      ),
+                    ));
+              }),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(165.0),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xff7c94b6),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  colorFilter:
+                      ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image: AssetImage("assets/dumy.png"),
+                ),
+              ),
+              child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 30),
+                  child: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: AppColors.white,
+                                size: 24.0,
+                              ),
+                            ),
+                            Image.asset(
+                              "assets/favoutline.png",
+                              scale: 2.8,
+                            ),
+                          ]),
+                      height10SizedBox,
+                      Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: AppColors.white, width: 1)),
+                            child: const CircleAvatar(
+                              radius: 28.0,
+                              backgroundImage: AssetImage("assets/dumy.png"),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                          width10SizedBox,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Obx(() => Text(
+                                      searchStoreController.storeName.value,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          color: AppColors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                height8SizedBox,
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/loc.png",
+                                      color: AppColors.white,
+                                      scale: 2,
+                                    ),
+                                    width4SizedBox,
+                                    Obx(
+                                      () => Expanded(
+                                        child: Text(
+                                            searchStoreController
+                                                .storeLocation.value,
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                height8SizedBox,
+                                const Text("Store Hours 9:00 am to 9:00PM",
+                                    style: TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400))
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+            )
+          ],
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          horizontalTabs(),
+          const Divider(
+            thickness: 1,
+          ),
+          selectedIndex.value == 0
+              ? const Expanded(child: MyStoreScreen())
+              : selectedIndex.value == 1
+                  ? const Expanded(child: ManageStoreScreen())
+                  : const Expanded(child: MyStoreScreen())
+        ],
+      ),
+    );
+  }
+}

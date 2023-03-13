@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_four_screen.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_one_screen.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_three_screen.dart';
@@ -128,10 +129,6 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                     curve: Curves.ease,
                   );
                   if (onboardController.page.value == 3) {
-                    // SharedPreferences prefs =
-                    //     await SharedPreferences.getInstance();
-                    // prefs.setBool("onBoard", true);
-
                     Get.offAll(const StartJourneyScreen());
                   }
                 },

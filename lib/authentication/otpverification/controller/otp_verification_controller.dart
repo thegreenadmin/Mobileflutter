@@ -35,6 +35,7 @@ class OtpVerificationController extends GetxController {
     }
   }
 
+// Fields Validation Method
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
@@ -49,7 +50,7 @@ class OtpVerificationController extends GetxController {
   Future apiOtpVerify() async {
     var rng = Random();
     Map data = {
-      "phone": phoneNumber.value,
+      "phone": phoneNumber.value.trim(),
       "otp": otpTextController.text.trim(),
       "device_id": rng.nextInt(100).toString(), //Random numbers
       "device_token": "1234567"
@@ -64,16 +65,15 @@ class OtpVerificationController extends GetxController {
         .then((value) async {
       debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        Utility.showMessage(StringConstants.successText, value.body['message']);
+        Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == 409) {
         //email must be unique & user already exists
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
+        Utility.showToast(value.body['message']);
       } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
+        Utility.showToast(value.body['message']);
       }
     });
   }

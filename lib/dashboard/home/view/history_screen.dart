@@ -171,14 +171,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             decoration: const BoxDecoration(
-                                color: AppColors.primarylight,
+                                color: AppColors.greylight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 )),
                             child: Column(children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Flexible(
@@ -187,12 +185,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                              color: AppColors.primary,
+                                              color: AppColors.white,
                                               width: 1)),
                                       child: const CircleAvatar(
                                         radius: 25.0,
-                                        backgroundImage: NetworkImage(
-                                            'https://picsum.photos/250?image=9'),
+                                        backgroundImage: AssetImage(
+                                          "assets/inboxexample.png",
+                                        ),
                                         backgroundColor: Colors.transparent,
                                       ),
                                     ),
@@ -239,38 +238,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ),
                                         height8SizedBox,
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: historyController
-                                                          .historyList[index],
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 16)),
-                                                  const WidgetSpan(
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .baseline,
-                                                      baseline: TextBaseline
-                                                          .alphabetic,
-                                                      child:
-                                                          SizedBox(width: 25)),
-                                                  const TextSpan(
-                                                    text: "\$ 30.15",
-                                                    style: TextStyle(
-                                                        color:
-                                                            AppColors.primary,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 16),
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                                historyController
+                                                    .historyList[index],
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16)),
+                                            const Text(
+                                              "\$ 30.15",
+                                              style: TextStyle(
+                                                  color: AppColors.primary,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16),
                                             ),
                                           ],
                                         ),

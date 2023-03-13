@@ -176,84 +176,89 @@ class _InboxScreenState extends State<InboxScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: AppColors.primary, width: 1)),
-                              child: const CircleAvatar(
-                                radius: 24.0,
-                                backgroundImage: NetworkImage(
-                                    'https://picsum.photos/250?image=9'),
-                                backgroundColor: Colors.transparent,
+                            Flexible(
+                              flex: 2,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: AppColors.white, width: 1)),
+                                child: const CircleAvatar(
+                                  radius: 24.0,
+                                  backgroundImage: AssetImage(
+                                    "assets/inboxexample.png",
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                ),
                               ),
                             ),
-                            width10SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  width: 250,
-                                  child: Text(
-                                    "Oh What a fun it is to buy @ Store 1 Oh What a fun it is to buy @ Store 1",
+                            width8SizedBox,
+                            Flexible(
+                              flex: 8,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Oh What a fun it is to buy @ Store 1",
+                                    textAlign: TextAlign.justify,
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                ),
-                                height4SizedBox,
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    RawMaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {},
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16.0, 8.0, 16.0, 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1.0,
-                                            color: AppColors.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(28.0),
+                                  height4SizedBox,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      RawMaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {},
+                                        constraints: const BoxConstraints(),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16.0, 8.0, 16.0, 8.0),
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                              width: 1.0,
+                                              color: AppColors.primary),
+                                          borderRadius:
+                                              BorderRadius.circular(28.0),
+                                        ),
+                                        fillColor: AppColors.primary,
+                                        child: Text(
+                                          StringConstants.seeMoreText,
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: AppColors.white,
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
-                                      fillColor: AppColors.primary,
-                                      child: Text(
-                                        StringConstants.seeMoreText,
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.w500),
+                                      width10SizedBox,
+                                      RawMaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {},
+                                        constraints: const BoxConstraints(),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            18.0, 8.0, 18.0, 8.0),
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                              width: 1.0,
+                                              color: AppColors.primary),
+                                          borderRadius:
+                                              BorderRadius.circular(28.0),
+                                        ),
+                                        fillColor: AppColors.white,
+                                        child: Text(
+                                          StringConstants.removeText,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14.0,
+                                              color: AppColors.black),
+                                        ),
                                       ),
-                                    ),
-                                    width10SizedBox,
-                                    RawMaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {},
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          18.0, 8.0, 18.0, 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1.0,
-                                            color: AppColors.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(28.0),
-                                      ),
-                                      fillColor: AppColors.white,
-                                      child: Text(
-                                        StringConstants.removeText,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14.0,
-                                            color: AppColors.black),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),

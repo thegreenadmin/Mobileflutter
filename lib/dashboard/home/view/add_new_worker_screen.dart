@@ -1,0 +1,361 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
+import '../../../utils/sizedbox_constants.dart';
+
+class AddNewWorkerScreen extends StatefulWidget {
+  const AddNewWorkerScreen({super.key});
+
+  @override
+  State<AddNewWorkerScreen> createState() => _AddNewWorkerScreenState();
+}
+
+class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
+  final AddNewWorkerController addNewWorkerController =
+      Get.put(AddNewWorkerController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(80.0),
+          child: Container(
+            color: AppColors.primarylight,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.black,
+                                  size: 24.0,
+                                ),
+                              ),
+                              width10SizedBox,
+                              const Text(
+                                "Add Worker",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Image.asset(
+                            "assets/homeMall.png",
+                            scale: 4,
+                          )
+                        ]),
+                  ],
+                )),
+          )),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        child: SingleChildScrollView(
+          child: Form(
+            key: addNewWorkerController.formKey,
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            DottedBorder(
+                              borderType: BorderType.Circle,
+                              radius: const Radius.circular(20),
+                              color: AppColors.blacklight,
+                              strokeWidth: 1,
+                              dashPattern: const [4, 4],
+                              child: Obx(() => Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: addNewWorkerController
+                                                    .userImageDynamicLinkfromServer
+                                                    .value ==
+                                                "" ||
+                                            addNewWorkerController
+                                                .userImageDynamicLinkfromServer
+                                                .value
+                                                .isEmpty
+                                        ? const CircleAvatar(
+                                            radius: 50.0,
+                                            backgroundImage: AssetImage(
+                                              "assets/userAccount.png",
+                                            ),
+                                            backgroundColor:
+                                                AppColors.primarylight,
+                                          )
+                                        : CircleAvatar(
+                                            radius: 50.0,
+                                            backgroundImage: NetworkImage(
+                                                addNewWorkerController
+                                                    .userImageDynamicLinkfromServer
+                                                    .value),
+                                            backgroundColor: Colors.transparent,
+                                          ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                        width20SizedBox,
+                        Column(
+                          children: [
+                            height20SizedBox,
+                            Text("Upload photo here",
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400)),
+                            height10SizedBox,
+                            InkWell(
+                              onTap: () {
+                                addNewWorkerController
+                                    .showSelectionDialog(context);
+                              },
+                              child: Image.asset(
+                                "assets/uploadbutton.png",
+                                scale: 3,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.shortDescriptionText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: addNewWorkerController
+                            .shortDescriptionTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterEinText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.addDescriptionText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.mobileNoText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            addNewWorkerController.nickNameTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterNickNameText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.enterMobileText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.primaryStoreText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    Obx(() => addNewWorkerController.getUserStoreList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<UserStoresList>(
+                            isExpanded: true,
+                            value: addNewWorkerController.getUserStoreList.last,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: 'Organisation Type',
+                              errorStyle: const TextStyle(color: Colors.yellow),
+                            ),
+                            items: addNewWorkerController.getUserStoreList
+                                .map<DropdownMenuItem<UserStoresList>>(
+                                    (dynamic value) {
+                              return DropdownMenuItem<UserStoresList>(
+                                value: value,
+                                child: Text(value.storeName.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (UserStoresList? newValue) {
+                              setState(() {
+                                addNewWorkerController.storeDropdownValue
+                                    .value = newValue!.storeName.toString();
+                                addNewWorkerController.storeId.value =
+                                    newValue.storeId.toString();
+                              });
+                            },
+                          )),
+                    height40SizedBox,
+                    CustomButton(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [AppColors.primary, AppColors.primary],
+                      ),
+                      onTap: () {
+                        addNewWorkerController.validateAndSubmit();
+                      },
+                      height: 50,
+                      text: StringConstants.saveText,
+                      borderRadius: 12,
+                      fontWeight: FontWeight.w500,
+                      iconL: false,
+                      fontSize: 16,
+                    ),
+                    height40SizedBox,
+                  ],
+                )),
+          ),
+        ),
+      ),
+    );
+  }
+}

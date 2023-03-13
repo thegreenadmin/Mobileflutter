@@ -1,17 +1,22 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController firstNameTextController = TextEditingController();
-  TextEditingController lastNameTextController = TextEditingController();
+  TextEditingController storeNameTextController = TextEditingController();
+  TextEditingController einTextController = TextEditingController();
   TextEditingController nickNameTextController = TextEditingController();
-  TextEditingController emailTextController = TextEditingController();
+  TextEditingController storeNickNameTextController = TextEditingController();
+  TextEditingController storeEmailTextController = TextEditingController();
+  TextEditingController storePhoneTextController = TextEditingController();
   TextEditingController addressLine1TextController = TextEditingController();
   TextEditingController addressLine2TextController = TextEditingController();
   TextEditingController townOrCityTextController = TextEditingController();
@@ -20,11 +25,24 @@ class AddNewStoreController extends GetxController {
   TextEditingController countryTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
+  late GetCountriesModel getCountriesModel = GetCountriesModel();
+  RxList<CountriesList> countriesList = <CountriesList>[].obs;
+
+  late GetStatesModel getStateModel = GetStatesModel();
+  RxList<StatesList> statesList = <StatesList>[].obs;
+
+  RxString countryDropdownValue = "Afghanistan".obs;
+  RxString? countryId = "1".obs;
+
+  RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString stateId = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(milliseconds: 200), () {});
+    Future.delayed(const Duration(milliseconds: 200), () {
+      apiGetCountries();
+    });
   }
 
   bool validateAndSave() {
@@ -39,7 +57,9 @@ class AddNewStoreController extends GetxController {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {} catch (_) {}
+      try {
+        apiCreateStore();
+      } catch (_) {}
     } else {
       autoValidate.value = true;
     }
@@ -47,27 +67,126 @@ class AddNewStoreController extends GetxController {
 
   //Create Store Api
   Future apiCreateStore() async {
-    Map data = {"store_name": "Demo store 12"};
+    Map data = {
+      "store": {
+        "store_name": storeNameTextController.text.trim(),
+        "store_ein": einTextController.text.trim(),
+        "image_url": null,
+        "store_nick_name": storeNickNameTextController.text.trim(),
+        "store_email": storeEmailTextController.text.trim(),
+        "store_phone": storePhoneTextController.text.trim()
+      },
+      "store_address": {
+        "state_id": stateId.value.trim(),
+        "address_name": "home",
+        "longitude": 37.0902,
+        "latitude": 95.7129,
+        "address_line_1": addressLine1TextController.text.trim(),
+        "address_line_2": addressLine2TextController.text.trim(),
+        "landmark": "",
+        "city": townOrCityTextController.text.trim()
+      }
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
     debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
         "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
     UserProvider()
-        .postApi(data,
+        .postWithHeadersApi(
+            data,
             ServerCommunicator().baseUrl + ServerCommunicator().createStore,
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201) {
-        Utility.showMessage(StringConstants.successText, value.body['message']);
-      } else if (value.body["status"] == 409) {
-        //User not exist
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
-      } else if (value.body["status"] == 400) {
-        //Phone Number is not valid
-        Utility.showMessage(StringConstants.alertText, value.body['message']);
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          Get.back();
+        });
+        storeNameTextController.clear();
+        einTextController.clear();
+        nickNameTextController.clear();
+        storeNickNameTextController.clear();
+        storeEmailTextController.clear();
+        storePhoneTextController.clear();
+        addressLine1TextController.clear();
+        addressLine2TextController.clear();
+        townOrCityTextController.clear();
+        zipCodeTextController.clear();
+        stateTextController.clear();
+        countryTextController.clear();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get Countries Api
+  Future apiGetCountries() async {
+    countriesList.clear();
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getCountriesModel = GetCountriesModel.fromJson(value.body);
+        countriesList.value = getCountriesModel.data!.countries!;
+        apiGetStates();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get States Api
+  Future apiGetStates() async {
+    statesList.clear();
+    debugPrint(
+        "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET STATES RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getStateModel = GetStatesModel.fromJson(value.body);
+        statesList.value = getStateModel.data!.states!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
       }
     });
   }

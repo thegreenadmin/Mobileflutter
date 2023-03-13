@@ -61,7 +61,7 @@ class OnBoardTwoState extends State<OnBoardTwo> {
                     ),
                     height10SizedBox,
                     Text(
-                      StringConstants.usingOurSearchText,
+                      StringConstants.asYouShopInVariousStores,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,

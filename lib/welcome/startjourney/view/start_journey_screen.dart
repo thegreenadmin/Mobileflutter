@@ -34,38 +34,14 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
             child: Column(
               children: [
                 Image.asset("assets/greenmall420.png"),
                 height10SizedBox,
-                const Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                          text: "Your ",
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Montaga",
-                              color: AppColors.black)),
-                      TextSpan(
-                          text: "420",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 24,
-                              fontFamily: "Montaga",
-                              color: AppColors.greenlight)),
-                      TextSpan(
-                        text: ' Market Place ',
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: "Montaga",
-                            color: AppColors.black),
-                      ),
-                    ],
-                  ),
+                Image.asset(
+                  "assets/420.png",
+                  scale: 3,
                 ),
               ],
             ),

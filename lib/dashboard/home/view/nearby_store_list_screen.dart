@@ -1,9 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_home_screen.dart';
+
 import 'package:thegreenmall/dashboard/home/view/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -51,11 +50,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                          color: AppColors.primary, width: 1)),
+                                          color: AppColors.white, width: 1)),
                                   child: const CircleAvatar(
                                     radius: 25.0,
-                                    backgroundImage: NetworkImage(
-                                        'https://picsum.photos/250?image=9'),
+                                    backgroundImage:
+                                        AssetImage("assets/dumy.png"),
                                     backgroundColor: Colors.transparent,
                                   ),
                                 ),
@@ -145,7 +144,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                     "assets/delivery.png",
                                     scale: 2.5,
                                   ),
-                                  width8SizedBox,
+                                  width3SizedBox,
                                   Text(
                                     StringConstants.deliveryText,
                                     style: const TextStyle(
@@ -163,9 +162,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                 children: [
                                   Image.asset(
                                     "assets/curb.png",
-                                    scale: 2.2,
+                                    scale: 1.8,
                                   ),
-                                  width8SizedBox,
+                                  width3SizedBox,
                                   Text(
                                     StringConstants.curbSideText,
                                     style: const TextStyle(

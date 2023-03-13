@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:country_codes/country_codes.dart';
 import 'package:devicelocale/devicelocale.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -119,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           flagsButtonMargin: const EdgeInsets.all(10),
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
+                            prefixIcon: Image.asset("assets/calling.png"),
                             alignLabelWithHint: true,
                             hintText: StringConstants.mobileText,
                             hintStyle: const TextStyle(

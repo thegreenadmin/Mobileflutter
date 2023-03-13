@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -27,6 +27,8 @@ class BottomNavigation extends StatelessWidget {
             ),
             onPressed: () {
               _bottomNavigationPageController.onItemTapped(2);
+              OrdersController controller = Get.find<OrdersController>();
+              controller.onInit();
             }),
         backgroundColor: AppColors.white,
         bottomNavigationBar: BottomAppBar(

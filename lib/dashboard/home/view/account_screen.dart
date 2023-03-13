@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
-
 import 'package:thegreenmall/dashboard/home/view/personal_info_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -19,6 +20,7 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   final AccountController accountController = Get.put(AccountController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,21 +85,21 @@ class _AccountScreenState extends State<AccountScreen> {
                     width10SizedBox,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "John Jocobon",
-                          style: TextStyle(
-                              color: AppColors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "johnjocobon@gmail.com",
-                          style: TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
+                      children: [
+                        Obx(() => Text(
+                              "${accountController.firstName!.value} ${accountController.lastName!.value}",
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600),
+                            )),
+                        Obx(() => Text(
+                              accountController.email.value,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            )),
                       ],
                     )
                   ],
@@ -107,25 +109,48 @@ class _AccountScreenState extends State<AccountScreen> {
                 thickness: 3,
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      StringConstants.switchToStoreText,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.blacklight,
-                          fontWeight: FontWeight.w500),
+              InkWell(
+                  onTap: () async {
+                    if (Role.role.value == Role.customerRoleText) {
+                      SharedPreferenceStorage.setData(
+                          Role.storeOwnerRoleText, Role.storeOwnerRoleText);
+                      Role.role.value = Role.storeOwnerRoleText;
+                      debugPrint(
+                          "ROLE CHANGED TO ***********${Role.role.value}");
+                      await Get.offAll(BottomNavigation());
+                    } else {
+                      SharedPreferenceStorage.setData(
+                          Role.customerRoleText, Role.customerRoleText);
+                      Role.role.value = Role.customerRoleText;
+                      debugPrint(
+                          "ROLE CHANGED TO ***********${Role.role.value}");
+                      await Get.offAll(BottomNavigation());
+                    }
+
+                    // SharedPreferenceStorage.setData(
+                    //     customerRoleText, Role.userRoleText);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 14.0, right: 14.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          Role.role.value == Role.customerRoleText
+                              ? StringConstants.switchToStoreText
+                              : StringConstants.switchToCustomerText,
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.blacklight,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Image.asset(
+                          "assets/switch.png",
+                          scale: 2.6,
+                        ),
+                      ],
                     ),
-                    Image.asset(
-                      "assets/switch.png",
-                      scale: 2.6,
-                    )
-                  ],
-                ),
-              ),
+                  )),
               const Divider(
                 thickness: 3,
                 height: 30,
@@ -418,7 +443,10 @@ class _AccountScreenState extends State<AccountScreen> {
                         end: Alignment.bottomCenter,
                         colors: [AppColors.redlight, AppColors.redlight],
                       ),
-                      onTap: () {},
+                      onTap: () async {
+                        SharedPreferenceStorage.clearData();
+                        await Get.offAll(const StartJourneyScreen());
+                      },
                       height: 50,
                       textColor: AppColors.red,
                       text: StringConstants.deleteAccountText,

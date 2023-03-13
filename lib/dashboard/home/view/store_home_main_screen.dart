@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/tool_tip.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -65,6 +66,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                       i != 3
                           ? height0SizedBox
                           : PopupMenuButton(
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               icon: Icon(
@@ -196,7 +199,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(145.0),
+        preferredSize: const Size.fromHeight(150.0),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -207,9 +210,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: NetworkImage(
-                    'https://picsum.photos/250?image=9',
-                  ),
+                  image: AssetImage("assets/dumy.png"),
                 ),
               ),
               child: Padding(
@@ -245,11 +246,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: AppColors.primary, width: 1)),
+                                    color: AppColors.white, width: 1)),
                             child: const CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: NetworkImage(
-                                  'https://picsum.photos/250?image=9'),
+                              backgroundImage: AssetImage("assets/dumy.png"),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -258,7 +258,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Click & Collect",
+                                "Ambrosia Store",
                                 style: TextStyle(
                                     color: AppColors.white,
                                     fontSize: 20,

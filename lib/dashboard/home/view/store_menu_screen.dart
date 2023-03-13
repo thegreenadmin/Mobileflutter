@@ -13,6 +13,13 @@ class StoreMenuScreen extends StatefulWidget {
 }
 
 class _StoreMenuScreenState extends State<StoreMenuScreen> {
+  List storeCategoriesList = [
+    "Topical medicines",
+    "Suppositories",
+    "Drops",
+    "Inhalers",
+    "Injections"
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +27,21 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          height5SizedBox,
+          Text(
+            StringConstants.categoriesText,
+            style: const TextStyle(
+                color: AppColors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+          ),
+          height5SizedBox,
           Expanded(
             child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return height6SizedBox;
                 },
-                itemCount: 15,
+                itemCount: storeCategoriesList.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
@@ -37,7 +53,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       decoration: const BoxDecoration(
-                          color: AppColors.primarylight,
+                          color: AppColors.greylight,
                           borderRadius: BorderRadius.all(
                             Radius.circular(10.0),
                           )),
@@ -51,11 +67,12 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                          color: AppColors.primary, width: 1)),
+                                          color: AppColors.white, width: 1)),
                                   child: const CircleAvatar(
                                     radius: 25.0,
-                                    backgroundImage: NetworkImage(
-                                        'https://picsum.photos/250?image=9'),
+                                    backgroundImage: AssetImage(
+                                      "assets/inboxexample.png",
+                                    ),
                                     backgroundColor: Colors.transparent,
                                   ),
                                 ),
@@ -63,13 +80,14 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      "Topical medicines",
-                                      style: TextStyle(
+                                    Text(
+                                      storeCategoriesList[index],
+                                      style: const TextStyle(
                                           fontSize: 16.0,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w500),
                                     ),
+                                    height10SizedBox,
                                     Text("12 Product",
                                         style: TextStyle(
                                             fontSize: 14.0,

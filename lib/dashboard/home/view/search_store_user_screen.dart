@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:thegreenmall/dashboard/home/view/favourite_store_list_screen.dart';
+
 import 'package:thegreenmall/dashboard/home/view/nearby_store_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -23,11 +25,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     super.initState();
   }
 
-  String googleApikey = "GOOGLE_MAP_API_KAY";
-  GoogleMapController? mapController; //contrller for Google map
-  CameraPosition? cameraPosition;
-  LatLng startLocation = LatLng(27.6602292, 85.308027);
-  String location = "Search Location";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,23 +103,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 child: Container(
                   height: 800,
                   width: WidgetConstants.screenWidth,
-                  color: AppColors.green,
-                  child: GoogleMap(
-                    //Map widget from google_maps_flutter package
-                    zoomGesturesEnabled: true, //enable Zoom in, out on map
-                    initialCameraPosition: CameraPosition(
-                      //innital position in map
-                      target: startLocation, //initial position
-                      zoom: 14.0, //initial zoom level
-                    ),
-                    mapType: MapType.normal, //map type
-                    onMapCreated: (controller) {
-                      //method called when map is created
-                      setState(() {
-                        mapController = controller;
-                      });
-                    },
-                  ),
+                  color: AppColors.primary,
                 ),
               ),
               Padding(
@@ -215,16 +196,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               controller: _tabController,
               children: const [
                 Center(child: NearbyStoreListScreen()),
-                Center(
-                  child: Text(
-                    'Screen 2',
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    'Screen 3',
-                  ),
-                ),
+                Center(child: PreviousStoreListScreen()),
+                Center(child: FavouriteStoreListScreen()),
               ],
             ),
           ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/add_new_store_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -15,6 +16,9 @@ class SearchStoreOwnerScreen extends StatefulWidget {
 }
 
 class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
+  final SearchStoreController searchStoreController =
+      Get.put(SearchStoreController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,13 +54,14 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  "Hi, Julia Adrew",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                Obx(() => Text(
+                                      "Hi, "
+                                      "${searchStoreController.firstName!.value} ${searchStoreController.firstName!.value}",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
@@ -85,165 +90,310 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
             child: Column(
               children: [
                 Expanded(
-                    child: ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) {
-                          return height12SizedBox;
-                        },
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: const BoxDecoration(
-                                color: AppColors.greylight,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                )),
-                            child: Column(children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Obx(() => searchStoreController.storeList.isEmpty
+                        ? searchStoreController.isLoading.value == true
+                            ? height0SizedBox
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: AppColors.primary,
-                                            width: 1)),
-                                    child: const CircleAvatar(
-                                      radius: 24.0,
-                                      backgroundImage: NetworkImage(
-                                          'https://picsum.photos/250?image=9'),
-                                      backgroundColor: Colors.transparent,
+                                  Center(
+                                    child: Image.asset(
+                                      "assets/nodata.png",
+                                      scale: 8,
+                                      color: AppColors.primary,
                                     ),
                                   ),
-                                  width10SizedBox,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        width: 190,
-                                        child: Text(
-                                          "Healthy  Store",
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      height8SizedBox,
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/loc.png",
-                                            scale: 3,
-                                          ),
-                                          width3SizedBox,
-                                          const Text(
-                                            "132, My Street, Kingston-36001",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 12.0,
-                                                color: AppColors.black),
-                                          ),
-                                        ],
-                                      ),
-                                      height8SizedBox,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text.rich(
-                                            softWrap: true,
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                    text:
-                                                        "${StringConstants.cityText}:",
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 12)),
-                                                const TextSpan(
-                                                  text: " Los Angeles",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          width10SizedBox,
-                                          Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                    text:
-                                                        "${StringConstants.stateText}:",
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 14)),
-                                                const TextSpan(
-                                                  text: "California",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Get.to(MangeStoreScreen());
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20.0, left: 10),
-                                      child: Image.asset(
-                                        "assets/edit.png",
-                                        scale: 2.8,
-                                      ),
+                                  height4SizedBox,
+                                  const Center(
+                                    child: Text(
+                                      "No stores found",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 16),
                                     ),
                                   ),
                                 ],
-                              ),
-                            ]),
-                          );
-                        })),
+                              )
+                        : ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return height12SizedBox;
+                            },
+                            itemCount: searchStoreController.storeList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () async {
+                                  searchStoreController.storeId.value =
+                                      searchStoreController
+                                              .storeList[index].storeId ??
+                                          "";
+
+                                  searchStoreController.storeName.value =
+                                      searchStoreController
+                                              .storeList[index].storeName ??
+                                          "";
+
+                                  searchStoreController.storeLocation.value =
+                                      searchStoreController
+                                          .storeList[index]
+                                          .addresses![searchStoreController
+                                              .addressListIndex!.value]
+                                          .addressLine1!;
+
+                                  await searchStoreController.getStoreApi();
+
+                                  await Get.to(
+                                      () => const ManageStoreMainScreen());
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.greylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      )),
+                                  child: Column(children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          flex: 2,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: const CircleAvatar(
+                                              radius: 24.0,
+                                              backgroundImage: AssetImage(
+                                                "assets/userAccount.png",
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                            ),
+                                          ),
+                                        ),
+                                        width10SizedBox,
+                                        Flexible(
+                                          flex: 8,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 190,
+                                                child: Text(
+                                                  searchStoreController
+                                                          .storeList[index]
+                                                          .storeName ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                              height8SizedBox,
+                                              ListView.separated(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  separatorBuilder:
+                                                      (BuildContext context,
+                                                          int i) {
+                                                    return height0SizedBox;
+                                                  },
+                                                  itemCount:
+                                                      searchStoreController
+                                                          .storeList[index]
+                                                          .addresses!
+                                                          .length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int i) {
+                                                    searchStoreController
+                                                        .addressListIndex!
+                                                        .value = i;
+                                                    return Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Image.asset(
+                                                                "assets/loc.png",
+                                                                scale: 3,
+                                                              ),
+                                                              width3SizedBox,
+                                                              Expanded(
+                                                                child: Text(
+                                                                  searchStoreController
+                                                                          .storeList[
+                                                                              index]
+                                                                          .addresses![
+                                                                              i]
+                                                                          .addressLine1 ??
+                                                                      "",
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      color: AppColors
+                                                                          .black),
+                                                                ),
+                                                              ),
+                                                            ]),
+                                                        height10SizedBox,
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Flexible(
+                                                              flex: 5,
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      "${StringConstants.cityText}: ",
+                                                                      style: TextStyle(
+                                                                          color: AppColors
+                                                                              .blacklight,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              12)),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      searchStoreController
+                                                                              .storeList[index]
+                                                                              .addresses![i]
+                                                                              .city ??
+                                                                          "",
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              12),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            width5SizedBox,
+                                                            Flexible(
+                                                              flex: 5,
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      "${StringConstants.stateText}: ",
+                                                                      style: TextStyle(
+                                                                          color: AppColors
+                                                                              .blacklight,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              12)),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      searchStoreController
+                                                                              .storeList[index]
+                                                                              .addresses![i]
+                                                                              .state!
+                                                                              .stateName ??
+                                                                          "",
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              12),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    );
+                                                  }),
+                                              height8SizedBox,
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20.0, left: 10),
+                                          child: Image.asset(
+                                            "assets/edit.png",
+                                            scale: 2.8,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                                ),
+                              );
+                            }))),
               ],
             ),
           ),
           Positioned(
             bottom: 20,
-            left: 90,
-            right: 90,
+            left: 110,
+            right: 110,
             child: CustomButton(
-              border: Border.all(color: AppColors.primary),
+              border: Border.all(
+                color: AppColors.primary,
+              ),
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(const AddNewStoreScreen());
+                Get.to(const AddNewStoreScreen())!
+                    .then((value) => searchStoreController.getStoreListApi());
               },
               height: 50,
               text: StringConstants.addANewStoreText,
               textColor: AppColors.primary,
-              borderRadius: 12,
+              borderRadius: 14,
               fontWeight: FontWeight.w500,
               iconL: false,
               iconR: false,

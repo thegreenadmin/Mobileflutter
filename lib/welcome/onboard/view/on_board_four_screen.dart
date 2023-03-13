@@ -44,7 +44,8 @@ class OnBoardFourState extends State<OnBoardFour> {
                           children: [
                             Image.asset("assets/onBoardFour.png"),
                             Positioned(
-                              right: 0,
+                              right: 90,
+                              bottom: 90,
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Image.asset(
@@ -74,7 +75,7 @@ class OnBoardFourState extends State<OnBoardFour> {
                     ),
                     height10SizedBox,
                     Text(
-                      StringConstants.usingOurSearchText,
+                      StringConstants.usingOurDigitalPlatformText,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,

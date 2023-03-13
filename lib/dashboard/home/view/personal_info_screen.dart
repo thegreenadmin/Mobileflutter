@@ -1,8 +1,8 @@
-import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/personal_info_edit.dart';
+import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/personal_info_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -15,6 +15,7 @@ class PersonalInfoScreen extends StatefulWidget {
 }
 
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+  final AccountController accountController = Get.put(AccountController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,16 +108,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
-                          "John",
+                          accountController.firstName!.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -134,16 +135,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 color: AppColors.blacklight,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16))),
-                    const Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
-                          "Jocobon",
+                          accountController.lastName!.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -161,16 +162,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 color: AppColors.blacklight,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16))),
-                    const Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
-                          "Joco",
+                          accountController.nickName!.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -188,16 +189,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 color: AppColors.blacklight,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16))),
-                    const Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
-                          "Johnjocon@gmail.com",
+                          accountController.email.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -217,16 +218,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
-                          "91 0123 4562 203",
+                          accountController.phone.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -257,7 +258,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     const Expanded(
                         flex: 6,
                         child: Text(
-                          "91 0123 4562 203",
+                          "",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: AppColors.black,
@@ -286,7 +287,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     const Expanded(
                         flex: 6,
                         child: Text(
-                          "91 0123 4562 203",
+                          "",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: AppColors.black,
@@ -315,7 +316,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     const Expanded(
                         flex: 6,
                         child: Text(
-                          "91 0123 4562 203",
+                          "",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: AppColors.black,
@@ -344,7 +345,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     const Expanded(
                         flex: 6,
                         child: Text(
-                          "91 0123 4562 203",
+                          "",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: AppColors.black,
