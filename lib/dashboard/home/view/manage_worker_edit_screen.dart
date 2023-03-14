@@ -47,6 +47,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                   Get.back();
                                 },
                                 icon: const Icon(
+
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
