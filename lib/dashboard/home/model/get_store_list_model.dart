@@ -47,27 +47,27 @@ class Data {
 
 class Stores {
   String? storeId;
+  Image? image;
   String? storeName;
   String? storeEin;
-  Image? image;
-  List<Addresses>? addresses;
+  List<StoreAddresses>? storeAddresses;
 
   Stores(
       {this.storeId,
+      this.image,
       this.storeName,
       this.storeEin,
-      this.image,
-      this.addresses});
+      this.storeAddresses});
 
   Stores.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
+    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
     storeName = json['store_name'];
     storeEin = json['store_ein'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
-    if (json['addresses'] != null) {
-      addresses = <Addresses>[];
-      json['addresses'].forEach((v) {
-        addresses!.add(new Addresses.fromJson(v));
+    if (json['store_addresses'] != null) {
+      storeAddresses = <StoreAddresses>[];
+      json['store_addresses'].forEach((v) {
+        storeAddresses!.add(new StoreAddresses.fromJson(v));
       });
     }
   }
@@ -75,13 +75,14 @@ class Stores {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['store_id'] = this.storeId;
-    data['store_name'] = this.storeName;
-    data['store_ein'] = this.storeEin;
     if (this.image != null) {
       data['image'] = this.image!.toJson();
     }
-    if (this.addresses != null) {
-      data['addresses'] = this.addresses!.map((v) => v.toJson()).toList();
+    data['store_name'] = this.storeName;
+    data['store_ein'] = this.storeEin;
+    if (this.storeAddresses != null) {
+      data['store_addresses'] =
+          this.storeAddresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -106,7 +107,7 @@ class Image {
   }
 }
 
-class Addresses {
+class StoreAddresses {
   String? storeAddressId;
   String? addressName;
   double? longitude;
@@ -117,7 +118,7 @@ class Addresses {
   String? city;
   State? state;
 
-  Addresses(
+  StoreAddresses(
       {this.storeAddressId,
       this.addressName,
       this.longitude,
@@ -128,7 +129,7 @@ class Addresses {
       this.city,
       this.state});
 
-  Addresses.fromJson(Map<String, dynamic> json) {
+  StoreAddresses.fromJson(Map<String, dynamic> json) {
     storeAddressId = json['store_address_id'];
     addressName = json['address_name'];
     longitude = json['longitude'];

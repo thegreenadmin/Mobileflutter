@@ -137,14 +137,14 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                   searchStoreController.storeLocation.value =
                                       searchStoreController
                                           .storeList[index]
-                                          .addresses![searchStoreController
+                                          .storeAddresses![searchStoreController
                                               .addressListIndex!.value]
                                           .addressLine1!;
 
                                   searchStoreController.storeLocation.value =
                                       searchStoreController
                                           .storeList[index]
-                                          .addresses![searchStoreController
+                                          .storeAddresses![searchStoreController
                                               .addressListIndex!.value]
                                           .addressLine1!;
 
@@ -226,7 +226,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                   itemCount:
                                                       searchStoreController
                                                           .storeList[index]
-                                                          .addresses!
+                                                          .storeAddresses!
                                                           .length,
                                                   itemBuilder:
                                                       (BuildContext context,
@@ -260,7 +260,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                   searchStoreController
                                                                           .storeList[
                                                                               index]
-                                                                          .addresses![
+                                                                          .storeAddresses![
                                                                               i]
                                                                           .addressLine1 ??
                                                                       "",
@@ -307,7 +307,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                     child: Text(
                                                                       searchStoreController
                                                                               .storeList[index]
-                                                                              .addresses![i]
+                                                                              .storeAddresses![i]
                                                                               .city ??
                                                                           "",
                                                                       style: const TextStyle(
@@ -346,7 +346,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                     child: Text(
                                                                       searchStoreController
                                                                               .storeList[index]
-                                                                              .addresses![i]
+                                                                              .storeAddresses![i]
                                                                               .state!
                                                                               .stateName ??
                                                                           "",

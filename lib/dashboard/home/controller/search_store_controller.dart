@@ -59,7 +59,7 @@ class SearchStoreController extends GetxController {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
-  RxList<Addresses> address = <Addresses>[].obs;
+  RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
 
   @override
