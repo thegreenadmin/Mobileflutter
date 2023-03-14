@@ -71,6 +71,7 @@ class StringConstants {
   //E
 
   static String emailText = "Email";
+  static String endTimeText = "End Time";
   static String emailIdText = "Email Id";
   static String emailUsText = "Email us";
   static String editText = "Edit";
@@ -86,6 +87,7 @@ class StringConstants {
   static String enterProductNameText = "Enter product name";
   static String enterQuantityText = "Enter quantity";
   static String enterPriceText = "Enter Price";
+  static String employeeTimingText = "Employee Timing";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -148,7 +150,7 @@ class StringConstants {
   static String offerName = "Offer Name";
   static String orderType = "Order Type";
   static String optionsText = "Options";
-  static String openingTime = "Opening Time";
+  static String openingTimeText = "Opening Time";
 
   //P
   static String profileText = "Profile";
@@ -209,6 +211,7 @@ class StringConstants {
   static String shortDescriptionText = "Short Description";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
+  static String startTimeText = "Start Time";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -276,13 +279,23 @@ class BottomNavStringConstants {
 
 //Alert Messages
 class AlertStringConstants {
-//I
+  //c
+  static String closingTimeAlertText = "Closing time can not be as opening time";
+//E
+  static String endTimeAlertText = "End time can not be as start time";
+
+  //I
   static String invalidOtpText = "Invalid OTP";
-//P
+  //O
+  static String openingTimeAlertText = "Opening time can not be as closing time";
+
+  //P
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseEnterFirstNameText = "Please enter first name";
+  static String pleaseEnterMobileNoText = "Please enter mobile number";
   static String pleaseEnterNickNameText = "Please enter nick name";
   static String pleaseEnterLastNameText = "Please enter last name";
+  static String pleaseEnterEmployeeNameText = "Please enter employee name";
   static String pleaseEnterEmailText = "Please enter email";
   static String pleaseEnterPhoneText = "Please enter phone number";
   static String pleaseEnterOtpText = "Please enter Otp";
@@ -292,6 +305,7 @@ class AlertStringConstants {
   static String pleaseEnterAddressText = "Please enter address";
   static String pleaseEnterTownOrCityText = "Please enter town or city";
   static String pleaseEnterZipCodeText = "Please enter zip code";
+  static String pleaseEnterWeekDaysText = "Please select week days";
   static String pleaseSelectOpeningTimeText = "Please select opening time";
   static String pleaseSelectClosingTimeText = "Please select closing time";
   static String pleaseEnterStateText = "Please enter state";
@@ -321,6 +335,9 @@ class AlertStringConstants {
   static String pleaseEnterWeightText = "Please enter weight";
   static String pleaseEnterDiscountOrOfferText =
       "Please enter discount or offer";
+  //S
+  static String startTimeAlertText = "Start time can not be as end time";
+
 }
 
 class Role {

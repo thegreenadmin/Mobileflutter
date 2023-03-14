@@ -158,7 +158,9 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(const ManageWorkerScreen());
+              Get.to( const ManageWorkerScreen(),arguments:  {
+              "storeId": searchStoreController.storeId.value,
+              });
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4),

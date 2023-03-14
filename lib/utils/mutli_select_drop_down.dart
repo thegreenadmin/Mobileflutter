@@ -9,6 +9,7 @@ class MultiCustomDropDown extends StatefulWidget {
   final String? title;
   final String? hintText;
   final String? label;
+  final Function(String?)? validator;
   final Function(List<dynamic>)? onChanged;
 
   const MultiCustomDropDown(
@@ -18,6 +19,7 @@ class MultiCustomDropDown extends StatefulWidget {
       this.controller,
       this.list,
       this.label,
+      this.validator,
       this.onChanged})
       : super(key: key);
 
@@ -33,6 +35,9 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     return LayoutBuilder(builder: (context, constraint) {
       return TextFormField(
         controller: widget.controller,
+        validator:(val){
+          return widget.validator!(val);
+        } ,
         style: const TextStyle(
             color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
         // obscureText: state.showPassword,
@@ -123,7 +128,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     onChanged!(results?.toList() ?? []);
     if (results != null) {
       for (var item in results) {
-        concatenate.write(item);
+        concatenate.write(item.name);
         concatenate.write(', ');
       }
     }
@@ -180,7 +185,7 @@ class _MultiSelectState extends State<MultiSelect> {
               .map((item) => CheckboxListTile(
                     value: _selectedItems.contains(item),
                     activeColor: AppColors.primary,
-                    title: Text(item),
+                    title: Text(item.name),
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (isChecked) => _itemChange(item, isChecked!),
                   ))

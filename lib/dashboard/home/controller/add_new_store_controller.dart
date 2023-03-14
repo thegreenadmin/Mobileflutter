@@ -16,6 +16,8 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 
+import '../model/categories.dart';
+
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -54,14 +56,36 @@ class AddNewStoreController extends GetxController {
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
-  RxList<String> weekDaysList = <String>[
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+  RxList<dynamic> selectedWeekDaysList = [].obs;
+
+  RxList<Categories> weekDaysList = [
+    Categories(
+        id: 1,
+        name: "Monday"
+    ),
+    Categories(
+        id: 2,
+        name: "Tuesday"
+    ),Categories(
+        id: 3,
+        name: "Wednesday"
+    ),
+    Categories(
+        id: 4,
+        name: "Thursday"
+    ),
+    Categories(
+        id: 5,
+        name: "Friday"
+    ),
+    Categories(
+        id: 6,
+        name: "Saturday"
+    ),
+    Categories(
+        id: 7,
+        name: "Sunday"
+    ),
   ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
@@ -246,6 +270,7 @@ class AddNewStoreController extends GetxController {
         "landmark": "",
         "city": townOrCityTextController.text.trim()
       }
+
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',

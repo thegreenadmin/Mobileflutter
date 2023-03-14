@@ -963,7 +963,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        StringConstants.openingTime,
+                                        StringConstants.openingTimeText,
                                         style: TextStyle(
                                             color: AppColors.blacklight,
                                             fontSize: 16,
@@ -990,6 +990,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectOpeningTimeText;
+                                            }else if(value!.trim() ==addNewStoreController
+                                                .closingTimeTextController.text){
+                                              return AlertStringConstants
+                                                  .openingTimeAlertText;
                                             }
                                             return null;
                                           },
@@ -1027,7 +1031,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           },
                                           decoration: InputDecoration(
                                             hintText:
-                                                StringConstants.openingTime,
+                                                StringConstants.openingTimeText,
                                             hintStyle: const TextStyle(
                                                 color: AppColors.grey,
                                                 fontSize: 14),
@@ -1104,6 +1108,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectClosingTimeText;
+                                            }else if(value!.trim() ==addNewStoreController
+                                                .openingTimeTextController.text){
+                                              return AlertStringConstants
+                                                  .closingTimeAlertText;
                                             }
                                             return null;
                                           },
@@ -1199,7 +1207,15 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     Obx(
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
-                              onChanged: (v) {},
+                              validator: (v){
+                                if (v!.trim().isEmpty && addNewStoreController.is247Time.value != true) {
+                                  return AlertStringConstants.pleaseEnterWeekDaysText;
+                                }
+                                return null;
+                              },
+                              onChanged: (v) {
+                                addNewStoreController.selectedWeekDaysList.value= v;
+                              },
                               controller: addNewStoreController
                                   .workingDaysTextController,
                               hintText: StringConstants.selectDaysText,
