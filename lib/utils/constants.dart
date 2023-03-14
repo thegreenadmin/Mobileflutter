@@ -82,6 +82,8 @@ class StringConstants {
   static String employeeNameText = "Employee Name";
   static String enterMobileText = "Enter mobile";
   static String enterProductNameText = "Enter product name";
+  static String enterQuantityText = "Enter quantity";
+  static String enterPriceText = "Enter Price";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -299,6 +301,16 @@ class AlertStringConstants {
   static String pleaseSelectAge = "Please select age";
   static String pleaseEnterContentAndStrainText = "Please contents and strains";
   static String pleaseEnterWorkerText = "Please enter worker name";
+  static String pleaseEnterQuantityText = "Please enter quantity";
+  static String pleaseEnterLinkText = "Please enter link";
+  static String pleaseEnterContentText = "Please enter content";
+  static String pleaseEnterPriceText = "Please enter price";
+  static String pleaseEnterLengthText = "Please enter length";
+  static String pleaseEnterBreadthText = "Please enter breadth";
+  static String pleaseEnterHeightText = "Please enter height";
+  static String pleaseEnterWeightText = "Please enter weight";
+  static String pleaseEnterDiscountOrOfferText =
+      "Please enter discount or offer";
 }
 
 class Role {

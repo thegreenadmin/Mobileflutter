@@ -17,7 +17,6 @@ class ViewProductListEditScreen extends StatefulWidget {
 }
 
 class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
-
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 
@@ -156,7 +155,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.firstNameTextController,
+                            manageStoreController.productNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -219,7 +218,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.lastNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -281,7 +280,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -343,7 +342,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -405,7 +404,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -468,7 +467,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -531,7 +530,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -595,7 +594,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -659,7 +658,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            manageStoreController.nickNameTextController,
+                            manageStoreController.quantityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -720,7 +719,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                      //  manageStoreController.validateAndSubmit();
+                        //  manageStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveText,

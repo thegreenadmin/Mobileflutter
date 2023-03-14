@@ -56,7 +56,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                               children: [
                                 Obx(() => Text(
                                       "Hi, "
-                                      "${searchStoreController.firstName!.value} ${searchStoreController.firstName!.value}",
+                                      "${searchStoreController.firstName!.value} ${searchStoreController.lastName!.value}",
                                       style: const TextStyle(
                                           fontSize: 20,
                                           color: AppColors.black,

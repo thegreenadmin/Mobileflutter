@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -9,16 +10,19 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class ManageStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController firstNameTextController = TextEditingController();
-  TextEditingController lastNameTextController = TextEditingController();
-  TextEditingController nickNameTextController = TextEditingController();
-  TextEditingController emailTextController = TextEditingController();
-  TextEditingController addressLine1TextController = TextEditingController();
-  TextEditingController addressLine2TextController = TextEditingController();
-  TextEditingController townOrCityTextController = TextEditingController();
-  TextEditingController postalCodeTextController = TextEditingController();
-  TextEditingController stateTextController = TextEditingController();
-  TextEditingController countryTextController = TextEditingController();
+  TextEditingController productNameTextController = TextEditingController();
+  TextEditingController quantityTextController = TextEditingController();
+  TextEditingController pricePerUnitTextController = TextEditingController();
+  TextEditingController shortDescriptionTextController =
+      TextEditingController();
+  TextEditingController discountOrOfferTextController = TextEditingController();
+  TextEditingController additionalLinkTextController = TextEditingController();
+  TextEditingController contentsAndStrainsTextController =
+      TextEditingController();
+  TextEditingController lengthTextController = TextEditingController();
+  TextEditingController breadthTextController = TextEditingController();
+  TextEditingController heightTextController = TextEditingController();
+  TextEditingController weightTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
@@ -35,6 +39,16 @@ class ManageStoreController extends GetxController {
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
 
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile>? imageFileList = [];
+  void selectImages() async {
+    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      imageFileList!.addAll(selectedImages);
+    }
+    print("Image List Length:" + imageFileList!.length.toString());
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -43,6 +57,24 @@ class ManageStoreController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
+  }
+
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmit() async {
+    if (validateAndSave()) {
+      try {} catch (_) {}
+    } else {
+      autoValidate.value = true;
+    }
   }
 
   //Get Categories Api
