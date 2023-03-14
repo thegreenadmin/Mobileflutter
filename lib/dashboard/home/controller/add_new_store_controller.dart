@@ -16,6 +16,8 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../model/categories.dart';
+
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -101,7 +103,10 @@ class AddNewStoreController extends GetxController {
           return AlertDialog(
               title: const Text(
                 "From where do you want to take the photo?",
-                style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
@@ -115,13 +120,19 @@ class AddNewStoreController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Gallery", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          const Text("Gallery",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {
                         Get.back();
                         XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(imageQuality: 50, source: ImageSource.gallery, maxWidth: 900, maxHeight: 900);
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.gallery,
+                                maxWidth: 900,
+                                maxHeight: 900);
                         if (pickedFile != null) {
                           storeImage.value = pickedFile;
                           await apiUploadImage();
@@ -141,13 +152,19 @@ class AddNewStoreController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Camera", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          const Text("Camera",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {
                         Get.back();
                         XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(imageQuality: 50, source: ImageSource.camera, maxWidth: 900, maxHeight: 900);
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.camera,
+                                maxWidth: 900,
+                                maxHeight: 900);
                         if (pickedFile != null) {
                           storeImage.value = pickedFile;
                           await apiUploadImage();
@@ -169,21 +186,28 @@ class AddNewStoreController extends GetxController {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
       Map<String, String> headers = {
-        'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
       };
 
       formData.files.add(MapEntry(
           "file",
           mdio.MultipartFile.fromBytes(await storeImage.value.readAsBytes(),
-              contentType: MediaType.parse("image/png"), filename: "file-name.png".toString())));
-      final res = await dio.post(ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
-          data: formData, options: mdio.Options(headers: headers));
+              contentType: MediaType.parse("image/png"),
+              filename: "file-name.png".toString())));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint("IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint(
+          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        storeImageOrigionalLinkfromServer.value = responseData['data']['urls']['orignal_url'];
-        storeImageDynamicLinkfromServer.value = responseData['data']['urls']['dynamic_url'];
+        storeImageOrigionalLinkfromServer.value =
+            responseData['data']['urls']['orignal_url'];
+        storeImageDynamicLinkfromServer.value =
+            responseData['data']['urls']['dynamic_url'];
         return responseData;
       } else if (res.statusCode == 403) {
         Utility.showToast(responseData['message'].toString());
@@ -193,7 +217,8 @@ class AddNewStoreController extends GetxController {
       if (e is mdio.DioError) {
         if (e.type == mdio.DioErrorType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
-          final responseData = json.decode(e.response?.data) as Map<String, dynamic>;
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
       }
@@ -224,18 +249,28 @@ class AddNewStoreController extends GetxController {
       },
       "store_timings": is247Time.value == true
           ? [
-              {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
+              {
+                "is_24_hours_active": is247Time.value,
+                "day_of_week": "",
+                "opening_time": "",
+                "closing_time": ""
+              }
             ]
           : []
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("CREATE STORE BODY********** $data");
-    debugPrint("CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
+    debugPrint(
+        "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
     UserProvider()
-        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().createStore, headers,
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl + ServerCommunicator().createStore,
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE STORE RESPONSE *******${value!.body}");
@@ -269,13 +304,18 @@ class AddNewStoreController extends GetxController {
   //Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
-    debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
@@ -298,12 +338,14 @@ class AddNewStoreController extends GetxController {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 
@@ -78,5 +79,23 @@ class Utility {
         ),
       ],
     ));
+  }
+
+
+  static String parseDateTime(DateTime timestamp,
+      {String format = 'MMM d, h:mm a'}) {
+    final dateTime = timestamp.toLocal();
+    return DateFormat(format).format(dateTime).toString();
+  }
+
+  static String formatDateTime(String timestamp,
+      {String firstFormat = 'MMM d, h:mm a',secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
+
+    DateTime parseDate =
+    DateFormat(firstFormat).parse(timestamp.toString());
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat(secFormat);
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
   }
 }

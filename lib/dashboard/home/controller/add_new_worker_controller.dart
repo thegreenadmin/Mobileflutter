@@ -15,13 +15,52 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/add_worker_request.dart';
+import '../model/categories.dart';
+
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController employeeNameTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
   TextEditingController shortDescriptionTextController =
       TextEditingController();
   TextEditingController nickNameTextController = TextEditingController();
+  TextEditingController mobileNoTextController = TextEditingController();
+  TextEditingController startTimeTextController = TextEditingController();
+  TextEditingController endTimeTextController = TextEditingController();
+  TextEditingController workingDaysTextController = TextEditingController();
+  RxList<dynamic> selectedWeekDaysList = [].obs;
+  RxList<Categories> weekDaysList = [
+    Categories(
+        id: 1,
+        name: "Monday"
+    ),
+    Categories(
+        id: 2,
+        name: "Tuesday"
+    ),Categories(
+        id: 3,
+        name: "Wednesday"
+    ),
+    Categories(
+        id: 4,
+        name: "Thursday"
+    ),
+    Categories(
+        id: 5,
+        name: "Friday"
+    ),
+    Categories(
+        id: 6,
+        name: "Saturday"
+    ),
+    Categories(
+        id: 7,
+        name: "Sunday"
+    ),
+  ].obs;
+
 
   RxString userImageOrigionalLinkfromServer = "".obs;
   RxString userImageDynamicLinkfromServer = "".obs;
@@ -32,11 +71,15 @@ class AddNewWorkerController extends GetxController {
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
 
   RxString storeDropdownValue = "My store".obs;
-  RxString storeId = "".obs;
+  RxString storeId = "0".obs;
+
+  RxInt radioGroupValue = 0.obs;
+  RxBool is247Time = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    storeId.value = Get.arguments["storeId"];
     apiGetUserStoreList();
   }
 
@@ -52,10 +95,59 @@ class AddNewWorkerController extends GetxController {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {} catch (_) {}
+      try {
+        addWorker();
+      } catch (_) {}
     } else {
       autoValidate.value = true;
     }
+  }
+
+  Future<dynamic> addWorker() async{
+    debugPrint("storeId ***${storeId.value}*");
+    debugPrint("ADD WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreUser}");
+    Map<String, String> headers = {
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    AddWorkerRequest addWorkerRequest = AddWorkerRequest();
+    addWorkerRequest.storeId = int.parse(storeId.value??"0");
+    addWorkerRequest.employeeName = employeeNameTextController.text.trim();
+    addWorkerRequest.description = shortDescriptionTextController.text.trim();
+    addWorkerRequest.phone = mobileNoTextController.text.trim();
+    addWorkerRequest.email = emailTextController.text.trim();
+    List<EmployeeTiming>? employeeTimings = [];
+    for (var element in selectedWeekDaysList) {
+      debugPrint("${element.id}${element.name}");
+      EmployeeTiming employeeTiming = EmployeeTiming();
+      employeeTiming.dayOfWeek = element.id;
+      employeeTiming.is24HrsActive = is247Time.value;
+      employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+      employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+      employeeTimings.add(employeeTiming);
+    }
+    addWorkerRequest.employeeTimings = employeeTimings;
+    debugPrint("addWorkerRequest ***${addWorkerRequest.toJson()}*");
+
+    UserProvider()
+        .postWithHeadersApi(
+        addWorkerRequest,
+        ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      debugPrint("ADD WORKER RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getUserStoreListModel = GetUserStoreListModel.fromJson(value.body);
+        getUserStoreList.value = getUserStoreListModel.data!.stores!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
   Future<void> showSelectionDialog(BuildContext context) {

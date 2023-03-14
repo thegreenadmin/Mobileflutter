@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewWorkerScreen extends StatefulWidget {
@@ -148,7 +149,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                     ),
                     height20SizedBox,
                     Text(
-                      StringConstants.shortDescriptionText,
+                      StringConstants.employeeNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -165,17 +166,18 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: addNewWorkerController
-                            .shortDescriptionTextController,
+                        controller:
+                            addNewWorkerController.employeeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterEinText;
+                            return AlertStringConstants
+                                .pleaseEnterEmployeeNameText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.addDescriptionText,
+                          hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -210,7 +212,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.mobileNoText,
+                      StringConstants.emailIdText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -227,17 +229,19 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            addNewWorkerController.nickNameTextController,
+                        controller: addNewWorkerController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterNickNameText;
+                            return AlertStringConstants.pleaseEnterEmailText;
+                          } else if (!GetUtils.isEmail(value.trim())) {
+                            return AlertStringConstants
+                                .pleaseEnterValidEmailText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterMobileText,
+                          hintText: StringConstants.enterEmailIdText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -333,6 +337,366 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                               });
                             },
                           )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.shortDescriptionText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: addNewWorkerController
+                            .shortDescriptionTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterEinText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.addDescriptionText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.workingDaysText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    MultiCustomDropDown(
+                        onChanged: (v) {
+                          addNewWorkerController.selectedWeekDaysList.value = v;
+                        },
+                        validator: (v) {
+                          if (v!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterWeekDaysText;
+                          }
+                          return null;
+                        },
+                        controller:
+                            addNewWorkerController.workingDaysTextController,
+                        hintText: StringConstants.selectDaysText,
+                        title: StringConstants.selectDaysText,
+                        list: addNewWorkerController.weekDaysList),
+                    height20SizedBox,
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.startTimeText,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  controller: addNewWorkerController
+                                      .startTimeTextController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseSelectOpeningTimeText;
+                                    } else if (value!.trim() ==
+                                        addNewWorkerController
+                                            .endTimeTextController.text) {
+                                      return AlertStringConstants
+                                          .startTimeAlertText;
+                                    }
+                                    return null;
+                                  },
+                                  onTap: () async {
+                                    TimeOfDay date = TimeOfDay.now();
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    date = (await showTimePicker(
+                                      helpText: "Select Time",
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                                    primary: AppColors.primary),
+                                            buttonTheme: const ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary),
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    ))!;
+
+                                    addNewWorkerController
+                                        .startTimeTextController
+                                        .text = date.format(context).toString();
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: StringConstants.startTimeText,
+                                    hintStyle: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                    fillColor: Colors.white,
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        width15SizedBox,
+                        Expanded(
+                          flex: 5,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.endTimeText,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  controller: addNewWorkerController
+                                      .endTimeTextController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseSelectClosingTimeText;
+                                    } else if (value!.trim() ==
+                                        addNewWorkerController
+                                            .startTimeTextController.text) {
+                                      return AlertStringConstants
+                                          .endTimeAlertText;
+                                    }
+                                    return null;
+                                  },
+                                  onTap: () async {
+                                    TimeOfDay date = TimeOfDay.now();
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    date = (await showTimePicker(
+                                      helpText: "Select Time",
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                                    primary: AppColors.primary),
+                                            buttonTheme: const ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary),
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    ))!;
+                                    addNewWorkerController.endTimeTextController
+                                        .text = date.format(context).toString();
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: StringConstants.endTimeText,
+                                    hintStyle: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                    fillColor: Colors.white,
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.mobileNoText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            addNewWorkerController.mobileNoTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterMobileNoText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.enterMobileText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

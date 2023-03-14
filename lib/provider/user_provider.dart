@@ -121,8 +121,7 @@ class UserProvider extends GetConnect {
   }
 
   // Post with header request
-  Future<Response?> postWithHeadersApi(
-      Map<dynamic, dynamic> data, String url, Map<String, String> headers,
+  Future<Response?> postWithHeadersApi(data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {

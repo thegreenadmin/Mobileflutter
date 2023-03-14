@@ -9,6 +9,8 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../controller/add_new_worker_controller.dart';
+
 class ManageWorkerScreen extends StatefulWidget {
   const ManageWorkerScreen({super.key});
 
@@ -17,7 +19,9 @@ class ManageWorkerScreen extends StatefulWidget {
 }
 
 class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
-  
+  final AddNewWorkerController addNewWorkerController =
+      Get.put(AddNewWorkerController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

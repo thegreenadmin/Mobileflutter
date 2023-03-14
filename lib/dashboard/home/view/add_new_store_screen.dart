@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/multi_drop_class.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 
 import '../../../utils/sizedbox_constants.dart';
@@ -963,7 +964,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        StringConstants.openingTime,
+                                        StringConstants.openingTimeText,
                                         style: TextStyle(
                                             color: AppColors.blacklight,
                                             fontSize: 16,
@@ -990,6 +991,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectOpeningTimeText;
+                                            } else if (value!.trim() ==
+                                                addNewStoreController
+                                                    .closingTimeTextController
+                                                    .text) {
+                                              return AlertStringConstants
+                                                  .openingTimeAlertText;
                                             }
                                             return null;
                                           },
@@ -1027,7 +1034,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           },
                                           decoration: InputDecoration(
                                             hintText:
-                                                StringConstants.openingTime,
+                                                StringConstants.openingTimeText,
                                             hintStyle: const TextStyle(
                                                 color: AppColors.grey,
                                                 fontSize: 14),
@@ -1104,6 +1111,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectClosingTimeText;
+                                            } else if (value!.trim() ==
+                                                addNewStoreController
+                                                    .openingTimeTextController
+                                                    .text) {
+                                              return AlertStringConstants
+                                                  .closingTimeAlertText;
                                             }
                                             return null;
                                           },
@@ -1198,7 +1211,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height4SizedBox,
                     Obx(
                       () => addNewStoreController.is247Time.value != true
-                          ? MultiCustomDropDown(
+                          ? MultiDropClass(
                               onChanged: (v) {
                                 addNewStoreController.storeTimmingList.clear();
                                 //  String selectedDays = "";

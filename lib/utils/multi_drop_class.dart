@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/constants.dart';
+
 import 'app_colors.dart';
 
-class MultiCustomDropDown extends StatefulWidget {
+class MultiDropClass extends StatefulWidget {
   // final _ProviderSignupPage? signupPage;
   final TextEditingController? controller;
-  final List<dynamic>? list;
+  final List<Map<String, dynamic>>? list;
   final String? title;
   final String? hintText;
   final String? label;
-  final Function(String?)? validator;
   final Function(List<dynamic>)? onChanged;
 
-  const MultiCustomDropDown(
+  const MultiDropClass(
       {Key? key,
       this.title,
       this.hintText,
       this.controller,
       this.list,
       this.label,
-      this.validator,
       this.onChanged})
       : super(key: key);
 
   @override
-  State<MultiCustomDropDown> createState() => _MultiCustomDropDownState();
+  State<MultiDropClass> createState() => _MultiDropClassState();
 }
 
-class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
+class _MultiDropClassState extends State<MultiDropClass> {
   // FocusNode myFocusNode =  FocusNode();
 
   @override
@@ -35,13 +34,11 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     return LayoutBuilder(builder: (context, constraint) {
       return TextFormField(
         controller: widget.controller,
-        validator: (val) {
-          return widget.validator!(val);
-        },
         style: const TextStyle(
             color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
         // obscureText: state.showPassword,
         textInputAction: TextInputAction.next,
+        readOnly: true,
         keyboardType: TextInputType.visiblePassword,
         onChanged: (text) {},
         onTap: () async {
@@ -114,6 +111,8 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 
   Future<String> _showMultiSelect(
       items, title, Function(List<dynamic>)? onChanged) async {
+    print("Items---->" + items.toString());
+    print("Titles---->" + title.toString());
     final List<dynamic>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -128,7 +127,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     onChanged!(results?.toList() ?? []);
     if (results != null) {
       for (var item in results) {
-        concatenate.write(item.name);
+        concatenate.write(item);
         concatenate.write(', ');
       }
     }
@@ -137,7 +136,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 }
 
 class MultiSelect extends StatefulWidget {
-  final List<dynamic> items;
+  final List<Map<String, dynamic>> items;
   final String? title;
   const MultiSelect({Key? key, required this.items, this.title})
       : super(key: key);
@@ -150,13 +149,19 @@ class _MultiSelectState extends State<MultiSelect> {
   // this variable holds the selected items
   final List<dynamic> _selectedItems = [];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(dynamic itemValue, bool isSelected) {
     setState(() {
+      itemValue['isSelected'] = isSelected;
       if (isSelected) {
-        _selectedItems.add(itemValue);
+        _selectedItems.add(itemValue["day"]);
       } else {
-        _selectedItems.remove(itemValue);
+        _selectedItems.remove(itemValue["day"]);
       }
     });
   }
@@ -183,9 +188,9 @@ class _MultiSelectState extends State<MultiSelect> {
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item),
+                    value: item['isSelected'],
                     activeColor: AppColors.primary,
-                    title: Text(item.name),
+                    title: Text(item["day"]),
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (isChecked) => _itemChange(item, isChecked!),
                   ))
