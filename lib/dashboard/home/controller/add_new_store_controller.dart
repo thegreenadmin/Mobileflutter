@@ -23,6 +23,9 @@ class AddNewStoreController extends GetxController {
   TextEditingController zipCodeTextController = TextEditingController();
   TextEditingController stateTextController = TextEditingController();
   TextEditingController countryTextController = TextEditingController();
+  TextEditingController openingTimeTextController = TextEditingController();
+  TextEditingController closingTimeTextController = TextEditingController();
+  TextEditingController workingDaysTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
   late GetCountriesModel getCountriesModel = GetCountriesModel();
@@ -36,6 +39,7 @@ class AddNewStoreController extends GetxController {
 
   RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
   RxString stateId = "".obs;
+  RxInt radioGroupValue = 0.obs;
 
   @override
   void onInit() {
