@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
+import 'package:thegreenmall/utils/utility.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -1198,7 +1199,37 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     Obx(
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
-                              onChanged: (v) {},
+                              onChanged: (v) {
+                                addNewStoreController.selectIndexList.clear();
+                                for (int i = 0;
+                                    i <
+                                        addNewStoreController
+                                            .weekDaysList.length;
+                                    i++) {
+                                  for (int j = 0; j < v.length; j++) {
+                                    if (v[j] ==
+                                        addNewStoreController.weekDaysList[i]) {
+                                      addNewStoreController.selectIndexList
+                                          .add(i);
+                                      addNewStoreController.storeTimmingList
+                                          .add({
+                                        "is_24_hours_active": false,
+                                        "day_of_week": (i + 1).toString(),
+                                        "opening_time": addNewStoreController
+                                            .openingTimeTextController.text
+                                            .trim(),
+                                        "closing_time": addNewStoreController
+                                            .closingTimeTextController.text
+                                            .trim()
+                                      });
+                                    }
+                                  }
+                                }
+                                print("top list" + v.toString());
+                                print("LISTTTTTTTTTTTTT" +
+                                    addNewStoreController.storeTimmingList
+                                        .toString());
+                              },
                               controller: addNewStoreController
                                   .workingDaysTextController,
                               hintText: StringConstants.selectDaysText,

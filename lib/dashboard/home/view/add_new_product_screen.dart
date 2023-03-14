@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
-import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -80,113 +79,128 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    manageStoreController.imageFileList!.isEmpty
-                        ? height0SizedBox
-                        : Text(StringConstants.uploadProductPhotosText,
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400)),
-                    manageStoreController.imageFileList!.isEmpty
-                        ? height0SizedBox
-                        : SizedBox(
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListView.separated(
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return width8SizedBox;
-                                  },
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: manageStoreController
-                                      .imageFileList!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Image.file(
-                                      File(manageStoreController
-                                          .imageFileList![index].path),
-                                      fit: BoxFit.cover,
-                                    );
-                                  }),
-                            ),
-                          ),
-                    height15SizedBox,
-                    manageStoreController.imageFileList!.isEmpty
-                        ? height0SizedBox
-                        : InkWell(
-                            onTap: () {
-                              manageStoreController.selectImages();
-                            },
-                            child: Image.asset(
-                              "assets/uploadbutton.png",
-                              scale: 3,
-                            ),
-                          ),
-                    manageStoreController.imageFileList!.isEmpty
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                flex: 4,
-                                child: Row(
-                                  children: [
-                                    DottedBorder(
-                                      color: AppColors.blacklight,
-                                      strokeWidth: 1,
-                                      dashPattern: const [4, 4],
-                                      child: Container(
-                                        width:
-                                            WidgetConstants.screenWidth * 0.3,
-                                        padding: const EdgeInsets.only(
-                                            top: 30, bottom: 30),
-                                        color: AppColors.primarylight,
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                "assets/upload.png",
-                                                scale: 2.5,
-                                              ),
-                                            ]),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                    Obx(
+                      () => manageStoreController.imageFileList!.isEmpty
+                          ? height0SizedBox
+                          : Text(StringConstants.uploadProductPhotosText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                    ),
+                    Obx(
+                      () => manageStoreController.imageFileList!.isEmpty
+                          ? height0SizedBox
+                          : SizedBox(
+                              height: 100,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListView.separated(
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return width8SizedBox;
+                                    },
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: manageStoreController
+                                        .imageFileList!.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Image.file(
+                                        File(manageStoreController
+                                            .imageFileList![index].path),
+                                        fit: BoxFit.cover,
+                                      );
+                                    }),
                               ),
-                              width20SizedBox,
-                              Flexible(
-                                flex: 6,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    height10SizedBox,
-                                    Text(
-                                        StringConstants.uploadProductPhotosText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500)),
-                                    height10SizedBox,
-                                    Text(
-                                        StringConstants
-                                            .theImageMustBeAtleaseText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400)),
-                                    height10SizedBox,
-                                  ],
+                            ),
+                    ),
+                    height15SizedBox,
+                    Obx(
+                      () => manageStoreController.imageFileList!.isEmpty
+                          ? height0SizedBox
+                          : InkWell(
+                              onTap: () {
+                                manageStoreController.selectImages();
+                              },
+                              child: Image.asset(
+                                "assets/uploadbutton.png",
+                                scale: 3,
+                              ),
+                            ),
+                    ),
+                    Obx(
+                      () => manageStoreController.imageFileList!.isEmpty
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  flex: 4,
+                                  child: InkWell(
+                                    onTap: () {
+                                      manageStoreController.selectImages();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        DottedBorder(
+                                          color: AppColors.blacklight,
+                                          strokeWidth: 1,
+                                          dashPattern: const [4, 4],
+                                          child: Container(
+                                            width: WidgetConstants.screenWidth *
+                                                0.3,
+                                            padding: const EdgeInsets.only(
+                                                top: 30, bottom: 30),
+                                            color: AppColors.primarylight,
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    "assets/upload.png",
+                                                    scale: 2.5,
+                                                  ),
+                                                ]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              )
-                            ],
-                          )
-                        : height0SizedBox,
+                                width20SizedBox,
+                                Flexible(
+                                  flex: 6,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      height10SizedBox,
+                                      Text(
+                                          StringConstants
+                                              .uploadProductPhotosText,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500)),
+                                      height10SizedBox,
+                                      Text(
+                                          StringConstants
+                                              .theImageMustBeAtleaseText,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400)),
+                                      height10SizedBox,
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          : height0SizedBox,
+                    ),
                     height20SizedBox,
                     Text(
                       StringConstants.productNameText,
@@ -258,64 +272,175 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    height4SizedBox,
-                    Obx(() => manageStoreController.categoriesList.isEmpty
-                        ? height0SizedBox
-                        : DropdownButtonFormField<Categories>(
-                            isExpanded: true,
-                            value: manageStoreController.categoriesList.last,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: 'Organisation Type',
-                              errorStyle: const TextStyle(color: Colors.yellow),
+                    height10SizedBox,
+                    Obx(
+                      () => manageStoreController.categoriesList.isEmpty
+                          ? height0SizedBox
+                          : SizedBox(
+                              width: Get.width,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Wrap(
+                                      children: [
+                                        for (var i = 0;
+                                            i <
+                                                manageStoreController
+                                                    .categoriesList.length;
+                                            i++)
+                                          InkWell(
+                                            onTap: () {
+                                              if (manageStoreController
+                                                      .categoriesList[i]
+                                                      .isSelected ==
+                                                  false) {
+                                                manageStoreController
+                                                    .selectedCategories
+                                                    .add({
+                                                  "category_id":
+                                                      manageStoreController
+                                                          .categoriesList[i]
+                                                          .categoryId
+                                                });
+                                                manageStoreController
+                                                    .categoriesList[i]
+                                                    .isSelected = true;
+                                              } else {
+                                                manageStoreController
+                                                    .selectedCategories
+                                                    .removeWhere((item) =>
+                                                        item['category_id'] ==
+                                                        manageStoreController
+                                                            .categoriesList[i]
+                                                            .categoryId);
+                                                manageStoreController
+                                                    .categoriesList[i]
+                                                    .isSelected = false;
+                                              }
+                                              print(manageStoreController
+                                                  .selectedCategories);
+                                            },
+                                            child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15,
+                                                    right: 15,
+                                                    top: 10,
+                                                    bottom: 10),
+                                                margin: const EdgeInsets.all(3),
+                                                decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                    ),
+                                                  ],
+                                                  color: manageStoreController
+                                                              .selectedCategories
+                                                              .any((item) =>
+                                                                  item[
+                                                                      'category_id'] ==
+                                                                  manageStoreController
+                                                                      .categoriesList[
+                                                                          i]
+                                                                      .categoryId) ==
+                                                          true
+                                                      ? AppColors.primary
+                                                      : AppColors.primarylight,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(100),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  manageStoreController
+                                                          .categoriesList[i]
+                                                          .categoryName ??
+                                                      "",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: manageStoreController
+                                                                .selectedCategories
+                                                                .any((item) =>
+                                                                    item[
+                                                                        'category_id'] ==
+                                                                    manageStoreController
+                                                                        .categoriesList[
+                                                                            i]
+                                                                        .categoryId) ==
+                                                            true
+                                                        ? AppColors.primarylight
+                                                        : AppColors.primary,
+                                                  ),
+                                                )),
+                                          )
+                                      ],
+                                    ),
+                                  ]),
                             ),
-                            items: manageStoreController.categoriesList
-                                .map<DropdownMenuItem<Categories>>(
-                                    (Categories value) {
-                              return DropdownMenuItem<Categories>(
-                                value: value,
-                                child: Text(value.categoryName.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (Categories? newValue) {
-                              setState(() {
-                                manageStoreController.categoryDropdownValue
-                                    .value = newValue!.categoryName.toString();
-                                manageStoreController.categoryId.value =
-                                    newValue.categoryId.toString();
+                    ),
+                    // Obx(() => manageStoreController.categoriesList.isEmpty
+                    //     ? height0SizedBox
+                    //     : DropdownButtonFormField<Categories>(
+                    //         isExpanded: true,
+                    //         value: manageStoreController.categoriesList.last,
+                    //         decoration: InputDecoration(
+                    //           enabledBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.grey,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           border: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           focusedBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           errorBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           hintText: 'Organisation Type',
+                    //           errorStyle: const TextStyle(color: Colors.yellow),
+                    //         ),
+                    //         items: manageStoreController.categoriesList
+                    //             .map<DropdownMenuItem<Categories>>(
+                    //                 (Categories value) {
+                    //           return DropdownMenuItem<Categories>(
+                    //             value: value,
+                    //             child: Text(value.categoryName.toString()),
+                    //           );
+                    //         }).toList(),
+                    //         onChanged: (Categories? newValue) {
+                    //           setState(() {
+                    //             manageStoreController.categoryDropdownValue
+                    //                 .value = newValue!.categoryName.toString();
+                    //             manageStoreController.categoryId.value =
+                    //                 newValue.categoryId.toString();
 
-                                debugPrint(
-                                    manageStoreController.categoryId.value);
-                              });
-                            },
-                          )),
+                    //             debugPrint(
+                    //                 manageStoreController.categoryId.value);
+                    //           });
+                    //         },
+                    //       )),
                     height20SizedBox,
                     Text(
                       StringConstants.quantityUnitText,
@@ -366,7 +491,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               style: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
                             ),
-                            items: <String>["Kg", "Grams", "peices", "liters"]
+                            items: <String>["Grams", "Unit", "Ml"]
                                 .map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -642,8 +767,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     TextFormField(
                         textInputAction: TextInputAction.next,
                         autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
+                        inputFormatters: [
+                          FilteringTextInputFormatter(RegExp(r"\s"),
+                              allow: false),
+                          LengthLimitingTextInputFormatter(25),
                         ],
                         style: const TextStyle(
                             color: AppColors.black,
@@ -655,6 +782,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterLinkText;
+                          } else if (!GetUtils.isURL(manageStoreController
+                              .additionalLinkTextController.text
+                              .trim())) {
+                            return AlertStringConstants
+                                .pleaseEnterValidLinkText;
                           }
                           return null;
                         },
@@ -756,7 +888,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               );
                             }).toList(),
-                            onChanged: (_) {},
+                            onChanged: (v) {
+                              manageStoreController.discountType.value =
+                                  v.toString();
+                            },
                           ),
                         ),
                         width15SizedBox,
@@ -877,7 +1012,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         );
                       }).toList(),
-                      onChanged: (_) {},
+                      onChanged: (v) {
+                        if (v == "Yes") {
+                          manageStoreController.isFeatured.value = true;
+                        } else {
+                          manageStoreController.isFeatured.value = false;
+                        }
+                      },
                     ),
                     height20SizedBox,
                     Row(
@@ -1165,6 +1306,42 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                    height20SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              StringConstants.enabledText,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Obx(() => FlutterSwitch(
+                              height: 28,
+                              width: 50,
+                              value: manageStoreController.isEnabled.value,
+                              activeToggleColor: AppColors.primary,
+                              inactiveToggleColor: AppColors.grey,
+                              activeSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              inactiveSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              activeColor: AppColors.greymediumlight,
+                              inactiveColor: AppColors.greymediumlight,
+                              onToggle: (val) {
+                                manageStoreController.isEnabled.value = val;
+                              },
+                            )),
                       ],
                     ),
                     height40SizedBox,

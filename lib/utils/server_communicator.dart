@@ -11,6 +11,7 @@ class ServerCommunicator {
   String countries = 'utils/countries';
   String createStoreCategory = 'store/category/create';
   String categoryList = 'store/category/list';
+  String createProduct = 'store/product/create';
 
 //D
 //E

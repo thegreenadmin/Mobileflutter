@@ -51,13 +51,15 @@ class Categories {
   String? categoryName;
   Images? image;
   int? totalProducts;
+  bool? isSelected = false;
 
   Categories(
       {this.categoryId,
       this.parentCategoryId,
       this.categoryName,
       this.image,
-      this.totalProducts});
+      this.totalProducts,
+      this.isSelected});
 
   Categories.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];

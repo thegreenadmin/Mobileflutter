@@ -5,7 +5,7 @@ import 'app_colors.dart';
 class MultiCustomDropDown extends StatefulWidget {
   // final _ProviderSignupPage? signupPage;
   final TextEditingController? controller;
-  final List<dynamic>? list;
+  final List<Map<String, dynamic>>? list;
   final String? title;
   final String? hintText;
   final String? label;
@@ -109,6 +109,8 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 
   Future<String> _showMultiSelect(
       items, title, Function(List<dynamic>)? onChanged) async {
+    print("Items---->" + items.toString());
+    print("Titles---->" + title.toString());
     final List<dynamic>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -132,7 +134,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 }
 
 class MultiSelect extends StatefulWidget {
-  final List<dynamic> items;
+  final List<Map<String, dynamic>> items;
   final String? title;
   const MultiSelect({Key? key, required this.items, this.title})
       : super(key: key);
@@ -144,6 +146,11 @@ class MultiSelect extends StatefulWidget {
 class _MultiSelectState extends State<MultiSelect> {
   // this variable holds the selected items
   final List<dynamic> _selectedItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(dynamic itemValue, bool isSelected) {
@@ -178,11 +185,12 @@ class _MultiSelectState extends State<MultiSelect> {
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item),
+                    value: _selectedItems.contains(item["day"]),
                     activeColor: AppColors.primary,
-                    title: Text(item),
+                    title: Text(item["day"]),
                     controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                    onChanged: (isChecked) =>
+                        _itemChange(item["day"], isChecked!),
                   ))
               .toList(),
         ),

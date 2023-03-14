@@ -168,11 +168,14 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                 border: Border.all(
                                                     color: AppColors.white,
                                                     width: 1)),
-                                            child: const CircleAvatar(
+                                            child: CircleAvatar(
                                               radius: 24.0,
-                                              backgroundImage: AssetImage(
-                                                "assets/userAccount.png",
-                                              ),
+                                              backgroundImage: NetworkImage(
+                                                  searchStoreController
+                                                      .storeList[index]
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString()),
                                               backgroundColor:
                                                   Colors.transparent,
                                             ),

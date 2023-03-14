@@ -86,6 +86,7 @@ class StringConstants {
   static String enterProductNameText = "Enter product name";
   static String enterQuantityText = "Enter quantity";
   static String enterPriceText = "Enter Price";
+  static String enabledText = "Enabled ";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -278,6 +279,7 @@ class BottomNavStringConstants {
 class AlertStringConstants {
 //I
   static String invalidOtpText = "Invalid OTP";
+
 //P
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseEnterFirstNameText = "Please enter first name";
@@ -309,7 +311,7 @@ class AlertStringConstants {
   static String pleaseEnterTermsAndConditions =
       "Please agree to terms and condition";
   static String pleaseSelectAge = "Please select age";
-  static String pleaseEnterContentAndStrainText = "Please contents and strains";
+  static String pleaseEnterContentAndStrainText = "Please enter contents and strains";
   static String pleaseEnterWorkerText = "Please enter worker name";
   static String pleaseEnterQuantityText = "Please enter quantity";
   static String pleaseEnterLinkText = "Please enter link";
@@ -321,6 +323,8 @@ class AlertStringConstants {
   static String pleaseEnterWeightText = "Please enter weight";
   static String pleaseEnterDiscountOrOfferText =
       "Please enter discount or offer";
+  static String pleaseEnterValidLinkText =
+      "Please enter valid link";
 }
 
 class Role {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
-
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';

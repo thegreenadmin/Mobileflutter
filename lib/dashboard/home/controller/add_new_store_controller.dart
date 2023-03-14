@@ -54,14 +54,15 @@ class AddNewStoreController extends GetxController {
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
-  RxList<String> weekDaysList = <String>[
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+  RxList selectIndexList = [].obs;
+  RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
+    {"isSelected": false, "day": "Monday"},
+    {"isSelected": false, "day": "Tuesday"},
+    {"isSelected": false, "day": "Wednesday"},
+    {"isSelected": false, "day": "Thursday"},
+    {"isSelected": false, "day": "Friday"},
+    {"isSelected": false, "day": "Saturday"},
+    {"isSelected": false, "day": "Sunday"},
   ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
@@ -200,13 +201,12 @@ class AddNewStoreController extends GetxController {
       final responseData = res.data;
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
+      debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
         storeImageOrigionalLinkfromServer.value =
             responseData['data']['urls']['orignal_url'];
         storeImageDynamicLinkfromServer.value =
             responseData['data']['urls']['dynamic_url'];
-
         return responseData;
       } else if (res.statusCode == 403) {
         Utility.showToast(responseData['message'].toString());
@@ -245,7 +245,17 @@ class AddNewStoreController extends GetxController {
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",
         "city": townOrCityTextController.text.trim()
-      }
+      },
+      "store_timings": is247Time.value == true
+          ? [
+              {
+                "is_24_hours_active": is247Time.value,
+                "day_of_week": "",
+                "opening_time": "",
+                "closing_time": ""
+              }
+            ]
+          : []
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
