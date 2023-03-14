@@ -95,33 +95,75 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    height10SizedBox,
-                    DottedBorder(
-                      color: AppColors.blacklight,
-                      strokeWidth: 1,
-                      dashPattern: const [4, 4],
-                      child: Container(
-                        width: WidgetConstants.screenWidth ,
-                        padding: const EdgeInsets.only(
-                            top: 35, bottom: 35),
-                        color: AppColors.primarylight,
-                        child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/upload.png",
-                                scale: 2.5,
+                    height20SizedBox,
+                    Obx(
+                      () => addNewStoreController
+                              .storeImageDynamicLinkfromServer.value.isEmpty
+                          ? InkWell(
+                              onTap: () {
+                                addNewStoreController
+                                    .showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                      width: WidgetConstants.screenWidth * 0.85,
+                                      padding: const EdgeInsets.only(
+                                          top: 35, bottom: 35),
+                                      color: AppColors.primarylight,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/upload.png",
+                                              scale: 2.5,
+                                            ),
+                                            height6SizedBox,
+                                            Text(StringConstants
+                                                .uploadStoreImageText)
+                                          ]),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              height6SizedBox,
-                              Text(StringConstants
-                                  .uploadCategoriesImageText)
-                            ]),
-                      ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                addNewStoreController
+                                    .showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                        width:
+                                            WidgetConstants.screenWidth * 0.85,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.2,
+                                        color: AppColors.primarylight,
+                                        child: Image.network(
+                                            addNewStoreController
+                                                .storeImageDynamicLinkfromServer
+                                                .value,
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
-                    height15SizedBox,
+                    height20SizedBox,
                     Text(
                       StringConstants.storeNameText,
                       style: TextStyle(
@@ -821,7 +863,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               });
                             },
                           )),
-                    height20SizedBox,
+                    height25SizedBox,
                     Text(
                       StringConstants.storeTimingText,
                       style: const TextStyle(
@@ -829,52 +871,77 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
                     ),
-                    height15SizedBox,
+                    height25SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Obx(() => SizedBox(
-                              height: 20,width: 20,
-                              child: Radio(
-                                value: 0,
-                                groupValue:addNewStoreController.radioGroupValue.value,
-                                activeColor: AppColors.primary,
-                                onChanged: (value){
-                                  addNewStoreController.radioGroupValue.value= value?.toInt()??0;
-                                },
+                            Obx(
+                              () => SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Radio(
+                                  value: 0,
+                                  groupValue: addNewStoreController
+                                      .radioGroupValue.value,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (value) {
+                                    addNewStoreController.radioGroupValue
+                                        .value = value?.toInt() ?? 0;
+                                    addNewStoreController.is247Time.value =
+                                        false;
+                                    print(addNewStoreController
+                                        .radioGroupValue.value);
+                                    print(
+                                        addNewStoreController.is247Time.value);
+                                  },
+                                ),
                               ),
-                            ),),
-                            width6SizedBox,
-                            Text(StringConstants.customTimeText,
+                            ),
+                            width15SizedBox,
+                            Text(
+                              StringConstants.customTimeText,
                               overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                  color: AppColors.blacklight,
+                              style: const TextStyle(
+                                  color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                         width30SizedBox,
-                        width20SizedBox,
                         Row(
                           children: [
-                            Obx(() => SizedBox( height: 20,width: 20,
-                              child: Radio(
-                                value:1,
-                                groupValue:addNewStoreController.radioGroupValue.value,
-                                activeColor: AppColors.primary,
-                                onChanged: (value){
-                                  addNewStoreController.radioGroupValue.value= value?.toInt()??0;
-                                },
+                            Obx(
+                              () => SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Radio(
+                                  value: 1,
+                                  groupValue: addNewStoreController
+                                      .radioGroupValue.value,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (value) {
+                                    addNewStoreController.radioGroupValue
+                                        .value = value?.toInt() ?? 0;
+                                    addNewStoreController.is247Time.value =
+                                        true;
+                                    print(addNewStoreController
+                                        .radioGroupValue.value);
+                                    print(
+                                        addNewStoreController.is247Time.value);
+                                  },
+                                ),
                               ),
-                            ),), width6SizedBox,
-                            Text(StringConstants.twentyFourSevenText,
+                            ),
+                            width15SizedBox,
+                            Text(
+                              StringConstants.twentyFourSevenText,
                               overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                  color: AppColors.blacklight,
+                              style: const TextStyle(
+                                  color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -882,10 +949,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         )
                       ],
                     ),
-                    height20SizedBox,
+                    height25SizedBox,
                     Row(
                       children: [
                         Expanded(
+                          flex: 5,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -909,39 +977,42 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
-                                  controller: addNewStoreController.openingTimeTextController,
+                                  controller: addNewStoreController
+                                      .openingTimeTextController,
                                   keyboardType: TextInputType.phone,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants.pleaseSelectOpeningTimeText;
+                                      return AlertStringConstants
+                                          .pleaseSelectOpeningTimeText;
                                     }
                                     return null;
                                   },
-                                  onTap: ()async{
+                                  onTap: () async {
                                     TimeOfDay date = TimeOfDay.now();
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    date = (
-                                        await showTimePicker(
-                                          helpText: "Select Time",
-                                          initialTime: TimeOfDay.now(),
-                                          context: context,
-                                          builder: (context, child) {
-                                            return Theme(
-                                              data: ThemeData.light().copyWith(
-                                                colorScheme: const ColorScheme.light(
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    date = (await showTimePicker(
+                                      helpText: "Select Time",
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
                                                     primary: AppColors.primary),
-                                                buttonTheme: const ButtonThemeData(
-                                                    textTheme: ButtonTextTheme.primary),
-                                              ),
-                                              child: child!,
-                                            );
-                                          },
-                                        )
-                                    )!;
+                                            buttonTheme: const ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary),
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    ))!;
 
-                                    addNewStoreController.openingTimeTextController.text =
-                                        date.format(context).toString();
-
+                                    addNewStoreController
+                                        .openingTimeTextController
+                                        .text = date.format(context).toString();
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.openingTime,
@@ -980,13 +1051,15 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             ],
                           ),
                         ),
+                        width15SizedBox,
                         Expanded(
+                          flex: 5,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                StringConstants.closingTime,
+                                StringConstants.closingTimeText,
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 16,
@@ -1004,42 +1077,45 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
-                                  controller: addNewStoreController.closingTimeTextController,
+                                  controller: addNewStoreController
+                                      .closingTimeTextController,
                                   keyboardType: TextInputType.phone,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants.pleaseSelectClosingTimeText;
+                                      return AlertStringConstants
+                                          .pleaseSelectClosingTimeText;
                                     }
                                     return null;
                                   },
-                                  onTap: ()async{
+                                  onTap: () async {
                                     TimeOfDay date = TimeOfDay.now();
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    date = (
-                                        await showTimePicker(
-                                          helpText: "Select Time",
-                                          initialTime: TimeOfDay.now(),
-                                          context: context,
-                                          builder: (context, child) {
-                                            return Theme(
-                                              data: ThemeData.light().copyWith(
-                                                colorScheme: const ColorScheme.light(
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    date = (await showTimePicker(
+                                      helpText: "Select Time",
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
                                                     primary: AppColors.primary),
-                                                buttonTheme: const ButtonThemeData(
-                                                    textTheme: ButtonTextTheme.primary),
-                                              ),
-                                              child: child!,
-                                            );
-                                          },
-                                        )
-                                    )!;
+                                            buttonTheme: const ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary),
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    ))!;
 
-                                    addNewStoreController.closingTimeTextController.text =
-                                        date.format(context).toString();
-
+                                    addNewStoreController
+                                        .closingTimeTextController
+                                        .text = date.format(context).toString();
                                   },
                                   decoration: InputDecoration(
-                                    hintText: StringConstants.closingTime,
+                                    hintText: StringConstants.closingTimeText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,
@@ -1087,14 +1163,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     ),
                     height4SizedBox,
                     MultiCustomDropDown(
-                      onChanged: (v){
-
-                      },
-                      controller:addNewStoreController.workingDaysTextController,
-                      hintText: StringConstants.selectedDaysText,
-                      title: StringConstants.selectedDaysText,
-                      list: const ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-                    ),
+                        onChanged: (v) {
+                          print(v.toString());
+                        },
+                        controller:
+                            addNewStoreController.workingDaysTextController,
+                        hintText: StringConstants.selectDaysText,
+                        title: StringConstants.selectDaysText,
+                        list: addNewStoreController.weekDaysList),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

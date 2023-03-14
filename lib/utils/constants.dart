@@ -49,7 +49,7 @@ class StringConstants {
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
   static String countryText = "Country";
-  static String closingTime = "Closing Time";
+  static String closingTimeText = "Closing Time";
   static String cityText = "City";
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
@@ -62,7 +62,7 @@ class StringConstants {
   static String currentMonthText = "Current Month";
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
-
+  static String cancelText = "Cancel";
   //D
   static String deliveryText = "Delivery";
   static String deleteAccountText = "Delete Account";
@@ -208,7 +208,7 @@ class StringConstants {
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
   static String selectTypeText = "Select Type";
-  static String selectedDaysText = "Select Days";
+  static String selectDaysText = "Select Days";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -234,7 +234,7 @@ class StringConstants {
   static String uploadText = "Upload";
   static String uploadImageText = "Upload Image";
   static String uploadCategoriesImageText = " Upload Categories Image";
-
+  static String uploadStoreImageText = " Upload Store Image";
   static String updateText = "Update";
   static String unitPriceText = "Unit price:";
   static String userProfileText = "User Profile";
