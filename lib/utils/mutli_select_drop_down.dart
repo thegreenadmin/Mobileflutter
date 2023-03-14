@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/constants.dart';
+
 import 'app_colors.dart';
 
 class MultiCustomDropDown extends StatefulWidget {
@@ -12,13 +13,7 @@ class MultiCustomDropDown extends StatefulWidget {
   final Function(List<dynamic>)? onChanged;
 
   const MultiCustomDropDown(
-      {Key? key,
-      this.title,
-      this.hintText,
-      this.controller,
-      this.list,
-      this.label,
-      this.onChanged})
+      {Key? key, this.title, this.hintText, this.controller, this.list, this.label, this.onChanged})
       : super(key: key);
 
   @override
@@ -33,15 +28,14 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     return LayoutBuilder(builder: (context, constraint) {
       return TextFormField(
         controller: widget.controller,
-        style: const TextStyle(
-            color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
         // obscureText: state.showPassword,
         textInputAction: TextInputAction.next,
+        readOnly: true,
         keyboardType: TextInputType.visiblePassword,
         onChanged: (text) {},
         onTap: () async {
-          final value = await _showMultiSelect(
-              widget.list, widget.title, widget.onChanged!);
+          final value = await _showMultiSelect(widget.list, widget.title, widget.onChanged!);
           widget.controller!.text = widget.controller!.text + value.toString();
         },
         maxLength: 50,
@@ -49,10 +43,8 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           counterText: '',
           suffixIcon: InkWell(
             onTap: () async {
-              final value = await _showMultiSelect(
-                  widget.list, widget.title, widget.onChanged!);
-              widget.controller!.text =
-                  widget.controller!.text + value.toString();
+              final value = await _showMultiSelect(widget.list, widget.title, widget.onChanged!);
+              widget.controller!.text = widget.controller!.text + value.toString();
             },
             child: Icon(
               Icons.arrow_drop_down,
@@ -107,8 +99,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     });
   }
 
-  Future<String> _showMultiSelect(
-      items, title, Function(List<dynamic>)? onChanged) async {
+  Future<String> _showMultiSelect(items, title, Function(List<dynamic>)? onChanged) async {
     print("Items---->" + items.toString());
     print("Titles---->" + title.toString());
     final List<dynamic>? results = await showDialog(
@@ -136,8 +127,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
 class MultiSelect extends StatefulWidget {
   final List<Map<String, dynamic>> items;
   final String? title;
-  const MultiSelect({Key? key, required this.items, this.title})
-      : super(key: key);
+  const MultiSelect({Key? key, required this.items, this.title}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MultiSelectState();
@@ -155,10 +145,11 @@ class _MultiSelectState extends State<MultiSelect> {
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(dynamic itemValue, bool isSelected) {
     setState(() {
+      itemValue['isSelected'] = isSelected;
       if (isSelected) {
-        _selectedItems.add(itemValue);
+        _selectedItems.add(itemValue["day"]);
       } else {
-        _selectedItems.remove(itemValue);
+        _selectedItems.remove(itemValue["day"]);
       }
     });
   }
@@ -178,19 +169,17 @@ class _MultiSelectState extends State<MultiSelect> {
     return AlertDialog(
       title: Text(
         widget.title.toString(),
-        style: const TextStyle(
-            color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
+        style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
       ),
       content: SingleChildScrollView(
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item["day"]),
+                    value: item['isSelected'],
                     activeColor: AppColors.primary,
                     title: Text(item["day"]),
                     controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) =>
-                        _itemChange(item["day"], isChecked!),
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
                   ))
               .toList(),
         ),
@@ -199,10 +188,7 @@ class _MultiSelectState extends State<MultiSelect> {
         TextButton(
           onPressed: _cancel,
           child: Text(StringConstants.cancelText,
-              style: TextStyle(
-                  color: AppColors.blacklight,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400)),
+              style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400)),
         ),
         ElevatedButton(
           onPressed: _submit,
@@ -210,10 +196,7 @@ class _MultiSelectState extends State<MultiSelect> {
             backgroundColor: AppColors.primary,
           ),
           child: Text(StringConstants.submitText,
-              style: const TextStyle(
-                  color: AppColors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400)),
+              style: const TextStyle(color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w400)),
         ),
       ],
     );

@@ -9,7 +9,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
-import 'package:thegreenmall/utils/utility.dart';
+
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -20,8 +20,7 @@ class AddNewStoreScreen extends StatefulWidget {
 }
 
 class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
-  final AddNewStoreController addNewStoreController =
-      Get.put(AddNewStoreController());
+  final AddNewStoreController addNewStoreController = Get.put(AddNewStoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +54,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               width10SizedBox,
                               Text(
                                 StringConstants.addStoreText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
+                                style:
+                                    const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -76,34 +73,25 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
           child: Form(
             key: addNewStoreController.formKey,
             child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       StringConstants.storeDetailsText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height15SizedBox,
                     Text(
                       StringConstants.storeImageText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height20SizedBox,
                     Obx(
-                      () => addNewStoreController
-                              .storeImageDynamicLinkfromServer.value.isEmpty
+                      () => addNewStoreController.storeImageDynamicLinkfromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
-                                addNewStoreController
-                                    .showSelectionDialog(context);
+                                addNewStoreController.showSelectionDialog(context);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -114,22 +102,18 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.85,
-                                      padding: const EdgeInsets.only(
-                                          top: 35, bottom: 35),
+                                      padding: const EdgeInsets.only(top: 35, bottom: 35),
                                       color: AppColors.primarylight,
                                       child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               "assets/upload.png",
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
-                                            Text(StringConstants
-                                                .uploadStoreImageText)
+                                            Text(StringConstants.uploadStoreImageText)
                                           ]),
                                     ),
                                   ),
@@ -138,8 +122,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             )
                           : InkWell(
                               onTap: () {
-                                addNewStoreController
-                                    .showSelectionDialog(context);
+                                addNewStoreController.showSelectionDialog(context);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -149,15 +132,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
-                                        width:
-                                            WidgetConstants.screenWidth * 0.85,
-                                        height:
-                                            WidgetConstants.screenHeight * 0.2,
+                                        width: WidgetConstants.screenWidth * 0.85,
+                                        height: WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: Image.network(
-                                            addNewStoreController
-                                                .storeImageDynamicLinkfromServer
-                                                .value,
+                                            addNewStoreController.storeImageDynamicLinkfromServer.value,
                                             fit: BoxFit.cover)),
                                   ),
                                 ],
@@ -167,10 +146,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.storeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -179,24 +155,18 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.storeNameTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.storeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterStoreNameText;
+                            return AlertStringConstants.pleaseEnterStoreNameText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.storeNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -230,10 +200,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.einBusinessId,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -242,10 +209,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                         controller: addNewStoreController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
@@ -256,8 +220,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.einBusinessId,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -291,10 +254,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.nickNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -303,12 +263,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.nickNameTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -318,8 +274,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -353,10 +308,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -365,26 +317,20 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.storeEmailTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.storeEmailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEmailText;
                           } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
+                            return AlertStringConstants.pleaseEnterValidEmailText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.emailIdText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -418,10 +364,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.phoneNumberText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -430,12 +373,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.storePhoneTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.storePhoneTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -445,8 +384,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.phoneNumberText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -480,18 +418,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine1Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -500,12 +432,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.addressLine1TextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.addressLine1TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -515,8 +443,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine1Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -550,10 +477,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -562,12 +486,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.addressLine2TextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.addressLine2TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -577,8 +497,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine2Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -612,10 +531,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.townOrCityText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -624,24 +540,18 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.townOrCityTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.townOrCityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterTownOrCityText;
+                            return AlertStringConstants.pleaseEnterTownOrCityText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -675,10 +585,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.zipCodeText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -688,10 +595,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           LengthLimitingTextInputFormatter(100),
                           FilteringTextInputFormatter.digitsOnly,
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                         controller: addNewStoreController.zipCodeTextController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
@@ -702,8 +606,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.zipCodeText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -738,10 +641,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.countryText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     Obx(() => addNewStoreController.countriesList.isEmpty
@@ -782,8 +682,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
                             items: addNewStoreController.countriesList
-                                .map<DropdownMenuItem<CountriesList>>(
-                                    (CountriesList value) {
+                                .map<DropdownMenuItem<CountriesList>>((CountriesList value) {
                               return DropdownMenuItem<CountriesList>(
                                 value: value,
                                 child: Text(value.countryName.toString()),
@@ -791,10 +690,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             }).toList(),
                             onChanged: (CountriesList? newValue) {
                               setState(() {
-                                addNewStoreController.countryDropdownValue
-                                    .value = newValue!.countryName.toString();
-                                addNewStoreController.countryId!.value =
-                                    newValue.countryId.toString();
+                                addNewStoreController.countryDropdownValue.value = newValue!.countryName.toString();
+                                addNewStoreController.countryId!.value = newValue.countryId.toString();
                                 addNewStoreController.apiGetStates();
                                 print(addNewStoreController.countryId!.value);
                               });
@@ -803,10 +700,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.zoneText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     Obx(() => addNewStoreController.statesList.isEmpty
@@ -846,9 +740,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               hintText: 'Organisation Type',
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                            items: addNewStoreController.statesList
-                                .map<DropdownMenuItem<StatesList>>(
-                                    (StatesList value) {
+                            items:
+                                addNewStoreController.statesList.map<DropdownMenuItem<StatesList>>((StatesList value) {
                               return DropdownMenuItem<StatesList>(
                                 value: value,
                                 child: Text(value.stateName.toString()),
@@ -856,10 +749,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             }).toList(),
                             onChanged: (StatesList? newValue) {
                               setState(() {
-                                addNewStoreController.stateDropdownValue.value =
-                                    newValue!.stateName.toString();
-                                addNewStoreController.stateId.value =
-                                    newValue.stateId.toString();
+                                addNewStoreController.stateDropdownValue.value = newValue!.stateName.toString();
+                                addNewStoreController.stateId.value = newValue.stateId.toString();
                                 debugPrint(addNewStoreController.stateId.value);
                               });
                             },
@@ -867,10 +758,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height25SizedBox,
                     Text(
                       StringConstants.storeTimingText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height25SizedBox,
                     Row(
@@ -885,18 +773,13 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 0,
-                                  groupValue: addNewStoreController
-                                      .radioGroupValue.value,
+                                  groupValue: addNewStoreController.radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    addNewStoreController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    addNewStoreController.is247Time.value =
-                                        false;
-                                    print(addNewStoreController
-                                        .radioGroupValue.value);
-                                    print(
-                                        addNewStoreController.is247Time.value);
+                                    addNewStoreController.radioGroupValue.value = value?.toInt() ?? 0;
+                                    addNewStoreController.is247Time.value = false;
+                                    print(addNewStoreController.radioGroupValue.value);
+                                    print(addNewStoreController.is247Time.value);
                                   },
                                 ),
                               ),
@@ -905,10 +788,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             Text(
                               StringConstants.customTimeText,
                               overflow: TextOverflow.visible,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -921,18 +801,13 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 1,
-                                  groupValue: addNewStoreController
-                                      .radioGroupValue.value,
+                                  groupValue: addNewStoreController.radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    addNewStoreController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    addNewStoreController.is247Time.value =
-                                        true;
-                                    print(addNewStoreController
-                                        .radioGroupValue.value);
-                                    print(
-                                        addNewStoreController.is247Time.value);
+                                    addNewStoreController.radioGroupValue.value = value?.toInt() ?? 0;
+                                    addNewStoreController.is247Time.value = true;
+                                    print(addNewStoreController.radioGroupValue.value);
+                                    print(addNewStoreController.is247Time.value);
                                   },
                                 ),
                               ),
@@ -941,10 +816,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             Text(
                               StringConstants.twentyFourSevenText,
                               overflow: TextOverflow.visible,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ],
                         )
@@ -959,106 +831,80 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   flex: 5,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.openingTime,
                                         style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
-                                            LengthLimitingTextInputFormatter(
-                                                100),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
+                                            LengthLimitingTextInputFormatter(100),
+                                            FilteringTextInputFormatter.digitsOnly,
                                           ],
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                          controller: addNewStoreController
-                                              .openingTimeTextController,
+                                              color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                          controller: addNewStoreController.openingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
                                             if (value!.trim().isEmpty) {
-                                              return AlertStringConstants
-                                                  .pleaseSelectOpeningTimeText;
+                                              return AlertStringConstants.pleaseSelectOpeningTimeText;
                                             }
                                             return null;
                                           },
                                           onTap: () async {
                                             TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                            FocusScope.of(context).requestFocus(FocusNode());
                                             date = (await showTimePicker(
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,
                                               builder: (context, child) {
                                                 return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
+                                                  data: ThemeData.light().copyWith(
+                                                    colorScheme: const ColorScheme.light(primary: AppColors.primary),
                                                     buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
+                                                        const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                                                   ),
                                                   child: child!,
                                                 );
                                               },
                                             ))!;
 
-                                            addNewStoreController
-                                                    .openingTimeTextController
-                                                    .text =
+                                            addNewStoreController.openingTimeTextController.text =
                                                 date.format(context).toString();
                                           },
                                           decoration: InputDecoration(
-                                            hintText:
-                                                StringConstants.openingTime,
-                                            hintStyle: const TextStyle(
-                                                color: AppColors.grey,
-                                                fontSize: 14),
+                                            hintText: StringConstants.openingTime,
+                                            hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                             fillColor: Colors.white,
                                             border: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             enabledBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.grey,
                                                 width: 1.0,
@@ -1073,105 +919,79 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   flex: 5,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.closingTimeText,
                                         style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
-                                            LengthLimitingTextInputFormatter(
-                                                100),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
+                                            LengthLimitingTextInputFormatter(100),
+                                            FilteringTextInputFormatter.digitsOnly,
                                           ],
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                          controller: addNewStoreController
-                                              .closingTimeTextController,
+                                              color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                          controller: addNewStoreController.closingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
                                             if (value!.trim().isEmpty) {
-                                              return AlertStringConstants
-                                                  .pleaseSelectClosingTimeText;
+                                              return AlertStringConstants.pleaseSelectClosingTimeText;
                                             }
                                             return null;
                                           },
                                           onTap: () async {
                                             TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                            FocusScope.of(context).requestFocus(FocusNode());
                                             date = (await showTimePicker(
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,
                                               builder: (context, child) {
                                                 return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
+                                                  data: ThemeData.light().copyWith(
+                                                    colorScheme: const ColorScheme.light(primary: AppColors.primary),
                                                     buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
+                                                        const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                                                   ),
                                                   child: child!,
                                                 );
                                               },
                                             ))!;
-                                            addNewStoreController
-                                                    .closingTimeTextController
-                                                    .text =
+                                            addNewStoreController.closingTimeTextController.text =
                                                 date.format(context).toString();
                                           },
                                           decoration: InputDecoration(
-                                            hintText:
-                                                StringConstants.closingTimeText,
-                                            hintStyle: const TextStyle(
-                                                color: AppColors.grey,
-                                                fontSize: 14),
+                                            hintText: StringConstants.closingTimeText,
+                                            hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                             fillColor: Colors.white,
                                             border: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             enabledBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.grey,
                                                 width: 1.0,
@@ -1189,10 +1009,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     Obx(() => addNewStoreController.is247Time.value != true
                         ? Text(
                             StringConstants.workingDaysText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                           )
                         : height0SizedBox),
                     height4SizedBox,
@@ -1200,38 +1017,21 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                addNewStoreController.selectIndexList.clear();
-                                for (int i = 0;
-                                    i <
-                                        addNewStoreController
-                                            .weekDaysList.length;
-                                    i++) {
-                                  for (int j = 0; j < v.length; j++) {
-                                    if (v[j] ==
-                                        addNewStoreController.weekDaysList[i]) {
-                                      addNewStoreController.selectIndexList
-                                          .add(i);
-                                      addNewStoreController.storeTimmingList
-                                          .add({
-                                        "is_24_hours_active": false,
-                                        "day_of_week": (i + 1).toString(),
-                                        "opening_time": addNewStoreController
-                                            .openingTimeTextController.text
-                                            .trim(),
-                                        "closing_time": addNewStoreController
-                                            .closingTimeTextController.text
-                                            .trim()
-                                      });
-                                    }
+                                addNewStoreController.storeTimmingList.clear();
+                                for (int i = 0; i < addNewStoreController.weekDaysList.length; i++) {
+                                  if (addNewStoreController.weekDaysList[i]['isSelected']) {
+                                    addNewStoreController.storeTimmingList.add({
+                                      "is_24_hours_active": false,
+                                      "day_of_week": (i + 1).toString(),
+                                      "opening_time": addNewStoreController.openingTimeTextController.text.trim(),
+                                      "closing_time": addNewStoreController.closingTimeTextController.text.trim()
+                                    });
                                   }
                                 }
                                 print("top list" + v.toString());
-                                print("LISTTTTTTTTTTTTT" +
-                                    addNewStoreController.storeTimmingList
-                                        .toString());
+                                print("LISTTTTTTTTTTTTT" + addNewStoreController.storeTimmingList.toString());
                               },
-                              controller: addNewStoreController
-                                  .workingDaysTextController,
+                              controller: addNewStoreController.workingDaysTextController,
                               hintText: StringConstants.selectDaysText,
                               title: StringConstants.selectDaysText,
                               list: addNewStoreController.weekDaysList)
