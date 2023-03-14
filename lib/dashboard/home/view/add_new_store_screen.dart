@@ -800,6 +800,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             },
                           )),
                     height20SizedBox,
+
                     Text(
                       StringConstants.zoneText,
                       style: TextStyle(
