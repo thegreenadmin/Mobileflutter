@@ -141,6 +141,17 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                               .addressListIndex!.value]
                                           .addressLine1!;
 
+                                  searchStoreController.storeLocation.value =
+                                      searchStoreController
+                                          .storeList[index]
+                                          .addresses![searchStoreController
+                                              .addressListIndex!.value]
+                                          .addressLine1!;
+
+                                  searchStoreController.storeImage.value =
+                                      searchStoreController
+                                          .storeList[index].image!.dynamicUrl!;
+
                                   await searchStoreController
                                       .apiGetParticularStore();
 

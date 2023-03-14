@@ -231,7 +231,7 @@ class AddNewStoreController extends GetxController {
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
-        "image_url": storeImageDynamicLinkfromServer.value,
+        "image_url": storeImageOrigionalLinkfromServer.value,
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
         "store_phone": storePhoneTextController.text.trim()

@@ -54,6 +54,7 @@ class SearchStoreController extends GetxController {
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
+  RxString storeImage = "".obs;
   RxInt? addressListIndex = 0.obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();

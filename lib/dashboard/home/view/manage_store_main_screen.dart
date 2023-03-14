@@ -79,13 +79,13 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xff7c94b6),
+              decoration: BoxDecoration(
+                color: const Color(0xff7c94b6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter:
-                      ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: AssetImage("assets/dumy.png"),
+                      const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image: NetworkImage(searchStoreController.storeImage.value),
                 ),
               ),
               child: Padding(
