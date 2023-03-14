@@ -84,6 +84,7 @@ class StringConstants {
   static String editStoreDetailText = "Edit Store Detail";
   static String employeeNameText = "Employee Name";
   static String enterMobileText = "Enter mobile";
+  static String enterEmailIdText = "Enter email id";
   static String enterProductNameText = "Enter product name";
   static String enterQuantityText = "Enter quantity";
   static String enterPriceText = "Enter Price";

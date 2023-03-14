@@ -22,6 +22,7 @@ class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController employeeNameTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
   TextEditingController shortDescriptionTextController =
       TextEditingController();
   TextEditingController nickNameTextController = TextEditingController();
@@ -114,7 +115,7 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
     addWorkerRequest.phone = mobileNoTextController.text.trim();
-    addWorkerRequest.email = employeeNameTextController.text.trim();
+    addWorkerRequest.email = emailTextController.text.trim();
     List<EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       debugPrint("${element.id}${element.name}");
