@@ -64,6 +64,8 @@ class AddNewStoreController extends GetxController {
     "Sunday"
   ].obs;
 
+  RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+
   @override
   void onInit() {
     super.onInit();
