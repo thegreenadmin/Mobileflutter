@@ -304,24 +304,24 @@ class SearchStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET PARTICULAR STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
-        storeId.value = value.body["data"]['store']['store_id'] ?? "";
+      debugPrint("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        storeId.value = value?.body["data"]['store']['store_id'] ?? "";
         editStoreImageDynamicLinkfromServer.value =
-            value.body["data"]['store']['image']["dynamic_url"] ?? "";
+            value?.body["data"]['store']['image']["dynamic_url"] ?? "";
         storeNameTextController.text =
-            value.body["data"]['store']['store_name'] ?? "";
-        einTextController.text = value.body["data"]['store']['store_ein'] ?? "";
+            value?.body["data"]['store']['store_name'] ?? "";
+        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
         nickNameTextController.text =
-            value.body["data"]['store']['store_nick_name'] ?? "";
+            value?.body["data"]['store']['store_nick_name'] ?? "";
         phoneTextController.text =
-            value.body["data"]['store']['store_phone'] ?? "";
+            value?.body["data"]['store']['store_phone'] ?? "";
         emailTextController.text =
-            value.body["data"]['store']['store_email'] ?? "";
-        einTextController.text = value.body["data"]['store']['store_ein'] ?? "";
+            value?.body["data"]['store']['store_email'] ?? "";
+        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
-            value.body["data"]['store']['store_addresses'] ?? [];
-        storeTimings.value = value.body["data"]['store']['store_timings'] ?? [];
+            value?.body["data"]['store']['store_addresses'] ?? [];
+        storeTimings.value = value?.body["data"]['store']['store_timings'] ?? [];
         addressLine1TextController.text =
             storeAddresses[0]["address_line_1"] ?? "";
         addressLine2TextController.text =
@@ -348,7 +348,7 @@ class SearchStoreController extends GetxController {
         }
         await apiGetCountries();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
       }
     });
   }

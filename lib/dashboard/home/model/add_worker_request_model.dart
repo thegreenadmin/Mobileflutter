@@ -1,5 +1,4 @@
 // To parse this JSON data, do
-//
 //     final addWorkerRequest = addWorkerRequestFromJson(jsonString);
 
 import 'dart:convert';
@@ -15,6 +14,7 @@ class AddWorkerRequest {
     this.description,
     this.phone,
     this.email,
+    this.imageUrl,
     this.employeeTimings,
   });
 
@@ -23,6 +23,7 @@ class AddWorkerRequest {
   String? description;
   String? phone;
   String? email;
+  String? imageUrl;
   List<EmployeeTiming>? employeeTimings;
 
   AddWorkerRequest copyWith({
@@ -31,6 +32,7 @@ class AddWorkerRequest {
     String? description,
     String? phone,
     String? email,
+    String? imageUrl,
     List<EmployeeTiming>? employeeTimings,
   }) =>
       AddWorkerRequest(
@@ -39,6 +41,7 @@ class AddWorkerRequest {
         description: description ?? this.description,
         phone: phone ?? this.phone,
         email: email ?? this.email,
+        imageUrl: imageUrl ?? this.imageUrl,
         employeeTimings: employeeTimings ?? this.employeeTimings,
       );
 
@@ -48,6 +51,7 @@ class AddWorkerRequest {
     description: json["description"],
     phone: json["phone"],
     email: json["email"],
+    imageUrl: json["image_url"],
     employeeTimings: json["employee_timings"] == null ? [] : List<EmployeeTiming>.from(json["employee_timings"]!.map((x) => EmployeeTiming.fromJson(x))),
   );
 
@@ -57,6 +61,7 @@ class AddWorkerRequest {
     "description": description,
     "phone": phone,
     "email": email,
+    "image_url": imageUrl,
     "employee_timings": employeeTimings == null ? [] : List<dynamic>.from(employeeTimings!.map((x) => x.toJson())),
   };
 }

@@ -48,6 +48,8 @@ class ServerCommunicator {
 
 //V
 //W
+  String workerList = 'store/user/list';
+
 //X
 //Y
 //Z

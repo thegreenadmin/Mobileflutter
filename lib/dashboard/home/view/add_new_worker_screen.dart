@@ -96,11 +96,11 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: addNewWorkerController
-                                                    .userImageDynamicLinkfromServer
+                                                    .userImageDynamicLinkFromServer
                                                     .value ==
                                                 "" ||
                                             addNewWorkerController
-                                                .userImageDynamicLinkfromServer
+                                                .userImageDynamicLinkFromServer
                                                 .value
                                                 .isEmpty
                                         ? const CircleAvatar(
@@ -115,7 +115,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                             radius: 50.0,
                                             backgroundImage: NetworkImage(
                                                 addNewWorkerController
-                                                    .userImageDynamicLinkfromServer
+                                                    .userImageDynamicLinkFromServer
                                                     .value),
                                             backgroundColor: Colors.transparent,
                                           ),

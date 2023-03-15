@@ -18,6 +18,7 @@ import 'package:http_parser/http_parser.dart';
 import '../model/add_worker_request_model.dart' as add_worker;
 import '../model/categories_model.dart';
 import '../model/edit_worker_request_model.dart';
+import '../model/get_worker_list_model.dart';
 
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -69,26 +70,32 @@ class AddNewWorkerController extends GetxController {
     ),
   ].obs;
 
-
-  RxString userImageOrigionalLinkfromServer = "".obs;
-  RxString userImageDynamicLinkfromServer = "".obs;
-
+  RxBool isLoading = false.obs;
   RxBool autoValidate = false.obs;
+  RxBool is247Time = false.obs;
+
+  RxString userImageOriginalLinkFromServer = "".obs;
+  RxString userImageDynamicLinkFromServer = "".obs;
+  RxString workerDays = "".obs;
+
+
   Rx<XFile> categoryImage = XFile("").obs;
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
+  late WorkerListResponse workerListResponse = WorkerListResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
+  RxList<StoreUser> workerList = <StoreUser>[].obs;
 
   RxString storeDropdownValue = "My store".obs;
   RxString storeId = "0".obs;
-
   RxInt radioGroupValue = 0.obs;
-  RxBool is247Time = false.obs;
+
 
   @override
   void onInit() {
     super.onInit();
     storeId.value = Get.arguments["storeId"];
     apiGetUserStoreList();
+    apiGetWorkerList();
   }
 
   bool validateAndSave() {
@@ -118,12 +125,14 @@ class AddNewWorkerController extends GetxController {
 
   Future<dynamic> apiAddWorker() async{
      Map<String, String> headers = {
+       'Content-Type': 'application/json',
       'Authorization':
       "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     add_worker.AddWorkerRequest addWorkerRequest = add_worker.AddWorkerRequest();
     addWorkerRequest.storeId = int.parse(storeId.value??"0");
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
+    addWorkerRequest.imageUrl = userImageOriginalLinkFromServer.value.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
     addWorkerRequest.phone = mobileNoTextController.text.trim();
     addWorkerRequest.email = emailTextController.text.trim();
@@ -146,10 +155,11 @@ class AddNewWorkerController extends GetxController {
         headers,
         showLoading: false)
         .then((value) async {
-      debugPrint("ADD WORKER RESPONSE *******${value!.body}");
+      debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        getUserStoreListModel = GetUserStoreListModel.fromJson(value?.body);
-        getUserStoreList.value = getUserStoreListModel.data!.stores!;
+        Utility.showToast(value?.body['message']??"");
+        apiGetWorkerList();
+        Get.back();
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']??"");
         SharedPreferenceStorage.clearData();
@@ -165,11 +175,13 @@ class AddNewWorkerController extends GetxController {
     debugPrint("ADD WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreUser}");
 
     Map<String, String> headers = {
+      'Content-Type': 'application/json',
       'Authorization':
       "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
     editWorkerRequest.storeId = int.parse(storeId.value??"0");
+    // editWorkerRequest.imageUrl = userImageOrigionalLinkfromServer.value.trim();
     // editWorkerRequest.employeeName = employeeNameTextController.text.trim();
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
     // editWorkerRequest.phone = mobileNoTextController.text.trim();
@@ -316,9 +328,9 @@ class AddNewWorkerController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        userImageOrigionalLinkfromServer.value =
+        userImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        userImageDynamicLinkfromServer.value =
+        userImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
@@ -344,8 +356,7 @@ class AddNewWorkerController extends GetxController {
     debugPrint(
         "GET USER STORE LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -366,4 +377,50 @@ class AddNewWorkerController extends GetxController {
       }
     });
   }
+
+
+  //Get Worker List Api
+  Future apiGetWorkerList() async {
+    workerList.clear();
+    isLoading.value = true;
+    debugPrint(
+        "GET USER STORE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+           "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?page=1&page_size=100&store_id=${int.parse(storeId.value??"0")}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET USER STORE LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        workerListResponse = WorkerListResponse.fromJson(value?.body);
+        workerList.value = workerListResponse.data?.storeUsers ??[];
+        // workerDays.value
+        var concatenate = StringBuffer();
+        if (workerList != null) {
+          for (StoreUser item in workerList??[]) {
+          for (StoreUserTiming data in item.storeUserTimings??[]) {
+          for (Categories day in weekDaysList??[]) {
+            if(data.dayOfWeek  == day.id){
+              concatenate.write(day.name?.substring(0,3));
+              concatenate.write(', ');
+            }}
+          }}
+        }
+        workerDays.value = concatenate.toString()??'';
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+
 }
