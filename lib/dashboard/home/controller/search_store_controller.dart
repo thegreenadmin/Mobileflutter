@@ -52,7 +52,7 @@ class SearchStoreController extends GetxController {
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
-  RxString ? storeImage = "".obs;
+  RxString? storeImage = "".obs;
   RxInt? addressListIndex = 0.obs;
 
   RxString countryDropdownValue = "Afghanistan".obs;
@@ -311,17 +311,20 @@ class SearchStoreController extends GetxController {
             value?.body["data"]['store']['image']["dynamic_url"] ?? "";
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
-        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
+        einTextController.text =
+            value?.body["data"]['store']['store_ein'] ?? "";
         nickNameTextController.text =
             value?.body["data"]['store']['store_nick_name'] ?? "";
         phoneTextController.text =
             value?.body["data"]['store']['store_phone'] ?? "";
         emailTextController.text =
             value?.body["data"]['store']['store_email'] ?? "";
-        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
+        einTextController.text =
+            value?.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
             value?.body["data"]['store']['store_addresses'] ?? [];
-        storeTimings.value = value?.body["data"]['store']['store_timings'] ?? [];
+        storeTimings.value =
+            value?.body["data"]['store']['store_timings'] ?? [];
         addressLine1TextController.text =
             storeAddresses[0]["address_line_1"] ?? "";
         addressLine2TextController.text =
