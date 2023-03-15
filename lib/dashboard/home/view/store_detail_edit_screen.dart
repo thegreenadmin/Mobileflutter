@@ -90,7 +90,74 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     ),
                     height15SizedBox,
                     Text(
-                      StringConstants.storeImageText,
+                      StringConstants.uploadLogoText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height15SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          flex: 4,
+                          child: Row(
+                            children: [
+                              DottedBorder(
+                                color: AppColors.blacklight,
+                                strokeWidth: 1,
+                                dashPattern: const [4, 4],
+                                child: Container(
+                                  width: WidgetConstants.screenWidth * 0.3,
+                                  padding: const EdgeInsets.only(
+                                      top: 30, bottom: 30),
+                                  color: AppColors.primarylight,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/uploadpic.png",
+                                          scale: 2.5,
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        width20SizedBox,
+                        Flexible(
+                          flex: 6,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              height10SizedBox,
+                              Text(StringConstants.uploadStoreLogoText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500)),
+                              height10SizedBox,
+                              // Text(StringConstants.theImageMustBeAtleaseText,
+                              //     style: const TextStyle(
+                              //         color: AppColors.black,
+                              //         fontSize: 12,
+                              //         fontWeight: FontWeight.w400)),
+                              height10SizedBox,
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+
+                    Text(
+                      StringConstants.bannerImageText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -1252,55 +1319,59 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     //       : height0SizedBox,
                     // ),
                     Obx(
-                          () => searchStoreController.is247Time.value != true
+                      () => searchStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
-                          onChanged: (v) {
-                            searchStoreController.storeTimmingList.clear();
-                            String selectedDays = "";
-                            for (int i = 0;
-                            i <
-                                searchStoreController
-                                    .weekDaysList.length;
-                            i++) {
-                              if (searchStoreController.weekDaysList[i].isSelected==true) {
-                                if (selectedDays.isEmpty) {
-                                  selectedDays =
-                                  "${searchStoreController.weekDaysList[i].name}";
-                                } else {
-                                  selectedDays =
-                                  "$selectedDays, ${searchStoreController.weekDaysList[i].name}";
+                              onChanged: (v) {
+                                searchStoreController.storeTimmingList.clear();
+                                String selectedDays = "";
+                                for (int i = 0;
+                                    i <
+                                        searchStoreController
+                                            .weekDaysList.length;
+                                    i++) {
+                                  if (searchStoreController
+                                          .weekDaysList[i].isSelected ==
+                                      true) {
+                                    if (selectedDays.isEmpty) {
+                                      selectedDays =
+                                          "${searchStoreController.weekDaysList[i].name}";
+                                    } else {
+                                      selectedDays =
+                                          "$selectedDays, ${searchStoreController.weekDaysList[i].name}";
+                                    }
+                                    searchStoreController.storeTimmingList.add({
+                                      "is_24_hours_active": false,
+                                      "day_of_week": searchStoreController
+                                          .weekDaysList[i].id,
+                                      //(i + 1).toString(),
+                                      "opening_time": searchStoreController
+                                          .openingTimeTextController.text
+                                          .trim(),
+                                      "closing_time": searchStoreController
+                                          .closingTimeTextController.text
+                                          .trim()
+                                    });
+                                  }
                                 }
-                                searchStoreController.storeTimmingList.add({
-                                  "is_24_hours_active": false,
-                                  "day_of_week": searchStoreController.weekDaysList[i].id,
-                                  //(i + 1).toString(),
-                                  "opening_time": searchStoreController
-                                      .openingTimeTextController.text
-                                      .trim(),
-                                  "closing_time": searchStoreController
-                                      .closingTimeTextController.text
-                                      .trim()
-                                });
-                              }
-                            }
-                            print("top list" + v.toString());
-                            print("LISTTTTTTTTTTTTT" +
-                                searchStoreController.storeTimmingList
-                                    .toString());
-                            searchStoreController.workingDaysTextController
-                                .text = selectedDays;
-                          },
+                                print("top list" + v.toString());
+                                print("LISTTTTTTTTTTTTT" +
+                                    searchStoreController.storeTimmingList
+                                        .toString());
+                                searchStoreController.workingDaysTextController
+                                    .text = selectedDays;
+                              },
                               validator: (v) {
                                 if (v!.trim().isEmpty) {
-                                  return AlertStringConstants.pleaseEnterWeekDaysText;
+                                  return AlertStringConstants
+                                      .pleaseEnterWeekDaysText;
                                 }
                                 return null;
                               },
-                          controller: searchStoreController
-                              .workingDaysTextController,
-                          hintText: StringConstants.selectDaysText,
-                          title: StringConstants.selectDaysText,
-                          list: searchStoreController.weekDaysList)
+                              controller: searchStoreController
+                                  .workingDaysTextController,
+                              hintText: StringConstants.selectDaysText,
+                              title: StringConstants.selectDaysText,
+                              list: searchStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
                     height40SizedBox,

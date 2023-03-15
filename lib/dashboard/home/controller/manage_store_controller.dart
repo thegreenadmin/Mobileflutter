@@ -134,7 +134,7 @@ class ManageStoreController extends GetxController {
   //Get Products List Api
   Future apiGetProductList() async {
     categoriesList.clear();
-    isLoading.value == true;
+    isLoading.value = true;
     debugPrint(
         "GET PRODUCT LIST URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}"}");
     Map<String, String> headers = {
@@ -147,7 +147,7 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value == false;
+      isLoading.value = false;
       debugPrint("GET PRODUCT LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
@@ -259,7 +259,7 @@ class ManageStoreController extends GetxController {
   }
 
   Future apiGetStoreProducts() async {
-    isLoading.value == true;
+    isLoading.value = true;
     debugPrint(
       "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
     );
@@ -291,7 +291,7 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value == false;
+      isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
       debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {

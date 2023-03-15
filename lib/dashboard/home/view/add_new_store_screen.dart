@@ -2,15 +2,12 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/multi_drop_class.dart';
-
 import '../../../utils/mutli_select_drop_down.dart';
 import '../../../utils/sizedbox_constants.dart';
 
@@ -92,7 +89,73 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     ),
                     height15SizedBox,
                     Text(
-                      StringConstants.storeImageText,
+                      StringConstants.uploadLogoText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height15SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          flex: 4,
+                          child: Row(
+                            children: [
+                              DottedBorder(
+                                color: AppColors.blacklight,
+                                strokeWidth: 1,
+                                dashPattern: const [4, 4],
+                                child: Container(
+                                  width: WidgetConstants.screenWidth * 0.3,
+                                  padding: const EdgeInsets.only(
+                                      top: 30, bottom: 30),
+                                  color: AppColors.primarylight,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/uploadpic.png",
+                                          scale: 2.5,
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        width20SizedBox,
+                        Flexible(
+                          flex: 6,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              height10SizedBox,
+                              Text(StringConstants.uploadStoreLogoText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500)),
+                              height10SizedBox,
+                              // Text(StringConstants.theImageMustBeAtleaseText,
+                              //     style: const TextStyle(
+                              //         color: AppColors.black,
+                              //         fontSize: 12,
+                              //         fontWeight: FontWeight.w400)),
+                              height10SizedBox,
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.bannerImageText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -1283,51 +1346,55 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     Obx(
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
-                          onChanged: (v) {
-                            addNewStoreController.storeTimmingList.clear();
-                            String selectedDays = "";
-                            for (int i = 0;
-                            i <
-                                addNewStoreController
-                                    .weekDaysList.length;
-                            i++) {
-                              if (addNewStoreController.weekDaysList[i].isSelected==true) {
-                                if (selectedDays.isEmpty) {
-                                  selectedDays =
-                                  "${addNewStoreController.weekDaysList[i].name}";
-                                } else {
-                                  selectedDays =
-                                  "$selectedDays, ${addNewStoreController.weekDaysList[i].name}";
+                              onChanged: (v) {
+                                addNewStoreController.storeTimmingList.clear();
+                                String selectedDays = "";
+                                for (int i = 0;
+                                    i <
+                                        addNewStoreController
+                                            .weekDaysList.length;
+                                    i++) {
+                                  if (addNewStoreController
+                                          .weekDaysList[i].isSelected ==
+                                      true) {
+                                    if (selectedDays.isEmpty) {
+                                      selectedDays =
+                                          "${addNewStoreController.weekDaysList[i].name}";
+                                    } else {
+                                      selectedDays =
+                                          "$selectedDays, ${addNewStoreController.weekDaysList[i].name}";
+                                    }
+                                    addNewStoreController.storeTimmingList.add({
+                                      "is_24_hours_active": false,
+                                      "day_of_week": addNewStoreController
+                                          .weekDaysList[i].id,
+                                      //(i + 1).toString(),
+                                      "opening_time": addNewStoreController
+                                          .openingTime.value,
+                                      "closing_time": addNewStoreController
+                                          .closingTime.value,
+                                    });
+                                  }
                                 }
-                                addNewStoreController.storeTimmingList.add({
-                                  "is_24_hours_active": false,
-                                  "day_of_week": addNewStoreController.weekDaysList[i].id,
-                                  //(i + 1).toString(),
-                                  "opening_time": addNewStoreController
-                                      .openingTime.value,
-                                  "closing_time": addNewStoreController
-                                      .closingTime.value,
-                                });
-                              }
-                            }
-                            print("top list" + v.toString());
-                            print("LISTTTTTTTTTTTTT" +
-                                addNewStoreController.storeTimmingList
-                                    .toString());
-                            addNewStoreController.workingDaysTextController
-                                .text = selectedDays;
-                          },
-                          validator: (v) {
-                            if (v!.trim().isEmpty) {
-                              return AlertStringConstants.pleaseEnterWeekDaysText;
-                            }
-                            return null;
-                          },
-                          controller: addNewStoreController
-                              .workingDaysTextController,
-                          hintText: StringConstants.selectDaysText,
-                          title: StringConstants.selectDaysText,
-                          list: addNewStoreController.weekDaysList)
+                                print("top list" + v.toString());
+                                print("LISTTTTTTTTTTTTT" +
+                                    addNewStoreController.storeTimmingList
+                                        .toString());
+                                addNewStoreController.workingDaysTextController
+                                    .text = selectedDays;
+                              },
+                              validator: (v) {
+                                if (v!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterWeekDaysText;
+                                }
+                                return null;
+                              },
+                              controller: addNewStoreController
+                                  .workingDaysTextController,
+                              hintText: StringConstants.selectDaysText,
+                              title: StringConstants.selectDaysText,
+                              list: addNewStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
                     height40SizedBox,

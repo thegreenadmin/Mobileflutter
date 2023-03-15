@@ -53,47 +53,19 @@ class AddNewStoreController extends GetxController {
   RxInt radioGroupValue = 0.obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
- 
 
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
   RxList<dynamic> selectedWeekDaysList = [].obs;
   RxList<Categories> weekDaysList = [
-    Categories(
-        id: 1,
-        name: "Monday",
-        isSelected:false
-    ),
-    Categories(
-        id: 2,
-        name: "Tuesday",
-        isSelected:false
-    ),Categories(
-        id: 3,
-        name: "Wednesday",
-        isSelected:false
-    ),
-    Categories(
-        id: 4,
-        name: "Thursday",
-        isSelected:false
-    ),
-    Categories(
-        id: 5,
-        name: "Friday",
-        isSelected:false
-    ),
-    Categories(
-        id: 6,
-        name: "Saturday",
-        isSelected:false
-    ),
-    Categories(
-        id: 7,
-        name: "Sunday",
-        isSelected:false
-    ),
+    Categories(id: 1, name: "Monday", isSelected: false),
+    Categories(id: 2, name: "Tuesday", isSelected: false),
+    Categories(id: 3, name: "Wednesday", isSelected: false),
+    Categories(id: 4, name: "Thursday", isSelected: false),
+    Categories(id: 5, name: "Friday", isSelected: false),
+    Categories(id: 6, name: "Saturday", isSelected: false),
+    Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
 
   // RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[

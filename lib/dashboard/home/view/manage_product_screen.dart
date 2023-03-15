@@ -217,10 +217,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               ),
                             ),
                             height4SizedBox,
-                            const Center(
+                            Center(
                               child: Text(
-                                "No products found",
-                                style: TextStyle(
+                                StringConstants.noProductFoundText,
+                                style:const TextStyle(
                                     fontStyle: FontStyle.italic, fontSize: 16),
                               ),
                             ),

@@ -39,6 +39,7 @@ class StringConstants {
 
   //B
   static String breadthText = "Breadth";
+  static String bannerImageText = "Banner Image";
 
   //C
   static String createYourAccountText = "Create your Account";
@@ -141,6 +142,8 @@ class StringConstants {
   static String nameText = "Name";
   static String inboxMessages = "Inbox Messages";
   static String nickNameText = "Nick Name";
+  static String noProductFoundText = "No products found";
+  static String noStoresFoundText = "No stores found";
 
   //O
   static String ownAStoreText = "Own a Store?";
@@ -245,7 +248,8 @@ class StringConstants {
   static String userProfileText = "User Profile";
   static String uploadProductPhotosText = "Upload product photos";
   static String updateWorkerText = "Update Worker";
-
+  static String uploadStoreLogoText = "Upload Store Logo";
+  static String uploadLogoText = "Upload Logo";
   //V
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
@@ -283,9 +287,10 @@ class BottomNavStringConstants {
 class AlertStringConstants {
   //c
   static String closingTimeAlertText =
-      "Closing time can not be as opening time";
+      "Closing time cannot be same as opening time";
   //E
-  static String endTimeAlertText = "End time can not be as start time";
+  static String endTimeAlertText =
+      "Closing time cannot be same as opening time";
 
   //I
   static String invalidOtpText = "Invalid OTP";

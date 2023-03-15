@@ -113,125 +113,156 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
             ),
             height15SizedBox,
             Expanded(
-                child: ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) {
-                      return height12SizedBox;
-                    },
-                    itemCount: manageStoreController.storeProductList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: const BoxDecoration(
-                            color: AppColors.greylight,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12.0),
-                            )),
-                        child: Column(children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                child: Obx(() => manageStoreController.storeProductList.isEmpty
+                    ? manageStoreController.isLoading.value == true
+                        ? height0SizedBox
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Flexible(
-                                flex: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1)),
-                                  child: Image.asset(
-                                    "assets/example.png",
-                                  ),
+                              Center(
+                                child: Image.asset(
+                                  "assets/nodata.png",
+                                  scale: 8,
+                                  color: AppColors.primary,
                                 ),
                               ),
-                              width12SizedBox,
-                              Flexible(
-                                flex: 8,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 190,
-                                      child: Text(
-                                        manageStoreController
-                                                .storeProductList[index]
-                                                .productName ??
-                                            "",
-                                        style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    height8SizedBox,
-                                    SizedBox(
-                                      width: 190,
-                                      child: Text(
-                                        manageStoreController
-                                                .storeProductList[index]
-                                                .description ??
-                                            "",
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            color: AppColors.blacklight,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ),
-                                    height8SizedBox,
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const Text(
-                                              "Unit Price: ",
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              manageStoreController
-                                                          .storeProductList[
-                                                              index]
-                                                          .productPrice ==
-                                                      null
-                                                  ? ""
-                                                  : manageStoreController
-                                                      .storeProductList[index]
-                                                      .productPrice
-                                                      .toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() =>
-                                                const ViewProductListEditScreen());
-                                          },
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: Image.asset(
-                                              "assets/circleedit.png",
-                                              scale: 2.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                              height4SizedBox,
+                              Center(
+                                child: Text(
+                                  StringConstants.noProductFoundText,
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16),
                                 ),
                               ),
                             ],
-                          ),
-                        ]),
-                      );
-                    })),
+                          )
+                    : ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return height12SizedBox;
+                        },
+                        itemCount:
+                            manageStoreController.storeProductList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            decoration: const BoxDecoration(
+                                color: AppColors.greylight,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.0),
+                                )),
+                            child: Column(children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                              color: AppColors.white,
+                                              width: 1)),
+                                      child: Image.asset(
+                                        "assets/example.png",
+                                      ),
+                                    ),
+                                  ),
+                                  width12SizedBox,
+                                  Flexible(
+                                    flex: 8,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 190,
+                                          child: Text(
+                                            manageStoreController
+                                                    .storeProductList[index]
+                                                    .productName ??
+                                                "",
+                                            style: const TextStyle(
+                                                fontSize: 16.0,
+                                                color: AppColors.black,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        height8SizedBox,
+                                        SizedBox(
+                                          width: 190,
+                                          child: Text(
+                                            manageStoreController
+                                                    .storeProductList[index]
+                                                    .description ??
+                                                "",
+                                            style: TextStyle(
+                                                fontSize: 12.0,
+                                                color: AppColors.blacklight,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        height8SizedBox,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Unit Price: ",
+                                                  style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                                Text(
+                                                  manageStoreController
+                                                              .storeProductList[
+                                                                  index]
+                                                              .productPrice ==
+                                                          null
+                                                      ? ""
+                                                      : manageStoreController
+                                                          .storeProductList[
+                                                              index]
+                                                          .productPrice
+                                                          .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )
+                                              ],
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    const ViewProductListEditScreen());
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10),
+                                                child: Image.asset(
+                                                  "assets/circleedit.png",
+                                                  scale: 2.5,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                          );
+                        }))),
           ],
         ),
       ),
