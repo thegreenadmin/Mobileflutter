@@ -117,7 +117,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                     separatorBuilder: (BuildContext context, int index) {
                       return height12SizedBox;
                     },
-                    itemCount: 3,
+                    itemCount: manageStoreController.storeProductList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
@@ -149,11 +149,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const SizedBox(
+                                    SizedBox(
                                       width: 190,
                                       child: Text(
-                                        "Supplement bottle",
-                                        style: TextStyle(
+                                        manageStoreController
+                                                .storeProductList[index]
+                                                .productName ??
+                                            "",
+                                        style: const TextStyle(
                                             fontSize: 16.0,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600),
@@ -163,7 +166,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                     SizedBox(
                                       width: 190,
                                       child: Text(
-                                        "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.",
+                                        manageStoreController
+                                                .storeProductList[index]
+                                                .description ??
+                                            "",
                                         style: TextStyle(
                                             fontSize: 12.0,
                                             color: AppColors.blacklight,
@@ -176,8 +182,8 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
-                                          children: const [
-                                            Text(
+                                          children: [
+                                            const Text(
                                               "Unit Price: ",
                                               style: TextStyle(
                                                   fontSize: 16.0,
@@ -185,8 +191,17 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                                   fontWeight: FontWeight.w400),
                                             ),
                                             Text(
-                                              "\$20.00",
-                                              style: TextStyle(
+                                              manageStoreController
+                                                          .storeProductList[
+                                                              index]
+                                                          .productPrice ==
+                                                      null
+                                                  ? ""
+                                                  : manageStoreController
+                                                      .storeProductList[index]
+                                                      .productPrice
+                                                      .toString(),
+                                              style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
