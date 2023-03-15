@@ -268,7 +268,7 @@ class AddNewStoreController extends GetxController {
                 "closing_time": ""
               }
             ]
-          : storeTimmingList.value
+          : storeTimmingList
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',

@@ -52,7 +52,7 @@ class SearchStoreController extends GetxController {
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
-  RxString storeImage = "".obs;
+  RxString ? storeImage = "".obs;
   RxInt? addressListIndex = 0.obs;
 
   RxString countryDropdownValue = "Afghanistan".obs;
@@ -337,6 +337,8 @@ class SearchStoreController extends GetxController {
         is247Time.value = storeTimings[0]["is_24_hours_active"] ?? false;
         openingTimeTextController.text = storeTimings[0]["opening_time"] ?? '';
         closingTimeTextController.text = storeTimings[0]["closing_time"] ?? '';
+        print("Store timming---------->" + storeTimings.value.toString());
+        //postalCodeTextController.text =
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
@@ -381,7 +383,17 @@ class SearchStoreController extends GetxController {
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",
         "city": townOrCityTextController.text.trim()
-      }
+      },
+      "store_timings": is247Time.value == true
+          ? [
+              {
+                "is_24_hours_active": is247Time.value,
+                "day_of_week": "",
+                "opening_time": "",
+                "closing_time": ""
+              }
+            ]
+          : storeTimmingList
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
     UserProvider()
@@ -393,10 +405,11 @@ class SearchStoreController extends GetxController {
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
+        print(value);
         Utility.showToast(value.body['message']);
-        Get.back();
-        Get.back();
-        apiGetStoreList();
+        // Get.back();
+        // Get.back();
+        // await apiGetStoreList();
         storeNameTextController.clear();
         einTextController.clear();
         nickNameTextController.clear();

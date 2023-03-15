@@ -85,7 +85,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: NetworkImage(searchStoreController.storeImage.value),
+                  image: NetworkImage(searchStoreController.storeImage!.value),
                 ),
               ),
               child: Padding(

@@ -8,9 +8,8 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/multi_drop_class.dart';
-import '../../../utils/mutli_select_drop_down.dart';
-import '../../../utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreDetailEditScreen extends StatefulWidget {
   const StoreDetailEditScreen({super.key});

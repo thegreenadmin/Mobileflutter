@@ -148,13 +148,11 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                               .addressListIndex!.value]
                                           .addressLine1!;
 
-                                  searchStoreController.storeImage.value =
+                                  searchStoreController.storeImage!.value =
                                       searchStoreController
                                           .storeList[index].image!.dynamicUrl!;
-
                                   await searchStoreController
                                       .apiGetParticularStore();
-
                                   await Get.to(
                                       () => const ManageStoreMainScreen());
                                 },
@@ -181,12 +179,21 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                     width: 1)),
                                             child: CircleAvatar(
                                               radius: 24.0,
-                                              backgroundImage: NetworkImage(
+                                              backgroundImage:
                                                   searchStoreController
-                                                      .storeList[index]
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString()),
+                                                              .storeList[index]
+                                                              .image!
+                                                              .dynamicUrl ==
+                                                          null
+                                                      ? const AssetImage(
+                                                          "assets/userAccount.png",
+                                                        ) as ImageProvider
+                                                      : NetworkImage(
+                                                          searchStoreController
+                                                              .storeList[index]
+                                                              .image!
+                                                              .dynamicUrl
+                                                              .toString()),
                                               backgroundColor:
                                                   Colors.transparent,
                                             ),

@@ -242,7 +242,13 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                             InkWell(
                                               onTap: () {
                                                 Get.to(() =>
-                                                    const ViewProductListEditScreen());
+                                                        const ViewProductListEditScreen())!
+                                                    .then((value) {
+                                                  manageStoreController
+                                                      .apiGetStoreProducts();
+                                                  manageStoreController
+                                                      .update();
+                                                });
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
