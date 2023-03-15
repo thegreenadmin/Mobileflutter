@@ -15,9 +15,9 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
 
-import '../model/add_worker_request.dart' as add_worker;
-import '../model/categories.dart';
-import '../model/edit_worker_request.dart';
+import '../model/add_worker_request_model.dart' as add_worker;
+import '../model/categories_model.dart';
+import '../model/edit_worker_request_model.dart';
 
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -35,30 +35,37 @@ class AddNewWorkerController extends GetxController {
   RxList<Categories> weekDaysList = [
     Categories(
         id: 1,
-        name: "Monday"
+        name: "Monday",
+        isSelected:false
     ),
     Categories(
         id: 2,
-        name: "Tuesday"
+        name: "Tuesday",
+        isSelected:false
     ),Categories(
         id: 3,
-        name: "Wednesday"
+        name: "Wednesday",
+        isSelected:false
     ),
     Categories(
         id: 4,
-        name: "Thursday"
+        name: "Thursday",
+        isSelected:false
     ),
     Categories(
         id: 5,
-        name: "Friday"
+        name: "Friday",
+        isSelected:false
     ),
     Categories(
         id: 6,
-        name: "Saturday"
+        name: "Saturday",
+        isSelected:false
     ),
     Categories(
         id: 7,
-        name: "Sunday"
+        name: "Sunday",
+        isSelected:false
     ),
   ].obs;
 

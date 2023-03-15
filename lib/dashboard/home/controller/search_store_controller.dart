@@ -16,6 +16,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/categories_model.dart';
+
 class SearchStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController storeNameTextController = TextEditingController();
@@ -69,6 +71,7 @@ class SearchStoreController extends GetxController {
   RxList<Stores> storeList = <Stores>[].obs;
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
+  RxList<dynamic> storeTimings= <dynamic>[].obs;
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
 
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
@@ -77,15 +80,51 @@ class SearchStoreController extends GetxController {
   Rx<XFile> editStoreImage = XFile("").obs;
   RxInt radioGroupValue = 0.obs;
 
-  RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
-    {"isSelected": false, "day": "Monday"},
-    {"isSelected": false, "day": "Tuesday"},
-    {"isSelected": false, "day": "Wednesday"},
-    {"isSelected": false, "day": "Thursday"},
-    {"isSelected": false, "day": "Friday"},
-    {"isSelected": false, "day": "Saturday"},
-    {"isSelected": false, "day": "Sunday"},
+  RxList<Categories> weekDaysList = [
+    Categories(
+        id: 1,
+        name: "Monday",
+        isSelected:false
+    ),
+    Categories(
+        id: 2,
+        name: "Tuesday",
+        isSelected:false
+    ),Categories(
+        id: 3,
+        name: "Wednesday",
+        isSelected:false
+    ),
+    Categories(
+        id: 4,
+        name: "Thursday",
+        isSelected:false
+    ),
+    Categories(
+        id: 5,
+        name: "Friday",
+        isSelected:false
+    ),
+    Categories(
+        id: 6,
+        name: "Saturday",
+        isSelected:false
+    ),
+    Categories(
+        id: 7,
+        name: "Sunday",
+        isSelected:false
+    ),
   ].obs;
+  // RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
+  //   {"isSelected": false, "day": "Monday"},
+  //   {"isSelected": false, "day": "Tuesday"},
+  //   {"isSelected": false, "day": "Wednesday"},
+  //   {"isSelected": false, "day": "Thursday"},
+  //   {"isSelected": false, "day": "Friday"},
+  //   {"isSelected": false, "day": "Saturday"},
+  //   {"isSelected": false, "day": "Sunday"},
+  // ].obs;
 
   @override
   void onInit() {
@@ -309,6 +348,8 @@ class SearchStoreController extends GetxController {
         einTextController.text = value.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
             value.body["data"]['store']['store_addresses'] ?? [];
+        storeTimings.value=
+            value.body["data"]['store']['store_timings'] ?? [];
         addressLine1TextController.text =
             storeAddresses[0]["address_line_1"] ?? "";
         addressLine2TextController.text =
@@ -321,6 +362,16 @@ class SearchStoreController extends GetxController {
         countryId!.value =
             storeAddresses[0]["state"]['country']['country_id'] ?? "";
         storeAddressId!.value = storeAddresses[0]["store_address_id"] ?? "";
+        is247Time.value =storeTimings[0]["is_24_hours_active"]??false;
+        openingTimeTextController.text=storeTimings[0]["opening_time"]??'';
+        closingTimeTextController.text=storeTimings[0]["closing_time"]??'';
+        for (var sData in storeTimings) {
+          for (var element in weekDaysList) {
+            if(sData["day_of_week"]==element.id){
+              element.isSelected=true;
+            }
+          }
+        }
         await apiGetCountries();
       } else {
         Utility.showToast(value.body['message']);

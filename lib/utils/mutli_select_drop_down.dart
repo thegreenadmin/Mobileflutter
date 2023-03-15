@@ -31,6 +31,16 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
+      var concatenate = StringBuffer();
+      if (widget.list != null) {
+        for (var item in widget.list??[]) {
+          if(item.isSelected==true){
+            concatenate.write(item.name);
+            concatenate.write(', ');
+          }
+        }
+        widget.controller!.text = concatenate.toString();
+      }
       return TextFormField(
         controller: widget.controller,
         validator: (val) {
