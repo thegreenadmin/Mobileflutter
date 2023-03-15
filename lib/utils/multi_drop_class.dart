@@ -12,14 +12,7 @@ class MultiDropClass extends StatefulWidget {
   final String? label;
   final Function(List<dynamic>)? onChanged;
 
-  const MultiDropClass(
-      {Key? key,
-      this.title,
-      this.hintText,
-      this.controller,
-      this.list,
-      this.label,
-      this.onChanged})
+  const MultiDropClass({Key? key, this.title, this.hintText, this.controller, this.list, this.label, this.onChanged})
       : super(key: key);
 
   @override
@@ -34,27 +27,22 @@ class _MultiDropClassState extends State<MultiDropClass> {
     return LayoutBuilder(builder: (context, constraint) {
       return TextFormField(
         controller: widget.controller,
-        style: const TextStyle(
-            color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
         // obscureText: state.showPassword,
         textInputAction: TextInputAction.next,
         readOnly: true,
         keyboardType: TextInputType.visiblePassword,
         onChanged: (text) {},
         onTap: () async {
-          final value = await _showMultiSelect(
-              widget.list, widget.title, widget.onChanged!);
-          widget.controller!.text = widget.controller!.text + value.toString();
+          await _showMultiSelect(widget.list, widget.title, widget.onChanged!);
         },
         maxLength: 50,
         decoration: InputDecoration(
           counterText: '',
           suffixIcon: InkWell(
             onTap: () async {
-              final value = await _showMultiSelect(
-                  widget.list, widget.title, widget.onChanged!);
-              widget.controller!.text =
-                  widget.controller!.text + value.toString();
+              final value = await _showMultiSelect(widget.list, widget.title, widget.onChanged!);
+              widget.controller!.text = widget.controller!.text + value.toString();
               setState(() {});
             },
             child: Icon(
@@ -110,8 +98,7 @@ class _MultiDropClassState extends State<MultiDropClass> {
     });
   }
 
-  Future<String> _showMultiSelect(
-      items, title, Function(List<dynamic>)? onChanged) async {
+  Future<String> _showMultiSelect(items, title, Function(List<dynamic>)? onChanged) async {
     print("Items---->" + items.toString());
     print("Titles---->" + title.toString());
     final List<dynamic>? results = await showDialog(
@@ -139,8 +126,7 @@ class _MultiDropClassState extends State<MultiDropClass> {
 class MultiSelect extends StatefulWidget {
   final List<Map<String, dynamic>> items;
   final String? title;
-  const MultiSelect({Key? key, required this.items, this.title})
-      : super(key: key);
+  const MultiSelect({Key? key, required this.items, this.title}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MultiSelectState();
@@ -182,8 +168,7 @@ class _MultiSelectState extends State<MultiSelect> {
     return AlertDialog(
       title: Text(
         widget.title.toString(),
-        style: const TextStyle(
-            color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
+        style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
       ),
       content: SingleChildScrollView(
         child: ListBody(
@@ -202,10 +187,7 @@ class _MultiSelectState extends State<MultiSelect> {
         TextButton(
           onPressed: _cancel,
           child: Text(StringConstants.cancelText,
-              style: TextStyle(
-                  color: AppColors.blacklight,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400)),
+              style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400)),
         ),
         ElevatedButton(
           onPressed: _submit,
@@ -213,10 +195,7 @@ class _MultiSelectState extends State<MultiSelect> {
             backgroundColor: AppColors.primary,
           ),
           child: Text(StringConstants.submitText,
-              style: const TextStyle(
-                  color: AppColors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400)),
+              style: const TextStyle(color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w400)),
         ),
       ],
     );
