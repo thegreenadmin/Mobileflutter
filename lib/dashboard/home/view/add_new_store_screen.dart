@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/multi_drop_class.dart';
 
+import '../../../utils/mutli_select_drop_down.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -1235,48 +1236,98 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           )
                         : height0SizedBox),
                     height4SizedBox,
+                    // Obx(
+                    //   () => addNewStoreController.is247Time.value != true
+                    //       ? MultiDropClass(
+                    //           onChanged: (v) {
+                    //             addNewStoreController.storeTimmingList.clear();
+                    //             String selectedDays = "";
+                    //             for (int i = 0;
+                    //                 i <
+                    //                     addNewStoreController
+                    //                         .weekDaysList.length;
+                    //                 i++) {
+                    //               if (addNewStoreController.weekDaysList[i]
+                    //                   ['isSelected']) {
+                    //                 if (selectedDays.isEmpty) {
+                    //                   selectedDays =
+                    //                       "${addNewStoreController.weekDaysList[i]['day']}";
+                    //                 } else {
+                    //                   selectedDays =
+                    //                       "$selectedDays, ${addNewStoreController.weekDaysList[i]['day']}";
+                    //                 }
+                    //                 addNewStoreController.storeTimmingList.add({
+                    //                   "is_24_hours_active": false,
+                    //                   "day_of_week": (i + 1).toString(),
+                    //                   "opening_time": addNewStoreController
+                    //                       .openingTime.value,
+                    //                   "closing_time": addNewStoreController
+                    //                       .closingTime.value,
+                    //                 });
+                    //               }
+                    //             }
+                    //             print("top list" + v.toString());
+                    //             print("LISTTTTTTTTTTTTT" +
+                    //                 addNewStoreController.storeTimmingList
+                    //                     .toString());
+                    //             addNewStoreController.workingDaysTextController
+                    //                 .text = selectedDays;
+                    //           },
+                    //           controller: addNewStoreController
+                    //               .workingDaysTextController,
+                    //           hintText: StringConstants.selectDaysText,
+                    //           title: StringConstants.selectDaysText,
+                    //           list: addNewStoreController.weekDaysList)
+                    //       : height0SizedBox,
+                    // ),
                     Obx(
                       () => addNewStoreController.is247Time.value != true
-                          ? MultiDropClass(
-                              onChanged: (v) {
-                                addNewStoreController.storeTimmingList.clear();
-                                String selectedDays = "";
-                                for (int i = 0;
-                                    i <
-                                        addNewStoreController
-                                            .weekDaysList.length;
-                                    i++) {
-                                  if (addNewStoreController.weekDaysList[i]
-                                      ['isSelected']) {
-                                    if (selectedDays.isEmpty) {
-                                      selectedDays =
-                                          "${addNewStoreController.weekDaysList[i]['day']}";
-                                    } else {
-                                      selectedDays =
-                                          "$selectedDays, ${addNewStoreController.weekDaysList[i]['day']}";
-                                    }
-                                    addNewStoreController.storeTimmingList.add({
-                                      "is_24_hours_active": false,
-                                      "day_of_week": (i + 1).toString(),
-                                      "opening_time": addNewStoreController
-                                          .openingTime.value,
-                                      "closing_time": addNewStoreController
-                                          .closingTime.value,
-                                    });
-                                  }
+                          ? MultiCustomDropDown(
+                          onChanged: (v) {
+                            addNewStoreController.storeTimmingList.clear();
+                            String selectedDays = "";
+                            for (int i = 0;
+                            i <
+                                addNewStoreController
+                                    .weekDaysList.length;
+                            i++) {
+                              if (addNewStoreController.weekDaysList[i].isSelected==true) {
+                                if (selectedDays.isEmpty) {
+                                  selectedDays =
+                                  "${addNewStoreController.weekDaysList[i].name}";
+                                } else {
+                                  selectedDays =
+                                  "$selectedDays, ${addNewStoreController.weekDaysList[i].name}";
                                 }
-                                print("top list" + v.toString());
-                                print("LISTTTTTTTTTTTTT" +
-                                    addNewStoreController.storeTimmingList
-                                        .toString());
-                                addNewStoreController.workingDaysTextController
-                                    .text = selectedDays;
-                              },
-                              controller: addNewStoreController
-                                  .workingDaysTextController,
-                              hintText: StringConstants.selectDaysText,
-                              title: StringConstants.selectDaysText,
-                              list: addNewStoreController.weekDaysList)
+                                addNewStoreController.storeTimmingList.add({
+                                  "is_24_hours_active": false,
+                                  "day_of_week": addNewStoreController.weekDaysList[i].id,
+                                  //(i + 1).toString(),
+                                  "opening_time": addNewStoreController
+                                      .openingTime.value,
+                                  "closing_time": addNewStoreController
+                                      .closingTime.value,
+                                });
+                              }
+                            }
+                            print("top list" + v.toString());
+                            print("LISTTTTTTTTTTTTT" +
+                                addNewStoreController.storeTimmingList
+                                    .toString());
+                            addNewStoreController.workingDaysTextController
+                                .text = selectedDays;
+                          },
+                          validator: (v) {
+                            if (v!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseEnterWeekDaysText;
+                            }
+                            return null;
+                          },
+                          controller: addNewStoreController
+                              .workingDaysTextController,
+                          hintText: StringConstants.selectDaysText,
+                          title: StringConstants.selectDaysText,
+                          list: addNewStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
                     height40SizedBox,

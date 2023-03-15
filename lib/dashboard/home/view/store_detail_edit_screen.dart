@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/multi_drop_class.dart';
+import '../../../utils/mutli_select_drop_down.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class StoreDetailEditScreen extends StatefulWidget {
@@ -1206,48 +1207,100 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           )
                         : height0SizedBox),
                     height4SizedBox,
+                    // Obx(
+                    //   () => searchStoreController.is247Time.value != true
+                    //       ? MultiDropClass(
+                    //           onChanged: (v) {
+                    //             searchStoreController.storeTimmingList.clear();
+                    //             //  String selectedDays = "";
+                    //             for (int i = 0;
+                    //                 i <
+                    //                     searchStoreController
+                    //                         .weekDaysList.length;
+                    //                 i++) {
+                    //               if (searchStoreController.weekDaysList[i]
+                    //                   ['isSelected']) {
+                    //                 // selectedDays = searchStoreController
+                    //                 //         .weekDaysList[i]['day'] +
+                    //                 //     "," +
+                    //                 //     selectedDays;
+                    //                 searchStoreController.storeTimmingList.add({
+                    //                   "is_24_hours_active": false,
+                    //                   "day_of_week": (i + 1).toString(),
+                    //                   "opening_time": searchStoreController
+                    //                       .openingTimeTextController.text
+                    //                       .trim(),
+                    //                   "closing_time": searchStoreController
+                    //                       .closingTimeTextController.text
+                    //                       .trim()
+                    //                 });
+                    //               }
+                    //             }
+                    //             print("top list" + v.toString());
+                    //             print("LISTTTTTTTTTTTTT" +
+                    //                 searchStoreController.storeTimmingList
+                    //                     .toString());
+                    //             // searchStoreController.workingDaysTextController.clear();
+                    //             // searchStoreController.workingDaysTextController
+                    //             //     .text = selectedDays;
+                    //           },
+                    //           controller: searchStoreController
+                    //               .workingDaysTextController,
+                    //           hintText: StringConstants.selectDaysText,
+                    //           title: StringConstants.selectDaysText,
+                    //           list: searchStoreController.weekDaysList)
+                    //       : height0SizedBox,
+                    // ),
                     Obx(
-                      () => searchStoreController.is247Time.value != true
-                          ? MultiDropClass(
-                              onChanged: (v) {
-                                searchStoreController.storeTimmingList.clear();
-                                //  String selectedDays = "";
-                                for (int i = 0;
-                                    i <
-                                        searchStoreController
-                                            .weekDaysList.length;
-                                    i++) {
-                                  if (searchStoreController.weekDaysList[i]
-                                      ['isSelected']) {
-                                    // selectedDays = searchStoreController
-                                    //         .weekDaysList[i]['day'] +
-                                    //     "," +
-                                    //     selectedDays;
-                                    searchStoreController.storeTimmingList.add({
-                                      "is_24_hours_active": false,
-                                      "day_of_week": (i + 1).toString(),
-                                      "opening_time": searchStoreController
-                                          .openingTimeTextController.text
-                                          .trim(),
-                                      "closing_time": searchStoreController
-                                          .closingTimeTextController.text
-                                          .trim()
-                                    });
-                                  }
+                          () => searchStoreController.is247Time.value != true
+                          ? MultiCustomDropDown(
+                          onChanged: (v) {
+                            searchStoreController.storeTimmingList.clear();
+                            String selectedDays = "";
+                            for (int i = 0;
+                            i <
+                                searchStoreController
+                                    .weekDaysList.length;
+                            i++) {
+                              if (searchStoreController.weekDaysList[i].isSelected==true) {
+                                if (selectedDays.isEmpty) {
+                                  selectedDays =
+                                  "${searchStoreController.weekDaysList[i].name}";
+                                } else {
+                                  selectedDays =
+                                  "$selectedDays, ${searchStoreController.weekDaysList[i].name}";
                                 }
-                                print("top list" + v.toString());
-                                print("LISTTTTTTTTTTTTT" +
-                                    searchStoreController.storeTimmingList
-                                        .toString());
-                                // searchStoreController.workingDaysTextController.clear();
-                                // searchStoreController.workingDaysTextController
-                                //     .text = selectedDays;
+                                searchStoreController.storeTimmingList.add({
+                                  "is_24_hours_active": false,
+                                  "day_of_week": searchStoreController.weekDaysList[i].id,
+                                  //(i + 1).toString(),
+                                  "opening_time": searchStoreController
+                                      .openingTimeTextController.text
+                                      .trim(),
+                                  "closing_time": searchStoreController
+                                      .closingTimeTextController.text
+                                      .trim()
+                                });
+                              }
+                            }
+                            print("top list" + v.toString());
+                            print("LISTTTTTTTTTTTTT" +
+                                searchStoreController.storeTimmingList
+                                    .toString());
+                            searchStoreController.workingDaysTextController
+                                .text = selectedDays;
+                          },
+                              validator: (v) {
+                                if (v!.trim().isEmpty) {
+                                  return AlertStringConstants.pleaseEnterWeekDaysText;
+                                }
+                                return null;
                               },
-                              controller: searchStoreController
-                                  .workingDaysTextController,
-                              hintText: StringConstants.selectDaysText,
-                              title: StringConstants.selectDaysText,
-                              list: searchStoreController.weekDaysList)
+                          controller: searchStoreController
+                              .workingDaysTextController,
+                          hintText: StringConstants.selectDaysText,
+                          title: StringConstants.selectDaysText,
+                          list: searchStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
                     height40SizedBox,

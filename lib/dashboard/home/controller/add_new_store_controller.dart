@@ -15,6 +15,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import '../model/categories_model.dart';
 
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -57,16 +58,53 @@ class AddNewStoreController extends GetxController {
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
-
-  RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
-    {"isSelected": false, "day": "Monday"},
-    {"isSelected": false, "day": "Tuesday"},
-    {"isSelected": false, "day": "Wednesday"},
-    {"isSelected": false, "day": "Thursday"},
-    {"isSelected": false, "day": "Friday"},
-    {"isSelected": false, "day": "Saturday"},
-    {"isSelected": false, "day": "Sunday"},
+  RxList<dynamic> selectedWeekDaysList = [].obs;
+  RxList<Categories> weekDaysList = [
+    Categories(
+        id: 1,
+        name: "Monday",
+        isSelected:false
+    ),
+    Categories(
+        id: 2,
+        name: "Tuesday",
+        isSelected:false
+    ),Categories(
+        id: 3,
+        name: "Wednesday",
+        isSelected:false
+    ),
+    Categories(
+        id: 4,
+        name: "Thursday",
+        isSelected:false
+    ),
+    Categories(
+        id: 5,
+        name: "Friday",
+        isSelected:false
+    ),
+    Categories(
+        id: 6,
+        name: "Saturday",
+        isSelected:false
+    ),
+    Categories(
+        id: 7,
+        name: "Sunday",
+        isSelected:false
+    ),
   ].obs;
+
+  // RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
+  //   {"isSelected": false, "day": "Monday"},
+  //   {"isSelected": false, "day": "Tuesday"},
+  //   {"isSelected": false, "day": "Wednesday"},
+  //   {"isSelected": false, "day": "Thursday"},
+  //   {"isSelected": false, "day": "Friday"},
+  //   {"isSelected": false, "day": "Saturday"},
+  //   {"isSelected": false, "day": "Sunday"},
+  // ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
 
@@ -258,7 +296,7 @@ class AddNewStoreController extends GetxController {
                 "closing_time": ""
               }
             ]
-          : []
+          : storeTimmingList.value
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
