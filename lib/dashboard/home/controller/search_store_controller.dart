@@ -29,13 +29,17 @@ class SearchStoreController extends GetxController {
   TextEditingController postalCodeTextController = TextEditingController();
   TextEditingController stateTextController = TextEditingController();
   TextEditingController countryTextController = TextEditingController();
+  TextEditingController openingTimeTextController = TextEditingController();
+  TextEditingController closingTimeTextController = TextEditingController();
+  TextEditingController workingDaysTextController = TextEditingController();
 
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
   RxBool isTippingNotify = false.obs;
-
   RxBool autoValidate = false.obs;
   RxBool isEnabledStore = false.obs;
+  RxBool isLoading = false.obs;
+  RxBool is247Time = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -43,6 +47,11 @@ class SearchStoreController extends GetxController {
   RxString email = "".obs;
   RxString phone = "".obs;
   RxString? storeAddressId = "".obs;
+  RxString storeId = "".obs;
+  RxString storeName = "".obs;
+  RxString storeLocation = "".obs;
+  RxString storeImage = "".obs;
+  RxInt? addressListIndex = 0.obs;
 
   RxString countryDropdownValue = "Afghanistan".obs;
   RxString? countryId = "".obs;
@@ -56,22 +65,27 @@ class SearchStoreController extends GetxController {
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
 
-  RxBool isLoading = false.obs;
-  RxString storeId = "".obs;
-  RxString storeName = "".obs;
-  RxString storeLocation = "".obs;
-  RxString storeImage = "".obs;
-  RxInt? addressListIndex = 0.obs;
-
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
+  RxList<dynamic> storeTimmingList = <dynamic>[].obs;
 
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
   RxString editStoreImageDynamicLinkfromServer = "".obs;
 
   Rx<XFile> editStoreImage = XFile("").obs;
+  RxInt radioGroupValue = 0.obs;
+
+  RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
+    {"isSelected": false, "day": "Monday"},
+    {"isSelected": false, "day": "Tuesday"},
+    {"isSelected": false, "day": "Wednesday"},
+    {"isSelected": false, "day": "Thursday"},
+    {"isSelected": false, "day": "Friday"},
+    {"isSelected": false, "day": "Saturday"},
+    {"isSelected": false, "day": "Sunday"},
+  ].obs;
 
   @override
   void onInit() {

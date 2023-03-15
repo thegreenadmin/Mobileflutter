@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/multi_drop_class.dart';
 import '../../../utils/sizedbox_constants.dart';
 
 class StoreDetailEditScreen extends StatefulWidget {
@@ -152,9 +153,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
-                                        child: 
-                                        
-                                        Image.network(
+                                        child: Image.network(
                                             searchStoreController
                                                 .editStoreImageDynamicLinkfromServer
                                                 .value,
@@ -863,6 +862,394 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               });
                             },
                           )),
+                    height25SizedBox,
+                    Text(
+                      StringConstants.storeTimingText,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20),
+                    ),
+                    height25SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Obx(
+                              () => SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Radio(
+                                  value: 0,
+                                  groupValue: searchStoreController
+                                      .radioGroupValue.value,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (value) {
+                                    searchStoreController.radioGroupValue
+                                        .value = value?.toInt() ?? 0;
+                                    searchStoreController.is247Time.value =
+                                        false;
+                                    print(searchStoreController
+                                        .radioGroupValue.value);
+                                    print(
+                                        searchStoreController.is247Time.value);
+                                  },
+                                ),
+                              ),
+                            ),
+                            width15SizedBox,
+                            Text(
+                              StringConstants.customTimeText,
+                              overflow: TextOverflow.visible,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        width30SizedBox,
+                        Row(
+                          children: [
+                            Obx(
+                              () => SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Radio(
+                                  value: 1,
+                                  groupValue: searchStoreController
+                                      .radioGroupValue.value,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (value) {
+                                    searchStoreController.radioGroupValue
+                                        .value = value?.toInt() ?? 0;
+                                    searchStoreController.is247Time.value =
+                                        true;
+                                    print(searchStoreController
+                                        .radioGroupValue.value);
+                                    print(
+                                        searchStoreController.is247Time.value);
+                                  },
+                                ),
+                              ),
+                            ),
+                            width15SizedBox,
+                            Text(
+                              StringConstants.twentyFourSevenText,
+                              overflow: TextOverflow.visible,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    height25SizedBox,
+                    Obx(
+                      () => searchStoreController.is247Time.value != true
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        StringConstants.openingTimeText,
+                                        style: TextStyle(
+                                            color: AppColors.blacklight,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      height4SizedBox,
+                                      TextFormField(
+                                          textInputAction: TextInputAction.next,
+                                          autofocus: false,
+                                          inputFormatters: <TextInputFormatter>[
+                                            LengthLimitingTextInputFormatter(
+                                                100),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                          controller: searchStoreController
+                                              .openingTimeTextController,
+                                          keyboardType: TextInputType.phone,
+                                          validator: (value) {
+                                            if (value!.trim().isEmpty) {
+                                              return AlertStringConstants
+                                                  .pleaseSelectOpeningTimeText;
+                                            } else if (value.trim() ==
+                                                searchStoreController
+                                                    .closingTimeTextController
+                                                    .text) {
+                                              return AlertStringConstants
+                                                  .openingTimeAlertText;
+                                            }
+                                            return null;
+                                          },
+                                          onTap: () async {
+                                            TimeOfDay date = TimeOfDay.now();
+                                            FocusScope.of(context)
+                                                .requestFocus(FocusNode());
+                                            date = (await showTimePicker(
+                                              helpText: "Select Time",
+                                              initialTime: TimeOfDay.now(),
+                                              context: context,
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData.light()
+                                                      .copyWith(
+                                                    colorScheme:
+                                                        const ColorScheme.light(
+                                                            primary: AppColors
+                                                                .primary),
+                                                    buttonTheme:
+                                                        const ButtonThemeData(
+                                                            textTheme:
+                                                                ButtonTextTheme
+                                                                    .primary),
+                                                  ),
+                                                  child: child!,
+                                                );
+                                              },
+                                            ))!;
+
+                                            searchStoreController
+                                                    .openingTimeTextController
+                                                    .text =
+                                                date.format(context).toString();
+                                          },
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                StringConstants.openingTimeText,
+                                            hintStyle: const TextStyle(
+                                                color: AppColors.grey,
+                                                fontSize: 14),
+                                            fillColor: Colors.white,
+                                            border: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                width15SizedBox,
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        StringConstants.closingTimeText,
+                                        style: TextStyle(
+                                            color: AppColors.blacklight,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      height4SizedBox,
+                                      TextFormField(
+                                          textInputAction: TextInputAction.next,
+                                          autofocus: false,
+                                          inputFormatters: <TextInputFormatter>[
+                                            LengthLimitingTextInputFormatter(
+                                                100),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                          controller: searchStoreController
+                                              .closingTimeTextController,
+                                          keyboardType: TextInputType.phone,
+                                          validator: (value) {
+                                            if (value!.trim().isEmpty) {
+                                              return AlertStringConstants
+                                                  .pleaseSelectClosingTimeText;
+                                            } else if (value.trim() ==
+                                                searchStoreController
+                                                    .openingTimeTextController
+                                                    .text) {
+                                              return AlertStringConstants
+                                                  .closingTimeAlertText;
+                                            }
+                                            return null;
+                                          },
+                                          onTap: () async {
+                                            TimeOfDay date = TimeOfDay.now();
+                                            FocusScope.of(context)
+                                                .requestFocus(FocusNode());
+                                            date = (await showTimePicker(
+                                              helpText: "Select Time",
+                                              initialTime: TimeOfDay.now(),
+                                              context: context,
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData.light()
+                                                      .copyWith(
+                                                    colorScheme:
+                                                        const ColorScheme.light(
+                                                            primary: AppColors
+                                                                .primary),
+                                                    buttonTheme:
+                                                        const ButtonThemeData(
+                                                            textTheme:
+                                                                ButtonTextTheme
+                                                                    .primary),
+                                                  ),
+                                                  child: child!,
+                                                );
+                                              },
+                                            ))!;
+                                            searchStoreController
+                                                    .closingTimeTextController
+                                                    .text =
+                                                date.format(context).toString();
+                                          },
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                StringConstants.closingTimeText,
+                                            hintStyle: const TextStyle(
+                                                color: AppColors.grey,
+                                                fontSize: 14),
+                                            fillColor: Colors.white,
+                                            border: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          : height0SizedBox,
+                    ),
+                    height20SizedBox,
+                    Obx(() => searchStoreController.is247Time.value != true
+                        ? Text(
+                            StringConstants.workingDaysText,
+                            style: TextStyle(
+                                color: AppColors.blacklight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          )
+                        : height0SizedBox),
+                    height4SizedBox,
+                    Obx(
+                      () => searchStoreController.is247Time.value != true
+                          ? MultiDropClass(
+                              onChanged: (v) {
+                                searchStoreController.storeTimmingList.clear();
+                                //  String selectedDays = "";
+                                for (int i = 0;
+                                    i <
+                                        searchStoreController
+                                            .weekDaysList.length;
+                                    i++) {
+                                  if (searchStoreController.weekDaysList[i]
+                                      ['isSelected']) {
+                                    // selectedDays = searchStoreController
+                                    //         .weekDaysList[i]['day'] +
+                                    //     "," +
+                                    //     selectedDays;
+                                    searchStoreController.storeTimmingList.add({
+                                      "is_24_hours_active": false,
+                                      "day_of_week": (i + 1).toString(),
+                                      "opening_time": searchStoreController
+                                          .openingTimeTextController.text
+                                          .trim(),
+                                      "closing_time": searchStoreController
+                                          .closingTimeTextController.text
+                                          .trim()
+                                    });
+                                  }
+                                }
+                                print("top list" + v.toString());
+                                print("LISTTTTTTTTTTTTT" +
+                                    searchStoreController.storeTimmingList
+                                        .toString());
+                                // searchStoreController.workingDaysTextController.clear();
+                                // searchStoreController.workingDaysTextController
+                                //     .text = selectedDays;
+                              },
+                              controller: searchStoreController
+                                  .workingDaysTextController,
+                              hintText: StringConstants.selectDaysText,
+                              title: StringConstants.selectDaysText,
+                              list: searchStoreController.weekDaysList)
+                          : height0SizedBox,
+                    ),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

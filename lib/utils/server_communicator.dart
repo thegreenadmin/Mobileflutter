@@ -37,6 +37,7 @@ class ServerCommunicator {
   String storeList = 'store/list';
   String storeDetails = 'store/details';
   String storeDetailsEdit = 'store/details/edit';
+  String storeProductList = 'store/product/list?';
 
 //T
 //U

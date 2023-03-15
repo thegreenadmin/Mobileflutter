@@ -16,7 +16,6 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -51,11 +50,14 @@ class AddNewStoreController extends GetxController {
   RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
   RxString stateId = "".obs;
   RxInt radioGroupValue = 0.obs;
+  RxString openingTime = "".obs;
+  RxString closingTime = "".obs;
+ 
 
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
-  
+
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
     {"isSelected": false, "day": "Monday"},
     {"isSelected": false, "day": "Tuesday"},

@@ -60,7 +60,18 @@ class ManageStoreController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
+    apiGetStoreCategories();
   }
+
+  RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
+    {"isSelected": false, "day": "Monday"},
+    {"isSelected": false, "day": "Tuesday"},
+    {"isSelected": false, "day": "Wednesday"},
+    {"isSelected": false, "day": "Thursday"},
+    {"isSelected": false, "day": "Friday"},
+    {"isSelected": false, "day": "Saturday"},
+    {"isSelected": false, "day": "Sunday"},
+  ].obs;
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -234,6 +245,37 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  Future apiGetStoreCategories() async {
+    isLoading.value == true;
+    debugPrint(
+        "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeProductList}}"}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {
+      "": "",
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value == false;
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

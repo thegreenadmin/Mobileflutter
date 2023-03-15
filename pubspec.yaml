@@ -46,6 +46,7 @@ dependencies:
   dio: ^5.0.1
   image_picker: ^0.8.7
   path_provider: ^2.0.13
+  
 
 
 
