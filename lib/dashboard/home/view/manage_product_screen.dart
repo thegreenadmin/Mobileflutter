@@ -238,6 +238,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                 manageStoreController
                                         .categoriesList[index].categoryName ??
                                     "";
+                            manageStoreController.categoryId.value =
+                                manageStoreController
+                                        .categoriesList[index].categoryId ??
+                                    "";
+                            manageStoreController.apiGetStoreProducts();
+
                             Get.to(const ViewProductScreen());
                           },
                           child: Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -35,12 +36,15 @@ class ManageStoreController extends GetxController {
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
   RxString categoryName = "".obs;
+  RxString categoryId = "".obs;
   RxString discountType = "".obs;
   RxString categoryDropdownValue = "Andaman and Nicobar Islands".obs;
-  RxString categoryId = "".obs;
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
+
+  late GetStoreProductList getStoreProductList = GetStoreProductList();
+  RxList<Products> storeProductList = <Products>[].obs;
 
   final ImagePicker imagePicker = ImagePicker();
   RxList<XFile>? imageFileList = <XFile>[].obs;
@@ -60,7 +64,6 @@ class ManageStoreController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
-    apiGetStoreCategories();
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
@@ -255,16 +258,31 @@ class ManageStoreController extends GetxController {
     });
   }
 
-  Future apiGetStoreCategories() async {
+  Future apiGetStoreProducts() async {
     isLoading.value == true;
     debugPrint(
-        "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeProductList}}"}");
+      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+    );
     Map<String, String> headers = {
+      'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map body = {
-      "": "",
+      "q": "",
+      "store_id": storeId.value,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "product_id",
+      "order_type": "ASC",
+      "category_id": categoryId.value,
+      "filters": [
+        {
+          "filter_by": "is_featured_product",
+          "filter_value": false,
+          "operation": "eq"
+        }
+      ]
     };
     UserProvider()
         .postWithHeadersApi(
@@ -274,8 +292,11 @@ class ManageStoreController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value == false;
+      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
       debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getStoreProductList = GetStoreProductList.fromJson(value.body);
+        storeProductList.value = getStoreProductList.data!.products!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
