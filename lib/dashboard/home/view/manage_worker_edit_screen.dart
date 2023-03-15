@@ -47,7 +47,6 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                   Get.back();
                                 },
                                 icon: const Icon(
-
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -304,7 +303,10 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         ? height0SizedBox
                         : DropdownButtonFormField<UserStoresList>(
                             isExpanded: true,
-                            value: addNewWorkerController.getUserStoreList.last,
+                            value:  addNewWorkerController.storeId.toString()!=null
+                                && addNewWorkerController.storeId.toString()!="0"?
+                            addNewWorkerController.getUserStoreList.firstWhere((element) =>
+                            element.storeId == addNewWorkerController.storeId.toString()):null,
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -707,7 +709,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit();
+                        addNewWorkerController.validateAndSubmit(isEdit:true);
                       },
                       height: 50,
                       text: StringConstants.saveText,

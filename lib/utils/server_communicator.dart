@@ -15,6 +15,7 @@ class ServerCommunicator {
 
 //D
 //E
+  String editWorker = 'store/user/edit';
 //F
   String fileUpload = 'file/upload/single';
 

@@ -8,10 +8,12 @@ class Categories {
   Categories({
     this.id,
     this.name,
+    this.isSelected,
   });
 
   int? id;
   String? name;
+  bool? isSelected;
 
   factory Categories.fromJson(Map<String, dynamic> json) => Categories(
     id: json["id"] == null ? null : json["id"],

@@ -3,7 +3,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'app_colors.dart';
 
 class MultiCustomDropDown extends StatefulWidget {
-  // final _ProviderSignupPage? signupPage;
   final TextEditingController? controller;
   final List<dynamic>? list;
   final String? title;
@@ -28,7 +27,6 @@ class MultiCustomDropDown extends StatefulWidget {
 }
 
 class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
-  // FocusNode myFocusNode =  FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +36,16 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
         validator: (val) {
           return widget.validator!(val);
         },
+        readOnly: true,
         style: const TextStyle(
             color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
-        // obscureText: state.showPassword,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.visiblePassword,
         onChanged: (text) {},
         onTap: () async {
           final value = await _showMultiSelect(
               widget.list, widget.title, widget.onChanged!);
-          widget.controller!.text = widget.controller!.text + value.toString();
+          widget.controller!.text = value.toString();
         },
         maxLength: 50,
         decoration: InputDecoration(
@@ -56,9 +54,8 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
             onTap: () async {
               final value = await _showMultiSelect(
                   widget.list, widget.title, widget.onChanged!);
-              widget.controller!.text =
-                  widget.controller!.text + value.toString();
-            },
+              widget.controller!.text = value.toString();
+              },
             child: Icon(
               Icons.arrow_drop_down,
               color: Theme.of(context).primaryColorDark,
@@ -112,7 +109,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     });
   }
 
-  Future<String> _showMultiSelect(
+  Future<String?> _showMultiSelect(
       items, title, Function(List<dynamic>)? onChanged) async {
     final List<dynamic>? results = await showDialog(
       context: context,
@@ -123,13 +120,14 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
         );
       },
     );
-
     var concatenate = StringBuffer();
     onChanged!(results?.toList() ?? []);
     if (results != null) {
       for (var item in results) {
-        concatenate.write(item.name);
-        concatenate.write(', ');
+        if(item.isSelected==true){
+          concatenate.write(item.name);
+          concatenate.write(', ');
+        }
       }
     }
     return concatenate.toString();
@@ -147,17 +145,11 @@ class MultiSelect extends StatefulWidget {
 }
 
 class _MultiSelectState extends State<MultiSelect> {
-  // this variable holds the selected items
-  final List<dynamic> _selectedItems = [];
 
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(dynamic itemValue, bool isSelected) {
     setState(() {
-      if (isSelected) {
-        _selectedItems.add(itemValue);
-      } else {
-        _selectedItems.remove(itemValue);
-      }
+      itemValue.isSelected=isSelected;
     });
   }
 
@@ -168,7 +160,7 @@ class _MultiSelectState extends State<MultiSelect> {
 
 // this function is called when the Submit button is tapped
   void _submit() {
-    Navigator.pop(context, _selectedItems);
+    Navigator.pop(context, widget.items);
   }
 
   @override
@@ -183,7 +175,7 @@ class _MultiSelectState extends State<MultiSelect> {
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item),
+                    value:item.isSelected==true, //_selectedItems.contains(item),
                     activeColor: AppColors.primary,
                     title: Text(item.name),
                     controlAffinity: ListTileControlAffinity.leading,
