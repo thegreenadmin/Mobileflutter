@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
-import 'package:thegreenmall/dashboard/home/view/search_store_owner_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'dart:convert';
+import 'package:dio/dio.dart' as mdio;
+import 'package:http_parser/http_parser.dart';
 
 class SearchStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -62,6 +68,11 @@ class SearchStoreController extends GetxController {
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
 
+  RxString editStoreImageOrigionalLinkfromServer = "".obs;
+  RxString editStoreImageDynamicLinkfromServer = "".obs;
+
+  Rx<XFile> editStoreImage = XFile("").obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -87,6 +98,136 @@ class SearchStoreController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
+    }
+  }
+
+  Future<void> showSelectionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text(
+                "From where do you want to take the photo?",
+                style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.image_sharp,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          const Text("Gallery",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                        Get.back();
+                        XFile? pickedFile = await ImagePickerClass.picker
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.gallery,
+                                maxWidth: 900,
+                                maxHeight: 900);
+                        if (pickedFile != null) {
+                          editStoreImage.value = pickedFile;
+                          await apiUploadImage();
+                          update();
+                        } else {
+                          // api();
+                        }
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.all(8.0)),
+                    GestureDetector(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.camera_alt,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          const Text("Camera",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                        Get.back();
+                        XFile? pickedFile = await ImagePickerClass.picker
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.camera,
+                                maxWidth: 900,
+                                maxHeight: 900);
+                        if (pickedFile != null) {
+                          editStoreImage.value = pickedFile;
+                          await apiUploadImage();
+                          update();
+                        } else {
+                          // api();
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ));
+        });
+  }
+
+  //Api upload image to server
+  Future apiUploadImage() async {
+    try {
+      final dio = mdio.Dio();
+      mdio.FormData formData = mdio.FormData.fromMap({});
+      Map<String, String> headers = {
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      };
+
+      formData.files.add(MapEntry(
+          "file",
+          mdio.MultipartFile.fromBytes(await editStoreImage.value.readAsBytes(),
+              contentType: MediaType.parse("image/png"),
+              filename: "file-name.png".toString())));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
+      final responseData = res.data;
+      debugPrint(
+          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        editStoreImageOrigionalLinkfromServer.value =
+            responseData['data']['urls']['orignal_url'];
+        editStoreImageDynamicLinkfromServer.value =
+            responseData['data']['urls']['dynamic_url'];
+        return responseData;
+      } else if (res.statusCode == 403) {
+        Utility.showToast(responseData['message'].toString());
+      } else {}
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e is mdio.DioError) {
+        if (e.type == mdio.DioErrorType.badResponse) {
+          debugPrint("${e.response?.data ?? ""}");
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
+          return responseData;
+        }
+      }
+      throw Exception('Failed to load data ! $e');
     }
   }
 
@@ -140,6 +281,8 @@ class SearchStoreController extends GetxController {
       debugPrint("GET PARTICULAR STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         storeId.value = value.body["data"]['store']['store_id'] ?? "";
+        editStoreImageDynamicLinkfromServer.value =
+            value.body["data"]['store']['image']["dynamic_url"] ?? "";
         storeNameTextController.text =
             value.body["data"]['store']['store_name'] ?? "";
         einTextController.text = value.body["data"]['store']['store_ein'] ?? "";
@@ -185,7 +328,7 @@ class SearchStoreController extends GetxController {
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
-        "image_url": null,
+        "image_url": editStoreImageOrigionalLinkfromServer,
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
         "store_phone": phoneTextController.text.trim(),

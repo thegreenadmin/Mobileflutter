@@ -991,7 +991,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectOpeningTimeText;
-                                            } else if (value!.trim() ==
+                                            } else if (value.trim() ==
                                                 addNewStoreController
                                                     .closingTimeTextController
                                                     .text) {
@@ -1111,7 +1111,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             if (value!.trim().isEmpty) {
                                               return AlertStringConstants
                                                   .pleaseSelectClosingTimeText;
-                                            } else if (value!.trim() ==
+                                            } else if (value.trim() ==
                                                 addNewStoreController
                                                     .openingTimeTextController
                                                     .text) {

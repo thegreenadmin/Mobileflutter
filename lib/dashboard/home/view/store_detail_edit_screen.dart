@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -84,6 +85,84 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
+                    ),
+                    height15SizedBox,
+                    Text(
+                      StringConstants.storeImageText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height20SizedBox,
+                    Obx(
+                      () => searchStoreController
+                              .editStoreImageDynamicLinkfromServer.value.isEmpty
+                          ? InkWell(
+                              onTap: () {
+                                searchStoreController
+                                    .showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                      width: WidgetConstants.screenWidth * 0.85,
+                                      padding: const EdgeInsets.only(
+                                          top: 35, bottom: 35),
+                                      color: AppColors.primarylight,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/upload.png",
+                                              scale: 2.5,
+                                            ),
+                                            height6SizedBox,
+                                            Text(StringConstants
+                                                .uploadStoreImageText)
+                                          ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                searchStoreController
+                                    .showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                        width:
+                                            WidgetConstants.screenWidth * 0.85,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.2,
+                                        color: AppColors.primarylight,
+                                        child: 
+                                        
+                                        Image.network(
+                                            searchStoreController
+                                                .editStoreImageDynamicLinkfromServer
+                                                .value,
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
                     height15SizedBox,
                     Text(

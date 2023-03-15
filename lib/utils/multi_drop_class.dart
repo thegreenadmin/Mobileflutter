@@ -55,6 +55,7 @@ class _MultiDropClassState extends State<MultiDropClass> {
                   widget.list, widget.title, widget.onChanged!);
               widget.controller!.text =
                   widget.controller!.text + value.toString();
+              setState(() {});
             },
             child: Icon(
               Icons.arrow_drop_down,

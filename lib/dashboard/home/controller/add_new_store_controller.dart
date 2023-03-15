@@ -16,7 +16,6 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-import '../model/categories.dart';
 
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -56,6 +55,7 @@ class AddNewStoreController extends GetxController {
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
+  
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
     {"isSelected": false, "day": "Monday"},
     {"isSelected": false, "day": "Tuesday"},
