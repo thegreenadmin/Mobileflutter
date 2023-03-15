@@ -15,8 +15,9 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
 
-import '../model/add_worker_request.dart';
+import '../model/add_worker_request.dart' as add_worker;
 import '../model/categories.dart';
+import '../model/edit_worker_request.dart';
 
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -93,33 +94,36 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit({bool isEdit = false}) async {
     if (validateAndSave()) {
       try {
-        addWorker();
+        if(isEdit){
+          apiEditWorker();
+        }else{
+          apiAddWorker();
+        }
+
       } catch (_) {}
     } else {
       autoValidate.value = true;
     }
   }
 
-  Future<dynamic> addWorker() async{
-    debugPrint("storeId ***${storeId.value}*");
-    debugPrint("ADD WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreUser}");
-    Map<String, String> headers = {
+  Future<dynamic> apiAddWorker() async{
+     Map<String, String> headers = {
       'Authorization':
       "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    AddWorkerRequest addWorkerRequest = AddWorkerRequest();
+    add_worker.AddWorkerRequest addWorkerRequest = add_worker.AddWorkerRequest();
     addWorkerRequest.storeId = int.parse(storeId.value??"0");
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
     addWorkerRequest.phone = mobileNoTextController.text.trim();
     addWorkerRequest.email = emailTextController.text.trim();
-    List<EmployeeTiming>? employeeTimings = [];
+    List<add_worker.EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       debugPrint("${element.id}${element.name}");
-      EmployeeTiming employeeTiming = EmployeeTiming();
+      add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
       employeeTiming.dayOfWeek = element.id;
       employeeTiming.is24HrsActive = is247Time.value;
       employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
@@ -127,12 +131,59 @@ class AddNewWorkerController extends GetxController {
       employeeTimings.add(employeeTiming);
     }
     addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("addWorkerRequest ***${addWorkerRequest.toJson()}*");
+     debugPrint("addWorkerRequest ***${addWorkerRequest.toJson()}*");
+
+    UserProvider().postWithHeadersApi(
+        addWorkerRequest,
+        ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      debugPrint("ADD WORKER RESPONSE *******${value!.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        getUserStoreListModel = GetUserStoreListModel.fromJson(value?.body);
+        getUserStoreList.value = getUserStoreListModel.data!.stores!;
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']??"");
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']??"");
+      }
+    });
+  }
+
+  Future<dynamic> apiEditWorker() async{
+    debugPrint("storeId ***${storeId.value}*");
+    debugPrint("ADD WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreUser}");
+
+    Map<String, String> headers = {
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    EditWorkerRequest editWorkerRequest = EditWorkerRequest();
+    editWorkerRequest.storeId = int.parse(storeId.value??"0");
+    // editWorkerRequest.employeeName = employeeNameTextController.text.trim();
+    editWorkerRequest.description = shortDescriptionTextController.text.trim();
+    // editWorkerRequest.phone = mobileNoTextController.text.trim();
+    // editWorkerRequest.email = emailTextController.text.trim();
+    // List<EmployeeTiming>? employeeTimings = [];
+    // for (var element in selectedWeekDaysList) {
+    //   debugPrint("${element.id}${element.name}");
+    //   EmployeeTiming employeeTiming = EmployeeTiming();
+    //   employeeTiming.dayOfWeek = element.id;
+    //   employeeTiming.is24HrsActive = is247Time.value;
+    //   employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+    //   employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+    //   employeeTimings.add(employeeTiming);
+    // }
+    // addWorkerRequest.employeeTimings = employeeTimings;
+    debugPrint("addWorkerRequest ***${editWorkerRequest.toJson()}*");
 
     UserProvider()
         .postWithHeadersApi(
-        addWorkerRequest,
-        ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser,
+        editWorkerRequest,
+        ServerCommunicator().baseUrl + ServerCommunicator().editWorker,
         headers,
         showLoading: false)
         .then((value) async {
