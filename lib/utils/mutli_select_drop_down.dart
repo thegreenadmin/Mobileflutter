@@ -61,11 +61,6 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
         decoration: InputDecoration(
           counterText: '',
           suffixIcon: InkWell(
-            onTap: () async {
-              final value = await _showMultiSelect(
-                  widget.list, widget.title, widget.onChanged!);
-              widget.controller!.text = value.toString();
-              },
             child: Icon(
               Icons.arrow_drop_down,
               color: Theme.of(context).primaryColorDark,
@@ -131,7 +126,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
       },
     );
     var concatenate = StringBuffer();
-    onChanged!(results?.toList() ?? []);
+    onChanged!(results?.toList()?? []);
     if (results != null) {
       for (var item in results) {
         if(item.isSelected==true){

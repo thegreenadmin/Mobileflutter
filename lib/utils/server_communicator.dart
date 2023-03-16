@@ -41,7 +41,7 @@ class ServerCommunicator {
   String storeProductList = 'store/product/list';
   String storeProductDetail = 'store/product/details';
   String storeProductEdit = 'store/product/edit';
-
+  String storeUserDetail = 'store/user/details';
 //T
 //U
   String userDetail = 'user/details';
@@ -51,6 +51,7 @@ class ServerCommunicator {
 //V
 //W
   String workerList = 'store/user/list';
+
 
 //X
 //Y

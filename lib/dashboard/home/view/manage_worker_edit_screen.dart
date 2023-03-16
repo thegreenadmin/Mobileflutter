@@ -23,6 +23,7 @@ class ManageWorkerEditScreen extends StatefulWidget {
 class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
   final AddNewWorkerController addNewWorkerController =
       Get.put(AddNewWorkerController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +45,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
+                                  addNewWorkerController.formKey.currentState?.reset();
+                                  addNewWorkerController.resetForm();
                                   Get.back();
                                 },
                                 icon: const Icon(
@@ -82,8 +85,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
                           children: [
@@ -93,36 +96,34 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                               color: AppColors.blacklight,
                               strokeWidth: 1,
                               dashPattern: const [4, 4],
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child:
-                                      // userProfileController
-                                      //                 .userImageFile.value ==
-                                      //             "" ||
-                                      //         userProfileController
-                                      //             .userImageFile.isEmpty
-                                      //     ?
-                                      const CircleAvatar(
-                                    radius: 50.0,
-                                    backgroundImage: AssetImage(
-                                      "assets/userAccount.png",
+                              child:  Obx(()=> Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
                                     ),
-                                    backgroundColor: AppColors.primarylight,
-                                  )
-                                  // : CircleAvatar(
-                                  //     radius: 38.0,
-                                  //     backgroundImage: NetworkImage(
-                                  //       ServerCommunicator()
-                                  //               .baseUrlWithoutV1 +
-                                  //           userProfileController
-                                  //               .userImageFile.value
-                                  //               .toString(),
-                                  //     ),
-                                  //     backgroundColor: Colors.transparent,
-                                  //   ),
-                                  ),
+                                    child:
+                                    addNewWorkerController
+                                                        .userImageDynamicLinkFromServer.value ==
+                                                    "" ||
+                                        addNewWorkerController
+                                                    .userImageDynamicLinkFromServer.isEmpty
+                                            ?
+                                        const CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage: AssetImage(
+                                        "assets/userAccount.png",
+                                      ),
+                                      backgroundColor: AppColors.primarylight,
+                                    )
+                                    : CircleAvatar(
+                                        radius: 50.0,
+                                        backgroundImage: NetworkImage(
+                                          addNewWorkerController
+                                                  .userImageDynamicLinkFromServer.toString(),
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                      ),
+                                    ),
+                              ),
                             ),
                           ],
                         ),
@@ -146,7 +147,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         //   ),
                         // ),
                         width20SizedBox,
-                        Column(
+                      /*  Column(
                           children: [
                             height20SizedBox,
                             Text("Upload photo here",
@@ -160,7 +161,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                               scale: 3,
                             ),
                           ],
-                        )
+                        )*/
                       ],
                     ),
                     height20SizedBox,
@@ -175,6 +176,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     TextFormField(
                         textInputAction: TextInputAction.next,
                         autofocus: false,
+                        readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -237,7 +239,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     height4SizedBox,
                     TextFormField(
                         textInputAction: TextInputAction.next,
-                        autofocus: false,
+                        autofocus: false, readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -431,8 +433,14 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         onChanged: (v) {
                           addNewWorkerController.selectedWeekDaysList.value = v;
                         },
+                        validator: (v) {
+                          if (v!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterWeekDaysText;
+                          }
+                          return null;
+                        },
                         controller:
-                            addNewWorkerController.workingDaysTextController,
+                        addNewWorkerController.workingDaysTextController,
                         hintText: StringConstants.selectDaysText,
                         title: StringConstants.selectDaysText,
                         list: addNewWorkerController.weekDaysList),
@@ -649,7 +657,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     height4SizedBox,
                     TextFormField(
                         textInputAction: TextInputAction.next,
-                        autofocus: false,
+                        autofocus: false, readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],

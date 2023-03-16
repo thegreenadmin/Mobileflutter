@@ -18,6 +18,7 @@ import 'package:http_parser/http_parser.dart';
 import '../model/add_worker_request_model.dart' as add_worker;
 import '../model/categories_model.dart';
 import '../model/edit_worker_request_model.dart';
+import '../model/get_worker_detail_model.dart' as worker_detail;
 import '../model/get_worker_list_model.dart';
 
 class AddNewWorkerController extends GetxController {
@@ -25,8 +26,7 @@ class AddNewWorkerController extends GetxController {
 
   TextEditingController employeeNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
-  TextEditingController shortDescriptionTextController =
-      TextEditingController();
+  TextEditingController shortDescriptionTextController = TextEditingController();
   TextEditingController nickNameTextController = TextEditingController();
   TextEditingController mobileNoTextController = TextEditingController();
   TextEditingController startTimeTextController = TextEditingController();
@@ -37,7 +37,7 @@ class AddNewWorkerController extends GetxController {
     Categories(
         id: 1,
         name: "Monday",
-        isSelected:false
+        isSelected:false,
     ),
     Categories(
         id: 2,
@@ -82,18 +82,20 @@ class AddNewWorkerController extends GetxController {
   Rx<XFile> categoryImage = XFile("").obs;
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
   late WorkerListResponse workerListResponse = WorkerListResponse();
+  late worker_detail.WorkerDetailResponse workerDetailResponse = worker_detail.WorkerDetailResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
 
   RxString storeDropdownValue = "My store".obs;
   RxString storeId = "0".obs;
+  RxString workerId = "0".obs;
   RxInt radioGroupValue = 0.obs;
 
 
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"];
+    storeId.value = Get.arguments["storeId"]??"";
     apiGetUserStoreList();
     apiGetWorkerList();
   }
@@ -123,6 +125,7 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
+  // Add Worker Api
   Future<dynamic> apiAddWorker() async{
      Map<String, String> headers = {
        'Content-Type': 'application/json',
@@ -138,13 +141,16 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.email = emailTextController.text.trim();
     List<add_worker.EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
-      debugPrint("${element.id}${element.name}");
-      add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
-      employeeTiming.dayOfWeek = element.id;
-      employeeTiming.is24HrsActive = is247Time.value;
-      employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-      employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-      employeeTimings.add(employeeTiming);
+      if(element.isSelected  == true){
+        debugPrint("${element.id} ${element.isSelected} ${element.name} ");
+        add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
+        employeeTiming.dayOfWeek = element.id;
+        employeeTiming.is24HrsActive = is247Time.value;
+        employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+        employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+        employeeTimings.add(employeeTiming);
+      }
+
     }
     addWorkerRequest.employeeTimings = employeeTimings;
      debugPrint("addWorkerRequest ***${addWorkerRequest.toJson()}*");
@@ -158,7 +164,7 @@ class AddNewWorkerController extends GetxController {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         Utility.showToast(value?.body['message']??"");
-        apiGetWorkerList();
+        await apiGetWorkerList();
         Get.back();
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']??"");
@@ -170,9 +176,10 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
+  // Edit Worker Api
   Future<dynamic> apiEditWorker() async{
     debugPrint("storeId ***${storeId.value}*");
-    debugPrint("ADD WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreUser}");
+    debugPrint("EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -181,35 +188,63 @@ class AddNewWorkerController extends GetxController {
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
     editWorkerRequest.storeId = int.parse(storeId.value??"0");
-    // editWorkerRequest.imageUrl = userImageOrigionalLinkfromServer.value.trim();
-    // editWorkerRequest.employeeName = employeeNameTextController.text.trim();
+    editWorkerRequest.storeUserId = int.parse(workerId.value??"0");
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
-    // editWorkerRequest.phone = mobileNoTextController.text.trim();
-    // editWorkerRequest.email = emailTextController.text.trim();
-    // List<EmployeeTiming>? employeeTimings = [];
-    // for (var element in selectedWeekDaysList) {
-    //   debugPrint("${element.id}${element.name}");
-    //   EmployeeTiming employeeTiming = EmployeeTiming();
-    //   employeeTiming.dayOfWeek = element.id;
-    //   employeeTiming.is24HrsActive = is247Time.value;
-    //   employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-    //   employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-    //   employeeTimings.add(employeeTiming);
-    // }
-    // addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("addWorkerRequest ***${editWorkerRequest.toJson()}*");
+    List<EmployeeTiming>? employeeTimings = [];
+    debugPrint("selectedWeekDaysList");
+    print(workerDetailResponse.data?.storeUser?.storeUserTimings?.length);
+    if(workerDetailResponse.data?.storeUser?.storeUserTimings!=null &&
+        workerDetailResponse.data?.storeUser?.storeUserTimings?.length!=0){
+      for (worker_detail.StoreUserTiming data in workerDetailResponse.data?.storeUser?.storeUserTimings??[]) {
+        for (var element in selectedWeekDaysList) {
+          if(element.id == data.dayOfWeek){
+          debugPrint("${element.id}${element.name}");
+          EmployeeTiming employeeTiming = EmployeeTiming();
+          employeeTiming.storeUserTimingId = data.storeUserTimingId;
+          employeeTiming.dayOfWeek = element.id;
+          employeeTiming.is24HrsActive = is247Time.value;
+          if(element.isSelected==true){
+            employeeTiming.status = "active";
+          }
+          else{
+            employeeTiming.status = "deleted";
+          }
+          employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+          employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+          employeeTimings.add(employeeTiming);
+        }
+        }
+      }
+    }else{
+      for (var element in selectedWeekDaysList) {
+        if(element.isSelected  == true){
+          debugPrint("${element.id} ${element.isSelected} ${element.name} ");
+        EmployeeTiming employeeTiming = EmployeeTiming();
+        employeeTiming.storeUserTimingId =null;
+        employeeTiming.dayOfWeek = element.id;
+        employeeTiming.is24HrsActive = is247Time.value;
+        employeeTiming.status = "active";
+        employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+        employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
+        employeeTimings.add(employeeTiming);
+      }
+      }
+    }
+   editWorkerRequest.employeeTimings = employeeTimings;
+    debugPrint("EDIT Request ***${editWorkerRequest.toJson()}*");
 
     UserProvider()
-        .postWithHeadersApi(
+        .putWithHeadersApi(
         editWorkerRequest,
         ServerCommunicator().baseUrl + ServerCommunicator().editWorker,
         headers,
         showLoading: false)
         .then((value) async {
-      debugPrint("ADD WORKER RESPONSE *******${value!.body}");
+      debugPrint("EDIT RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        getUserStoreListModel = GetUserStoreListModel.fromJson(value.body);
-        getUserStoreList.value = getUserStoreListModel.data!.stores!;
+        Utility.showToast(value.body['message']);
+        await apiGetWorkerList();
+        Get.back();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -384,7 +419,7 @@ class AddNewWorkerController extends GetxController {
     workerList.clear();
     isLoading.value = true;
     debugPrint(
-        "GET USER STORE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
+        "apiGetWorkerList **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
     Map<String, String> headers = {
       'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
@@ -392,26 +427,15 @@ class AddNewWorkerController extends GetxController {
         .getWithHeadersApi(
            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?page=1&page_size=100&store_id=${int.parse(storeId.value??"0")}",
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET USER STORE LIST RESPONSE *******${value?.body}");
+      debugPrint("apiGetWorkerList RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ??[];
-        // workerDays.value
-        var concatenate = StringBuffer();
-        if (workerList != null) {
-          for (StoreUser item in workerList??[]) {
-          for (StoreUserTiming data in item.storeUserTimings??[]) {
-          for (Categories day in weekDaysList??[]) {
-            if(data.dayOfWeek  == day.id){
-              concatenate.write(day.name?.substring(0,3));
-              concatenate.write(', ');
-            }}
-          }}
-        }
-        workerDays.value = concatenate.toString()??'';
+
+        // workerDays.value = concatenate.toString()??'';
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -423,4 +447,68 @@ class AddNewWorkerController extends GetxController {
   }
 
 
+  //Get Worker List Api
+  Future apiGetWorkerDetail() async {
+    isLoading.value = true;
+    selectedWeekDaysList.clear();
+    debugPrint(
+        "GET  STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value??"0")}&store_id=${int.parse(storeId.value??"0")}");
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+           "${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value??"0")}&store_id=${int.parse(storeId.value??"0")}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET  STORE USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        workerDetailResponse = worker_detail.WorkerDetailResponse.fromJson(value?.body);
+        employeeNameTextController.text = workerDetailResponse.data?.storeUser?.user?.firstName??'';
+        shortDescriptionTextController.text = workerDetailResponse.data?.storeUser?.description??'';
+        emailTextController.text = workerDetailResponse.data?.storeUser?.user?.email??'';
+        mobileNoTextController.text = workerDetailResponse.data?.storeUser?.user?.phone??'';
+        userImageDynamicLinkFromServer.value = workerDetailResponse.data?.storeUser?.user?.image?.dynamicUrl??"";
+        userImageOriginalLinkFromServer.value = workerDetailResponse.data?.storeUser?.user?.image?.orignalUrl??"";
+        List<worker_detail.StoreUserTiming>? storeUserTimings= workerDetailResponse.data?.storeUser?.storeUserTimings??[];
+        var concatenate = StringBuffer();
+        if (workerDetailResponse.data?.storeUser?.storeUserTimings != null &&
+            workerDetailResponse.data?.storeUser?.storeUserTimings?.length!=0) {
+            for (worker_detail.StoreUserTiming data in storeUserTimings) {
+              for (Categories day in weekDaysList??[]) {
+                if(day.id == data.dayOfWeek ){
+                  day.isSelected = true;
+                  selectedWeekDaysList.add(day);
+                  concatenate.write(day.name);
+                  concatenate.write(', ');
+                  startTimeTextController.text =
+                      Utility.formatDateTime(data.startTime??"",firstFormat: "hh:mm:ss",secFormat: "hh:mm a");
+                  endTimeTextController.text =  Utility.formatDateTime(data.endTime??"",firstFormat: "hh:mm:ss",secFormat: "hh:mm a");
+                }}
+            }
+        }
+        workingDaysTextController.text =  concatenate.toString()??'';
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  resetForm(){
+    userImageDynamicLinkFromServer.value = "";
+    userImageOriginalLinkFromServer.value = "";
+    employeeNameTextController.clear();
+    emailTextController.clear();
+    shortDescriptionTextController.clear();
+    mobileNoTextController.clear();
+    workingDaysTextController.clear();
+    startTimeTextController.clear();
+    endTimeTextController.clear();
+  }
 }
