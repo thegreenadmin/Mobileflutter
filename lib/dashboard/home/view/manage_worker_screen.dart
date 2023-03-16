@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import '../controller/add_new_worker_controller.dart';
+import '../model/categories_model.dart';
 
 class ManageWorkerScreen extends StatefulWidget {
   const ManageWorkerScreen({super.key});
@@ -149,41 +150,18 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                         },
                         itemCount: addNewWorkerController.workerList.length,
                         itemBuilder: (BuildContext context, int index) {
+
+                          var concatenate = StringBuffer();
+                              for (var data in addNewWorkerController.workerList[index].storeUserTimings??[]) {
+                                for (Categories day in addNewWorkerController.weekDaysList??[]) {
+                                  if(data.dayOfWeek  == day.id){
+                                    concatenate.write(day.name?.substring(0,3));
+                                    concatenate.write(', ');
+                                  }}
+                              }
                           return InkWell(
                             onTap: () async {
-                              // searchStoreController.storeId.value =
-                              //     searchStoreController
-                              //         .storeList[index].storeId ??
-                              //         "";
-                              //
-                              // searchStoreController.storeName.value =
-                              //     searchStoreController
-                              //         .storeList[index].storeName ??
-                              //         "";
-                              //
-                              // searchStoreController.storeLocation.value =
-                              // searchStoreController
-                              //     .storeList[index]
-                              //     .storeAddresses![searchStoreController
-                              //     .addressListIndex!.value]
-                              //     .addressLine1!;
-                              //
-                              // searchStoreController.storeLocation.value =
-                              // searchStoreController
-                              //     .storeList[index]
-                              //     .storeAddresses![searchStoreController
-                              //     .addressListIndex!.value]
-                              //     .addressLine1!;
-                              //
-                              // searchStoreController.storeImage.value =
-                              // searchStoreController
-                              //     .storeList[index].image!.dynamicUrl!;
-                              //
-                              // await searchStoreController
-                              //     .apiGetParticularStore();
-                              //
-                              // await Get.to(
-                              //         () => const ManageStoreMainScreen());
+
                             },
                             child:Container(
                               padding: const EdgeInsets.symmetric(
@@ -285,7 +263,7 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                  "AvenueErie Rhode Island 24975",
+                                                 "addNewWorkerController",
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.w400,
                                                       fontSize: 12.0,
@@ -295,52 +273,45 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                             ],
                                           ),
                                           height8SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                "assets/watch.png",
-                                                scale: 2.5,
-                                              ),
-                                              width5SizedBox,
-                                              SizedBox(
-                                                width: 120,
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      // addNewWorkerController.workerList
-                                                      // [index].storeUserTimings!.length.toString(),
-
-                                                      "${addNewWorkerController.workerDays.value} ",
-                                                          // "${ addNewWorkerController.workerList
-                                                      // [index].storeUserTimings?.first.startTime} - ${ addNewWorkerController.workerList
-                                                      // [index].storeUserTimings?.first.endTime} ":"",
-                                                      // "M to F - 9:00 – 5:00 PM",
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w400,
-                                                          fontSize: 12.0,
-                                                          color: AppColors.blacklight),
-                                                    ),
-                                                    // Text(
-                                                    //   addNewWorkerController.workerList
-                                                    //   [index].storeUserTimings!=null && addNewWorkerController.workerList
-                                                    //   [index].storeUserTimings!=[]?
-                                                    //       "${ addNewWorkerController.workerList
-                                                    //   [index].storeUserTimings?.first.startTime} - ${ addNewWorkerController.workerList
-                                                    //   [index].storeUserTimings?.first.endTime} ":"",
-                                                    //   // "M to F - 9:00 – 5:00 PM",
-                                                    //   style: TextStyle(
-                                                    //       fontWeight: FontWeight.w400,
-                                                    //       fontSize: 12.0,
-                                                    //       color: AppColors.blacklight),
-                                                    // ),
-                                                  ],
+                                          Visibility(
+                                            visible: addNewWorkerController.workerList
+                                            [index].storeUserTimings!=null && addNewWorkerController.workerList
+                                            [index].storeUserTimings!.isNotEmpty,
+                                            replacement: height0SizedBox,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/watch.png",
+                                                  scale: 2.5,
                                                 ),
-                                              )
-                                            ],
+                                                width5SizedBox,
+                                                SizedBox(
+                                                  width: 120,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "${concatenate.toString()??''} \n ${
+                                                        addNewWorkerController.workerList
+                                                        [index].storeUserTimings!=null && addNewWorkerController.workerList
+                                                        [index].storeUserTimings!.isNotEmpty?
+                                                        "${ addNewWorkerController.workerList
+                                                            [index].storeUserTimings?.first.startTime??""} - ${ addNewWorkerController.workerList
+                                                        [index].storeUserTimings?.first.endTime??""} ":""
+                                                        }",
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w400,
+                                                            fontSize: 12.0,
+                                                            color: AppColors.blacklight),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           height8SizedBox,
                                           Row(
@@ -398,8 +369,11 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                       ),
                                     ),
                                     InkWell(
-                                      onTap: () {
+                                      onTap: () async{
+                                        addNewWorkerController.workerId.value = addNewWorkerController.workerList
+                                        [index].storeUserId.toString()??"";
                                         Get.to(() => const ManageWorkerEditScreen());
+                                       await addNewWorkerController.apiGetWorkerDetail();
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 10),
