@@ -10,7 +10,10 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class ManageStoreController extends GetxController {
+  
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
+
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController quantityTextController = TextEditingController();
   TextEditingController pricePerUnitTextController = TextEditingController();
@@ -27,6 +30,7 @@ class ManageStoreController extends GetxController {
 
   RxList<Map> selectedCategories = <Map>[].obs;
   RxBool autoValidate = false.obs;
+  RxBool updateAutoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isNotify = false.obs;
   RxBool isMenuSelected = false.obs;
@@ -38,13 +42,21 @@ class ManageStoreController extends GetxController {
   RxString categoryName = "".obs;
   RxString categoryId = "".obs;
   RxString discountType = "".obs;
+  RxString productId = "".obs;
   RxString categoryDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString selectedFeaturedType = "No".obs;
+  RxString discountValueType = "percentage".obs;
+  RxString lastProductContent = "".obs;
+  RxString lastProductLink = "".obs;
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
+
+  RxList<dynamic> productContent = <dynamic>[].obs;
+  RxList<dynamic> productLinks = <dynamic>[].obs;
 
   final ImagePicker imagePicker = ImagePicker();
   RxList<XFile>? imageFileList = <XFile>[].obs;
@@ -97,6 +109,30 @@ class ManageStoreController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
+    }
+  }
+
+  bool validateAndSaveUpdateProduct() {
+    final forms = updateformKey.currentState;
+    if (forms!.validate()) {
+      forms.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmitUpdateProduct() async {
+    if (validateAndSaveUpdateProduct()) {
+      try {
+        if (selectedCategories.isEmpty) {
+          Utility.showToast("Please select categories");
+        } else {
+          apiUpdateStoreProductDetail();
+        }
+      } catch (_) {}
+    } else {
+      updateAutoValidate.value = true;
     }
   }
 
@@ -278,11 +314,11 @@ class ManageStoreController extends GetxController {
       "order_type": "ASC",
       "category_id": categoryId.value,
       "filters": [
-        {
-          "filter_by": "is_featured_product",
-          "filter_value": false,
-          "operation": "eq"
-        }
+        // {
+        //   "filter_by": "is_featured_product",
+        //   "filter_value": false,
+        //   "operation": "eq"
+        // }
       ]
     };
     UserProvider()
@@ -298,6 +334,195 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Api to get details of one product
+  Future apiGetProductDetails() async {
+    isLoading.value = true;
+    debugPrint(
+      "GET PRODUCTS DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
+    );
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        productNameTextController.text =
+            value.body["data"]['product']["product_name"] ?? "";
+        discountType.value =
+            value.body["data"]['product']["discount_type"] ?? "";
+        if (discountType.value == "amount") {
+          discountValueType.value = "Amount";
+        } else {
+          discountValueType.value = "Percentage";
+        }
+        discountOrOfferTextController.text =
+            value.body["data"]['product']["discount_value"].toString();
+        quantityTextController.text =
+            value.body["data"]['product']["quantity"].toString();
+
+        pricePerUnitTextController.text =
+            value.body["data"]['product']["product_price"].toString();
+        shortDescriptionTextController.text =
+            value.body["data"]['product']["description"] ?? "";
+        isFeatured.value = value.body["data"]['product']["is_featured_product"];
+        if (isFeatured.value) {
+          selectedFeaturedType.value = "Yes";
+        } else {
+          selectedFeaturedType.value = "No";
+        }
+        lengthTextController.text =
+            value.body["data"]['product']["length"].toString();
+        breadthTextController.text =
+            value.body["data"]['product']["width"].toString();
+        heightTextController.text =
+            value.body["data"]['product']["height"].toString();
+        weightTextController.text =
+            value.body["data"]['product']["weight"].toString();
+        productContent.value =
+            value.body["data"]['product']["product_contents"] ?? [];
+        productLinks.value =
+            value.body["data"]['product']["product_links"] ?? [];
+        if (productContent.isNotEmpty) {
+          for (int i = 0; i < productContent.length; i++) {
+            contentsAndStrainsTextController.text =
+                productContent[i]['paragraph'];
+            lastProductContent.value = productContent[i]['paragraph'];
+          }
+        }
+        if (productLinks.isNotEmpty) {
+          for (int i = 0; i < productLinks.length; i++) {
+            additionalLinkTextController.text = productLinks[i]['link'];
+            lastProductLink.value = productLinks[i]['link'];
+          }
+        }
+        isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Update  Store Product Api
+  Future apiUpdateStoreProductDetail() async {
+    debugPrint(
+        "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "store_id": storeId.value,
+      "product": {
+        "product_id": productId.value,
+        "quantity_type_id": 1,
+        "quantity": quantityTextController.text.trim(),
+        "is_featured_product": isFeatured.value,
+        "product_name": productNameTextController.text.trim(),
+        "description": shortDescriptionTextController.text.trim(),
+        "product_price": pricePerUnitTextController.text.trim(),
+        "selling_price": 0,
+        "discount_type": discountOrOfferTextController.text.trim(),
+        "discount_value": 0,
+        "is_product_returnable": false,
+        "return_days_count": 0,
+        "length": lengthTextController.text.trim(),
+        "width": breadthTextController.text.trim(),
+        "height": heightTextController.text.trim(),
+        "weight": weightTextController.text.trim(),
+        "is_enabled": isEnabled.value
+      },
+      // "product_categories": [
+      //   {
+      //     "product_category_id": "1",
+      //     "status": "active",
+      //     "category": {"category_id": "3"}
+      //   }
+      // ],
+      "product_images": [
+        // {
+        //   "product_image_id": "1",
+        //   "image_url":
+        //       "https://sdd-citizen-app-bucket.s3.ap-south-1.amazonaws.com/100377077211-Screenshot-1.png",
+        //   "order": 1,
+        //   "status": "active"
+        // },
+        // {
+        //   "product_image_id": "2",
+        //   "image_url":
+        //       "https://sdd-citizen-app-bucket.s3.ap-south-1.amazonaws.com/100377077211-Screenshot-1.png",
+        //   "order": 2,
+        //   "status": "deleted"
+        // }
+      ],
+      "product_contents": [
+        {
+          "product_content_id":
+              lastProductContent.value != contentsAndStrainsTextController.text
+                  ? "1"
+                  : null,
+          "heading": "Heading",
+          "paragraph":
+              lastProductContent.value != contentsAndStrainsTextController.text
+                  ? contentsAndStrainsTextController.text
+                  : lastProductContent.value,
+          "order": 1,
+          "status":
+              lastProductContent.value != additionalLinkTextController.text
+                  ? "active"
+                  : "deleted"
+        },
+      ],
+      "product_links": [
+        {
+          "product_link_id":
+              lastProductLink.value != additionalLinkTextController.text
+                  ? "1"
+                  : null,
+          "name": "Product link",
+          "link": lastProductLink.value != additionalLinkTextController.text
+              ? additionalLinkTextController.text
+              : lastProductLink.value,
+          "order": 1,
+          "status": lastProductLink.value != additionalLinkTextController.text
+              ? "active"
+              : "deleted"
+        },
+      ]
+    };
+    debugPrint("UPDATE STORE PRODUCT BODY********************$data");
+    UserProvider()
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

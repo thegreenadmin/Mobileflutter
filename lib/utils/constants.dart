@@ -347,6 +347,8 @@ class AlertStringConstants {
   static String pleaseEnterDiscountOrOfferText =
       "Please enter discount or offer";
   static String pleaseEnterValidLinkText = "Please enter valid link";
+  static String pleaseSelectLogoText = "Please select logo";
+  static String pleaseSelectBannerText = "Please select banner";
   //S
   static String startTimeAlertText = "Start time can not be as end time";
 }

@@ -1,11 +1,11 @@
-class GetStoreProductList {
+class GetProductDetailModel {
   int? status;
   String? message;
   Data? data;
 
-  GetStoreProductList({this.status, this.message, this.data});
+  GetProductDetailModel({this.status, this.message, this.data});
 
-  GetStoreProductList.fromJson(Map<String, dynamic> json) {
+  GetProductDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -23,40 +23,34 @@ class GetStoreProductList {
 }
 
 class Data {
-  int? totalCount;
-  List<Products>? products;
+  Product? product;
 
-  Data({this.totalCount, this.products});
+  Data({this.product});
 
   Data.fromJson(Map<String, dynamic> json) {
-    totalCount = json['total_count'];
-    if (json['products'] != null) {
-      products = <Products>[];
-      json['products'].forEach((v) {
-        products!.add(Products.fromJson(v));
-      });
-    }
+    product =
+        json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['total_count'] = totalCount;
-    if (products != null) {
-      data['products'] = products!.map((v) => v.toJson()).toList();
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
     return data;
   }
 }
 
-class Products {
+class Product {
   String? productId;
   String? storeId;
+  String? quantityTypeId;
   int? quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  dynamic productPrice;
-  dynamic sellingPrice;
+  int? productPrice;
+  int? sellingPrice;
   String? discountType;
   int? discountValue;
   bool? isProductReturnable;
@@ -75,9 +69,10 @@ class Products {
   List<ProductContents>? productContents;
   List<ProductLinks>? productLinks;
 
-  Products(
+  Product(
       {this.productId,
       this.storeId,
+      this.quantityTypeId,
       this.quantity,
       this.isFeaturedProduct,
       this.productName,
@@ -102,9 +97,10 @@ class Products {
       this.productContents,
       this.productLinks});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  Product.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     storeId = json['store_id'];
+    quantityTypeId = json['quantity_type_id'];
     quantity = json['quantity'];
     isFeaturedProduct = json['is_featured_product'];
     productName = json['product_name'];
@@ -156,6 +152,7 @@ class Products {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['product_id'] = productId;
     data['store_id'] = storeId;
+    data['quantity_type_id'] = quantityTypeId;
     data['quantity'] = quantity;
     data['is_featured_product'] = isFeaturedProduct;
     data['product_name'] = productName;
@@ -200,7 +197,7 @@ class QuantityType {
   String? quantityTypeName;
   String? status;
 
-  QuantityType({quantityTypeId, quantityTypeName, status});
+  QuantityType({this.quantityTypeId, this.quantityTypeName, this.status});
 
   QuantityType.fromJson(Map<String, dynamic> json) {
     quantityTypeId = json['quantity_type_id'];
@@ -222,7 +219,7 @@ class ProductCategories {
   String? status;
   Category? category;
 
-  ProductCategories({productCategoryId, status, category});
+  ProductCategories({this.productCategoryId, this.status, this.category});
 
   ProductCategories.fromJson(Map<String, dynamic> json) {
     productCategoryId = json['product_category_id'];
@@ -246,7 +243,7 @@ class Category {
   String? categoryId;
   String? categoryName;
 
-  Category({categoryId, categoryName});
+  Category({this.categoryId, this.categoryName});
 
   Category.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];
@@ -267,7 +264,7 @@ class ProductImages {
   int? order;
   String? status;
 
-  ProductImages({productImageId, this.imageUrl, this.order, this.status});
+  ProductImages({this.productImageId, this.imageUrl, this.order, this.status});
 
   ProductImages.fromJson(Map<String, dynamic> json) {
     productImageId = json['product_image_id'];
@@ -310,11 +307,11 @@ class ProductContents {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_content_id'] = productContentId;
-    data['heading'] = heading;
-    data['paragraph'] = paragraph;
-    data['order'] = order;
-    data['status'] = status;
+    data['product_content_id'] = this.productContentId;
+    data['heading'] = this.heading;
+    data['paragraph'] = this.paragraph;
+    data['order'] = this.order;
+    data['status'] = this.status;
     return data;
   }
 }
@@ -339,11 +336,11 @@ class ProductLinks {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_link_id'] = productLinkId;
-    data['name'] = name;
-    data['link'] = link;
-    data['order'] = order;
-    data['status'] = status;
+    data['product_link_id'] = this.productLinkId;
+    data['name'] = this.name;
+    data['link'] = this.link;
+    data['order'] = this.order;
+    data['status'] = this.status;
     return data;
   }
 }

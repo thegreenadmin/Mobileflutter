@@ -1316,10 +1316,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           children: [
                             Text(
                               StringConstants.enabledText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blacklight,
                               ),
                             ),
                           ],

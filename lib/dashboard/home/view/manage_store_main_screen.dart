@@ -85,12 +85,16 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: NetworkImage(searchStoreController.storeImage!.value),
+                  image: searchStoreController.storeImage!.value.isEmpty
+                      ? const AssetImage(
+                          "assets/userAccount.png",
+                        ) as ImageProvider
+                      : NetworkImage(searchStoreController.storeImage!.value),
                 ),
               ),
               child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 30),
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 65),
                   child: Column(
                     children: [
                       Row(
@@ -122,9 +126,15 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: AppColors.white, width: 1)),
-                            child: const CircleAvatar(
+                            child: CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: AssetImage("assets/dumy.png"),
+                              backgroundImage: searchStoreController
+                                      .storeLogo!.value.isEmpty
+                                  ? const AssetImage(
+                                      "assets/userAccount.png",
+                                    ) as ImageProvider
+                                  : NetworkImage(
+                                      searchStoreController.storeLogo!.value),
                               backgroundColor: Colors.transparent,
                             ),
                           ),

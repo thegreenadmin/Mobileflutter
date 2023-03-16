@@ -15,7 +15,6 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'dart:convert';
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
-
 import '../model/categories_model.dart';
 
 class SearchStoreController extends GetxController {
@@ -53,12 +52,15 @@ class SearchStoreController extends GetxController {
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
   RxString? storeImage = "".obs;
+  RxString? storeLogo = "".obs;
   RxInt? addressListIndex = 0.obs;
+  RxBool isStoreLogoSelected = false.obs;
 
-  RxString countryDropdownValue = "Afghanistan".obs;
+  RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
 
-  RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString stateDropdownValue = "".obs;
+  CountriesList? selectedValue;
   RxString stateId = "".obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
@@ -77,7 +79,12 @@ class SearchStoreController extends GetxController {
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
   RxString editStoreImageDynamicLinkfromServer = "".obs;
 
+  RxString editStoreLogoOrigionalLinkfromServer = "".obs;
+  RxString editStoreLogoDynamicLinkfromServer = "".obs;
+
   Rx<XFile> editStoreImage = XFile("").obs;
+  Rx<XFile> editStoreLogo = XFile("").obs;
+
   RxInt radioGroupValue = 0.obs;
 
   RxList<Categories> weekDaysList = [
@@ -89,15 +96,6 @@ class SearchStoreController extends GetxController {
     Categories(id: 6, name: "Saturday", isSelected: false),
     Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
-  // RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
-  //   {"isSelected": false, "day": "Monday"},
-  //   {"isSelected": false, "day": "Tuesday"},
-  //   {"isSelected": false, "day": "Wednesday"},
-  //   {"isSelected": false, "day": "Thursday"},
-  //   {"isSelected": false, "day": "Friday"},
-  //   {"isSelected": false, "day": "Saturday"},
-  //   {"isSelected": false, "day": "Sunday"},
-  // ].obs;
 
   @override
   void onInit() {
@@ -165,9 +163,15 @@ class SearchStoreController extends GetxController {
                                 maxWidth: 900,
                                 maxHeight: 900);
                         if (pickedFile != null) {
-                          editStoreImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
+                          if (isStoreLogoSelected.value) {
+                            editStoreLogo.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          } else {
+                            editStoreImage.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          }
                         } else {
                           // api();
                         }
@@ -197,9 +201,15 @@ class SearchStoreController extends GetxController {
                                 maxWidth: 900,
                                 maxHeight: 900);
                         if (pickedFile != null) {
-                          editStoreImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
+                          if (isStoreLogoSelected.value) {
+                            editStoreLogo.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          } else {
+                            editStoreImage.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          }
                         } else {
                           // api();
                         }
@@ -220,10 +230,12 @@ class SearchStoreController extends GetxController {
         'Authorization':
             "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
       };
-
       formData.files.add(MapEntry(
           "file",
-          mdio.MultipartFile.fromBytes(await editStoreImage.value.readAsBytes(),
+          mdio.MultipartFile.fromBytes(
+              isStoreLogoSelected.value
+                  ? await editStoreLogo.value.readAsBytes()
+                  : await editStoreImage.value.readAsBytes(),
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
@@ -235,10 +247,18 @@ class SearchStoreController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        editStoreImageOrigionalLinkfromServer.value =
-            responseData['data']['urls']['orignal_url'];
-        editStoreImageDynamicLinkfromServer.value =
-            responseData['data']['urls']['dynamic_url'];
+        if (isStoreLogoSelected.value) {
+          editStoreLogoOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          editStoreLogoDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
+          isStoreLogoSelected.value = false;
+        } else {
+          editStoreImageOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          editStoreImageDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
+        }
         return responseData;
       } else if (res.statusCode == 403) {
         Utility.showToast(responseData['message'].toString());
@@ -309,6 +329,8 @@ class SearchStoreController extends GetxController {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
         editStoreImageDynamicLinkfromServer.value =
             value?.body["data"]['store']['image']["dynamic_url"] ?? "";
+        editStoreLogoDynamicLinkfromServer.value =
+            value?.body["data"]['store']['logo']["dynamic_url"] ?? "";
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
@@ -325,22 +347,42 @@ class SearchStoreController extends GetxController {
             value?.body["data"]['store']['store_addresses'] ?? [];
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
-        addressLine1TextController.text =
-            storeAddresses[0]["address_line_1"] ?? "";
-        addressLine2TextController.text =
-            storeAddresses[0]["address_line_2"] ?? "";
-        addressLine1TextController.text =
-            storeAddresses[0]["address_line_1"] ?? "";
-        townOrCityTextController.text = storeAddresses[0]["city"] ?? "";
-        countryTextController.text =
-            storeAddresses[0]["state"]['country']['country_name'] ?? "";
-        countryId!.value =
-            storeAddresses[0]["state"]['country']['country_id'] ?? "";
-        storeAddressId!.value = storeAddresses[0]["store_address_id"] ?? "";
-        is247Time.value = storeTimings[0]["is_24_hours_active"] ?? false;
-        openingTimeTextController.text = storeTimings[0]["opening_time"] ?? '';
-        closingTimeTextController.text = storeTimings[0]["closing_time"] ?? '';
-        print("Store timming---------->" + storeTimings.value.toString());
+        if (storeAddresses.isNotEmpty) {
+          for (int i = 0; i < storeAddresses.length; i++) {
+            addressLine1TextController.text =
+                storeAddresses[i]["address_line_1"] ?? "";
+            addressLine2TextController.text =
+                storeAddresses[i]["address_line_2"] ?? "";
+            addressLine1TextController.text =
+                storeAddresses[i]["address_line_1"] ?? "";
+            townOrCityTextController.text = storeAddresses[i]["city"] ?? "";
+            countryTextController.text =
+                storeAddresses[i]["state"]['country']['country_name'] ?? "";
+            countryId!.value =
+                storeAddresses[i]["state"]['country']['country_id'] ?? "";
+            countryDropdownValue.value =
+                storeAddresses[i]["state"]['country']['country_name'] ?? "";
+            stateId.value = storeAddresses[i]["state"]['state_id'] ?? "";
+            stateDropdownValue.value =
+                storeAddresses[i]["state"]['state_name'] ?? "";
+            storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
+          }
+        }
+        if (storeTimings.isNotEmpty) {
+          for (int i = 0; i < storeTimings.length; i++) {
+            is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
+            openingTimeTextController.text =
+                storeTimings[i]["opening_time"] ?? '';
+            closingTimeTextController.text =
+                storeTimings[i]["closing_time"] ?? '';
+          }
+        }
+        print("stateId.value---------->" + stateId.value.toString());
+        print("stateId.value---------->" + countryId!.value.toString());
+        print("stateDropdownValue.value---------->" +
+            stateDropdownValue.value.toString());
+        print("countryDropdownValue.value---------->" +
+            countryDropdownValue.value.toString());
         //postalCodeTextController.text =
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
@@ -371,6 +413,7 @@ class SearchStoreController extends GetxController {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
         "image_url": editStoreImageOrigionalLinkfromServer,
+        "logo_url": editStoreLogoOrigionalLinkfromServer,
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
         "store_phone": phoneTextController.text.trim(),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,7 +12,8 @@ class PreviousStoreListScreen extends StatefulWidget {
   const PreviousStoreListScreen({super.key});
 
   @override
-  State<PreviousStoreListScreen> createState() => _PreviousStoreListScreenState();
+  State<PreviousStoreListScreen> createState() =>
+      _PreviousStoreListScreenState();
 }
 
 class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
@@ -54,7 +54,8 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                           color: AppColors.primary, width: 1)),
                                   child: const CircleAvatar(
                                     radius: 25.0,
-                                    backgroundImage:  AssetImage("assets/dumy.png"),
+                                    backgroundImage:
+                                        AssetImage("assets/dumy.png"),
                                     backgroundColor: Colors.transparent,
                                   ),
                                 ),

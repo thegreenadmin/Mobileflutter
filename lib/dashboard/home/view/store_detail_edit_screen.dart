@@ -31,43 +31,39 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                StringConstants.editStoreText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
                           ),
-                          Image.asset(
-                            "assets/homeMall.png",
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
+                          width10SizedBox,
+                          Text(
+                            StringConstants.editStoreText,
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        "assets/homeMall.png",
+                        scale: 4,
+                      )
+                    ])),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -101,34 +97,82 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
-                          flex: 4,
-                          child: Row(
-                            children: [
-                              DottedBorder(
-                                color: AppColors.blacklight,
-                                strokeWidth: 1,
-                                dashPattern: const [4, 4],
-                                child: Container(
-                                  width: WidgetConstants.screenWidth * 0.3,
-                                  padding: const EdgeInsets.only(
-                                      top: 30, bottom: 30),
-                                  color: AppColors.primarylight,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                            flex: 4,
+                            child: Obx(() => searchStoreController
+                                    .editStoreLogoDynamicLinkfromServer
+                                    .value
+                                    .isEmpty
+                                ? InkWell(
+                                    onTap: () {
+                                      searchStoreController
+                                          .showSelectionDialog(context);
+                                      searchStoreController
+                                          .isStoreLogoSelected.value = true;
+                                    },
+                                    child: Row(
                                       children: [
-                                        Image.asset(
-                                          "assets/uploadpic.png",
-                                          scale: 2.5,
+                                        DottedBorder(
+                                          color: AppColors.blacklight,
+                                          strokeWidth: 1,
+                                          dashPattern: const [4, 4],
+                                          child: Container(
+                                            width: WidgetConstants.screenWidth *
+                                                0.3,
+                                            padding: const EdgeInsets.only(
+                                                top: 30, bottom: 30),
+                                            color: AppColors.primarylight,
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    "assets/uploadpic.png",
+                                                    scale: 2.5,
+                                                  ),
+                                                ]),
+                                          ),
                                         ),
-                                      ]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                      ],
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      searchStoreController
+                                          .showSelectionDialog(context);
+                                      searchStoreController
+                                          .isStoreLogoSelected.value = true;
+                                    },
+                                    child: Row(
+                                      children: [
+                                        DottedBorder(
+                                          color: AppColors.blacklight,
+                                          strokeWidth: 1,
+                                          dashPattern: const [4, 4],
+                                          child: Container(
+                                            width: WidgetConstants.screenWidth *
+                                                0.3,
+                                            padding: const EdgeInsets.only(
+                                                top: 0, bottom: 0),
+                                            color: AppColors.primarylight,
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.network(
+                                                      searchStoreController
+                                                          .editStoreLogoDynamicLinkfromServer
+                                                          .value,
+                                                      fit: BoxFit.cover)
+                                                ]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ))),
                         width20SizedBox,
                         Flexible(
                           flex: 6,
@@ -809,11 +853,42 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
+                    // Obx(
+                    //   () => searchStoreController.countriesList.isEmpty
+                    //       ? height0SizedBox
+                    //       : Center(
+                    //           child: DropdownButton<CountriesList>(
+                    //             //isDense: true,
+                    //             hint: Text('Choose'),
+                    //             value: searchStoreController.selectedValue,
+                    //             icon: Icon(Icons.check_circle_outline),
+                    //             iconSize: 24,
+                    //             elevation: 16,
+                    //             style: TextStyle(color: Colors.deepPurple),
+                    //             underline: Container(
+                    //               height: 2,
+                    //               color: Colors.blue[300],
+                    //             ),
+                    //             onChanged: (newValue) {
+                    //               searchStoreController.selectedValue =
+                    //                   newValue;
+                    //             },
+                    //             items: searchStoreController.countriesList
+                    //                 .map<DropdownMenuItem<CountriesList>>(
+                    //                     (CountriesList value) {
+                    //               return DropdownMenuItem<CountriesList>(
+                    //                 value: value,
+                    //                 child: Text(value.countryName.toString()),
+                    //               );
+                    //             }).toList(),
+                    //           ),
+                    //         ),
+                    // ),
                     Obx(() => searchStoreController.countriesList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<CountriesList>(
                             isExpanded: true,
-                            value: searchStoreController.countriesList.last,
+                            value: searchStoreController.countriesList.first,
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -843,7 +918,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   width: 1.0,
                                 ),
                               ),
-                              hintText: 'Organisation Type',
+                              hintText: StringConstants.countryText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
                             items: searchStoreController.countriesList
@@ -908,7 +983,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   width: 1.0,
                                 ),
                               ),
-                              hintText: 'Organisation Type',
+                              hintText: StringConstants.stateText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
                             items: searchStoreController.statesList
@@ -921,11 +996,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             }).toList(),
                             onChanged: (StatesList? newValue) {
                               setState(() {
-                                searchStoreController.stateDropdownValue.value =
-                                    newValue!.stateName.toString();
-                                searchStoreController.stateId.value =
-                                    newValue.stateId.toString();
-                                print(searchStoreController.stateId.value);
+                                // searchStoreController.stateDropdownValue.value =
+                                //     newValue!.stateName.toString();
+                                // searchStoreController.stateId.value =
+                                //     newValue.stateId.toString();
+                                // print(searchStoreController.stateId.value);
                               });
                             },
                           )),

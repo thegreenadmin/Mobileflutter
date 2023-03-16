@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -37,6 +38,8 @@ class AddNewStoreController extends GetxController {
   TextEditingController workingDaysTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
+  RxBool isStoreLogoSelected = false.obs;
+
   RxBool is247Time = false.obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
@@ -54,10 +57,17 @@ class AddNewStoreController extends GetxController {
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
 
+  Rx<XFile> storeImage = XFile("").obs;
+  Rx<XFile> storeLogo = XFile("").obs;
+
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
-  Rx<XFile> storeImage = XFile("").obs;
+
+  RxString storeLogoOrigionalLinkfromServer = "".obs;
+  RxString storeLogoDynamicLinkfromServer = "".obs;
+
   RxList<dynamic> selectedWeekDaysList = [].obs;
+
   RxList<Categories> weekDaysList = [
     Categories(id: 1, name: "Monday", isSelected: false),
     Categories(id: 2, name: "Tuesday", isSelected: false),
@@ -67,16 +77,6 @@ class AddNewStoreController extends GetxController {
     Categories(id: 6, name: "Saturday", isSelected: false),
     Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
-
-  // RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
-  //   {"isSelected": false, "day": "Monday"},
-  //   {"isSelected": false, "day": "Tuesday"},
-  //   {"isSelected": false, "day": "Wednesday"},
-  //   {"isSelected": false, "day": "Thursday"},
-  //   {"isSelected": false, "day": "Friday"},
-  //   {"isSelected": false, "day": "Saturday"},
-  //   {"isSelected": false, "day": "Sunday"},
-  // ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
 
@@ -101,7 +101,13 @@ class AddNewStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        apiCreateStore();
+        if (storeImageDynamicLinkfromServer.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectBannerText);
+        } else if (storeLogoDynamicLinkfromServer.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectLogoText);
+        } else {
+          apiCreateStore();
+        }
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -146,9 +152,15 @@ class AddNewStoreController extends GetxController {
                                 maxWidth: 900,
                                 maxHeight: 900);
                         if (pickedFile != null) {
-                          storeImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
+                          if (isStoreLogoSelected.value) {
+                            storeLogo.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          } else {
+                            storeImage.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          }
                         } else {
                           // api();
                         }
@@ -178,9 +190,15 @@ class AddNewStoreController extends GetxController {
                                 maxWidth: 900,
                                 maxHeight: 900);
                         if (pickedFile != null) {
-                          storeImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
+                          if (isStoreLogoSelected.value) {
+                            storeLogo.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          } else {
+                            storeImage.value = pickedFile;
+                            await apiUploadImage();
+                            update();
+                          }
                         } else {
                           // api();
                         }
@@ -201,10 +219,12 @@ class AddNewStoreController extends GetxController {
         'Authorization':
             "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
       };
-
       formData.files.add(MapEntry(
           "file",
-          mdio.MultipartFile.fromBytes(await storeImage.value.readAsBytes(),
+          mdio.MultipartFile.fromBytes(
+              isStoreLogoSelected.value
+                  ? await storeLogo.value.readAsBytes()
+                  : await storeImage.value.readAsBytes(),
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
@@ -216,10 +236,19 @@ class AddNewStoreController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        storeImageOrigionalLinkfromServer.value =
-            responseData['data']['urls']['orignal_url'];
-        storeImageDynamicLinkfromServer.value =
-            responseData['data']['urls']['dynamic_url'];
+        if (isStoreLogoSelected.value) {
+          storeLogoOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          storeLogoDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
+          isStoreLogoSelected.value = false;
+        } else {
+          storeImageOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          storeImageDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
+        }
+
         return responseData;
       } else if (res.statusCode == 403) {
         Utility.showToast(responseData['message'].toString());
@@ -245,6 +274,7 @@ class AddNewStoreController extends GetxController {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
         "image_url": storeImageOrigionalLinkfromServer.value,
+        "logo_url": storeLogoOrigionalLinkfromServer.value,
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
         "store_phone": storePhoneTextController.text.trim()
@@ -333,6 +363,9 @@ class AddNewStoreController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.value = getCountriesModel.data!.countries!;
+        if (countryId!.value.isEmpty) {
+          countryId!.value = countriesList[0].countryId!;
+        }
         apiGetStates();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);

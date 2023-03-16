@@ -35,7 +35,7 @@ class AccountController extends GetxController {
   RxString phone = "".obs;
 
   RxString countryDropdownValue = "Afghanistan".obs;
-  RxString? countryId = "1".obs;
+  RxString? countryId = "".obs;
 
   RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
   RxString stateId = "".obs;
@@ -45,7 +45,7 @@ class AccountController extends GetxController {
 
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
-
+  List userAddress = [];
   @override
   void onInit() {
     super.onInit();
@@ -104,7 +104,24 @@ class AccountController extends GetxController {
         email.value = value.body["data"]["user"]['email'] ?? "";
         emailTextController.text = email.value;
         phone.value = value.body["data"]["user"]['phone'] ?? "";
+        if (value.body["data"]["user"]['user_addresses'] != null ||
+            value.body["data"]["user"]['user_addresses'] != []) {
+          userAddress = value.body["data"]["user"]['user_addresses'];
+          for (int i = 0; i < userAddress.length; i++) {
+            countryId!.value =
+                userAddress[i]['state']['country']["country_id"] ?? "";
+            countryDropdownValue.value =
+                userAddress[i]['state']['country']["country_name"] ?? "";
+            stateId.value = userAddress[i]['state']["state_id"] ?? "";
 
+            stateDropdownValue.value =
+                userAddress[i]['state']["state_name"] ?? "";
+          }
+          print(countryId!.value);
+          print(countryDropdownValue.value);
+          print(stateId.value);
+          print(stateDropdownValue.value);
+        }
         await apiGetCountries();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
@@ -136,8 +153,9 @@ class AccountController extends GetxController {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.addAll(
             getCountriesModel.data!.countries as Iterable<CountriesList>);
-        //for (int i = 0; i < countriesList.length; i++) {
-        //}
+        if (userAddress.isEmpty && countryId!.value.isEmpty) {
+          countryId!.value = countriesList[0].countryId!;
+        }
         apiGetStates();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
@@ -168,6 +186,12 @@ class AccountController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
+        for (int i = 0; i < statesList.length; i++) {
+          if (stateId.value == statesList[i].stateId) {
+            stateDropdownValue.value = statesList[i].stateName.toString();
+            print("HIIIIIIIII" + stateDropdownValue.value.toString());
+          }
+        }
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -7,7 +7,6 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-
 import '../../../utils/sizedbox_constants.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
@@ -536,7 +535,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     height4SizedBox,
                     DropdownButtonFormField<CountriesList>(
                       isExpanded: true,
-                      value: accountController.countriesList.last,
+                      value: accountController.countriesList.first,
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -566,7 +565,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             width: 1.0,
                           ),
                         ),
-                        hintText: 'Organisation Type',
+                        hintText: StringConstants.countryText,
                         errorStyle: const TextStyle(color: Colors.yellow),
                       ),
                       items: accountController.countriesList
@@ -599,7 +598,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     height4SizedBox,
                     DropdownButtonFormField<StatesList>(
                       isExpanded: true,
-                      value: accountController.statesList.last,
+                      value: accountController.statesList.first,
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -629,8 +628,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             width: 1.0,
                           ),
                         ),
-                        hintText: 'Organisation Type',
-                        errorStyle: TextStyle(color: Colors.yellow),
+                        hintText: StringConstants.stateText,
+                        errorStyle: const TextStyle(color: Colors.red),
                       ),
                       items: accountController.statesList
                           .map<DropdownMenuItem<StatesList>>(
