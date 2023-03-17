@@ -506,6 +506,7 @@ class SearchStoreController extends GetxController {
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 
+
     UserProvider()
         .putWithHeadersApi(
             data,
