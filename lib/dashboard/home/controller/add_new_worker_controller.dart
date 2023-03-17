@@ -77,18 +77,18 @@ class AddNewWorkerController extends GetxController {
   RxString userImageOriginalLinkFromServer = "".obs;
   RxString userImageDynamicLinkFromServer = "".obs;
   RxString workerDays = "".obs;
-
+  RxString storeDropdownValue = "My store".obs;
+  RxString storeId = "0".obs;
+  RxString storeName = "".obs;
+  RxString workerId = "0".obs;
 
   Rx<XFile> categoryImage = XFile("").obs;
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
   late WorkerListResponse workerListResponse = WorkerListResponse();
-  late worker_detail.WorkerDetailResponse workerDetailResponse = worker_detail.WorkerDetailResponse();
+   worker_detail.WorkerDetailResponse ? workerDetailResponse = worker_detail.WorkerDetailResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
 
-  RxString storeDropdownValue = "My store".obs;
-  RxString storeId = "0".obs;
-  RxString workerId = "0".obs;
   RxInt radioGroupValue = 0.obs;
 
 
@@ -96,6 +96,7 @@ class AddNewWorkerController extends GetxController {
   void onInit() {
     super.onInit();
     storeId.value = Get.arguments["storeId"]??"";
+    storeName.value = Get.arguments["storeName"]??"";
     apiGetUserStoreList();
     apiGetWorkerList();
   }
@@ -191,34 +192,52 @@ class AddNewWorkerController extends GetxController {
     editWorkerRequest.storeUserId = int.parse(workerId.value??"0");
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
     List<EmployeeTiming>? employeeTimings = [];
-    debugPrint("selectedWeekDaysList");
-    print(workerDetailResponse.data?.storeUser?.storeUserTimings?.length);
-    if(workerDetailResponse.data?.storeUser?.storeUserTimings!=null &&
-        workerDetailResponse.data?.storeUser?.storeUserTimings?.length!=0){
-      for (worker_detail.StoreUserTiming data in workerDetailResponse.data?.storeUser?.storeUserTimings??[]) {
+    if(workerDetailResponse?.data?.storeUser?.storeUserTimings!=null
+        && workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty){
+      for (worker_detail.StoreUserTiming data in workerDetailResponse?.data?.storeUser?.storeUserTimings??[]) {
         for (var element in selectedWeekDaysList) {
-          if(element.id == data.dayOfWeek){
-          debugPrint("${element.id}${element.name}");
+          if(element.id == data.dayOfWeek) {
+            EmployeeTiming employeeTiming = EmployeeTiming();
+            employeeTiming.storeUserTimingId = data.storeUserTimingId;
+            employeeTiming.dayOfWeek = element.id;
+            employeeTiming.is24HrsActive = is247Time.value;
+            if (element.isSelected == true) {
+              employeeTiming.status = "active";
+            }
+            else {
+              employeeTiming.status = "deleted";
+            }
+            employeeTiming.startTime = Utility.formatDateTime(
+                startTimeTextController.text, firstFormat: "hh:mm a",
+                secFormat: "hh:mm:ss").toString();
+            employeeTiming.endTime = Utility.formatDateTime(
+                endTimeTextController.text, firstFormat: "hh:mm a",
+                secFormat: "hh:mm:ss").toString();
+            employeeTimings.add(employeeTiming);
+          }
+        }
+      }
+      for (var element in selectedWeekDaysList) {
+        if(element.isSelected==true){
           EmployeeTiming employeeTiming = EmployeeTiming();
-          employeeTiming.storeUserTimingId = data.storeUserTimingId;
+          employeeTiming.storeUserTimingId = null;
           employeeTiming.dayOfWeek = element.id;
           employeeTiming.is24HrsActive = is247Time.value;
-          if(element.isSelected==true){
-            employeeTiming.status = "active";
-          }
-          else{
-            employeeTiming.status = "deleted";
-          }
+          employeeTiming.status = "active";
           employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
           employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-          employeeTimings.add(employeeTiming);
-        }
+          debugPrint("test isSelected dayOfWeek");
+          print(employeeTimings.first.dayOfWeek);
+          // print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
+            if(!employeeTimings.any((data) => data.dayOfWeek!=element.id)){
+              employeeTimings.add(employeeTiming);
+            }
+
         }
       }
     }else{
       for (var element in selectedWeekDaysList) {
         if(element.isSelected  == true){
-          debugPrint("${element.id} ${element.isSelected} ${element.name} ");
         EmployeeTiming employeeTiming = EmployeeTiming();
         employeeTiming.storeUserTimingId =null;
         employeeTiming.dayOfWeek = element.id;
@@ -226,13 +245,19 @@ class AddNewWorkerController extends GetxController {
         employeeTiming.status = "active";
         employeeTiming.startTime = Utility.formatDateTime(startTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
         employeeTiming.endTime = Utility.formatDateTime(endTimeTextController.text,firstFormat: "hh:mm a",secFormat: "hh:mm:ss").toString();
-        employeeTimings.add(employeeTiming);
+
+       debugPrint("test else dayOfWeek");
+       print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
+        if(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id){
+          employeeTimings.add(employeeTiming);
+        }
       }
       }
     }
    editWorkerRequest.employeeTimings = employeeTimings;
     debugPrint("EDIT Request ***${editWorkerRequest.toJson()}*");
 
+    return;
     UserProvider()
         .putWithHeadersApi(
         editWorkerRequest,
@@ -434,8 +459,6 @@ class AddNewWorkerController extends GetxController {
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ??[];
-
-        // workerDays.value = concatenate.toString()??'';
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -466,16 +489,16 @@ class AddNewWorkerController extends GetxController {
       debugPrint("GET  STORE USER DETAIL RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         workerDetailResponse = worker_detail.WorkerDetailResponse.fromJson(value?.body);
-        employeeNameTextController.text = workerDetailResponse.data?.storeUser?.user?.firstName??'';
-        shortDescriptionTextController.text = workerDetailResponse.data?.storeUser?.description??'';
-        emailTextController.text = workerDetailResponse.data?.storeUser?.user?.email??'';
-        mobileNoTextController.text = workerDetailResponse.data?.storeUser?.user?.phone??'';
-        userImageDynamicLinkFromServer.value = workerDetailResponse.data?.storeUser?.user?.image?.dynamicUrl??"";
-        userImageOriginalLinkFromServer.value = workerDetailResponse.data?.storeUser?.user?.image?.orignalUrl??"";
-        List<worker_detail.StoreUserTiming>? storeUserTimings= workerDetailResponse.data?.storeUser?.storeUserTimings??[];
+        employeeNameTextController.text = workerDetailResponse?.data?.storeUser?.user?.firstName??'';
+        shortDescriptionTextController.text = workerDetailResponse?.data?.storeUser?.description??'';
+        emailTextController.text = workerDetailResponse?.data?.storeUser?.user?.email??'';
+        mobileNoTextController.text = workerDetailResponse?.data?.storeUser?.user?.phone??'';
+        userImageDynamicLinkFromServer.value = workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl??"";
+        userImageOriginalLinkFromServer.value = workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl??"";
+        List<worker_detail.StoreUserTiming>? storeUserTimings= workerDetailResponse?.data?.storeUser?.storeUserTimings??[];
         var concatenate = StringBuffer();
-        if (workerDetailResponse.data?.storeUser?.storeUserTimings != null &&
-            workerDetailResponse.data?.storeUser?.storeUserTimings?.length!=0) {
+        if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
+            workerDetailResponse?.data?.storeUser?.storeUserTimings?.length!=0) {
             for (worker_detail.StoreUserTiming data in storeUserTimings) {
               for (Categories day in weekDaysList??[]) {
                 if(day.id == data.dayOfWeek ){
@@ -510,5 +533,6 @@ class AddNewWorkerController extends GetxController {
     workingDaysTextController.clear();
     startTimeTextController.clear();
     endTimeTextController.clear();
+    selectedWeekDaysList.clear();
   }
 }

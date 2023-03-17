@@ -160,6 +160,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
             onTap: () {
               Get.to(const ManageWorkerScreen(), arguments: {
                 "storeId": searchStoreController.storeId.value,
+                "storeName": searchStoreController.storeName.value,
               });
             },
             child: Container(

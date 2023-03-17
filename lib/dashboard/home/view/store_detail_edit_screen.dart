@@ -1398,11 +1398,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               onChanged: (v) {
                                 searchStoreController.storeTimmingList.clear();
                                 String selectedDays = "";
-                                for (int i = 0;
-                                    i <
-                                        searchStoreController
-                                            .weekDaysList.length;
-                                    i++) {
+                                for (int i = 0; i < searchStoreController
+                                            .weekDaysList.length; i++) {
                                   if (searchStoreController
                                           .weekDaysList[i].isSelected ==
                                       true) {
@@ -1411,13 +1408,15 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                           "${searchStoreController.weekDaysList[i].name}";
                                     } else {
                                       selectedDays =
-                                          "$selectedDays, ${searchStoreController.weekDaysList[i].name}";
+                                          "$selectedDays, "
+                                              "${searchStoreController.weekDaysList[i].name}";
                                     }
                                     searchStoreController.storeTimmingList.add({
+                                      "store_user_timing_id": null,
                                       "is_24_hours_active": false,
+                                      "status": "active",
                                       "day_of_week": searchStoreController
                                           .weekDaysList[i].id,
-                                      //(i + 1).toString(),
                                       "opening_time": searchStoreController
                                           .openingTimeTextController.text
                                           .trim(),

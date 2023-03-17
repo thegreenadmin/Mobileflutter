@@ -135,7 +135,7 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                           height4SizedBox,
                           const Center(
                             child: Text(
-                              "No stores found",
+                              "No workers found",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   fontSize: 16),
@@ -185,16 +185,23 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                 border: Border.all(
                                                     color: AppColors.white,
                                                     width: 1)),
-                                            child:  CircleAvatar(
+                                            child:  addNewWorkerController.workerList
+                                            [index].user?.image?.dynamicUrl!=null &&
+                                                addNewWorkerController.workerList
+                                                [index].user?.image?.dynamicUrl!=""?
+                                            CircleAvatar(
                                               radius: 36.0,
                                               backgroundImage:  NetworkImage(
                                                   addNewWorkerController.workerList
-                                                  [index].user?.image?.dynamicUrl
-                                                      .toString()??""),
+                                                  [index].user?.image?.dynamicUrl.toString()??""),
+                                              backgroundColor: Colors.transparent,
+                                            ):const CircleAvatar(
+                                              radius: 36.0,
+                                              backgroundImage:  AssetImage("assets/userAccount.png"),
                                               backgroundColor: Colors.transparent,
                                             ),
                                           ),
-                                          const Divider(),
+                                          // const Divider(),
                                           // const Text(
                                           //   "",
                                           //   textAlign: TextAlign.center,
@@ -263,7 +270,7 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                 "addNewWorkerController",
+                                                 addNewWorkerController.storeName.value,
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.w400,
                                                       fontSize: 12.0,
