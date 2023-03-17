@@ -35,6 +35,7 @@ class StringConstants {
   static String alertText = "Alert";
   static String addDescriptionText = "Add Description";
   static String addNewText = "Add New";
+  static String addWorkerText = "Add Worker";
   static String additionalLinksToResearchText = "Additional Links to Research";
 
   //B
@@ -135,6 +136,8 @@ class StringConstants {
   static String manageProdcutText = "Manage Product";
   static String manageWorkersText = "Manage Workers";
   static String mobileNoText = "Mobile No";
+  static String membersText = "Members";
+  static String memberText = "Member";
 
   //N
   static String nearbyText = "Nearby";
@@ -144,6 +147,7 @@ class StringConstants {
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
   static String noStoresFoundText = "No stores found";
+  static String noWorkersFoundText = "No workers found";
   static String noCategoriesFoundText = "No Categories found";
 
   //O
@@ -157,6 +161,7 @@ class StringConstants {
   static String orderType = "Order Type";
   static String optionsText = "Options";
   static String openingTimeText = "Opening Time";
+  static String organisationTypeText = "Organisation Type";
 
   //P
   static String profileText = "Profile";
@@ -188,6 +193,7 @@ class StringConstants {
   static String signUpText = "Sign up";
   static String skipText = "Skip";
   static String storeText = "Store";
+  static String storesText = "Stores";
   static String successText = "Success";
   static String sendConfirmationCodeText = "Send Confirmation Code";
   static String securityText = "Security";
@@ -218,6 +224,7 @@ class StringConstants {
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
   static String startTimeText = "Start Time";
+  static String selectTimeText = "Select Time";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -242,6 +249,7 @@ class StringConstants {
       "Upload License, State ID, Passport";
   static String uploadText = "Upload";
   static String uploadImageText = "Upload Image";
+  static String uploadPhotoHereText = "Upload photo here";
   static String uploadCategoriesImageText = " Upload Categories Image";
   static String uploadStoreImageText = " Upload Store Image";
   static String updateText = "Update";

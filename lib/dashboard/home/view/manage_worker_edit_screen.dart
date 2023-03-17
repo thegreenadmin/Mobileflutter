@@ -2,8 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
-
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -11,7 +9,6 @@ import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 
 import '../../../utils/sizedbox_constants.dart';
 import '../controller/add_new_worker_controller.dart';
-import '../model/get_user_store_list_model.dart';
 
 class ManageWorkerEditScreen extends StatefulWidget {
   const ManageWorkerEditScreen({super.key});
@@ -463,7 +460,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText: "Select Time",
+                                      helpText:   StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {
@@ -564,7 +561,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText: "Select Time",
+                                      helpText:  StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {

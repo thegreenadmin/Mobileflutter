@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller.dart';
-import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -51,9 +50,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 ),
                               ),
                               width10SizedBox,
-                              const Text(
-                                "Add Worker",
-                                style: TextStyle(
+                               Text(StringConstants.addWorkerText,
+                                style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -127,7 +125,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         Column(
                           children: [
                             height20SizedBox,
-                            Text("Upload photo here",
+                            Text( StringConstants.uploadPhotoHereText,
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 14,
@@ -445,7 +443,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText: "Select Time",
+                                      helpText:  StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {
@@ -551,7 +549,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText: "Select Time",
+                                      helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {

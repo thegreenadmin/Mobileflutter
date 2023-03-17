@@ -897,7 +897,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   width: 1.0,
                                 ),
                               ),
-                              hintText: 'Organisation Type',
+                              hintText: StringConstants.organisationTypeText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
                             items: addNewStoreController.countriesList
@@ -915,7 +915,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 addNewStoreController.countryId!.value =
                                     newValue.countryId.toString();
                                 addNewStoreController.apiGetStates();
-                                print(addNewStoreController.countryId!.value);
                               });
                             },
                           )),
@@ -962,7 +961,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   width: 1.0,
                                 ),
                               ),
-                              hintText: 'Organisation Type',
+                              hintText: StringConstants.organisationTypeText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
                             items: addNewStoreController.statesList
@@ -1012,10 +1011,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         .value = value?.toInt() ?? 0;
                                     addNewStoreController.is247Time.value =
                                         false;
-                                    print(addNewStoreController
-                                        .radioGroupValue.value);
-                                    print(
-                                        addNewStoreController.is247Time.value);
                                   },
                                 ),
                               ),
@@ -1126,7 +1121,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
-                                                helpText: "Select Time",
+                                                helpText: StringConstants.selectTimeText,
                                                 initialTime: TimeOfDay.now(),
                                                 context: context,
                                                 builder: (context, child) {
@@ -1260,7 +1255,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
-                                                helpText: "Select Time",
+                                                helpText: StringConstants.selectTimeText,
                                                 initialTime: TimeOfDay.now(),
                                                 context: context,
                                                 builder: (context, child) {
@@ -1352,50 +1347,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           )
                         : height0SizedBox),
                     height4SizedBox,
-                    // Obx(
-                    //   () => addNewStoreController.is247Time.value != true
-                    //       ? MultiDropClass(
-                    //           onChanged: (v) {
-                    //             addNewStoreController.storeTimmingList.clear();
-                    //             String selectedDays = "";
-                    //             for (int i = 0;
-                    //                 i <
-                    //                     addNewStoreController
-                    //                         .weekDaysList.length;
-                    //                 i++) {
-                    //               if (addNewStoreController.weekDaysList[i]
-                    //                   ['isSelected']) {
-                    //                 if (selectedDays.isEmpty) {
-                    //                   selectedDays =
-                    //                       "${addNewStoreController.weekDaysList[i]['day']}";
-                    //                 } else {
-                    //                   selectedDays =
-                    //                       "$selectedDays, ${addNewStoreController.weekDaysList[i]['day']}";
-                    //                 }
-                    //                 addNewStoreController.storeTimmingList.add({
-                    //                   "is_24_hours_active": false,
-                    //                   "day_of_week": (i + 1).toString(),
-                    //                   "opening_time": addNewStoreController
-                    //                       .openingTime.value,
-                    //                   "closing_time": addNewStoreController
-                    //                       .closingTime.value,
-                    //                 });
-                    //               }
-                    //             }
-                    //             print("top list" + v.toString());
-                    //             print("LISTTTTTTTTTTTTT" +
-                    //                 addNewStoreController.storeTimmingList
-                    //                     .toString());
-                    //             addNewStoreController.workingDaysTextController
-                    //                 .text = selectedDays;
-                    //           },
-                    //           controller: addNewStoreController
-                    //               .workingDaysTextController,
-                    //           hintText: StringConstants.selectDaysText,
-                    //           title: StringConstants.selectDaysText,
-                    //           list: addNewStoreController.weekDaysList)
-                    //       : height0SizedBox,
-                    // ),
                     Obx(
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
