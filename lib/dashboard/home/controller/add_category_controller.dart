@@ -15,6 +15,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class AddCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
   TextEditingController categoryNameTextController = TextEditingController();
   Rx<XFile> categoryImage = XFile("").obs;
   RxString categoryImageOrigionalLinkfromServer = "".obs;
@@ -22,7 +23,8 @@ class AddCategoryController extends GetxController {
   RxString storeId = "".obs;
   RxString categoryId = "".obs;
   RxBool autoValidate = false.obs;
-
+  RxBool isFeaturedCategory = false.obs;
+  RxBool updateAutoValidate = false.obs;
   String? imageData;
   bool dataLoaded = false;
 
@@ -57,6 +59,30 @@ class AddCategoryController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
+    }
+  }
+
+  bool validateAndSaveUpdate() {
+    final form = updateformKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmitUpdate() async {
+    if (validateAndSaveUpdate()) {
+      try {
+        if (categoryImageDynamicLinkfromServer.isEmpty) {
+          Utility.showToast("Please upload catagory Image");
+        } else {
+          await apiUpdateCategory();
+        }
+      } catch (_) {}
+    } else {
+      updateAutoValidate.value = true;
     }
   }
 
@@ -246,6 +272,49 @@ class AddCategoryController extends GetxController {
             value.body["data"]['category']['category_name'] ?? "";
         categoryImageDynamicLinkfromServer.value =
             value.body["data"]['category']['image']['dynamic_url'] ?? "";
+        categoryImageOrigionalLinkfromServer.value =
+            value.body["data"]['category']['image']['orignal_url'] ?? "";
+        isFeaturedCategory.value =
+            value.body["data"]['category']['is_featured_category'] ?? false;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Update Category Api
+  Future apiUpdateCategory() async {
+    debugPrint(
+        "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "store_id": int.parse(storeId.value),
+      "category_id": int.parse(categoryId.value),
+      "is_featured_category": isFeaturedCategory.value,
+      "parent_category_id": null,
+      "category_name": categoryNameTextController.text.trim(),
+      "image_url": categoryImageOrigionalLinkfromServer
+    };
+    debugPrint("UPDATE CATEGORY BODY**********$data");
+    UserProvider()
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      print(value);
+      debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

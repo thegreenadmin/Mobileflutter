@@ -185,7 +185,6 @@ class UserProvider extends GetConnect {
       IOClient ioClient = IOClient(httpClient);
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
-
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {

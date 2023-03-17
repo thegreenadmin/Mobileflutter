@@ -16,7 +16,6 @@ class CategoryEditScreen extends StatefulWidget {
 }
 
 class _CategoryEditScreenState extends State<CategoryEditScreen> {
-  
   AddCategoryController addCategoryController =
       Get.put(AddCategoryController());
 
@@ -71,7 +70,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addCategoryController.formKey,
+            key: addCategoryController.updateformKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -155,7 +154,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                     ),
                     height35SizedBox,
                     Text(
-                      StringConstants.categoriesNameText,
+                      StringConstants.categoryNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -223,10 +222,10 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addCategoryController.validateAndSubmit();
+                        addCategoryController.validateAndSubmitUpdate();
                       },
                       height: 50,
-                      text: StringConstants.saveAndAddProductText,
+                      text: StringConstants.saveAndUpdateCategoryText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

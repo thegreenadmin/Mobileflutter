@@ -57,6 +57,7 @@ class StringConstants {
   static String cartText = "Cart";
   static String changeText = "Change";
   static String categoriesNameText = "Categories Name";
+   static String categoryNameText = "Category Name";
   static String categoriesText = "Categories";
   static String completedOrders = "Completed Orders";
   static String contactText = "Contact";
@@ -196,6 +197,7 @@ class StringConstants {
   static String submitText = "Submit";
   static String saveText = "Save";
   static String saveAndAddProductText = "Save and Add Product";
+  static String saveAndUpdateCategoryText = "Save and Update Category";
   static String subjectText = "Subject";
   static String seeMoreText = "See More";
   static String sendMessageText = "Send Message";

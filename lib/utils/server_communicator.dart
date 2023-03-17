@@ -13,6 +13,8 @@ class ServerCommunicator {
   String categoryList = 'store/category/list';
   String createProduct = 'store/product/create';
   String storeCategoryDeatil = 'store/category/details';
+  String storeCategoryEdit = 'store/category/edit';
+
 
 //D
   String deleteWorker = 'store/user/delete';

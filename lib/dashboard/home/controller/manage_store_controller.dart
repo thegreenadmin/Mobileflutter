@@ -69,7 +69,7 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
-      apiUploadMultipleImage();
+      // apiUploadMultipleImage();
     }
   }
 

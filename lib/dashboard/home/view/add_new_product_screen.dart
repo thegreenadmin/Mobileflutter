@@ -30,43 +30,39 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                manageStoreController.categoryName.value,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
                           ),
-                          Image.asset(
-                            "assets/homeMall.png",
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
+                          width10SizedBox,
+                          Text(
+                            manageStoreController.categoryName.value,
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        "assets/homeMall.png",
+                        scale: 4,
+                      )
+                    ])),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
