@@ -88,8 +88,8 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                 Obx(
                   () => Text(
                     addNewWorkerController.workerList.length > 1
-                        ? "${addNewWorkerController.workerList.length} Members"
-                        : "${addNewWorkerController.workerList.length} Member",
+                        ? "${addNewWorkerController.workerList.length} ${ StringConstants.membersText}"
+                        : "${addNewWorkerController.workerList.length} ${ StringConstants.memberText}",
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: AppColors.black,
@@ -138,9 +138,9 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                 ),
                               ),
                               height4SizedBox,
-                              const Center(
+                               Center(
                                 child: Text(
-                                  "No workers found",
+                                    StringConstants.noWorkersFoundText,
                                   style: TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontSize: 16),
@@ -302,8 +302,7 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               width: 190,
                                               child: Row(
                                                 children: [
-                                                  Text(
-                                                    "Stores:",
+                                                  Text( "${StringConstants.storesText}:",
                                                     style: TextStyle(
                                                         fontSize: 12.0,
                                                         color: AppColors

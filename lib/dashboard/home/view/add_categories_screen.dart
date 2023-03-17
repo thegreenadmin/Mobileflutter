@@ -172,13 +172,11 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            addCategoryController.categoryNameTextController,
+                        controller: addCategoryController.categoryNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterCategoryNameText;
+                            return AlertStringConstants.pleaseEnterCategoryNameText;
                           }
                           return null;
                         },
