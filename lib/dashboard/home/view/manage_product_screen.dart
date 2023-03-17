@@ -268,8 +268,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           backgroundImage: NetworkImage(
                                               manageStoreController
                                                   .categoriesList[index]
-                                                  .image!
-                                                  .dynamicUrl
+                                                  .image!.dynamicUrl
                                                   .toString()),
                                           backgroundColor: Colors.transparent,
                                         )),
@@ -284,8 +283,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         child: Obx(() => Text(
                                               manageStoreController
                                                       .categoriesList[index]
-                                                      .categoryName ??
-                                                  "",
+                                                      .categoryName ?? "",
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
@@ -298,8 +296,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         child: Obx(() => Text(
                                               manageStoreController
                                                           .categoriesList[index]
-                                                          .totalProducts! >
-                                                      1
+                                                          .totalProducts! > 1
                                                   ? "${manageStoreController.categoriesList[index].totalProducts} Products"
                                                   : "${manageStoreController.categoriesList[index].totalProducts} Product",
                                               style: TextStyle(

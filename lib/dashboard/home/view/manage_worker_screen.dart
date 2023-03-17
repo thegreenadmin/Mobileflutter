@@ -84,13 +84,15 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(()=>Text(
-                  "${addNewWorkerController.workerList.length??0} Member",
-                  style: const TextStyle(
-                      fontSize: 18.0,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600),
-                ),) ,
+                Obx(
+                  () => Text(
+                    "${addNewWorkerController.workerList.length ?? 0} Member",
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
                 InkWell(
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
@@ -120,50 +122,58 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
             Expanded(
                 child: Obx(() => addNewWorkerController.workerList.isEmpty
                     ? addNewWorkerController.isLoading.value == true
-                    ? height0SizedBox
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              "assets/nodata.png",
-                              scale: 8,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          height4SizedBox,
-                          const Center(
-                            child: Text(
-                              "No stores found",
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      )
+                        ? height0SizedBox
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Image.asset(
+                                  "assets/nodata.png",
+                                  scale: 8,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              height4SizedBox,
+                              const Center(
+                                child: Text(
+                                  "No workers found",
+                                  style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16),
+                                ),
+                              ),
+                            ],
+                          )
                     : ListView.separated(
-                        separatorBuilder:
-                            (BuildContext context, int index) {
+                        separatorBuilder: (BuildContext context, int index) {
                           return height12SizedBox;
                         },
                         itemCount: addNewWorkerController.workerList.length,
                         itemBuilder: (BuildContext context, int index) {
-
                           var concatenate = StringBuffer();
-                              for (var data in addNewWorkerController.workerList[index].storeUserTimings??[]) {
-                                for (Categories day in addNewWorkerController.weekDaysList??[]) {
-                                  if(data.dayOfWeek  == day.id){
-                                    concatenate.write(day.name?.substring(0,3));
-                                    concatenate.write(', ');
-                                  }}
+                          for (var data in addNewWorkerController
+                                  .workerList[index].storeUserTimings ??
+                              []) {
+                            for (Categories day
+                                in addNewWorkerController.weekDaysList ?? []) {
+                              if (data.dayOfWeek == day.id) {
+                                concatenate.write(day.name?.substring(0, 3));
+                                concatenate.write(', ');
                               }
+                            }
+                          }
                           return InkWell(
                             onTap: () async {
-
+                              addNewWorkerController.workerId.value =
+                                  addNewWorkerController
+                                          .workerList[index].storeUserId
+                                          .toString() ??
+                                      "";
+                              Get.to(() => const ManageWorkerEditScreen());
+                              await addNewWorkerController.apiGetWorkerDetail();
                             },
-                            child:Container(
+                            child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               decoration: const BoxDecoration(
@@ -185,16 +195,41 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                 border: Border.all(
                                                     color: AppColors.white,
                                                     width: 1)),
-                                            child:  CircleAvatar(
-                                              radius: 36.0,
-                                              backgroundImage:  NetworkImage(
-                                                  addNewWorkerController.workerList
-                                                  [index].user?.image?.dynamicUrl
-                                                      .toString()??""),
-                                              backgroundColor: Colors.transparent,
-                                            ),
+                                            child: addNewWorkerController
+                                                            .workerList[index]
+                                                            .user
+                                                            ?.image
+                                                            ?.dynamicUrl !=
+                                                        null &&
+                                                    addNewWorkerController
+                                                            .workerList[index]
+                                                            .user
+                                                            ?.image
+                                                            ?.dynamicUrl !=
+                                                        ""
+                                                ? CircleAvatar(
+                                                    radius: 36.0,
+                                                    backgroundImage: NetworkImage(
+                                                        addNewWorkerController
+                                                                .workerList[
+                                                                    index]
+                                                                .user
+                                                                ?.image
+                                                                ?.dynamicUrl
+                                                                .toString() ??
+                                                            ""),
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                  )
+                                                : const CircleAvatar(
+                                                    radius: 36.0,
+                                                    backgroundImage: AssetImage(
+                                                        "assets/userAccount.png"),
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                  ),
                                           ),
-                                          const Divider(),
+                                          // const Divider(),
                                           // const Text(
                                           //   "",
                                           //   textAlign: TextAlign.center,
@@ -210,13 +245,18 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                     Flexible(
                                       flex: 8,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                           SizedBox(
+                                          SizedBox(
                                             width: 190,
                                             child: Text(
-                                              addNewWorkerController.workerList
-                                              [index].user?.firstName.toString()??"",
+                                              addNewWorkerController
+                                                      .workerList[index]
+                                                      .user
+                                                      ?.firstName
+                                                      .toString() ??
+                                                  "",
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
@@ -232,18 +272,35 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                   "Stores:",
                                                   style: TextStyle(
                                                       fontSize: 12.0,
-                                                      color: AppColors.blacklight,
-                                                      fontWeight: FontWeight.w400),
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
-                                                 Text(
-                                                     addNewWorkerController.storeId!=null && addNewWorkerController.getUserStoreList!=null?
-                                                     addNewWorkerController.getUserStoreList.firstWhere((element) =>
-                                                  element.storeId == addNewWorkerController.storeId.toString())
-                                                         .storeName.toString()??'':"",
+                                                Text(
+                                                  addNewWorkerController
+                                                                  .storeId !=
+                                                              null &&
+                                                          addNewWorkerController
+                                                                  .getUserStoreList !=
+                                                              null
+                                                      ? addNewWorkerController
+                                                              .getUserStoreList
+                                                              .firstWhere((element) =>
+                                                                  element
+                                                                      .storeId ==
+                                                                  addNewWorkerController
+                                                                      .storeId
+                                                                      .toString())
+                                                              .storeName
+                                                              .toString() ??
+                                                          ''
+                                                      : "",
                                                   style: const TextStyle(
                                                       fontSize: 12.0,
                                                       color: AppColors.black,
-                                                      fontWeight: FontWeight.w500),
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                 ),
                                               ],
                                             ),
@@ -251,9 +308,9 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                           height8SizedBox,
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Image.asset(
                                                 "assets/loc.png",
@@ -263,26 +320,34 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                 "addNewWorkerController",
+                                                  addNewWorkerController
+                                                      .storeName.value,
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 12.0,
-                                                      color: AppColors.blacklight),
+                                                      color:
+                                                          AppColors.blacklight),
                                                 ),
                                               )
                                             ],
                                           ),
                                           height8SizedBox,
                                           Visibility(
-                                            visible: addNewWorkerController.workerList
-                                            [index].storeUserTimings!=null && addNewWorkerController.workerList
-                                            [index].storeUserTimings!.isNotEmpty,
+                                            visible: addNewWorkerController
+                                                        .workerList[index]
+                                                        .storeUserTimings !=
+                                                    null &&
+                                                addNewWorkerController
+                                                    .workerList[index]
+                                                    .storeUserTimings!
+                                                    .isNotEmpty,
                                             replacement: height0SizedBox,
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
                                                   "assets/watch.png",
@@ -294,18 +359,13 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        "${concatenate.toString()??''} \n ${
-                                                        addNewWorkerController.workerList
-                                                        [index].storeUserTimings!=null && addNewWorkerController.workerList
-                                                        [index].storeUserTimings!.isNotEmpty?
-                                                        "${ addNewWorkerController.workerList
-                                                            [index].storeUserTimings?.first.startTime??""} - ${ addNewWorkerController.workerList
-                                                        [index].storeUserTimings?.first.endTime??""} ":""
-                                                        }",
+                                                        "${concatenate.toString() ?? ''} \n ${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? ""} - ${addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? ""} " : ""}",
                                                         style: TextStyle(
-                                                            fontWeight: FontWeight.w400,
+                                                            fontWeight:
+                                                                FontWeight.w400,
                                                             fontSize: 12.0,
-                                                            color: AppColors.blacklight),
+                                                            color: AppColors
+                                                                .blacklight),
                                                       ),
                                                     ],
                                                   ),
@@ -316,9 +376,9 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                           height8SizedBox,
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Image.asset(
                                                 "assets/email.png",
@@ -329,12 +389,18 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                  addNewWorkerController.workerList
-                                                  [index].user?.email.toString()??"",
+                                                  addNewWorkerController
+                                                          .workerList[index]
+                                                          .user
+                                                          ?.email
+                                                          .toString() ??
+                                                      "",
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 12.0,
-                                                      color: AppColors.blacklight),
+                                                      color:
+                                                          AppColors.blacklight),
                                                 ),
                                               )
                                             ],
@@ -342,9 +408,9 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                           height8SizedBox,
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Image.asset(
                                                 "assets/calling.png",
@@ -355,12 +421,18 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                  addNewWorkerController.workerList
-                                                  [index].user?.phone.toString()??"",
+                                                  addNewWorkerController
+                                                          .workerList[index]
+                                                          .user
+                                                          ?.phone
+                                                          .toString() ??
+                                                      "",
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 12.0,
-                                                      color: AppColors.blacklight),
+                                                      color:
+                                                          AppColors.blacklight),
                                                 ),
                                               )
                                             ],
@@ -368,19 +440,11 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                         ],
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () async{
-                                        addNewWorkerController.workerId.value = addNewWorkerController.workerList
-                                        [index].storeUserId.toString()??"";
-                                        Get.to(() => const ManageWorkerEditScreen());
-                                       await addNewWorkerController.apiGetWorkerDetail();
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Image.asset(
-                                          "assets/circleedit.png",
-                                          scale: 2.8,
-                                        ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Image.asset(
+                                        "assets/circleedit.png",
+                                        scale: 2.8,
                                       ),
                                     ),
                                   ],

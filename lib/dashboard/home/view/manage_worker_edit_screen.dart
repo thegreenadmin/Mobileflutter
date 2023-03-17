@@ -301,63 +301,38 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => addNewWorkerController.getUserStoreList.isEmpty
-                        ? height0SizedBox
-                        : DropdownButtonFormField<UserStoresList>(
-                            isExpanded: true,
-                            value:  addNewWorkerController.storeId.toString()!=null
-                                && addNewWorkerController.storeId.toString()!="0"?
-                            addNewWorkerController.getUserStoreList.firstWhere((element) =>
-                            element.storeId == addNewWorkerController.storeId.toString()):null,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: 'Organisation Type',
-                              errorStyle: const TextStyle(color: Colors.yellow),
+                    Container(
+                        padding: const EdgeInsets.only(
+                            left: 15,
+                            right: 15,
+                            top: 10,
+                            bottom: 10),
+                        margin: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                              const Offset(0, 2),
                             ),
-                            items: addNewWorkerController.getUserStoreList
-                                .map<DropdownMenuItem<UserStoresList>>(
-                                    (dynamic value) {
-                              return DropdownMenuItem<UserStoresList>(
-                                value: value,
-                                child: Text(value.storeName.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (UserStoresList? newValue) {
-                              setState(() {
-                                addNewWorkerController.storeDropdownValue
-                                    .value = newValue!.storeName.toString();
-                                addNewWorkerController.storeId.value =
-                                    newValue.storeId.toString();
-                              });
-                            },
-                          )),
+                          ],
+                          color: AppColors.primary,
+                          borderRadius:
+                          const BorderRadius.all(
+                            Radius.circular(100),
+                          ),
+                        ),
+                        child: Text(
+                          addNewWorkerController.storeName.value,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color:AppColors.primarylight,
+                          ),
+                        )),
                     height20SizedBox,
                     Text(
                       StringConstants.shortDescriptionText,
@@ -483,7 +458,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     return null;
                                   },
                                   onTap: () async {
-                                    TimeOfDay date = TimeOfDay.now();
+                                    TimeOfDay? date = TimeOfDay.now();
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
@@ -503,11 +478,11 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                           child: child!,
                                         );
                                       },
-                                    ))!;
+                                    ));
 
                                     addNewWorkerController
                                         .startTimeTextController
-                                        .text = date.format(context).toString();
+                                        .text = date?.format(context).toString()??"";
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.startTimeText,
@@ -583,7 +558,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     return null;
                                   },
                                   onTap: () async {
-                                    TimeOfDay date = TimeOfDay.now();
+                                    TimeOfDay? date = TimeOfDay.now();
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
@@ -603,9 +578,9 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                           child: child!,
                                         );
                                       },
-                                    ))!;
+                                    ));
                                     addNewWorkerController.endTimeTextController
-                                        .text = date.format(context).toString();
+                                        .text = date?.format(context).toString()??"";
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.endTimeText,
