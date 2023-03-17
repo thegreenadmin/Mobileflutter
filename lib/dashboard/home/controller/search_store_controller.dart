@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
@@ -41,6 +42,7 @@ class SearchStoreController extends GetxController {
   RxBool isEnabledStore = false.obs;
   RxBool isLoading = false.obs;
   RxBool is247Time = false.obs;
+  RxBool isEnabled = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -55,6 +57,7 @@ class SearchStoreController extends GetxController {
   RxString? storeLogo = "".obs;
   RxInt? addressListIndex = 0.obs;
   RxBool isStoreLogoSelected = false.obs;
+  RxInt selectedIndex = 0.obs;
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
@@ -71,10 +74,15 @@ class SearchStoreController extends GetxController {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
+
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
+
   RxList<dynamic> storeTimings = <dynamic>[].obs;
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+
+  late GetStoreProductList getStoreProductList = GetStoreProductList();
+  RxList<Products> storeProductList = <Products>[].obs;
 
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
   RxString editStoreImageDynamicLinkfromServer = "".obs;
@@ -100,6 +108,7 @@ class SearchStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    selectedIndex.value = 0;
     firstName!.value = Get.arguments["firstName"] ?? "";
     lastName!.value = Get.arguments["lastName"] ?? "";
     apiGetStoreList();
@@ -219,6 +228,56 @@ class SearchStoreController extends GetxController {
                 ),
               ));
         });
+  }
+
+//Get featured products List Api
+  Future apiGetFeaturedProducts() async {
+    isLoading.value = true;
+    debugPrint(
+      "GET FEATURED PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+    );
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {
+      "q": "",
+      "store_id": storeId.value,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "product_id",
+      "order_type": "ASC",
+      "category_id": null,
+      "filters": [
+        {
+          "filter_by": "is_featured_product",
+          "filter_value": true,
+          "operation": "eq"
+        }
+      ]
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET FEATURED PRODUCTS LIST BODY *******$body");
+      debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getStoreProductList = GetStoreProductList.fromJson(value.body);
+        storeProductList.value = getStoreProductList.data!.products!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
   //Api upload image to server
@@ -347,6 +406,7 @@ class SearchStoreController extends GetxController {
             value?.body["data"]['store']['store_addresses'] ?? [];
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
+        isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =
@@ -417,7 +477,7 @@ class SearchStoreController extends GetxController {
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
         "store_phone": phoneTextController.text.trim(),
-        "is_enabled": true
+        "is_enabled": isEnabled.value
       },
       "store_address": {
         "store_address_id": storeAddressId!.value,

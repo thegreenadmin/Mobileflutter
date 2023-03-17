@@ -101,10 +101,10 @@ class AddNewStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        if (storeImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectBannerText);
-        } else if (storeLogoDynamicLinkfromServer.isEmpty) {
+        if (storeLogoDynamicLinkfromServer.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseSelectLogoText);
+        } else if (storeImageDynamicLinkfromServer.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectBannerText);
         } else {
           apiCreateStore();
         }

@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
@@ -178,19 +179,28 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           flex: 6,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              height10SizedBox,
                               Text(StringConstants.uploadStoreLogoText,
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500)),
                               height10SizedBox,
-                              // Text(StringConstants.theImageMustBeAtleaseText,
-                              //     style: const TextStyle(
-                              //         color: AppColors.black,
-                              //         fontSize: 12,
-                              //         fontWeight: FontWeight.w400)),
+                              InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  searchStoreController
+                                      .showSelectionDialog(context);
+                                  searchStoreController
+                                      .isStoreLogoSelected.value = true;
+                                },
+                                child: Image.asset(
+                                  "assets/picupload.png",
+                                  scale: 2.5,
+                                ),
+                              ),
                               height10SizedBox,
                             ],
                           ),
@@ -1448,6 +1458,43 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               list: searchStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
+                    height15SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              StringConstants.enabledText,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blacklight,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Obx(() => FlutterSwitch(
+                              height: 28,
+                              width: 50,
+                              value: searchStoreController.isEnabled.value,
+                              activeToggleColor: AppColors.primary,
+                              inactiveToggleColor: AppColors.grey,
+                              activeSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              inactiveSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              activeColor: AppColors.greymediumlight,
+                              inactiveColor: AppColors.greymediumlight,
+                              onToggle: (val) {
+                                searchStoreController.isEnabled.value = val;
+                              },
+                            )),
+                      ],
+                    ),
+
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

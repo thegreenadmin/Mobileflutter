@@ -10,7 +10,7 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class ManageStoreController extends GetxController {
-  
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
 
@@ -76,6 +76,7 @@ class ManageStoreController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
+ 
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[

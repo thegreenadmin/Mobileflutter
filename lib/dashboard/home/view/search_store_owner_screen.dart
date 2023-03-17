@@ -116,6 +116,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                 ],
                               )
                         : ListView.separated(
+                            padding: const EdgeInsets.only(bottom: 60),
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return height12SizedBox;
@@ -133,14 +134,6 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                         Icon(
                                           Icons.delete,
                                           color: AppColors.red,
-                                        ),
-                                        Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.right,
                                         ),
                                         SizedBox(
                                           width: 20,
@@ -194,6 +187,11 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
 
                                     await searchStoreController
                                         .apiGetParticularStore();
+
+                                    await searchStoreController
+                                        .apiGetFeaturedProducts();
+                                    searchStoreController.onInit();
+
                                     await Get.to(
                                         () => const ManageStoreMainScreen());
                                   },

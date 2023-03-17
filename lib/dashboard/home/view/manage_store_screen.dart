@@ -18,6 +18,7 @@ class ManageStoreScreen extends StatefulWidget {
 class _ManageStoreScreenState extends State<ManageStoreScreen> {
   final SearchStoreController searchStoreController =
       Get.put(SearchStoreController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

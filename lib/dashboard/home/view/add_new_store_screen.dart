@@ -178,19 +178,28 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           flex: 6,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              height10SizedBox,
                               Text(StringConstants.uploadStoreLogoText,
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500)),
                               height10SizedBox,
-                              // Text(StringConstants.theImageMustBeAtleaseText,
-                              //     style: const TextStyle(
-                              //         color: AppColors.black,
-                              //         fontSize: 12,
-                              //         fontWeight: FontWeight.w400)),
+                              InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  addNewStoreController
+                                      .showSelectionDialog(context);
+                                  addNewStoreController
+                                      .isStoreLogoSelected.value = true;
+                                },
+                                child: Image.asset(
+                                  "assets/picupload.png",
+                                  scale: 2.5,
+                                ),
+                              ),
                               height10SizedBox,
                             ],
                           ),

@@ -18,13 +18,15 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
   final SearchStoreController searchStoreController =
       Get.put(SearchStoreController());
 
-  RxInt selectedIndex = 0.obs;
-
   RxList horizontalTabList = [
     StringConstants.myStoreText,
     StringConstants.manageStoreText,
   ].obs;
 
+@override
+  initState() {
+    print("initState Called");
+  }
   Padding horizontalTabs() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -45,7 +47,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                     splashColor: Colors.transparent,
                     onTap: () {
                       setState(() {
-                        selectedIndex.value = i;
+                        searchStoreController.selectedIndex.value = i;
+                        if (i == 0) {
+                          searchStoreController.apiGetFeaturedProducts();
+                        } else {
+                          searchStoreController.selectedIndex.value = i;
+                        }
                       });
                     },
                     child: SizedBox(
@@ -55,10 +62,11 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: selectedIndex.value == i
-                              ? FontWeight.w500
-                              : FontWeight.w400,
-                          color: selectedIndex.value == i
+                          fontWeight:
+                              searchStoreController.selectedIndex.value == i
+                                  ? FontWeight.w500
+                                  : FontWeight.w400,
+                          color: searchStoreController.selectedIndex.value == i
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -112,10 +120,6 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 color: AppColors.white,
                                 size: 24.0,
                               ),
-                            ),
-                            Image.asset(
-                              "assets/favoutline.png",
-                              scale: 2.8,
                             ),
                           ]),
                       height10SizedBox,
@@ -198,9 +202,9 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
           const Divider(
             thickness: 1,
           ),
-          selectedIndex.value == 0
+          searchStoreController.selectedIndex.value == 0
               ? const Expanded(child: MyStoreScreen())
-              : selectedIndex.value == 1
+              : searchStoreController.selectedIndex.value == 1
                   ? const Expanded(child: ManageStoreScreen())
                   : const Expanded(child: MyStoreScreen())
         ],
