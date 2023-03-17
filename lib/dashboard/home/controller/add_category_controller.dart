@@ -16,6 +16,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class AddCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
+
   TextEditingController categoryNameTextController = TextEditingController();
   Rx<XFile> categoryImage = XFile("").obs;
   RxString categoryImageOrigionalLinkfromServer = "".obs;
@@ -27,12 +28,15 @@ class AddCategoryController extends GetxController {
   RxBool updateAutoValidate = false.obs;
   String? imageData;
   bool dataLoaded = false;
+  RxBool isFeaturedTypeSelected = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     storeId.value = Get.arguments["storeId"] ?? "";
     categoryId.value = Get.arguments["categoryId"] ?? "";
+    isFeaturedTypeSelected.value =
+        Get.arguments["isFeaturedSelectedType"] ?? false;
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }
@@ -63,9 +67,9 @@ class AddCategoryController extends GetxController {
   }
 
   bool validateAndSaveUpdate() {
-    final form = updateformKey.currentState;
-    if (form!.validate()) {
-      form.save();
+    final forms = updateformKey.currentState;
+    if (forms!.validate()) {
+      forms.save();
       return true;
     } else {
       return false;
@@ -179,7 +183,6 @@ class AddCategoryController extends GetxController {
         'Authorization':
             "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
       };
-
       formData.files.add(MapEntry(
           "file",
           mdio.MultipartFile.fromBytes(await categoryImage.value.readAsBytes(),
@@ -229,6 +232,7 @@ class AddCategoryController extends GetxController {
     Map body = {
       "store_id": int.parse(storeId.value),
       "parent_category_id": null,
+      "is_featured_category": isFeaturedTypeSelected.value,
       "category_name": categoryNameTextController.text.trim(),
       "image_url": categoryImageOrigionalLinkfromServer.value
     };
@@ -301,7 +305,7 @@ class AddCategoryController extends GetxController {
       "is_featured_category": isFeaturedCategory.value,
       "parent_category_id": null,
       "category_name": categoryNameTextController.text.trim(),
-      "image_url": categoryImageOrigionalLinkfromServer
+      "image_url": categoryImageOrigionalLinkfromServer.value
     };
     debugPrint("UPDATE CATEGORY BODY**********$data");
     UserProvider()
@@ -315,6 +319,9 @@ class AddCategoryController extends GetxController {
       debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
+        Get.back();
+        categoryNameTextController.clear();
+        categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -222,7 +222,8 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addCategoryController.validateAndSubmitUpdate();
+                        //addCategoryController.validateAndSubmitUpdate();
+                        addCategoryController.apiUpdateCategory();
                       },
                       height: 50,
                       text: StringConstants.saveAndUpdateCategoryText,

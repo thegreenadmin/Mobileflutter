@@ -23,10 +23,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
     StringConstants.manageStoreText,
   ].obs;
 
-@override
-  initState() {
-    print("initState Called");
-  }
+
   Padding horizontalTabs() {
     return Padding(
       padding: const EdgeInsets.all(10.0),

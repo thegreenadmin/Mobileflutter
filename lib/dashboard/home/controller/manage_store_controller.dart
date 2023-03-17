@@ -34,6 +34,7 @@ class ManageStoreController extends GetxController {
 
   RxList<Map> selectedCategories = <Map>[].obs;
   RxBool autoValidate = false.obs;
+  RxBool isFeaturedSelectedType = false.obs;
   RxBool updateAutoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isNotify = false.obs;
@@ -80,6 +81,7 @@ class ManageStoreController extends GetxController {
     storeId.value = Get.arguments["storeId"] ?? "";
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
+
     apiGetCategoriesList();
   }
 

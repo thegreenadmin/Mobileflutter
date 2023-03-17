@@ -184,10 +184,13 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                     splashColor: Colors.transparent,
                     onTap: () {
                       Get.to(() => const AddCategoriesScreen(), arguments: {
-                        "storeId": manageStoreController.storeId.value
+                        "storeId": manageStoreController.storeId.value,
+                        "isFeaturedTypeSelected":
+                            manageStoreController.isFeaturedTypeSelected.value,
                       })!
-                          .then((value) =>
-                              manageStoreController.apiGetCategoriesList());
+                          .then((value) {
+                        manageStoreController.apiGetCategoriesList();
+                      });
                     },
                     child: Row(
                       children: [
@@ -370,7 +373,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                 "";
 
                                         Get.to(const CategoryEditScreen(),
-                                            arguments: {
+                                                arguments: {
                                               "storeId": manageStoreController
                                                   .storeId.value,
                                               "categoryId":
@@ -378,7 +381,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                           .categoriesList[index]
                                                           .categoryId ??
                                                       ""
-                                            });
+                                            })!
+                                            .then((value) {
+                                          manageStoreController
+                                              .apiGetCategoriesList();
+                                        });
                                       },
                                       child: Padding(
                                         padding:
