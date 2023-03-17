@@ -16,6 +16,7 @@ class CategoryEditScreen extends StatefulWidget {
 }
 
 class _CategoryEditScreenState extends State<CategoryEditScreen> {
+  
   AddCategoryController addCategoryController =
       Get.put(AddCategoryController());
 

@@ -372,7 +372,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         Get.to(const CategoryEditScreen(),
                                             arguments: {
                                               "storeId": manageStoreController
-                                                  .storeId.value
+                                                  .storeId.value,
+                                              "categoryId":
+                                                  manageStoreController
+                                                          .categoriesList[index]
+                                                          .categoryId ??
+                                                      ""
                                             });
                                       },
                                       child: Padding(

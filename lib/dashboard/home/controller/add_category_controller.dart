@@ -11,6 +11,7 @@ import 'package:dio/dio.dart' as mdio;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -19,6 +20,7 @@ class AddCategoryController extends GetxController {
   RxString categoryImageOrigionalLinkfromServer = "".obs;
   RxString categoryImageDynamicLinkfromServer = "".obs;
   RxString storeId = "".obs;
+  RxString categoryId = "".obs;
   RxBool autoValidate = false.obs;
 
   String? imageData;
@@ -28,6 +30,10 @@ class AddCategoryController extends GetxController {
   void onInit() {
     super.onInit();
     storeId.value = Get.arguments["storeId"] ?? "";
+    categoryId.value = Get.arguments["categoryId"] ?? "";
+    if (categoryId.value.isNotEmpty) {
+      apiGetCategoryDetail();
+    }
   }
 
   bool validateAndSave() {
@@ -214,6 +220,36 @@ class AddCategoryController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
         Get.back();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get Category Detail Api
+  Future apiGetCategoryDetail() async {
+    debugPrint(
+        "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDeatil}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDeatil}?store_id=${storeId.value}&category_id=${categoryId.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("GET CATEGORY DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        categoryNameTextController.text =
+            value.body["data"]['category']['category_name'] ?? "";
+        categoryImageDynamicLinkfromServer.value =
+            value.body["data"]['category']['image']['dynamic_url'] ?? "";
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
