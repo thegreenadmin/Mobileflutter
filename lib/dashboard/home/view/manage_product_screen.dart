@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/add_categories_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/category_edit_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/view_product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -37,19 +37,22 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  if (manageStoreController.isMenuSelected.value == true) {
+                  if (manageStoreController.isFeaturedTypeSelected.value ==
+                      false) {
                   } else {
-                    manageStoreController.isMenuSelected.value =
-                        !manageStoreController.isMenuSelected.value;
+                    manageStoreController.isFeaturedTypeSelected.value =
+                        !manageStoreController.isFeaturedTypeSelected.value;
+
+                    manageStoreController.apiGetCategoriesList();
                   }
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: manageStoreController.isMenuSelected.value
-                      ? AppColors.primarylight
-                      : AppColors.white,
+                  color: manageStoreController.isFeaturedTypeSelected.value
+                      ? AppColors.white
+                      : AppColors.primarylight,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,9 +63,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: manageStoreController.isMenuSelected.value
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                          color:
+                              manageStoreController.isFeaturedTypeSelected.value
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                     ],
@@ -71,19 +75,22 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
               ),
               InkWell(
                 onTap: () {
-                  if (manageStoreController.isMenuSelected.value == false) {
+                  if (manageStoreController.isFeaturedTypeSelected.value ==
+                      true) {
                   } else {
-                    manageStoreController.isMenuSelected.value =
-                        !manageStoreController.isMenuSelected.value;
+                    manageStoreController.isFeaturedTypeSelected.value =
+                        !manageStoreController.isFeaturedTypeSelected.value;
+
+                    manageStoreController.apiGetCategoriesList();
                   }
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: manageStoreController.isMenuSelected.value
-                      ? AppColors.white
-                      : AppColors.primarylight,
+                  color: manageStoreController.isFeaturedTypeSelected.value
+                      ? AppColors.primarylight
+                      : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,9 +101,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: manageStoreController.isMenuSelected.value
-                              ? AppColors.blacklight
-                              : AppColors.primary,
+                          color:
+                              manageStoreController.isFeaturedTypeSelected.value
+                                  ? AppColors.blacklight
+                                  : AppColors.primary,
                         ),
                       ),
                     ],
@@ -219,8 +227,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                             height4SizedBox,
                             Center(
                               child: Text(
-                                StringConstants.noProductFoundText,
-                                style:const TextStyle(
+                                StringConstants.noCategoriesFoundText,
+                                style: const TextStyle(
                                     fontStyle: FontStyle.italic, fontSize: 16),
                               ),
                             ),
@@ -232,84 +240,154 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       },
                       itemCount: manageStoreController.categoriesList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            manageStoreController.categoryName.value =
-                                manageStoreController
-                                        .categoriesList[index].categoryName ??
-                                    "";
-                            manageStoreController.categoryId.value =
-                                manageStoreController
-                                        .categoriesList[index].categoryId ??
-                                    "";
-                            manageStoreController.apiGetStoreProducts();
-
-                            Get.to(const ViewProductScreen());
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: const BoxDecoration(
-                                color: AppColors.greylight,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                )),
-                            child: Column(children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: AppColors.white, width: 1)),
-                                    child: Obx(() => CircleAvatar(
-                                          radius: 24.0,
-                                          backgroundImage: NetworkImage(
-                                              manageStoreController
-                                                  .categoriesList[index]
-                                                  .image!.dynamicUrl
-                                                  .toString()),
-                                          backgroundColor: Colors.transparent,
-                                        )),
+                        return Dismissible(
+                          background: Container(
+                            color: AppColors.redlight,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: const <Widget>[
+                                  Icon(
+                                    Icons.delete,
+                                    color: AppColors.red,
                                   ),
-                                  width10SizedBox,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 250,
-                                        child: Obx(() => Text(
-                                              manageStoreController
-                                                      .categoriesList[index]
-                                                      .categoryName ?? "",
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500),
-                                            )),
-                                      ),
-                                      height4SizedBox,
-                                      SizedBox(
-                                        width: 250,
-                                        child: Obx(() => Text(
-                                              manageStoreController
-                                                          .categoriesList[index]
-                                                          .totalProducts! > 1
-                                                  ? "${manageStoreController.categoriesList[index].totalProducts} Products"
-                                                  : "${manageStoreController.categoriesList[index].totalProducts} Product",
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: AppColors.blacklight,
-                                                  fontWeight: FontWeight.w400),
-                                            )),
-                                      ),
-                                    ],
-                                  )
+                                  SizedBox(
+                                    width: 20,
+                                  ),
                                 ],
                               ),
-                            ]),
+                            ),
+                          ),
+                          direction: DismissDirection.endToStart,
+                          resizeDuration: const Duration(milliseconds: 200),
+                          key: UniqueKey(),
+                          onDismissed: (direction) {
+                            manageStoreController.categoryId.value =
+                                manageStoreController
+                                    .categoriesList[index].categoryId
+                                    .toString();
+                            manageStoreController.apiDeleteCategory();
+                          },
+                          child: InkWell(
+                            onTap: () {
+                              manageStoreController.categoryName.value =
+                                  manageStoreController
+                                          .categoriesList[index].categoryName ??
+                                      "";
+                              manageStoreController.categoryId.value =
+                                  manageStoreController
+                                          .categoriesList[index].categoryId ??
+                                      "";
+                              manageStoreController.apiGetStoreProducts();
+
+                              Get.to(const ViewProductScreen());
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              decoration: const BoxDecoration(
+                                  color: AppColors.greylight,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  )),
+                              child: Column(children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: AppColors.white,
+                                                  width: 1)),
+                                          child: Obx(() => CircleAvatar(
+                                                radius: 24.0,
+                                                backgroundImage: NetworkImage(
+                                                    manageStoreController
+                                                        .categoriesList[index]
+                                                        .image!
+                                                        .dynamicUrl
+                                                        .toString()),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                              )),
+                                        ),
+                                        width10SizedBox,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 150,
+                                              child: Obx(() => Text(
+                                                    manageStoreController
+                                                            .categoriesList[
+                                                                index]
+                                                            .categoryName ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )),
+                                            ),
+                                            height4SizedBox,
+                                            SizedBox(
+                                              width: 150,
+                                              child: Obx(() => Text(
+                                                    manageStoreController
+                                                                .categoriesList[
+                                                                    index]
+                                                                .totalProducts! >
+                                                            1
+                                                        ? "${manageStoreController.categoriesList[index].totalProducts} Products"
+                                                        : "${manageStoreController.categoriesList[index].totalProducts} Product",
+                                                    style: TextStyle(
+                                                        fontSize: 14.0,
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        manageStoreController.categoryId.value =
+                                            manageStoreController
+                                                    .categoriesList[index]
+                                                    .categoryId ??
+                                                "";
+
+                                        Get.to(const CategoryEditScreen(),
+                                            arguments: {
+                                              "storeId": manageStoreController
+                                                  .storeId.value
+                                            });
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Image.asset(
+                                          "assets/circleedit.png",
+                                          scale: 2.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                            ),
                           ),
                         );
                       })),

@@ -18,6 +18,7 @@ class ServerCommunicator {
   String editWorker = 'store/user/edit';
 //F
   String fileUpload = 'file/upload/single';
+  String fileUploadMultiple = 'file/upload/multiple';
 
 //G
   String generateOtp = 'user/otp/generate';
@@ -42,6 +43,9 @@ class ServerCommunicator {
   String storeProductDetail = 'store/product/details';
   String storeProductEdit = 'store/product/edit';
   String storeUserDetail = 'store/user/details';
+  String storeProductDelete = 'store/product/delete';
+  String storeCategoryDelete = 'store/category/delete';
+
 //T
 //U
   String userDetail = 'user/details';
@@ -51,7 +55,6 @@ class ServerCommunicator {
 //V
 //W
   String workerList = 'store/user/list';
-
 
 //X
 //Y

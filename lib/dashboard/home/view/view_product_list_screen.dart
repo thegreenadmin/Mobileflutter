@@ -184,7 +184,13 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                             direction: DismissDirection.endToStart,
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
-                            onDismissed: (direction) {},
+                            onDismissed: (direction) {
+                              manageStoreController.productId.value =
+                                  manageStoreController
+                                      .storeProductList[index].productId
+                                      .toString();
+                              manageStoreController.apiDeleteProduct();
+                            },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),

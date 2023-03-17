@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
@@ -10,7 +15,6 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class ManageStoreController extends GetxController {
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
 
@@ -33,7 +37,7 @@ class ManageStoreController extends GetxController {
   RxBool updateAutoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isNotify = false.obs;
-  RxBool isMenuSelected = false.obs;
+  RxBool isFeaturedTypeSelected = false.obs;
   RxBool isFeatured = false.obs;
   RxBool isEnabled = false.obs;
   RxString storeId = "".obs;
@@ -65,18 +69,18 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
+      apiUploadMultipleImage();
     }
   }
 
   @override
   void onInit() {
     super.onInit();
-    isMenuSelected.value = true;
+    isFeaturedTypeSelected.value = false;
     storeId.value = Get.arguments["storeId"] ?? "";
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
- 
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
@@ -137,19 +141,50 @@ class ManageStoreController extends GetxController {
     }
   }
 
+  //Api upload image to server
+  Future<Future<bool?>?> apiUploadMultipleImage() async {
+    // create multipart request
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(ServerCommunicator().baseUrl +
+            ServerCommunicator().fileUploadMultiple));
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    if (imageFileList!.length > 0) {
+      for (var i = 0; i < imageFileList!.length; i++) {
+        request.files.add(http.MultipartFile(
+            'picture',
+            File(imageFileList![i].path).readAsBytes().asStream(),
+            File(imageFileList![i].path).lengthSync(),
+            filename: basename(imageFileList![i].path.split("/").last)));
+        request.headers.addAll(headers);
+      }
+      // send
+      var response = await request.send();
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        debugPrint(value);
+      });
+    } else {
+      Utility.showToast("Please Select atleast one image");
+    }
+  }
+
   //Get Categories Api
   Future apiGetCategoriesList() async {
     categoriesList.clear();
     isLoading.value = true;
     debugPrint(
-        "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}"}");
+        "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -172,8 +207,8 @@ class ManageStoreController extends GetxController {
   Future apiGetProductList() async {
     categoriesList.clear();
     isLoading.value = true;
-    debugPrint(
-        "GET PRODUCT LIST URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}"}");
+    debugPrint("GET PRODUCT LIST URL **********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -443,9 +478,9 @@ class ManageStoreController extends GetxController {
         "is_featured_product": isFeatured.value,
         "product_name": productNameTextController.text.trim(),
         "description": shortDescriptionTextController.text.trim(),
-        "product_price": pricePerUnitTextController.text.trim(),
-        "selling_price": 0,
-        "discount_type": discountOrOfferTextController.text.trim(),
+        "product_price": double.parse(pricePerUnitTextController.text.trim()),
+        "selling_price": double.parse(pricePerUnitTextController.text.trim()),
+        "discount_type": discountValueType.value.toLowerCase(),
         "discount_value": 0,
         "is_product_returnable": false,
         "return_days_count": 0,
@@ -482,8 +517,8 @@ class ManageStoreController extends GetxController {
         {
           "product_content_id":
               lastProductContent.value != contentsAndStrainsTextController.text
-                  ? "1"
-                  : null,
+                  ? null
+                  : "1",
           "heading": "Heading",
           "paragraph":
               lastProductContent.value != contentsAndStrainsTextController.text
@@ -500,8 +535,8 @@ class ManageStoreController extends GetxController {
         {
           "product_link_id":
               lastProductLink.value != additionalLinkTextController.text
-                  ? "1"
-                  : null,
+                  ? null
+                  : "1",
           "name": "Product link",
           "link": lastProductLink.value != additionalLinkTextController.text
               ? additionalLinkTextController.text
@@ -524,6 +559,76 @@ class ManageStoreController extends GetxController {
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Api Delete Product
+  Future apiDeleteProduct() async {
+    debugPrint(
+        "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {"store_id": storeId.value, "product_id": productId.value};
+    debugPrint("DELETE PRODUCT BODY ************* $data");
+    UserProvider()
+        .deleteWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE PRODUCT RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        await apiGetProductList();
+      } else if (value.body["status"] == 409) {
+        Utility.showToast(value.body['message']);
+        await apiGetProductList();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Api Delete Category
+  Future apiDeleteCategory() async {
+    debugPrint(
+        "DELETE CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {"store_id": storeId.value, "category_id": categoryId.value};
+    debugPrint("DELETE CATEGORY BODY ************* $data");
+    UserProvider()
+        .deleteWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        await apiGetCategoriesList();
+      } else if (value.body["status"] == 409) {
+        Utility.showToast(value.body['message']);
+        await apiGetCategoriesList();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

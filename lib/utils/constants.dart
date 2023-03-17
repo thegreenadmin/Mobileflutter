@@ -144,6 +144,7 @@ class StringConstants {
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
   static String noStoresFoundText = "No stores found";
+  static String noCategoriesFoundText = "No Categories found";
 
   //O
   static String ownAStoreText = "Own a Store?";
@@ -250,6 +251,9 @@ class StringConstants {
   static String updateWorkerText = "Update Worker";
   static String uploadStoreLogoText = "Upload Store Logo";
   static String uploadLogoText = "Upload Logo";
+  static String updateCategoryText = "Update Category";
+  static String updateCategoryImageText = "Update Category Image";
+
   //V
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
