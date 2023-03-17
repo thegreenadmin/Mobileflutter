@@ -45,7 +45,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  addNewWorkerController.formKey.currentState?.reset();
+                                  addNewWorkerController.formKey.currentState
+                                      ?.reset();
                                   addNewWorkerController.resetForm();
                                   Get.back();
                                 },
@@ -96,33 +97,36 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                               color: AppColors.blacklight,
                               strokeWidth: 1,
                               dashPattern: const [4, 4],
-                              child:  Obx(()=> Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child:
-                                    addNewWorkerController
-                                                        .userImageDynamicLinkFromServer.value ==
-                                                    "" ||
-                                        addNewWorkerController
-                                                    .userImageDynamicLinkFromServer.isEmpty
-                                            ?
-                                        const CircleAvatar(
-                                      radius: 50.0,
-                                      backgroundImage: AssetImage(
-                                        "assets/userAccount.png",
-                                      ),
-                                      backgroundColor: AppColors.primarylight,
-                                    )
-                                    : CircleAvatar(
-                                        radius: 50.0,
-                                        backgroundImage: NetworkImage(
+                              child: Obx(
+                                () => Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: addNewWorkerController
+                                                  .userImageDynamicLinkFromServer
+                                                  .value ==
+                                              "" ||
                                           addNewWorkerController
-                                                  .userImageDynamicLinkFromServer.toString(),
+                                              .userImageDynamicLinkFromServer
+                                              .isEmpty
+                                      ? const CircleAvatar(
+                                          radius: 50.0,
+                                          backgroundImage: AssetImage(
+                                            "assets/userAccount.png",
+                                          ),
+                                          backgroundColor:
+                                              AppColors.primarylight,
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50.0,
+                                          backgroundImage: NetworkImage(
+                                            addNewWorkerController
+                                                .userImageDynamicLinkFromServer
+                                                .toString(),
+                                          ),
+                                          backgroundColor: Colors.transparent,
                                         ),
-                                        backgroundColor: Colors.transparent,
-                                      ),
-                                    ),
+                                ),
                               ),
                             ),
                           ],
@@ -147,7 +151,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         //   ),
                         // ),
                         width20SizedBox,
-                      /*  Column(
+                        /*  Column(
                           children: [
                             height20SizedBox,
                             Text("Upload photo here",
@@ -239,7 +243,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     height4SizedBox,
                     TextFormField(
                         textInputAction: TextInputAction.next,
-                        autofocus: false, readOnly: true,
+                        autofocus: false,
+                        readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -303,10 +308,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     height4SizedBox,
                     Container(
                         padding: const EdgeInsets.only(
-                            left: 15,
-                            right: 15,
-                            top: 10,
-                            bottom: 10),
+                            left: 15, right: 15, top: 10, bottom: 10),
                         margin: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -314,13 +316,11 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                               color: Colors.grey.withOpacity(0.1),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset:
-                              const Offset(0, 2),
+                              offset: const Offset(0, 2),
                             ),
                           ],
                           color: AppColors.primary,
-                          borderRadius:
-                          const BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(100),
                           ),
                         ),
@@ -330,7 +330,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color:AppColors.primarylight,
+                            color: AppColors.primarylight,
                           ),
                         )),
                     height20SizedBox,
@@ -357,7 +357,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterEinText;
+                            return AlertStringConstants
+                                .pleaseEnterShortDescriptionText;
                           }
                           return null;
                         },
@@ -415,7 +416,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                           return null;
                         },
                         controller:
-                        addNewWorkerController.workingDaysTextController,
+                            addNewWorkerController.workingDaysTextController,
                         hintText: StringConstants.selectDaysText,
                         title: StringConstants.selectDaysText,
                         list: addNewWorkerController.weekDaysList),
@@ -481,10 +482,11 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     ));
 
                                     addNewWorkerController
-                                        .startTimeTextController
-                                        .text = date?.format(context).toString()??"";
+                                            .startTimeTextController.text =
+                                        date?.format(context).toString() ?? "";
                                   },
                                   decoration: InputDecoration(
+                                    errorMaxLines: 3,
                                     hintText: StringConstants.startTimeText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
@@ -579,10 +581,12 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                         );
                                       },
                                     ));
-                                    addNewWorkerController.endTimeTextController
-                                        .text = date?.format(context).toString()??"";
+                                    addNewWorkerController
+                                            .endTimeTextController.text =
+                                        date?.format(context).toString() ?? "";
                                   },
                                   decoration: InputDecoration(
+                                    errorMaxLines: 3,
                                     hintText: StringConstants.endTimeText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
@@ -632,7 +636,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                     height4SizedBox,
                     TextFormField(
                         textInputAction: TextInputAction.next,
-                        autofocus: false, readOnly: true,
+                        autofocus: false,
+                        readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -692,7 +697,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit(isEdit:true);
+                        addNewWorkerController.validateAndSubmit(isEdit: true);
                       },
                       height: 50,
                       text: StringConstants.saveText,

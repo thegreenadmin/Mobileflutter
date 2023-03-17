@@ -75,37 +75,37 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           filled: false,
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
+            borderSide:  BorderSide(
+              color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           border: InputBorder.none,
           disabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
+            borderSide:  BorderSide(
+              color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           errorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
+            borderSide:  BorderSide(
+              color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           focusedErrorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
+            borderSide:  BorderSide(
+              color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
+            borderSide:  BorderSide(
+              color: AppColors.blacklight,
               width: 1.0,
             ),
           ),

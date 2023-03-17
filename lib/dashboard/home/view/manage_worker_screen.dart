@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 import '../controller/add_new_worker_controller.dart';
 import '../model/categories_model.dart';
@@ -86,7 +87,9 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
               children: [
                 Obx(
                   () => Text(
-                    "${addNewWorkerController.workerList.length ?? 0} Member",
+                    addNewWorkerController.workerList.length > 1
+                        ? "${addNewWorkerController.workerList.length} Members"
+                        : "${addNewWorkerController.workerList.length} Member",
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: AppColors.black,
@@ -156,300 +159,320 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                   .workerList[index].storeUserTimings ??
                               []) {
                             for (Categories day
-                                in addNewWorkerController.weekDaysList ?? []) {
+                                in addNewWorkerController.weekDaysList) {
                               if (data.dayOfWeek == day.id) {
                                 concatenate.write(day.name?.substring(0, 3));
                                 concatenate.write(', ');
                               }
                             }
                           }
-                          return InkWell(
-                            onTap: () async {
+                          return Dismissible(
+                            background: Container(
+                              color: AppColors.redlight,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const <Widget>[
+                                    Icon(
+                                      Icons.delete,
+                                      color: AppColors.red,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            direction: DismissDirection.endToStart,
+                            resizeDuration: const Duration(milliseconds: 200),
+                            key: UniqueKey(),
+                            onDismissed: (direction) {
                               addNewWorkerController.workerId.value =
                                   addNewWorkerController
-                                          .workerList[index].storeUserId
-                                          .toString() ??
-                                      "";
-                              Get.to(() => const ManageWorkerEditScreen());
-                              await addNewWorkerController.apiGetWorkerDetail();
+                                      .workerList[index].storeUserId
+                                      .toString();
+                              addNewWorkerController.apiDeleteWorker();
                             },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  )),
-                              child: Column(children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      flex: 3,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
-                                                    width: 1)),
-                                            child: addNewWorkerController
-                                                            .workerList[index]
-                                                            .user
-                                                            ?.image
-                                                            ?.dynamicUrl !=
-                                                        null &&
-                                                    addNewWorkerController
-                                                            .workerList[index]
-                                                            .user
-                                                            ?.image
-                                                            ?.dynamicUrl !=
-                                                        ""
-                                                ? CircleAvatar(
-                                                    radius: 36.0,
-                                                    backgroundImage: NetworkImage(
-                                                        addNewWorkerController
-                                                                .workerList[
-                                                                    index]
-                                                                .user
-                                                                ?.image
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                  )
-                                                : const CircleAvatar(
-                                                    radius: 36.0,
-                                                    backgroundImage: AssetImage(
-                                                        "assets/userAccount.png"),
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                  ),
-                                          ),
-                                          // const Divider(),
-                                          // const Text(
-                                          //   "",
-                                          //   textAlign: TextAlign.center,
-                                          //   style: TextStyle(
-                                          //       fontSize: 12.0,
-                                          //       color: AppColors.black,
-                                          //       fontWeight: FontWeight.w500),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                    width10SizedBox,
-                                    Flexible(
-                                      flex: 8,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: 190,
-                                            child: Text(
-                                              addNewWorkerController
-                                                      .workerList[index]
-                                                      .user
-                                                      ?.firstName
-                                                      .toString() ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ),
-                                          height8SizedBox,
-                                          SizedBox(
-                                            width: 190,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Stores:",
-                                                  style: TextStyle(
-                                                      fontSize: 12.0,
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                Text(
-                                                  addNewWorkerController
-                                                                  .storeId !=
-                                                              null &&
+                            child: InkWell(
+                              onTap: () async {
+                                addNewWorkerController.workerId.value =
+                                    addNewWorkerController
+                                        .workerList[index].storeUserId
+                                        .toString();
+                                Get.to(() => const ManageWorkerEditScreen());
+                                await addNewWorkerController
+                                    .apiGetWorkerDetail();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: const BoxDecoration(
+                                    color: AppColors.greylight,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    )),
+                                child: Column(children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                      color: AppColors.white,
+                                                      width: 1)),
+                                              child: addNewWorkerController
+                                                              .workerList[index]
+                                                              .user
+                                                              ?.image
+                                                              ?.dynamicUrl !=
+                                                          null &&
+                                                      addNewWorkerController
+                                                              .workerList[index]
+                                                              .user
+                                                              ?.image
+                                                              ?.dynamicUrl !=
+                                                          ""
+                                                  ? CircleAvatar(
+                                                      radius: 36.0,
+                                                      backgroundImage: NetworkImage(
                                                           addNewWorkerController
-                                                                  .getUserStoreList !=
-                                                              null
-                                                      ? addNewWorkerController
-                                                              .getUserStoreList
-                                                              .firstWhere((element) =>
-                                                                  element
-                                                                      .storeId ==
-                                                                  addNewWorkerController
-                                                                      .storeId
-                                                                      .toString())
-                                                              .storeName
-                                                              .toString() ??
-                                                          ''
-                                                      : "",
-                                                  style: const TextStyle(
-                                                      fontSize: 12.0,
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
+                                                                  .workerList[
+                                                                      index]
+                                                                  .user
+                                                                  ?.image
+                                                                  ?.dynamicUrl
+                                                                  .toString() ??
+                                                              ""),
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                    )
+                                                  : const CircleAvatar(
+                                                      radius: 36.0,
+                                                      backgroundImage: AssetImage(
+                                                          "assets/userAccount.png"),
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                    ),
                                             ),
-                                          ),
-                                          height8SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                "assets/loc.png",
-                                                scale: 2.5,
-                                              ),
-                                              width5SizedBox,
-                                              SizedBox(
-                                                width: 120,
-                                                child: Text(
-                                                  addNewWorkerController
-                                                      .storeName.value,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 12.0,
-                                                      color:
-                                                          AppColors.blacklight),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          height8SizedBox,
-                                          Visibility(
-                                            visible: addNewWorkerController
-                                                        .workerList[index]
-                                                        .storeUserTimings !=
-                                                    null &&
+                                            // const Divider(),
+                                            // const Text(
+                                            //   "",
+                                            //   textAlign: TextAlign.center,
+                                            //   style: TextStyle(
+                                            //       fontSize: 12.0,
+                                            //       color: AppColors.black,
+                                            //       fontWeight: FontWeight.w500),
+                                            // ),
+                                          ],
+                                        ),
+                                      ),
+                                      width10SizedBox,
+                                      Flexible(
+                                        flex: 8,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 190,
+                                              child: Text(
                                                 addNewWorkerController
-                                                    .workerList[index]
-                                                    .storeUserTimings!
-                                                    .isNotEmpty,
-                                            replacement: height0SizedBox,
-                                            child: Row(
+                                                        .workerList[index]
+                                                        .user
+                                                        ?.firstName
+                                                        .toString() ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: AppColors.black,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                            height8SizedBox,
+                                            SizedBox(
+                                              width: 190,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Stores:",
+                                                    style: TextStyle(
+                                                        fontSize: 12.0,
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  Text(
+                                                    addNewWorkerController
+                                                        .storeName.value,
+                                                    style: const TextStyle(
+                                                        fontSize: 12.0,
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            height8SizedBox,
+                                            Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
-                                                  "assets/watch.png",
+                                                  "assets/loc.png",
                                                   scale: 2.5,
                                                 ),
                                                 width5SizedBox,
                                                 SizedBox(
                                                   width: 120,
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "${concatenate.toString() ?? ''} \n ${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? ""} - ${addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? ""} " : ""}",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 12.0,
-                                                            color: AppColors
-                                                                .blacklight),
-                                                      ),
-                                                    ],
+                                                  child: Text(
+                                                    addNewWorkerController
+                                                        .storeName.value,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 12.0,
+                                                        color: AppColors
+                                                            .blacklight),
                                                   ),
                                                 )
                                               ],
                                             ),
-                                          ),
-                                          height8SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                "assets/email.png",
-                                                scale: 4,
-                                                color: AppColors.blacklight,
-                                              ),
-                                              width5SizedBox,
-                                              SizedBox(
-                                                width: 120,
-                                                child: Text(
-                                                  addNewWorkerController
+                                            height8SizedBox,
+                                            Visibility(
+                                              visible: addNewWorkerController
                                                           .workerList[index]
-                                                          .user
-                                                          ?.email
-                                                          .toString() ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 12.0,
-                                                      color:
-                                                          AppColors.blacklight),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          height8SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                "assets/calling.png",
-                                                color: AppColors.blacklight,
-                                                scale: 4,
-                                              ),
-                                              width5SizedBox,
-                                              SizedBox(
-                                                width: 120,
-                                                child: Text(
+                                                          .storeUserTimings !=
+                                                      null &&
                                                   addNewWorkerController
-                                                          .workerList[index]
-                                                          .user
-                                                          ?.phone
-                                                          .toString() ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 12.0,
-                                                      color:
-                                                          AppColors.blacklight),
+                                                      .workerList[index]
+                                                      .storeUserTimings!
+                                                      .isNotEmpty,
+                                              replacement: height0SizedBox,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Image.asset(
+                                                    "assets/watch.png",
+                                                    scale: 2.5,
+                                                  ),
+                                                  width5SizedBox,
+                                                  SizedBox(
+                                                    width: 120,
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          "${concatenate.toString()} \n "
+                                                          "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
+                                                              "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 12.0,
+                                                              color: AppColors
+                                                                  .blacklight),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            height8SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/email.png",
+                                                  scale: 4,
+                                                  color: AppColors.blacklight,
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                                width5SizedBox,
+                                                SizedBox(
+                                                  width: 120,
+                                                  child: Text(
+                                                    addNewWorkerController
+                                                            .workerList[index]
+                                                            .user
+                                                            ?.email
+                                                            .toString() ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 12.0,
+                                                        color: AppColors
+                                                            .blacklight),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            height8SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/calling.png",
+                                                  color: AppColors.blacklight,
+                                                  scale: 4,
+                                                ),
+                                                width5SizedBox,
+                                                SizedBox(
+                                                  width: 120,
+                                                  child: Text(
+                                                    addNewWorkerController
+                                                            .workerList[index]
+                                                            .user
+                                                            ?.phone
+                                                            .toString() ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 12.0,
+                                                        color: AppColors
+                                                            .blacklight),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Image.asset(
-                                        "assets/circleedit.png",
-                                        scale: 2.8,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Image.asset(
+                                          "assets/circleedit.png",
+                                          scale: 2.8,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ]),
+                                    ],
+                                  ),
+                                ]),
+                              ),
                             ),
                           );
                         }))),

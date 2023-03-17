@@ -14,6 +14,7 @@ class ServerCommunicator {
   String createProduct = 'store/product/create';
 
 //D
+  String deleteWorker = 'store/user/delete';
 //E
   String editWorker = 'store/user/edit';
 //F

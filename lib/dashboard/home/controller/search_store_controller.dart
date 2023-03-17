@@ -432,9 +432,13 @@ class SearchStoreController extends GetxController {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
             openingTimeTextController.text =
-                storeTimings[i]["opening_time"] ?? '';
+                Utility.formatDateTime(
+                    storeTimings[i]["opening_time"] ?? '',
+                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString();
             closingTimeTextController.text =
-                storeTimings[i]["closing_time"] ?? '';
+                Utility.formatDateTime(
+                    storeTimings[i]["closing_time"] ?? '',
+                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString();
           }
         }
         print("stateId.value---------->" + stateId.value.toString());
@@ -443,7 +447,6 @@ class SearchStoreController extends GetxController {
             stateDropdownValue.value.toString());
         print("countryDropdownValue.value---------->" +
             countryDropdownValue.value.toString());
-        //postalCodeTextController.text =
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
@@ -502,6 +505,7 @@ class SearchStoreController extends GetxController {
           : storeTimmingList
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
+
     UserProvider()
         .putWithHeadersApi(
             data,
@@ -509,10 +513,10 @@ class SearchStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         print(value);
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
         // Get.back();
         // Get.back();
         // await apiGetStoreList();
@@ -527,12 +531,12 @@ class SearchStoreController extends GetxController {
         postalCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
-      } else if (value.body["status"] == 403) {
-        Utility.showToast(value.body['message']);
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
       }
     });
   }

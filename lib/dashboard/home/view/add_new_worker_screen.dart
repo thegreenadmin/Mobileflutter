@@ -285,25 +285,19 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                     height4SizedBox,
                     Container(
                         padding: const EdgeInsets.only(
-                            left: 15,
-                            right: 15,
-                            top: 10,
-                            bottom: 10),
+                            left: 15, right: 15, top: 10, bottom: 10),
                         margin: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey
-                                  .withOpacity(0.1),
+                              color: Colors.grey.withOpacity(0.1),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset:
-                              const Offset(0, 2),
+                              offset: const Offset(0, 2),
                             ),
                           ],
                           color: AppColors.primary,
-                          borderRadius:
-                          const BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(100),
                           ),
                         ),
@@ -313,7 +307,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color:AppColors.primarylight,
+                            color: AppColors.primarylight,
                           ),
                         )),
                     height20SizedBox,
@@ -340,7 +334,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterEinText;
+                            return AlertStringConstants
+                                .pleaseEnterShortDescriptionText;
                           }
                           return null;
                         },
@@ -437,7 +432,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseSelectOpeningTimeText;
-                                    } else if (value!.trim() ==
+                                    } else if (value.trim() ==
                                         addNewWorkerController
                                             .endTimeTextController.text) {
                                       return AlertStringConstants
@@ -473,6 +468,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                         .text = date.format(context).toString();
                                   },
                                   decoration: InputDecoration(
+                                    errorMaxLines: 3,
                                     hintText: StringConstants.startTimeText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
@@ -542,7 +538,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseSelectClosingTimeText;
-                                    } else if (value!.trim() ==
+                                    } else if (value.trim() ==
                                         addNewWorkerController
                                             .startTimeTextController.text) {
                                       return AlertStringConstants
@@ -576,6 +572,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                         .text = date.format(context).toString();
                                   },
                                   decoration: InputDecoration(
+                                    errorMaxLines: 3,
                                     hintText: StringConstants.endTimeText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
