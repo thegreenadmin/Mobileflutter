@@ -165,6 +165,8 @@ class UserProvider extends GetConnect {
     }
   }
 
+
+
   // Post with header request
   Future<Response?> putWithHeadersApi(data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
@@ -210,17 +212,27 @@ class UserProvider extends GetConnect {
     }
   }
 
-  // Signup request
-  Future<Response?> deleteWithHeadersApi(
-      String url, Map<String, String> headers) async {
+  // Delete Request
+  Future<Response?> deleteWithHeadersApi(data, String url, Map<String, String> headers,
+      {bool showLoading = false}) async {
     try {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (showLoading) {
+          Get.dialog(
+              const Center(
+                  child: CircularProgressIndicator(color: AppColors.primary)),
+              barrierDismissible: false);
+        }
+      });
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.delete(Uri.parse(url), headers: headers);
-      //return await post(url, data, headers: headers);
-      final mData = json.decode(res.body) as Map<String, dynamic>;
+      final res = await ioClient.delete(Uri.parse(url),
+          body: jsonEncode(data), headers: headers);
+
+      if (showLoading) Get.back();
+      final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showMessage("Alert!", "FCM Error");
         return null;
@@ -230,15 +242,16 @@ class UserProvider extends GetConnect {
           body: json.decode(res.body),
           headers: headers);
     } on SocketException {
-      Get.back();
+      if (showLoading) Get.back();
       Utility.showMessage(
           "No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
+      if (showLoading) Get.back();
       Utility.showMessage("Alert!", "Connection timed out.");
       return null;
     } catch (e) {
-      Get.back();
+      if (showLoading) Get.back();
       Utility.showMessage("Alert!", e.toString());
       return null;
     }

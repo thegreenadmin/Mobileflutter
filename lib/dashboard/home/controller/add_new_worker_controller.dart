@@ -110,7 +110,7 @@ class AddNewWorkerController extends GetxController {
     };
     add_worker.AddWorkerRequest addWorkerRequest =
         add_worker.AddWorkerRequest();
-    addWorkerRequest.storeId = int.parse(storeId.value ?? "0");
+    addWorkerRequest.storeId = int.parse(storeId.value);
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.imageUrl = userImageOriginalLinkFromServer.value.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
@@ -149,6 +149,7 @@ class AddNewWorkerController extends GetxController {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         Utility.showToast(value?.body['message'] ?? "");
+        resetForm();
         await apiGetWorkerList();
         Get.back();
       } else if (value?.body["status"] == 403) {
@@ -173,8 +174,8 @@ class AddNewWorkerController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
-    editWorkerRequest.storeId = int.parse(storeId.value ?? "0");
-    editWorkerRequest.storeUserId = int.parse(workerId.value ?? "0");
+    editWorkerRequest.storeId = int.parse(storeId.value);
+    editWorkerRequest.storeUserId = int.parse(workerId.value);
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
@@ -224,9 +225,9 @@ class AddNewWorkerController extends GetxController {
                   secFormat: "hh:mm:ss")
               .toString();
           debugPrint("test isSelected dayOfWeek");
-          print(employeeTimings.first.dayOfWeek);
+          print(element.id);
           // print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
-          if (!employeeTimings.any((data) => data.dayOfWeek != element.id)) {
+          if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
             employeeTimings.add(employeeTiming);
           }
         }
@@ -251,23 +252,13 @@ class AddNewWorkerController extends GetxController {
               .toString();
 
           debugPrint("test else dayOfWeek");
-          print(employeeTimings
-                  .firstWhere((data) => data.dayOfWeek == element.id)
-                  .dayOfWeek !=
-              element.id);
-          if (employeeTimings
-                  .firstWhere((data) => data.dayOfWeek == element.id)
-                  .dayOfWeek !=
-              element.id) {
-            employeeTimings.add(employeeTiming);
-          }
+          employeeTimings.add(employeeTiming);
         }
       }
     }
     editWorkerRequest.employeeTimings = employeeTimings;
     debugPrint("EDIT Request ***${editWorkerRequest.toJson()}*");
 
-    return;
     UserProvider()
         .putWithHeadersApi(
             editWorkerRequest,
@@ -278,12 +269,52 @@ class AddNewWorkerController extends GetxController {
       debugPrint("EDIT RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
+        resetForm();
         await apiGetWorkerList();
         Get.back();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      }   else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  // Edit Worker Api
+  Future<dynamic> apiDeleteWorker() async {
+    debugPrint("storeId ***${storeId.value}*");
+    debugPrint(
+        "deleteWithHeadersApi WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+     Map<String, dynamic> data = {
+       "store_id": int.parse(storeId.value),
+       "store_user_id":  int.parse(workerId.value),
+    };
+
+    UserProvider()
+        .deleteWithHeadersApi(data,
+            ServerCommunicator().baseUrl + ServerCommunicator().deleteWorker,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("deleteWorker RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        await apiGetWorkerList();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      }else if (value.body["status"] == 409) {
+        Utility.showToast(value.body['message']);
+        await apiGetWorkerList();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -461,7 +492,7 @@ class AddNewWorkerController extends GetxController {
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?page=1&page_size=100&store_id=${int.parse(storeId.value ?? "0")}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?page=1&page_size=100&store_id=${int.parse(storeId.value)}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -485,7 +516,7 @@ class AddNewWorkerController extends GetxController {
     isLoading.value = true;
     selectedWeekDaysList.clear();
     debugPrint(
-        "GET  STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value ?? "0")}&store_id=${int.parse(storeId.value ?? "0")}");
+        "GET  STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value ?? "0")}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -519,10 +550,9 @@ class AddNewWorkerController extends GetxController {
             workerDetailResponse?.data?.storeUser?.storeUserTimings ?? [];
         var concatenate = StringBuffer();
         if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
-            workerDetailResponse?.data?.storeUser?.storeUserTimings?.length !=
-                0) {
+            workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
           for (worker_detail.StoreUserTiming data in storeUserTimings) {
-            for (Categories day in weekDaysList ?? []) {
+            for (Categories day in weekDaysList) {
               if (day.id == data.dayOfWeek) {
                 day.isSelected = true;
                 selectedWeekDaysList.add(day);
@@ -562,5 +592,8 @@ class AddNewWorkerController extends GetxController {
     startTimeTextController.clear();
     endTimeTextController.clear();
     selectedWeekDaysList.clear();
+    for (Categories day in weekDaysList) {
+      day.isSelected=false;
+    }
   }
 }
