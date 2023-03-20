@@ -839,10 +839,12 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: Obx(() => manageStoreController
-                                  .discountValueType.value.isEmpty
-                              ? height0SizedBox
-                              : DropdownButtonFormField<String>(
+                          child: 
+                          // Obx(() => manageStoreController
+                          //         .discountValueType.value.isEmpty
+                          //     ? height0SizedBox
+                          //     :
+                               DropdownButtonFormField<String>(
                                   value: manageStoreController
                                       .discountValueType.value,
                                   decoration: InputDecoration(
@@ -901,7 +903,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                         .discountValueType.value = v.toString();
                                   },
                                 )),
-                        ),
+                       // ),
                         width15SizedBox,
                         Flexible(
                           flex: 5,

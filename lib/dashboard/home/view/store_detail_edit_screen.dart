@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -21,8 +21,8 @@ class StoreDetailEditScreen extends StatefulWidget {
 }
 
 class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
-  final SearchStoreController searchStoreController =
-      Get.put(SearchStoreController());
+  final SearchStoreOwnerController searchStoreOwnerController =
+      Get.put(SearchStoreOwnerController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: searchStoreController.formKey,
+            key: searchStoreOwnerController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -100,15 +100,15 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                       children: [
                         Flexible(
                             flex: 4,
-                            child: Obx(() => searchStoreController
+                            child: Obx(() => searchStoreOwnerController
                                     .editStoreLogoDynamicLinkfromServer
                                     .value
                                     .isEmpty
                                 ? InkWell(
                                     onTap: () {
-                                      searchStoreController
+                                      searchStoreOwnerController
                                           .showSelectionDialog(context);
-                                      searchStoreController
+                                      searchStoreOwnerController
                                           .isStoreLogoSelected.value = true;
                                     },
                                     child: Row(
@@ -141,9 +141,9 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   )
                                 : InkWell(
                                     onTap: () {
-                                      searchStoreController
+                                      searchStoreOwnerController
                                           .showSelectionDialog(context);
-                                      searchStoreController
+                                      searchStoreOwnerController
                                           .isStoreLogoSelected.value = true;
                                     },
                                     child: Row(
@@ -165,7 +165,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Image.network(
-                                                      searchStoreController
+                                                      searchStoreOwnerController
                                                           .editStoreLogoDynamicLinkfromServer
                                                           .value,
                                                       fit: BoxFit.cover)
@@ -192,9 +192,9 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  searchStoreController
+                                  searchStoreOwnerController
                                       .showSelectionDialog(context);
-                                  searchStoreController
+                                  searchStoreOwnerController
                                       .isStoreLogoSelected.value = true;
                                 },
                                 child: Image.asset(
@@ -219,11 +219,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     ),
                     height20SizedBox,
                     Obx(
-                      () => searchStoreController
+                      () => searchStoreOwnerController
                               .editStoreImageDynamicLinkfromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
-                                searchStoreController
+                                searchStoreOwnerController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -259,7 +259,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             )
                           : InkWell(
                               onTap: () {
-                                searchStoreController
+                                searchStoreOwnerController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -276,7 +276,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: Image.network(
-                                            searchStoreController
+                                            searchStoreOwnerController
                                                 .editStoreImageDynamicLinkfromServer
                                                 .value,
                                             fit: BoxFit.cover)),
@@ -305,7 +305,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            searchStoreController.storeNameTextController,
+                            searchStoreOwnerController.storeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -367,7 +367,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: searchStoreController.einTextController,
+                        controller:
+                            searchStoreOwnerController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -429,7 +430,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            searchStoreController.nickNameTextController,
+                            searchStoreOwnerController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -490,7 +491,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: searchStoreController.emailTextController,
+                        controller:
+                            searchStoreOwnerController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -554,7 +556,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: searchStoreController.phoneTextController,
+                        controller:
+                            searchStoreOwnerController.phoneTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -623,8 +626,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreController.addressLine1TextController,
+                        controller: searchStoreOwnerController
+                            .addressLine1TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -685,8 +688,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreController.addressLine2TextController,
+                        controller: searchStoreOwnerController
+                            .addressLine2TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -748,7 +751,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            searchStoreController.townOrCityTextController,
+                            searchStoreOwnerController.townOrCityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -812,7 +815,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            searchStoreController.postalCodeTextController,
+                            searchStoreOwnerController.postalCodeTextController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -865,13 +868,13 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     ),
                     height4SizedBox,
                     // Obx(
-                    //   () => searchStoreController.countriesList.isEmpty
+                    //   () => searchStoreOwnerController.countriesList.isEmpty
                     //       ? height0SizedBox
                     //       : Center(
                     //           child: DropdownButton<CountriesList>(
                     //             //isDense: true,
                     //             hint: Text('Choose'),
-                    //             value: searchStoreController.selectedValue,
+                    //             value: searchStoreOwnerController.selectedValue,
                     //             icon: Icon(Icons.check_circle_outline),
                     //             iconSize: 24,
                     //             elevation: 16,
@@ -881,10 +884,10 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     //               color: Colors.blue[300],
                     //             ),
                     //             onChanged: (newValue) {
-                    //               searchStoreController.selectedValue =
+                    //               searchStoreOwnerController.selectedValue =
                     //                   newValue;
                     //             },
-                    //             items: searchStoreController.countriesList
+                    //             items: searchStoreOwnerController.countriesList
                     //                 .map<DropdownMenuItem<CountriesList>>(
                     //                     (CountriesList value) {
                     //               return DropdownMenuItem<CountriesList>(
@@ -895,11 +898,12 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     //           ),
                     //         ),
                     // ),
-                    Obx(() => searchStoreController.countriesList.isEmpty
+                    Obx(() => searchStoreOwnerController.countriesList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<CountriesList>(
                             isExpanded: true,
-                            value: searchStoreController.countriesList.first,
+                            value:
+                                searchStoreOwnerController.countriesList.first,
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -932,7 +936,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               hintText: StringConstants.countryText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                            items: searchStoreController.countriesList
+                            items: searchStoreOwnerController.countriesList
                                 .map<DropdownMenuItem<CountriesList>>(
                                     (CountriesList value) {
                               return DropdownMenuItem<CountriesList>(
@@ -942,12 +946,13 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             }).toList(),
                             onChanged: (CountriesList? newValue) {
                               setState(() {
-                                searchStoreController.countryDropdownValue
+                                searchStoreOwnerController.countryDropdownValue
                                     .value = newValue!.countryName.toString();
-                                searchStoreController.countryId!.value =
+                                searchStoreOwnerController.countryId!.value =
                                     newValue.countryId.toString();
-                                searchStoreController.apiGetState();
-                                print(searchStoreController.countryId!.value);
+                                searchStoreOwnerController.apiGetState();
+                                print(searchStoreOwnerController
+                                    .countryId!.value);
                               });
                             },
                           )),
@@ -960,11 +965,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => searchStoreController.statesList.isEmpty
+                    Obx(() => searchStoreOwnerController.statesList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<StatesList>(
                             isExpanded: true,
-                            value: searchStoreController.statesList.last,
+                            value: searchStoreOwnerController.statesList.last,
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -997,7 +1002,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               hintText: StringConstants.stateText,
                               errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                            items: searchStoreController.statesList
+                            items: searchStoreOwnerController.statesList
                                 .map<DropdownMenuItem<StatesList>>(
                                     (StatesList value) {
                               return DropdownMenuItem<StatesList>(
@@ -1007,11 +1012,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             }).toList(),
                             onChanged: (StatesList? newValue) {
                               setState(() {
-                                // searchStoreController.stateDropdownValue.value =
+                                // searchStoreOwnerController.stateDropdownValue.value =
                                 //     newValue!.stateName.toString();
-                                // searchStoreController.stateId.value =
+                                // searchStoreOwnerController.stateId.value =
                                 //     newValue.stateId.toString();
-                                // print(searchStoreController.stateId.value);
+                                // print(searchStoreOwnerController.stateId.value);
                               });
                             },
                           )),
@@ -1036,18 +1041,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 0,
-                                  groupValue: searchStoreController
+                                  groupValue: searchStoreOwnerController
                                       .radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    searchStoreController.radioGroupValue
+                                    searchStoreOwnerController.radioGroupValue
                                         .value = value?.toInt() ?? 0;
-                                    searchStoreController.is247Time.value =
+                                    searchStoreOwnerController.is247Time.value =
                                         false;
-                                    print(searchStoreController
+                                    print(searchStoreOwnerController
                                         .radioGroupValue.value);
-                                    print(
-                                        searchStoreController.is247Time.value);
+                                    print(searchStoreOwnerController
+                                        .is247Time.value);
                                   },
                                 ),
                               ),
@@ -1072,18 +1077,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 1,
-                                  groupValue: searchStoreController
+                                  groupValue: searchStoreOwnerController
                                       .radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    searchStoreController.radioGroupValue
+                                    searchStoreOwnerController.radioGroupValue
                                         .value = value?.toInt() ?? 0;
-                                    searchStoreController.is247Time.value =
+                                    searchStoreOwnerController.is247Time.value =
                                         true;
-                                    print(searchStoreController
+                                    print(searchStoreOwnerController
                                         .radioGroupValue.value);
-                                    print(
-                                        searchStoreController.is247Time.value);
+                                    print(searchStoreOwnerController
+                                        .is247Time.value);
                                   },
                                 ),
                               ),
@@ -1103,7 +1108,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     ),
                     height25SizedBox,
                     Obx(
-                      () => searchStoreController.is247Time.value != true
+                      () => searchStoreOwnerController.is247Time.value != true
                           ? Row(
                               children: [
                                 Expanded(
@@ -1134,7 +1139,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
-                                          controller: searchStoreController
+                                          controller: searchStoreOwnerController
                                               .openingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
@@ -1142,7 +1147,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                               return AlertStringConstants
                                                   .pleaseSelectOpeningTimeText;
                                             } else if (value.trim() ==
-                                                searchStoreController
+                                                searchStoreOwnerController
                                                     .closingTimeTextController
                                                     .text) {
                                               return AlertStringConstants
@@ -1177,7 +1182,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                               },
                                             ))!;
 
-                                            searchStoreController
+                                            searchStoreOwnerController
                                                     .openingTimeTextController
                                                     .text =
                                                 date.format(context).toString();
@@ -1254,7 +1259,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
-                                          controller: searchStoreController
+                                          controller: searchStoreOwnerController
                                               .closingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
@@ -1262,7 +1267,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                               return AlertStringConstants
                                                   .pleaseSelectClosingTimeText;
                                             } else if (value.trim() ==
-                                                searchStoreController
+                                                searchStoreOwnerController
                                                     .openingTimeTextController
                                                     .text) {
                                               return AlertStringConstants
@@ -1296,7 +1301,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                                 );
                                               },
                                             ))!;
-                                            searchStoreController
+                                            searchStoreOwnerController
                                                     .closingTimeTextController
                                                     .text =
                                                 date.format(context).toString();
@@ -1349,7 +1354,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           : height0SizedBox,
                     ),
                     height20SizedBox,
-                    Obx(() => searchStoreController.is247Time.value != true
+                    Obx(() => searchStoreOwnerController.is247Time.value != true
                         ? Text(
                             StringConstants.workingDaysText,
                             style: TextStyle(
@@ -1360,68 +1365,124 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         : height0SizedBox),
                     height4SizedBox,
                     Obx(
-                      () => searchStoreController.is247Time.value != true
+                      () => searchStoreOwnerController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                searchStoreController.storeTimmingList.clear();
-                                if(searchStoreController.storeTimings.isNotEmpty){
-                                  for (int i = 0; i < searchStoreController.weekDaysList.length; i++) {
-                                    for (var element in searchStoreController.storeTimings) {
-                                      if( element["day_of_week"] == searchStoreController.weekDaysList[i].id){
-                                        print("store_timing_id  =====${ element["store_timing_id"]} =========== ");
-                                        searchStoreController.storeTimmingList.add({
-                                          "store_timing_id": element["store_timing_id"],
+                                searchStoreOwnerController.storeTimmingList
+                                    .clear();
+                                if (searchStoreOwnerController
+                                    .storeTimings.isNotEmpty) {
+                                  for (int i = 0;
+                                      i <
+                                          searchStoreOwnerController
+                                              .weekDaysList.length;
+                                      i++) {
+                                    for (var element
+                                        in searchStoreOwnerController
+                                            .storeTimings) {
+                                      if (element["day_of_week"] ==
+                                          searchStoreOwnerController
+                                              .weekDaysList[i].id) {
+                                        print(
+                                            "store_timing_id  =====${element["store_timing_id"]} =========== ");
+                                        searchStoreOwnerController
+                                            .storeTimmingList
+                                            .add({
+                                          "store_timing_id":
+                                              element["store_timing_id"],
                                           "is_24_hours_active": false,
-                                          "status" :searchStoreController.weekDaysList[i].isSelected == true?
-                                          "active" :  "deleted",
-                                          "day_of_week": searchStoreController.weekDaysList[i].id,
+                                          "status": searchStoreOwnerController
+                                                      .weekDaysList[i]
+                                                      .isSelected ==
+                                                  true
+                                              ? "active"
+                                              : "deleted",
+                                          "day_of_week":
+                                              searchStoreOwnerController
+                                                  .weekDaysList[i].id,
                                           "opening_time": Utility.formatDateTime(
-                                              searchStoreController.openingTimeTextController.text.trim(),
-                                              firstFormat: "hh:mm a", secFormat: "hh:mm:ss").toString(),
+                                                  searchStoreOwnerController
+                                                      .openingTimeTextController
+                                                      .text
+                                                      .trim(),
+                                                  firstFormat: "hh:mm a",
+                                                  secFormat: "hh:mm:ss")
+                                              .toString(),
                                           "closing_time": Utility.formatDateTime(
-                                              searchStoreController.closingTimeTextController.text.trim(),
-                                              firstFormat: "hh:mm a", secFormat: "hh:mm:ss").toString()
+                                                  searchStoreOwnerController
+                                                      .closingTimeTextController
+                                                      .text
+                                                      .trim(),
+                                                  firstFormat: "hh:mm a",
+                                                  secFormat: "hh:mm:ss")
+                                              .toString()
                                         });
                                       }
                                     }
-                                    if(searchStoreController.weekDaysList[i].isSelected==true){
-                                      print("store_user_timing_id =====${searchStoreController.weekDaysList[i].isSelected} ==================== ");
-                                        // if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
-                                      if(!searchStoreController.storeTimmingList.any((element) => element["day_of_week"] == searchStoreController.weekDaysList[i].id)){
-                                        searchStoreController.storeTimmingList.add({
+                                    if (searchStoreOwnerController
+                                            .weekDaysList[i].isSelected ==
+                                        true) {
+                                      print(
+                                          "store_user_timing_id =====${searchStoreOwnerController.weekDaysList[i].isSelected} ==================== ");
+                                      // if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
+                                      if (!searchStoreOwnerController
+                                          .storeTimmingList
+                                          .any((element) =>
+                                              element["day_of_week"] ==
+                                              searchStoreOwnerController
+                                                  .weekDaysList[i].id)) {
+                                        searchStoreOwnerController
+                                            .storeTimmingList
+                                            .add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
                                           "status": "active",
-                                          "day_of_week": searchStoreController
-                                              .weekDaysList[i].id,
-                                          "opening_time": searchStoreController
-                                              .openingTimeTextController.text
-                                              .trim(),
-                                          "closing_time": searchStoreController
-                                              .closingTimeTextController.text
-                                              .trim()
+                                          "day_of_week":
+                                              searchStoreOwnerController
+                                                  .weekDaysList[i].id,
+                                          "opening_time":
+                                              searchStoreOwnerController
+                                                  .openingTimeTextController
+                                                  .text
+                                                  .trim(),
+                                          "closing_time":
+                                              searchStoreOwnerController
+                                                  .closingTimeTextController
+                                                  .text
+                                                  .trim()
                                         });
                                       }
-
                                     }
                                   }
-                                }else{
-                                  print("store_user_timing_id =====null ==================== ");
-                                  for (int i = 0; i < searchStoreController.weekDaysList.length; i++) {
-                                    if(searchStoreController.weekDaysList[i].isSelected==true){
-                                       searchStoreController.storeTimmingList.add({
-                                          "store_timing_id": null,
-                                          "is_24_hours_active": false,
-                                          "status": "active",
-                                          "day_of_week": searchStoreController
-                                              .weekDaysList[i].id,
-                                          "opening_time": searchStoreController
-                                              .openingTimeTextController.text
-                                              .trim(),
-                                          "closing_time": searchStoreController
-                                              .closingTimeTextController.text
-                                              .trim()
-                                        });
+                                } else {
+                                  print(
+                                      "store_user_timing_id =====null ==================== ");
+                                  for (int i = 0;
+                                      i <
+                                          searchStoreOwnerController
+                                              .weekDaysList.length;
+                                      i++) {
+                                    if (searchStoreOwnerController
+                                            .weekDaysList[i].isSelected ==
+                                        true) {
+                                      searchStoreOwnerController
+                                          .storeTimmingList
+                                          .add({
+                                        "store_timing_id": null,
+                                        "is_24_hours_active": false,
+                                        "status": "active",
+                                        "day_of_week":
+                                            searchStoreOwnerController
+                                                .weekDaysList[i].id,
+                                        "opening_time":
+                                            searchStoreOwnerController
+                                                .openingTimeTextController.text
+                                                .trim(),
+                                        "closing_time":
+                                            searchStoreOwnerController
+                                                .closingTimeTextController.text
+                                                .trim()
+                                      });
                                     }
                                   }
                                 }
@@ -1433,11 +1494,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 }
                                 return null;
                               },
-                              controller: searchStoreController
+                              controller: searchStoreOwnerController
                                   .workingDaysTextController,
                               hintText: StringConstants.selectDaysText,
                               title: StringConstants.selectDaysText,
-                              list: searchStoreController.weekDaysList)
+                              list: searchStoreOwnerController.weekDaysList)
                           : height0SizedBox,
                     ),
                     height15SizedBox,
@@ -1459,7 +1520,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         Obx(() => FlutterSwitch(
                               height: 28,
                               width: 50,
-                              value: searchStoreController.isEnabled.value,
+                              value: searchStoreOwnerController.isEnabled.value,
                               activeToggleColor: AppColors.primary,
                               inactiveToggleColor: AppColors.grey,
                               activeSwitchBorder: Border.all(
@@ -1471,7 +1532,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               activeColor: AppColors.greymediumlight,
                               inactiveColor: AppColors.greymediumlight,
                               onToggle: (val) {
-                                searchStoreController.isEnabled.value = val;
+                                searchStoreOwnerController.isEnabled.value =
+                                    val;
                               },
                             )),
                       ],
@@ -1485,7 +1547,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        searchStoreController.validateAndSubmit();
+                        searchStoreOwnerController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.updateText,

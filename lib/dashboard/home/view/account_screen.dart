@@ -111,24 +111,17 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               InkWell(
                   onTap: () async {
-                    if (Role.role.value == Role.customerRoleText) {
+                    if (SharedPreferenceStorage.getData(Role.role.value)
+                            .toString() ==
+                        Role.customerRoleText) {
                       SharedPreferenceStorage.setData(
-                          Role.storeOwnerRoleText, Role.storeOwnerRoleText);
-                      Role.role.value = Role.storeOwnerRoleText;
-                      debugPrint(
-                          "ROLE CHANGED TO ***********${Role.role.value}");
+                          Role.role.value, Role.storeOwnerRoleText);
                       await Get.offAll(BottomNavigation());
                     } else {
                       SharedPreferenceStorage.setData(
-                          Role.customerRoleText, Role.customerRoleText);
-                      Role.role.value = Role.customerRoleText;
-                      debugPrint(
-                          "ROLE CHANGED TO ***********${Role.role.value}");
+                          Role.role.value, Role.customerRoleText);
                       await Get.offAll(BottomNavigation());
                     }
-
-                    // SharedPreferenceStorage.setData(
-                    //     customerRoleText, Role.userRoleText);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 14.0, right: 14.0),
@@ -136,7 +129,9 @@ class _AccountScreenState extends State<AccountScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          Role.role.value == Role.customerRoleText
+                          SharedPreferenceStorage.getData(Role.role.value)
+                                      .toString() ==
+                                  Role.customerRoleText
                               ? StringConstants.switchToStoreText
                               : StringConstants.switchToCustomerText,
                           style: TextStyle(

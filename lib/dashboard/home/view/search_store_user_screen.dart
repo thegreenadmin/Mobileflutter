@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/favourite_store_list_screen.dart';
 
 import 'package:thegreenmall/dashboard/home/view/nearby_store_list_screen.dart';
@@ -18,6 +19,8 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
 
   @override
   void initState() {
@@ -60,13 +63,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  "Hi, Julia Adrew",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                Obx(() => Text(
+                                      "Hi, "
+                                      "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(

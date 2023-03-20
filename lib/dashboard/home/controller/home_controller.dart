@@ -15,15 +15,8 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getDetail();
+    apiGetUserDetail();
     Future.delayed(const Duration(milliseconds: 200), () {});
-  }
-
-  getDetail() async {
-    await apiGetUserDetail();
-    Role.role.value =
-        SharedPreferenceStorage.getData(Role.storeOwnerRoleText) ?? "";
-    debugPrint("ROLE CHANGED TO ***********${Role.role.value}");
   }
 
   List<PopupMenuEntry<String>>? userTypeOptionsPopUpList(context) {

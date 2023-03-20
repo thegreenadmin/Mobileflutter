@@ -39,6 +39,8 @@ class AccountController extends GetxController {
 
   RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
   RxString stateId = "".obs;
+  RxInt countryIndex = 0.obs;
+  RxInt stateIndex = 0.obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
@@ -49,7 +51,7 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getDetail();
+    //getDetail();
     apiGetUserDetailApi();
     Future.delayed(const Duration(milliseconds: 200), () {});
   }
@@ -72,11 +74,11 @@ class AccountController extends GetxController {
     }
   }
 
-  getDetail() {
-    Role.role.value =
-        SharedPreferenceStorage.getData(Role.storeOwnerRoleText) ?? "";
-    debugPrint("ROLE CHANGED TO ***********${Role.role.value}");
-  }
+  // getDetail() {
+  //   Role.role.value =
+  //       SharedPreferenceStorage.getData(Role.storeOwnerRoleText) ?? "";
+  //   debugPrint("ROLE CHANGED TO ***********${Role.role.value}");
+  // }
 
   //Get User Detail Info Api
   Future apiGetUserDetailApi() async {
@@ -107,16 +109,17 @@ class AccountController extends GetxController {
         if (value.body["data"]["user"]['user_addresses'] != null ||
             value.body["data"]["user"]['user_addresses'] != []) {
           userAddress = value.body["data"]["user"]['user_addresses'];
+
           for (int i = 0; i < userAddress.length; i++) {
             countryId!.value =
                 userAddress[i]['state']['country']["country_id"] ?? "";
             countryDropdownValue.value =
                 userAddress[i]['state']['country']["country_name"] ?? "";
             stateId.value = userAddress[i]['state']["state_id"] ?? "";
-
             stateDropdownValue.value =
                 userAddress[i]['state']["state_name"] ?? "";
           }
+
           print(countryId!.value);
           print(countryDropdownValue.value);
           print(stateId.value);
@@ -153,6 +156,7 @@ class AccountController extends GetxController {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.addAll(
             getCountriesModel.data!.countries as Iterable<CountriesList>);
+
         if (userAddress.isEmpty && countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
         }
@@ -186,10 +190,19 @@ class AccountController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
-        for (int i = 0; i < statesList.length; i++) {
-          if (stateId.value == statesList[i].stateId) {
-            stateDropdownValue.value = statesList[i].stateName.toString();
-            print("HIIIIIIIII" + stateDropdownValue.value.toString());
+
+        if (countryId!.value.isNotEmpty) {
+          for (int i = 0; i < countriesList.length; i++) {
+            if (countryId!.value == countriesList[i].countryId) {
+              countryIndex.value = i;
+            }
+          }
+        }
+        if (stateId.value.isNotEmpty) {
+          for (int i = 0; i < statesList.length; i++) {
+            if (stateId.value == statesList[i].stateId) {
+              stateIndex.value = i;
+            }
           }
         }
       } else if (value.body["status"] == 403) {

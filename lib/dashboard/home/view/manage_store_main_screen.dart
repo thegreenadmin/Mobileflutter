@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/my_store_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -15,14 +15,13 @@ class ManageStoreMainScreen extends StatefulWidget {
 }
 
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
-  final SearchStoreController searchStoreController =
-      Get.put(SearchStoreController());
+  final SearchStoreOwnerController searchStoreOwnerController =
+      Get.put(SearchStoreOwnerController());
 
   RxList horizontalTabList = [
     StringConstants.myStoreText,
     StringConstants.manageStoreText,
   ].obs;
-
 
   Padding horizontalTabs() {
     return Padding(
@@ -44,11 +43,11 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                     splashColor: Colors.transparent,
                     onTap: () {
                       setState(() {
-                        searchStoreController.selectedIndex.value = i;
+                        searchStoreOwnerController.selectedIndex.value = i;
                         if (i == 0) {
-                          searchStoreController.apiGetFeaturedProducts();
+                          searchStoreOwnerController.apiGetFeaturedProducts();
                         } else {
-                          searchStoreController.selectedIndex.value = i;
+                          searchStoreOwnerController.selectedIndex.value = i;
                         }
                       });
                     },
@@ -60,12 +59,15 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight:
-                              searchStoreController.selectedIndex.value == i
+                              searchStoreOwnerController.selectedIndex.value ==
+                                      i
                                   ? FontWeight.w500
                                   : FontWeight.w400,
-                          color: searchStoreController.selectedIndex.value == i
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                          color:
+                              searchStoreOwnerController.selectedIndex.value ==
+                                      i
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                     ));
@@ -90,11 +92,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: searchStoreController.storeImage!.value.isEmpty
+                  image: searchStoreOwnerController.storeImage!.value.isEmpty
                       ? const AssetImage(
                           "assets/userAccount.png",
                         ) as ImageProvider
-                      : NetworkImage(searchStoreController.storeImage!.value),
+                      : NetworkImage(
+                          searchStoreOwnerController.storeImage!.value),
                 ),
               ),
               child: Padding(
@@ -129,13 +132,13 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     color: AppColors.white, width: 1)),
                             child: CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: searchStoreController
+                              backgroundImage: searchStoreOwnerController
                                       .storeLogo!.value.isEmpty
                                   ? const AssetImage(
                                       "assets/userAccount.png",
                                     ) as ImageProvider
-                                  : NetworkImage(
-                                      searchStoreController.storeLogo!.value),
+                                  : NetworkImage(searchStoreOwnerController
+                                      .storeLogo!.value),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -145,7 +148,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Obx(() => Text(
-                                      searchStoreController.storeName.value,
+                                      searchStoreOwnerController
+                                          .storeName.value,
                                       maxLines: 2,
                                       style: const TextStyle(
                                           color: AppColors.white,
@@ -164,7 +168,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     Obx(
                                       () => Expanded(
                                         child: Text(
-                                            searchStoreController
+                                            searchStoreOwnerController
                                                 .storeLocation.value,
                                             maxLines: 2,
                                             style: const TextStyle(
@@ -199,9 +203,9 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
           const Divider(
             thickness: 1,
           ),
-          searchStoreController.selectedIndex.value == 0
+          searchStoreOwnerController.selectedIndex.value == 0
               ? const Expanded(child: MyStoreScreen())
-              : searchStoreController.selectedIndex.value == 1
+              : searchStoreOwnerController.selectedIndex.value == 1
                   ? const Expanded(child: ManageStoreScreen())
                   : const Expanded(child: MyStoreScreen())
         ],

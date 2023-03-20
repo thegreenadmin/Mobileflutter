@@ -70,7 +70,7 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
-      // apiUploadMultipleImage();
+      apiUploadMultipleImage();
     }
   }
 
@@ -81,7 +81,6 @@ class ManageStoreController extends GetxController {
     storeId.value = Get.arguments["storeId"] ?? "";
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
-
     apiGetCategoriesList();
   }
 

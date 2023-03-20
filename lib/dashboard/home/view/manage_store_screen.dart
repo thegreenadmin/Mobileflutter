@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/manage_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/manage_worker_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_detail_edit_screen.dart';
@@ -16,8 +16,8 @@ class ManageStoreScreen extends StatefulWidget {
 }
 
 class _ManageStoreScreenState extends State<ManageStoreScreen> {
-  final SearchStoreController searchStoreController =
-      Get.put(SearchStoreController());
+  final SearchStoreOwnerController searchStoreOwnerController =
+      Get.put(SearchStoreOwnerController());
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +94,9 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
             splashColor: Colors.transparent,
             onTap: () {
               Get.to(const MangeProductScreen(), arguments: {
-                "storeId": searchStoreController.storeId.value,
-                "storeName": searchStoreController.storeName.value,
-                "storeLocation": searchStoreController.storeLocation.value,
+                "storeId": searchStoreOwnerController.storeId.value,
+                "storeName": searchStoreOwnerController.storeName.value,
+                "storeLocation": searchStoreOwnerController.storeLocation.value,
               });
             },
             child: Container(
@@ -160,8 +160,8 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
             splashColor: Colors.transparent,
             onTap: () {
               Get.to(const ManageWorkerScreen(), arguments: {
-                "storeId": searchStoreController.storeId.value,
-                "storeName": searchStoreController.storeName.value,
+                "storeId": searchStoreOwnerController.storeId.value,
+                "storeName": searchStoreOwnerController.storeName.value,
               });
             },
             child: Container(

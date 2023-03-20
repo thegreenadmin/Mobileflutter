@@ -7,9 +7,10 @@ import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/history_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/search_store_owner_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -122,16 +123,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              // Role.role.value == Role.storeOwnerRoleText
-                              //     ?
-                              Get.to(
-                                () => const SearchStoreOwnerScreen(),
-                                arguments: {
-                                  "firstName": homeController.firstName!.value,
-                                  "lastName": homeController.lastName!.value,
-                                },
-                              );
-                              //: Get.to(() => const SearchStoreUserScreen());
+                              if (SharedPreferenceStorage.getData(
+                                          Role.role.value)
+                                      .toString() ==
+                                  Role.customerRoleText) {
+                                Get.to(
+                                  const SearchStoreUserScreen(),
+                                  arguments: {
+                                    "firstName":
+                                        homeController.firstName!.value,
+                                    "lastName": homeController.lastName!.value,
+                                  },
+                                );
+                              } else {
+                                Get.to(
+                                  () => const SearchStoreOwnerScreen(),
+                                  arguments: {
+                                    "firstName":
+                                        homeController.firstName!.value,
+                                    "lastName": homeController.lastName!.value,
+                                  },
+                                );
+                              }
                             },
                             constraints: const BoxConstraints(),
                             padding:

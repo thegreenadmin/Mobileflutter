@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/search_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -14,8 +14,8 @@ class MyStoreScreen extends StatefulWidget {
 }
 
 class _MyStoreScreenState extends State<MyStoreScreen> {
-  final SearchStoreController searchStoreController =
-      Get.put(SearchStoreController());
+  final SearchStoreOwnerController searchStoreOwnerController =
+      Get.put(SearchStoreOwnerController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
               Image.asset("assets/examplee.png"),
               height30SizedBox,
               Obx(
-                () => searchStoreController.storeProductList.isEmpty
+                () => searchStoreOwnerController.storeProductList.isEmpty
                     ? height0SizedBox
                     : Text(
                         StringConstants.featuredProductText,
@@ -40,7 +40,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                       ),
               ),
               Obx(
-                () => searchStoreController.storeProductList.isEmpty
+                () => searchStoreOwnerController.storeProductList.isEmpty
                     ? height0SizedBox
                     : SizedBox(
                         height: 280,
@@ -50,8 +50,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                           },
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              searchStoreController.storeProductList.length,
+                          itemCount: searchStoreOwnerController
+                              .storeProductList.length,
                           itemBuilder: (BuildContext context, int index) =>
                               Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +68,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   child: Stack(
                                     alignment: Alignment.topRight,
                                     children: [
-                                      // searchStoreController
+                                      // searchStoreOwnerController
                                       //         .storeProductList[index]
                                       //         .productImages![0]
                                       //         .imageUrl!
@@ -78,7 +78,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                         'assets/example.png',
                                         fit: BoxFit.fill,
                                       )
-                                      // : Image.network(searchStoreController
+                                      // : Image.network(searchStoreOwnerController
                                       //     .storeProductList[index]
                                       //     .productImages![0]
                                       //     .imageUrl
@@ -92,7 +92,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    searchStoreController
+                                    searchStoreOwnerController
                                             .storeProductList[index]
                                             .productName ??
                                         "",
@@ -105,7 +105,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   SizedBox(
                                     width: 160,
                                     child: Text(
-                                      searchStoreController
+                                      searchStoreOwnerController
                                               .storeProductList[index]
                                               .description ??
                                           "",
@@ -118,7 +118,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   ),
                                   height4SizedBox,
                                   Text(
-                                    "\$${searchStoreController.storeProductList[index].productPrice}",
+                                    "\$${searchStoreOwnerController.storeProductList[index].productPrice}",
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,

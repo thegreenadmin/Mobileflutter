@@ -68,6 +68,7 @@ class OtpVerificationController extends GetxController {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
+        SharedPreferenceStorage.setData(Role.role.value, Role.customerRoleText);
         Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == 409) {
         //email must be unique & user already exists

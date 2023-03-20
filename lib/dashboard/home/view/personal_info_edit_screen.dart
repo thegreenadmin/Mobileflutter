@@ -535,7 +535,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     height4SizedBox,
                     DropdownButtonFormField<CountriesList>(
                       isExpanded: true,
-                      value: accountController.countriesList.first,
+                      value: accountController
+                          .countriesList[accountController.countryIndex.value],
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -582,6 +583,11 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               newValue!.countryName.toString();
                           accountController.countryId!.value =
                               newValue.countryId.toString();
+
+                          accountController.stateDropdownValue.value = "";
+                          accountController.stateId.value = "";
+                          accountController.stateIndex.value = 0;
+
                           accountController.apiGetStates();
                           print(accountController.countryId!.value);
                         });
@@ -598,7 +604,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     height4SizedBox,
                     DropdownButtonFormField<StatesList>(
                       isExpanded: true,
-                      value: accountController.statesList.first,
+                      value: accountController
+                          .statesList[accountController.stateIndex.value],
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),

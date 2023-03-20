@@ -18,7 +18,7 @@ import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart';
 import '../model/categories_model.dart';
 
-class SearchStoreController extends GetxController {
+class SearchStoreOwnerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController storeNameTextController = TextEditingController();
   TextEditingController einTextController = TextEditingController();
@@ -407,6 +407,7 @@ class SearchStoreController extends GetxController {
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
+
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =
@@ -426,19 +427,23 @@ class SearchStoreController extends GetxController {
             stateDropdownValue.value =
                 storeAddresses[i]["state"]['state_name'] ?? "";
             storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
+            postalCodeTextController.text =
+                storeAddresses[i]["postal_code"] ?? "";
           }
         }
         if (storeTimings.isNotEmpty) {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
-            openingTimeTextController.text =
-                Utility.formatDateTime(
+            openingTimeTextController.text = Utility.formatDateTime(
                     storeTimings[i]["opening_time"] ?? '',
-                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString();
-            closingTimeTextController.text =
-                Utility.formatDateTime(
+                    firstFormat: "hh:mm:ss",
+                    secFormat: "hh:mm a")
+                .toString();
+            closingTimeTextController.text = Utility.formatDateTime(
                     storeTimings[i]["closing_time"] ?? '',
-                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString();
+                    firstFormat: "hh:mm:ss",
+                    secFormat: "hh:mm a")
+                .toString();
           }
         }
         print("stateId.value---------->" + stateId.value.toString());
@@ -488,6 +493,7 @@ class SearchStoreController extends GetxController {
         "address_name": "home",
         "longitude": 37.0902,
         "latitude": 95.7129,
+        "postal_code": postalCodeTextController.text.trim(),
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",
@@ -505,7 +511,6 @@ class SearchStoreController extends GetxController {
           : storeTimmingList
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
-
 
     UserProvider()
         .putWithHeadersApi(
