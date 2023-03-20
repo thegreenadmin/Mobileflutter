@@ -37,6 +37,8 @@ class StringConstants {
   static String addNewText = "Add New";
   static String addWorkerText = "Add Worker";
   static String additionalLinksToResearchText = "Additional Links to Research";
+  static String addRoleText = "Add Role";
+  static String adminText = "Admin";
 
   //B
   static String breadthText = "Breadth";
@@ -58,7 +60,7 @@ class StringConstants {
   static String cartText = "Cart";
   static String changeText = "Change";
   static String categoriesNameText = "Categories Name";
-   static String categoryNameText = "Category Name";
+  static String categoryNameText = "Category Name";
   static String categoriesText = "Categories";
   static String completedOrders = "Completed Orders";
   static String contactText = "Contact";
@@ -70,6 +72,7 @@ class StringConstants {
   static String deliveryText = "Delivery";
   static String deleteAccountText = "Delete Account";
   static String discountsOrOffersText = "Discounts or Offers";
+  static String deliveryBoyText = "Delivery Boy";
 
   //E
 
@@ -139,6 +142,7 @@ class StringConstants {
   static String mobileNoText = "Mobile No";
   static String membersText = "Members";
   static String memberText = "Member";
+  static String managerText = "Manager";
 
   //N
   static String nearbyText = "Nearby";
@@ -189,6 +193,8 @@ class StringConstants {
   //R
   static String registerHereText = " Register Here!!";
   static String removeText = "Remove";
+  static String roleAndPermissionText = "Role & Permission";
+  static String rolesText = "Roles";
 
   //S
   static String signUpText = "Sign up";
@@ -227,6 +233,7 @@ class StringConstants {
   static String selectDaysText = "Select Days";
   static String startTimeText = "Start Time";
   static String selectTimeText = "Select Time";
+  static String storePersonText = "Store Person";
 
   //T
   static String termsOfServiceText = "Terms of service";

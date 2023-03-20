@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/manage_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/manage_worker_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/role_and_permission_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_detail_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -219,7 +220,71 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 ),
               ]),
             ),
-          )
+          ),
+          InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: () {
+              Get.to(
+                const RoleAndPermissionScreen(),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: const BoxDecoration(
+                  color: AppColors.greylight,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  )),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: AppColors.white, width: 1)),
+                              child: const CircleAvatar(
+                                radius: 28.0,
+                                backgroundImage: AssetImage(
+                                  "assets/blackcircle.png",
+                                ),
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ),
+                            Image.asset(
+                              "assets/role.png",
+                              scale: 3,
+                            ),
+                          ],
+                        ),
+                        width10SizedBox,
+                        Text(
+                          StringConstants.roleAndPermissionText,
+                          style: const TextStyle(
+                              fontSize: 16.0,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      color: AppColors.blacklight,
+                      size: 24.0,
+                    ),
+                  ],
+                ),
+              ]),
+            ),
+          ),
         ]),
       ),
     );

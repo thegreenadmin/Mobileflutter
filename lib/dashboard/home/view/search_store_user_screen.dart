@@ -104,10 +104,21 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               ),
               Positioned(
                 top: 30,
-                child: Container(
-                  height: 800,
-                  width: WidgetConstants.screenWidth,
-                  color: AppColors.primary,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 800,
+                      width: WidgetConstants.screenWidth,
+                      color: AppColors.greenlight,
+                    ),
+                    Positioned(
+                        top: 170,
+                        right: 10,
+                        child: Image.asset(
+                          "assets/filterbutton.png",
+                          scale: 3,
+                        ))
+                  ],
                 ),
               ),
               Padding(
