@@ -468,117 +468,115 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                       style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    DropdownButtonFormField<CountriesList>(
-                      isExpanded: true,
-                      value: accountController.countriesList[accountController.countryIndex.value],
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
+                    Obx(() => DropdownButtonFormField<CountriesList>(
+                          isExpanded: true,
+                          value: accountController.countriesList.isEmpty
+                              ? CountriesList()
+                              : accountController.countriesList[accountController.countryIndex.value],
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            hintText: StringConstants.countryText,
+                            errorStyle: const TextStyle(color: Colors.yellow),
                           ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        hintText: StringConstants.countryText,
-                        errorStyle: const TextStyle(color: Colors.yellow),
-                      ),
-                      items:
-                          accountController.countriesList.map<DropdownMenuItem<CountriesList>>((CountriesList value) {
-                        return DropdownMenuItem<CountriesList>(
-                          value: value,
-                          child: Text(value.countryName.toString()),
-                        );
-                      }).toList(),
-                      onChanged: (CountriesList? newValue) {
-                        setState(() {
-                          accountController.countryDropdownValue.value = newValue!.countryName.toString();
-                          accountController.countryId!.value = newValue.countryId.toString();
+                          items: accountController.countriesList
+                              .map<DropdownMenuItem<CountriesList>>((CountriesList value) {
+                            return DropdownMenuItem<CountriesList>(
+                              value: value,
+                              child: Text(value.countryName.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (CountriesList? newValue) {
+                            accountController.countryDropdownValue.value = newValue!.countryName.toString();
+                            accountController.countryId!.value = newValue.countryId.toString();
 
-                          accountController.stateDropdownValue.value = "";
-                          accountController.stateId.value = "";
-                          accountController.stateIndex.value = 0;
+                            accountController.stateId.value = "";
 
-                          accountController.apiGetStates();
-                          print(accountController.countryId!.value);
-                        });
-                      },
-                    ),
+                            accountController.apiGetStates();
+                            print(accountController.countryId!.value);
+                          },
+                        )),
                     height20SizedBox,
                     Text(
                       StringConstants.stateText,
                       style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    DropdownButtonFormField<StatesList>(
-                      isExpanded: true,
-                      value: accountController.statesList[accountController.stateIndex.value],
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
+                    Obx(() => DropdownButtonFormField<StatesList>(
+                          isExpanded: true,
+                          value: accountController.statesList.isEmpty
+                              ? StatesList()
+                              : accountController.statesList[accountController.stateIndex.value],
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            hintText: StringConstants.stateText,
+                            errorStyle: const TextStyle(color: Colors.red),
                           ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        hintText: StringConstants.stateText,
-                        errorStyle: const TextStyle(color: Colors.red),
-                      ),
-                      items: accountController.statesList.map<DropdownMenuItem<StatesList>>((StatesList value) {
-                        return DropdownMenuItem<StatesList>(
-                          value: value,
-                          child: Text(value.stateName.toString()),
-                        );
-                      }).toList(),
-                      onChanged: (StatesList? newValue) {
-                        setState(() {
-                          accountController.stateDropdownValue.value = newValue!.stateName.toString();
-                          accountController.stateId.value = newValue.stateId.toString();
-                          print(accountController.stateId.value);
-                        });
-                      },
-                    ),
+                          items: accountController.statesList.map<DropdownMenuItem<StatesList>>((StatesList value) {
+                            return DropdownMenuItem<StatesList>(
+                              value: value,
+                              child: Text(value.stateName.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (StatesList? newValue) {
+                            accountController.stateDropdownValue.value = newValue!.stateName.toString();
+                            accountController.stateId.value = newValue.stateId.toString();
+                            print(accountController.stateId.value);
+                          },
+                        )),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

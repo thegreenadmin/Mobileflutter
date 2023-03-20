@@ -33,10 +33,10 @@ class AccountController extends GetxController {
   RxString email = "".obs;
   RxString phone = "".obs;
 
-  RxString countryDropdownValue = "Afghanistan".obs;
+  RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
 
-  RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString stateDropdownValue = "".obs;
   RxString stateId = "".obs;
   RxInt countryIndex = 0.obs;
   RxInt stateIndex = 0.obs;
@@ -47,6 +47,7 @@ class AccountController extends GetxController {
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
   List userAddress = [];
+
   @override
   void onInit() {
     super.onInit();
@@ -188,13 +189,11 @@ class AccountController extends GetxController {
           for (int i = 0; i < statesList.length; i++) {
             if (stateId.value == statesList[i].stateId) {
               stateIndex.value = i;
-              stateDropdownValue.value = statesList[i].stateName.toString();
               stateId.value = statesList[i].stateId.toString();
             }
           }
         } else {
           stateIndex.value = 0;
-          stateDropdownValue.value = statesList[0].stateName.toString();
           stateId.value = statesList[0].stateId.toString();
         }
       } else if (value.body["status"] == 403) {
