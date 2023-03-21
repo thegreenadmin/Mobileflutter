@@ -1052,6 +1052,19 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                         .value = value?.toInt() ?? 0;
                                     searchStoreOwnerController.is247Time.value =
                                         true;
+                                    searchStoreOwnerController
+                                        .storeTimmingList.clear();
+                                    searchStoreOwnerController
+                                        .storeTimings.clear();
+                                    searchStoreOwnerController
+                                        .openingTimeTextController.clear();
+                                    searchStoreOwnerController
+                                        .closingTimeTextController.clear();
+                                    searchStoreOwnerController
+                                        .workingDaysTextController.clear();
+                                    for (var element in searchStoreOwnerController.weekDaysList) {
+                                      element.isSelected=false;
+                                    }
                                     print(searchStoreOwnerController
                                         .radioGroupValue.value);
                                     print(searchStoreOwnerController

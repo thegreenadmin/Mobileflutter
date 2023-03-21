@@ -446,13 +446,13 @@ class SearchStoreOwnerController extends GetxController {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
             openingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["opening_time"] ?? '',
+                storeTimings[i]["opening_time"] ?? '',
                     firstFormat: "hh:mm:ss",
                     secFormat: "hh:mm a")
                 .toString();
             openingTime.value = openingTimeTextController.text;
             closingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["closing_time"] ?? '',
+                storeTimings[i]["closing_time"] ?? '',
                     firstFormat: "hh:mm:ss",
                     secFormat: "hh:mm a")
                 .toString();
@@ -508,16 +508,17 @@ class SearchStoreOwnerController extends GetxController {
         "landmark": "",
         "city": townOrCityTextController.text.trim()
       },
+      "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true
           ? [
-              {
-                "is_24_hours_active": is247Time.value,
-                "day_of_week": "",
-                "opening_time": "",
-                "closing_time": ""
-              }
+              // {
+              //   "is_24_hours_active": is247Time.value,
+              //   "day_of_week": "",
+              //   "opening_time": "",
+              //   "closing_time": ""
+              // }
             ]
-          : storeTimmingList.value
+          : storeTimmingList.isNotEmpty ? storeTimmingList:storeTimings
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 

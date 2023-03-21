@@ -505,8 +505,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 ),
                 onTap: () {
                   if(searchStoreUserController.zipCodeTextController.text==""
-                  || searchStoreUserController.mileageTextController.text=="" ||
-                      searchStoreUserController.openingTimeTextController.text=="" ||
+                  && searchStoreUserController.mileageTextController.text=="" &&
+                      searchStoreUserController.openingTimeTextController.text=="" &&
                       searchStoreUserController.closingTimeTextController.text==""){
                     Utility.showToast(AlertStringConstants
                         .pleaseSelectOneFilterText);
