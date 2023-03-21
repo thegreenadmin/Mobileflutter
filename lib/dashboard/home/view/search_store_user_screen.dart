@@ -237,10 +237,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
 
   void updateMap(lat, lng) async {
     CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
-
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
-    setState(() {});
   }
 
   Future<Position> _determinePosition() async {
