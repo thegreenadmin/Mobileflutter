@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/favourite_store_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/filter_option_screen.dart';
 
 import 'package:thegreenmall/dashboard/home/view/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/previous_store_list_screen.dart';
@@ -19,6 +20,7 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
@@ -114,9 +116,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                     Positioned(
                         top: 170,
                         right: 10,
-                        child: Image.asset(
-                          "assets/filterbutton.png",
-                          scale: 3,
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(const FilterOptionScreen());
+                          },
+                          child: Image.asset(
+                            "assets/filterbutton.png",
+                            scale: 3,
+                          ),
                         ))
                   ],
                 ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class AddNewRoleScreen extends StatefulWidget {
@@ -12,6 +15,8 @@ class AddNewRoleScreen extends StatefulWidget {
 }
 
 class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
+  AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
+  final selectedIndexes = <int>[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,206 +60,232 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                       )
                     ])),
           )),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: Column(children: [
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              decoration: const BoxDecoration(
-                  color: AppColors.greylight,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8.0),
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StringConstants.managerText,
-                    style: const TextStyle(
-                        fontSize: 16.0,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  height4SizedBox,
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/deleteicon.png",
-                            scale: 2.5,
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+            child: Form(
+              key: addNewRoleController.formKey,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    height20SizedBox,
+                    Text(
+                      StringConstants.roleNameText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(200),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: addNewRoleController.roleNameTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterRoleText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          errorMaxLines: 3,
+                          hintText: StringConstants.enterRoleText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
                           ),
-                        ),
-                      ),
-                      width12SizedBox,
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/circleedit.png",
-                            scale: 2.5,
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.permissionText,
+                      style: const TextStyle(
+                          fontSize: 22,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Expanded(
+                        child: Obx(
+                      () => addNewRoleController.moduleList.isEmpty
+                          ? addNewRoleController.isLoading.value == true
+                              ? height0SizedBox
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Image.asset(
+                                        "assets/nodata.png",
+                                        scale: 8,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    height4SizedBox,
+                                    Center(
+                                      child: Text(
+                                        StringConstants.noPermissionsFoundText,
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                          : ListView.builder(
+                              itemCount: addNewRoleController.moduleList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int i) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: addNewRoleController
+                                        .moduleList[i].controllers!.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(children: [
+                                          Obx(
+                                            () => SizedBox(
+                                              height: 20,
+                                              width: 30,
+                                              child: Checkbox(
+                                                side: MaterialStateBorderSide
+                                                    .resolveWith(
+                                                  (states) => BorderSide(
+                                                      width: 1.0,
+                                                      color: AppColors.primary
+                                                          .withOpacity(0.5)),
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0)),
+                                                activeColor: AppColors.primary,
+                                                value: addNewRoleController
+                                                    .moduleList[i]
+                                                    .controllers![index]
+                                                    .isSelected,
+                                                onChanged: (bool? value) {
+                                                  if (addNewRoleController
+                                                          .moduleList[i]
+                                                          .controllers![index]
+                                                          .isSelected ==
+                                                      false) {
+                                                    addNewRoleController
+                                                        .controllerIdsList
+                                                        .add({
+                                                      "controller_id":
+                                                          addNewRoleController
+                                                              .moduleList[i]
+                                                              .controllers![
+                                                                  index]
+                                                              .controllerId
+                                                              .toString()
+                                                    });
+                                                    addNewRoleController
+                                                        .moduleList[i]
+                                                        .controllers![index]
+                                                        .isSelected = true;
+                                                  } else {
+                                                    addNewRoleController
+                                                        .controllerIdsList
+                                                        .removeWhere((item) =>
+                                                            item[
+                                                                'controller_id'] ==
+                                                            addNewRoleController
+                                                                .moduleList[i]
+                                                                .controllers![
+                                                                    index]
+                                                                .controllerId);
+
+                                                    addNewRoleController
+                                                        .moduleList[i]
+                                                        .controllers![index]
+                                                        .isSelected = false;
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          width10SizedBox,
+                                          Text(addNewRoleController
+                                              .moduleList[i]
+                                              .controllers![index]
+                                              .controllerName
+                                              .toString())
+                                        ]),
+                                      );
+                                    });
+                              }),
+                    )),
+                  ]),
             ),
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              decoration: const BoxDecoration(
-                  color: AppColors.greylight,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8.0),
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StringConstants.deliveryBoyText,
-                    style: const TextStyle(
-                        fontSize: 16.0,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  height4SizedBox,
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/deleteicon.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                      width12SizedBox,
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/circleedit.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+          Positioned(
+            bottom: 20,
+            left: 60,
+            right: 60,
+            child: CustomButton(
+              border: Border.all(
+                color: AppColors.primary,
               ),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.primary, AppColors.primary],
+              ),
+              onTap: () {
+                addNewRoleController.apiCreateRole();
+              },
+              height: 50,
+              text: StringConstants.saveText,
+              textColor: AppColors.white,
+              borderRadius: 14,
+              fontWeight: FontWeight.w500,
+              iconL: false,
+              iconR: false,
+              fontSize: 16,
             ),
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              decoration: const BoxDecoration(
-                  color: AppColors.greylight,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8.0),
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StringConstants.storePersonText,
-                    style: const TextStyle(
-                        fontSize: 16.0,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  height4SizedBox,
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/deleteicon.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                      width12SizedBox,
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/circleedit.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              decoration: const BoxDecoration(
-                  color: AppColors.greylight,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8.0),
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StringConstants.adminText,
-                    style: const TextStyle(
-                        fontSize: 16.0,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  height4SizedBox,
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/deleteicon.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                      width12SizedBox,
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            "assets/circleedit.png",
-                            scale: 2.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ]),
+        ],
       ),
     );
   }

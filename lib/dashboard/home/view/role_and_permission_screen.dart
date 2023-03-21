@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/add_new_role_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -16,6 +15,8 @@ class RoleAndPermissionScreen extends StatefulWidget {
 }
 
 class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
+  AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

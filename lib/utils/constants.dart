@@ -103,6 +103,8 @@ class StringConstants {
   static String faqText = "FAQ";
   static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
+  static String filterText = " Filter";
+  static String enterRoleText = "Enter Role";
 
   //G
   static String getInTouchText = "Get In touch";
@@ -143,6 +145,7 @@ class StringConstants {
   static String membersText = "Members";
   static String memberText = "Member";
   static String managerText = "Manager";
+  static String mileageText = "Mileage";
 
   //N
   static String nearbyText = "Nearby";
@@ -154,6 +157,7 @@ class StringConstants {
   static String noStoresFoundText = "No stores found";
   static String noWorkersFoundText = "No workers found";
   static String noCategoriesFoundText = "No Categories found";
+  static String noPermissionsFoundText = " No permissions found";
 
   //O
   static String ownAStoreText = "Own a Store?";
@@ -187,14 +191,18 @@ class StringConstants {
   static String productNameText = "Product Name";
   static String pricePerUnitText = "Price Per Unit";
   static String primaryStoreText = "Primary Store";
+  static String pickupOptionsText = "Pick-up Options";
+  static String permissionText = "Permission";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
+
   //R
   static String registerHereText = " Register Here!!";
   static String removeText = "Remove";
   static String roleAndPermissionText = "Role & Permission";
   static String rolesText = "Roles";
+  static String roleNameText = "Role Name";
 
   //S
   static String signUpText = "Sign up";
@@ -234,6 +242,7 @@ class StringConstants {
   static String startTimeText = "Start Time";
   static String selectTimeText = "Select Time";
   static String storePersonText = "Store Person";
+  static String storeOpeningText = "Store Opening";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -327,6 +336,7 @@ class AlertStringConstants {
   static String pleaseEnterNickNameText = "Please enter nick name";
   static String pleaseEnterLastNameText = "Please enter last name";
   static String pleaseEnterEmployeeNameText = "Please enter employee name";
+  static String pleaseEnterMileageText = "Please enter mileage";
   static String pleaseEnterEmailText = "Please enter email";
   static String pleaseEnterPhoneText = "Please enter phone number";
   static String pleaseEnterOtpText = "Please enter Otp";
@@ -349,6 +359,7 @@ class AlertStringConstants {
   static String pleaseEnterEinText = "Please enter EIN";
   static String pleaseEnterPostalCodeText = "Please enter postal code";
   static String pleaseEnterCategoryNameText = "Please enter category name";
+  static String pleaseEnterRoleText = "Please enter row";
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
   static String pleaseEnterTermsAndConditions =

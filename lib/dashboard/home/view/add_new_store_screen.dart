@@ -1121,7 +1121,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
-                                                helpText: StringConstants.selectTimeText,
+                                                helpText: StringConstants
+                                                    .selectTimeText,
                                                 initialTime: TimeOfDay.now(),
                                                 context: context,
                                                 builder: (context, child) {
@@ -1255,7 +1256,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
-                                                helpText: StringConstants.selectTimeText,
+                                                helpText: StringConstants
+                                                    .selectTimeText,
                                                 initialTime: TimeOfDay.now(),
                                                 context: context,
                                                 builder: (context, child) {

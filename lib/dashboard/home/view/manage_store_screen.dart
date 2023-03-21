@@ -225,9 +225,10 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(
-                const RoleAndPermissionScreen(),
-              );
+              Get.to(const RoleAndPermissionScreen(), arguments: {
+                "storeId": searchStoreOwnerController.storeId.value,
+                "storeName": searchStoreOwnerController.storeName.value,
+              });
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4),

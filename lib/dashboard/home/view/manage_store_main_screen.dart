@@ -15,6 +15,7 @@ class ManageStoreMainScreen extends StatefulWidget {
 }
 
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
+  
   final SearchStoreOwnerController searchStoreOwnerController =
       Get.put(SearchStoreOwnerController());
 
