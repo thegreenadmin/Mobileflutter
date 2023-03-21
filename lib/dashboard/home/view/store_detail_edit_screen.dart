@@ -21,8 +21,7 @@ class StoreDetailEditScreen extends StatefulWidget {
 }
 
 class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
-  final SearchStoreOwnerController searchStoreOwnerController =
-      Get.put(SearchStoreOwnerController());
+  final SearchStoreOwnerController searchStoreOwnerController = Get.put(SearchStoreOwnerController());
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +53,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           width10SizedBox,
                           Text(
                             StringConstants.editStoreText,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -73,25 +69,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
           child: Form(
             key: searchStoreOwnerController.formKey,
             child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       StringConstants.editStoreText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height15SizedBox,
                     Text(
                       StringConstants.uploadLogoText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height15SizedBox,
                     Row(
@@ -100,16 +89,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                       children: [
                         Flexible(
                             flex: 4,
-                            child: Obx(() => searchStoreOwnerController
-                                    .editStoreLogoDynamicLinkfromServer
-                                    .value
-                                    .isEmpty
+                            child: Obx(() => searchStoreOwnerController.editStoreLogoDynamicLinkfromServer.value.isEmpty
                                 ? InkWell(
                                     onTap: () {
-                                      searchStoreOwnerController
-                                          .showSelectionDialog(context);
-                                      searchStoreOwnerController
-                                          .isStoreLogoSelected.value = true;
+                                      searchStoreOwnerController.showSelectionDialog(context);
+                                      searchStoreOwnerController.isStoreLogoSelected.value = true;
                                     },
                                     child: Row(
                                       children: [
@@ -118,16 +102,12 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                           strokeWidth: 1,
                                           dashPattern: const [4, 4],
                                           child: Container(
-                                            width: WidgetConstants.screenWidth *
-                                                0.3,
-                                            padding: const EdgeInsets.only(
-                                                top: 30, bottom: 30),
+                                            width: WidgetConstants.screenWidth * 0.3,
+                                            padding: const EdgeInsets.only(top: 30, bottom: 30),
                                             color: AppColors.primarylight,
                                             child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
                                                     "assets/uploadpic.png",
@@ -141,10 +121,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   )
                                 : InkWell(
                                     onTap: () {
-                                      searchStoreOwnerController
-                                          .showSelectionDialog(context);
-                                      searchStoreOwnerController
-                                          .isStoreLogoSelected.value = true;
+                                      searchStoreOwnerController.showSelectionDialog(context);
+                                      searchStoreOwnerController.isStoreLogoSelected.value = true;
                                     },
                                     child: Row(
                                       children: [
@@ -153,21 +131,16 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                           strokeWidth: 1,
                                           dashPattern: const [4, 4],
                                           child: Container(
-                                            width: WidgetConstants.screenWidth *
-                                                0.3,
-                                            padding: const EdgeInsets.only(
-                                                top: 0, bottom: 0),
+                                            width: WidgetConstants.screenWidth * 0.3,
+                                            padding: const EdgeInsets.only(top: 0, bottom: 0),
                                             color: AppColors.primarylight,
                                             child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Image.network(
                                                       searchStoreOwnerController
-                                                          .editStoreLogoDynamicLinkfromServer
-                                                          .value,
+                                                          .editStoreLogoDynamicLinkfromServer.value,
                                                       fit: BoxFit.cover)
                                                 ]),
                                           ),
@@ -184,18 +157,14 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             children: [
                               Text(StringConstants.uploadStoreLogoText,
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500)),
+                                      color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w500)),
                               height10SizedBox,
                               InkWell(
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  searchStoreOwnerController
-                                      .showSelectionDialog(context);
-                                  searchStoreOwnerController
-                                      .isStoreLogoSelected.value = true;
+                                  searchStoreOwnerController.showSelectionDialog(context);
+                                  searchStoreOwnerController.isStoreLogoSelected.value = true;
                                 },
                                 child: Image.asset(
                                   "assets/picupload.png",
@@ -209,22 +178,16 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                       ],
                     ),
                     height20SizedBox,
-
                     Text(
                       StringConstants.bannerImageText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height20SizedBox,
                     Obx(
-                      () => searchStoreOwnerController
-                              .editStoreImageDynamicLinkfromServer.value.isEmpty
+                      () => searchStoreOwnerController.editStoreImageDynamicLinkfromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
-                                searchStoreOwnerController
-                                    .showSelectionDialog(context);
+                                searchStoreOwnerController.showSelectionDialog(context);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -235,22 +198,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.85,
-                                      padding: const EdgeInsets.only(
-                                          top: 35, bottom: 35),
+                                      padding: const EdgeInsets.only(top: 35, bottom: 35),
                                       color: AppColors.primarylight,
                                       child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               "assets/upload.png",
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
-                                            Text(StringConstants
-                                                .uploadStoreImageText)
+                                            Text(StringConstants.uploadStoreImageText)
                                           ]),
                                     ),
                                   ),
@@ -259,8 +218,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             )
                           : InkWell(
                               onTap: () {
-                                searchStoreOwnerController
-                                    .showSelectionDialog(context);
+                                searchStoreOwnerController.showSelectionDialog(context);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -270,15 +228,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
-                                        width:
-                                            WidgetConstants.screenWidth * 0.85,
-                                        height:
-                                            WidgetConstants.screenHeight * 0.2,
+                                        width: WidgetConstants.screenWidth * 0.85,
+                                        height: WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: Image.network(
-                                            searchStoreOwnerController
-                                                .editStoreImageDynamicLinkfromServer
-                                                .value,
+                                            searchStoreOwnerController.editStoreImageDynamicLinkfromServer.value,
                                             fit: BoxFit.cover)),
                                   ),
                                 ],
@@ -288,10 +242,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height15SizedBox,
                     Text(
                       StringConstants.storeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -300,24 +251,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.storeNameTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.storeNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterStoreNameText;
+                            return AlertStringConstants.pleaseEnterStoreNameText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.storeNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -351,10 +296,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.einBusinessId,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -363,12 +305,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.einTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -378,8 +316,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.einBusinessId,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -413,10 +350,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.nickNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -425,12 +359,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.nickNameTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -440,8 +370,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -475,10 +404,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -487,26 +413,20 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.emailTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEmailText;
                           } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
+                            return AlertStringConstants.pleaseEnterValidEmailText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.emailIdText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -540,10 +460,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.phoneNumberText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -552,12 +469,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.phoneTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.phoneTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -567,8 +480,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.phoneNumberText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -602,18 +514,12 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine1Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -622,12 +528,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: searchStoreOwnerController
-                            .addressLine1TextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.addressLine1TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -637,8 +539,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine1Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -672,10 +573,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -684,12 +582,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: searchStoreOwnerController
-                            .addressLine2TextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.addressLine2TextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -699,8 +593,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine2Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -734,10 +627,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.townOrCityText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -746,24 +636,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(500),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.townOrCityTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.townOrCityTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterTownOrCityText;
+                            return AlertStringConstants.pleaseEnterTownOrCityText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -797,10 +681,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.postalCodeText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -810,24 +691,18 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           LengthLimitingTextInputFormatter(100),
                           FilteringTextInputFormatter.digitsOnly,
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.postalCodeTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: searchStoreOwnerController.postalCodeTextController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterPostalCodeText;
+                            return AlertStringConstants.pleaseEnterPostalCodeText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.postalCodeText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -861,172 +736,121 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.countryText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    // Obx(
-                    //   () => searchStoreOwnerController.countriesList.isEmpty
-                    //       ? height0SizedBox
-                    //       : Center(
-                    //           child: DropdownButton<CountriesList>(
-                    //             //isDense: true,
-                    //             hint: Text('Choose'),
-                    //             value: searchStoreOwnerController.selectedValue,
-                    //             icon: Icon(Icons.check_circle_outline),
-                    //             iconSize: 24,
-                    //             elevation: 16,
-                    //             style: TextStyle(color: Colors.deepPurple),
-                    //             underline: Container(
-                    //               height: 2,
-                    //               color: Colors.blue[300],
-                    //             ),
-                    //             onChanged: (newValue) {
-                    //               searchStoreOwnerController.selectedValue =
-                    //                   newValue;
-                    //             },
-                    //             items: searchStoreOwnerController.countriesList
-                    //                 .map<DropdownMenuItem<CountriesList>>(
-                    //                     (CountriesList value) {
-                    //               return DropdownMenuItem<CountriesList>(
-                    //                 value: value,
-                    //                 child: Text(value.countryName.toString()),
-                    //               );
-                    //             }).toList(),
-                    //           ),
-                    //         ),
-                    // ),
-                    Obx(() => searchStoreOwnerController.countriesList.isEmpty
-                        ? height0SizedBox
-                        : DropdownButtonFormField<CountriesList>(
-                            isExpanded: true,
-                            value:
-                                searchStoreOwnerController.countriesList.first,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
+                    Obx(() => DropdownButtonFormField<CountriesList>(
+                          isExpanded: true,
+                          value: searchStoreOwnerController.countriesList.isEmpty
+                              ? CountriesList()
+                              : searchStoreOwnerController.countriesList[searchStoreOwnerController.countryIndex.value],
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
                               ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: StringConstants.countryText,
-                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                            items: searchStoreOwnerController.countriesList
-                                .map<DropdownMenuItem<CountriesList>>(
-                                    (CountriesList value) {
-                              return DropdownMenuItem<CountriesList>(
-                                value: value,
-                                child: Text(value.countryName.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (CountriesList? newValue) {
-                              setState(() {
-                                searchStoreOwnerController.countryDropdownValue
-                                    .value = newValue!.countryName.toString();
-                                searchStoreOwnerController.countryId!.value =
-                                    newValue.countryId.toString();
-                                searchStoreOwnerController.apiGetState();
-                                print(searchStoreOwnerController
-                                    .countryId!.value);
-                              });
-                            },
-                          )),
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            hintText: StringConstants.countryText,
+                            errorStyle: const TextStyle(color: Colors.yellow),
+                          ),
+                          items: searchStoreOwnerController.countriesList
+                              .map<DropdownMenuItem<CountriesList>>((CountriesList value) {
+                            return DropdownMenuItem<CountriesList>(
+                              value: value,
+                              child: Text(value.countryName.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (CountriesList? newValue) {
+                            searchStoreOwnerController.countryDropdownValue.value = newValue!.countryName.toString();
+                            searchStoreOwnerController.countryId!.value = newValue.countryId.toString();
+                            searchStoreOwnerController.stateId.value = "";
+                            searchStoreOwnerController.apiGetState();
+                            print(searchStoreOwnerController.countryId!.value);
+                          },
+                        )),
                     height20SizedBox,
                     Text(
                       StringConstants.zoneText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => searchStoreOwnerController.statesList.isEmpty
-                        ? height0SizedBox
-                        : DropdownButtonFormField<StatesList>(
-                            isExpanded: true,
-                            value: searchStoreOwnerController.statesList.last,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
+                    Obx(() => DropdownButtonFormField<StatesList>(
+                          isExpanded: true,
+                          value: searchStoreOwnerController.statesList.isEmpty
+                              ? StatesList()
+                              : searchStoreOwnerController.statesList[searchStoreOwnerController.stateIndex.value],
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
                               ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: StringConstants.stateText,
-                              errorStyle: const TextStyle(color: Colors.yellow),
                             ),
-                            items: searchStoreOwnerController.statesList
-                                .map<DropdownMenuItem<StatesList>>(
-                                    (StatesList value) {
-                              return DropdownMenuItem<StatesList>(
-                                value: value,
-                                child: Text(value.stateName.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (StatesList? newValue) {
-                              setState(() {
-                                // searchStoreOwnerController.stateDropdownValue.value =
-                                //     newValue!.stateName.toString();
-                                // searchStoreOwnerController.stateId.value =
-                                //     newValue.stateId.toString();
-                                // print(searchStoreOwnerController.stateId.value);
-                              });
-                            },
-                          )),
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            hintText: StringConstants.stateText,
+                            errorStyle: const TextStyle(color: Colors.yellow),
+                          ),
+                          items: searchStoreOwnerController.statesList
+                              .map<DropdownMenuItem<StatesList>>((StatesList value) {
+                            return DropdownMenuItem<StatesList>(
+                              value: value,
+                              child: Text(value.stateName.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (StatesList? newValue) {
+                            searchStoreOwnerController.stateDropdownValue.value = newValue!.stateName.toString();
+                            searchStoreOwnerController.stateId.value = newValue.stateId.toString();
+                            print(searchStoreOwnerController.stateId.value);
+                          },
+                        )),
                     height25SizedBox,
                     Text(
                       StringConstants.storeTimingText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+                      style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                     height25SizedBox,
                     Row(
@@ -1041,18 +865,13 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 0,
-                                  groupValue: searchStoreOwnerController
-                                      .radioGroupValue.value,
+                                  groupValue: searchStoreOwnerController.radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    searchStoreOwnerController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    searchStoreOwnerController.is247Time.value =
-                                        false;
-                                    print(searchStoreOwnerController
-                                        .radioGroupValue.value);
-                                    print(searchStoreOwnerController
-                                        .is247Time.value);
+                                    searchStoreOwnerController.radioGroupValue.value = value?.toInt() ?? 0;
+                                    searchStoreOwnerController.is247Time.value = false;
+                                    print(searchStoreOwnerController.radioGroupValue.value);
+                                    print(searchStoreOwnerController.is247Time.value);
                                   },
                                 ),
                               ),
@@ -1061,10 +880,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             Text(
                               StringConstants.customTimeText,
                               overflow: TextOverflow.visible,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -1077,18 +893,13 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 1,
-                                  groupValue: searchStoreOwnerController
-                                      .radioGroupValue.value,
+                                  groupValue: searchStoreOwnerController.radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    searchStoreOwnerController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    searchStoreOwnerController.is247Time.value =
-                                        true;
-                                    print(searchStoreOwnerController
-                                        .radioGroupValue.value);
-                                    print(searchStoreOwnerController
-                                        .is247Time.value);
+                                    searchStoreOwnerController.radioGroupValue.value = value?.toInt() ?? 0;
+                                    searchStoreOwnerController.is247Time.value = true;
+                                    print(searchStoreOwnerController.radioGroupValue.value);
+                                    print(searchStoreOwnerController.is247Time.value);
                                   },
                                 ),
                               ),
@@ -1097,10 +908,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                             Text(
                               StringConstants.twentyFourSevenText,
                               overflow: TextOverflow.visible,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ],
                         )
@@ -1115,112 +923,83 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   flex: 5,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.openingTimeText,
                                         style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
-                                            LengthLimitingTextInputFormatter(
-                                                100),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
+                                            LengthLimitingTextInputFormatter(100),
+                                            FilteringTextInputFormatter.digitsOnly,
                                           ],
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                          controller: searchStoreOwnerController
-                                              .openingTimeTextController,
+                                              color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                          controller: searchStoreOwnerController.openingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
                                             if (value!.trim().isEmpty) {
-                                              return AlertStringConstants
-                                                  .pleaseSelectOpeningTimeText;
+                                              return AlertStringConstants.pleaseSelectOpeningTimeText;
                                             } else if (value.trim() ==
-                                                searchStoreOwnerController
-                                                    .closingTimeTextController
-                                                    .text) {
-                                              return AlertStringConstants
-                                                  .openingTimeAlertText;
+                                                searchStoreOwnerController.closingTimeTextController.text) {
+                                              return AlertStringConstants.openingTimeAlertText;
                                             }
                                             return null;
                                           },
                                           onTap: () async {
                                             TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                            FocusScope.of(context).requestFocus(FocusNode());
                                             date = (await showTimePicker(
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,
                                               builder: (context, child) {
                                                 return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
+                                                  data: ThemeData.light().copyWith(
+                                                    colorScheme: const ColorScheme.light(primary: AppColors.primary),
                                                     buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
+                                                        const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                                                   ),
                                                   child: child!,
                                                 );
                                               },
                                             ))!;
 
-                                            searchStoreOwnerController
-                                                    .openingTimeTextController
-                                                    .text =
+                                            searchStoreOwnerController.openingTimeTextController.text =
                                                 date.format(context).toString();
                                           },
                                           decoration: InputDecoration(
-                                            hintText:
-                                                StringConstants.openingTimeText,
-                                            hintStyle: const TextStyle(
-                                                color: AppColors.grey,
-                                                fontSize: 14),
+                                            hintText: StringConstants.openingTimeText,
+                                            hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                             fillColor: Colors.white,
                                             border: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             enabledBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.grey,
                                                 width: 1.0,
@@ -1235,111 +1014,82 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                   flex: 5,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.closingTimeText,
                                         style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
-                                            LengthLimitingTextInputFormatter(
-                                                100),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
+                                            LengthLimitingTextInputFormatter(100),
+                                            FilteringTextInputFormatter.digitsOnly,
                                           ],
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                          controller: searchStoreOwnerController
-                                              .closingTimeTextController,
+                                              color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                          controller: searchStoreOwnerController.closingTimeTextController,
                                           keyboardType: TextInputType.phone,
                                           validator: (value) {
                                             if (value!.trim().isEmpty) {
-                                              return AlertStringConstants
-                                                  .pleaseSelectClosingTimeText;
+                                              return AlertStringConstants.pleaseSelectClosingTimeText;
                                             } else if (value.trim() ==
-                                                searchStoreOwnerController
-                                                    .openingTimeTextController
-                                                    .text) {
-                                              return AlertStringConstants
-                                                  .closingTimeAlertText;
+                                                searchStoreOwnerController.openingTimeTextController.text) {
+                                              return AlertStringConstants.closingTimeAlertText;
                                             }
                                             return null;
                                           },
                                           onTap: () async {
                                             TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                            FocusScope.of(context).requestFocus(FocusNode());
                                             date = (await showTimePicker(
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,
                                               builder: (context, child) {
                                                 return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
+                                                  data: ThemeData.light().copyWith(
+                                                    colorScheme: const ColorScheme.light(primary: AppColors.primary),
                                                     buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
+                                                        const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                                                   ),
                                                   child: child!,
                                                 );
                                               },
                                             ))!;
-                                            searchStoreOwnerController
-                                                    .closingTimeTextController
-                                                    .text =
+                                            searchStoreOwnerController.closingTimeTextController.text =
                                                 date.format(context).toString();
                                           },
                                           decoration: InputDecoration(
-                                            hintText:
-                                                StringConstants.closingTimeText,
-                                            hintStyle: const TextStyle(
-                                                color: AppColors.grey,
-                                                fontSize: 14),
+                                            hintText: StringConstants.closingTimeText,
+                                            hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                             fillColor: Colors.white,
                                             border: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             enabledBorder: UnderlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                              borderRadius: BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
                                                 color: AppColors.grey,
                                                 width: 1.0,
@@ -1357,10 +1107,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                     Obx(() => searchStoreOwnerController.is247Time.value != true
                         ? Text(
                             StringConstants.workingDaysText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                           )
                         : height0SizedBox),
                     height4SizedBox,
@@ -1368,120 +1115,63 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                       () => searchStoreOwnerController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                searchStoreOwnerController.storeTimmingList
-                                    .clear();
-                                if (searchStoreOwnerController
-                                    .storeTimings.isNotEmpty) {
-                                  for (int i = 0;
-                                      i <
-                                          searchStoreOwnerController
-                                              .weekDaysList.length;
-                                      i++) {
-                                    for (var element
-                                        in searchStoreOwnerController
-                                            .storeTimings) {
-                                      if (element["day_of_week"] ==
-                                          searchStoreOwnerController
-                                              .weekDaysList[i].id) {
-                                        print(
-                                            "store_timing_id  =====${element["store_timing_id"]} =========== ");
-                                        searchStoreOwnerController
-                                            .storeTimmingList
-                                            .add({
-                                          "store_timing_id":
-                                              element["store_timing_id"],
+                                searchStoreOwnerController.storeTimmingList.clear();
+                                if (searchStoreOwnerController.storeTimings.isNotEmpty) {
+                                  for (int i = 0; i < searchStoreOwnerController.weekDaysList.length; i++) {
+                                    for (var element in searchStoreOwnerController.storeTimings) {
+                                      if (element["day_of_week"] == searchStoreOwnerController.weekDaysList[i].id) {
+                                        print("store_timing_id  =====${element["store_timing_id"]} =========== ");
+                                        searchStoreOwnerController.storeTimmingList.add({
+                                          "store_timing_id": element["store_timing_id"],
                                           "is_24_hours_active": false,
-                                          "status": searchStoreOwnerController
-                                                      .weekDaysList[i]
-                                                      .isSelected ==
-                                                  true
+                                          "status": searchStoreOwnerController.weekDaysList[i].isSelected == true
                                               ? "active"
                                               : "deleted",
-                                          "day_of_week":
-                                              searchStoreOwnerController
-                                                  .weekDaysList[i].id,
+                                          "day_of_week": searchStoreOwnerController.weekDaysList[i].id,
                                           "opening_time": Utility.formatDateTime(
-                                                  searchStoreOwnerController
-                                                      .openingTimeTextController
-                                                      .text
-                                                      .trim(),
+                                                  searchStoreOwnerController.openingTimeTextController.text.trim(),
                                                   firstFormat: "hh:mm a",
                                                   secFormat: "hh:mm:ss")
                                               .toString(),
                                           "closing_time": Utility.formatDateTime(
-                                                  searchStoreOwnerController
-                                                      .closingTimeTextController
-                                                      .text
-                                                      .trim(),
+                                                  searchStoreOwnerController.closingTimeTextController.text.trim(),
                                                   firstFormat: "hh:mm a",
                                                   secFormat: "hh:mm:ss")
                                               .toString()
                                         });
                                       }
                                     }
-                                    if (searchStoreOwnerController
-                                            .weekDaysList[i].isSelected ==
-                                        true) {
+                                    if (searchStoreOwnerController.weekDaysList[i].isSelected == true) {
                                       print(
                                           "store_user_timing_id =====${searchStoreOwnerController.weekDaysList[i].isSelected} ==================== ");
                                       // if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
-                                      if (!searchStoreOwnerController
-                                          .storeTimmingList
-                                          .any((element) =>
-                                              element["day_of_week"] ==
-                                              searchStoreOwnerController
-                                                  .weekDaysList[i].id)) {
-                                        searchStoreOwnerController
-                                            .storeTimmingList
-                                            .add({
+                                      if (!searchStoreOwnerController.storeTimmingList.any((element) =>
+                                          element["day_of_week"] == searchStoreOwnerController.weekDaysList[i].id)) {
+                                        searchStoreOwnerController.storeTimmingList.add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
                                           "status": "active",
-                                          "day_of_week":
-                                              searchStoreOwnerController
-                                                  .weekDaysList[i].id,
+                                          "day_of_week": searchStoreOwnerController.weekDaysList[i].id,
                                           "opening_time":
-                                              searchStoreOwnerController
-                                                  .openingTimeTextController
-                                                  .text
-                                                  .trim(),
+                                              searchStoreOwnerController.openingTimeTextController.text.trim(),
                                           "closing_time":
-                                              searchStoreOwnerController
-                                                  .closingTimeTextController
-                                                  .text
-                                                  .trim()
+                                              searchStoreOwnerController.closingTimeTextController.text.trim()
                                         });
                                       }
                                     }
                                   }
                                 } else {
-                                  print(
-                                      "store_user_timing_id =====null ==================== ");
-                                  for (int i = 0;
-                                      i <
-                                          searchStoreOwnerController
-                                              .weekDaysList.length;
-                                      i++) {
-                                    if (searchStoreOwnerController
-                                            .weekDaysList[i].isSelected ==
-                                        true) {
-                                      searchStoreOwnerController
-                                          .storeTimmingList
-                                          .add({
+                                  print("store_user_timing_id =====null ==================== ");
+                                  for (int i = 0; i < searchStoreOwnerController.weekDaysList.length; i++) {
+                                    if (searchStoreOwnerController.weekDaysList[i].isSelected == true) {
+                                      searchStoreOwnerController.storeTimmingList.add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
                                         "status": "active",
-                                        "day_of_week":
-                                            searchStoreOwnerController
-                                                .weekDaysList[i].id,
+                                        "day_of_week": searchStoreOwnerController.weekDaysList[i].id,
                                         "opening_time":
-                                            searchStoreOwnerController
-                                                .openingTimeTextController.text
-                                                .trim(),
-                                        "closing_time":
-                                            searchStoreOwnerController
-                                                .closingTimeTextController.text
-                                                .trim()
+                                            searchStoreOwnerController.openingTimeTextController.text.trim(),
+                                        "closing_time": searchStoreOwnerController.closingTimeTextController.text.trim()
                                       });
                                     }
                                   }
@@ -1489,13 +1179,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               },
                               validator: (v) {
                                 if (v!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterWeekDaysText;
+                                  return AlertStringConstants.pleaseEnterWeekDaysText;
                                 }
                                 return null;
                               },
-                              controller: searchStoreOwnerController
-                                  .workingDaysTextController,
+                              controller: searchStoreOwnerController.workingDaysTextController,
                               hintText: StringConstants.selectDaysText,
                               title: StringConstants.selectDaysText,
                               list: searchStoreOwnerController.weekDaysList)
@@ -1532,13 +1220,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               activeColor: AppColors.greymediumlight,
                               inactiveColor: AppColors.greymediumlight,
                               onToggle: (val) {
-                                searchStoreOwnerController.isEnabled.value =
-                                    val;
+                                searchStoreOwnerController.isEnabled.value = val;
                               },
                             )),
                       ],
                     ),
-
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
