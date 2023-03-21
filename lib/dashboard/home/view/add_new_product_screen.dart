@@ -448,6 +448,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height4SizedBox,
                     Row(
                       children: [
+
                         Flexible(
                           flex: 5,
                           child: DropdownButtonFormField<String>(
@@ -487,12 +488,14 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               style: const TextStyle(
                                   color: AppColors.grey, fontSize: 14),
                             ),
-                            items: <String>["Grams", "Unit", "Ml"]
-                                .map((String value) {
+                            items: manageStoreController.quantityTypeList
+                                .map((dynamic value) {
                               return DropdownMenuItem<String>(
-                                value: value,
+                                // String? quantityTypeId;
+                                // String? quantityTypeName;
+                                value: value.quantityTypeId,
                                 child: Text(
-                                  value,
+                                  value.quantityTypeName,
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
@@ -500,7 +503,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               );
                             }).toList(),
-                            onChanged: (_) {},
+                            onChanged: (value) {
+                              manageStoreController.quantityValue.value= value.toString();
+                            },
                           ),
                         ),
                         width15SizedBox,
@@ -584,7 +589,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             fontWeight: FontWeight.w500),
                         controller:
                             manageStoreController.pricePerUnitTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPriceText;
@@ -905,7 +910,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller: manageStoreController
                                   .discountOrOfferTextController,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
@@ -1043,7 +1048,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .lengthTextController,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1113,7 +1118,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .breadthTextController,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1187,7 +1192,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .heightTextController,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1257,7 +1262,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .weightTextController,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1267,6 +1272,154 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.weightText,
+                                    hintStyle: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                    fillColor: Colors.white,
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                     height20SizedBox,
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.returnAvailableText,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.grey,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  border: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: true,
+                                hint: Text(
+                                  StringConstants.selectTypeText,
+                                  style: const TextStyle(
+                                      color: AppColors.grey, fontSize: 14),
+                                ),
+                                items: <String>["Yes", "No"].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (v) {
+                                  if (v == "Yes") {
+                                    manageStoreController.isProductReturnable.value = true;
+                                  } else {
+                                    manageStoreController.isProductReturnable.value = false;
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        width12SizedBox,
+                        Flexible(
+                          flex: 5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.daysText,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  controller: manageStoreController
+                                      .daysTextController,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseEnterValidDaysText;
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: StringConstants.daysText,
                                     hintStyle: const TextStyle(
                                         color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,

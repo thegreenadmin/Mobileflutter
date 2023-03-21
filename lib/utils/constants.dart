@@ -39,6 +39,7 @@ class StringConstants {
   static String additionalLinksToResearchText = "Additional Links to Research";
   static String addRoleText = "Add Role";
   static String adminText = "Admin";
+  static String availabilityText = "Availability";
 
   //B
   static String breadthText = "Breadth";
@@ -73,6 +74,7 @@ class StringConstants {
   static String deleteAccountText = "Delete Account";
   static String discountsOrOffersText = "Discounts or Offers";
   static String deliveryBoyText = "Delivery Boy";
+  static String daysText = "Days";
 
   //E
 
@@ -204,6 +206,7 @@ class StringConstants {
   static String roleAndPermissionText = "Role & Permission";
   static String rolesText = "Roles";
   static String roleNameText = "Role Name";
+  static String returnAvailableText = "Return Available";
 
   //S
   static String signUpText = "Sign up";
@@ -334,6 +337,7 @@ class AlertStringConstants {
 
   //P
   static String pleaseEnterNameText = "Please enter name";
+  static String pleaseSelectOneFilterText = "Please select one filter";
   static String pleaseEnterFirstNameText = "Please enter first name";
   static String pleaseEnterMobileNoText = "Please enter mobile number";
   static String pleaseEnterNickNameText = "Please enter nick name";
@@ -382,6 +386,7 @@ class AlertStringConstants {
   static String pleaseEnterDiscountOrOfferText =
       "Please enter discount or offer";
   static String pleaseEnterValidLinkText = "Please enter valid link";
+  static String pleaseEnterValidDaysText = "Please enter days here";
   static String pleaseSelectLogoText = "Please select logo";
   static String pleaseSelectBannerText = "Please select banner";
   static String pleaseSelectAtleastOnePermissionText =
