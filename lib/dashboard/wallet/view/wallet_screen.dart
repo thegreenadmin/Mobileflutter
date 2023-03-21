@@ -109,7 +109,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${walletController.firstName!.value}",
+                                  "Hi, ${walletController.firstName!.value} ${walletController.lastName!.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,

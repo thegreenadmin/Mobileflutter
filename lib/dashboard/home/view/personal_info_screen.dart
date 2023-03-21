@@ -255,12 +255,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Expanded(
                         flex: 6,
                         child: Text(
-                          "",
+                          accountController.addressLine1.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
@@ -284,12 +284,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Expanded(
                         flex: 6,
                         child: Text(
-                          "",
+                          accountController.addressLine2.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
@@ -313,12 +313,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Expanded(
                         flex: 6,
                         child: Text(
-                          "",
+                          accountController.city.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
@@ -342,12 +342,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    const Expanded(
+                    Expanded(
                         flex: 6,
                         child: Text(
-                          "",
+                          accountController.postalCode.value,
                           textAlign: TextAlign.end,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
@@ -359,66 +359,66 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   thickness: 1,
                 ),
                 height15SizedBox,
-                Text(
-                  StringConstants.collectTheIdentityInfoText,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-                height20SizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DottedBorder(
-                      color: AppColors.blacklight,
-                      strokeWidth: 1,
-                      dashPattern: const [4, 4],
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                            left: 50, right: 50, top: 18, bottom: 18),
-                        color: AppColors.primarylight,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/upload.png",
-                                scale: 2.5,
-                              ),
-                              height6SizedBox,
-                              Text(
-                                StringConstants
-                                    .uploadLicenseStateIdPasswordText,
-                                style: TextStyle(color: AppColors.blacklight),
-                              ),
-                              height5SizedBox,
-                              SizedBox(
-                                width: 130,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              AppColors.primary),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                              side: const BorderSide(
-                                                  color: AppColors.primary)))),
-                                  child: const Text(
-                                    "Upload",
-                                    style: TextStyle(color: AppColors.white),
-                                  ),
-                                ),
-                              )
-                            ]),
-                      ),
-                    ),
-                  ],
-                ),
+                // Text(
+                //   StringConstants.collectTheIdentityInfoText,
+                //   style: const TextStyle(
+                //       color: AppColors.black,
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 20),
+                // ),
+                // height20SizedBox,
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     DottedBorder(
+                //       color: AppColors.blacklight,
+                //       strokeWidth: 1,
+                //       dashPattern: const [4, 4],
+                //       child: Container(
+                //         padding: const EdgeInsets.only(
+                //             left: 50, right: 50, top: 18, bottom: 18),
+                //         color: AppColors.primarylight,
+                //         child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.center,
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Image.asset(
+                //                 "assets/upload.png",
+                //                 scale: 2.5,
+                //               ),
+                //               height6SizedBox,
+                //               Text(
+                //                 StringConstants
+                //                     .uploadLicenseStateIdPasswordText,
+                //                 style: TextStyle(color: AppColors.blacklight),
+                //               ),
+                //               height5SizedBox,
+                //               SizedBox(
+                //                 width: 130,
+                //                 child: ElevatedButton(
+                //                   onPressed: () {},
+                //                   style: ButtonStyle(
+                //                       foregroundColor:
+                //                           MaterialStateProperty.all<Color>(
+                //                               AppColors.primary),
+                //                       shape: MaterialStateProperty.all<
+                //                               RoundedRectangleBorder>(
+                //                           RoundedRectangleBorder(
+                //                               borderRadius:
+                //                                   BorderRadius.circular(18.0),
+                //                               side: const BorderSide(
+                //                                   color: AppColors.primary)))),
+                //                   child: const Text(
+                //                     "Upload",
+                //                     style: TextStyle(color: AppColors.white),
+                //                   ),
+                //                 ),
+                //               )
+                //             ]),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 height20SizedBox,
               ],
             )),

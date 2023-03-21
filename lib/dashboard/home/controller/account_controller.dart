@@ -32,6 +32,10 @@ class AccountController extends GetxController {
   RxString? nickName = "".obs;
   RxString email = "".obs;
   RxString phone = "".obs;
+  RxString addressLine1 = "".obs;
+  RxString addressLine2 = "".obs;
+  RxString city = "".obs;
+  RxString postalCode = "".obs;
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
@@ -68,27 +72,28 @@ class AccountController extends GetxController {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {} catch (_) {}
+      try {
+        apiUpdateUserDetail();
+      } catch (_) {}
     } else {
       autoValidate.value = true;
     }
   }
 
-  // getDetail() {
-  //   Role.role.value =
-  //       SharedPreferenceStorage.getData(Role.storeOwnerRoleText) ?? "";
-  //   debugPrint("ROLE CHANGED TO ***********${Role.role.value}");
-  // }
-
   //Get User Detail Info Api
   Future apiGetUserDetailApi() async {
-    debugPrint("GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+    debugPrint(
+        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().userDetail, headers, showLoading: true)
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+            headers,
+            showLoading: true)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
@@ -106,16 +111,25 @@ class AccountController extends GetxController {
           userAddress = value.body["data"]["user"]['user_addresses'];
 
           for (int i = 0; i < userAddress.length; i++) {
-            countryId!.value = userAddress[i]['state']['country']["country_id"] ?? "";
-            countryDropdownValue.value = userAddress[i]['state']['country']["country_name"] ?? "";
+            countryId!.value =
+                userAddress[i]['state']['country']["country_id"] ?? "";
+            countryDropdownValue.value =
+                userAddress[i]['state']['country']["country_name"] ?? "";
             stateId.value = userAddress[i]['state']["state_id"] ?? "";
-            stateDropdownValue.value = userAddress[i]['state']["state_name"] ?? "";
-          }
+            stateDropdownValue.value =
+                userAddress[i]['state']["state_name"] ?? "";
 
-          print(countryId!.value);
-          print(countryDropdownValue.value);
-          print(stateId.value);
-          print(stateDropdownValue.value);
+            addressLine1TextController.text =
+                userAddress[i]['address_line_1'] ?? "";
+            addressLine1.value = addressLine1TextController.text;
+            addressLine2TextController.text =
+                userAddress[i]['address_line_2'] ?? "";
+            addressLine2.value = addressLine2TextController.text;
+            townOrCityTextController.text = userAddress[i]['city'] ?? "";
+            city.value = townOrCityTextController.text;
+            postalCodeTextController.text = userAddress[i]['postal_code'] ?? "";
+            postalCode.value = postalCodeTextController.text;
+          }
         }
         await apiGetCountries();
       } else if (value.body["status"] == 403) {
@@ -130,20 +144,25 @@ class AccountController extends GetxController {
 
   //Get Countries Api
   Future apiGetCountries() async {
-    debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.clear();
-        countriesList.addAll(getCountriesModel.data!.countries as Iterable<CountriesList>);
-
+        countriesList.addAll(
+            getCountriesModel.data!.countries as Iterable<CountriesList>);
         if (userAddress.isEmpty && countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
           countryIndex.value = 0;
@@ -170,12 +189,14 @@ class AccountController extends GetxController {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");
@@ -207,10 +228,12 @@ class AccountController extends GetxController {
 
   //Update User Detail Api
   Future apiUpdateUserDetail() async {
-    debugPrint("UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
+    debugPrint(
+        "UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {
       "user": {
@@ -224,13 +247,16 @@ class AccountController extends GetxController {
         "address_name": "home",
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
-        "city": "Dehradun",
+        "city": townOrCityTextController.text,
         "postal_code": postalCodeTextController.text.trim()
       }
     };
     debugPrint("UPDATE USER DETAIL BODY**********$data");
     UserProvider()
-        .putWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}", headers,
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}",
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");

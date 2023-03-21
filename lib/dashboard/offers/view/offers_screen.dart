@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart'
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OffersScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _OffersScreenState extends State<OffersScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${offersController.firstName!.value}",
+                                  "Hi, ${offersController.firstName!.value} ${offersController.lastName!.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
@@ -64,31 +65,34 @@ class _OffersScreenState extends State<OffersScreen> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StringConstants.activeOffersText,
-                    style: const TextStyle(
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20),
-                  ),
-                  InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      Get.to(const AddOfferScreen());
-                    },
-                    child: Text(StringConstants.addOfferText,
-                        style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: AppColors.primary)),
-                  ),
-                ],
-              ),
+              SharedPreferenceStorage.getData(Role.role.value).toString() ==
+                      Role.customerRoleText
+                  ? height0SizedBox
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          StringConstants.activeOffersText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        ),
+                        InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            Get.to(const AddOfferScreen());
+                          },
+                          child: Text(StringConstants.addOfferText,
+                              style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: AppColors.primary)),
+                        ),
+                      ],
+                    ),
               height20SizedBox,
               Expanded(
                 child: Obx(() => ListView.separated(

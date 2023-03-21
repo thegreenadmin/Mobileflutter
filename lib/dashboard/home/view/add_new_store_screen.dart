@@ -366,7 +366,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: addNewStoreController.einTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEinText;
@@ -555,7 +555,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontWeight: FontWeight.w500),
                         controller:
                             addNewStoreController.storePhoneTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPhoneText;

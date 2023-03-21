@@ -48,10 +48,10 @@ class AddNewStoreController extends GetxController {
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
 
-  RxString countryDropdownValue = "Afghanistan".obs;
-  RxString? countryId = "1".obs;
+  RxString countryDropdownValue = "".obs;
+  RxString? countryId = "".obs;
 
-  RxString stateDropdownValue = "Andaman and Nicobar Islands".obs;
+  RxString stateDropdownValue = "".obs;
   RxString stateId = "".obs;
   RxInt radioGroupValue = 0.obs;
   RxString openingTime = "".obs;

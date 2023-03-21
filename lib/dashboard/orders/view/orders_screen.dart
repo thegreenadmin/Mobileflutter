@@ -124,7 +124,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${ordersController.firstName!.value}",
+                                  "Hi, ${ordersController.firstName!.value} ${ordersController.lastName!.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
