@@ -147,6 +147,12 @@ class AccountController extends GetxController {
         if (userAddress.isEmpty && countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
           countryIndex.value = 0;
+        } else {
+          for (int i = 0; i < countriesList.length; i++) {
+            if (countryId!.value == countriesList[i].countryId) {
+              countryIndex.value = i;
+            }
+          }
         }
         apiGetStates();
       } else if (value.body["status"] == 403) {
@@ -178,13 +184,6 @@ class AccountController extends GetxController {
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
 
-        if (countryId!.value.isNotEmpty) {
-          for (int i = 0; i < countriesList.length; i++) {
-            if (countryId!.value == countriesList[i].countryId) {
-              countryIndex.value = i;
-            }
-          }
-        }
         if (stateId.value.isNotEmpty) {
           for (int i = 0; i < statesList.length; i++) {
             if (stateId.value == statesList[i].stateId) {
