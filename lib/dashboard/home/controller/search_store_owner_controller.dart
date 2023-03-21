@@ -396,6 +396,12 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['image']["dynamic_url"] ?? "";
         editStoreLogoDynamicLinkfromServer.value =
             value?.body["data"]['store']['logo']["dynamic_url"] ?? "";
+        editStoreImageOrigionalLinkfromServer.value =
+            value?.body["data"]['store']['image']["orignal_url"] ?? "";
+        editStoreLogoOrigionalLinkfromServer.value =
+            value?.body["data"]['store']['logo']["orignal_url"] ?? "";
+        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
+        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
@@ -435,7 +441,6 @@ class SearchStoreOwnerController extends GetxController {
             storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
             postalCodeTextController.text =
                 storeAddresses[i]["postal_code"] ?? "";
-            print("postal code---------->" + postalCodeTextController.text);
           }
         }
         if (storeTimings.isNotEmpty) {
@@ -454,13 +459,10 @@ class SearchStoreOwnerController extends GetxController {
                 .toString();
             closingTime.value = closingTimeTextController.text;
           }
+        } else {
+          is247Time.value = true;
         }
-        print("stateId.value---------->" + stateId.value.toString());
-        print("stateId.value---------->" + countryId!.value.toString());
-        print("stateDropdownValue.value---------->" +
-            stateDropdownValue.value.toString());
-        print("countryDropdownValue.value---------->" +
-            countryDropdownValue.value.toString());
+
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
@@ -497,8 +499,8 @@ class SearchStoreOwnerController extends GetxController {
         "is_enabled": isEnabled.value
       },
       "store_address": {
-        "store_address_id": storeAddressId!.value,
-        "state_id": 1853,
+        "store_address_id": int.parse(storeAddressId!.value),
+        "state_id": stateId.value,
         "address_name": "home",
         "longitude": 37.0902,
         "latitude": 95.7129,

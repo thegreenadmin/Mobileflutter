@@ -180,12 +180,19 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   ],
                                 ),
                                 height8SizedBox,
-                                Obx(() => Text(
-                                    "Store Hours ${searchStoreOwnerController.openingTime.value} to ${searchStoreOwnerController.closingTime.value}",
-                                    style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400)))
+                                Obx(() => searchStoreOwnerController
+                                        .is247Time.value
+                                    ? const Text("Store Hours: 24/7 Hours",
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400))
+                                    : Text(
+                                        "Store Hours ${searchStoreOwnerController.openingTime.value} to ${searchStoreOwnerController.closingTime.value}",
+                                        style: const TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)))
                               ],
                             ),
                           )

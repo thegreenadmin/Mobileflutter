@@ -163,7 +163,6 @@ class AccountController extends GetxController {
         countriesList.clear();
         countriesList.addAll(
             getCountriesModel.data!.countries as Iterable<CountriesList>);
-
         if (userAddress.isEmpty && countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
           countryIndex.value = 0;
