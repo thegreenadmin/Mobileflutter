@@ -1043,6 +1043,16 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         .value = value?.toInt() ?? 0;
                                     addNewStoreController.is247Time.value =
                                         true;
+                                    addNewStoreController.storeTimmingList.clear();
+                                    addNewStoreController
+                                        .openingTimeTextController.clear();
+                                    addNewStoreController
+                                        .closingTimeTextController.clear();
+                                    addNewStoreController
+                                        .workingDaysTextController.clear();
+                                    for (var element in addNewStoreController.weekDaysList) {
+                                      element.isSelected=false;
+                                    }
                                     print(addNewStoreController
                                         .radioGroupValue.value);
                                     print(
