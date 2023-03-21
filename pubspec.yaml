@@ -46,7 +46,11 @@ dependencies:
   dio: ^5.0.1
   image_picker: ^0.8.7
   path_provider: ^2.0.13
-  
+  flutter_google_places: ^0.3.0
+  google_maps_flutter: ^2.2.5
+  geolocator: ^9.0.2
+  location: ^4.1.1
+
 
 
 
