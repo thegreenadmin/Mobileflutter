@@ -49,7 +49,7 @@ dependencies:
   flutter_google_places: ^0.3.0
   google_maps_flutter: ^2.2.5
   geolocator: ^9.0.2
-  location: ^4.1.1
+  geocoder2: ^1.4.0
 
 
 
