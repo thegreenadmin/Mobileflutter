@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/favourite_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/filter_option_screen.dart';
@@ -37,7 +39,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
-    updateMap();
+    fetchCurrentLocation();
     super.initState();
   }
 
@@ -119,7 +121,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                         height: 800,
                         width: WidgetConstants.screenWidth,
                         child: GoogleMap(
-                          mapType: MapType.hybrid,
+                          mapType: MapType.normal,
                           initialCameraPosition: _kGooglePlex,
                           onMapCreated: (GoogleMapController controller) {
                             _controller.complete(controller);
@@ -144,12 +146,21 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                 padding: const EdgeInsets.only(left: 18.0, right: 18.0),
                 child: InkWell(
                   onTap: () async {
-                    var p = await PlacesAutocomplete.show(
-                      context: context,
-                      apiKey: kGoogleApiKey,
-                      region: "us",
-                      mode: Mode.fullscreen,
-                    );
+                    Prediction? p = await PlacesAutocomplete.show(
+                        offset: 0,
+                        radius: 1000,
+                        types: [],
+                        strictbounds: false,
+                        region: "ar",
+                        context: context,
+                        apiKey: kGoogleApiKey,
+                        mode: Mode.overlay,
+                        // Mode.fullscreen
+                        language: "en",
+                        components: [Component(Component.country, "in")]);
+                    GeoData addresses = await Geocoder2.getDataFromAddress(
+                        address: p!.description.toString(), googleMapApiKey: kGoogleApiKey);
+                    updateMap(addresses.latitude, addresses.longitude);
                   },
                   child: TextFormField(
                       enabled: false,
@@ -224,13 +235,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
     );
   }
 
-  void updateMap() async {
-    Position currentLocation = await _determinePosition();
-    CameraPosition kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        tilt: 0.0,
-        zoom: 14.15);
+  void updateMap(lat, lng) async {
+    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
 
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
@@ -271,5 +277,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
+  }
+
+  void fetchCurrentLocation() async {
+    Position currentLocation = await _determinePosition();
+    updateMap(currentLocation.latitude, currentLocation.longitude);
   }
 }
