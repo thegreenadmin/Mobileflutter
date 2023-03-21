@@ -12,10 +12,6 @@ class ServerCommunicator {
   String createStoreCategory = 'store/category/create';
   String categoryList = 'store/category/list';
   String createProduct = 'store/product/create';
-  String storeCategoryDeatil = 'store/category/details';
-  String storeCategoryEdit = 'store/category/edit';
-  String storeRoleList = 'store/role/list';
-  String storeRoleCreate = 'store/role/create';
 
 //D
   String deleteWorker = 'store/user/delete';
@@ -51,6 +47,12 @@ class ServerCommunicator {
   String storeProductDelete = 'store/product/delete';
   String storeCategoryDelete = 'store/category/delete';
   String storeControllerList = 'store/controller/list';
+  String storeRoleList = 'store/role/list';
+  String storeCategoryDeatil = 'store/category/details';
+  String storeCategoryEdit = 'store/category/edit';
+  String storeRoleCreate = 'store/role/create';
+  String storeRoleDelete = 'store/role/delete';
+  String storeRoleDetail = 'store/role/details';
 
 //T
 //U

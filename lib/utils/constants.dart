@@ -359,7 +359,7 @@ class AlertStringConstants {
   static String pleaseEnterEinText = "Please enter EIN";
   static String pleaseEnterPostalCodeText = "Please enter postal code";
   static String pleaseEnterCategoryNameText = "Please enter category name";
-  static String pleaseEnterRoleText = "Please enter row";
+  static String pleaseEnterRoleText = "Please enter role";
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
   static String pleaseEnterTermsAndConditions =
@@ -381,6 +381,9 @@ class AlertStringConstants {
   static String pleaseEnterValidLinkText = "Please enter valid link";
   static String pleaseSelectLogoText = "Please select logo";
   static String pleaseSelectBannerText = "Please select banner";
+  static String pleaseSelectAtleastOnePermissionText =
+      "Please select atleast one permission";
+
   //S
   static String startTimeAlertText = "Start time can not be as end time";
 }

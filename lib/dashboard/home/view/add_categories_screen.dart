@@ -40,8 +40,6 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-
-                              
                               Get.back();
                             },
                             icon: const Icon(

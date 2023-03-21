@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/get_role_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -13,15 +16,23 @@ class AddNewRoleController extends GetxController {
 
   RxString storeId = "".obs;
   RxString storeName = "".obs;
+  RxString roleId = "".obs;
   RxInt controllerId = 0.obs;
   RxBool checkBoxValue = false.obs;
   RxBool isLoading = false.obs;
+  RxBool autoValidate = false.obs;
 
   GetStoreControllerModel getStoreControllerModel = GetStoreControllerModel();
-
   RxList<Modules> moduleList = <Modules>[].obs;
 
-  RxList<Controllers> controllerList = <Controllers>[].obs;
+  GetRoleListModel getRoleListModel = GetRoleListModel();
+  RxList<StoreRoles> storeRoleList = <StoreRoles>[].obs;
+
+  GetStoreDetailModel getStoreDetailModel = GetStoreDetailModel();
+  RxList<Permissions> permissionList = <Permissions>[].obs;
+
+  RxList<dynamic> interest = <dynamic>[].obs;
+  RxList<dynamic> selectedCategories = <dynamic>[].obs;
 
   RxList<Map<String, dynamic>> controllerIdsList = <Map<String, dynamic>>[].obs;
 
@@ -31,6 +42,63 @@ class AddNewRoleController extends GetxController {
     storeId.value = Get.arguments["storeId"] ?? "";
     storeName.value = Get.arguments["storeName"] ?? "";
     apiGetControllers();
+    apiGetStoreRole();
+  }
+
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmit() async {
+    if (validateAndSave()) {
+      try {
+        if (controllerIdsList.isEmpty) {
+          Utility.showToast(
+              AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+        } else {
+          await apiCreateRole();
+        }
+      } catch (_) {}
+    } else {
+      autoValidate.value = true;
+    }
+  }
+
+  //Get Store Role List Api
+  Future apiGetStoreRole() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE ROLE  RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getRoleListModel = GetRoleListModel.fromJson(value.body);
+        storeRoleList.value = getRoleListModel.data!.storeRoles!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
   //Create Role Api
@@ -86,13 +154,96 @@ class AddNewRoleController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeControllerList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE CONTROLLER RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStoreControllerModel = GetStoreControllerModel.fromJson(value.body);
         moduleList.value = getStoreControllerModel.data!.modules!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Delete Store Role
+  Future apiDeleteRole() async {
+    debugPrint(
+        "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "store_id": int.parse(storeId.value),
+      "role_id": int.parse(roleId.value)
+    };
+    debugPrint("DELETE ROLE  BODY ************* $data");
+    UserProvider()
+        .deleteWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        await apiGetStoreRole();
+      } else if (value.body["status"] == 409) {
+        Utility.showToast(value.body['message']);
+        await apiGetStoreRole();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Get Store Role Detail
+  Future apiGetStoreRoleDetail() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET ROLE DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
+        permissionList.value = getStoreDetailModel.data!.role!.permissions!;
+        roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
+
+        // for (Permissions data in permissionList) {
+        //   if (interest.any((element) =>
+        //       data.controllerId == element['controller_id'].toString())) {
+        //     data.isSelected = true;
+        //   } else {
+        //     data.isSelected = false;
+        //   }
+        // }
+        update();
+        selectedCategories.addAll(interest
+            .map((element) => element['controller_id'].toString())
+            .toList());
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -7,14 +7,14 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddNewRoleScreen extends StatefulWidget {
-  const AddNewRoleScreen({super.key});
+class RoleUpdateScreen extends StatefulWidget {
+  const RoleUpdateScreen({super.key});
 
   @override
-  State<AddNewRoleScreen> createState() => _AddNewRoleScreenState();
+  State<RoleUpdateScreen> createState() => _RoleUpdateScreenState();
 }
 
-class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
+class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
   final selectedIndexes = <int>[];
   @override
@@ -167,93 +167,123 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                                   ],
                                 )
                           : ListView.builder(
-                              itemCount: addNewRoleController.moduleList.length,
                               shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int i) {
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: addNewRoleController
-                                        .moduleList[i].controllers!.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(children: [
-                                          Obx(
-                                            () => SizedBox(
-                                              height: 20,
-                                              width: 30,
-                                              child: Checkbox(
-                                                side: MaterialStateBorderSide
-                                                    .resolveWith(
-                                                  (states) => BorderSide(
-                                                      width: 1.0,
-                                                      color: AppColors.primary
-                                                          .withOpacity(0.5)),
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.0)),
-                                                activeColor: AppColors.primary,
-                                                value: addNewRoleController
-                                                    .moduleList[i]
-                                                    .controllers![index]
-                                                    .isSelected,
-                                                onChanged: (bool? value) {
-                                                  if (addNewRoleController
-                                                          .moduleList[i]
-                                                          .controllers![index]
-                                                          .isSelected ==
-                                                      false) {
-                                                    addNewRoleController
-                                                        .controllerIdsList
-                                                        .add({
-                                                      "controller_id":
-                                                          addNewRoleController
-                                                              .moduleList[i]
-                                                              .controllers![
-                                                                  index]
-                                                              .controllerId
-                                                              .toString()
-                                                    });
-                                                    addNewRoleController
-                                                        .moduleList[i]
-                                                        .controllers![index]
-                                                        .isSelected = true;
-                                                  } else {
-                                                    addNewRoleController
-                                                        .controllerIdsList
-                                                        .removeWhere((item) =>
-                                                            item[
-                                                                'controller_id'] ==
-                                                            addNewRoleController
-                                                                .moduleList[i]
-                                                                .controllers![
-                                                                    index]
-                                                                .controllerId);
-
-                                                    addNewRoleController
-                                                        .moduleList[i]
-                                                        .controllers![index]
-                                                        .isSelected = false;
-                                                  }
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            ),
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount:
+                                  addNewRoleController.permissionList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(children: [
+                                    Obx(
+                                      () => SizedBox(
+                                        height: 20,
+                                        width: 30,
+                                        child: Checkbox(
+                                          side: MaterialStateBorderSide
+                                              .resolveWith(
+                                            (states) => BorderSide(
+                                                width: 1.0,
+                                                color: AppColors.primary
+                                                    .withOpacity(0.5)),
                                           ),
-                                          width10SizedBox,
-                                          Text(addNewRoleController
-                                              .moduleList[i]
-                                              .controllers![index]
-                                              .controllerName
-                                              .toString())
-                                        ]),
-                                      );
-                                    });
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0)),
+                                          activeColor: AppColors.primary,
+                                          value: addNewRoleController
+                                              .permissionList[index].isSelected,
+                                          onChanged: (bool? value) {
+                                            if (addNewRoleController
+                                                    .permissionList[index]
+                                                    .isSelected ==
+                                                false) {
+                                              addNewRoleController
+                                                  .selectedCategories
+                                                  .add({
+                                                "controller_id":
+                                                    addNewRoleController
+                                                        .permissionList[index]
+                                                        .controllerId
+                                                        .toString()
+                                              });
+
+                                              addNewRoleController
+                                                  .permissionList[index]
+                                                  .isSelected = true;
+
+                                              debugPrint("Added" +
+                                                  addNewRoleController
+                                                      .permissionList[index]
+                                                      .isSelected
+                                                      .toString());
+
+                                              debugPrint(addNewRoleController
+                                                  .selectedCategories
+                                                  .toString());
+                                            } else {
+                                              addNewRoleController
+                                                  .selectedCategories
+                                                  .remove(addNewRoleController
+                                                      .permissionList[index]
+                                                      .controllerId);
+                                              addNewRoleController
+                                                  .permissionList[index]
+                                                  .isSelected = false;
+                                              debugPrint(addNewRoleController
+                                                  .selectedCategories
+                                                  .toString());
+
+                                              debugPrint("Deleted" +
+                                                  addNewRoleController
+                                                      .selectedCategories[index]
+                                                      .isSelected
+                                                      .toString());
+                                            }
+                                          },
+                                          // onChanged: (bool? value) {
+                                          //   if (addNewRoleController
+                                          //           .permissionList[index]
+                                          //           .isSelected ==
+                                          //       false) {
+                                          //     addNewRoleController
+                                          //         .controllerIdsList
+                                          //         .add({
+                                          //       "controller_id":
+                                          //           addNewRoleController
+                                          //               .permissionList[index]
+                                          //               .controllerId
+                                          //               .toString()
+                                          //     });
+                                          //     addNewRoleController
+                                          //         .permissionList[index]
+                                          //         .isSelected = true;
+                                          //   } else {
+                                          //     addNewRoleController
+                                          //         .controllerIdsList
+                                          //         .removeWhere((item) =>
+                                          //             item['controller_id'] ==
+                                          //             addNewRoleController
+                                          //                 .permissionList[index]
+                                          //                 .controllerId);
+
+                                          //     addNewRoleController
+                                          //         .permissionList[index]
+                                          //         .isSelected = false;
+                                          //   }
+                                          //   setState(() {});
+                                          // },
+                                        ),
+                                      ),
+                                    ),
+                                    width10SizedBox,
+                                    Text(addNewRoleController
+                                            .permissionList[index]
+                                            .controller!
+                                            .controllerName ??
+                                        "")
+                                  ]),
+                                );
                               }),
                     )),
                   ]),
