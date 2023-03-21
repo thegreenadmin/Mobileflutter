@@ -46,7 +46,7 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.addRoleText,
+                            StringConstants.updateRoleText,
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: AppColors.black,
@@ -198,81 +198,48 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                                                     .permissionList[index]
                                                     .isSelected ==
                                                 false) {
-                                              addNewRoleController
-                                                  .selectedCategories
+                                              addNewRoleController.selectedRoles
                                                   .add({
+                                                "permission_id":
+                                                    addNewRoleController
+                                                        .permissionList[index]
+                                                        .permissionId,
                                                 "controller_id":
                                                     addNewRoleController
                                                         .permissionList[index]
                                                         .controllerId
-                                                        .toString()
+                                                        .toString(),
+                                                "status": "active"
                                               });
 
                                               addNewRoleController
                                                   .permissionList[index]
                                                   .isSelected = true;
 
-                                              debugPrint("Added" +
-                                                  addNewRoleController
-                                                      .permissionList[index]
-                                                      .isSelected
-                                                      .toString());
-
+                                              debugPrint(
+                                                  "Added${addNewRoleController.permissionList[index].isSelected}");
                                               debugPrint(addNewRoleController
-                                                  .selectedCategories
+                                                  .selectedRoles
                                                   .toString());
                                             } else {
                                               addNewRoleController
-                                                  .selectedCategories
-                                                  .remove(addNewRoleController
-                                                      .permissionList[index]
-                                                      .controllerId);
+                                                  .controllerIdsList
+                                                  .removeWhere((item) =>
+                                                      item['controller_id'] ==
+                                                      addNewRoleController
+                                                          .permissionList[index]
+                                                          .controllerId);
+
                                               addNewRoleController
                                                   .permissionList[index]
                                                   .isSelected = false;
+
                                               debugPrint(addNewRoleController
-                                                  .selectedCategories
+                                                  .selectedRoles
                                                   .toString());
-
-                                              debugPrint("Deleted" +
-                                                  addNewRoleController
-                                                      .selectedCategories[index]
-                                                      .isSelected
-                                                      .toString());
                                             }
+                                            setState(() {});
                                           },
-                                          // onChanged: (bool? value) {
-                                          //   if (addNewRoleController
-                                          //           .permissionList[index]
-                                          //           .isSelected ==
-                                          //       false) {
-                                          //     addNewRoleController
-                                          //         .controllerIdsList
-                                          //         .add({
-                                          //       "controller_id":
-                                          //           addNewRoleController
-                                          //               .permissionList[index]
-                                          //               .controllerId
-                                          //               .toString()
-                                          //     });
-                                          //     addNewRoleController
-                                          //         .permissionList[index]
-                                          //         .isSelected = true;
-                                          //   } else {
-                                          //     addNewRoleController
-                                          //         .controllerIdsList
-                                          //         .removeWhere((item) =>
-                                          //             item['controller_id'] ==
-                                          //             addNewRoleController
-                                          //                 .permissionList[index]
-                                          //                 .controllerId);
-
-                                          //     addNewRoleController
-                                          //         .permissionList[index]
-                                          //         .isSelected = false;
-                                          //   }
-                                          //   setState(() {});
-                                          // },
                                         ),
                                       ),
                                     ),

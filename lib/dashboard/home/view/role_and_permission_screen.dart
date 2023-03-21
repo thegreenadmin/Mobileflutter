@@ -79,7 +79,10 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        Get.to(const AddNewRoleScreen());
+                        addNewRoleController.roleNameTextController.clear();
+                        addNewRoleController.controllerIdsList.clear();
+                        Get.to(const AddNewRoleScreen())!.then(
+                            (value) => addNewRoleController.apiGetStoreRole());
                       },
                       child: Row(
                         children: [

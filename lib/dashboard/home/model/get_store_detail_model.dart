@@ -74,7 +74,7 @@ class Permissions {
   String? controllerId;
   String? status;
   Controller? controller;
-  bool? isSelected = false;
+  bool? isSelected = true;
 
   Permissions(
       {this.permissionId,

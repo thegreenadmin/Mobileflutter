@@ -280,6 +280,8 @@ class StringConstants {
   static String updateCategoryText = "Update Category";
   static String updateCategoryImageText = "Update Category Image";
 
+  static String updateRoleText = "Update Role";
+
   //V
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =

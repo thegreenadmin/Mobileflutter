@@ -60,6 +60,8 @@ class SearchStoreOwnerController extends GetxController {
   RxInt? addressListIndex = 0.obs;
   RxBool isStoreLogoSelected = false.obs;
   RxInt selectedIndex = 0.obs;
+  RxString openingTime = "".obs;
+  RxString closingTime = "".obs;
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
@@ -145,7 +147,10 @@ class SearchStoreOwnerController extends GetxController {
           return AlertDialog(
               title: const Text(
                 "From where do you want to take the photo?",
-                style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
@@ -159,13 +164,19 @@ class SearchStoreOwnerController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Gallery", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          const Text("Gallery",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {
                         Get.back();
                         XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(imageQuality: 50, source: ImageSource.gallery, maxWidth: 900, maxHeight: 900);
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.gallery,
+                                maxWidth: 900,
+                                maxHeight: 900);
                         if (pickedFile != null) {
                           if (isStoreLogoSelected.value) {
                             editStoreLogo.value = pickedFile;
@@ -191,13 +202,19 @@ class SearchStoreOwnerController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Camera", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          const Text("Camera",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {
                         Get.back();
                         XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(imageQuality: 50, source: ImageSource.camera, maxWidth: 900, maxHeight: 900);
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.camera,
+                                maxWidth: 900,
+                                maxHeight: 900);
                         if (pickedFile != null) {
                           if (isStoreLogoSelected.value) {
                             editStoreLogo.value = pickedFile;
@@ -227,7 +244,8 @@ class SearchStoreOwnerController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map body = {
       "q": "",
@@ -238,11 +256,18 @@ class SearchStoreOwnerController extends GetxController {
       "order_type": "ASC",
       "category_id": null,
       "filters": [
-        {"filter_by": "is_featured_product", "filter_value": true, "operation": "eq"}
+        {
+          "filter_by": "is_featured_product",
+          "filter_value": true,
+          "operation": "eq"
+        }
       ]
     };
     UserProvider()
-        .postWithHeadersApi(body, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}", headers,
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
@@ -267,7 +292,8 @@ class SearchStoreOwnerController extends GetxController {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
       Map<String, String> headers = {
-        'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -277,19 +303,26 @@ class SearchStoreOwnerController extends GetxController {
                   : await editStoreImage.value.readAsBytes(),
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
-      final res = await dio.post(ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
-          data: formData, options: mdio.Options(headers: headers));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint("IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint(
+          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
         if (isStoreLogoSelected.value) {
-          editStoreLogoOrigionalLinkfromServer.value = responseData['data']['urls']['orignal_url'];
-          editStoreLogoDynamicLinkfromServer.value = responseData['data']['urls']['dynamic_url'];
+          editStoreLogoOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          editStoreLogoDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
           isStoreLogoSelected.value = false;
         } else {
-          editStoreImageOrigionalLinkfromServer.value = responseData['data']['urls']['orignal_url'];
-          editStoreImageDynamicLinkfromServer.value = responseData['data']['urls']['dynamic_url'];
+          editStoreImageOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          editStoreImageDynamicLinkfromServer.value =
+              responseData['data']['urls']['dynamic_url'];
         }
         return responseData;
       } else if (res.statusCode == 403) {
@@ -300,7 +333,8 @@ class SearchStoreOwnerController extends GetxController {
       if (e is mdio.DioError) {
         if (e.type == mdio.DioErrorType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
-          final responseData = json.decode(e.response?.data) as Map<String, dynamic>;
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
       }
@@ -311,14 +345,19 @@ class SearchStoreOwnerController extends GetxController {
   //Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
-    debugPrint("GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    debugPrint(
+        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().storeList, headers, showLoading: true)
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
@@ -341,58 +380,86 @@ class SearchStoreOwnerController extends GetxController {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET PARTICULAR STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
-        editStoreImageDynamicLinkfromServer.value = value?.body["data"]['store']['image']["dynamic_url"] ?? "";
-        editStoreLogoDynamicLinkfromServer.value = value?.body["data"]['store']['logo']["dynamic_url"] ?? "";
-        storeNameTextController.text = value?.body["data"]['store']['store_name'] ?? "";
-        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
-        nickNameTextController.text = value?.body["data"]['store']['store_nick_name'] ?? "";
-        phoneTextController.text = value?.body["data"]['store']['store_phone'] ?? "";
-        emailTextController.text = value?.body["data"]['store']['store_email'] ?? "";
-        einTextController.text = value?.body["data"]['store']['store_ein'] ?? "";
-        storeAddresses.value = value?.body["data"]['store']['store_addresses'] ?? [];
-        storeTimings.value = value?.body["data"]['store']['store_timings'] ?? [];
+        editStoreImageDynamicLinkfromServer.value =
+            value?.body["data"]['store']['image']["dynamic_url"] ?? "";
+        editStoreLogoDynamicLinkfromServer.value =
+            value?.body["data"]['store']['logo']["dynamic_url"] ?? "";
+        storeNameTextController.text =
+            value?.body["data"]['store']['store_name'] ?? "";
+        einTextController.text =
+            value?.body["data"]['store']['store_ein'] ?? "";
+        nickNameTextController.text =
+            value?.body["data"]['store']['store_nick_name'] ?? "";
+        phoneTextController.text =
+            value?.body["data"]['store']['store_phone'] ?? "";
+        emailTextController.text =
+            value?.body["data"]['store']['store_email'] ?? "";
+        einTextController.text =
+            value?.body["data"]['store']['store_ein'] ?? "";
+        storeAddresses.value =
+            value?.body["data"]['store']['store_addresses'] ?? [];
+        storeTimings.value =
+            value?.body["data"]['store']['store_timings'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
 
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
-            addressLine1TextController.text = storeAddresses[i]["address_line_1"] ?? "";
-            addressLine2TextController.text = storeAddresses[i]["address_line_2"] ?? "";
-            addressLine1TextController.text = storeAddresses[i]["address_line_1"] ?? "";
+            addressLine1TextController.text =
+                storeAddresses[i]["address_line_1"] ?? "";
+            addressLine2TextController.text =
+                storeAddresses[i]["address_line_2"] ?? "";
+            addressLine1TextController.text =
+                storeAddresses[i]["address_line_1"] ?? "";
             townOrCityTextController.text = storeAddresses[i]["city"] ?? "";
-            countryTextController.text = storeAddresses[i]["state"]['country']['country_name'] ?? "";
-            countryId!.value = storeAddresses[i]["state"]['country']['country_id'] ?? "";
-            countryDropdownValue.value = storeAddresses[i]["state"]['country']['country_name'] ?? "";
+            countryTextController.text =
+                storeAddresses[i]["state"]['country']['country_name'] ?? "";
+            countryId!.value =
+                storeAddresses[i]["state"]['country']['country_id'] ?? "";
+            countryDropdownValue.value =
+                storeAddresses[i]["state"]['country']['country_name'] ?? "";
             stateId.value = storeAddresses[i]["state"]['state_id'] ?? "";
-            stateDropdownValue.value = storeAddresses[i]["state"]['state_name'] ?? "";
+            stateDropdownValue.value =
+                storeAddresses[i]["state"]['state_name'] ?? "";
             storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
-            postalCodeTextController.text = storeAddresses[i]["postal_code"] ?? "";
+            postalCodeTextController.text =
+                storeAddresses[i]["postal_code"] ?? "";
           }
         }
         if (storeTimings.isNotEmpty) {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
-            openingTimeTextController.text = Utility.formatDateTime(storeTimings[i]["opening_time"] ?? '',
-                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a")
+            openingTimeTextController.text = Utility.formatDateTime(
+                    storeTimings[i]["opening_time"] ?? '',
+                    firstFormat: "hh:mm:ss",
+                    secFormat: "hh:mm a")
                 .toString();
-            closingTimeTextController.text = Utility.formatDateTime(storeTimings[i]["closing_time"] ?? '',
-                    firstFormat: "hh:mm:ss", secFormat: "hh:mm a")
+            openingTime.value = openingTimeTextController.text;
+            closingTimeTextController.text = Utility.formatDateTime(
+                    storeTimings[i]["closing_time"] ?? '',
+                    firstFormat: "hh:mm:ss",
+                    secFormat: "hh:mm a")
                 .toString();
+            closingTime.value = closingTimeTextController.text;
           }
         }
         print("stateId.value---------->" + stateId.value.toString());
         print("stateId.value---------->" + countryId!.value.toString());
-        print("stateDropdownValue.value---------->" + stateDropdownValue.value.toString());
-        print("countryDropdownValue.value---------->" + countryDropdownValue.value.toString());
+        print("stateDropdownValue.value---------->" +
+            stateDropdownValue.value.toString());
+        print("countryDropdownValue.value---------->" +
+            countryDropdownValue.value.toString());
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
@@ -413,7 +480,8 @@ class SearchStoreOwnerController extends GetxController {
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {
       "store_id": storeId.value,
@@ -441,14 +509,22 @@ class SearchStoreOwnerController extends GetxController {
       },
       "store_timings": is247Time.value == true
           ? [
-              {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
+              {
+                "is_24_hours_active": is247Time.value,
+                "day_of_week": "",
+                "opening_time": "",
+                "closing_time": ""
+              }
             ]
           : storeTimmingList
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 
     UserProvider()
-        .putWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}", headers,
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}",
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
@@ -482,19 +558,25 @@ class SearchStoreOwnerController extends GetxController {
   //Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
-    debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.clear();
-        countriesList.addAll(getCountriesModel.data!.countries as Iterable<CountriesList>);
+        countriesList.addAll(
+            getCountriesModel.data!.countries as Iterable<CountriesList>);
         if (countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
           countryIndex.value = 0;
@@ -517,12 +599,14 @@ class SearchStoreOwnerController extends GetxController {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");

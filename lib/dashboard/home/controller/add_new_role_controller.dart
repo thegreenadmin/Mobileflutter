@@ -31,8 +31,7 @@ class AddNewRoleController extends GetxController {
   GetStoreDetailModel getStoreDetailModel = GetStoreDetailModel();
   RxList<Permissions> permissionList = <Permissions>[].obs;
 
-  RxList<dynamic> interest = <dynamic>[].obs;
-  RxList<dynamic> selectedCategories = <dynamic>[].obs;
+  RxList<dynamic> selectedRoles = <dynamic>[].obs;
 
   RxList<Map<String, dynamic>> controllerIdsList = <Map<String, dynamic>>[].obs;
 
@@ -231,19 +230,50 @@ class AddNewRoleController extends GetxController {
         getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
         roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
 
-        // for (Permissions data in permissionList) {
-        //   if (interest.any((element) =>
-        //       data.controllerId == element['controller_id'].toString())) {
-        //     data.isSelected = true;
-        //   } else {
-        //     data.isSelected = false;
-        //   }
-        // }
-        update();
-        selectedCategories.addAll(interest
-            .map((element) => element['controller_id'].toString())
-            .toList());
+  //Edit Role Api
+  Future apiEditRole() async {
+    Map data = {
+      "store_id": storeId.value,
+      "role_id": roleId.value,
+      "role_name": roleNameTextController.text.trim(),
+      "permissions": [
+        {"permission_id": 5, "controller_id": "2", "status": "active"},
+        {"permission_id": "2", "controller_id": "3", "status": "active"},
+        {"permission_id": "3", "controller_id": "4", "status": "active"},
+        {"permission_id": "4", "controller_id": "5", "status": "active"}
+      ]
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("EDIT ROLE BODY********** $data");
+    debugPrint(
+        "EDIT ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleEdit}");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeRoleEdit,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("EDIT ROLE RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        Utility.showToast(value.body['message']);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          Get.back();
+        });
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

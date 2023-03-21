@@ -15,7 +15,6 @@ class ManageStoreMainScreen extends StatefulWidget {
 }
 
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
-  
   final SearchStoreOwnerController searchStoreOwnerController =
       Get.put(SearchStoreOwnerController());
 
@@ -181,11 +180,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   ],
                                 ),
                                 height8SizedBox,
-                                const Text("Store Hours 9:00 am to 9:00PM",
-                                    style: TextStyle(
+                                Obx(() => Text(
+                                    "Store Hours ${searchStoreOwnerController.openingTime.value} to ${searchStoreOwnerController.closingTime.value}",
+                                    style: const TextStyle(
                                         color: AppColors.white,
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w400))
+                                        fontWeight: FontWeight.w400)))
                               ],
                             ),
                           )
