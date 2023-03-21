@@ -400,8 +400,7 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
         editStoreLogoOrigionalLinkfromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
-        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
-        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
+
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
@@ -462,7 +461,6 @@ class SearchStoreOwnerController extends GetxController {
         } else {
           is247Time.value = true;
         }
-
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
