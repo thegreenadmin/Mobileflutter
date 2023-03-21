@@ -415,7 +415,7 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
             value?.body["data"]['store']['store_addresses'] ?? [];
-        storeTimings.value =
+        storeTimmingList.value =
             value?.body["data"]['store']['store_timings'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
 
@@ -442,17 +442,17 @@ class SearchStoreOwnerController extends GetxController {
                 storeAddresses[i]["postal_code"] ?? "";
           }
         }
-        if (storeTimings.isNotEmpty) {
-          for (int i = 0; i < storeTimings.length; i++) {
-            is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
+        if (storeTimmingList.isNotEmpty) {
+          for (int i = 0; i < storeTimmingList.length; i++) {
+            is247Time.value = storeTimmingList[i]["is_24_hours_active"] ?? false;
             openingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["opening_time"] ?? '',
+                storeTimmingList[i]["opening_time"] ?? '',
                     firstFormat: "hh:mm:ss",
                     secFormat: "hh:mm a")
                 .toString();
             openingTime.value = openingTimeTextController.text;
             closingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["closing_time"] ?? '',
+                storeTimmingList[i]["closing_time"] ?? '',
                     firstFormat: "hh:mm:ss",
                     secFormat: "hh:mm a")
                 .toString();
@@ -461,7 +461,7 @@ class SearchStoreOwnerController extends GetxController {
         } else {
           is247Time.value = true;
         }
-        for (var sData in storeTimings) {
+        for (var sData in storeTimmingList) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
               element.isSelected = true;
