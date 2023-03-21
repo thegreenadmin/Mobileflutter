@@ -269,12 +269,7 @@ class AddNewRoleController extends GetxController {
       "store_id": storeId.value,
       "role_id": roleId.value,
       "role_name": roleNameTextController.text.trim(),
-      "permissions": [
-        {"permission_id": 5, "controller_id": "2", "status": "active"},
-        {"permission_id": "2", "controller_id": "3", "status": "active"},
-        {"permission_id": "3", "controller_id": "4", "status": "active"},
-        {"permission_id": "4", "controller_id": "5", "status": "active"}
-      ]
+      "permissions": selectedRoles
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',

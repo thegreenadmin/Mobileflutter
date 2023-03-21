@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
@@ -389,7 +390,7 @@ class SearchStoreOwnerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
         editStoreImageDynamicLinkfromServer.value =
@@ -400,7 +401,6 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
         editStoreLogoOrigionalLinkfromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
-
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =

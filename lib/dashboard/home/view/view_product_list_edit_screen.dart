@@ -122,7 +122,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                           ? height0SizedBox
                           : InkWell(
                               onTap: () {
-                                manageStoreController.selectImages();
+                                //  manageStoreController.selectImages();
                               },
                               child: Image.asset(
                                 "assets/uploadbutton.png",
@@ -140,7 +140,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                   flex: 4,
                                   child: InkWell(
                                     onTap: () {
-                                      manageStoreController.selectImages();
+                                      //manageStoreController.selectImages();
                                     },
                                     child: Row(
                                       children: [
@@ -455,10 +455,16 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child:DropdownButtonFormField<String>(
-                            value: manageStoreController.quantityValue.value!=""?
-                            manageStoreController.quantityTypeList.firstWhere((element) => element.quantityTypeId==manageStoreController.quantityValue.value).quantityTypeId
-                                :null,
+                          child: DropdownButtonFormField<String>(
+                            value:
+                                manageStoreController.quantityValue.value != ""
+                                    ? manageStoreController.quantityTypeList
+                                        .firstWhere((element) =>
+                                            element.quantityTypeId ==
+                                            manageStoreController
+                                                .quantityValue.value)
+                                        .quantityTypeId
+                                    : null,
                             isExpanded: true,
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -511,7 +517,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              manageStoreController.quantityValue.value= value.toString();
+                              manageStoreController.quantityValue.value =
+                                  value.toString();
                             },
                           ),
                         ),
@@ -846,12 +853,10 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: 
-                          Obx(() => manageStoreController
+                          child: Obx(() => manageStoreController
                                   .discountValueType.value.isEmpty
                               ? height0SizedBox
-                              :
-                               DropdownButtonFormField<String>(
+                              : DropdownButtonFormField<String>(
                                   value: manageStoreController
                                       .discountValueType.value,
                                   decoration: InputDecoration(
@@ -910,7 +915,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                         .discountValueType.value = v.toString();
                                   },
                                 )),
-                       ),
+                        ),
                         width15SizedBox,
                         Flexible(
                           flex: 5,
@@ -1350,73 +1355,89 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
                               ),
-                              Obx(()=> manageStoreController
-                                      .selectedProductReturnableType.value.isEmpty
-                                      ? height0SizedBox
-                                      :DropdownButtonFormField<String>(
-                                      value: manageStoreController
-                                          .selectedProductReturnableType.value,
-                                      decoration: InputDecoration(
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
-                                            color: AppColors.grey,
-                                            width: 1.0,
+                              Obx(
+                                () => manageStoreController
+                                        .selectedProductReturnableType
+                                        .value
+                                        .isEmpty
+                                    ? height0SizedBox
+                                    : DropdownButtonFormField<String>(
+                                        value: manageStoreController
+                                            .selectedProductReturnableType
+                                            .value,
+                                        decoration: InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.grey,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          border: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          errorBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
                                           ),
                                         ),
-                                        border: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
-                                            color: AppColors.primary,
-                                            width: 1.0,
-                                          ),
+                                        isExpanded: true,
+                                        hint: Text(
+                                          StringConstants.selectTypeText,
+                                          style: const TextStyle(
+                                              color: AppColors.grey,
+                                              fontSize: 14),
                                         ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
-                                            color: AppColors.primary,
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        errorBorder: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
-                                            color: AppColors.primary,
-                                            width: 1.0,
-                                          ),
-                                        ),
+                                        items: <String>["Yes", "No"]
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (v) {
+                                          if (v == "Yes") {
+                                            manageStoreController
+                                                .isProductReturnable
+                                                .value = true;
+                                            manageStoreController
+                                                .selectedProductReturnableType
+                                                .value = v.toString();
+                                          } else {
+                                            manageStoreController
+                                                .isProductReturnable
+                                                .value = false;
+                                            manageStoreController
+                                                .selectedProductReturnableType
+                                                .value = v.toString();
+                                          }
+                                        },
                                       ),
-                                      isExpanded: true,
-                                      hint: Text(
-                                        StringConstants.selectTypeText,
-                                        style: const TextStyle(
-                                            color: AppColors.grey, fontSize: 14),
-                                      ),
-                                      items: <String>["Yes", "No"].map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (v) {
-                                        if (v == "Yes") {
-                                          manageStoreController.isProductReturnable.value = true;
-                                          manageStoreController
-                                              .selectedProductReturnableType.value = v.toString();
-                                        } else {
-                                          manageStoreController.isProductReturnable.value = false;
-                                          manageStoreController
-                                              .selectedProductReturnableType.value = v.toString();
-                                        }
-                                      },
-                                    ),),
-
+                              ),
                             ],
                           ),
                         ),
@@ -1444,8 +1465,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .daysTextController,
+                                  controller:
+                                      manageStoreController.daysTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {

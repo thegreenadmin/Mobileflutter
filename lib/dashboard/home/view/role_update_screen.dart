@@ -16,7 +16,7 @@ class RoleUpdateScreen extends StatefulWidget {
 
 class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
-  final selectedIndexes = <int>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,15 +209,10 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                                                         .permissionList[index]
                                                         .controllerId
                                                         .toString(),
-                                                "status": addNewRoleController
-                                                            .permissionList[
-                                                                index]
-                                                            .isSelected ==
-                                                        true
+                                                "status": value == true
                                                     ? "active"
                                                     : "deleted"
                                               });
-
                                               addNewRoleController
                                                   .permissionList[index]
                                                   .isSelected = true;

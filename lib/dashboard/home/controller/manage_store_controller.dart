@@ -8,7 +8,8 @@ import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
-import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart' as quantity_model;
+import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
+    as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -61,8 +62,10 @@ class ManageStoreController extends GetxController {
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
-  late quantity_model.QuantityListResponse quantityListResponse = quantity_model.QuantityListResponse();
-  RxList<quantity_model.QuantityType> quantityTypeList = <quantity_model.QuantityType>[].obs;
+  late quantity_model.QuantityListResponse quantityListResponse =
+      quantity_model.QuantityListResponse();
+  RxList<quantity_model.QuantityType> quantityTypeList =
+      <quantity_model.QuantityType>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
@@ -77,7 +80,7 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
-      apiUploadMultipleImage();
+      // apiUploadMultipleImage();
     }
   }
 
@@ -231,8 +234,9 @@ class ManageStoreController extends GetxController {
       isLoading.value = false;
       debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        quantityListResponse = quantity_model.QuantityListResponse.fromJson(value?.body);
-        quantityTypeList.value = quantityListResponse.data?.quantityTypes??[];
+        quantityListResponse =
+            quantity_model.QuantityListResponse.fromJson(value?.body);
+        quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -289,7 +293,7 @@ class ManageStoreController extends GetxController {
         "discount_type": discountType.value.toLowerCase(),
         "discount_value": discountOrOfferTextController.text.trim(),
         "is_product_returnable": isProductReturnable.value,
-        "return_days_count":  int.parse(daysTextController.text.trim()),
+        "return_days_count": int.parse(daysTextController.text.trim()),
         "length": lengthTextController.text.trim(),
         "width": breadthTextController.text.trim(),
         "height": heightTextController.text.trim(),
@@ -467,8 +471,10 @@ class ManageStoreController extends GetxController {
         } else {
           selectedFeaturedType.value = "No";
         }
-        daysTextController.text = value.body["data"]['product']["return_days_count"].toString();
-        isProductReturnable.value = value.body["data"]['product']["is_product_returnable"];
+        daysTextController.text =
+            value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value =
+            value.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {

@@ -23,13 +23,16 @@ class SearchStoreUserScreen extends StatefulWidget {
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
 }
 
-class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with SingleTickerProviderStateMixin {
+class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
-  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
 
   var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -82,12 +85,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                                       "Hi, "
                                       "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
                                       style: const TextStyle(
-                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.w600),
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
                                     )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18, color: AppColors.black, fontWeight: FontWeight.w400),
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -117,16 +124,19 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                 top: 30,
                 child: Stack(
                   children: [
-                    SizedBox(
-                        height: 800,
-                        width: WidgetConstants.screenWidth,
-                        child: GoogleMap(
-                          mapType: MapType.normal,
-                          initialCameraPosition: _kGooglePlex,
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
-                          },
-                        )),
+                    Container(
+                      color: AppColors.greenlight,
+                      height: 800,
+                      width: WidgetConstants.screenWidth,
+                      // child:
+                      // GoogleMap(
+                      //   mapType: MapType.normal,
+                      //   initialCameraPosition: _kGooglePlex,
+                      //   onMapCreated: (GoogleMapController controller) {
+                      //     _controller.complete(controller);
+                      //   },
+                      // )
+                    ),
                     Positioned(
                         top: 170,
                         right: 10,
@@ -159,12 +169,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                         language: "en",
                         components: [Component(Component.country, "in")]);
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p!.description.toString(), googleMapApiKey: kGoogleApiKey);
+                        address: p!.description.toString(),
+                        googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
                   child: TextFormField(
                       enabled: false,
-                      style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w400),
+                      style: const TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                       decoration: InputDecoration(
                         filled: true,
                         isDense: true,
@@ -236,7 +250,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
   }
 
   void updateMap(lat, lng) async {
-    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
+    CameraPosition kLake = CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(lat, lng),
+        tilt: 0.0,
+        zoom: 14.15);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
   }
@@ -269,7 +287,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can
