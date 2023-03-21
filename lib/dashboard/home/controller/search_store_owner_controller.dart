@@ -435,6 +435,7 @@ class SearchStoreOwnerController extends GetxController {
             storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
             postalCodeTextController.text =
                 storeAddresses[i]["postal_code"] ?? "";
+            print("postal code---------->" + postalCodeTextController.text);
           }
         }
         if (storeTimings.isNotEmpty) {
@@ -488,8 +489,8 @@ class SearchStoreOwnerController extends GetxController {
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
-        "image_url": editStoreImageOrigionalLinkfromServer,
-        "logo_url": editStoreLogoOrigionalLinkfromServer,
+        "image_url": editStoreImageOrigionalLinkfromServer.value,
+        "logo_url": editStoreLogoOrigionalLinkfromServer.value,
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
         "store_phone": phoneTextController.text.trim(),
@@ -516,7 +517,7 @@ class SearchStoreOwnerController extends GetxController {
                 "closing_time": ""
               }
             ]
-          : storeTimmingList
+          : storeTimmingList.value
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 
@@ -531,9 +532,9 @@ class SearchStoreOwnerController extends GetxController {
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         print(value);
         Utility.showToast(value?.body['message']);
-        // Get.back();
-        // Get.back();
-        // await apiGetStoreList();
+        Get.back();
+        Get.back();
+        await apiGetStoreList();
         storeNameTextController.clear();
         einTextController.clear();
         nickNameTextController.clear();

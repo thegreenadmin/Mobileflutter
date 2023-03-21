@@ -585,8 +585,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        accountController.apiUpdateUserDetail();
-                        //  accountController.validateAndSubmit();
+                       // accountController.apiUpdateUserDetail();
+                      accountController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.updateText,

@@ -158,6 +158,7 @@ class StringConstants {
   static String noWorkersFoundText = "No workers found";
   static String noCategoriesFoundText = "No Categories found";
   static String noPermissionsFoundText = " No permissions found";
+  static String noRolesFoundText = "No Roles found";
 
   //O
   static String ownAStoreText = "Own a Store?";

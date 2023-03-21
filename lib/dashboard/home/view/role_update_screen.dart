@@ -65,7 +65,7 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Form(
-              key: addNewRoleController.formKey,
+              key: addNewRoleController.updateFormKey,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -209,7 +209,13 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                                                         .permissionList[index]
                                                         .controllerId
                                                         .toString(),
-                                                "status": "active"
+                                                "status": addNewRoleController
+                                                            .permissionList[
+                                                                index]
+                                                            .isSelected ==
+                                                        true
+                                                    ? "active"
+                                                    : "deleted"
                                               });
 
                                               addNewRoleController
@@ -270,7 +276,7 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                 colors: [AppColors.primary, AppColors.primary],
               ),
               onTap: () {
-                addNewRoleController.validateAndSubmit();
+                addNewRoleController.validateAndSubmitUpdate();
               },
               height: 50,
               text: StringConstants.saveText,

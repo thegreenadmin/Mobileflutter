@@ -36,7 +36,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${moreController.firstName!.value}",
+                                  "Hi, ${moreController.firstName!.value} ${moreController.lastName!.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,

@@ -12,6 +12,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class AddNewRoleController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
   TextEditingController roleNameTextController = TextEditingController();
 
   RxString storeId = "".obs;
@@ -20,7 +21,9 @@ class AddNewRoleController extends GetxController {
   RxInt controllerId = 0.obs;
   RxBool checkBoxValue = false.obs;
   RxBool isLoading = false.obs;
+
   RxBool autoValidate = false.obs;
+  RxBool autoValidateUpdate = false.obs;
 
   GetStoreControllerModel getStoreControllerModel = GetStoreControllerModel();
   RxList<Modules> moduleList = <Modules>[].obs;
@@ -66,6 +69,26 @@ class AddNewRoleController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
+    }
+  }
+
+  bool validateAndSaveUpdate() {
+    final forms = updateFormKey.currentState;
+    if (forms!.validate()) {
+      forms.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmitUpdate() async {
+    if (validateAndSaveUpdate()) {
+      try {
+        await apiEditRole();
+      } catch (_) {}
+    } else {
+      autoValidateUpdate.value = true;
     }
   }
 
@@ -262,7 +285,7 @@ class AddNewRoleController extends GetxController {
     debugPrint(
         "EDIT ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleEdit}");
     UserProvider()
-        .postWithHeadersApi(
+        .putWithHeadersApi(
             data,
             ServerCommunicator().baseUrl + ServerCommunicator().storeRoleEdit,
             headers,
