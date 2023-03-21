@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/favourite_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/filter_option_screen.dart';
-
 import 'package:thegreenmall/dashboard/home/view/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -17,16 +21,23 @@ class SearchStoreUserScreen extends StatefulWidget {
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
 }
 
-class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
-    with SingleTickerProviderStateMixin {
+class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
-  final SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
+  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
+
+  var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
 
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
+    updateMap();
     super.initState();
   }
 
@@ -69,16 +80,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       "Hi, "
                                       "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
                                       style: const TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
+                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.w600),
                                     )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
+                                      fontSize: 18, color: AppColors.black, fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -108,11 +115,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 top: 30,
                 child: Stack(
                   children: [
-                    Container(
-                      height: 800,
-                      width: WidgetConstants.screenWidth,
-                      color: AppColors.greenlight,
-                    ),
+                    SizedBox(
+                        height: 800,
+                        width: WidgetConstants.screenWidth,
+                        child: GoogleMap(
+                          mapType: MapType.hybrid,
+                          initialCameraPosition: _kGooglePlex,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                        )),
                     Positioned(
                         top: 170,
                         right: 10,
@@ -130,60 +142,44 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-                child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    autofocus: false,
-                    style: const TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                    // controller: signupController.firstNameTextController,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return AlertStringConstants.pleaseEnterFirstNameText;
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      prefixIcon: Image.asset(
-                        "assets/search.png",
-                        scale: 4,
-                      ),
-                      hintText: StringConstants.searchText,
-                      hintStyle: const TextStyle(color: AppColors.grey),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
+                child: InkWell(
+                  onTap: () async {
+                    var p = await PlacesAutocomplete.show(
+                      context: context,
+                      apiKey: kGoogleApiKey,
+                      region: "us",
+                      mode: Mode.fullscreen,
+                    );
+                  },
+                  child: TextFormField(
+                      enabled: false,
+                      style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w400),
+                      decoration: InputDecoration(
+                        filled: true,
+                        isDense: true,
+                        prefixIcon: Image.asset(
+                          "assets/search.png",
+                          scale: 4,
                         ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
+                        hintText: StringConstants.searchText,
+                        hintStyle: const TextStyle(color: AppColors.grey),
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
+                          ),
                         ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                    )),
+                      )),
+                ),
               ),
             ],
           ),
@@ -226,5 +222,54 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         ],
       ),
     );
+  }
+
+  void updateMap() async {
+    Position currentLocation = await _determinePosition();
+    CameraPosition kLake = CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        tilt: 0.0,
+        zoom: 14.15);
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    setState(() {});
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }
