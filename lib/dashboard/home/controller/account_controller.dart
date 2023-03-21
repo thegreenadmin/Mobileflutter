@@ -248,7 +248,7 @@ class AccountController extends GetxController {
         "address_name": "home",
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
-        "city": "Dehradun",
+        "city": townOrCityTextController.text,
         "postal_code": postalCodeTextController.text.trim()
       }
     };
