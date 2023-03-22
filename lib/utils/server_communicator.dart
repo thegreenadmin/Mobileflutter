@@ -20,6 +20,7 @@ class ServerCommunicator {
 //F
   String fileUpload = 'file/upload/single';
   String fileUploadMultiple = 'file/upload/multiple';
+  String createFavouriteStore = 'user/store/favourite/create';
 
 //G
   String generateOtp = 'user/otp/generate';
@@ -36,6 +37,8 @@ class ServerCommunicator {
 //P
 //Q
 //R
+
+  String removeFavouriteStore = 'user/store/favourite/remove';
 //S
   String states = 'utils/states';
   String storeList = 'store/list';
