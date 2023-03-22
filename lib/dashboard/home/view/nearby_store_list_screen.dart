@@ -11,7 +11,6 @@ import 'package:thegreenmall/dashboard/home/view/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
@@ -21,13 +20,17 @@ class NearbyStoreListScreen extends StatefulWidget {
 }
 
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
-  final SearchStoreUserController searchStoreUserController =
-  Get.put(SearchStoreUserController());
+  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
+
+  @override
+  void initState() {
+    searchStoreUserController.apiGetNearByStores();
+    searchStoreUserController.setupScrollController(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    searchStoreUserController.apiGetNearByStores();
-    searchStoreUserController.setupScrollController(context);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -271,18 +274,5 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
         ]),
       ),
     );
-
-  }
-  Widget _loadingIndicator() {
-    return  Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CupertinoActivityIndicator(
-            radius: 20,
-            color: Theme.of(context).primaryColor,
-          ),
-        )
-    );
   }
 }
-

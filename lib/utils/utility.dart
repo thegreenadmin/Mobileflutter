@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -36,9 +36,7 @@ class Utility {
   }
 
   static void showSuccessMessage(String title, String message) {
-    Get.snackbar(title, message,
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(title, message, duration: const Duration(seconds: 2), snackPosition: SnackPosition.BOTTOM);
   }
 
   static String loadImageUrl(String url) {
@@ -69,8 +67,7 @@ class Utility {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  textStyle: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold)),
+                  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               child: Text(buttonText),
               onPressed: () => Get.back(result: true),
               // ** result: returns this value up the call stack **
@@ -81,21 +78,37 @@ class Utility {
     ));
   }
 
-
-  static String parseDateTime(DateTime timestamp,
-      {String format = 'MMM d, h:mm a'}) {
+  static String parseDateTime(DateTime timestamp, {String format = 'MMM d, h:mm a'}) {
     final dateTime = timestamp.toLocal();
     return DateFormat(format).format(dateTime).toString();
   }
 
   static String formatDateTime(String timestamp,
-      {String firstFormat = 'MMM d, h:mm a',secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
-
-    DateTime parseDate =
-    DateFormat(firstFormat).parse(timestamp.toString());
+      {String firstFormat = 'MMM d, h:mm a', secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
+    DateTime parseDate = DateFormat(firstFormat).parse(timestamp.toString());
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat(secFormat);
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
+  }
+
+  static Future<Position> fetchCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return await Geolocator.getCurrentPosition();
   }
 }

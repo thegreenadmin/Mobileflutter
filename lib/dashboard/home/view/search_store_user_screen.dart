@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,26 +26,22 @@ class SearchStoreUserScreen extends StatefulWidget {
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
 }
 
-class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
-    with SingleTickerProviderStateMixin {
+class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with SingleTickerProviderStateMixin {
   TabController? _tabController;
-
-  final SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
-
+  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
   var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
     fetchCurrentLocation();
+    updateCurrentLocation();
     super.initState();
   }
 
@@ -85,16 +84,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       "Hi, "
                                       "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
                                       style: const TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
+                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.w600),
                                     )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
+                                      fontSize: 18, color: AppColors.black, fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -124,13 +119,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 top: 30,
                 child: Stack(
                   children: [
-                    Container(
-                        color: AppColors.greenlight,
-                        height: 800,
+                    SizedBox(
+                        height: 250,
                         width: WidgetConstants.screenWidth,
                         child: GoogleMap(
                           mapType: MapType.normal,
                           initialCameraPosition: _kGooglePlex,
+                          markers: Set<Marker>.of(markers.values),
                           onMapCreated: (GoogleMapController controller) {
                             _controller.complete(controller);
                           },
@@ -159,24 +154,20 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         radius: 1000,
                         types: [],
                         strictbounds: false,
-                        region: "ar",
                         context: context,
                         apiKey: kGoogleApiKey,
                         mode: Mode.overlay,
-                        // Mode.fullscreen
                         language: "en",
-                        components: [Component(Component.country, "in")]);
+                        components: []);
+                    searchStoreUserController.searchController.text = p!.description!.toString();
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p?.description.toString()??'',
-                        googleMapApiKey: kGoogleApiKey);
+                        address: p.description.toString(), googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
                   child: TextFormField(
                       enabled: false,
-                      style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                      controller: searchStoreUserController.searchController,
+                      style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w400),
                       decoration: InputDecoration(
                         filled: true,
                         isDense: true,
@@ -248,54 +239,33 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   }
 
   void updateMap(lat, lng) async {
-    CameraPosition kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(lat, lng),
-        tilt: 0.0,
-        zoom: 14.15);
+    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
   }
 
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
+  void updateMarker(latitude, longitude) async {
+    const MarkerId markerId = MarkerId("12345");
+    final Uint8List markerIcon = await getBytesFromAsset('assets/marker.png', 60);
+    final Marker marker = Marker(
+      markerId: markerId,
+      icon: BitmapDescriptor.fromBytes(markerIcon),
+      position: LatLng(latitude, longitude),
+    );
+    setState(() {
+      markers[markerId] = marker;
+    });
   }
 
-  void fetchCurrentLocation() async {
-    Position currentLocation = await _determinePosition();
+  void updateCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
     updateMap(currentLocation.latitude, currentLocation.longitude);
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 }

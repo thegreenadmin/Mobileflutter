@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/home/model/pagination_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:dio/dio.dart' as mdio;
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -27,6 +18,7 @@ class SearchStoreUserController extends GetxController {
   TextEditingController storeOpeningTextController = TextEditingController();
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
@@ -52,6 +44,7 @@ class SearchStoreUserController extends GetxController {
     super.onInit();
     firstName!.value = Get.arguments["firstName"] ?? "";
     lastName!.value = Get.arguments["lastName"] ?? "";
+    apiGetNearByStores();
   }
 
   //Get Nearby Stores Api
