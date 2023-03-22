@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:dio/dio.dart' as mdio;
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -25,6 +17,7 @@ class SearchStoreUserController extends GetxController {
   TextEditingController storeOpeningTextController = TextEditingController();
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() {
@@ -35,18 +28,13 @@ class SearchStoreUserController extends GetxController {
 
   //Get Nearby Stores Api
   Future apiGetNearByStores() async {
-    debugPrint(
-        "GET GET NEARBY STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    debugPrint("GET GET NEARBY STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().countries,
-            headers,
-            showLoading: false)
+        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
