@@ -126,7 +126,6 @@ class UserProvider extends GetConnect {
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
-
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
