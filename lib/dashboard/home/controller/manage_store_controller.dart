@@ -121,7 +121,9 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        if (selectedCategories.isEmpty) {
+        if (imageFileList!.length < 1) {
+          Utility.showToast("Please upload atleast one image");
+        } else if (selectedCategories.isEmpty) {
           Utility.showToast("Please select categories");
         } else {
           apiCreateProduct();
@@ -333,9 +335,9 @@ class ManageStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    debugPrint("CREATE STORE BODY********** $data");
+    debugPrint("CREATE PRODUCT BODY********** $data");
     debugPrint(
-        "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
+        "CREATE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -347,6 +349,7 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         Utility.showToast(value?.body['message']);
         Future.delayed(const Duration(milliseconds: 200), () {
+          Get.back();
           Get.back();
         });
         productNameTextController.clear();

@@ -108,6 +108,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       manageStoreController.heightTextController.clear();
                       manageStoreController.weightTextController.clear();
                       manageStoreController.isEnabled.value = false;
+                      manageStoreController.imageFileList!.clear();
                     },
                     child: Row(
                       children: [

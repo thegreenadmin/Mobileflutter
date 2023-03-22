@@ -105,7 +105,7 @@ class AddCategoryController extends GetxController {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    GestureDetector(
+                    InkWell(
                       child: Row(
                         children: [
                           const Icon(
@@ -137,7 +137,7 @@ class AddCategoryController extends GetxController {
                       },
                     ),
                     const Padding(padding: EdgeInsets.all(8.0)),
-                    GestureDetector(
+                    InkWell(
                       child: Row(
                         children: [
                           const Icon(

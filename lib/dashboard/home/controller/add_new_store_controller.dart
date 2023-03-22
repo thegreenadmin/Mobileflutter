@@ -278,7 +278,7 @@ class AddNewStoreController extends GetxController {
         "logo_url": storeLogoOrigionalLinkfromServer.value,
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
-        "store_phone": storePhoneTextController.text.trim()
+        "store_phone": "+${storePhoneTextController.text.trim()}"
       },
       "store_address": {
         "state_id": stateId.value.trim(),
