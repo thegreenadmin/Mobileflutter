@@ -41,7 +41,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     fetchCurrentLocation();
     super.initState();
   }
