@@ -9,20 +9,13 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class OffersController extends GetxController {
-  RxList offersList = [
-    "Click & Collect",
-    "Happy Shop",
-    "Ambrosia Store",
-    "Click & Collect",
-    "Happy Shop",
-    "Ambrosia Store"
-  ].obs;
-
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
   RxString? email = "".obs;
   RxString? phone = "".obs;
+
+  RxBool? isLoading = false.obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
@@ -69,6 +62,7 @@ class OffersController extends GetxController {
 
   //Get Offers List Api
   Future apiGetOffersList() async {
+    isLoading!.value = true;
     debugPrint(
         "GET OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferLists}");
 
@@ -93,6 +87,7 @@ class OffersController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading!.value = false;
       debugPrint("OFFERS LIST BODY ******* $body");
       debugPrint("OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {

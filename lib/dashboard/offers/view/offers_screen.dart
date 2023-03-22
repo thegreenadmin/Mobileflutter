@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -71,13 +72,15 @@ class _OffersScreenState extends State<OffersScreen> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          StringConstants.activeOffersText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20),
-                        ),
+                        offersController.getofferlist.isEmpty
+                            ? height0SizedBox
+                            : Text(
+                                StringConstants.activeOffersText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20),
+                              ),
                         InkWell(
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
@@ -95,177 +98,209 @@ class _OffersScreenState extends State<OffersScreen> {
                     ),
               height20SizedBox,
               Expanded(
-                child: Obx(() => ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) {
-                      return height8SizedBox;
-                    },
-                    shrinkWrap: true,
-                    itemCount: offersController.getofferlist.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: const BoxDecoration(
-                            color: AppColors.greylight,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.0),
-                            )),
-                        child: Column(children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                child: Obx(() => offersController.getofferlist.isEmpty
+                    ? offersController.isLoading!.value == true
+                        ? height0SizedBox
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 1)),
-                                child: CircleAvatar(
-                                  radius: 24.0,
-                                  backgroundImage: offersController
+                              Center(
+                                child: Image.asset(
+                                  "assets/nodata.png",
+                                  scale: 8,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              height4SizedBox,
+                              Center(
+                                child: Text(
+                                  StringConstants.noOffersFoundText,
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16),
+                                ),
+                              ),
+                            ],
+                          )
+                    : ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return height8SizedBox;
+                        },
+                        shrinkWrap: true,
+                        itemCount: offersController.getofferlist.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            decoration: const BoxDecoration(
+                                color: AppColors.greylight,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                )),
+                            child: Column(children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: AppColors.white, width: 1)),
+                                    child: CircleAvatar(
+                                      radius: 24.0,
+                                      backgroundImage: offersController
+                                                      .getofferlist[index]
+                                                      .store!
+                                                      .logo!
+                                                      .dynamicUrl ==
+                                                  null ||
+                                              offersController
                                                   .getofferlist[index]
                                                   .store!
                                                   .logo!
-                                                  .dynamicUrl ==
-                                              null ||
-                                          offersController.getofferlist[index]
-                                              .store!.logo!.dynamicUrl!.isEmpty
-                                      ? const AssetImage(
-                                          "assets/offercheck.png",
-                                        ) as ImageProvider
-                                      : NetworkImage(offersController
-                                          .getofferlist[index]
-                                          .store!
-                                          .logo!
-                                          .dynamicUrl!),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 270,
-                                    child: Text(
-                                      offersController.getofferlist[index]
-                                              .store!.storeName ??
-                                          "",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 16.0,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
+                                                  .dynamicUrl!
+                                                  .isEmpty
+                                          ? const AssetImage(
+                                              "assets/offercheck.png",
+                                            ) as ImageProvider
+                                          : NetworkImage(offersController
+                                              .getofferlist[index]
+                                              .store!
+                                              .logo!
+                                              .dynamicUrl!),
+                                      backgroundColor: Colors.transparent,
                                     ),
                                   ),
-                                  height8SizedBox,
-                                  SizedBox(
-                                    width: 270,
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          "assets/loc.png",
-                                          scale: 3,
-                                        ),
-                                        width6SizedBox,
-                                        Text(
-                                          offersController
-                                                  .getofferlist[index]
-                                                  .store!
-                                                  .storeAddresses![0]
-                                                  .city ??
+                                  width10SizedBox,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 270,
+                                        child: Text(
+                                          offersController.getofferlist[index]
+                                                  .store!.storeName ??
                                               "",
-                                          overflow: TextOverflow.fade,
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: AppColors.blacklight,
-                                              fontWeight: FontWeight.w400),
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16.0,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      height8SizedBox,
+                                      SizedBox(
+                                        width: 270,
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/loc.png",
+                                              scale: 3,
+                                            ),
+                                            width6SizedBox,
+                                            Text(
+                                              offersController
+                                                      .getofferlist[index]
+                                                      .store!
+                                                      .storeAddresses![0]
+                                                      .city ??
+                                                  "",
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: AppColors.blacklight,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                          height12SizedBox,
-                          SizedBox(
-                            height: 160,
-                            width: WidgetConstants.screenWidth,
-                            child: ListView.separated(
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return width8SizedBox;
-                                },
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 4,
-                                itemBuilder: (BuildContext context,
-                                        int index) =>
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Stack(
-                                          alignment: Alignment.bottomCenter,
+                              height12SizedBox,
+                              SizedBox(
+                                height: 160,
+                                width: WidgetConstants.screenWidth,
+                                child: ListView.separated(
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return width8SizedBox;
+                                    },
+                                    shrinkWrap: true,
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 4,
+                                    itemBuilder: (BuildContext context,
+                                            int index) =>
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Image.asset(
-                                              "assets/medicine.png",
-                                              width:
-                                                  WidgetConstants.screenWidth *
+                                            Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/medicine.png",
+                                                  width: WidgetConstants
+                                                          .screenWidth *
                                                       0.8,
-                                            ),
-                                            SizedBox(
-                                              height: 55,
-                                              child: Card(
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                  Radius.circular(10),
-                                                )),
-                                                color: Colors.white,
-                                                elevation: 2.0,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 12.0,
-                                                          right: 12,
-                                                          bottom: 10,
-                                                          top: 10),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: const [
-                                                      Text(
-                                                        "Offers for April 2023 Upto 85% Off",
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppColors.black,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 16),
+                                                ),
+                                                SizedBox(
+                                                  height: 55,
+                                                  child: Card(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                      Radius.circular(10),
+                                                    )),
+                                                    color: Colors.white,
+                                                    elevation: 2.0,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 12.0,
+                                                              right: 12,
+                                                              bottom: 10,
+                                                              top: 10),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Text(
+                                                            "Offers for April 2023 Upto 85% Off",
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            height12SizedBox,
+                                                height12SizedBox,
+                                              ],
+                                            )
                                           ],
-                                        )
-                                      ],
-                                    )),
-                          )
-                        ]),
-                      );
-                    })),
+                                        )),
+                              )
+                            ]),
+                          );
+                        })),
               ),
             ],
           )),

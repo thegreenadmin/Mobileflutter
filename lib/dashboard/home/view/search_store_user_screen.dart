@@ -20,7 +20,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-
 class SearchStoreUserScreen extends StatefulWidget {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
 
@@ -28,11 +27,14 @@ class SearchStoreUserScreen extends StatefulWidget {
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
 }
 
-class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with SingleTickerProviderStateMixin {
+class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
   var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
@@ -86,12 +88,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                                       "Hi, "
                                       "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
                                       style: const TextStyle(
-                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.w600),
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
                                     )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18, color: AppColors.black, fontWeight: FontWeight.w400),
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -161,15 +167,20 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                         mode: Mode.overlay,
                         language: "en",
                         components: []);
-                    searchStoreUserController.searchController.text = p!.description!.toString();
+                    searchStoreUserController.searchController.text =
+                        p!.description!.toString();
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p.description.toString(), googleMapApiKey: kGoogleApiKey);
+                        address: p.description.toString(),
+                        googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
                   child: TextFormField(
                       enabled: false,
                       controller: searchStoreUserController.searchController,
-                      style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w400),
+                      style: const TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                       decoration: InputDecoration(
                         filled: true,
                         isDense: true,
@@ -241,14 +252,19 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
   }
 
   void updateMap(lat, lng) async {
-    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
+    CameraPosition kLake = CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(lat, lng),
+        tilt: 0.0,
+        zoom: 14.15);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
   }
 
   void updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
-    final Uint8List markerIcon = await getBytesFromAsset('assets/marker.png', 60);
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/marker.png', 60);
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.fromBytes(markerIcon),
@@ -266,8 +282,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 }
