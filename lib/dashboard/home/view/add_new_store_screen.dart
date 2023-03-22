@@ -1035,33 +1035,18 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 width: 20,
                                 child: Radio(
                                   value: 1,
-                                  groupValue: addNewStoreController
-                                      .radioGroupValue.value,
+                                  groupValue: addNewStoreController.radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    addNewStoreController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    addNewStoreController.is247Time.value =
-                                        true;
-                                    addNewStoreController.storeTimmingList
-                                        .clear();
-                                    addNewStoreController
-                                        .openingTimeTextController
-                                        .clear();
-                                    addNewStoreController
-                                        .closingTimeTextController
-                                        .clear();
-                                    addNewStoreController
-                                        .workingDaysTextController
-                                        .clear();
-                                    for (var element
-                                        in addNewStoreController.weekDaysList) {
-                                      element.isSelected = false;
+                                    addNewStoreController.radioGroupValue.value = value?.toInt() ?? 0;
+                                    addNewStoreController.is247Time.value = true;
+                                    addNewStoreController.storeTimmingList.clear();
+                                    addNewStoreController.openingTimeTextController.clear();
+                                    addNewStoreController.closingTimeTextController.clear();
+                                    addNewStoreController.workingDaysTextController.clear();
+                                    for (var element in addNewStoreController.weekDaysList) {
+                                      element.isSelected=false;
                                     }
-                                    print(addNewStoreController
-                                        .radioGroupValue.value);
-                                    print(
-                                        addNewStoreController.is247Time.value);
                                   },
                                 ),
                               ),

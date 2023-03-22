@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
 
 import 'package:thegreenmall/dashboard/home/view/store_home_main_screen.dart';
@@ -16,15 +17,21 @@ class NearbyStoreListScreen extends StatefulWidget {
 }
 
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
+  final SearchStoreUserController searchStoreUserController =
+  Get.put(SearchStoreUserController());
+
   @override
   Widget build(BuildContext context) {
+    searchStoreUserController.setupScrollController(context);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
-            child: ListView.builder(
-                itemCount: 15,
+            child:
+            Obx(() =>  ListView.builder(
+              controller: searchStoreUserController.scrollController,
+                itemCount: searchStoreUserController.storeAddresses.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
@@ -54,7 +61,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   child: const CircleAvatar(
                                     radius: 25.0,
                                     backgroundImage:
-                                        AssetImage("assets/dumy.png"),
+                                    AssetImage("assets/dumy.png"),
                                     backgroundColor: Colors.transparent,
                                   ),
                                 ),
@@ -179,7 +186,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                               onPressed: () {},
                               constraints: const BoxConstraints(),
                               padding:
-                                  const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                              const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
                               shape: RoundedRectangleBorder(
                                 side: const BorderSide(
                                     width: 1.0, color: AppColors.primary),
@@ -199,7 +206,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                       ]),
                     ),
                   );
-                }),
+                }),),
+
           ),
         ]),
       ),
