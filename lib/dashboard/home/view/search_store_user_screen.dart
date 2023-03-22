@@ -18,6 +18,8 @@ import 'package:thegreenmall/dashboard/home/view/previous_store_list_screen.dart
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
+
 
 class SearchStoreUserScreen extends StatefulWidget {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
@@ -40,7 +42,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
-    fetchCurrentLocation();
+
     updateCurrentLocation();
     super.initState();
   }

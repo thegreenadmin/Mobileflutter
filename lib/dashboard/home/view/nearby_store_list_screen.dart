@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/home/view/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
@@ -274,5 +275,18 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
         ]),
       ),
     );
+
+  }
+  Widget _loadingIndicator() {
+    return  Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: CupertinoActivityIndicator(
+            radius: 20,
+            color: Theme.of(context).primaryColor,
+          ),
+        )
+    );
   }
 }
+
