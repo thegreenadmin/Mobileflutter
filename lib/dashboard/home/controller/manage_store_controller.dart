@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -21,12 +21,10 @@ class ManageStoreController extends GetxController {
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController quantityTextController = TextEditingController();
   TextEditingController pricePerUnitTextController = TextEditingController();
-  TextEditingController shortDescriptionTextController =
-      TextEditingController();
+  TextEditingController shortDescriptionTextController = TextEditingController();
   TextEditingController discountOrOfferTextController = TextEditingController();
   TextEditingController additionalLinkTextController = TextEditingController();
-  TextEditingController contentsAndStrainsTextController =
-      TextEditingController();
+  TextEditingController contentsAndStrainsTextController = TextEditingController();
   TextEditingController lengthTextController = TextEditingController();
   TextEditingController breadthTextController = TextEditingController();
   TextEditingController heightTextController = TextEditingController();
@@ -53,6 +51,7 @@ class ManageStoreController extends GetxController {
   RxString discountValueType = "percentage".obs;
   RxString lastProductContent = "".obs;
   RxString lastProductLink = "".obs;
+  Map data = {};
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
@@ -67,6 +66,7 @@ class ManageStoreController extends GetxController {
   RxList<XFile>? imageFileList = <XFile>[].obs;
 
   selectImages() async {
+    imageFileList!.clear();
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
@@ -146,19 +146,14 @@ class ManageStoreController extends GetxController {
   Future<Future<bool?>?> apiUploadMultipleImage() async {
     // create multipart request
     var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(ServerCommunicator().baseUrl +
-            ServerCommunicator().fileUploadMultiple));
+        'POST', Uri.parse(ServerCommunicator().baseUrl + ServerCommunicator().fileUploadMultiple));
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    if (imageFileList!.length > 0) {
+    if (imageFileList!.isNotEmpty) {
       for (var i = 0; i < imageFileList!.length; i++) {
         request.files.add(http.MultipartFile(
-            'picture',
-            File(imageFileList![i].path).readAsBytes().asStream(),
-            File(imageFileList![i].path).lengthSync(),
+            'files', File(imageFileList![i].path).readAsBytes().asStream(), File(imageFileList![i].path).lengthSync(),
             filename: basename(imageFileList![i].path.split("/").last)));
         request.headers.addAll(headers);
       }
@@ -167,6 +162,12 @@ class ManageStoreController extends GetxController {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         debugPrint(value);
+        List imagesList = [];
+        for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
+          var imageData = jsonDecode(value)['data']['files'][i];
+          imagesList.add({"image_url": imageData['orignal_url'], "order": "${i + 1}"});
+        }
+        data['product_images'] = imagesList;
       });
     } else {
       Utility.showToast("Please Select atleast one image");
@@ -180,8 +181,7 @@ class ManageStoreController extends GetxController {
     debugPrint(
         "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -211,13 +211,11 @@ class ManageStoreController extends GetxController {
     debugPrint("GET PRODUCT LIST URL **********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",
-            headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}", headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
@@ -237,67 +235,40 @@ class ManageStoreController extends GetxController {
 
   //Create Product Api
   Future apiCreateProduct() async {
-    Map data = {
-      "store_id": storeId.value,
-      "product": {
-        "quantity_type_id": 1,
-        "quantity": quantityTextController.text.trim(),
-        "is_featured_product": isFeatured.value,
-        "product_name": productNameTextController.text.trim(),
-        "description": shortDescriptionTextController.text.trim(),
-        "product_price": pricePerUnitTextController.text.trim(),
-        "selling_price": pricePerUnitTextController.text.trim(),
-        "discount_type": discountType.value.toLowerCase(),
-        "discount_value": discountOrOfferTextController.text.trim(),
-        "is_product_returnable": false,
-        "return_days_count": 0,
-        "length": lengthTextController.text.trim(),
-        "width": breadthTextController.text.trim(),
-        "height": heightTextController.text.trim(),
-        "weight": weightTextController.text.trim(),
-        "is_enabled": isEnabled.value
-      },
-      "product_categories": selectedCategories,
-      "product_images": [
-        {
-          "image_url":
-              "https://sdd-citizen-app-bucket.s3.ap-south-1.amazonaws.com/100377077211-Screenshot-1.png",
-          "order": 1
-        },
-        {
-          "image_url":
-              "https://sdd-citizen-app-bucket.s3.ap-south-1.amazonaws.com/100377077211-Screenshot-1.png",
-          "order": 2
-        }
-      ],
-      "product_contents": [
-        {
-          "heading": "Demo heading 1",
-          "paragraph": contentsAndStrainsTextController.text.trim(),
-          "order": 1
-        },
-      ],
-      "product_links": [
-        {
-          "name": "Product link 1",
-          "link": additionalLinkTextController.text.trim(),
-          "order": 1
-        },
-      ]
+    data['store_id'] = storeId.value;
+    data['product'] = {
+      "quantity_type_id": 1,
+      "quantity": quantityTextController.text.trim(),
+      "is_featured_product": isFeatured.value,
+      "product_name": productNameTextController.text.trim(),
+      "description": shortDescriptionTextController.text.trim(),
+      "product_price": pricePerUnitTextController.text.trim(),
+      "selling_price": pricePerUnitTextController.text.trim(),
+      "discount_type": discountType.value.toLowerCase(),
+      "discount_value": discountOrOfferTextController.text.trim(),
+      "is_product_returnable": false,
+      "return_days_count": 0,
+      "length": lengthTextController.text.trim(),
+      "width": breadthTextController.text.trim(),
+      "height": heightTextController.text.trim(),
+      "weight": weightTextController.text.trim(),
+      "is_enabled": isEnabled.value
     };
+    data['product_categories'] = selectedCategories;
+    data['product_links'] = [
+      {"name": "Product link 1", "link": additionalLinkTextController.text.trim(), "order": 1},
+    ];
+    data['product_contents'] = [
+      {"heading": "Demo heading 1", "paragraph": contentsAndStrainsTextController.text.trim(), "order": 1},
+    ];
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("CREATE STORE BODY********** $data");
-    debugPrint(
-        "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
+    debugPrint("CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl + ServerCommunicator().createProduct,
-            headers,
+        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().createProduct, headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE STORE RESPONSE *******${value!.body}");
@@ -339,8 +310,7 @@ class ManageStoreController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map body = {
       "q": "",
@@ -359,10 +329,7 @@ class ManageStoreController extends GetxController {
       ]
     };
     UserProvider()
-        .postWithHeadersApi(
-            body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
-            headers,
+        .postWithHeadersApi(body, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}", headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
@@ -389,8 +356,7 @@ class ManageStoreController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -401,46 +367,33 @@ class ManageStoreController extends GetxController {
       isLoading.value = false;
       debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        productNameTextController.text =
-            value.body["data"]['product']["product_name"] ?? "";
-        discountType.value =
-            value.body["data"]['product']["discount_type"] ?? "";
+        productNameTextController.text = value.body["data"]['product']["product_name"] ?? "";
+        discountType.value = value.body["data"]['product']["discount_type"] ?? "";
         if (discountType.value == "amount") {
           discountValueType.value = "Amount";
         } else {
           discountValueType.value = "Percentage";
         }
-        discountOrOfferTextController.text =
-            value.body["data"]['product']["discount_value"].toString();
-        quantityTextController.text =
-            value.body["data"]['product']["quantity"].toString();
+        discountOrOfferTextController.text = value.body["data"]['product']["discount_value"].toString();
+        quantityTextController.text = value.body["data"]['product']["quantity"].toString();
 
-        pricePerUnitTextController.text =
-            value.body["data"]['product']["product_price"].toString();
-        shortDescriptionTextController.text =
-            value.body["data"]['product']["description"] ?? "";
+        pricePerUnitTextController.text = value.body["data"]['product']["product_price"].toString();
+        shortDescriptionTextController.text = value.body["data"]['product']["description"] ?? "";
         isFeatured.value = value.body["data"]['product']["is_featured_product"];
         if (isFeatured.value) {
           selectedFeaturedType.value = "Yes";
         } else {
           selectedFeaturedType.value = "No";
         }
-        lengthTextController.text =
-            value.body["data"]['product']["length"].toString();
-        breadthTextController.text =
-            value.body["data"]['product']["width"].toString();
-        heightTextController.text =
-            value.body["data"]['product']["height"].toString();
-        weightTextController.text =
-            value.body["data"]['product']["weight"].toString();
-        productContent.value =
-            value.body["data"]['product']["product_contents"] ?? [];
-        productLinks.value =
-            value.body["data"]['product']["product_links"] ?? [];
+        lengthTextController.text = value.body["data"]['product']["length"].toString();
+        breadthTextController.text = value.body["data"]['product']["width"].toString();
+        heightTextController.text = value.body["data"]['product']["height"].toString();
+        weightTextController.text = value.body["data"]['product']["weight"].toString();
+        productContent.value = value.body["data"]['product']["product_contents"] ?? [];
+        productLinks.value = value.body["data"]['product']["product_links"] ?? [];
         if (productContent.isNotEmpty) {
           for (int i = 0; i < productContent.length; i++) {
-            contentsAndStrainsTextController.text =
-                productContent[i]['paragraph'];
+            contentsAndStrainsTextController.text = productContent[i]['paragraph'];
             lastProductContent.value = productContent[i]['paragraph'];
           }
         }
@@ -467,8 +420,7 @@ class ManageStoreController extends GetxController {
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {
       "store_id": storeId.value,
@@ -516,45 +468,30 @@ class ManageStoreController extends GetxController {
       ],
       "product_contents": [
         {
-          "product_content_id":
-              lastProductContent.value != contentsAndStrainsTextController.text
-                  ? null
-                  : "1",
+          "product_content_id": lastProductContent.value != contentsAndStrainsTextController.text ? null : "1",
           "heading": "Heading",
-          "paragraph":
-              lastProductContent.value != contentsAndStrainsTextController.text
-                  ? contentsAndStrainsTextController.text
-                  : lastProductContent.value,
+          "paragraph": lastProductContent.value != contentsAndStrainsTextController.text
+              ? contentsAndStrainsTextController.text
+              : lastProductContent.value,
           "order": 1,
-          "status":
-              lastProductContent.value != additionalLinkTextController.text
-                  ? "active"
-                  : "deleted"
+          "status": lastProductContent.value != additionalLinkTextController.text ? "active" : "deleted"
         },
       ],
       "product_links": [
         {
-          "product_link_id":
-              lastProductLink.value != additionalLinkTextController.text
-                  ? null
-                  : "1",
+          "product_link_id": lastProductLink.value != additionalLinkTextController.text ? null : "1",
           "name": "Product link",
           "link": lastProductLink.value != additionalLinkTextController.text
               ? additionalLinkTextController.text
               : lastProductLink.value,
           "order": 1,
-          "status": lastProductLink.value != additionalLinkTextController.text
-              ? "active"
-              : "deleted"
+          "status": lastProductLink.value != additionalLinkTextController.text ? "active" : "deleted"
         },
       ]
     };
     debugPrint("UPDATE STORE PRODUCT BODY********************$data");
     UserProvider()
-        .putWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}",
-            headers,
+        .putWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
@@ -572,20 +509,16 @@ class ManageStoreController extends GetxController {
 
 //Api Delete Product
   Future apiDeleteProduct() async {
-    debugPrint(
-        "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
+    debugPrint("DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
     debugPrint("DELETE PRODUCT BODY ************* $data");
     UserProvider()
         .deleteWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}",
-            headers,
+            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}", headers,
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE PRODUCT RESPONSE *******${value!.body}");
@@ -611,16 +544,13 @@ class ManageStoreController extends GetxController {
         "DELETE CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
     debugPrint("DELETE CATEGORY BODY ************* $data");
     UserProvider()
         .deleteWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}",
-            headers,
+            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}", headers,
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
