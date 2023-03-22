@@ -114,7 +114,7 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.imageUrl = userImageOriginalLinkFromServer.value.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
-    addWorkerRequest.phone = mobileNoTextController.text.trim();
+    addWorkerRequest.phone = "+${mobileNoTextController.text.trim()}";
     addWorkerRequest.email = emailTextController.text.trim();
     List<add_worker.EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
