@@ -169,11 +169,12 @@ class StringConstants {
   static String ordersText = "Orders";
   static String orderText = "Order";
   static String orderSummaryText = "Order Summary";
-  static String offerName = "Offer Name";
+  static String offerNameText = "Offer Name";
   static String orderType = "Order Type";
   static String optionsText = "Options";
   static String openingTimeText = "Opening Time";
   static String organisationTypeText = "Organisation Type";
+  static String offerFor = "Offer For";
 
   //P
   static String profileText = "Profile";
@@ -196,6 +197,7 @@ class StringConstants {
   static String primaryStoreText = "Primary Store";
   static String pickupOptionsText = "Pick-up Options";
   static String permissionText = "Permission";
+  static String productText = "Product";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -213,6 +215,7 @@ class StringConstants {
   static String skipText = "Skip";
   static String storeText = "Store";
   static String storesText = "Stores";
+
   static String successText = "Success";
   static String sendConfirmationCodeText = "Send Confirmation Code";
   static String securityText = "Security";
@@ -247,6 +250,7 @@ class StringConstants {
   static String selectTimeText = "Select Time";
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";
+  static String selectStoreText = "Select Store";
 
   //T
   static String termsOfServiceText = "Terms of service";

@@ -448,7 +448,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height4SizedBox,
                     Row(
                       children: [
-
                         Flexible(
                           flex: 5,
                           child: DropdownButtonFormField<String>(
@@ -504,7 +503,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              manageStoreController.quantityValue.value= value.toString();
+                              manageStoreController.quantityValue.value =
+                                  value.toString();
                             },
                           ),
                         ),
@@ -1309,7 +1309,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         ),
                       ],
                     ),
-                     height20SizedBox,
+                    height20SizedBox,
                     Row(
                       children: [
                         Flexible(
@@ -1361,7 +1361,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   style: const TextStyle(
                                       color: AppColors.grey, fontSize: 14),
                                 ),
-                                items: <String>["Yes", "No"].map((String value) {
+                                items:
+                                    <String>["Yes", "No"].map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(
@@ -1375,9 +1376,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 }).toList(),
                                 onChanged: (v) {
                                   if (v == "Yes") {
-                                    manageStoreController.isProductReturnable.value = true;
+                                    manageStoreController
+                                        .isProductReturnable.value = true;
                                   } else {
-                                    manageStoreController.isProductReturnable.value = false;
+                                    manageStoreController
+                                        .isProductReturnable.value = false;
                                   }
                                 },
                               ),
@@ -1408,8 +1411,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .daysTextController,
+                                  controller:
+                                      manageStoreController.daysTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {

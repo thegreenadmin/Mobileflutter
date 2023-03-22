@@ -2,6 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -14,7 +16,13 @@ class AddOfferScreen extends StatefulWidget {
   State<AddOfferScreen> createState() => _AddOfferScreenState();
 }
 
+enum OfferFor { store, product }
+
+OfferFor? _offerFor = OfferFor.store;
+
 class _AddOfferScreenState extends State<AddOfferScreen> {
+  final AddOffersController addOffersController =
+      Get.put(AddOffersController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,85 +73,220 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
-          child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.uploadImageText,
-                    style: const TextStyle(
-                        color: AppColors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16),
-                  ),
-                  height15SizedBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DottedBorder(
-                        color: AppColors.blacklight,
-                        strokeWidth: 1,
-                        dashPattern: const [4, 4],
-                        child: Container(
-                          width: WidgetConstants.screenWidth * 0.8,
-                          padding: const EdgeInsets.only(top: 35, bottom: 35),
-                          color: AppColors.primarylight,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "assets/upload.png",
-                                  scale: 2.5,
-                                ),
-                                height6SizedBox,
-                                Text(StringConstants.uploadImageText)
-                              ]),
-                        ),
-                      ),
-                    ],
-                  ),
-                  height35SizedBox,
-                  Text(
-                    StringConstants.offerName,
-                    style: TextStyle(
-                        color: AppColors.blacklight,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  TextFormField(
-                      textInputAction: TextInputAction.next,
-                      autofocus: false,
-                      inputFormatters: <TextInputFormatter>[
-                        LengthLimitingTextInputFormatter(100),
-                      ],
+          child: Form(
+            key: addOffersController.formKey,
+            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      StringConstants.uploadImageText,
                       style: const TextStyle(
                           color: AppColors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
+                    height15SizedBox,
+                    Obx(
+                      () => addOffersController
+                              .offerImageDynamicLinkfromServer.value.isEmpty
+                          ? InkWell(
+                              onTap: () {
+                                addOffersController.showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                      width: WidgetConstants.screenWidth * 0.8,
+                                      padding: const EdgeInsets.only(
+                                          top: 35, bottom: 35),
+                                      color: AppColors.primarylight,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/upload.png",
+                                              scale: 2.5,
+                                            ),
+                                            height6SizedBox,
+                                            Text(StringConstants.uploadImageText)
+                                          ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                addOffersController.showSelectionDialog(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Container(
+                                        width: WidgetConstants.screenWidth * 0.8,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.2,
+                                        color: AppColors.primarylight,
+                                        child: Image.network(
+                                            addOffersController
+                                                .offerImageDynamicLinkfromServer
+                                                .value,
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+                    height35SizedBox,
+                    Text(
+                      StringConstants.offerNameText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
                           fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                      // controller:
-                      //     personalInfoEditController.firstNameTextController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return AlertStringConstants.pleaseEnterFirstNameText;
-                        }
-                        return null;
-                      },
+                          fontWeight: FontWeight.w400),
+                    ),
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: addOffersController.offerNameTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterFirstNameText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.enterNameText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            "${StringConstants.offerFor}:",
+                            style: TextStyle(
+                                color: AppColors.blacklight,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<OfferFor>(
+                                  value: OfferFor.store,
+                                  groupValue: _offerFor,
+                                  onChanged: (OfferFor? value) {
+                                    setState(() {
+                                      _offerFor = value;
+                                      addOffersController.isStoreOffer.value =
+                                          true;
+                                      print(
+                                          addOffersController.isStoreOffer.value);
+                                    });
+                                  },
+                                ),
+                                Text(StringConstants.storeText)
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Radio<OfferFor>(
+                                  value: OfferFor.product,
+                                  groupValue: _offerFor,
+                                  onChanged: (OfferFor? value) {
+                                    setState(() {
+                                      _offerFor = value;
+                                      addOffersController.isStoreOffer.value =
+                                          false;
+                                      print(
+                                          addOffersController.isStoreOffer.value);
+                                    });
+                                  },
+                                ),
+                                Text(StringConstants.productText)
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    height12SizedBox,
+                    Text(
+                      StringConstants.selectStoreText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    ),
+                    height8SizedBox,
+                    DropdownButtonFormField<String>(
+                      isExpanded: true,
                       decoration: InputDecoration(
-                        hintText: StringConstants.enterNameText,
-                        hintStyle: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                        fillColor: Colors.white,
-                        border: UnderlineInputBorder(
+                        enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
-                            color: AppColors.primary,
+                            color: AppColors.grey,
                             width: 1.0,
                           ),
                         ),
-                        errorBorder: UnderlineInputBorder(
+                        border: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
                             color: AppColors.primary,
@@ -157,31 +300,184 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             width: 1.0,
                           ),
                         ),
-                        enabledBorder: UnderlineInputBorder(
+                        errorBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
-                            color: AppColors.grey,
+                            color: AppColors.primary,
                             width: 1.0,
                           ),
                         ),
-                      )),
-                  height35SizedBox,
-                  CustomButton(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.primary, AppColors.primary],
+                      ),
+                      hint: Text(
+                        StringConstants.selectStoreText,
+                        style:
+                            const TextStyle(color: AppColors.grey, fontSize: 14),
+                      ),
+                      items: addOffersController.storeList.map((dynamic value) {
+                        return DropdownMenuItem<String>(
+                          value: value.storeId,
+                          child: Text(
+                            value.storeName,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        addOffersController.storeIdValue.value = value.toString();
+                      },
                     ),
-                    onTap: () {},
-                    height: 50,
-                    text: StringConstants.saveText,
-                    borderRadius: 12,
-                    fontWeight: FontWeight.w500,
-                    iconL: false,
-                    fontSize: 16,
-                  ),
-                ],
-              )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.discountsOrOffersText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 5,
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            isExpanded: true,
+                            hint: Text(
+                              StringConstants.selectTypeText,
+                              style: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                            ),
+                            items: <String>["Percentage", "Amount"]
+                                .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (v) {
+                              addOffersController.discountType.value =
+                                  v.toString();
+                            },
+                          ),
+                        ),
+                        width15SizedBox,
+                        Flexible(
+                          flex: 5,
+                          child: TextFormField(
+                              textInputAction: TextInputAction.next,
+                              autofocus: false,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              controller: addOffersController
+                                  .discountOrOfferTextController,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterDiscountOrOfferText;
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                hintText: StringConstants.discountsOrOffersText,
+                                hintStyle: const TextStyle(
+                                    color: AppColors.grey, fontSize: 14),
+                                fillColor: Colors.white,
+                                border: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
+                    height35SizedBox,
+                    CustomButton(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [AppColors.primary, AppColors.primary],
+                      ),
+                      onTap: () {
+                        addOffersController.validateAndSubmit();
+                      },
+                      height: 50,
+                      text: StringConstants.saveText,
+                      borderRadius: 12,
+                      fontWeight: FontWeight.w500,
+                      iconL: false,
+                      fontSize: 16,
+                    ),
+                  ],
+                )),
+          ),
         ),
       ),
     );

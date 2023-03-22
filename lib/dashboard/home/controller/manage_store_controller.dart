@@ -80,7 +80,7 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
-      // apiUploadMultipleImage();
+      apiUploadMultipleImage();
     }
   }
 
@@ -164,10 +164,10 @@ class ManageStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    if (imageFileList!.length > 0) {
+    if (imageFileList!.isNotEmpty) {
       for (var i = 0; i < imageFileList!.length; i++) {
         request.files.add(http.MultipartFile(
-            'picture',
+            'file',
             File(imageFileList![i].path).readAsBytes().asStream(),
             File(imageFileList![i].path).lengthSync(),
             filename: basename(imageFileList![i].path.split("/").last)));
@@ -182,6 +182,7 @@ class ManageStoreController extends GetxController {
     } else {
       Utility.showToast("Please Select atleast one image");
     }
+    return null;
   }
 
   //Get Categories Api

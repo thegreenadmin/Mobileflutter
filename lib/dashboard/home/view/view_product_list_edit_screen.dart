@@ -122,7 +122,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                           ? height0SizedBox
                           : InkWell(
                               onTap: () {
-                                //  manageStoreController.selectImages();
+                                manageStoreController.selectImages();
                               },
                               child: Image.asset(
                                 "assets/uploadbutton.png",
@@ -140,7 +140,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                   flex: 4,
                                   child: InkWell(
                                     onTap: () {
-                                      //manageStoreController.selectImages();
+                                      manageStoreController.selectImages();
                                     },
                                     child: Row(
                                       children: [

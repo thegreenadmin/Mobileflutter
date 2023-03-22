@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class OffersController extends GetxController {
+  
   RxList offersList = [
     "Click & Collect",
     "Happy Shop",

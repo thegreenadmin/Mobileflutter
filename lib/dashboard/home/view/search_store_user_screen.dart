@@ -125,18 +125,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 child: Stack(
                   children: [
                     Container(
-                      color: AppColors.greenlight,
-                      height: 800,
-                      width: WidgetConstants.screenWidth,
-                      // child:
-                      // GoogleMap(
-                      //   mapType: MapType.normal,
-                      //   initialCameraPosition: _kGooglePlex,
-                      //   onMapCreated: (GoogleMapController controller) {
-                      //     _controller.complete(controller);
-                      //   },
-                      // )
-                    ),
+                        color: AppColors.greenlight,
+                        height: 800,
+                        width: WidgetConstants.screenWidth,
+                        child: GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: _kGooglePlex,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                        )),
                     Positioned(
                         top: 170,
                         right: 10,
