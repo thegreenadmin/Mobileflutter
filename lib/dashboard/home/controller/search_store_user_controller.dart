@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/home/model/pagination_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -49,9 +47,8 @@ class SearchStoreUserController extends GetxController {
 
   //Get Nearby Stores Api
   Future apiGetNearByStores() async {
-    debugPrint(
-        "GET GET NEARBY STORES URL**********"
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
+    debugPrint("GET GET NEARBY STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
     Map<String, String> headers = {
       'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
@@ -72,10 +69,8 @@ class SearchStoreUserController extends GetxController {
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-        data,
-            ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
-            headers, showLoading: false)
+        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList, headers,
+            showLoading: false)
         .then((value) async {
       debugPrint("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {

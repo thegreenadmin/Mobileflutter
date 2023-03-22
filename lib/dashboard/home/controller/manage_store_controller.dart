@@ -8,8 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
-import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
-    as quantity_model;
+import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart' as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -61,10 +60,8 @@ class ManageStoreController extends GetxController {
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
-  late quantity_model.QuantityListResponse quantityListResponse =
-      quantity_model.QuantityListResponse();
-  RxList<quantity_model.QuantityType> quantityTypeList =
-      <quantity_model.QuantityType>[].obs;
+  late quantity_model.QuantityListResponse quantityListResponse = quantity_model.QuantityListResponse();
+  RxList<quantity_model.QuantityType> quantityTypeList = <quantity_model.QuantityType>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
@@ -222,20 +219,16 @@ class ManageStoreController extends GetxController {
     debugPrint(
         "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
-            headers,
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}", headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        quantityListResponse =
-            quantity_model.QuantityListResponse.fromJson(value?.body);
+        quantityListResponse = quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
@@ -418,12 +411,9 @@ class ManageStoreController extends GetxController {
         } else {
           discountValueType.value = "Percentage";
         }
-        discountOrOfferTextController.text =
-            value.body["data"]['product']["discount_value"].toString();
-        quantityValue.value =
-            value.body["data"]['product']["quantity_type_id"].toString();
-        quantityTextController.text =
-            value.body["data"]['product']["quantity"].toString();
+        discountOrOfferTextController.text = value.body["data"]['product']["discount_value"].toString();
+        quantityValue.value = value.body["data"]['product']["quantity_type_id"].toString();
+        quantityTextController.text = value.body["data"]['product']["quantity"].toString();
 
         pricePerUnitTextController.text = value.body["data"]['product']["product_price"].toString();
         shortDescriptionTextController.text = value.body["data"]['product']["description"] ?? "";
@@ -433,28 +423,20 @@ class ManageStoreController extends GetxController {
         } else {
           selectedFeaturedType.value = "No";
         }
-        daysTextController.text =
-            value.body["data"]['product']["return_days_count"].toString();
-        isProductReturnable.value =
-            value.body["data"]['product']["is_product_returnable"];
+        daysTextController.text = value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value = value.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {
           selectedProductReturnableType.value = "No";
         }
 
-        lengthTextController.text =
-            value.body["data"]['product']["length"].toString();
-        breadthTextController.text =
-            value.body["data"]['product']["width"].toString();
-        heightTextController.text =
-            value.body["data"]['product']["height"].toString();
-        weightTextController.text =
-            value.body["data"]['product']["weight"].toString();
-        productContent.value =
-            value.body["data"]['product']["product_contents"] ?? [];
-        productLinks.value =
-            value.body["data"]['product']["product_links"] ?? [];
+        lengthTextController.text = value.body["data"]['product']["length"].toString();
+        breadthTextController.text = value.body["data"]['product']["width"].toString();
+        heightTextController.text = value.body["data"]['product']["height"].toString();
+        weightTextController.text = value.body["data"]['product']["weight"].toString();
+        productContent.value = value.body["data"]['product']["product_contents"] ?? [];
+        productLinks.value = value.body["data"]['product']["product_links"] ?? [];
         if (productContent.isNotEmpty) {
           for (int i = 0; i < productContent.length; i++) {
             contentsAndStrainsTextController.text = productContent[i]['paragraph'];
