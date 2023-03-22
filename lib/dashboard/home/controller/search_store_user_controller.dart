@@ -156,7 +156,7 @@ class SearchStoreUserController extends GetxController {
     };
 
     Map data = {
-      "favourite_store_id": int.parse(id??"0")
+      "store_id": int.parse(id??"0")
     };
 
     debugPrint("TOKEN ********** $headers");

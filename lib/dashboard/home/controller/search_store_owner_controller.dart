@@ -418,7 +418,6 @@ class SearchStoreOwnerController extends GetxController {
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
-
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =
@@ -445,29 +444,38 @@ class SearchStoreOwnerController extends GetxController {
         if (storeTimings.isNotEmpty) {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
-            openingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["opening_time"] ?? '',
-                    firstFormat: "hh:mm:ss",
-                    secFormat: "hh:mm a")
-                .toString();
-            openingTime.value = openingTimeTextController.text;
-            closingTimeTextController.text = Utility.formatDateTime(
-                    storeTimings[i]["closing_time"] ?? '',
-                    firstFormat: "hh:mm:ss",
-                    secFormat: "hh:mm a")
-                .toString();
-            closingTime.value = closingTimeTextController.text;
+            if(is247Time.value==true){
+              radioGroupValue.value=1;
+            }else{
+              radioGroupValue.value = 0;
+              openingTimeTextController.text = Utility.formatDateTime(
+                  storeTimings[i]["opening_time"] ?? '',
+                  firstFormat: "hh:mm:ss",
+                  secFormat: "hh:mm a")
+                  .toString();
+              openingTime.value = openingTimeTextController.text;
+              closingTimeTextController.text = Utility.formatDateTime(
+                  storeTimings[i]["closing_time"] ?? '',
+                  firstFormat: "hh:mm:ss",
+                  secFormat: "hh:mm a")
+                  .toString();
+              closingTime.value = closingTimeTextController.text;
+            }
+
           }
         } else {
           is247Time.value = true;
         }
-        for (var sData in storeTimings) {
-          for (var element in weekDaysList) {
-            if (sData["day_of_week"] == element.id) {
-              element.isSelected = true;
+        if( is247Time.value==false){
+          for (var sData in storeTimings) {
+            for (var element in weekDaysList) {
+              if (sData["day_of_week"] == element.id) {
+                element.isSelected = true;
+              }
             }
           }
         }
+
         await apiGetCountries();
       } else {
         Utility.showToast(value?.body['message']);
