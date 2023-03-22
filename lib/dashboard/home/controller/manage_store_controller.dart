@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
+import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
+    as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -29,6 +31,7 @@ class ManageStoreController extends GetxController {
   TextEditingController breadthTextController = TextEditingController();
   TextEditingController heightTextController = TextEditingController();
   TextEditingController weightTextController = TextEditingController();
+  TextEditingController daysTextController = TextEditingController();
 
   RxList<Map> selectedCategories = <Map>[].obs;
   RxBool autoValidate = false.obs;
@@ -39,6 +42,7 @@ class ManageStoreController extends GetxController {
   RxBool isFeaturedTypeSelected = false.obs;
   RxBool isFeatured = false.obs;
   RxBool isEnabled = false.obs;
+  RxBool isProductReturnable = false.obs;
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
@@ -48,13 +52,19 @@ class ManageStoreController extends GetxController {
   RxString productId = "".obs;
   RxString categoryDropdownValue = "Andaman and Nicobar Islands".obs;
   RxString selectedFeaturedType = "No".obs;
+  RxString selectedProductReturnableType = "No".obs;
   RxString discountValueType = "percentage".obs;
   RxString lastProductContent = "".obs;
   RxString lastProductLink = "".obs;
+  RxString quantityValue = "".obs;
   Map data = {};
 
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
+  late quantity_model.QuantityListResponse quantityListResponse =
+      quantity_model.QuantityListResponse();
+  RxList<quantity_model.QuantityType> quantityTypeList =
+      <quantity_model.QuantityType>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
@@ -82,6 +92,7 @@ class ManageStoreController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     storeLocation.value = Get.arguments["storeLocation"] ?? "";
     apiGetCategoriesList();
+    apiGetQuantityList();
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
@@ -204,6 +215,38 @@ class ManageStoreController extends GetxController {
     });
   }
 
+  //Get Quantity List Api
+  Future apiGetQuantityList() async {
+    quantityTypeList.clear();
+    isLoading.value = true;
+    debugPrint(
+        "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        quantityListResponse =
+            quantity_model.QuantityListResponse.fromJson(value?.body);
+        quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
   //Get Products List Api
   Future apiGetProductList() async {
     categoriesList.clear();
@@ -237,7 +280,7 @@ class ManageStoreController extends GetxController {
   Future apiCreateProduct() async {
     data['store_id'] = storeId.value;
     data['product'] = {
-      "quantity_type_id": 1,
+      "quantity_type_id": int.parse(quantityValue.value),
       "quantity": quantityTextController.text.trim(),
       "is_featured_product": isFeatured.value,
       "product_name": productNameTextController.text.trim(),
@@ -246,8 +289,8 @@ class ManageStoreController extends GetxController {
       "selling_price": pricePerUnitTextController.text.trim(),
       "discount_type": discountType.value.toLowerCase(),
       "discount_value": discountOrOfferTextController.text.trim(),
-      "is_product_returnable": false,
-      "return_days_count": 0,
+      "is_product_returnable": isProductReturnable.value,
+      "return_days_count": int.parse(daysTextController.text.trim()),
       "length": lengthTextController.text.trim(),
       "width": breadthTextController.text.trim(),
       "height": heightTextController.text.trim(),
@@ -271,9 +314,9 @@ class ManageStoreController extends GetxController {
         .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().createProduct, headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("CREATE STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        Utility.showToast(value?.body['message']);
         Future.delayed(const Duration(milliseconds: 200), () {
           Get.back();
         });
@@ -287,17 +330,18 @@ class ManageStoreController extends GetxController {
         lengthTextController.clear();
         breadthTextController.clear();
         heightTextController.clear();
+        daysTextController.clear();
         weightTextController.clear();
         isEnabled.value = false;
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
-      } else if (value.body["status"] == 403) {
-        Utility.showToast(value.body['message']);
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
       }
     });
   }
@@ -374,8 +418,12 @@ class ManageStoreController extends GetxController {
         } else {
           discountValueType.value = "Percentage";
         }
-        discountOrOfferTextController.text = value.body["data"]['product']["discount_value"].toString();
-        quantityTextController.text = value.body["data"]['product']["quantity"].toString();
+        discountOrOfferTextController.text =
+            value.body["data"]['product']["discount_value"].toString();
+        quantityValue.value =
+            value.body["data"]['product']["quantity_type_id"].toString();
+        quantityTextController.text =
+            value.body["data"]['product']["quantity"].toString();
 
         pricePerUnitTextController.text = value.body["data"]['product']["product_price"].toString();
         shortDescriptionTextController.text = value.body["data"]['product']["description"] ?? "";
@@ -385,12 +433,28 @@ class ManageStoreController extends GetxController {
         } else {
           selectedFeaturedType.value = "No";
         }
-        lengthTextController.text = value.body["data"]['product']["length"].toString();
-        breadthTextController.text = value.body["data"]['product']["width"].toString();
-        heightTextController.text = value.body["data"]['product']["height"].toString();
-        weightTextController.text = value.body["data"]['product']["weight"].toString();
-        productContent.value = value.body["data"]['product']["product_contents"] ?? [];
-        productLinks.value = value.body["data"]['product']["product_links"] ?? [];
+        daysTextController.text =
+            value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value =
+            value.body["data"]['product']["is_product_returnable"];
+        if (isProductReturnable.value) {
+          selectedProductReturnableType.value = "Yes";
+        } else {
+          selectedProductReturnableType.value = "No";
+        }
+
+        lengthTextController.text =
+            value.body["data"]['product']["length"].toString();
+        breadthTextController.text =
+            value.body["data"]['product']["width"].toString();
+        heightTextController.text =
+            value.body["data"]['product']["height"].toString();
+        weightTextController.text =
+            value.body["data"]['product']["weight"].toString();
+        productContent.value =
+            value.body["data"]['product']["product_contents"] ?? [];
+        productLinks.value =
+            value.body["data"]['product']["product_links"] ?? [];
         if (productContent.isNotEmpty) {
           for (int i = 0; i < productContent.length; i++) {
             contentsAndStrainsTextController.text = productContent[i]['paragraph'];
@@ -426,7 +490,7 @@ class ManageStoreController extends GetxController {
       "store_id": storeId.value,
       "product": {
         "product_id": productId.value,
-        "quantity_type_id": 1,
+        "quantity_type_id": int.parse(quantityValue.value),
         "quantity": quantityTextController.text.trim(),
         "is_featured_product": isFeatured.value,
         "product_name": productNameTextController.text.trim(),
@@ -434,9 +498,9 @@ class ManageStoreController extends GetxController {
         "product_price": double.parse(pricePerUnitTextController.text.trim()),
         "selling_price": double.parse(pricePerUnitTextController.text.trim()),
         "discount_type": discountValueType.value.toLowerCase(),
-        "discount_value": 0,
-        "is_product_returnable": false,
-        "return_days_count": 0,
+        "discount_value": discountOrOfferTextController.text.trim(),
+        "is_product_returnable": isProductReturnable.value,
+        "return_days_count": int.parse(daysTextController.text.trim()),
         "length": lengthTextController.text.trim(),
         "width": breadthTextController.text.trim(),
         "height": heightTextController.text.trim(),
@@ -497,6 +561,25 @@ class ManageStoreController extends GetxController {
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          Get.back();
+        });
+        productNameTextController.clear();
+        quantityTextController.clear();
+        pricePerUnitTextController.clear();
+        shortDescriptionTextController.clear();
+        discountOrOfferTextController.clear();
+        additionalLinkTextController.clear();
+        contentsAndStrainsTextController.clear();
+        lengthTextController.clear();
+        breadthTextController.clear();
+        heightTextController.clear();
+        daysTextController.clear();
+        weightTextController.clear();
+        isEnabled.value = false;
+        discountType.value = "";
+        isFeatured.value = false;
+        selectedCategories.value = [];
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -1,0 +1,303 @@
+// To parse this JSON data, do
+//
+//     final nearbyStoreListResponse = nearbyStoreListResponseFromJson(jsonString);
+
+import 'dart:convert';
+
+NearbyStoreListResponse nearbyStoreListResponseFromJson(String str) => NearbyStoreListResponse.fromJson(json.decode(str));
+
+String nearbyStoreListResponseToJson(NearbyStoreListResponse data) => json.encode(data.toJson());
+
+class NearbyStoreListResponse {
+  NearbyStoreListResponse({
+    this.status,
+    this.message,
+    this.data,
+  });
+
+  int? status;
+  String? message;
+  Data? data;
+
+  NearbyStoreListResponse copyWith({
+    int? status,
+    String? message,
+    Data? data,
+  }) =>
+      NearbyStoreListResponse(
+        status: status ?? this.status,
+        message: message ?? this.message,
+        data: data ?? this.data,
+      );
+
+  factory NearbyStoreListResponse.fromJson(Map<String, dynamic> json) => NearbyStoreListResponse(
+    status: json["status"],
+    message: json["message"],
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "data": data?.toJson(),
+  };
+}
+
+class Data {
+  Data({
+    this.totalCount,
+    this.storeAddresses,
+  });
+
+  int? totalCount;
+  List<StoreAddress>? storeAddresses;
+
+  Data copyWith({
+    int? totalCount,
+    List<StoreAddress>? storeAddresses,
+  }) =>
+      Data(
+        totalCount: totalCount ?? this.totalCount,
+        storeAddresses: storeAddresses ?? this.storeAddresses,
+      );
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    totalCount: json["total_count"],
+    storeAddresses: json["store_addresses"] == null ? [] : List<StoreAddress>.from(json["store_addresses"]!.map((x) => StoreAddress.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "total_count": totalCount,
+    "store_addresses": storeAddresses == null ? [] : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
+  };
+}
+
+class StoreAddress {
+  StoreAddress({
+    this.storeAddressId,
+    this.addressName,
+    this.longitude,
+    this.latitude,
+    this.addressLine1,
+    this.addressLine2,
+    this.landmark,
+    this.city,
+    this.postalCode,
+    this.distance,
+    this.store,
+  });
+
+  String? storeAddressId;
+  String? addressName;
+  double? longitude;
+  double? latitude;
+  String? addressLine1;
+  String? addressLine2;
+  String? landmark;
+  String? city;
+  String? postalCode;
+  int? distance;
+  Store? store;
+
+  StoreAddress copyWith({
+    String? storeAddressId,
+    String? addressName,
+    double? longitude,
+    double? latitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? landmark,
+    String? city,
+    String? postalCode,
+    int? distance,
+    Store? store,
+  }) =>
+      StoreAddress(
+        storeAddressId: storeAddressId ?? this.storeAddressId,
+        addressName: addressName ?? this.addressName,
+        longitude: longitude ?? this.longitude,
+        latitude: latitude ?? this.latitude,
+        addressLine1: addressLine1 ?? this.addressLine1,
+        addressLine2: addressLine2 ?? this.addressLine2,
+        landmark: landmark ?? this.landmark,
+        city: city ?? this.city,
+        postalCode: postalCode ?? this.postalCode,
+        distance: distance ?? this.distance,
+        store: store ?? this.store,
+      );
+
+  factory StoreAddress.fromJson(Map<String, dynamic> json) => StoreAddress(
+    storeAddressId: json["store_address_id"],
+    addressName: json["address_name"],
+    longitude: json["longitude"]?.toDouble(),
+    latitude: json["latitude"]?.toDouble(),
+    addressLine1: json["address_line_1"],
+    addressLine2: json["address_line_2"],
+    landmark: json["landmark"],
+    city: json["city"],
+    postalCode: json["postal_code"],
+    distance: json["distance"],
+    store: json["store"] == null ? null : Store.fromJson(json["store"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_address_id": storeAddressId,
+    "address_name": addressName,
+    "longitude": longitude,
+    "latitude": latitude,
+    "address_line_1": addressLine1,
+    "address_line_2": addressLine2,
+    "landmark": landmark,
+    "city": city,
+    "postal_code": postalCode,
+    "distance": distance,
+    "store": store?.toJson(),
+  };
+}
+
+class Store {
+  Store({
+    this.logo,
+    this.hasStoreOwner,
+    this.isFavouriteStore,
+    this.storeId,
+    this.storeName,
+    this.isVerified,
+    this.isEnabled,
+    this.storeTimings,
+  });
+
+  Logo? logo;
+  bool? hasStoreOwner;
+  bool? isFavouriteStore;
+  String? storeId;
+  String? storeName;
+  bool? isVerified;
+  bool? isEnabled;
+  List<StoreTiming>? storeTimings;
+
+  Store copyWith({
+    Logo? logo,
+    bool? hasStoreOwner,
+    bool? isFavouriteStore,
+    String? storeId,
+    String? storeName,
+    bool? isVerified,
+    bool? isEnabled,
+    List<StoreTiming>? storeTimings,
+  }) =>
+      Store(
+        logo: logo ?? this.logo,
+        hasStoreOwner: hasStoreOwner ?? this.hasStoreOwner,
+        isFavouriteStore: isFavouriteStore ?? this.isFavouriteStore,
+        storeId: storeId ?? this.storeId,
+        storeName: storeName ?? this.storeName,
+        isVerified: isVerified ?? this.isVerified,
+        isEnabled: isEnabled ?? this.isEnabled,
+        storeTimings: storeTimings ?? this.storeTimings,
+      );
+
+  factory Store.fromJson(Map<String, dynamic> json) => Store(
+    logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
+    hasStoreOwner: json["has_store_owner"],
+    isFavouriteStore: json["is_favourite_store"],
+    storeId: json["store_id"],
+    storeName: json["store_name"],
+    isVerified: json["is_verified"],
+    isEnabled: json["is_enabled"],
+    storeTimings: json["store_timings"] == null ? [] : List<StoreTiming>.from(json["store_timings"]!.map((x) => StoreTiming.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "logo": logo?.toJson(),
+    "has_store_owner": hasStoreOwner,
+    "is_favourite_store": isFavouriteStore,
+    "store_id": storeId,
+    "store_name": storeName,
+    "is_verified": isVerified,
+    "is_enabled": isEnabled,
+    "store_timings": storeTimings == null ? [] : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
+  };
+}
+
+class Logo {
+  Logo({
+    this.orignalUrl,
+    this.dynamicUrl,
+  });
+
+  String? orignalUrl;
+  String? dynamicUrl;
+
+  Logo copyWith({
+    String? orignalUrl,
+    String? dynamicUrl,
+  }) =>
+      Logo(
+        orignalUrl: orignalUrl ?? this.orignalUrl,
+        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+      );
+
+  factory Logo.fromJson(Map<String, dynamic> json) => Logo(
+    orignalUrl: json["orignal_url"],
+    dynamicUrl: json["dynamic_url"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "orignal_url": orignalUrl,
+    "dynamic_url": dynamicUrl,
+  };
+}
+
+class StoreTiming {
+  StoreTiming({
+    this.storeTimingId,
+    this.is24HoursActive,
+    this.dayOfWeek,
+    this.openingTime,
+    this.closingTime,
+    this.status,
+  });
+
+  String? storeTimingId;
+  bool? is24HoursActive;
+  int? dayOfWeek;
+  String? openingTime;
+  String? closingTime;
+  String? status;
+
+  StoreTiming copyWith({
+    String? storeTimingId,
+    bool? is24HoursActive,
+    int? dayOfWeek,
+    String? openingTime,
+    String? closingTime,
+    String? status,
+  }) =>
+      StoreTiming(
+        storeTimingId: storeTimingId ?? this.storeTimingId,
+        is24HoursActive: is24HoursActive ?? this.is24HoursActive,
+        dayOfWeek: dayOfWeek ?? this.dayOfWeek,
+        openingTime: openingTime ?? this.openingTime,
+        closingTime: closingTime ?? this.closingTime,
+        status: status ?? this.status,
+      );
+
+  factory StoreTiming.fromJson(Map<String, dynamic> json) => StoreTiming(
+    storeTimingId: json["store_timing_id"],
+    is24HoursActive: json["is_24_hours_active"],
+    dayOfWeek: json["day_of_week"],
+    openingTime: json["opening_time"],
+    closingTime: json["closing_time"],
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_timing_id": storeTimingId,
+    "is_24_hours_active": is24HoursActive,
+    "day_of_week": dayOfWeek,
+    "opening_time": openingTime,
+    "closing_time": closingTime,
+    "status": status,
+  };
+}

@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class FilterOptionScreen extends StatefulWidget {
   const FilterOptionScreen({super.key});
@@ -86,12 +87,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.zipCodeTextController,
                   keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return AlertStringConstants.pleaseEnterZipCodeText;
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.trim().isEmpty) {
+                  //     return AlertStringConstants.pleaseEnterZipCodeText;
+                  //   }
+                  //   return null;
+                  // },
                   decoration: InputDecoration(
                     hintText: StringConstants.zipCodeText,
                     hintStyle: const TextStyle(color: AppColors.grey),
@@ -144,12 +145,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.mileageTextController,
                   keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return AlertStringConstants.pleaseEnterMileageText;
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.trim().isEmpty) {
+                  //     return AlertStringConstants.pleaseEnterMileageText;
+                  //   }
+                  //   return null;
+                  // },
                   decoration: InputDecoration(
                     hintText: StringConstants.mileageText,
                     hintStyle: const TextStyle(color: AppColors.grey),
@@ -270,17 +271,14 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                           //     .openingTimeTextController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
-                            // if (value!.trim().isEmpty) {
-                            //   return AlertStringConstants
-                            //       .pleaseSelectOpeningTimeText;
-                            // } else if (value.trim() ==
-                            //     addNewStoreController
-                            //         .closingTimeTextController
-                            //         .text) {
-                            //   return AlertStringConstants
-                            //       .openingTimeAlertText;
-                            // }
-                            // return null;
+                          if (value?.trim() ==
+                                searchStoreUserController
+                                    .closingTimeTextController
+                                    .text) {
+                              return AlertStringConstants
+                                  .openingTimeAlertText;
+                            }
+                            return null;
                           },
                           onTap: () async {
                             TimeOfDay date = TimeOfDay.now();
@@ -367,10 +365,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 .closingTimeTextController,
                             keyboardType: TextInputType.phone,
                             validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseSelectClosingTimeText;
-                              } else if (value.trim() ==
+                               if (value?.trim() ==
                                   searchStoreUserController
                                       .openingTimeTextController.text) {
                                 return AlertStringConstants
@@ -508,7 +503,15 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   end: Alignment.bottomCenter,
                   colors: [AppColors.primary, AppColors.primary],
                 ),
-                onTap: () {},
+                onTap: () {
+                  if(searchStoreUserController.zipCodeTextController.text==""
+                  && searchStoreUserController.mileageTextController.text=="" &&
+                      searchStoreUserController.openingTimeTextController.text=="" &&
+                      searchStoreUserController.closingTimeTextController.text==""){
+                    Utility.showToast(AlertStringConstants
+                        .pleaseSelectOneFilterText);
+                  }
+                },
                 height: 50,
                 text: StringConstants.saveText,
                 borderRadius: 12,

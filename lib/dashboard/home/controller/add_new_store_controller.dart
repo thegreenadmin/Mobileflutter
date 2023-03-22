@@ -264,9 +264,10 @@ class AddNewStoreController extends GetxController {
         "landmark": "",
         "city": townOrCityTextController.text.trim()
       },
+      "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true
           ? [
-              {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
+              // {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
             ]
           : storeTimmingList
     };

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
@@ -389,7 +390,7 @@ class SearchStoreOwnerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
         editStoreImageDynamicLinkfromServer.value =
@@ -400,8 +401,6 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
         editStoreLogoOrigionalLinkfromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
-        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
-        print("HELLOOOOOOOOOO" + editStoreImageOrigionalLinkfromServer.value);
         storeNameTextController.text =
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
@@ -462,7 +461,6 @@ class SearchStoreOwnerController extends GetxController {
         } else {
           is247Time.value = true;
         }
-
         for (var sData in storeTimings) {
           for (var element in weekDaysList) {
             if (sData["day_of_week"] == element.id) {
@@ -510,16 +508,19 @@ class SearchStoreOwnerController extends GetxController {
         "landmark": "",
         "city": townOrCityTextController.text.trim()
       },
+      "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true
           ? [
-              {
-                "is_24_hours_active": is247Time.value,
-                "day_of_week": "",
-                "opening_time": "",
-                "closing_time": ""
-              }
+              // {
+              //   "is_24_hours_active": is247Time.value,
+              //   "day_of_week": "",
+              //   "opening_time": "",
+              //   "closing_time": ""
+              // }
             ]
-          : storeTimmingList.value
+          : storeTimmingList.isNotEmpty
+              ? storeTimmingList
+              : storeTimings
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 

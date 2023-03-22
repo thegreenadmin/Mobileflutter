@@ -27,7 +27,8 @@ class SearchStoreUserScreen extends StatefulWidget {
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();
 }
 
-class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with SingleTickerProviderStateMixin {
+class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
   final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
   var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
@@ -84,12 +85,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                                       "Hi, "
                                       "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
                                       style: const TextStyle(
-                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.w600),
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
                                     )),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18, color: AppColors.black, fontWeight: FontWeight.w400),
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -120,7 +125,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
                 child: Stack(
                   children: [
                     SizedBox(
-                        height: 200,
+                        height: 250,
                         width: WidgetConstants.screenWidth,
                         child: GoogleMap(
                           mapType: MapType.normal,
@@ -239,8 +244,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen> with Sing
   }
 
   void updateMap(lat, lng) async {
-    updateMarker(lat, lng);
-    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 15.00);
+    CameraPosition kLake = CameraPosition(bearing: 192.8334901395799, target: LatLng(lat, lng), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
   }
