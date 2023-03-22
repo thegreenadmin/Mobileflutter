@@ -30,6 +30,7 @@ class ServerCommunicator {
 //L
 //M
 //N
+  String nearByStoreList = '/shop/stores/list/nearby';
 //O
   String otpVerify = 'user/otp/verify';
 //P
@@ -56,7 +57,7 @@ class ServerCommunicator {
   String storeRoleEdit = '/store/role/edit';
   String storeQuantityTypeList = '/store/quantity_type/list';
   String storeOfferCreate = 'store/offer/create';
-  String nearByStoreList = '/shop/stores/list/nearby';
+  String storeOfferLists = 'store/offer/list';
 
 //T
 //U

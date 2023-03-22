@@ -74,6 +74,7 @@ class Products {
   List<ProductImages>? productImages;
   List<ProductContents>? productContents;
   List<ProductLinks>? productLinks;
+  bool isSelected = false;
 
   Products(
       {this.productId,

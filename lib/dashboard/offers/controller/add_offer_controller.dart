@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
@@ -31,6 +32,11 @@ class AddOffersController extends GetxController {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
+
+  late GetStoreProductList getStoreProductList = GetStoreProductList();
+  RxList<Products> storeProductList = <Products>[].obs;
+
+  RxList<dynamic> selectedProducts = <dynamic>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
     return showDialog(
@@ -182,6 +188,8 @@ class AddOffersController extends GetxController {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
           Utility.showToast("Please upload Image");
+        } else if (discountType.value.isEmpty) {
+          Utility.showToast("Please select discount type");
         } else {
           await apiAddOffer();
         }
@@ -206,14 +214,10 @@ class AddOffersController extends GetxController {
         "is_offer_for_store": isStoreOffer.value,
         "offer_name": offerNameTextController.text.trim(),
         "image_url": offerImageOrigionalLinkfromServer.value,
-        "offer_type": discountType.value,
-        "offer_value": discountOrOfferTextController.text.trim()
+        "offer_type": discountType.value.toLowerCase(),
+        "offer_value": int.parse(discountOrOfferTextController.text.trim())
       },
-      "offer_products": [
-        {"product_id": 2},
-        {"product_id": 5},
-        {"product_id": 8}
-      ]
+      "offer_products": isStoreOffer.value ? [] : selectedProducts
     };
     debugPrint("ADD OFFER BODY********** $body");
     debugPrint("TOKEN ********** $headers");
@@ -229,6 +233,10 @@ class AddOffersController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
         Get.back();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -258,6 +266,61 @@ class AddOffersController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        if (storeIdValue.value.isEmpty && storeList.isNotEmpty) {
+          storeIdValue.value = storeList[0].storeId.toString();
+          print(storeIdValue.value);
+          apiGetStoreProducts();
+        }
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Get store products List Api
+  Future apiGetStoreProducts() async {
+    isLoading.value = true;
+    debugPrint(
+      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+    );
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {
+      "q": "",
+      "store_id": storeIdValue.value,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "product_name",
+      "order_type": "ASC",
+      "category_id": null,
+      "filters": [
+        // {
+        //   "filter_by": "is_featured_product",
+        //   "filter_value": false,
+        //   "operation": "eq"
+        // }
+      ]
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getStoreProductList = GetStoreProductList.fromJson(value.body);
+        storeProductList.value = getStoreProductList.data!.products!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

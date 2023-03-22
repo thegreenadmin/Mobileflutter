@@ -126,8 +126,6 @@ class UserProvider extends GetConnect {
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
-      log("request data:");
-      log(data.toString());
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -142,8 +140,6 @@ class UserProvider extends GetConnect {
       IOClient ioClient = IOClient(httpClient);
       final res = await ioClient.post(Uri.parse(url),
           body: jsonEncode(data), headers: headers);
-      log("response data:");
-      log(json.decode(res.body));
 
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
@@ -219,7 +215,7 @@ class UserProvider extends GetConnect {
 
   // Post with header request
   Future<Response?> putWithHeadersApi1(
-    Map  data, String url, Map<String, String> headers,
+      Map data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {

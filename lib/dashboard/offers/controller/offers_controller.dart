@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_offers_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -7,7 +9,6 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class OffersController extends GetxController {
-  
   RxList offersList = [
     "Click & Collect",
     "Happy Shop",
@@ -20,14 +21,19 @@ class OffersController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
-  RxString email = "".obs;
-  RxString phone = "".obs;
+  RxString? email = "".obs;
+  RxString? phone = "".obs;
+
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+
+  late GetOffersListModel getOffersListModel = GetOffersListModel();
+  RxList<Offers> getofferlist = <Offers>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     apiGetUserDetail();
-    Future.delayed(const Duration(milliseconds: 200), () {});
+    apiGetOffersList();
   }
 
   //Get User Detail Info Api
@@ -48,14 +54,52 @@ class OffersController extends GetxController {
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        firstName!.value = value.body["data"]["user"]['first_name'] ?? "";
-        lastName!.value = value.body["data"]["user"]['last_name'] ?? "";
-        nickName!.value = value.body["data"]["user"]['nick_name'] ?? "-";
-        email.value = value.body["data"]["user"]['email'] ?? "";
-        phone.value = value.body["data"]["user"]['phone'] ?? "";
+        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+        firstName!.value = getUserDetailModel.data!.user!.firstName!;
+        lastName!.value = getUserDetailModel.data!.user!.lastName!;
+        nickName!.value = getUserDetailModel.data!.user!.nickName!;
+        email!.value = getUserDetailModel.data!.user!.email!;
+        phone!.value = getUserDetailModel.data!.user!.phone!;
       } else {
         Utility.showMessage(
             StringConstants.alertText, value.body['message'].toString());
+      }
+    });
+  }
+
+  //Get Offers List Api
+  Future apiGetOffersList() async {
+    debugPrint(
+        "GET OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferLists}");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    Map body = {
+      "store_id": null,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "offer_id",
+      "order_type": "DESC",
+      "filters": []
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferLists,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("OFFERS LIST BODY ******* $body");
+      debugPrint("OFFERS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getOffersListModel = GetOffersListModel.fromJson(value.body);
+        getofferlist.value = getOffersListModel.data!.offers!;
+      } else {
+        Utility.showToast(value.body['message']);
       }
     });
   }

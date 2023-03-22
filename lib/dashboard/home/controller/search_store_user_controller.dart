@@ -28,7 +28,8 @@ class SearchStoreUserController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
 
-  late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
+  late NearbyStoreListResponse nearbyStoreListResponse =
+      NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
   RxInt page = 1.obs;
@@ -55,14 +56,13 @@ class SearchStoreUserController extends GetxController {
 
   //Get Nearby Stores Api
   Future apiGetNearByStores() async {
-    debugPrint(
-        "GET GET NEARBY STORES URL**********"
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
+    debugPrint("GET GET NEARBY STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
     Map<String, String> headers = {
+      'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     Map data = {
       "q": "",
       "page": 1,
@@ -80,14 +80,16 @@ class SearchStoreUserController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-        data,
+            data,
             ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
-            headers, showLoading: false)
+            headers,
+            showLoading: true)
         .then((value) async {
       debugPrint("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
-        storeAddresses.addAll(nearbyStoreListResponse.data!.storeAddresses as Iterable<StoreAddress>);
+        storeAddresses.addAll(nearbyStoreListResponse.data!.storeAddresses
+            as Iterable<StoreAddress>);
         page++;
         // storeAddresses.addAll(storeAddresses);
       } else if (value?.body["status"] == 403) {

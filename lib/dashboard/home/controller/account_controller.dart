@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -45,6 +46,8 @@ class AccountController extends GetxController {
   RxInt countryIndex = 0.obs;
   RxInt stateIndex = 0.obs;
 
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
 
@@ -55,7 +58,6 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //getDetail();
     apiGetUserDetailApi();
     Future.delayed(const Duration(milliseconds: 200), () {});
   }
@@ -97,6 +99,8 @@ class AccountController extends GetxController {
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+
         firstName!.value = value.body["data"]["user"]['first_name'] ?? "";
         firstNameTextController.text = firstName!.value;
         lastName!.value = value.body["data"]["user"]['last_name'] ?? "";

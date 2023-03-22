@@ -252,6 +252,7 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
+        selectedRoles.value = getStoreDetailModel.data!.role!.permissions!;
         roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);

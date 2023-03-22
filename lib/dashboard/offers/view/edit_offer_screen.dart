@@ -8,20 +8,21 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddOfferScreen extends StatefulWidget {
-  const AddOfferScreen({super.key});
+class EditOfferScreen extends StatefulWidget {
+  const EditOfferScreen({super.key});
 
   @override
-  State<AddOfferScreen> createState() => _AddOfferScreenState();
+  State<EditOfferScreen> createState() => _EditOfferScreenState();
 }
 
 enum OfferFor { store, product }
 
 OfferFor? _offerFor = OfferFor.store;
 
-class _AddOfferScreenState extends State<AddOfferScreen> {
+class _EditOfferScreenState extends State<EditOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,7 +75,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.uploadCategoriesImageText,
+                      StringConstants.uploadCategoryImageText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
@@ -115,7 +114,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                                             ),
                                             height6SizedBox,
                                             Text(StringConstants
-                                                .uploadCategoriesImageText)
+                                                .uploadCategoryImageText)
                                           ]),
                                     ),
                                   ),
@@ -152,7 +151,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                     ),
                     height35SizedBox,
                     Text(
-                      StringConstants.categoriesNameText,
+                      StringConstants.categoryNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,

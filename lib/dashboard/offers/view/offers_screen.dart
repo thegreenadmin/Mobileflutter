@@ -100,7 +100,7 @@ class _OffersScreenState extends State<OffersScreen> {
                       return height8SizedBox;
                     },
                     shrinkWrap: true,
-                    itemCount: offersController.offersList.length,
+                    itemCount: offersController.getofferlist.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
@@ -118,11 +118,25 @@ class _OffersScreenState extends State<OffersScreen> {
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                        color: AppColors.primary, width: 1)),
-                                child: const CircleAvatar(
+                                        color: AppColors.white, width: 1)),
+                                child: CircleAvatar(
                                   radius: 24.0,
-                                  backgroundImage: NetworkImage(
-                                      'https://picsum.photos/250?image=9'),
+                                  backgroundImage: offersController
+                                                  .getofferlist[index]
+                                                  .store!
+                                                  .logo!
+                                                  .dynamicUrl ==
+                                              null ||
+                                          offersController.getofferlist[index]
+                                              .store!.logo!.dynamicUrl!.isEmpty
+                                      ? const AssetImage(
+                                          "assets/offercheck.png",
+                                        ) as ImageProvider
+                                      : NetworkImage(offersController
+                                          .getofferlist[index]
+                                          .store!
+                                          .logo!
+                                          .dynamicUrl!),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
@@ -133,7 +147,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                   SizedBox(
                                     width: 270,
                                     child: Text(
-                                      offersController.offersList[index],
+                                      offersController.getofferlist[index]
+                                              .store!.storeName ??
+                                          "",
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           fontSize: 16.0,
@@ -152,7 +168,12 @@ class _OffersScreenState extends State<OffersScreen> {
                                         ),
                                         width6SizedBox,
                                         Text(
-                                          "Gate Village 10 Dubai 10017",
+                                          offersController
+                                                  .getofferlist[index]
+                                                  .store!
+                                                  .storeAddresses![0]
+                                                  .city ??
+                                              "",
                                           overflow: TextOverflow.fade,
                                           style: TextStyle(
                                               fontSize: 14.0,

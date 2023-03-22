@@ -81,7 +81,6 @@ class Utility {
     ));
   }
 
-
   static String parseDateTime(DateTime timestamp,
       {String format = 'MMM d, h:mm a'}) {
     final dateTime = timestamp.toLocal();
@@ -89,10 +88,9 @@ class Utility {
   }
 
   static String formatDateTime(String timestamp,
-      {String firstFormat = 'MMM d, h:mm a',secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
-
-    DateTime parseDate =
-    DateFormat(firstFormat).parse(timestamp.toString());
+      {String firstFormat = 'MMM d, h:mm a',
+      secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
+    DateTime parseDate = DateFormat(firstFormat).parse(timestamp.toString());
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat(secFormat);
     var outputDate = outputFormat.format(inputDate);
