@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/io_client.dart';
@@ -9,20 +9,16 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProvider extends GetConnect {
-  Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
-      {bool showLoading = false}) async {
+  Future<Response?> getWithHeadersApi(String url, Map<String, String> headers, {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
       final res = await ioClient.get(Uri.parse(url), headers: headers);
       // final res = await get(url, headers: headers);
@@ -30,8 +26,7 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -44,24 +39,19 @@ class UserProvider extends GetConnect {
     }
   }
 
-  Future<Response?> postApi(Map data, String url,
-      {bool showLoading = false}) async {
+  Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.post(Uri.parse(url),
-          body: json.encode(data),
-          headers: {"Content-Type": "application/json"});
+      final res =
+          await ioClient.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"});
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
@@ -71,8 +61,7 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -86,20 +75,16 @@ class UserProvider extends GetConnect {
   }
 
   // Signup request
-  Future<Response?> putApi(Map data, String url,
-      {bool showLoading = false}) async {
+  Future<Response?> putApi(Map data, String url, {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
       final res = await ioClient.put(Uri.parse(url));
 
@@ -107,8 +92,7 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -122,24 +106,19 @@ class UserProvider extends GetConnect {
   }
 
   // Post with header request
-  Future<Response?> postWithHeadersApi(
-      data, String url, Map<String, String> headers,
+  Future<Response?> postWithHeadersApi(data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.post(Uri.parse(url),
-          body: jsonEncode(data), headers: headers);
+      final res = await ioClient.post(Uri.parse(url), body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
@@ -148,14 +127,10 @@ class UserProvider extends GetConnect {
         return null;
       }
 
-      return Response(
-          statusCode: res.statusCode,
-          body: json.decode(res.body),
-          headers: headers);
+      return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -169,38 +144,28 @@ class UserProvider extends GetConnect {
   }
 
   // Post with header request
-  Future<Response?> putWithHeadersApi(
-      data, String url, Map<String, String> headers,
-      {bool showLoading = false}) async {
+  Future<Response?> putWithHeadersApi(data, String url, Map<String, String> headers, {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.put(Uri.parse(url),
-          body: json.encode(data), headers: headers);
+      final res = await ioClient.put(Uri.parse(url), body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showMessage("Alert!", "FCM Error");
         return null;
       }
-      return Response(
-          statusCode: res.statusCode,
-          body: json.decode(res.body),
-          headers: headers);
+      return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -214,38 +179,29 @@ class UserProvider extends GetConnect {
   }
 
   // Post with header request
-  Future<Response?> putWithHeadersApi1(
-    Map  data, String url, Map<String, String> headers,
+  Future<Response?> putWithHeadersApi1(Map data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.put(Uri.parse(url),
-          body: json.encode(data), headers: headers);
+      final res = await ioClient.put(Uri.parse(url), body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showMessage("Alert!", "FCM Error");
         return null;
       }
-      return Response(
-          statusCode: res.statusCode,
-          body: json.decode(res.body),
-          headers: headers);
+      return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
@@ -259,24 +215,19 @@ class UserProvider extends GetConnect {
   }
 
   // Post with header request
-  Future<Response?> deleteWithHeadersApi(
-      data, String url, Map<String, String> headers,
+  Future<Response?> deleteWithHeadersApi(data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
-          Get.dialog(
-              const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary)),
+          Get.dialog(const Center(child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
       });
       HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
-      final res = await ioClient.delete(Uri.parse(url),
-          body: jsonEncode(data), headers: headers);
+      final res = await ioClient.delete(Uri.parse(url), body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
@@ -284,14 +235,10 @@ class UserProvider extends GetConnect {
         Utility.showMessage("Alert!", "FCM Error");
         return null;
       }
-      return Response(
-          statusCode: res.statusCode,
-          body: json.decode(res.body),
-          headers: headers);
+      return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage(
-          "No Internet Connection!", "Please check your network connection.");
+      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
