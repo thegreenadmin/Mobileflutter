@@ -31,7 +31,6 @@ class StringConstants {
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
   static String addCategoriesText = "Add Categories";
-  static String addCategoryText = "Add Category";
   static String addMoneyToMyWalletText = "Add money to my wallet";
   static String alertText = "Alert";
   static String addDescriptionText = "Add Description";
@@ -279,7 +278,6 @@ class StringConstants {
   static String uploadImageText = "Upload Image";
   static String uploadPhotoHereText = "Upload photo here";
   static String uploadCategoriesImageText = " Upload Categories Image";
-  static String uploadCategoryImageText = " Upload Category Image";
   static String uploadStoreImageText = " Upload Store Image";
   static String updateText = "Update";
   static String unitPriceText = "Unit price:";

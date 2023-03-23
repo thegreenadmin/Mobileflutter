@@ -20,8 +20,7 @@ class SearchStoreUserController extends GetxController {
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
-  late NearbyStoreListResponse nearbyStoreListResponse =
-      NearbyStoreListResponse();
+  late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
   RxInt page = 1.obs;
@@ -59,6 +58,7 @@ class SearchStoreUserController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
+
     Map data = {
       "q": "",
       "page": page.value,
@@ -76,7 +76,7 @@ class SearchStoreUserController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-            data,
+        data,
             ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
             headers, showLoading: page.value==1)
         .then((value) async {

@@ -64,7 +64,7 @@ class OffersController extends GetxController {
   Future apiGetOffersList() async {
     isLoading!.value = true;
     debugPrint(
-        "GET OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferLists}");
+        "GET OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ class OffersController extends GetxController {
     UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferLists,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
             headers,
             showLoading: true)
         .then((value) async {

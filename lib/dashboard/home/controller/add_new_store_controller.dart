@@ -287,8 +287,7 @@ class AddNewStoreController extends GetxController {
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",
-        "city": townOrCityTextController.text.trim(),
-        "postal_code": zipCodeTextController.text.trim()
+        "city": townOrCityTextController.text.trim()
       },
       "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true

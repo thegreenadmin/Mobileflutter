@@ -201,7 +201,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         ),
                         width2SizedBox,
                         Text(
-                          StringConstants.addCategoryText,
+                          StringConstants.addCategoriesText,
                           style: const TextStyle(
                               fontSize: 16.0,
                               color: AppColors.primary,
