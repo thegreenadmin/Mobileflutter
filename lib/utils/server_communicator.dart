@@ -15,6 +15,7 @@ class ServerCommunicator {
 
 //D
   String deleteWorker = 'store/user/delete';
+  String deliveryServiceList = 'store/delivery/service/list';
 //E
   String editWorker = 'store/user/edit';
 //F
@@ -31,6 +32,7 @@ class ServerCommunicator {
 //L
 //M
 //N
+  String nearByStoreList = 'shop/stores/list/nearby';
 //O
   String otpVerify = 'user/otp/verify';
 //P
@@ -56,11 +58,13 @@ class ServerCommunicator {
   String storeRoleCreate = 'store/role/create';
   String storeRoleDelete = 'store/role/delete';
   String storeRoleDetail = 'store/role/details';
-  String storeRoleEdit = '/store/role/edit';
-  String storeQuantityTypeList = '/store/quantity_type/list';
+  String storeRoleEdit = 'store/role/edit';
+  String storeQuantityTypeList = 'store/quantity_type/list';
   String storeOfferCreate = 'store/offer/create';
-  String nearByStoreList = '/shop/stores/list/nearby';
   String storeOfferList = 'store/offer/list';
+  String storeCategoryList = 'shop/store/category/list';
+  String storeOffersList = 'shop/store/offers/list';
+  String storeFeatureProductList = 'shop/store/product/list';
 
 //T
 //U

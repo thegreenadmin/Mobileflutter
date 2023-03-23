@@ -34,6 +34,8 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
+      print("Alert:------");
+      print( e.toString());
       Utility.showMessage("Alert!", e.toString());
       return null;
     }

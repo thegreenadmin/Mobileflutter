@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thegreenmall/dashboard/home/model/delivery_services_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -36,6 +37,7 @@ class AddNewStoreController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController workingDaysTextController = TextEditingController();
+  TextEditingController deliveryServicesTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
   RxBool isStoreLogoSelected = false.obs;
@@ -44,6 +46,9 @@ class AddNewStoreController extends GetxController {
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
+
+  late DeliveryServicesResponse deliveryServicesResponse = DeliveryServicesResponse();
+  RxList<DeliveryService> deliveryServices = <DeliveryService>[].obs;
 
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
@@ -79,12 +84,14 @@ class AddNewStoreController extends GetxController {
   ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+  RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 200), () {
       apiGetCountries();
+      apiGetDeliveryServices();
     });
   }
 
@@ -294,7 +301,8 @@ class AddNewStoreController extends GetxController {
           ? [
               // {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
             ]
-          : storeTimmingList
+          : storeTimmingList,
+      "store_delivery_services":deliveryServicesList
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -329,6 +337,36 @@ class AddNewStoreController extends GetxController {
         zipCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get DeliveryServices Api
+  Future apiGetDeliveryServices() async {
+    deliveryServices.clear();
+    debugPrint(
+        "GET deliveryServiceList  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().deliveryServiceList,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
+        deliveryServices.value = deliveryServicesResponse.data!.deliveryServices!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

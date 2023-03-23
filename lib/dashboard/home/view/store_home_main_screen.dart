@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_menu_screen.dart';
@@ -7,6 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -16,7 +18,9 @@ class StoreHomeMainScreen extends StatefulWidget {
 }
 
 class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
-  RxInt selectedIndex = 0.obs;
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -43,9 +47,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    setState(() {
-                      selectedIndex.value = i;
-                    });
+                    storeHomeMainController.onIndexChange(i);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -55,10 +57,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: selectedIndex.value == i
+                          fontWeight: storeHomeMainController.selectedIndex.value == i
                               ? FontWeight.w500
                               : FontWeight.w400,
-                          color: selectedIndex.value == i
+                          color: storeHomeMainController.selectedIndex.value == i
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -72,7 +74,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               constraints: const BoxConstraints(),
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: selectedIndex.value == i
+                                color: storeHomeMainController.selectedIndex.value == i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
                                 size: 22,
@@ -203,131 +205,152 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Color(0xff7c94b6),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  colorFilter:
-                      ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: AssetImage("assets/dumy.png"),
-                ),
-              ),
-              child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                  child: Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: AppColors.white,
-                                size: 24.0,
-                              ),
-                            ),
-                            Image.asset(
-                              "assets/favoutline.png",
-                              scale: 2.8,
-                            ),
-                          ]),
-                      height10SizedBox,
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: AppColors.white, width: 1)),
-                            child: const CircleAvatar(
-                              radius: 28.0,
-                              backgroundImage: AssetImage("assets/dumy.png"),
-                              backgroundColor: Colors.transparent,
-                            ),
-                          ),
-                          width10SizedBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Ambrosia Store",
-                                style: TextStyle(
-                                    color: AppColors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              height8SizedBox,
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/loc.png",
-                                    color: AppColors.white,
-                                    scale: 2,
-                                  ),
-                                  width4SizedBox,
-                                  const Text("Gate Village 10 Dubai 10017",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400)),
-                                ],
-                              ),
-                              height8SizedBox,
-                              Row(
-                                children: [
-                                  const Text("Store Hours 9:00 am to 9:00PM",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400)),
-                                  width10SizedBox,
-                                  Image.asset(
-                                    "assets/door.png",
-                                    scale: 2.5,
-                                  ),
-                                  width8SizedBox,
-                                  Image.asset(
-                                    "assets/call.png",
-                                    scale: 2.5,
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  )),
-            )
+           Obx(()=> Container(
+             decoration:  BoxDecoration(
+               color: const Color(0xff7c94b6),
+               image: DecorationImage(
+                 fit: BoxFit.cover,
+                 colorFilter:
+                 const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                 image:
+                 storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl == null ||
+                     storeHomeMainController.storeAddress.value.store!.logo!.dynamicUrl!.isEmpty
+                     ? const AssetImage(
+                     "assets/storeicon.png")
+                 as ImageProvider
+                     : NetworkImage(
+                     storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl.toString() ?? ""),
+               ),
+             ),
+             child: Padding(
+                 padding:
+                 const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                 child: Column(
+                   children: [
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         children: [
+                           IconButton(
+                             padding: EdgeInsets.zero,
+                             constraints: const BoxConstraints(),
+                             onPressed: () {
+                               Get.back();
+                             },
+                             icon: const Icon(
+                               Icons.arrow_back,
+                               color: AppColors.white,
+                               size: 24.0,
+                             ),
+                           ),
+                           storeHomeMainController.storeAddress.value.store?.isFavouriteStore==true?
+                           Image.asset(
+                             "assets/liked.png",
+                             scale: 2.8,
+                           ): Image.asset(
+                             "assets/favoutline.png",
+                             scale: 2.8,
+                           ),
+                         ]),
+                     height10SizedBox,
+                     Row(
+                       children: [
+                         Container(
+                           decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                               border: Border.all(
+                                   color: AppColors.white, width: 1)),
+                           child:  CircleAvatar(
+                             radius: 28.0,
+                             backgroundImage:  storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl == null ||
+                                 storeHomeMainController.storeAddress.value.store!.logo!.dynamicUrl!.isEmpty
+                                 ? const AssetImage(
+                                 "assets/storeicon.png")
+                             as ImageProvider
+                                 : NetworkImage(
+                                 storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl.toString() ?? ""),
+                             backgroundColor: Colors.transparent,
+                           ),
+                         ),
+                         width10SizedBox,
+                         Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text(storeHomeMainController.storeAddress.value.store?.storeName??"",
+                               style: const TextStyle(
+                                   color: AppColors.white,
+                                   fontSize: 20,
+                                   fontWeight: FontWeight.w600),
+                             ),
+                             height8SizedBox,
+                             Row(
+                               children: [
+                                 Image.asset(
+                                   "assets/loc.png",
+                                   color: AppColors.white,
+                                   scale: 2,
+                                 ),
+                                 width4SizedBox,
+                                 Text(storeHomeMainController.storeAddress.value.addressLine1??"",
+                                     style: const TextStyle(
+                                         color: AppColors.white,
+                                         fontSize: 16,
+                                         fontWeight: FontWeight.w400)),
+                               ],
+                             ),
+                             height8SizedBox,
+                             Row(
+                               children: [
+                                 Text(
+                                     storeHomeMainController.storeAddress.value.store!.storeTimings!.isNotEmpty?
+                                     storeHomeMainController.storeAddress.value.store?.storeTimings?.first.is24HoursActive ==false?
+                                     "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                         "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                         :   StringConstants.storeHoursText:  StringConstants.storeHoursText,
+                                     style: const TextStyle(
+                                         color: AppColors.white,
+                                         fontSize: 14,
+                                         fontWeight: FontWeight.w400)),
+                                 width10SizedBox,
+                                 Image.asset(
+                                   "assets/door.png",
+                                   scale: 2.5,
+                                 ),
+                                 width8SizedBox,
+                                 Image.asset(
+                                   "assets/call.png",
+                                   scale: 2.5,
+                                 )
+                               ],
+                             )
+                           ],
+                         )
+                       ],
+                     )
+                   ],
+                 )),
+           ))
           ],
         ),
       ),
-      body: Column(
+      body:Obx(()=>Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           horizontalTabs(),
           const Divider(
             thickness: 1,
           ),
-          selectedIndex.value == 0
+          storeHomeMainController.selectedIndex.value == 0
               ? const Expanded(child: StoreHomeScreen())
-              : selectedIndex.value == 1
-                  ? const Expanded(child: StoreMenuScreen())
-                  : selectedIndex.value == 2
-                      ? const Expanded(child: StoreFavouriteScreen())
-                      : selectedIndex.value == 3
-                          ? const Expanded(child: StoreFavouriteScreen())
-                          : const Expanded(child: StoreHomeScreen())
+              : storeHomeMainController.selectedIndex.value == 1
+              ? const Expanded(child: StoreMenuScreen())
+              : storeHomeMainController.selectedIndex.value == 2
+              ? const Expanded(child: StoreFavouriteScreen())
+              : storeHomeMainController.selectedIndex.value == 3
+              ? const Expanded(child: StoreFavouriteScreen())
+              : const Expanded(child: StoreHomeScreen())
         ],
-      ),
+      ),)
     );
   }
 }

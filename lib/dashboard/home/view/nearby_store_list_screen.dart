@@ -24,12 +24,6 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
-  @override
-  void initState() {
-    searchStoreUserController.apiGetNearByStores();
-    searchStoreUserController.setupScrollController(context);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +34,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
           Expanded(
             child: Obx(
               () => searchStoreUserController.storeAddresses.isEmpty
-                  ? searchStoreUserController.isLoading.value == true
+                  ? searchStoreUserController.isDataLoading.value == true
                       ? height0SizedBox
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +50,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             height4SizedBox,
                             Center(
                               child: Text(
-                                StringConstants.noWorkersFoundText,
+                                StringConstants.noNearbyStoreFoundText,
                                 style: const TextStyle(
                                     fontStyle: FontStyle.italic, fontSize: 16),
                               ),
@@ -73,7 +67,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.to(const StoreHomeMainScreen());
+                              Get.to(const StoreHomeMainScreen(),arguments: {
+                                "storeAddress":searchStoreUserController.storeAddresses[index]
+                              });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -86,8 +82,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   )),
                               child: Column(children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
@@ -95,38 +90,19 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: AppColors.white,
-                                                  width: 1)),
+                                              border: Border.all(color: AppColors.white, width: 1)),
                                           child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundImage:
-                                                searchStoreUserController
-                                                                .storeAddresses[
-                                                                    index]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl ==
-                                                            null ||
+                                                searchStoreUserController.storeAddresses[index].store?.logo?.dynamicUrl == null ||
                                                         searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
+                                                            .storeAddresses[index].store!.logo!.dynamicUrl!.isEmpty
                                                     ? const AssetImage(
                                                             "assets/storeicon.png")
                                                         as ImageProvider
                                                     : NetworkImage(
                                                         searchStoreUserController
-                                                                .storeAddresses[
-                                                                    index]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
+                                                                .storeAddresses[index].store?.logo?.dynamicUrl.toString() ?? ""),
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ),
@@ -137,10 +113,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           children: [
                                             Text(
                                               searchStoreUserController
-                                                      .storeAddresses[index]
-                                                      .store
-                                                      ?.storeName ??
-                                                  "",
+                                                      .storeAddresses[index].store?.storeName ?? "",
                                               style: const TextStyle(
                                                   fontSize: 17.0,
                                                   color: AppColors.black,
@@ -148,11 +121,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                             ),
                                             height4SizedBox,
                                             Visibility(
-                                              visible: searchStoreUserController
-                                                  .storeAddresses[index]
-                                                  .store!
-                                                  .storeTimings!
-                                                  .isNotEmpty,
+                                              visible: searchStoreUserController.storeAddresses[index].store!.storeTimings!.isNotEmpty,
                                               child: Row(
                                                 children: [
                                                   Image.asset(
@@ -161,50 +130,38 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                   ),
                                                   width4SizedBox,
                                                   Text(
-                                                    searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .addressLine1 ??
+                                                    searchStoreUserController.storeAddresses[index].addressLine1 ??
                                                         "",
                                                     style: TextStyle(
                                                         fontSize: 14.0,
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                        color: AppColors.blacklight,
+                                                        fontWeight: FontWeight.w500),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             height4SizedBox,
-                                            Text(
+                                            Text(searchStoreUserController.storeAddresses[index].store!.storeTimings!.isNotEmpty?
+                                            searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.is24HoursActive ==false?
                                                 "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}",
+                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                               :   StringConstants.storeHoursText:  StringConstants.storeHoursText,
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
+                                                    fontWeight: FontWeight.w500)),
                                           ],
                                         )
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .storeAddresses[index]
-                                                    .store
-                                                    ?.isFavouriteStore ==
+                                        searchStoreUserController.storeAddresses[index].store?.isFavouriteStore ==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
                                                   searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
-                                                          searchStoreUserController
-                                                              .storeAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
+                                                      .apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   "assets/liked.png",
@@ -215,11 +172,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 onTap: () {
                                                   searchStoreUserController
                                                       .apiCreateFavouriteStore(
-                                                          searchStoreUserController
-                                                              .storeAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
+                                                          searchStoreUserController.storeAddresses[index].store?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   "assets/fav.png",
@@ -332,8 +285,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                         } else if (searchStoreUserController.isLoading.value) {
                           Timer(const Duration(milliseconds: 30), () {
                             searchStoreUserController.scrollController.jumpTo(
-                                searchStoreUserController
-                                    .scrollController.position.maxScrollExtent);
+                                searchStoreUserController.scrollController.position.maxScrollExtent);
                           });
 
                           return _loadingIndicator();
