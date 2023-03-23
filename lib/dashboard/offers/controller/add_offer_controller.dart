@@ -25,6 +25,7 @@ class AddOffersController extends GetxController {
   RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
   RxBool isStoreOffer = false.obs;
+  RxString radioValue = "store".obs;
   RxBool autoValidate = true.obs;
   Rx<XFile> categoryImage = XFile("").obs;
   RxString offerImageOrigionalLinkfromServer = "".obs;
@@ -36,7 +37,7 @@ class AddOffersController extends GetxController {
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
 
-  RxList<dynamic> selectedProducts = <dynamic>[].obs;
+  RxList<Map> selectedProducts = <Map>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
     return showDialog(

@@ -15,9 +15,9 @@ class AddOfferScreen extends StatefulWidget {
   State<AddOfferScreen> createState() => _AddOfferScreenState();
 }
 
-enum OfferFor { store, product }
+// enum OfferFor { store, product }
 
-OfferFor? _offerFor = OfferFor.store;
+// OfferFor? _offerFor = OfferFor.product;
 
 class _AddOfferScreenState extends State<AddOfferScreen> {
   final AddOffersController addOffersController =
@@ -234,16 +234,18 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           children: [
                             Row(
                               children: [
-                                Radio<OfferFor>(
-                                  value: OfferFor.store,
-                                  groupValue: _offerFor,
-                                  onChanged: (OfferFor? value) {
+                                Radio(
+                                  activeColor: AppColors.primary,
+                                  value: "store",
+                                  groupValue:
+                                      addOffersController.radioValue.value,
+                                  onChanged: (value) {
                                     setState(() {
-                                      _offerFor = value;
+                                      addOffersController.radioValue.value =
+                                          value.toString();
+
                                       addOffersController.isStoreOffer.value =
                                           true;
-                                      print(addOffersController
-                                          .isStoreOffer.value);
                                     });
                                   },
                                 ),
@@ -252,12 +254,15 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             ),
                             Row(
                               children: [
-                                Radio<OfferFor>(
-                                  value: OfferFor.product,
-                                  groupValue: _offerFor,
-                                  onChanged: (OfferFor? value) {
+                                Radio(
+                                  activeColor: AppColors.primary,
+                                  value: "product",
+                                  groupValue:
+                                      addOffersController.radioValue.value,
+                                  onChanged: (value) {
                                     setState(() {
-                                      _offerFor = value;
+                                      addOffersController.radioValue.value =
+                                          value.toString();
                                       addOffersController.isStoreOffer.value =
                                           false;
                                     });
@@ -376,13 +381,10 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = true;
-
-                                                    print(addOffersController
-                                                        .selectedProducts);
                                                   } else {
                                                     addOffersController
                                                         .selectedProducts
-                                                        .remove((item) =>
+                                                        .removeWhere((item) =>
                                                             item[
                                                                 'product_id'] ==
                                                             addOffersController
@@ -392,8 +394,6 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = false;
-                                                    print(addOffersController
-                                                        .selectedProducts);
                                                   }
                                                 },
                                                 child: Container(
@@ -453,11 +453,13 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                                         item[
                                                                             'product_id'] ==
                                                                         addOffersController
-                                                                            .storeProductList[i]
+                                                                            .storeProductList[
+                                                                                i]
                                                                             .productId) ==
                                                                 true
-                                                            ? AppColors.white
-                                                            : AppColors.primary,
+                                                            ? AppColors.primary
+                                                            : AppColors
+                                                                .primarylight,
                                                       ),
                                                     )),
                                               )

@@ -115,9 +115,10 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                             .logo!
                                                             .dynamicUrl!
                                                             .isEmpty
-                                                    ?  const AssetImage(
+                                                    ? const AssetImage(
                                                             "assets/storeicon.png")
-                                                        as ImageProvider : NetworkImage(
+                                                        as ImageProvider
+                                                    : NetworkImage(
                                                         searchStoreUserController
                                                                 .storeAddresses[
                                                                     index]
@@ -125,8 +126,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                                 ?.logo
                                                                 ?.dynamicUrl
                                                                 .toString() ??
-                                                            "")
-                                                    ,
+                                                            ""),
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ),
