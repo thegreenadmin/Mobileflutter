@@ -50,7 +50,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 ),
                               ),
                               width10SizedBox,
-                               Text(StringConstants.addWorkerText,
+                              Text(
+                                StringConstants.addWorkerText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -125,7 +126,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         Column(
                           children: [
                             height20SizedBox,
-                            Text( StringConstants.uploadPhotoHereText,
+                            Text(StringConstants.uploadPhotoHereText,
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 14,
@@ -443,7 +444,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText:  StringConstants.selectTimeText,
+                                      helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {

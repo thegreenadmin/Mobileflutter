@@ -21,7 +21,8 @@ class NearbyStoreListScreen extends StatefulWidget {
 }
 
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
-  final SearchStoreUserController searchStoreUserController = Get.put(SearchStoreUserController());
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
 
   @override
   void initState() {
@@ -37,37 +38,39 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
-            child:
-            Obx(() =>   searchStoreUserController.storeAddresses.isEmpty
-                ? searchStoreUserController.isLoading.value == true
-                ? height0SizedBox
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          "assets/nodata.png",
-                          scale: 8,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      height4SizedBox,
-                      Center(
-                        child: Text(
-                          StringConstants.noWorkersFoundText,
-                          style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  )
-                : ListView.builder(
+            child: Obx(
+              () => searchStoreUserController.storeAddresses.isEmpty
+                  ? searchStoreUserController.isLoading.value == true
+                      ? height0SizedBox
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                "assets/nodata.png",
+                                scale: 8,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            height4SizedBox,
+                            Center(
+                              child: Text(
+                                StringConstants.noWorkersFoundText,
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic, fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        )
+                  : ListView.builder(
                       controller: searchStoreUserController.scrollController,
-                        itemCount: searchStoreUserController.storeAddresses.length+ (searchStoreUserController.isLoading.value ?1:0),
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index <  searchStoreUserController.storeAddresses.length) {
+                      itemCount: searchStoreUserController
+                              .storeAddresses.length +
+                          (searchStoreUserController.isLoading.value ? 1 : 0),
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index <
+                            searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
                               Get.to(const StoreHomeMainScreen());
@@ -83,7 +86,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   )),
                               child: Column(children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
@@ -92,20 +96,51 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
-                                                  color: AppColors.white, width: 1)),
+                                                  color: AppColors.white,
+                                                  width: 1)),
                                           child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundImage:
-                                            NetworkImage(searchStoreUserController.storeAddresses[index].store?.logo?.dynamicUrl.toString()??""),
+                                                searchStoreUserController
+                                                                .storeAddresses[
+                                                                    index]
+                                                                .store
+                                                                ?.logo
+                                                                ?.dynamicUrl ==
+                                                            null ||
+                                                        searchStoreUserController
+                                                            .storeAddresses[
+                                                                index]
+                                                            .store!
+                                                            .logo!
+                                                            .dynamicUrl!
+                                                            .isEmpty
+                                                    ? NetworkImage(
+                                                        searchStoreUserController
+                                                                .storeAddresses[
+                                                                    index]
+                                                                .store
+                                                                ?.logo
+                                                                ?.dynamicUrl
+                                                                .toString() ??
+                                                            "")
+                                                    : const AssetImage(
+                                                            "assets/storeicon.png")
+                                                        as ImageProvider,
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ),
                                         width10SizedBox,
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                        searchStoreUserController.storeAddresses[index].store?.storeName??"",
+                                              searchStoreUserController
+                                                      .storeAddresses[index]
+                                                      .store
+                                                      ?.storeName ??
+                                                  "",
                                               style: const TextStyle(
                                                   fontSize: 17.0,
                                                   color: AppColors.black,
@@ -113,7 +148,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                             ),
                                             height4SizedBox,
                                             Visibility(
-                                              visible: searchStoreUserController.storeAddresses[index].store!.storeTimings!.isNotEmpty,
+                                              visible: searchStoreUserController
+                                                  .storeAddresses[index]
+                                                  .store!
+                                                  .storeTimings!
+                                                  .isNotEmpty,
                                               child: Row(
                                                 children: [
                                                   Image.asset(
@@ -122,46 +161,71 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                   ),
                                                   width4SizedBox,
                                                   Text(
-                                                    searchStoreUserController.storeAddresses[index].addressLine1??"",
+                                                    searchStoreUserController
+                                                            .storeAddresses[
+                                                                index]
+                                                            .addressLine1 ??
+                                                        "",
                                                     style: TextStyle(
                                                         fontSize: 14.0,
-                                                        color: AppColors.blacklight,
-                                                        fontWeight: FontWeight.w500),
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             height4SizedBox,
-                                            Text("${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime??"0",firstFormat: "hh:mm:ss",secFormat: "hh:mm a") } - "
-                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime??"0",firstFormat: "hh:mm:ss",secFormat: "hh:mm a")}",
+                                            Text(
+                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}",
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,
-                                                    fontWeight: FontWeight.w500)),
+                                                    fontWeight:
+                                                        FontWeight.w500)),
                                           ],
                                         )
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController.storeAddresses[index].store?.isFavouriteStore==true?
-                                        InkWell(
-                                          onTap:(){
-                                            searchStoreUserController.apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
-                                          },
-                                          child: Image.asset(
-                                            "assets/liked.png",
-                                            scale: 3.2,
-                                          ),
-                                        ):InkWell(
-                                          onTap:(){
-                                            searchStoreUserController.apiCreateFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
-                                          },
-                                          child: Image.asset(
-                                            "assets/fav.png",
-                                            scale: 3.2,
-                                          ),
-                                        ),
+                                        searchStoreUserController
+                                                    .storeAddresses[index]
+                                                    .store
+                                                    ?.isFavouriteStore ==
+                                                true
+                                            ? InkWell(
+                                                onTap: () {
+                                                  searchStoreUserController
+                                                      .apiRemoveFavouriteStore(
+                                                          searchStoreUserController
+                                                              .storeAddresses[
+                                                                  index]
+                                                              .store
+                                                              ?.storeId);
+                                                },
+                                                child: Image.asset(
+                                                  "assets/liked.png",
+                                                  scale: 3.2,
+                                                ),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  searchStoreUserController
+                                                      .apiCreateFavouriteStore(
+                                                          searchStoreUserController
+                                                              .storeAddresses[
+                                                                  index]
+                                                              .store
+                                                              ?.storeId);
+                                                },
+                                                child: Image.asset(
+                                                  "assets/fav.png",
+                                                  scale: 3.2,
+                                                ),
+                                              ),
                                         width10SizedBox,
                                         Image.asset(
                                           "assets/info.png",
@@ -172,11 +236,13 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() => const SearchStoreUserScreen());
+                                        Get.to(() =>
+                                            const SearchStoreUserScreen());
                                       },
                                       child: Row(
                                         children: [
@@ -196,7 +262,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() => const SearchStoreUserScreen());
+                                        Get.to(() =>
+                                            const SearchStoreUserScreen());
                                       },
                                       child: Row(
                                         children: [
@@ -216,7 +283,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() => const SearchStoreUserScreen());
+                                        Get.to(() =>
+                                            const SearchStoreUserScreen());
                                       },
                                       child: Row(
                                         children: [
@@ -238,12 +306,14 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                       elevation: 0,
                                       onPressed: () {},
                                       constraints: const BoxConstraints(),
-                                      padding:
-                                      const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8.0, 8.0, 8.0, 8.0),
                                       shape: RoundedRectangleBorder(
                                         side: const BorderSide(
-                                            width: 1.0, color: AppColors.primary),
-                                        borderRadius: BorderRadius.circular(28.0),
+                                            width: 1.0,
+                                            color: AppColors.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(28.0),
                                       ),
                                       fillColor: AppColors.primary,
                                       child: Text(
@@ -259,34 +329,33 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                               ]),
                             ),
                           );
-                        } else if( searchStoreUserController.isLoading.value){
+                        } else if (searchStoreUserController.isLoading.value) {
                           Timer(const Duration(milliseconds: 30), () {
-                            searchStoreUserController.scrollController
-                                .jumpTo(searchStoreUserController.scrollController.position.maxScrollExtent);
+                            searchStoreUserController.scrollController.jumpTo(
+                                searchStoreUserController
+                                    .scrollController.position.maxScrollExtent);
                           });
 
                           return _loadingIndicator();
-                        }else{
-                           return const SizedBox();
+                        } else {
+                          return const SizedBox();
                         }
-                }),),
-
+                      }),
+            ),
           ),
         ]),
       ),
     );
-
   }
+
   Widget _loadingIndicator() {
-    return  Padding(
+    return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: CupertinoActivityIndicator(
             radius: 20,
             color: Theme.of(context).primaryColor,
           ),
-        )
-    );
+        ));
   }
 }
-

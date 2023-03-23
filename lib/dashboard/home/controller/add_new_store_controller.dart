@@ -24,7 +24,6 @@ class AddNewStoreController extends GetxController {
 
   TextEditingController storeNameTextController = TextEditingController();
   TextEditingController einTextController = TextEditingController();
-  //TextEditingController nickNameTextController = TextEditingController();
   TextEditingController storeNickNameTextController = TextEditingController();
   TextEditingController storeEmailTextController = TextEditingController();
   TextEditingController storePhoneTextController = TextEditingController();
