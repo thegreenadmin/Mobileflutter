@@ -109,7 +109,7 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeAddress.value.store?.storeId}",
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
@@ -170,7 +170,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
