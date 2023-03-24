@@ -18,6 +18,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    apiGetUserDetail();
   }
 
   List<PopupMenuEntry<String>>? userTypeOptionsPopUpList(context) {
@@ -102,9 +103,9 @@ class HomeController extends GetxController {
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
         email!.value = getUserDetailModel.data!.user!.email ?? "";
         SharedPreferenceStorage.setData(
-            StringConstants.firstNameText,firstName!.value);
+            StringConstants.firstNameText, firstName!.value);
         SharedPreferenceStorage.setData(
-            StringConstants.lastNameText,lastName!.value);
+            StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
       } else {
