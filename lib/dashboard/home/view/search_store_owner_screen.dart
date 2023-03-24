@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class SearchStoreOwnerScreen extends StatefulWidget {
@@ -54,14 +55,13 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(() => Text(
-                                      "Hi, "
-                                      "${searchStoreOwnerController.firstName!.value} ${searchStoreOwnerController.lastName!.value}",
+                             Text(
+                                      'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
                                       style: const TextStyle(
                                           fontSize: 20,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w600),
-                                    )),
+                                    ),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(

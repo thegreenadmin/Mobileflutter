@@ -12,7 +12,7 @@ import 'package:thegreenmall/utils/utility.dart';
 class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
-
+  RxString? email = "".obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   @override
@@ -100,10 +100,13 @@ class HomeController extends GetxController {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
+        email!.value = getUserDetailModel.data!.user!.email ?? "";
         SharedPreferenceStorage.setData(
-            StringConstants.firstNameText, firstName!.value);
+            StringConstants.firstNameText,firstName!.value);
         SharedPreferenceStorage.setData(
-            StringConstants.lastNameText, lastName!.value);
+            StringConstants.lastNameText,lastName!.value);
+        SharedPreferenceStorage.setData(
+            StringConstants.emailText, email!.value);
       } else {
         Utility.showToast(value.body['message']);
       }

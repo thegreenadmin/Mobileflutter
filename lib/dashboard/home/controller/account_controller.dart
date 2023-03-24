@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -52,6 +53,7 @@ class AccountController extends GetxController {
   RxList<StatesList> statesList = <StatesList>[].obs;
   List userAddress = [];
 
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   @override
   void onInit() {
     super.onInit();
@@ -97,40 +99,68 @@ class AccountController extends GetxController {
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        firstName!.value = value.body["data"]["user"]['first_name'] ?? "";
+        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+
+        firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
-        lastName!.value = value.body["data"]["user"]['last_name'] ?? "";
+        lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
         lastNameTextController.text = lastName!.value;
-        nickName!.value = value.body["data"]["user"]['nick_name'] ?? "";
+        nickName!.value = getUserDetailModel.data!.user!.nickName ?? "";
         nickNameTextController.text = nickName!.value;
-        email.value = value.body["data"]["user"]['email'] ?? "";
+        email.value = getUserDetailModel.data!.user!.email ?? "";
         emailTextController.text = email.value;
-        phone.value = value.body["data"]["user"]['phone'] ?? "";
-        if (value.body["data"]["user"]['user_addresses'] != null ||
-            value.body["data"]["user"]['user_addresses'] != []) {
-          userAddress = value.body["data"]["user"]['user_addresses'];
+        phone.value = getUserDetailModel.data!.user!.phone ?? "";
+
+        List<UserAddresses> userAddress = <UserAddresses>[];
+        userAddress = getUserDetailModel.data!.user!.userAddresses!;
+
+        if (userAddress.isNotEmpty) {
+          userAddress = getUserDetailModel.data!.user!.userAddresses!;
 
           for (int i = 0; i < userAddress.length; i++) {
-            countryId!.value =
-                userAddress[i]['state']['country']["country_id"] ?? "";
+            countryId!.value = userAddress[i].state!.country!.countryId ?? "";
             countryDropdownValue.value =
-                userAddress[i]['state']['country']["country_name"] ?? "";
-            stateId.value = userAddress[i]['state']["state_id"] ?? "";
-            stateDropdownValue.value =
-                userAddress[i]['state']["state_name"] ?? "";
+                userAddress[i].state!.country!.countryName ?? "";
+            stateId.value = userAddress[i].state!.stateId ?? "";
 
-            addressLine1TextController.text =
-                userAddress[i]['address_line_1'] ?? "";
+            stateDropdownValue.value = userAddress[i].state!.stateName ?? "";
+
+            addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
             addressLine1.value = addressLine1TextController.text;
-            addressLine2TextController.text =
-                userAddress[i]['address_line_2'] ?? "";
+            addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
             addressLine2.value = addressLine2TextController.text;
-            townOrCityTextController.text = userAddress[i]['city'] ?? "";
+            townOrCityTextController.text = userAddress[i].city ?? "";
             city.value = townOrCityTextController.text;
-            postalCodeTextController.text = userAddress[i]['postal_code'] ?? "";
+            postalCodeTextController.text = userAddress[i].postalCode ?? "";
             postalCode.value = postalCodeTextController.text;
           }
         }
+
+        // if (value.body["data"]["user"]['user_addresses'] != null ||
+        //     value.body["data"]["user"]['user_addresses'] != []) {
+        //   userAddress = value.body["data"]["user"]['user_addresses'];
+
+        //   for (int i = 0; i < userAddress.length; i++) {
+        //     countryId!.value =
+        //         userAddress[i]['state']['country']["country_id"] ?? "";
+        //     countryDropdownValue.value =
+        //         userAddress[i]['state']['country']["country_name"] ?? "";
+        //     stateId.value = userAddress[i]['state']["state_id"] ?? "";
+        //     stateDropdownValue.value =
+        //         userAddress[i]['state']["state_name"] ?? "";
+
+        //     addressLine1TextController.text =
+        //         userAddress[i]['address_line_1'] ?? "";
+        //     addressLine1.value = addressLine1TextController.text;
+        //     addressLine2TextController.text =
+        //         userAddress[i]['address_line_2'] ?? "";
+        //     addressLine2.value = addressLine2TextController.text;
+        //     townOrCityTextController.text = userAddress[i]['city'] ?? "";
+        //     city.value = townOrCityTextController.text;
+        //     postalCodeTextController.text = userAddress[i]['postal_code'] ?? "";
+        //     postalCode.value = postalCodeTextController.text;
+        // }
+        // }
         await apiGetCountries();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);

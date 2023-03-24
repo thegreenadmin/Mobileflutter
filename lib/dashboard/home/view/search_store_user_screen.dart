@@ -17,6 +17,7 @@ import 'package:thegreenmall/dashboard/home/view/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -29,7 +30,6 @@ class SearchStoreUserScreen extends StatefulWidget {
 
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
-
   TabController? _tabController;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
@@ -44,7 +44,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
-    _tabController = TabController(initialIndex:searchStoreUserController.initialIndex.value,length: 3, vsync: this);
+    _tabController = TabController(
+        initialIndex: searchStoreUserController.initialIndex.value,
+        length: 3,
+        vsync: this);
 
     updateCurrentLocation();
     super.initState();
@@ -85,14 +88,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(() => Text(
-                                      "Hi, "
-                                      "${searchStoreUserController.firstName!.value} ${searchStoreUserController.lastName!.value}",
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
-                                    )),
+                                Text(
+                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
