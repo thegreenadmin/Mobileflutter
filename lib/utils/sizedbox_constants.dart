@@ -43,3 +43,5 @@ SizedBox width25SizedBox = const SizedBox(width: 25);
 SizedBox width30SizedBox = const SizedBox(width: 30);
 SizedBox width40SizedBox = const SizedBox(width: 40);
 SizedBox width50SizedBox = const SizedBox(width: 50);
+//Shrink SIZED-BOX
+SizedBox shrinkSizedBox = const SizedBox.shrink();

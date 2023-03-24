@@ -62,6 +62,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                       itemCount: searchStoreUserController
                               .storeAddresses.length +
                           (searchStoreUserController.isLoading.value ? 1 : 0),
+                      primary: false,
+                      shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         if (index <
                             searchStoreUserController.storeAddresses.length) {
@@ -94,15 +96,15 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundImage:
-                                                searchStoreUserController.storeAddresses[index].store?.logo?.dynamicUrl == null ||
+                                                searchStoreUserController.storeAddresses[index].store?.image?.dynamicUrl == null ||
                                                         searchStoreUserController
-                                                            .storeAddresses[index].store!.logo!.dynamicUrl!.isEmpty
+                                                            .storeAddresses[index].store!.image!.dynamicUrl!.isEmpty
                                                     ? const AssetImage(
                                                             "assets/storeicon.png")
                                                         as ImageProvider
                                                     : NetworkImage(
                                                         searchStoreUserController
-                                                                .storeAddresses[index].store?.logo?.dynamicUrl.toString() ?? ""),
+                                                                .storeAddresses[index].store?.image?.dynamicUrl.toString() ?? ""),
                                             backgroundColor: Colors.transparent,
                                           ),
                                         ),
@@ -192,67 +194,81 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/inStore.png",
-                                            scale: 2.5,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.inStoreText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                    Visibility(
+                                      visible:searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.isNotEmpty &&
+                                          searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.any((element) => element.deliveryServiceId=="1"),
+                                      replacement:  shrinkSizedBox,
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Get.to(() =>
+                                          //     const SearchStoreUserScreen());
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/inStore.png",
+                                              scale: 2.5,
+                                            ),
+                                            width3SizedBox,
+                                            Text(
+                                              StringConstants.inStoreText,
+                                              style: const TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/delivery.png",
-                                            scale: 2.5,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.deliveryText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                    Visibility(
+                                      visible:searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.isNotEmpty &&
+                                          searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.any((element) => element.deliveryServiceId=="2"),
+                                      replacement:  shrinkSizedBox,
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Get.to(() =>
+                                          //     const SearchStoreUserScreen());
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/delivery.png",
+                                              scale: 2.5,
+                                            ),
+                                            width3SizedBox,
+                                            Text(
+                                              StringConstants.deliveryText,
+                                              style: const TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/curb.png",
-                                            scale: 1.8,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.curbSideText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                    Visibility(
+                                      visible:searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.isNotEmpty &&
+                                          searchStoreUserController.storeAddresses[index].store!.storeDeliveryServices!.any((element) => element.deliveryServiceId=="3"),
+                                      replacement:  shrinkSizedBox,
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Get.to(() => const SearchStoreUserScreen());
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/curb.png",
+                                              scale: 1.8,
+                                            ),
+                                            width3SizedBox,
+                                            Text(
+                                              StringConstants.curbSideText,
+                                              style: const TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     RawMaterialButton(
@@ -283,7 +299,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             ),
                           );
                         } else if (searchStoreUserController.isLoading.value) {
-                          Timer(const Duration(milliseconds: 30), () {
+                          Timer(const Duration(milliseconds: 10), () {
                             searchStoreUserController.scrollController.jumpTo(
                                 searchStoreUserController.scrollController.position.maxScrollExtent);
                           });

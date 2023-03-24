@@ -24,6 +24,7 @@ import '../model/categories_model.dart';
 
 class SearchStoreOwnerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   TextEditingController storeNameTextController = TextEditingController();
   TextEditingController einTextController = TextEditingController();
   TextEditingController nickNameTextController = TextEditingController();
@@ -38,6 +39,7 @@ class SearchStoreOwnerController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController workingDaysTextController = TextEditingController();
+  TextEditingController deliveryServicesTextController = TextEditingController();
 
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
@@ -47,6 +49,7 @@ class SearchStoreOwnerController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool is247Time = false.obs;
   RxBool isEnabled = false.obs;
+  RxBool isStoreLogoSelected = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -59,20 +62,19 @@ class SearchStoreOwnerController extends GetxController {
   RxString storeLocation = "".obs;
   RxString? storeImage = "".obs;
   RxString? storeLogo = "".obs;
-  RxInt? addressListIndex = 0.obs;
-  RxBool isStoreLogoSelected = false.obs;
-  RxInt selectedIndex = 0.obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
-
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
-  RxInt countryIndex = 0.obs;
-
   RxString stateDropdownValue = "".obs;
   CountriesList? selectedValue;
   RxString stateId = "".obs;
+
+  RxInt? addressListIndex = 0.obs;
   RxInt stateIndex = 0.obs;
+  RxInt countryIndex = 0.obs;
+  RxInt selectedIndex = 0.obs;
+  RxInt radioGroupValue = 0.obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
@@ -90,10 +92,12 @@ class SearchStoreOwnerController extends GetxController {
   RxList<Products> storeProductList = <Products>[].obs;
 
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
-  RxList<dynamic> storeAddresses = <dynamic>[].obs;
 
+  RxList<dynamic> storeAddresses = <dynamic>[].obs;
   RxList<dynamic> storeTimings = <dynamic>[].obs;
+  RxList<dynamic> storeDeliveryServices = <dynamic>[].obs;
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+  RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
 
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
   RxString editStoreImageDynamicLinkfromServer = "".obs;
@@ -103,8 +107,6 @@ class SearchStoreOwnerController extends GetxController {
 
   Rx<XFile> editStoreImage = XFile("").obs;
   Rx<XFile> editStoreLogo = XFile("").obs;
-
-  RxInt radioGroupValue = 0.obs;
 
   RxList<Categories> weekDaysList = [
     Categories(id: 1, name: "Monday", isSelected: false),
@@ -123,6 +125,7 @@ class SearchStoreOwnerController extends GetxController {
     firstName!.value = Get.arguments["firstName"] ?? "";
     lastName!.value = Get.arguments["lastName"] ?? "";
     apiGetStoreList();
+    apiGetDeliveryServices();
   }
 
   bool validateAndSave() {
@@ -451,7 +454,18 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['store_addresses'] ?? [];
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
+        storeDeliveryServices.value=
+            value?.body["data"]['store']['store_delivery_services'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
+       if(storeDeliveryServices.isNotEmpty){
+         for (var sData in storeDeliveryServices) {
+           for (var element in deliveryServices) {
+             if (sData["delivery_service_id"] == element.id) {
+               element.isSelected = sData["is_enabled"];
+             }
+           }
+         }
+       }
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =

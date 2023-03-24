@@ -427,7 +427,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            addNewStoreController.storeNameTextController,
+                            addNewStoreController.storeNickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {

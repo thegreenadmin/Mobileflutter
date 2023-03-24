@@ -55,6 +55,7 @@ class SearchStoreUserController extends GetxController {
   //Get Nearby Stores Api
   Future apiGetNearByStores({bool isFilter = false}) async {
     isDataLoading.value= true;
+    nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value= storeAddresses.isNotEmpty?true:false;
     isFavLoading.value= favStoreAddresses.isNotEmpty?true:false;
     debugPrint(
@@ -69,12 +70,11 @@ class SearchStoreUserController extends GetxController {
     Map data = {
       "q": "",
       "page": page.value,
-      "page_size": 3,
+      "page_size":3,
       "longitude": 37.0902,
       "latitude": 95.7129,
       "postal_code": zipCodeTextController.text!=""?zipCodeTextController.text:null,
-      "mileage":  mileageTextController.text!=""?
-      int.parse(mileageTextController.text):1000,
+      "mileage":  mileageTextController.text!=""? int.parse(mileageTextController.text):1000,
       "is_open_now": isOpenNow.value,
       "opening_time": openingTimeTextController.text!=""?Utility.formatDateTime(openingTimeTextController.text,
               firstFormat: "hh:mm a",secFormat: "hh:mm:ss"):"00:00:00",
@@ -85,8 +85,7 @@ class SearchStoreUserController extends GetxController {
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-        data,
+        .postWithHeadersApi(data,
             ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
             headers, showLoading: page.value==1)
         .then((value) async {
@@ -96,15 +95,21 @@ class SearchStoreUserController extends GetxController {
       debugPrint("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
-        if(nearbyStoreListResponse.data!.storeAddresses!.isNotEmpty){
-          if(page.value==1) {storeAddresses.value = [];favStoreAddresses.value=[];}
-        storeAddresses.addAll(nearbyStoreListResponse.data!.storeAddresses as Iterable<StoreAddress>);
+        List<StoreAddress>? storeAddressesNewList = [];
+        storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses;
+        if(storeAddressesNewList!.isNotEmpty){
+          if(page.value==1) {
+            storeAddresses.value = [];
+            favStoreAddresses.value=[];
+          }
+        storeAddresses.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
             if(element.store?.isFavouriteStore==true){
               favStoreAddresses.add(element);
             }
           }
         }
+        storeAddresses.toSet().toList();
          page.value++;
         update();
         if(isFilter){
@@ -118,7 +123,6 @@ class SearchStoreUserController extends GetxController {
           favStoreAddresses.clear();
           Get.back();
         }
-        // storeAddresses.addAll(storeAddresses);
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

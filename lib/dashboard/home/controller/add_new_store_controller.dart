@@ -337,6 +337,7 @@ class AddNewStoreController extends GetxController {
         addressLine2TextController.clear();
         townOrCityTextController.clear();
         zipCodeTextController.clear();
+        deliveryServicesTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
       } else if (value.body["status"] == 403) {

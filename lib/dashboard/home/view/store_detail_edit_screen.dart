@@ -1353,66 +1353,38 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 if (searchStoreOwnerController
                                     .storeTimings.isNotEmpty) {
                                   for (int i = 0;
-                                      i <
-                                          searchStoreOwnerController
-                                              .weekDaysList.length;
+                                      i < searchStoreOwnerController.weekDaysList.length;
                                       i++) {
                                     for (var element
-                                        in searchStoreOwnerController
-                                            .storeTimings) {
+                                        in searchStoreOwnerController.storeTimings) {
                                       if (element["day_of_week"] ==
-                                          searchStoreOwnerController
-                                              .weekDaysList[i].id) {
-                                        print(
-                                            "store_timing_id  =====${element["store_timing_id"]} =========== ");
-                                        searchStoreOwnerController
-                                            .storeTimmingList
-                                            .add({
-                                          "store_timing_id":
-                                              element["store_timing_id"],
+                                          searchStoreOwnerController.weekDaysList[i].id) {
+                                        searchStoreOwnerController.storeTimmingList.add({
+                                          "store_timing_id": element["store_timing_id"],
                                           "is_24_hours_active": false,
-                                          "status": searchStoreOwnerController
-                                                      .weekDaysList[i]
-                                                      .isSelected ==
-                                                  true
-                                              ? "active"
-                                              : "deleted",
-                                          "day_of_week":
-                                              searchStoreOwnerController
-                                                  .weekDaysList[i].id,
+                                          "status": searchStoreOwnerController.weekDaysList[i].isSelected == true
+                                              ? "active" : "deleted",
+                                          "day_of_week": searchStoreOwnerController.weekDaysList[i].id,
                                           "opening_time": Utility.formatDateTime(
                                                   searchStoreOwnerController
-                                                      .openingTimeTextController
-                                                      .text
-                                                      .trim(),
+                                                      .openingTimeTextController.text.trim(),
                                                   firstFormat: "hh:mm a",
                                                   secFormat: "hh:mm:ss")
                                               .toString(),
                                           "closing_time": Utility.formatDateTime(
-                                                  searchStoreOwnerController
-                                                      .closingTimeTextController
-                                                      .text
-                                                      .trim(),
-                                                  firstFormat: "hh:mm a",
-                                                  secFormat: "hh:mm:ss")
-                                              .toString()
+                                                  searchStoreOwnerController.closingTimeTextController.text
+                                                      .trim(), firstFormat: "hh:mm a",
+                                                  secFormat: "hh:mm:ss").toString()
                                         });
                                       }
                                     }
-                                    if (searchStoreOwnerController
-                                            .weekDaysList[i].isSelected ==
+                                    if (searchStoreOwnerController.weekDaysList[i].isSelected ==
                                         true) {
-                                      print(
-                                          "store_user_timing_id =====${searchStoreOwnerController.weekDaysList[i].isSelected} ==================== ");
-                                      // if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
                                       if (!searchStoreOwnerController
-                                          .storeTimmingList
-                                          .any((element) =>
+                                          .storeTimmingList.any((element) =>
                                               element["day_of_week"] ==
-                                              searchStoreOwnerController
-                                                  .weekDaysList[i].id)) {
-                                        searchStoreOwnerController
-                                            .storeTimmingList
+                                              searchStoreOwnerController.weekDaysList[i].id)) {
+                                        searchStoreOwnerController.storeTimmingList
                                             .add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
@@ -1435,18 +1407,11 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                     }
                                   }
                                 } else {
-                                  print(
-                                      "store_user_timing_id =====null ==================== ");
-                                  for (int i = 0;
-                                      i <
-                                          searchStoreOwnerController
-                                              .weekDaysList.length;
+                                for (int i = 0; i < searchStoreOwnerController.weekDaysList.length;
                                       i++) {
-                                    if (searchStoreOwnerController
-                                            .weekDaysList[i].isSelected ==
+                                    if (searchStoreOwnerController.weekDaysList[i].isSelected ==
                                         true) {
-                                      searchStoreOwnerController
-                                          .storeTimmingList
+                                      searchStoreOwnerController.storeTimmingList
                                           .add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
@@ -1482,6 +1447,61 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           : height0SizedBox,
                     ),
                     height15SizedBox,
+                    Text(
+                      StringConstants.deliveryMethodsText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ), height4SizedBox,
+                    MultiCustomDropDown(
+                        onChanged: (v) {
+                          searchStoreOwnerController.deliveryServicesList.clear();
+                          if(searchStoreOwnerController.storeDeliveryServices.isNotEmpty){
+                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
+                              for (var element in searchStoreOwnerController.storeDeliveryServices) {
+                                if(element["delivery_service_id"] == searchStoreOwnerController.deliveryServices[i].id ){
+                                  searchStoreOwnerController.deliveryServicesList.add({
+                                    "store_delivery_service_id": element["store_delivery_service_id"] ,
+                                    "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
+                                    "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                                    "status": "active"
+                                  });
+                                }
+                              }
+                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true) {
+                                searchStoreOwnerController.deliveryServicesList.add({
+                                  "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
+                                  "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                                  "status": "active"
+                                });
+                              }
+                            }
+                          }else{
+                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
+                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true) {
+                                searchStoreOwnerController.deliveryServicesList.add({
+                                  "store_delivery_service_id": null,
+                                  "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
+                                  "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                                  "status": "active"
+                                });
+                              }
+                            }
+                          }
+
+                        },
+                        validator: (v) {
+                          if (v!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterDeliveryServicesText;
+                          }
+                          return null;
+                        },
+                        controller: searchStoreOwnerController.deliveryServicesTextController,
+                        hintText: StringConstants.selectDeliveryServicesText,
+                        title: StringConstants.selectDeliveryServicesText,
+                        list: searchStoreOwnerController.deliveryServices),
+                    height20SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1512,8 +1532,7 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               activeColor: AppColors.greymediumlight,
                               inactiveColor: AppColors.greymediumlight,
                               onToggle: (val) {
-                                searchStoreOwnerController.isEnabled.value =
-                                    val;
+                                searchStoreOwnerController.isEnabled.value = val;
                               },
                             )),
                       ],
