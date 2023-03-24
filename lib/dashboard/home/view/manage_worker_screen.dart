@@ -360,40 +360,45 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                       .storeUserTimings!
                                                       .isNotEmpty,
                                               replacement: height0SizedBox,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                              child: Column(
                                                 children: [
-                                                  Image.asset(
-                                                    "assets/watch.png",
-                                                    scale: 2.5,
-                                                  ),
-                                                  width5SizedBox,
-                                                  SizedBox(
-                                                    width: 120,
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          "${concatenate.toString()} \n "
-                                                          "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
-                                                              "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 12.0,
-                                                              color: AppColors
-                                                                  .blacklight),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/watch.png",
+                                                        scale: 2.5,
+                                                      ),
+                                                      width5SizedBox,
+                                                      SizedBox(
+                                                        width: 120,
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              "${concatenate.toString()} \n "
+                                                              "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
+                                                                  "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontSize: 12.0,
+                                                                  color: AppColors
+                                                                      .blacklight),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                      )
+                                                    ],
+                                                  ),
+                                                  height8SizedBox,
                                                 ],
                                               ),
                                             ),
-                                            height8SizedBox,
+
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,

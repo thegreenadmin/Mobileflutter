@@ -16,6 +16,7 @@ class AddWorkerRequest {
     this.email,
     this.imageUrl,
     this.employeeTimings,
+    this.roleId,
   });
 
   int? storeId;
@@ -25,6 +26,7 @@ class AddWorkerRequest {
   String? email;
   String? imageUrl;
   List<EmployeeTiming>? employeeTimings;
+  int? roleId;
 
   AddWorkerRequest copyWith({
     int? storeId,
@@ -34,6 +36,7 @@ class AddWorkerRequest {
     String? email,
     String? imageUrl,
     List<EmployeeTiming>? employeeTimings,
+    int? roleId,
   }) =>
       AddWorkerRequest(
         storeId: storeId ?? this.storeId,
@@ -43,6 +46,7 @@ class AddWorkerRequest {
         email: email ?? this.email,
         imageUrl: imageUrl ?? this.imageUrl,
         employeeTimings: employeeTimings ?? this.employeeTimings,
+        roleId: roleId ?? this.roleId,
       );
 
   factory AddWorkerRequest.fromJson(Map<String, dynamic> json) => AddWorkerRequest(
@@ -53,6 +57,7 @@ class AddWorkerRequest {
     email: json["email"],
     imageUrl: json["image_url"],
     employeeTimings: json["employee_timings"] == null ? [] : List<EmployeeTiming>.from(json["employee_timings"]!.map((x) => EmployeeTiming.fromJson(x))),
+    roleId: json["role_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -63,6 +68,7 @@ class AddWorkerRequest {
     "email": email,
     "image_url": imageUrl,
     "employee_timings": employeeTimings == null ? [] : List<dynamic>.from(employeeTimings!.map((x) => x.toJson())),
+    "role_id": roleId,
   };
 }
 
