@@ -91,11 +91,8 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             : SizedBox(
                                 height: 100,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.separated(
-                                      separatorBuilder: (BuildContext context, int index) {
-                                        return width8SizedBox;
-                                      },
+                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: manageStoreController.imageUrlList.length,
@@ -105,9 +102,12 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                             : Stack(
                                                 alignment: Alignment.topRight,
                                                 children: [
-                                                  Image.network(
-                                                    manageStoreController.imageUrlList[index].dynamicImageUrl!,
-                                                    fit: BoxFit.cover,
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(4.0),
+                                                    child: Image.network(
+                                                      manageStoreController.imageUrlList[index].dynamicImageUrl!,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                   InkWell(
                                                     onTap: () {

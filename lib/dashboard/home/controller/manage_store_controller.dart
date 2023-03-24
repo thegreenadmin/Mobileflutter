@@ -433,11 +433,13 @@ class ManageStoreController extends GetxController {
         for (int i = 0; i < value.body["data"]['product']['product_images'].length; i++) {
           var image = value.body["data"]['product']['product_images'][i];
           imageUrlList.add(ProductImagesList(
+              productImageId: image['product_image_id'],
               imageUrl: image["image"]["orignal_url"],
               dynamicImageUrl: image["image"]["dynamic_url"],
               order: image["order"],
               status: image["status"]));
         }
+        inputData.productImages = imageUrlList;
         discountOrOfferTextController.text = value.body["data"]['product']["discount_value"].toString();
         quantityValue.value = value.body["data"]['product']["quantity_type_id"].toString();
         quantityTextController.text = value.body["data"]['product']["quantity"].toString();
@@ -505,6 +507,7 @@ class ManageStoreController extends GetxController {
 
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
+    product.productId = int.parse(productId.value);
     product.quantityTypeId = int.parse(quantityValue.value);
     product.quantity = int.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
@@ -622,7 +625,7 @@ class ManageStoreController extends GetxController {
       ]
     };
     debugPrint("UPDATE STORE PRODUCT BODY********************${inputData.toJson()}");
-    /*UserProvider()
+    UserProvider()
         .putWithHeadersApi(
             inputData, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}", headers,
             showLoading: true)
@@ -656,7 +659,7 @@ class ManageStoreController extends GetxController {
       } else {
         Utility.showToast(value.body['message']);
       }
-    });*/
+    });
   }
 
 //Api Delete Product

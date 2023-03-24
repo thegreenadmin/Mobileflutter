@@ -68,13 +68,15 @@ class InputAddProduct {
 class ProductImagesList {
   String? imageUrl;
   String? dynamicImageUrl;
+  String? productImageId;
   String? status;
   int? order;
 
-  ProductImagesList({this.imageUrl, this.status, this.dynamicImageUrl, this.order});
+  ProductImagesList({this.imageUrl, this.productImageId, this.status, this.dynamicImageUrl, this.order});
 
   ProductImagesList.fromJson(Map<String, dynamic> json) {
     imageUrl = json['image_url'];
+    productImageId = json['product_image_id'];
     order = json['order'];
     status = json['status'];
     dynamicImageUrl = json['dynamic_url'];
@@ -82,6 +84,7 @@ class ProductImagesList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_image_id'] = productImageId;
     data['image_url'] = imageUrl;
     data['order'] = order;
     data['status'] = status;
@@ -91,6 +94,7 @@ class ProductImagesList {
 
 class Product {
   int? quantityTypeId;
+  int? productId;
   int? quantity;
   bool? isFeaturedProduct;
   String? productName;
@@ -109,6 +113,7 @@ class Product {
 
   Product(
       {this.quantityTypeId,
+      this.productId,
       this.quantity,
       this.isFeaturedProduct,
       this.productName,
@@ -126,6 +131,7 @@ class Product {
       this.isEnabled});
 
   Product.fromJson(Map<String, dynamic> json) {
+    productId = json['product_id'];
     quantityTypeId = json['quantity_type_id'];
     quantity = json['quantity'];
     isFeaturedProduct = json['is_featured_product'];
@@ -147,6 +153,7 @@ class Product {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['quantity_type_id'] = quantityTypeId;
+    data['product_id'] = productId;
     data['quantity'] = quantity;
     data['is_featured_product'] = isFeaturedProduct;
     data['product_name'] = productName;
@@ -194,7 +201,7 @@ class ProductCategory {
     categoryId = json['category_id'];
     productCategoryId = json['product_category_id'];
     status = json['status'];
-    category = json['category'];
+    category = json['category'] != null ? Categorys.fromJson(json['category']) : null;
   }
 
   Map<String, dynamic> toJson() {
