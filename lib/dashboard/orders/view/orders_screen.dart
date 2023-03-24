@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -124,7 +125,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Hi, ${ordersController.firstName!.value} ${ordersController.lastName!.value}",
+                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
                               style: const TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,

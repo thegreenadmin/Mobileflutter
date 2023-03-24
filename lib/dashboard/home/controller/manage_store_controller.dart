@@ -36,7 +36,7 @@ class ManageStoreController extends GetxController {
   TextEditingController weightTextController = TextEditingController();
   TextEditingController daysTextController = TextEditingController();
 
-  RxList<Map> selectedCategories = <Map>[].obs;
+  RxList selectedCategories = [].obs;
   RxBool autoValidate = false.obs;
   RxBool isFeaturedSelectedType = false.obs;
   RxBool updateAutoValidate = false.obs;
@@ -84,7 +84,7 @@ class ManageStoreController extends GetxController {
     final List<XFile> selectedImages = await imagePicker.pickMultiImage();
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
-      apiUploadMultipleImage();
+      apiUploadMultipleImage(imageUrlList.length);
     }
   }
 
@@ -160,7 +160,7 @@ class ManageStoreController extends GetxController {
   }
 
   //Api upload image to server
-  Future<Future<bool?>?> apiUploadMultipleImage() async {
+  Future<Future<bool?>?> apiUploadMultipleImage(length) async {
     // create multipart request
     var request = http.MultipartRequest(
         'POST',
@@ -188,9 +188,14 @@ class ManageStoreController extends GetxController {
         for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
           var imageData = jsonDecode(value)['data']['files'][i];
           imagesList.add(ProductImagesList(
-              imageUrl: imageData['orignal_url'], order: i + 1));
+              imageUrl: imageData['orignal_url'],
+              order: length + 1 + i,
+              status: 'active',
+              dynamicImageUrl: imageData['dynamic_url']));
         }
+        imageUrlList.value.addAll(imagesList);
         inputData.productImages = imagesList;
+        imageUrlList.refresh();
       });
     } else {
       Utility.showToast("Please Select atleast one image");
@@ -512,6 +517,8 @@ class ManageStoreController extends GetxController {
             value.body["data"]['product']["height"].toString();
         weightTextController.text =
             value.body["data"]['product']["weight"].toString();
+        selectedCategories.value =
+            value.body["data"]['product']['product_categories'] ?? [];
         productContent.value =
             value.body["data"]['product']["product_contents"] ?? [];
         productLinks.value =
@@ -549,6 +556,78 @@ class ManageStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
+
+    inputData.storeId = int.parse(storeId.value);
+    Product product = Product();
+    product.quantityTypeId = int.parse(quantityValue.value);
+    product.quantity = int.parse(quantityTextController.text.trim());
+    product.isFeaturedProduct = isFeatured.value;
+    product.productName = productNameTextController.text.trim();
+    product.description = shortDescriptionTextController.text.trim();
+    product.productPrice = int.parse(pricePerUnitTextController.text.trim());
+    product.sellingPrice = int.parse(pricePerUnitTextController.text.trim());
+    product.discountType = discountType.value.isEmpty
+        ? "amount"
+        : discountType.value.toLowerCase();
+    product.discountValue = int.parse(
+        discountOrOfferTextController.text.trim().isEmpty
+            ? "0"
+            : discountOrOfferTextController.text.trim());
+    product.isProductReturnable = isProductReturnable.value;
+    product.returnDaysCount = daysTextController.text.trim().isEmpty
+        ? 0
+        : int.parse(daysTextController.text.trim());
+    product.length = int.parse(lengthTextController.text.trim());
+    product.width = int.parse(breadthTextController.text.trim());
+    product.height = int.parse(heightTextController.text.trim());
+    product.weight = int.parse(weightTextController.text.trim());
+    product.isEnabled = isEnabled.value;
+    inputData.product = product;
+    List<ProductCategory> listProductCategory = <ProductCategory>[];
+    for (int i = 0; i < selectedCategories.length; i++) {
+      ProductCategory productCategory = ProductCategory();
+      productCategory.status = selectedCategories[i]['status'];
+      productCategory.productCategoryId =
+          selectedCategories[i]['product_category_id'];
+      productCategory.category = Categorys(
+          categoryId:
+              int.parse(selectedCategories[i]['category']["category_id"]));
+      listProductCategory.add(productCategory);
+    }
+    inputData.productCategories = listProductCategory;
+    inputData.productLinks = <ProductLink>[
+      ProductLink(
+          name: "Product link 1",
+          link: lastProductLink.value != additionalLinkTextController.text
+              ? additionalLinkTextController.text
+              : lastProductLink.value,
+          order: 1,
+          status: lastProductLink.value != additionalLinkTextController.text
+              ? "active"
+              : "deleted",
+          productLinkId:
+              lastProductLink.value != additionalLinkTextController.text
+                  ? null
+                  : "1")
+    ];
+    inputData.productContents = <ProductContent>[
+      ProductContent(
+        heading: "Demo heading 1",
+        paragraph:
+            lastProductContent.value != contentsAndStrainsTextController.text
+                ? contentsAndStrainsTextController.text
+                : lastProductContent.value,
+        order: 1,
+        productContentId:
+            lastProductContent.value != contentsAndStrainsTextController.text
+                ? null
+                : "1",
+        status: lastProductContent.value != additionalLinkTextController.text
+            ? "active"
+            : "deleted",
+      )
+    ];
+
     Map data = {
       "store_id": storeId.value,
       "product": {
@@ -628,12 +707,11 @@ class ManageStoreController extends GetxController {
         },
       ]
     };
-    debugPrint("UPDATE STORE PRODUCT BODY********************$data");
-    UserProvider()
+    debugPrint(
+        "UPDATE STORE PRODUCT BODY********************${inputData.toJson()}");
+    /*UserProvider()
         .putWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}",
-            headers,
+            inputData, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
@@ -665,7 +743,7 @@ class ManageStoreController extends GetxController {
       } else {
         Utility.showToast(value.body['message']);
       }
-    });
+    });*/
   }
 
 //Api Delete Product

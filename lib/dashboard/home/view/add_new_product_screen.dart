@@ -292,29 +292,45 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                       .categoriesList[i]
                                                       .isSelected ==
                                                   false) {
-                                                manageStoreController
-                                                    .selectedCategories
-                                                    .add({
-                                                  "category_id":
+                                                for (var item
+                                                    in manageStoreController
+                                                        .selectedCategories) {
+                                                  if (item['category_id'] ==
                                                       manageStoreController
                                                           .categoriesList[i]
-                                                          .categoryId
-                                                });
+                                                          .categoryId) {
+                                                    item['status'] = "deleted";
+                                                    print(manageStoreController
+                                                        .selectedCategories);
+                                                  }
+                                                }
                                                 manageStoreController
                                                     .categoriesList[i]
                                                     .isSelected = true;
-                                              } else {
-                                                manageStoreController
+                                                print(manageStoreController
                                                     .selectedCategories
-                                                    .removeWhere((item) =>
-                                                        item['category_id'] ==
-                                                        manageStoreController
-                                                            .categoriesList[i]
-                                                            .categoryId);
+                                                    .toString());
+                                              } else {
+                                                for (var item
+                                                    in manageStoreController
+                                                        .selectedCategories) {
+                                                  if (item['category_id'] ==
+                                                      manageStoreController
+                                                          .categoriesList[i]
+                                                          .categoryId) {
+                                                    item['status'] = "active";
+                                                    print(manageStoreController
+                                                        .selectedCategories);
+                                                  }
+                                                }
                                                 manageStoreController
                                                     .categoriesList[i]
                                                     .isSelected = false;
+                                                print(manageStoreController
+                                                    .selectedCategories
+                                                    .toString());
                                               }
+                                              setState(() {});
                                               print(manageStoreController
                                                   .selectedCategories);
                                             },
@@ -337,14 +353,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                     ),
                                                   ],
                                                   color: manageStoreController
-                                                              .selectedCategories
-                                                              .any((item) =>
-                                                                  item[
-                                                                      'category_id'] ==
-                                                                  manageStoreController
-                                                                      .categoriesList[
-                                                                          i]
-                                                                      .categoryId) ==
+                                                              .categoriesList[i]
+                                                              .isSelected ==
                                                           true
                                                       ? AppColors.primary
                                                       : AppColors.primarylight,
@@ -363,14 +373,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
                                                     color: manageStoreController
-                                                                .selectedCategories
-                                                                .any((item) =>
-                                                                    item[
-                                                                        'category_id'] ==
-                                                                    manageStoreController
-                                                                        .categoriesList[
-                                                                            i]
-                                                                        .categoryId) ==
+                                                                .categoriesList[
+                                                                    i]
+                                                                .isSelected ==
                                                             true
                                                         ? AppColors.primarylight
                                                         : AppColors.primary,
