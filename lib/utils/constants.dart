@@ -75,6 +75,7 @@ class StringConstants {
   static String discountsOrOffersText = "Discounts or Offers";
   static String deliveryBoyText = "Delivery Boy";
   static String daysText = "Days";
+  static String deliveryMethodsText = "Delivery Methods";
 
   //E
 
@@ -158,6 +159,7 @@ class StringConstants {
   static String noProductFoundText = "No products found";
   static String noStoresFoundText = "No stores found";
   static String noWorkersFoundText = "No workers found";
+  static String noNearbyStoreFoundText = "No nearby store found";
   static String noCategoriesFoundText = "No Categories found";
   static String noPermissionsFoundText = " No permissions found";
   static String noRolesFoundText = "No Roles found";
@@ -216,6 +218,7 @@ class StringConstants {
   static String skipText = "Skip";
   static String storeText = "Store";
   static String storesText = "Stores";
+  static String storeHoursText = "Store hours: 24/7 hours";
 
   static String successText = "Success";
   static String sendConfirmationCodeText = "Send Confirmation Code";
@@ -247,6 +250,7 @@ class StringConstants {
   static String shortDescriptionText = "Short Description";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
+  static String selectDeliveryServicesText = "Select Delivery Services";
   static String startTimeText = "Start Time";
   static String selectTimeText = "Select Time";
   static String storePersonText = "Store Person";
@@ -359,6 +363,7 @@ class AlertStringConstants {
   static String pleaseEnterTownOrCityText = "Please enter town or city";
   static String pleaseEnterZipCodeText = "Please enter zip code";
   static String pleaseEnterWeekDaysText = "Please select week days";
+  static String pleaseEnterDeliveryServicesText = "Please select delivery services";
   static String pleaseSelectOpeningTimeText = "Please select opening time";
   static String pleaseSelectClosingTimeText = "Please select closing time";
   static String pleaseEnterStateText = "Please enter state";

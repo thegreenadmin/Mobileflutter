@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -13,13 +14,9 @@ class StoreMenuScreen extends StatefulWidget {
 }
 
 class _StoreMenuScreenState extends State<StoreMenuScreen> {
-  List storeCategoriesList = [
-    "Topical medicines",
-    "Suppositories",
-    "Drops",
-    "Inhalers",
-    "Injections"
-  ];
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +34,35 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
           ),
           height5SizedBox,
           Expanded(
-            child: ListView.separated(
+            child: Obx(()=>storeHomeMainController.categoriesList.isEmpty
+                ? storeHomeMainController.isLoading.value == true
+                ? height0SizedBox
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          "assets/nodata.png",
+                          scale: 8,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      height4SizedBox,
+                      Center(
+                        child: Text(
+                          StringConstants.noCategoriesFoundText,
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  )
+                : ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return height6SizedBox;
                 },
-                itemCount: storeCategoriesList.length,
+                itemCount: storeHomeMainController.categoriesList.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
@@ -81,14 +102,17 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      storeCategoriesList[index],
+                                      storeHomeMainController.categoriesList[index].categoryName??'',
                                       style: const TextStyle(
                                           fontSize: 16.0,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w500),
                                     ),
                                     height10SizedBox,
-                                    Text("12 Product",
+                                    Text(
+                                        storeHomeMainController.categoriesList[index].totalProducts!>1?
+                                        "${storeHomeMainController.categoriesList[index].totalProducts.toString()} products" :
+                                        "${storeHomeMainController.categoriesList[index].totalProducts.toString()} product" ,
                                         style: TextStyle(
                                             fontSize: 14.0,
                                             color: AppColors.blacklight,
@@ -107,7 +131,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                       ]),
                     ),
                   );
-                }),
+                }),)
           ),
         ]),
       ),

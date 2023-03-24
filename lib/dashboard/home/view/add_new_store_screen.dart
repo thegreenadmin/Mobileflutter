@@ -1365,27 +1365,16 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ? MultiCustomDropDown(
                               onChanged: (v) {
                                 addNewStoreController.storeTimmingList.clear();
-                                String selectedDays = "";
                                 for (int i = 0;
-                                    i <
-                                        addNewStoreController
-                                            .weekDaysList.length;
+                                    i < addNewStoreController.weekDaysList.length;
                                     i++) {
                                   if (addNewStoreController
                                           .weekDaysList[i].isSelected ==
                                       true) {
-                                    if (selectedDays.isEmpty) {
-                                      selectedDays =
-                                          "${addNewStoreController.weekDaysList[i].name}";
-                                    } else {
-                                      selectedDays =
-                                          "$selectedDays, ${addNewStoreController.weekDaysList[i].name}";
-                                    }
                                     addNewStoreController.storeTimmingList.add({
                                       "is_24_hours_active": false,
                                       "day_of_week": addNewStoreController
                                           .weekDaysList[i].id,
-                                      //(i + 1).toString(),
                                       "opening_time": addNewStoreController
                                           .openingTime.value,
                                       "closing_time": addNewStoreController
@@ -1393,12 +1382,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     });
                                   }
                                 }
-                                print("top list" + v.toString());
-                                print("LISTTTTTTTTTTTTT" +
-                                    addNewStoreController.storeTimmingList
-                                        .toString());
-                                addNewStoreController.workingDaysTextController
-                                    .text = selectedDays;
                               },
                               validator: (v) {
                                 if (v!.trim().isEmpty) {
@@ -1414,7 +1397,50 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               list: addNewStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
+                    height20SizedBox,
+
+                    Text(
+                      StringConstants.deliveryMethodsText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ), height4SizedBox,
+                    MultiCustomDropDown(
+                        onChanged: (v) {
+                          addNewStoreController.deliveryServicesList.clear();
+
+                          for (int i = 0;
+                          i <
+                              addNewStoreController
+                                  .deliveryServices.length;
+                          i++) {
+                            if (addNewStoreController
+                                .deliveryServices[i].isSelected ==
+                                true) {
+                              addNewStoreController.deliveryServicesList.add({
+                              "delivery_service_id": addNewStoreController
+                                  .deliveryServices[i].id,
+                              "is_enabled": true,
+                              "status": "active"
+                              });
+                            }
+                          }
+                        },
+                        validator: (v) {
+                          if (v!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterDeliveryServicesText;
+                          }
+                          return null;
+                        },
+                        controller: addNewStoreController
+                            .deliveryServicesTextController,
+                        hintText: StringConstants.selectDeliveryServicesText,
+                        title: StringConstants.selectDeliveryServicesText,
+                        list: addNewStoreController.deliveryServices),
                     height40SizedBox,
+
                     CustomButton(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,

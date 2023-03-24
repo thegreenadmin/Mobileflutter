@@ -29,6 +29,7 @@ class SearchStoreUserScreen extends StatefulWidget {
 
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
+
   TabController? _tabController;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
@@ -43,7 +44,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(initialIndex:searchStoreUserController.initialIndex.value,length: 3, vsync: this);
 
     updateCurrentLocation();
     super.initState();

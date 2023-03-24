@@ -15,12 +15,12 @@ class NearbyStoreListResponse {
     this.data,
   });
 
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
   NearbyStoreListResponse copyWith({
-    int? status,
+    dynamic status,
     String? message,
     Data? data,
   }) =>
@@ -49,11 +49,11 @@ class Data {
     this.storeAddresses,
   });
 
-  int? totalCount;
+  dynamic totalCount;
   List<StoreAddress>? storeAddresses;
 
   Data copyWith({
-    int? totalCount,
+    dynamic totalCount,
     List<StoreAddress>? storeAddresses,
   }) =>
       Data(
@@ -96,7 +96,7 @@ class StoreAddress {
   String? landmark;
   String? city;
   String? postalCode;
-  int? distance;
+  dynamic distance;
   Store? store;
 
   StoreAddress copyWith({
@@ -109,7 +109,7 @@ class StoreAddress {
     String? landmark,
     String? city,
     String? postalCode,
-    int? distance,
+    dynamic distance,
     Store? store,
   }) =>
       StoreAddress(
@@ -261,7 +261,7 @@ class StoreTiming {
 
   String? storeTimingId;
   bool? is24HoursActive;
-  int? dayOfWeek;
+  dynamic dayOfWeek;
   String? openingTime;
   String? closingTime;
   String? status;
@@ -269,7 +269,7 @@ class StoreTiming {
   StoreTiming copyWith({
     String? storeTimingId,
     bool? is24HoursActive,
-    int? dayOfWeek,
+    dynamic dayOfWeek,
     String? openingTime,
     String? closingTime,
     String? status,

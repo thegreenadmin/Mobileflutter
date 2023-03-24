@@ -145,12 +145,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.mileageTextController,
                   keyboardType: TextInputType.phone,
-                  // validator: (value) {
-                  //   if (value == null || value.trim().isEmpty) {
-                  //     return AlertStringConstants.pleaseEnterMileageText;
-                  //   }
-                  //   return null;
-                  // },
                   decoration: InputDecoration(
                     hintText: StringConstants.mileageText,
                     hintStyle: const TextStyle(color: AppColors.grey),
@@ -240,10 +234,10 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   );
                 }).toList(),
                 onChanged: (v) {
-                  if (v == "Yes") {
-                    // manageStoreController.isFeatured.value = true;
+                  if (v == "Open Now") {
+                    searchStoreUserController.isOpenNow.value = true;
                   } else {
-                    //manageStoreController.isFeatured.value = false;
+                    searchStoreUserController.isOpenNow.value = false;
                   }
                 },
               ),
@@ -267,16 +261,14 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          // controller: addNewStoreController
-                          //     .openingTimeTextController,
+                          controller: searchStoreUserController
+                              .openingTimeTextController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
                           if (value?.trim() ==
                                 searchStoreUserController
-                                    .closingTimeTextController
-                                    .text) {
-                              return AlertStringConstants
-                                  .openingTimeAlertText;
+                                    .closingTimeTextController.text) {
+                              return AlertStringConstants.openingTimeAlertText;
                             }
                             return null;
                           },
@@ -393,7 +385,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 },
                               ))!;
                               searchStoreUserController
-                                ..closingTimeTextController.text =
+                                .closingTimeTextController.text =
                                     date.format(context).toString();
                               searchStoreUserController.closingTime.value =
                                   "${date.hour}:${date.minute}:00";
@@ -507,10 +499,14 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   if(searchStoreUserController.zipCodeTextController.text==""
                   && searchStoreUserController.mileageTextController.text=="" &&
                       searchStoreUserController.openingTimeTextController.text=="" &&
-                      searchStoreUserController.closingTimeTextController.text==""){
+                      searchStoreUserController.closingTimeTextController.text==""
+                  ){
                     Utility.showToast(AlertStringConstants
                         .pleaseSelectOneFilterText);
+                  }else{
+                    searchStoreUserController.apiGetNearByStores(isFilter:true);
                   }
+
                 },
                 height: 50,
                 text: StringConstants.saveText,

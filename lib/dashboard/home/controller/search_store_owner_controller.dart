@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thegreenmall/dashboard/home/model/delivery_services_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
@@ -82,14 +83,17 @@ class SearchStoreOwnerController extends GetxController {
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
+  late DeliveryServicesResponse deliveryServicesResponse = DeliveryServicesResponse();
+  RxList<DeliveryService> deliveryServices = <DeliveryService>[].obs;
+
+  late GetStoreProductList getStoreProductList = GetStoreProductList();
+  RxList<Products> storeProductList = <Products>[].obs;
+
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
 
   RxList<dynamic> storeTimings = <dynamic>[].obs;
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
-
-  late GetStoreProductList getStoreProductList = GetStoreProductList();
-  RxList<Products> storeProductList = <Products>[].obs;
 
   RxString editStoreImageOrigionalLinkfromServer = "".obs;
   RxString editStoreImageDynamicLinkfromServer = "".obs;
@@ -366,6 +370,36 @@ class SearchStoreOwnerController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get DeliveryServices Api
+  Future apiGetDeliveryServices() async {
+    deliveryServices.clear();
+    debugPrint(
+        "GET deliveryServiceList  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
+    Map<String, String> headers = {
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl + ServerCommunicator().deliveryServiceList,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
+        deliveryServices.value = deliveryServicesResponse.data!.deliveryServices!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -11,6 +13,9 @@ class StoreHomeScreen extends StatefulWidget {
 }
 
 class _StoreHomeScreenState extends State<StoreHomeScreen> {
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
   List<String> imgList = [
     'assets/examplee.png',
     'assets/examplee.png',
@@ -34,33 +39,103 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                 scale: 3,
               )),
               height5SizedBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text.rich(
-                    TextSpan(
+              Obx(()=> Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Text.rich(
+                   TextSpan(
+                     children: [
+                       TextSpan(
+                           text: StringConstants.welcomeToText,
+                           style: TextStyle(
+                               color: AppColors.blacklight,
+                               fontWeight: FontWeight.w400,
+                               fontSize: 20)),
+                       TextSpan(
+                         text: " ${storeHomeMainController.storeAddress.value.store?.storeName??""}",
+                         style: const TextStyle(
+                             fontWeight: FontWeight.w600,
+                             fontSize: 20,
+                             color: AppColors.primary),
+                       ),
+                     ],
+                   ),
+                 ),
+               ],
+             ),),
+              height20SizedBox,
+              SizedBox(
+                height:200,
+                child: Obx(()=>storeHomeMainController.offersList.isEmpty
+                    ? storeHomeMainController.isLoading.value == true
+                    ? height0SizedBox
+                    : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        TextSpan(
-                            text: StringConstants.welcomeToText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 20)),
-                        const TextSpan(
-                          text: ' Ambrosia Store',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: AppColors.primary),
+                        Center(
+                          child: Image.asset(
+                            "assets/nodata.png",
+                            scale: 8,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        height4SizedBox,
+                        Center(
+                          child: Text(
+                            StringConstants.noOffersFoundText,
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic, fontSize: 16),
+                          ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
-              ),
+                    )
+                    : ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                      return width8SizedBox;
+                      },
+                      scrollDirection: Axis.horizontal,
+                      itemCount: storeHomeMainController.offersList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return
+                          Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              storeHomeMainController.offersList[index].image?.dynamicUrl!=null &&
+                                  storeHomeMainController.offersList[index].image?.dynamicUrl!="" ?
+                              SizedBox(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width- 60,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(storeHomeMainController.offersList[index].image?.dynamicUrl??"",
+                                      fit:BoxFit.cover),
+                                ),
+                              ):
+                              Image.asset("assets/examplee.png"),
+                              SizedBox( height: 55, child:
+                              Card( shape:  const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius .all( Radius.circular(10), )),
+                                color: Colors.white, elevation: 2.0,
+                                child: Padding( padding: const EdgeInsets .only( left: 12.0, right: 12, bottom: 10, top: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text( storeHomeMainController.offersList[index].offerName ?? "",
+                                        style: const TextStyle( color: AppColors .black,
+                                            fontWeight: FontWeight .w500,
+                                            fontSize: 14),
+                                      ), ],
+                                  ),
+                                ),),
+                              ),
+                            ],
+                          );
+                  }),)),
+
               height20SizedBox,
-              Image.asset("assets/examplee.png"),
-              height30SizedBox,
               Text(
                 StringConstants.featuredProductText,
                 style: const TextStyle(
@@ -70,76 +145,111 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
               ),
               SizedBox(
                 height: 280,
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) {
-                    return width8SizedBox;
-                  },
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: imgList.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 180,
-                        width: 180,
-                        decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Image.asset(
-                                'assets/example.png',
-                                fit: BoxFit.fill,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.asset(
-                                  "assets/fav.png",
-                                  scale: 3,
-                                ),
-                              )
-                            ],
+                child: Obx(()=>
+                      storeHomeMainController.featureProductList.isEmpty
+                          ? storeHomeMainController.isLoading.value == true
+                    ? height0SizedBox
+                    : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            "assets/nodata.png",
+                            scale: 8,
+                            color: AppColors.primary,
                           ),
                         ),
-                      ),
-                      height8SizedBox,
-                      Column(
+                        height4SizedBox,
+                        Center(
+                          child: Text(
+                            StringConstants.noProductFoundText,
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    )
+                    : ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                        return width8SizedBox;
+                      },
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: storeHomeMainController.featureProductList.length,
+                      itemBuilder: (BuildContext context, int index) => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Skin toner cosmetic",
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                        children: <Widget>[
+                          Container(
+                            height: 180,
+                            width: 180,
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  storeHomeMainController.featureProductList[index].productImages!.isNotEmpty &&
+                                      storeHomeMainController.featureProductList[index].productImages?.first.image?.dynamicUrl!=null?
+                                  Image.network(storeHomeMainController.featureProductList[index].productImages?.first.image?.dynamicUrl??"",
+                                  fit: BoxFit.cover,):
+                                  Image.asset(
+                                    'assets/example.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child:
+                                    storeHomeMainController.featureProductList[index].isFavouriteProduct==true?
+                                    Image.asset(
+                                      "assets/liked.png",
+                                      scale: 3,
+                                    ):Image.asset(
+                                      "assets/fav.png",
+                                      scale: 3,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                          height4SizedBox,
-                          Text(
-                            "Lorem Ipsum is simply",
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          height4SizedBox,
-                          const Text(
-                            "Unit price: \$20.00",
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                          height8SizedBox,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                storeHomeMainController.featureProductList[index].productName??"",
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              height4SizedBox,
+                              Text(
+                                storeHomeMainController.featureProductList[index].description??"",
+                                // maxLines: 2,
+                                overflow: TextOverflow.visible,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              Text(
+                                "Unit price: \$${ storeHomeMainController.featureProductList[index].productPrice??""}",
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),)
               ),
             ],
           ),
