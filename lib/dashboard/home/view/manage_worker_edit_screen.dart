@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -630,39 +631,142 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        readOnly: true,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewWorkerController.mobileNoTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterMobileNoText;
-                          }
-                          return null;
-                        },
+                    IntlPhoneField(
+                      controller: addNewWorkerController.mobileNoTextController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                      showDropdownIcon: false,
+                      flagsButtonMargin: const EdgeInsets.all(10),
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        prefixIcon: Image.asset("assets/calling.png"),
+                        alignLabelWithHint: true,
+                        hintText: StringConstants.mobileText,
+                        hintStyle: TextStyle(
+                            color: AppColors.blacklight, fontSize: 15),
+                        border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      initialValue: addNewWorkerController.countryCode.value,
+                      // initialCountryCode:
+                      //     searchStoreOwnerController.countryCode.value,
+                      onCountryChanged: (value) {
+                        addNewWorkerController.countryCode.value =
+                            "+${value.dialCode}";
+                      },
+                      onChanged: (phone) {
+                        addNewWorkerController.phoneNumber.value =
+                            phone.number.toString();
+                        addNewWorkerController.countryCode.value =
+                            phone.countryCode.toString();
+                      },
+                    ),
+                    // TextFormField(
+                    //     textInputAction: TextInputAction.next,
+                    //     autofocus: false,
+                    //     readOnly: true,
+                    //     inputFormatters: <TextInputFormatter>[
+                    //       LengthLimitingTextInputFormatter(100),
+                    //     ],
+                    //     style: const TextStyle(
+                    //         color: AppColors.black,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w500),
+                    //     controller:
+                    //         addNewWorkerController.mobileNoTextController,
+                    //     keyboardType: TextInputType.text,
+                    //     validator: (value) {
+                    //       if (value!.trim().isEmpty) {
+                    //         return AlertStringConstants.pleaseEnterMobileNoText;
+                    //       }
+                    //       return null;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       hintText: StringConstants.enterMobileText,
+                    //       hintStyle: const TextStyle(
+                    //           color: AppColors.grey, fontSize: 14),
+                    //       fillColor: Colors.white,
+                    //       border: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       errorBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.grey,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //     )),
+                    height20SizedBox,
+                    Obx(
+                      () => DropdownButtonFormField<String>(
+                        value: addNewWorkerController.roleId.value != ""
+                            ? addNewWorkerController.storeRoleList
+                                .firstWhere((element) =>
+                                    element.roleId ==
+                                    addNewWorkerController.roleId.value)
+                                .roleId
+                            : null,
+                        isExpanded: true,
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterMobileText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
+                          enabledBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
-                              color: AppColors.primary,
+                              color: AppColors.grey,
                               width: 1.0,
                             ),
                           ),
-                          errorBorder: UnderlineInputBorder(
+                          border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
                               color: AppColors.primary,
@@ -676,77 +780,40 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                               width: 1.0,
                             ),
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
-                              color: AppColors.grey,
+                              color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
-                        )),
-                    height20SizedBox,
-                   Obx(()=> DropdownButtonFormField<String>(
-                     value: addNewWorkerController
-                         .roleId.value != ""
-                         ? addNewWorkerController.storeRoleList.firstWhere((element) =>
-                     element.roleId == addNewWorkerController.roleId.value).roleId
-                         : null,
-                     isExpanded: true,
-                     decoration: InputDecoration(
-                       enabledBorder: UnderlineInputBorder(
-                         borderRadius: BorderRadius.circular(5.0),
-                         borderSide: const BorderSide(
-                           color: AppColors.grey,
-                           width: 1.0,
-                         ),
-                       ),
-                       border: UnderlineInputBorder(
-                         borderRadius: BorderRadius.circular(5.0),
-                         borderSide: const BorderSide(
-                           color: AppColors.primary,
-                           width: 1.0,
-                         ),
-                       ),
-                       focusedBorder: UnderlineInputBorder(
-                         borderRadius: BorderRadius.circular(5.0),
-                         borderSide: const BorderSide(
-                           color: AppColors.primary,
-                           width: 1.0,
-                         ),
-                       ),
-                       errorBorder: UnderlineInputBorder(
-                         borderRadius: BorderRadius.circular(5.0),
-                         borderSide: const BorderSide(
-                           color: AppColors.primary,
-                           width: 1.0,
-                         ),
-                       ),
-                     ),
-                     hint: Text(
-                       StringConstants.selectTypeText,
-                       style: const TextStyle(
-                           color: AppColors.grey, fontSize: 14),
-                     ),
-                     items: addNewWorkerController.storeRoleList
-                         .map((dynamic value) {
-                       return DropdownMenuItem<String>(
-                         // String? quantityTypeId;
-                         // String? quantityTypeName;
-                         value: value.roleId,
-                         child: Text(
-                           value.roleName,
-                           style: const TextStyle(
-                               color: AppColors.black,
-                               fontSize: 16,
-                               fontWeight: FontWeight.w500),
-                         ),
-                       );
-                     }).toList(),
-                     onChanged: (value) {
-                       addNewWorkerController.roleId.value =
-                           value.toString();
-                     },
-                   ),),
+                        ),
+                        hint: Text(
+                          StringConstants.selectTypeText,
+                          style: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                        ),
+                        items: addNewWorkerController.storeRoleList
+                            .map((dynamic value) {
+                          return DropdownMenuItem<String>(
+                            // String? quantityTypeId;
+                            // String? quantityTypeName;
+                            value: value.roleId,
+                            child: Text(
+                              value.roleName,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          addNewWorkerController.roleId.value =
+                              value.toString();
+                        },
+                      ),
+                    ),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

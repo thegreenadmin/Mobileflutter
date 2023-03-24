@@ -225,15 +225,30 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                       Flexible(
                                         flex: 3,
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              border: Border.all(
-                                                  color: AppColors.white,
-                                                  width: 1)),
-                                          child: Image.asset(
-                                            "assets/example.png",
-                                          ),
-                                        ),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: manageStoreController
+                                                            .storeProductList[
+                                                                index]
+                                                            .productImages![0]
+                                                            .imageUrl ==
+                                                        null ||
+                                                    manageStoreController
+                                                        .storeProductList[index]
+                                                        .productImages![0]
+                                                        .imageUrl!
+                                                        .isEmpty
+                                                ? Image.asset(
+                                                    "assets/nopicfound.png",
+                                                  )
+                                                : Image.network(
+                                                    manageStoreController
+                                                        .storeProductList[index]
+                                                        .productImages![0]
+                                                        .imageUrl!)),
                                       ),
                                       width12SizedBox,
                                       Flexible(

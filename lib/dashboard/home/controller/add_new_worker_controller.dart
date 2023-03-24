@@ -72,7 +72,6 @@ class AddNewWorkerController extends GetxController {
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
   RxList<StoreRole> storeRoleList = <StoreRole>[].obs;
-
   RxInt radioGroupValue = 0.obs;
 
   @override
@@ -589,7 +588,8 @@ class AddNewWorkerController extends GetxController {
         mobileNoTextController.text =
             workerDetailResponse?.data?.storeUser?.user?.phone ?? '';
         phoneNumber.value = mobileNoTextController.text.trim();
-
+        countryCode.value =
+            workerDetailResponse?.data?.storeUser?.user?.phoneCode ?? '';
         userImageDynamicLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
                 "";

@@ -23,6 +23,14 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
       Get.put(ManageStoreController());
 
   @override
+  void initState() {
+    for (int i = 0; i < manageStoreController.categoriesList.length; i++) {
+      manageStoreController.categoriesList[i].isSelected = true;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
@@ -92,12 +100,9 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                             : SizedBox(
                                 height: 100,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.separated(
-                                      separatorBuilder:
-                                          (BuildContext context, int index) {
-                                        return width8SizedBox;
-                                      },
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: manageStoreController
@@ -113,11 +118,16 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                             : Stack(
                                                 alignment: Alignment.topRight,
                                                 children: [
-                                                  Image.network(
-                                                    manageStoreController
-                                                        .imageUrlList[index]
-                                                        .dynamicImageUrl!,
-                                                    fit: BoxFit.cover,
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Image.network(
+                                                      manageStoreController
+                                                          .imageUrlList[index]
+                                                          .dynamicImageUrl!,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                   InkWell(
                                                     onTap: () {
@@ -312,10 +322,10 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                       onTap: () {
                                         if (manageStoreController
                                                 .categoriesList[i].isSelected ==
-                                            false) {
+                                            true) {
                                           manageStoreController
                                               .categoriesList[i]
-                                              .isSelected = true;
+                                              .isSelected = false;
                                           for (var item in manageStoreController
                                               .selectedCategories) {
                                             if (item['category']
@@ -343,7 +353,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                           }
                                           manageStoreController
                                               .categoriesList[i]
-                                              .isSelected = false;
+                                              .isSelected = true;
                                         }
                                         setState(() {});
                                       },
@@ -409,16 +419,16 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                         children: [
                           Flexible(
                             flex: 5,
-                            child: Obx(()=>DropdownButtonFormField<String>(
+                            child: DropdownButtonFormField<String>(
                               value: manageStoreController
-                                  .quantityValue.value !=
-                                  ""
+                                          .quantityValue.value !=
+                                      ""
                                   ? manageStoreController.quantityTypeList
-                                  .firstWhere((element) =>
-                              element.quantityTypeId ==
-                                  manageStoreController
-                                      .quantityValue.value)
-                                  .quantityTypeId
+                                      .firstWhere((element) =>
+                                          element.quantityTypeId ==
+                                          manageStoreController
+                                              .quantityValue.value)
+                                      .quantityTypeId
                                   : null,
                               isExpanded: true,
                               decoration: InputDecoration(
@@ -475,7 +485,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                 manageStoreController.quantityValue.value =
                                     value.toString();
                               },
-                            ),)
+                            ),
                           ),
                           width15SizedBox,
                           Flexible(
