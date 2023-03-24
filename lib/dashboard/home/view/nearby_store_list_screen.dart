@@ -100,7 +100,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                         searchStoreUserController
                                                             .storeAddresses[index].store!.image!.dynamicUrl!.isEmpty
                                                     ? const AssetImage(
-                                                            "assets/storeicon.png")
+                                                            "assets/nopicfound.png")
                                                         as ImageProvider
                                                     : NetworkImage(
                                                         searchStoreUserController

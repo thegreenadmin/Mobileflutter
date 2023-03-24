@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -11,6 +13,9 @@ class StoreFavouriteScreen extends StatefulWidget {
 }
 
 class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,79 +23,113 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
-            child: GridView.builder(
-              itemCount: 6,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: (WidgetConstants.screenWidth + 120) /
-                    WidgetConstants.screenHeight,
-                mainAxisSpacing: 0.0,
-                crossAxisSpacing: 0.0,
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Card(
-                      shape: BeveledRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+            child: Obx(()=>
+                 storeHomeMainController.featureProductList.isEmpty
+                ? storeHomeMainController.isLoading.value == true
+                ? height0SizedBox
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          "assets/nodata.png",
+                          scale: 8,
+                          color: AppColors.primary,
+                        ),
                       ),
-                      elevation: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            Image.asset(
-                              'assets/exampleee.png',
-                              fit: BoxFit.fill,
+                      height4SizedBox,
+                      Center(
+                        child: Text(
+                          StringConstants.noProductFoundText,
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  )
+                : GridView.builder(
+                    itemCount: storeHomeMainController.featureProductList.length,
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: (WidgetConstants.screenWidth + 120) /
+                          WidgetConstants.screenHeight,
+                      mainAxisSpacing: 0.0,
+                      crossAxisSpacing: 0.0,
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (BuildContext context, int i) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Card(
+                            shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                "assets/liked.png",
-                                scale: 3,
+                            elevation: 0,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  storeHomeMainController.featureProductList[i].productImages!.isNotEmpty &&
+                                      storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl!=null
+                                      ?Image.network(
+                                    storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl,
+                                    fit: BoxFit.fill,height: 160,
+                                  ): Image.asset(
+                                    'assets/nopicfound.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: storeHomeMainController.featureProductList[i].isFavouriteProduct==true
+                                        ?Image.asset(
+                                      "assets/liked.png",
+                                      scale: 3,
+                                    ):Image.asset(
+                                      "assets/fav.png",
+                                      scale: 3,
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    height5SizedBox,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Skin toner cosmetic",
-                          style: TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        height4SizedBox,
-                        Text(
-                          "Lorem Ipsum is simply",
-                          maxLines: 2,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        height4SizedBox,
-                        const Text(
-                          "Unit price: \$20.00",
-                          style: TextStyle(
-                              color: AppColors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
+                            ),
+                          ),
+                          height5SizedBox,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                storeHomeMainController.featureProductList[i].productName??"",
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              height4SizedBox,
+                              Text(
+                                storeHomeMainController.featureProductList[i].description??"",
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: AppColors.blacklight,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              height4SizedBox,
+                              Text(
+                                "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice??""}",
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),)
           ),
         ]),
       ),

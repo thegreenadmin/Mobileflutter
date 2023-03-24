@@ -12,11 +12,13 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class StoreHomeMainController extends GetxController {
   Rx<StoreAddress> storeAddress = StoreAddress().obs;
+
   late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
   RxList<Offer> offersList = <Offer>[].obs;
   late StoreCategoriesListResponse categoriesListResponse =
       StoreCategoriesListResponse();
   RxList<Category> categoriesList = <Category>[].obs;
+  Rx<Category> category = Category().obs;
   late FeatureProductListResponse featureProductListResponse =
       FeatureProductListResponse();
   RxList<Product> featureProductList = <Product>[].obs;
@@ -49,11 +51,14 @@ class StoreHomeMainController extends GetxController {
     selectedIndex.value = i;
     if (i == 0) {
       await apiGetStoreOffersApi();
-      await apiFeatureProductListApi();
+      await apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
     } else if (i == 2) {
-    } else if (i == 3) {}
+      await apiFeatureProductListApi(isFavouriteProducts: true);
+    } else if (i == 3) {
+
+    }
   }
 
   //Get Categories Api
@@ -125,7 +130,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Feature ProductList Store Api
-  Future apiFeatureProductListApi() async {
+  Future apiFeatureProductListApi({bool isFavouriteProducts = false, isFeaturedProduct = false ,String categoryId = "0"}) async {
     isLoading.value = true;
     debugPrint("FeatureProductList URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
@@ -142,15 +147,15 @@ class StoreHomeMainController extends GetxController {
       "page_size": 100,
       "order_by": "product_id",
       "order_type": "DESC",
-      "category_id": null,
-      "is_favourite_products": null,
-      "filters": [
-        {
+      "category_id": isFeaturedProduct==false && categoryId!="0"?int.parse(categoryId):null,
+      "is_favourite_products": isFavouriteProducts,
+      "filters": isFeaturedProduct ? [
+         {
           "filter_by": "is_featured_product",
-          "filter_value": true,
+          "filter_value": isFeaturedProduct,
           "operation": "eq"
         }
-      ]
+      ]:[]
     };
 
     debugPrint("TOKEN ********** $headers");

@@ -70,7 +70,7 @@ class SearchStoreUserController extends GetxController {
     Map data = {
       "q": "",
       "page": page.value,
-      "page_size":3,
+      "page_size":5,
       "longitude": 37.0902,
       "latitude": 95.7129,
       "postal_code": zipCodeTextController.text!=""?zipCodeTextController.text:null,
