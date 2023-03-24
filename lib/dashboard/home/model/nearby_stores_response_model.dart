@@ -96,7 +96,7 @@ class StoreAddress {
   String? landmark;
   String? city;
   String? postalCode;
-  dynamic distance;
+  double? distance;
   Store? store;
 
   StoreAddress copyWith({
@@ -109,7 +109,7 @@ class StoreAddress {
     String? landmark,
     String? city,
     String? postalCode,
-    dynamic distance,
+    double? distance,
     Store? store,
   }) =>
       StoreAddress(
@@ -136,7 +136,7 @@ class StoreAddress {
     landmark: json["landmark"],
     city: json["city"],
     postalCode: json["postal_code"],
-    distance: json["distance"],
+    distance: json["distance"]?.toDouble(),
     store: json["store"] == null ? null : Store.fromJson(json["store"]),
   );
 
@@ -158,6 +158,7 @@ class StoreAddress {
 class Store {
   Store({
     this.logo,
+    this.image,
     this.hasStoreOwner,
     this.isFavouriteStore,
     this.storeId,
@@ -165,9 +166,11 @@ class Store {
     this.isVerified,
     this.isEnabled,
     this.storeTimings,
+    this.storeDeliveryServices,
   });
 
-  Logo? logo;
+  Image? logo;
+  Image? image;
   bool? hasStoreOwner;
   bool? isFavouriteStore;
   String? storeId;
@@ -175,9 +178,11 @@ class Store {
   bool? isVerified;
   bool? isEnabled;
   List<StoreTiming>? storeTimings;
+  List<StoreDeliveryService>? storeDeliveryServices;
 
   Store copyWith({
-    Logo? logo,
+    Image? logo,
+    Image? image,
     bool? hasStoreOwner,
     bool? isFavouriteStore,
     String? storeId,
@@ -185,9 +190,11 @@ class Store {
     bool? isVerified,
     bool? isEnabled,
     List<StoreTiming>? storeTimings,
+    List<StoreDeliveryService>? storeDeliveryServices,
   }) =>
       Store(
         logo: logo ?? this.logo,
+        image: image ?? this.image,
         hasStoreOwner: hasStoreOwner ?? this.hasStoreOwner,
         isFavouriteStore: isFavouriteStore ?? this.isFavouriteStore,
         storeId: storeId ?? this.storeId,
@@ -195,10 +202,12 @@ class Store {
         isVerified: isVerified ?? this.isVerified,
         isEnabled: isEnabled ?? this.isEnabled,
         storeTimings: storeTimings ?? this.storeTimings,
+        storeDeliveryServices: storeDeliveryServices ?? this.storeDeliveryServices,
       );
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-    logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
+    logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
     hasStoreOwner: json["has_store_owner"],
     isFavouriteStore: json["is_favourite_store"],
     storeId: json["store_id"],
@@ -206,10 +215,12 @@ class Store {
     isVerified: json["is_verified"],
     isEnabled: json["is_enabled"],
     storeTimings: json["store_timings"] == null ? [] : List<StoreTiming>.from(json["store_timings"]!.map((x) => StoreTiming.fromJson(x))),
+    storeDeliveryServices: json["store_delivery_services"] == null ? [] : List<StoreDeliveryService>.from(json["store_delivery_services"]!.map((x) => StoreDeliveryService.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "logo": logo?.toJson(),
+    "image": image?.toJson(),
     "has_store_owner": hasStoreOwner,
     "is_favourite_store": isFavouriteStore,
     "store_id": storeId,
@@ -217,11 +228,12 @@ class Store {
     "is_verified": isVerified,
     "is_enabled": isEnabled,
     "store_timings": storeTimings == null ? [] : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
+    "store_delivery_services": storeDeliveryServices == null ? [] : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
   };
 }
 
-class Logo {
-  Logo({
+class Image {
+  Image({
     this.orignalUrl,
     this.dynamicUrl,
   });
@@ -229,16 +241,16 @@ class Logo {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Logo copyWith({
+  Image copyWith({
     String? orignalUrl,
     String? dynamicUrl,
   }) =>
-      Logo(
+      Image(
         orignalUrl: orignalUrl ?? this.orignalUrl,
         dynamicUrl: dynamicUrl ?? this.dynamicUrl,
       );
 
-  factory Logo.fromJson(Map<String, dynamic> json) => Logo(
+  factory Image.fromJson(Map<String, dynamic> json) => Image(
     orignalUrl: json["orignal_url"],
     dynamicUrl: json["dynamic_url"],
   );
@@ -246,6 +258,53 @@ class Logo {
   Map<String, dynamic> toJson() => {
     "orignal_url": orignalUrl,
     "dynamic_url": dynamicUrl,
+  };
+}
+
+class StoreDeliveryService {
+  StoreDeliveryService({
+    this.storeDeliveryServiceId,
+    this.deliveryServiceId,
+    this.isEnabled,
+    this.status,
+    this.deliveryServiceName,
+  });
+
+  String? storeDeliveryServiceId;
+  String? deliveryServiceId;
+  bool? isEnabled;
+  String? status;
+  String? deliveryServiceName;
+
+  StoreDeliveryService copyWith({
+    String? storeDeliveryServiceId,
+    String? deliveryServiceId,
+    bool? isEnabled,
+    String? status,
+    String? deliveryServiceName,
+  }) =>
+      StoreDeliveryService(
+        storeDeliveryServiceId: storeDeliveryServiceId ?? this.storeDeliveryServiceId,
+        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
+        isEnabled: isEnabled ?? this.isEnabled,
+        status: status ?? this.status,
+        deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
+      );
+
+  factory StoreDeliveryService.fromJson(Map<String, dynamic> json) => StoreDeliveryService(
+    storeDeliveryServiceId: json["store_delivery_service_id"],
+    deliveryServiceId: json["delivery_service_id"],
+    isEnabled: json["is_enabled"],
+    status: json["status"],
+    deliveryServiceName: json["delivery_service_name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_delivery_service_id": storeDeliveryServiceId,
+    "delivery_service_id": deliveryServiceId,
+    "is_enabled": isEnabled,
+    "status": status,
+    "delivery_service_name": deliveryServiceName,
   };
 }
 

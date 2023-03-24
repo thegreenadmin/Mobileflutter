@@ -213,13 +213,13 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                  colorFilter:
                  const ColorFilter.mode(Colors.black45, BlendMode.darken),
                  image:
-                 storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl == null ||
-                     storeHomeMainController.storeAddress.value.store!.logo!.dynamicUrl!.isEmpty
+                 storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl == null ||
+                     storeHomeMainController.storeAddress.value.store!.image!.dynamicUrl!.isEmpty
                      ? const AssetImage(
                      "assets/storeicon.png")
                  as ImageProvider
                      : NetworkImage(
-                     storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl.toString() ?? ""),
+                     storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl.toString() ?? ""),
                ),
              ),
              child: Padding(
