@@ -29,41 +29,36 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                manageStoreController.categoryName.value,
-                                style:
-                                    const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
                           ),
-                          Image.asset(
-                            "assets/homeMall.png",
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
+                          width10SizedBox,
+                          Text(
+                            manageStoreController.categoryName.value,
+                            style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        "assets/homeMall.png",
+                        scale: 4,
+                      )
+                    ])),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -262,16 +257,25 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                       InkWell(
                                         onTap: () {
                                           if (manageStoreController.categoriesList[i].isSelected == false) {
-                                            manageStoreController.selectedCategories.add(
-                                                {"category_id": manageStoreController.categoriesList[i].categoryId});
                                             manageStoreController.categoriesList[i].isSelected = true;
+                                            for (var item in manageStoreController.selectedCategories) {
+                                              if (item['category']['category_id'] ==
+                                                  manageStoreController.categoriesList[i].categoryId) {
+                                                item['status'] = "deleted";
+                                                print(manageStoreController.selectedCategories);
+                                              }
+                                            }
                                           } else {
-                                            manageStoreController.selectedCategories.removeWhere((item) =>
-                                                item['category_id'] ==
-                                                manageStoreController.categoriesList[i].categoryId);
+                                            for (var item in manageStoreController.selectedCategories) {
+                                              if (item['category']['category_id'] ==
+                                                  manageStoreController.categoriesList[i].categoryId) {
+                                                item['status'] = "active";
+                                                print(manageStoreController.selectedCategories);
+                                              }
+                                            }
                                             manageStoreController.categoriesList[i].isSelected = false;
                                           }
-                                          print(manageStoreController.selectedCategories);
+                                          setState(() {});
                                         },
                                         child: Container(
                                             padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
@@ -285,10 +289,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                                   offset: const Offset(0, 2),
                                                 ),
                                               ],
-                                              color: manageStoreController.selectedCategories.any((item) =>
-                                                          item['category_id'] ==
-                                                          manageStoreController.categoriesList[i].categoryId) ==
-                                                      true
+                                              color: manageStoreController.categoriesList[i].isSelected == true
                                                   ? AppColors.primary
                                                   : AppColors.primarylight,
                                               borderRadius: const BorderRadius.all(
@@ -301,10 +302,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: manageStoreController.selectedCategories.any((item) =>
-                                                            item['category_id'] ==
-                                                            manageStoreController.categoriesList[i].categoryId) ==
-                                                        true
+                                                color: manageStoreController.categoriesList[i].isSelected == true
                                                     ? AppColors.primarylight
                                                     : AppColors.primary,
                                               ),
@@ -722,62 +720,63 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                     height4SizedBox,
                     Row(
                       children: [
-                        Flexible(
-                          flex: 5,
-                          child: Obx(() => manageStoreController.discountValueType.value.isEmpty
+                        Obx(
+                          () => manageStoreController.discountValueType.value.isEmpty
                               ? height0SizedBox
-                              : DropdownButtonFormField<String>(
-                                  value: manageStoreController.discountValueType.value,
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
+                              : Flexible(
+                                  flex: 5,
+                                  child: DropdownButtonFormField<String>(
+                                    value: manageStoreController.discountValueType.value,
+                                    decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.grey,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      errorBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
                                       ),
                                     ),
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
+                                    isExpanded: true,
+                                    hint: Text(
+                                      StringConstants.selectTypeText,
+                                      style: const TextStyle(color: AppColors.grey, fontSize: 14),
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  hint: Text(
-                                    StringConstants.selectTypeText,
-                                    style: const TextStyle(color: AppColors.grey, fontSize: 14),
-                                  ),
-                                  items: <String>["Percentage", "Amount"].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(
-                                            color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (v) {
-                                    manageStoreController.discountType.value = v.toString();
-                                    manageStoreController.discountValueType.value = v.toString();
-                                  },
-                                )),
+                                    items: <String>["Percentage", "Amount"].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (v) {
+                                      manageStoreController.discountType.value = v.toString();
+                                      manageStoreController.discountValueType.value = v.toString();
+                                    },
+                                  )),
                         ),
                         width15SizedBox,
                         Flexible(
