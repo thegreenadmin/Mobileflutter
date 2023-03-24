@@ -200,9 +200,11 @@ class ProductCategory {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['category_id'] = categoryId;
-    data['category'] = category;
     data['product_category_id'] = productCategoryId;
     data['status'] = status;
+    if (category != null) {
+      data['category'] = category!.toJson();
+    }
     return data;
   }
 }
