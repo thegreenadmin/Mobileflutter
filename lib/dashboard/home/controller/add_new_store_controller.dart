@@ -63,7 +63,8 @@ class AddNewStoreController extends GetxController {
   RxInt radioGroupValue = 0.obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
-
+  RxString countryCode = "".obs;
+  RxString phoneNumber = "".obs;
   Rx<XFile> storeImage = XFile("").obs;
   Rx<XFile> storeLogo = XFile("").obs;
 
@@ -286,7 +287,8 @@ class AddNewStoreController extends GetxController {
         "logo_url": storeLogoOrigionalLinkfromServer.value,
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
-        "store_phone": "+${storePhoneTextController.text.trim()}"
+        "store_phone": phoneNumber.value,
+        "store_phone_code": countryCode.value
       },
       "store_address": {
         "state_id": stateId.value.trim(),

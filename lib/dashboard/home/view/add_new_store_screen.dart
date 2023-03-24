@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
@@ -543,59 +544,72 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.storePhoneTextController,
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterPhoneText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.phoneNumberText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                    IntlPhoneField(
+                      controller:
+                          addNewStoreController.storePhoneTextController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                      showDropdownIcon: false,
+                      flagsButtonMargin: const EdgeInsets.all(10),
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        prefixIcon: Image.asset("assets/calling.png"),
+                        alignLabelWithHint: true,
+                        hintText: StringConstants.mobileText,
+                        hintStyle: TextStyle(
+                            color: AppColors.blacklight, fontSize: 15),
+                        border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                        )),
+                        ),
+                      ),
+                      onCountryChanged: (value) {
+                        addNewStoreController.countryCode.value =
+                            "+${value.dialCode}";
+                        // loginController.countryCode.value =
+                        //     "+${value.dialCode}";
+                      },
+                      onChanged: (phone) {
+                        addNewStoreController.phoneNumber.value =
+                            phone.number.toString();
+                        addNewStoreController.countryCode.value =
+                            phone.countryCode.toString();
+                        // loginController.phoneNumber.value =
+                        //     phone.number.toString();
+                        // loginController.countryCode.value =
+                        //     phone.countryCode.toString();
+                      },
+                    ),
                     height20SizedBox,
                     Text(
                       StringConstants.addressText,
@@ -1366,7 +1380,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               onChanged: (v) {
                                 addNewStoreController.storeTimmingList.clear();
                                 for (int i = 0;
-                                    i < addNewStoreController.weekDaysList.length;
+                                    i <
+                                        addNewStoreController
+                                            .weekDaysList.length;
                                     i++) {
                                   if (addNewStoreController
                                           .weekDaysList[i].isSelected ==
@@ -1397,32 +1413,30 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               list: addNewStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
-                    height20SizedBox,
-
+                    height10SizedBox,
                     Text(
                       StringConstants.deliveryMethodsText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
-                    ), height4SizedBox,
+                    ),
+                    height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
                           addNewStoreController.deliveryServicesList.clear();
 
                           for (int i = 0;
-                          i <
-                              addNewStoreController
-                                  .deliveryServices.length;
-                          i++) {
+                              i < addNewStoreController.deliveryServices.length;
+                              i++) {
                             if (addNewStoreController
-                                .deliveryServices[i].isSelected ==
+                                    .deliveryServices[i].isSelected ==
                                 true) {
                               addNewStoreController.deliveryServicesList.add({
-                              "delivery_service_id": addNewStoreController
-                                  .deliveryServices[i].id,
-                              "is_enabled": true,
-                              "status": "active"
+                                "delivery_service_id": addNewStoreController
+                                    .deliveryServices[i].id,
+                                "is_enabled": true,
+                                "status": "active"
                               });
                             }
                           }
@@ -1440,7 +1454,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         title: StringConstants.selectDeliveryServicesText,
                         list: addNewStoreController.deliveryServices),
                     height40SizedBox,
-
                     CustomButton(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,

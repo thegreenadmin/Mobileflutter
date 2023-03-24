@@ -24,6 +24,7 @@ class OtpVerificationController extends GetxController {
   void onInit() {
     super.onInit();
     phoneNumber.value = Get.arguments["phoneNumber"];
+    countryCode.value = Get.arguments["countryCode"];
   }
 
   bool otpValidateAndSave() {
@@ -51,7 +52,8 @@ class OtpVerificationController extends GetxController {
   Future apiOtpVerify() async {
     var rng = Random();
     Map data = {
-      "phone": phoneNumber.value.trim(),
+      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone_code": countryCode.value.trim(),
       "otp": otpTextController.text.trim(),
       "device_id": rng.nextInt(100).toString(), //Random numbers
       "device_token": "1234567"

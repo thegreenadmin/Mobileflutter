@@ -70,6 +70,8 @@ class SearchStoreOwnerController extends GetxController {
   RxString stateDropdownValue = "".obs;
   CountriesList? selectedValue;
   RxString stateId = "".obs;
+  RxString countryCode = "".obs;
+  RxString phoneNumber = "".obs;
 
   RxInt? addressListIndex = 0.obs;
   RxInt stateIndex = 0.obs;
@@ -450,6 +452,10 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['store_nick_name'] ?? "";
         phoneTextController.text =
             value?.body["data"]['store']['store_phone'] ?? "";
+        phoneNumber.value = phoneTextController.text;
+        countryCode.value =
+            value?.body["data"]['store']['store_phone_code'] ?? "";
+        print("Country code----->" + countryCode.value);
         emailTextController.text =
             value?.body["data"]['store']['store_email'] ?? "";
         einTextController.text =
@@ -544,7 +550,7 @@ class SearchStoreOwnerController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {
-      "store_id": storeId.value,
+      "store_id": int.parse(storeId.value),
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
@@ -552,7 +558,8 @@ class SearchStoreOwnerController extends GetxController {
         "logo_url": editStoreLogoOrigionalLinkfromServer.value,
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
-        "store_phone": phoneTextController.text.trim(),
+        "store_phone": phoneNumber.value,
+        "store_phone_code": countryCode.value,
         "is_enabled": isEnabled.value
       },
       "store_address": {
@@ -579,7 +586,8 @@ class SearchStoreOwnerController extends GetxController {
             ]
           : storeTimmingList.isNotEmpty
               ? storeTimmingList
-              : storeTimings
+              : storeTimings,
+      "store_delivery_services": deliveryServicesList
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 
@@ -608,6 +616,7 @@ class SearchStoreOwnerController extends GetxController {
         postalCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+        countryCode.value = "";
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

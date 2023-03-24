@@ -184,7 +184,8 @@ class SignupController extends GetxController {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
       "email": emailTextController.text.trim(),
-      "phone": countryCode.value + phoneNumber.value,
+      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone_code": countryCode.value.trim(),
       "dob": dateTextController.text.trim()
     };
     debugPrint("CREATE USER BODY********** $data");
@@ -215,6 +216,7 @@ class SignupController extends GetxController {
   Future apiGenerateOtp() async {
     Map data = {
       "phone": countryCode.value + phoneNumber.value,
+      "phone_code": countryCode.value
     };
     debugPrint("LOGIN BODY********** $data");
     debugPrint(
@@ -228,8 +230,10 @@ class SignupController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201) {
         phoneNumberTextController.clear();
         Utility.showToast(value.body['message']);
-        Get.to(() => const OtpVerificationScreen(),
-            arguments: {"phoneNumber": countryCode.value + phoneNumber.value});
+        Get.to(() => const OtpVerificationScreen(), arguments: {
+          "phoneNumber": phoneNumber.value.trim(),
+          "countryCode": countryCode.value.trim()
+        });
         firstNameTextController.clear();
         lastNameTextController.clear();
         emailTextController.clear();

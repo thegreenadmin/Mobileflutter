@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
@@ -545,59 +546,123 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            searchStoreOwnerController.phoneTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterPhoneText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.phoneNumberText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                    IntlPhoneField(
+                      controller:
+                          searchStoreOwnerController.phoneTextController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                      showDropdownIcon: false,
+                      flagsButtonMargin: const EdgeInsets.all(10),
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        prefixIcon: Image.asset("assets/calling.png"),
+                        alignLabelWithHint: true,
+                        hintText: StringConstants.mobileText,
+                        hintStyle: TextStyle(
+                            color: AppColors.blacklight, fontSize: 15),
+                        border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                        )),
+                        ),
+                      ),
+                      initialValue:
+                          searchStoreOwnerController.countryCode.value,
+                      // initialCountryCode:
+                      //     searchStoreOwnerController.countryCode.value,
+                      onCountryChanged: (value) {
+                        searchStoreOwnerController.countryCode.value =
+                            "+${value.dialCode}";
+                      },
+                      onChanged: (phone) {
+                        searchStoreOwnerController.phoneNumber.value =
+                            phone.number.toString();
+                        searchStoreOwnerController.countryCode.value =
+                            phone.countryCode.toString();
+                      },
+                    ),
+                    // TextFormField(
+                    //     textInputAction: TextInputAction.next,
+                    //     autofocus: false,
+                    //     inputFormatters: <TextInputFormatter>[
+                    //       LengthLimitingTextInputFormatter(100),
+                    //     ],
+                    //     style: const TextStyle(
+                    //         color: AppColors.black,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w500),
+                    //     controller:
+                    //         searchStoreOwnerController.phoneTextController,
+                    //     keyboardType: TextInputType.text,
+                    //     validator: (value) {
+                    //       if (value!.trim().isEmpty) {
+                    //         return AlertStringConstants.pleaseEnterPhoneText;
+                    //       }
+                    //       return null;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       hintText: StringConstants.phoneNumberText,
+                    //       hintStyle: const TextStyle(
+                    //           color: AppColors.grey, fontSize: 14),
+                    //       fillColor: Colors.white,
+                    //       border: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       errorBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.grey,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //     )),
                     height20SizedBox,
                     Text(
                       StringConstants.addressText,
@@ -1052,18 +1117,23 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                         .value = value?.toInt() ?? 0;
                                     searchStoreOwnerController.is247Time.value =
                                         true;
+                                    searchStoreOwnerController.storeTimmingList
+                                        .clear();
+                                    searchStoreOwnerController.storeTimings
+                                        .clear();
                                     searchStoreOwnerController
-                                        .storeTimmingList.clear();
+                                        .openingTimeTextController
+                                        .clear();
                                     searchStoreOwnerController
-                                        .storeTimings.clear();
+                                        .closingTimeTextController
+                                        .clear();
                                     searchStoreOwnerController
-                                        .openingTimeTextController.clear();
-                                    searchStoreOwnerController
-                                        .closingTimeTextController.clear();
-                                    searchStoreOwnerController
-                                        .workingDaysTextController.clear();
-                                    for (var element in searchStoreOwnerController.weekDaysList) {
-                                      element.isSelected=false;
+                                        .workingDaysTextController
+                                        .clear();
+                                    for (var element
+                                        in searchStoreOwnerController
+                                            .weekDaysList) {
+                                      element.isSelected = false;
                                     }
                                     print(searchStoreOwnerController
                                         .radioGroupValue.value);
@@ -1353,38 +1423,61 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                 if (searchStoreOwnerController
                                     .storeTimings.isNotEmpty) {
                                   for (int i = 0;
-                                      i < searchStoreOwnerController.weekDaysList.length;
+                                      i <
+                                          searchStoreOwnerController
+                                              .weekDaysList.length;
                                       i++) {
                                     for (var element
-                                        in searchStoreOwnerController.storeTimings) {
+                                        in searchStoreOwnerController
+                                            .storeTimings) {
                                       if (element["day_of_week"] ==
-                                          searchStoreOwnerController.weekDaysList[i].id) {
-                                        searchStoreOwnerController.storeTimmingList.add({
-                                          "store_timing_id": element["store_timing_id"],
+                                          searchStoreOwnerController
+                                              .weekDaysList[i].id) {
+                                        searchStoreOwnerController
+                                            .storeTimmingList
+                                            .add({
+                                          "store_timing_id":
+                                              element["store_timing_id"],
                                           "is_24_hours_active": false,
-                                          "status": searchStoreOwnerController.weekDaysList[i].isSelected == true
-                                              ? "active" : "deleted",
-                                          "day_of_week": searchStoreOwnerController.weekDaysList[i].id,
+                                          "status": searchStoreOwnerController
+                                                      .weekDaysList[i]
+                                                      .isSelected ==
+                                                  true
+                                              ? "active"
+                                              : "deleted",
+                                          "day_of_week":
+                                              searchStoreOwnerController
+                                                  .weekDaysList[i].id,
                                           "opening_time": Utility.formatDateTime(
                                                   searchStoreOwnerController
-                                                      .openingTimeTextController.text.trim(),
+                                                      .openingTimeTextController
+                                                      .text
+                                                      .trim(),
                                                   firstFormat: "hh:mm a",
                                                   secFormat: "hh:mm:ss")
                                               .toString(),
                                           "closing_time": Utility.formatDateTime(
-                                                  searchStoreOwnerController.closingTimeTextController.text
-                                                      .trim(), firstFormat: "hh:mm a",
-                                                  secFormat: "hh:mm:ss").toString()
+                                                  searchStoreOwnerController
+                                                      .closingTimeTextController
+                                                      .text
+                                                      .trim(),
+                                                  firstFormat: "hh:mm a",
+                                                  secFormat: "hh:mm:ss")
+                                              .toString()
                                         });
                                       }
                                     }
-                                    if (searchStoreOwnerController.weekDaysList[i].isSelected ==
+                                    if (searchStoreOwnerController
+                                            .weekDaysList[i].isSelected ==
                                         true) {
                                       if (!searchStoreOwnerController
-                                          .storeTimmingList.any((element) =>
+                                          .storeTimmingList
+                                          .any((element) =>
                                               element["day_of_week"] ==
-                                              searchStoreOwnerController.weekDaysList[i].id)) {
-                                        searchStoreOwnerController.storeTimmingList
+                                              searchStoreOwnerController
+                                                  .weekDaysList[i].id)) {
+                                        searchStoreOwnerController
+                                            .storeTimmingList
                                             .add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
@@ -1407,11 +1500,16 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                                     }
                                   }
                                 } else {
-                                for (int i = 0; i < searchStoreOwnerController.weekDaysList.length;
+                                  for (int i = 0;
+                                      i <
+                                          searchStoreOwnerController
+                                              .weekDaysList.length;
                                       i++) {
-                                    if (searchStoreOwnerController.weekDaysList[i].isSelected ==
+                                    if (searchStoreOwnerController
+                                            .weekDaysList[i].isSelected ==
                                         true) {
-                                      searchStoreOwnerController.storeTimmingList
+                                      searchStoreOwnerController
+                                          .storeTimmingList
                                           .add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
@@ -1453,51 +1551,84 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                           color: AppColors.blacklight,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
-                    ), height4SizedBox,
+                    ),
+                    height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
-                          searchStoreOwnerController.deliveryServicesList.clear();
-                          if(searchStoreOwnerController.storeDeliveryServices.isNotEmpty){
-                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
-                              for (var element in searchStoreOwnerController.storeDeliveryServices) {
-                                if(element["delivery_service_id"] == searchStoreOwnerController.deliveryServices[i].id ){
-                                  searchStoreOwnerController.deliveryServicesList.add({
-                                    "store_delivery_service_id": element["store_delivery_service_id"] ,
-                                    "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
-                                    "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                          searchStoreOwnerController.deliveryServicesList
+                              .clear();
+                          if (searchStoreOwnerController
+                              .storeDeliveryServices.isNotEmpty) {
+                            for (int i = 0;
+                                i <
+                                    searchStoreOwnerController
+                                        .deliveryServices.length;
+                                i++) {
+                              for (var element in searchStoreOwnerController
+                                  .storeDeliveryServices) {
+                                if (element["delivery_service_id"] ==
+                                    searchStoreOwnerController
+                                        .deliveryServices[i].id) {
+                                  searchStoreOwnerController
+                                      .deliveryServicesList
+                                      .add({
+                                    "store_delivery_service_id":
+                                        element["store_delivery_service_id"],
+                                    "delivery_service_id":
+                                        searchStoreOwnerController
+                                            .deliveryServices[i].id,
+                                    "is_enabled": searchStoreOwnerController
+                                        .deliveryServices[i].isSelected,
                                     "status": "active"
                                   });
                                 }
                               }
-                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true) {
-                                searchStoreOwnerController.deliveryServicesList.add({
-                                  "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
-                                  "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                              if (searchStoreOwnerController
+                                      .deliveryServices[i].isSelected ==
+                                  true) {
+                                searchStoreOwnerController.deliveryServicesList
+                                    .add({
+                                  "delivery_service_id":
+                                      searchStoreOwnerController
+                                          .deliveryServices[i].id,
+                                  "is_enabled": searchStoreOwnerController
+                                      .deliveryServices[i].isSelected,
                                   "status": "active"
                                 });
                               }
                             }
-                          }else{
-                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
-                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true) {
-                                searchStoreOwnerController.deliveryServicesList.add({
+                          } else {
+                            for (int i = 0;
+                                i <
+                                    searchStoreOwnerController
+                                        .deliveryServices.length;
+                                i++) {
+                              if (searchStoreOwnerController
+                                      .deliveryServices[i].isSelected ==
+                                  true) {
+                                searchStoreOwnerController.deliveryServicesList
+                                    .add({
                                   "store_delivery_service_id": null,
-                                  "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
-                                  "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                                  "delivery_service_id":
+                                      searchStoreOwnerController
+                                          .deliveryServices[i].id,
+                                  "is_enabled": searchStoreOwnerController
+                                      .deliveryServices[i].isSelected,
                                   "status": "active"
                                 });
                               }
                             }
                           }
-
                         },
                         validator: (v) {
                           if (v!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterDeliveryServicesText;
+                            return AlertStringConstants
+                                .pleaseEnterDeliveryServicesText;
                           }
                           return null;
                         },
-                        controller: searchStoreOwnerController.deliveryServicesTextController,
+                        controller: searchStoreOwnerController
+                            .deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: searchStoreOwnerController.deliveryServices),
@@ -1532,7 +1663,8 @@ class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
                               activeColor: AppColors.greymediumlight,
                               inactiveColor: AppColors.greymediumlight,
                               onToggle: (val) {
-                                searchStoreOwnerController.isEnabled.value = val;
+                                searchStoreOwnerController.isEnabled.value =
+                                    val;
                               },
                             )),
                       ],

@@ -42,7 +42,7 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeAddress?.value = Get.arguments["storeAddress"];
+    storeAddress.value = Get.arguments["storeAddress"];
     // setupScrollController(Get.context);
     onIndexChange(0);
   }
@@ -56,9 +56,7 @@ class StoreHomeMainController extends GetxController {
       await apiGetStoreCategoriesApi();
     } else if (i == 2) {
       await apiFeatureProductListApi(isFavouriteProducts: true);
-    } else if (i == 3) {
-
-    }
+    } else if (i == 3) {}
   }
 
   //Get Categories Api
@@ -116,7 +114,6 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        Utility.showToast(value?.body['message']);
         offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == 403) {
@@ -130,7 +127,10 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Feature ProductList Store Api
-  Future apiFeatureProductListApi({bool isFavouriteProducts = false, isFeaturedProduct = false ,String categoryId = "0"}) async {
+  Future apiFeatureProductListApi(
+      {bool isFavouriteProducts = false,
+      isFeaturedProduct = false,
+      String categoryId = "0"}) async {
     isLoading.value = true;
     debugPrint("FeatureProductList URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
@@ -147,15 +147,19 @@ class StoreHomeMainController extends GetxController {
       "page_size": 100,
       "order_by": "product_id",
       "order_type": "DESC",
-      "category_id": isFeaturedProduct==false && categoryId!="0"?int.parse(categoryId):null,
+      "category_id": isFeaturedProduct == false && categoryId != "0"
+          ? int.parse(categoryId)
+          : null,
       "is_favourite_products": isFavouriteProducts,
-      "filters": isFeaturedProduct ? [
-         {
-          "filter_by": "is_featured_product",
-          "filter_value": isFeaturedProduct,
-          "operation": "eq"
-        }
-      ]:[]
+      "filters": isFeaturedProduct
+          ? [
+              {
+                "filter_by": "is_featured_product",
+                "filter_value": isFeaturedProduct,
+                "operation": "eq"
+              }
+            ]
+          : []
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -171,7 +175,6 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        Utility.showToast(value?.body['message']);
         featureProductListResponse =
             FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =

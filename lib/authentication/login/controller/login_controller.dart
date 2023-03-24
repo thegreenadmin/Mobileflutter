@@ -50,7 +50,8 @@ class LoginController extends GetxController {
   //Login Api
   Future apiGenerateOtp() async {
     Map data = {
-      "phone": countryCode.value + phoneNumber.value,
+      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone_code": countryCode.value.trim()
     };
     debugPrint("LOGIN BODY********** $data");
     debugPrint(
@@ -64,8 +65,10 @@ class LoginController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201) {
         phoneTextController.clear();
         Utility.showToast(value.body['message']);
-        Get.to(() => const OtpVerificationScreen(),
-            arguments: {"phoneNumber": countryCode.value + phoneNumber.value});
+        Get.to(() => const OtpVerificationScreen(), arguments: {
+          "phoneNumber": phoneNumber.value.trim(),
+          "countryCode": countryCode.value.trim()
+        });
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //User not exist
         Utility.showToast(value.body['message']);

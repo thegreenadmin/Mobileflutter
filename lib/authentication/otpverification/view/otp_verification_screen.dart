@@ -76,8 +76,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             ),
                             height10SizedBox,
                             Text(
-                              StringConstants.verificationCodeSentText +
-                                  otpVerificationController.phoneNumber.value,
+                              "${StringConstants.verificationCodeSentText}${otpVerificationController.countryCode.value.trim()}-${otpVerificationController.phoneNumber.value.trim()}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColors.blacklight,

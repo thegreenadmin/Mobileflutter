@@ -177,7 +177,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       .dynamicUrl!
                                                       .isEmpty
                                               ? const AssetImage(
-                                                  "assets/offercheck.png",
+                                                  "assets/nopicfound.png",
                                                 ) as ImageProvider
                                               : NetworkImage(offersController
                                                   .getUserOfferlist[index]
@@ -462,7 +462,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? const AssetImage(
-                                                    "assets/offercheck.png",
+                                                    "assets/nopicfound.png",
                                                   ) as ImageProvider
                                                 : NetworkImage(offersController
                                                     .getOwnerOfferlist[index]
