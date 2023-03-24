@@ -27,8 +27,8 @@ class BottomNavigation extends StatelessWidget {
             ),
             onPressed: () {
               _bottomNavigationPageController.onItemTapped(2);
-              OrdersController controller = Get.find<OrdersController>();
-              controller.onInit();
+              // OrdersController controller = Get.find<OrdersController>();
+              // controller.onInit();
             }),
         backgroundColor: AppColors.white,
         bottomNavigationBar: BottomAppBar(

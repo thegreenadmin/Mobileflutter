@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
+import 'package:thegreenmall/dashboard/offers/controller/add_offer_request_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_offer_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -31,12 +34,16 @@ class AddOffersController extends GetxController {
   RxString offerImageOrigionalLinkfromServer = "".obs;
   RxString offerImageDynamicLinkfromServer = "".obs;
 
+  RxString storeId = "".obs;
+  RxString offerId = "".obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
 
+  late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
+  late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
   RxList<Map> selectedProducts = <Map>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -172,6 +179,11 @@ class AddOffersController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetStoreList();
+    storeId.value = Get.arguments["storeId"] ?? "";
+    offerId.value = Get.arguments["offerId"] ?? "";
+    if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
+      apiGetOffersDetail();
+    }
   }
 
   bool validateAndSave() {
@@ -188,9 +200,9 @@ class AddOffersController extends GetxController {
     if (validateAndSave()) {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast("Please upload Image");
+          Utility.showToast(AlertStringConstants.pleaseUploadImageText);
         } else if (discountType.value.isEmpty) {
-          Utility.showToast("Please select discount type");
+          Utility.showToast(AlertStringConstants.pleaseSelectDiscountType);
         } else {
           await apiAddOffer();
         }
@@ -209,22 +221,38 @@ class AddOffersController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map body = {
-      "store_id": storeIdValue.value,
-      "offer": {
-        "is_offer_for_store": isStoreOffer.value,
-        "offer_name": offerNameTextController.text.trim(),
-        "image_url": offerImageOrigionalLinkfromServer.value,
-        "offer_type": discountType.value.toLowerCase(),
-        "offer_value": int.parse(discountOrOfferTextController.text.trim())
-      },
-      "offer_products": isStoreOffer.value ? [] : selectedProducts
-    };
-    debugPrint("ADD OFFER BODY********** $body");
+    List<OfferProducts> offerProductList = <OfferProducts>[];
+    Offer offer = Offer();
+
+    for (int i = 0; i < selectedProducts.length; i++) {
+      offerProductList.add(OfferProducts(
+          productId: int.parse(selectedProducts[i]['product_id'])));
+    }
+    addOfferRequestModel.storeId = storeIdValue.value;
+    addOfferRequestModel.offerProducts =
+        isStoreOffer.value ? [] : offerProductList;
+    offer.isOfferForStore = isStoreOffer.value;
+    offer.offerName = offerNameTextController.text.trim();
+    offer.imageUrl = offerImageOrigionalLinkfromServer.value;
+    offer.offerType = discountType.value.toLowerCase();
+    offer.offerValue = int.parse(discountOrOfferTextController.text.trim());
+    addOfferRequestModel.offer = offer;
+    // Map body = {
+    //   "store_id": storeIdValue.value,
+    //   "offer": {
+    //     "is_offer_for_store": isStoreOffer.value,
+    //     "offer_name": offerNameTextController.text.trim(),
+    //     "image_url": offerImageOrigionalLinkfromServer.value,
+    //     "offer_type": discountType.value.toLowerCase(),
+    //     "offer_value": int.parse(discountOrOfferTextController.text.trim())
+    //   },
+    //   "offer_products": isStoreOffer.value ? [] : selectedProducts.value
+    // };
+    debugPrint("ADD OFFER BODY********** ${addOfferRequestModel.toJson()}");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-            body,
+            addOfferRequestModel,
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeOfferCreate,
             headers,
@@ -269,7 +297,6 @@ class AddOffersController extends GetxController {
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         if (storeIdValue.value.isEmpty && storeList.isNotEmpty) {
           storeIdValue.value = storeList[0].storeId.toString();
-          print(storeIdValue.value);
           apiGetStoreProducts();
         }
       } else if (value.body["status"] == 403) {
@@ -322,6 +349,50 @@ class AddOffersController extends GetxController {
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
+      } else if (value.body["status"] == 403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Get Offers Detail List Api
+  Future apiGetOffersDetail() async {
+    debugPrint(
+      "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
+    );
+    Map<String, String> headers = {
+      // 'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET OFFER DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == 201 || value.body["status"] == 200) {
+        getOfferDetailModel = GetOfferDetailModel.fromJson(value.body);
+        offerNameTextController.text = getOfferDetailModel.data!.offerName!;
+        discountOrOfferTextController.text =
+            getOfferDetailModel.data!.offerValue!.toString();
+        isStoreOffer.value = getOfferDetailModel.data!.isOfferForStore ?? false;
+        if (isStoreOffer.value) {
+          radioValue.value = "store";
+        } else {
+          radioValue.value = "product";
+        }
+        discountType.value = getOfferDetailModel.data!.offerType!;
+        List<OfferProduct> offerProducts = <OfferProduct>[];
+        for (int i = 0; i < offerProducts.length; i++) {
+          storeId.value = offerProducts[i].product!.storeId!;
+        }
+        update();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

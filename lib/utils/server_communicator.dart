@@ -56,11 +56,13 @@ class ServerCommunicator {
   String storeRoleCreate = 'store/role/create';
   String storeRoleDelete = 'store/role/delete';
   String storeRoleDetail = 'store/role/details';
-  String storeRoleEdit = '/store/role/edit';
-  String storeQuantityTypeList = '/store/quantity_type/list';
+  String storeRoleEdit = 'store/role/edit';
+  String storeQuantityTypeList = 'store/quantity_type/list';
   String storeOfferCreate = 'store/offer/create';
-  String nearByStoreList = '/shop/stores/list/nearby';
+  String nearByStoreList = 'shop/stores/list/nearby';
   String storeOfferList = 'store/offer/list';
+  String shopeOffersList = 'shop/offers/list';
+  String storeOffersDetails = 'store/offer/details';
 
 //T
 //U

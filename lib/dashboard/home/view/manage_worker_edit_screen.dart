@@ -459,7 +459,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText:   StringConstants.selectTimeText,
+                                      helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {
@@ -560,7 +560,7 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
-                                      helpText:  StringConstants.selectTimeText,
+                                      helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
                                       builder: (context, child) {

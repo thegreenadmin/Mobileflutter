@@ -124,8 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             elevation: 0,
                             onPressed: () {
                               if (SharedPreferenceStorage.getData(
-                                          Role.role.value)
-                                      .toString() ==
+                                      Role.role.value) ==
                                   Role.customerRoleText) {
                                 Get.to(
                                   const SearchStoreUserScreen(),

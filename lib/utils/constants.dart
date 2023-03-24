@@ -288,8 +288,8 @@ class StringConstants {
   static String uploadLogoText = "Upload Logo";
   static String updateCategoryText = "Update Category";
   static String updateCategoryImageText = "Update Category Image";
-
   static String updateRoleText = "Update Role";
+  static String updateOfferText = "Update Offer";
 
   //V
   static String verificationCodeText = "Verification code";
@@ -397,6 +397,8 @@ class AlertStringConstants {
   static String pleaseSelectAtleastOnePermissionText =
       "Please select atleast one permission";
   static String pleaseEnterOfferNameText = "Please enter offer name";
+  static String pleaseUploadImageText = "Please upload Image";
+  static String pleaseSelectDiscountType = "Please select discount type";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

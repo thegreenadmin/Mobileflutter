@@ -8,16 +8,17 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddOfferScreen extends StatefulWidget {
-  const AddOfferScreen({super.key});
+class EditOfferScreen extends StatefulWidget {
+  const EditOfferScreen({super.key});
 
   @override
-  State<AddOfferScreen> createState() => _AddOfferScreenState();
+  State<EditOfferScreen> createState() => _EditOfferScreenState();
 }
 
-class _AddOfferScreenState extends State<AddOfferScreen> {
+class _EditOfferScreenState extends State<EditOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,43 +28,39 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                StringConstants.addOfferText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
                           ),
-                          Image.asset(
-                            "assets/homeMall.png",
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
+                          width10SizedBox,
+                          Text(
+                            StringConstants.updateOfferText,
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        "assets/homeMall.png",
+                        scale: 4,
+                      )
+                    ])),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -230,39 +227,40 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           children: [
                             Row(
                               children: [
-                                Obx(() => Radio(
-                                      activeColor: AppColors.primary,
-                                      value: "store",
-                                      groupValue:
-                                          addOffersController.radioValue.value,
-                                      onChanged: (value) {
-                                        addOffersController.radioValue.value =
-                                            value.toString();
-                                        addOffersController.isStoreOffer.value =
-                                            true;
-                                        addOffersController.storeProductList
-                                            .clear();
-                                      },
-                                    )),
+                                Radio(
+                                  activeColor: AppColors.primary,
+                                  value: "store",
+                                  groupValue:
+                                      addOffersController.radioValue.value,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      addOffersController.radioValue.value =
+                                          value.toString();
+
+                                      addOffersController.isStoreOffer.value =
+                                          true;
+                                    });
+                                  },
+                                ),
                                 Text(StringConstants.storeText)
                               ],
                             ),
                             Row(
                               children: [
-                                Obx(() => Radio(
-                                      activeColor: AppColors.primary,
-                                      value: "product",
-                                      groupValue:
-                                          addOffersController.radioValue.value,
-                                      onChanged: (value) {
-                                        addOffersController.radioValue.value =
-                                            value.toString();
-                                        addOffersController.isStoreOffer.value =
-                                            false;
-                                        addOffersController.storeProductList
-                                            .clear();
-                                      },
-                                    )),
+                                Radio(
+                                  activeColor: AppColors.primary,
+                                  value: "product",
+                                  groupValue:
+                                      addOffersController.radioValue.value,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      addOffersController.radioValue.value =
+                                          value.toString();
+                                      addOffersController.isStoreOffer.value =
+                                          false;
+                                    });
+                                  },
+                                ),
                                 Text(StringConstants.productText)
                               ],
                             ),
@@ -279,71 +277,68 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           fontSize: 16),
                     ),
                     height8SizedBox,
-                    Obx(() => DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
+                    DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
                           ),
-                          hint: Text(
-                            StringConstants.selectStoreText,
+                        ),
+                        border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      hint: Text(
+                        StringConstants.selectStoreText,
+                        style: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
+                      ),
+                      items: addOffersController.storeList.map((dynamic value) {
+                        return DropdownMenuItem<String>(
+                          value: value.storeId,
+                          child: Text(
+                            value.storeName,
                             style: const TextStyle(
-                                color: AppColors.grey, fontSize: 14),
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           ),
-                          items: addOffersController.storeList
-                              .map((dynamic value) {
-                            return DropdownMenuItem<String>(
-                              value: value.storeId,
-                              child: Text(
-                                value.storeName,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) async {
-                            addOffersController.storeIdValue.value =
-                                value.toString();
-                            if (addOffersController.isStoreOffer.value ==
-                                false) {
-                              await addOffersController.apiGetStoreProducts();
-                              setState(() {});
-                            }
-                            setState(() {});
-                          },
-                        )),
+                        );
+                      }).toList(),
+                      onChanged: (value) async {
+                        addOffersController.storeIdValue.value =
+                            value.toString();
+                        if (addOffersController.isStoreOffer.value == false) {
+                          await addOffersController.apiGetStoreProducts();
+                          setState(() {});
+                        }
+                        setState(() {});
+                      },
+                    ),
                     height20SizedBox,
                     Obx(
-                      () => addOffersController.isStoreOffer.value ||
-                              addOffersController.radioValue.value == "store"
+                      () => addOffersController.isStoreOffer.value
                           ? height0SizedBox
                           : addOffersController.storeProductList.isEmpty
                               ? height0SizedBox
@@ -379,8 +374,6 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = true;
-                                                    print(addOffersController
-                                                        .selectedProducts);
                                                   } else {
                                                     addOffersController
                                                         .selectedProducts
@@ -394,8 +387,6 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = false;
-                                                    print(addOffersController
-                                                        .selectedProducts);
                                                   }
                                                 },
                                                 child: Container(
@@ -455,11 +446,13 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                                         item[
                                                                             'product_id'] ==
                                                                         addOffersController
-                                                                            .storeProductList[i]
+                                                                            .storeProductList[
+                                                                                i]
                                                                             .productId) ==
                                                                 true
-                                                            ? AppColors.white
-                                                            : AppColors.primary,
+                                                            ? AppColors.primary
+                                                            : AppColors
+                                                                .primarylight,
                                                       ),
                                                     )),
                                               )
@@ -481,61 +474,65 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: DropdownButtonFormField<String>(
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            isExpanded: true,
-                            hint: Text(
-                              StringConstants.selectTypeText,
-                              style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                            ),
-                            items: <String>["Percentage", "Amount"]
-                                .map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (v) {
-                              addOffersController.discountType.value =
-                                  v.toString();
-                            },
-                          ),
+                          child: Obx(() => addOffersController
+                                  .discountType.value.isEmpty
+                              ? height0SizedBox
+                              : DropdownButtonFormField<String>(
+                                  value: addOffersController.discountType.value,
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  hint: Text(
+                                    StringConstants.selectTypeText,
+                                    style: const TextStyle(
+                                        color: AppColors.grey, fontSize: 14),
+                                  ),
+                                  items: <String>["percentage", "amount"]
+                                      .map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (v) {
+                                    addOffersController.discountType.value =
+                                        v.toString();
+                                  },
+                                )),
                         ),
                         width15SizedBox,
                         Flexible(
