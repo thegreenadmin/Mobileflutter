@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/add_to_order_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/view_user_product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -67,7 +68,10 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      Get.to(const AddToOrderScreen());
+                      Get.to(const UserProductListScreen());
+                      storeHomeMainController.apiFeatureProductListApi(categoryId:
+                      storeHomeMainController.categoriesList[index].categoryId??"0");
+                      storeHomeMainController.category.value = storeHomeMainController.categoriesList[index];
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),

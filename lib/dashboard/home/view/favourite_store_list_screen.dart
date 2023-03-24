@@ -110,7 +110,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                 .dynamicUrl!
                                                 .isEmpty
                                             ? const AssetImage(
-                                            "assets/storeicon.png")
+                                            "assets/nopicfound.png")
                                         as ImageProvider
                                             : NetworkImage(
                                             searchStoreUserController
