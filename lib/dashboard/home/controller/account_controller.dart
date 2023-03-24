@@ -100,7 +100,6 @@ class AccountController extends GetxController {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
-
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
@@ -110,21 +109,16 @@ class AccountController extends GetxController {
         email.value = getUserDetailModel.data!.user!.email ?? "";
         emailTextController.text = email.value;
         phone.value = getUserDetailModel.data!.user!.phone ?? "";
-
         List<UserAddresses> userAddress = <UserAddresses>[];
         userAddress = getUserDetailModel.data!.user!.userAddresses!;
-
         if (userAddress.isNotEmpty) {
           userAddress = getUserDetailModel.data!.user!.userAddresses!;
-
           for (int i = 0; i < userAddress.length; i++) {
             countryId!.value = userAddress[i].state!.country!.countryId ?? "";
             countryDropdownValue.value =
                 userAddress[i].state!.country!.countryName ?? "";
             stateId.value = userAddress[i].state!.stateId ?? "";
-
             stateDropdownValue.value = userAddress[i].state!.stateName ?? "";
-
             addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
             addressLine1.value = addressLine1TextController.text;
             addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
@@ -135,32 +129,6 @@ class AccountController extends GetxController {
             postalCode.value = postalCodeTextController.text;
           }
         }
-
-        // if (value.body["data"]["user"]['user_addresses'] != null ||
-        //     value.body["data"]["user"]['user_addresses'] != []) {
-        //   userAddress = value.body["data"]["user"]['user_addresses'];
-
-        //   for (int i = 0; i < userAddress.length; i++) {
-        //     countryId!.value =
-        //         userAddress[i]['state']['country']["country_id"] ?? "";
-        //     countryDropdownValue.value =
-        //         userAddress[i]['state']['country']["country_name"] ?? "";
-        //     stateId.value = userAddress[i]['state']["state_id"] ?? "";
-        //     stateDropdownValue.value =
-        //         userAddress[i]['state']["state_name"] ?? "";
-
-        //     addressLine1TextController.text =
-        //         userAddress[i]['address_line_1'] ?? "";
-        //     addressLine1.value = addressLine1TextController.text;
-        //     addressLine2TextController.text =
-        //         userAddress[i]['address_line_2'] ?? "";
-        //     addressLine2.value = addressLine2TextController.text;
-        //     townOrCityTextController.text = userAddress[i]['city'] ?? "";
-        //     city.value = townOrCityTextController.text;
-        //     postalCodeTextController.text = userAddress[i]['postal_code'] ?? "";
-        //     postalCode.value = postalCodeTextController.text;
-        // }
-        // }
         await apiGetCountries();
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
