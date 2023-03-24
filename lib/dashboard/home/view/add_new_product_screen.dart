@@ -119,7 +119,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ? height0SizedBox
                           : InkWell(
                               onTap: () {
-                                manageStoreController.selectImages();
+                                manageStoreController.selectImages(true);
                               },
                               child: Image.asset(
                                 "assets/uploadbutton.png",
@@ -137,7 +137,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   flex: 4,
                                   child: InkWell(
                                     onTap: () {
-                                      manageStoreController.selectImages();
+                                      manageStoreController.selectImages(true);
                                     },
                                     child: Row(
                                       children: [
