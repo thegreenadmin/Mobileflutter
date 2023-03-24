@@ -93,11 +93,12 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                           color: AppColors.white, width: 1)),
-                                  child: const CircleAvatar(
+                                  child: CircleAvatar(
                                     radius: 25.0,
-                                    backgroundImage: AssetImage(
-                                      "assets/inboxexample.png",
-                                    ),
+                                    backgroundImage:
+                                    storeHomeMainController.categoriesList[index].image?.dynamicUrl == null
+                                        ? const AssetImage("assets/storeicon.png")
+                                    as ImageProvider : NetworkImage(storeHomeMainController.categoriesList[index].image?.dynamicUrl.toString() ?? ""),
                                     backgroundColor: Colors.transparent,
                                   ),
                                 ),

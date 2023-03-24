@@ -111,12 +111,11 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeAddress.value.store?.storeId}",
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        Utility.showToast(value?.body['message']);
         offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == 403) {
@@ -166,12 +165,11 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        Utility.showToast(value?.body['message']);
         featureProductListResponse =
             FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =
