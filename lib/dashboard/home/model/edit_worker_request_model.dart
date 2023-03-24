@@ -14,24 +14,28 @@ class EditWorkerRequest {
     this.storeUserId,
     this.description,
     this.employeeTimings,
+    this.storeUserRole,
   });
 
   int? storeId;
   int? storeUserId;
   String? description;
   List<EmployeeTiming>? employeeTimings;
+  StoreUserRole? storeUserRole;
 
   EditWorkerRequest copyWith({
     int? storeId,
     int? storeUserId,
     String? description,
     List<EmployeeTiming>? employeeTimings,
+    StoreUserRole? storeUserRole,
   }) =>
       EditWorkerRequest(
         storeId: storeId ?? this.storeId,
         storeUserId: storeUserId ?? this.storeUserId,
         description: description ?? this.description,
         employeeTimings: employeeTimings ?? this.employeeTimings,
+        storeUserRole: storeUserRole ?? this.storeUserRole,
       );
 
   factory EditWorkerRequest.fromJson(Map<String, dynamic> json) => EditWorkerRequest(
@@ -39,6 +43,8 @@ class EditWorkerRequest {
     storeUserId: json["store_user_id"],
     description: json["description"],
     employeeTimings: json["employee_timings"] == null ? [] : List<EmployeeTiming>.from(json["employee_timings"]!.map((x) => EmployeeTiming.fromJson(x))),
+    storeUserRole: json["store_user_role"] == null ? null : StoreUserRole.fromJson(json["store_user_role"]),
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +52,36 @@ class EditWorkerRequest {
     "store_user_id": storeUserId,
     "description": description,
     "employee_timings": employeeTimings == null ? [] : List<dynamic>.from(employeeTimings!.map((x) => x.toJson())),
+    "store_user_role": storeUserRole?.toJson(),
+  };
+}
+
+class StoreUserRole {
+  StoreUserRole({
+    this.storeUserRoleId,
+    this.roleId,
+  });
+
+  int? storeUserRoleId;
+  int? roleId;
+
+  StoreUserRole copyWith({
+    int? storeUserRoleId,
+    int? roleId,
+  }) =>
+      StoreUserRole(
+        storeUserRoleId: storeUserRoleId ?? this.storeUserRoleId,
+        roleId: roleId ?? this.roleId,
+      );
+
+  factory StoreUserRole.fromJson(Map<String, dynamic> json) => StoreUserRole(
+    storeUserRoleId: json["store_user_role_id"],
+    roleId: json["role_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_user_role_id": storeUserRoleId,
+    "role_id": roleId,
   };
 }
 

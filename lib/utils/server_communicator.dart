@@ -39,6 +39,7 @@ class ServerCommunicator {
 //Q
 //R
 
+  String roleList = 'store/role/list';
   String removeFavouriteStore = 'user/store/favourite/remove';
 //S
   String states = 'utils/states';

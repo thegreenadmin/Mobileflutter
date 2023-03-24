@@ -409,16 +409,16 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                         children: [
                           Flexible(
                             flex: 5,
-                            child: DropdownButtonFormField<String>(
+                            child: Obx(()=>DropdownButtonFormField<String>(
                               value: manageStoreController
-                                          .quantityValue.value !=
-                                      ""
+                                  .quantityValue.value !=
+                                  ""
                                   ? manageStoreController.quantityTypeList
-                                      .firstWhere((element) =>
-                                          element.quantityTypeId ==
-                                          manageStoreController
-                                              .quantityValue.value)
-                                      .quantityTypeId
+                                  .firstWhere((element) =>
+                              element.quantityTypeId ==
+                                  manageStoreController
+                                      .quantityValue.value)
+                                  .quantityTypeId
                                   : null,
                               isExpanded: true,
                               decoration: InputDecoration(
@@ -475,7 +475,7 @@ class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
                                 manageStoreController.quantityValue.value =
                                     value.toString();
                               },
-                            ),
+                            ),)
                           ),
                           width15SizedBox,
                           Flexible(

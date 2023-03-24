@@ -55,8 +55,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                             Text(
-                                      'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                             Text('Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
                                       style: const TextStyle(
                                           fontSize: 20,
                                           color: AppColors.black,

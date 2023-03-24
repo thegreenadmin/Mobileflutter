@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
+import 'package:thegreenmall/dashboard/home/model/role_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
@@ -57,14 +58,18 @@ class AddNewWorkerController extends GetxController {
   RxString storeId = "0".obs;
   RxString storeName = "".obs;
   RxString workerId = "0".obs;
+  RxString roleId = "".obs;
+  RxString storeUserRoleId = "".obs;
 
   Rx<XFile> categoryImage = XFile("").obs;
+  late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
   late WorkerListResponse workerListResponse = WorkerListResponse();
   worker_detail.WorkerDetailResponse? workerDetailResponse =
       worker_detail.WorkerDetailResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
+  RxList<StoreRole> storeRoleList = <StoreRole>[].obs;
 
   RxInt radioGroupValue = 0.obs;
 
@@ -75,6 +80,7 @@ class AddNewWorkerController extends GetxController {
     storeName.value = Get.arguments["storeName"] ?? "";
     apiGetUserStoreList();
     apiGetWorkerList();
+    apiGetRoleList();
   }
 
   bool validateAndSave() {
@@ -116,6 +122,7 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
     addWorkerRequest.phone = "+${mobileNoTextController.text.trim()}";
     addWorkerRequest.email = emailTextController.text.trim();
+    addWorkerRequest.roleId = int.parse(roleId.value.toString());
     List<add_worker.EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       if (element.isSelected == true) {
@@ -177,6 +184,11 @@ class AddNewWorkerController extends GetxController {
     editWorkerRequest.storeId = int.parse(storeId.value);
     editWorkerRequest.storeUserId = int.parse(workerId.value);
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
+    StoreUserRole? storeUserRole = StoreUserRole();
+    storeUserRole.roleId = int.parse(roleId.value);
+    storeUserRole.storeUserRoleId = storeUserRoleId.value!=""?
+        int.parse(storeUserRoleId.value):null;
+     editWorkerRequest.storeUserRole =storeUserRole;
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
         workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
@@ -512,6 +524,37 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
+  //Get Role List Api
+  Future apiGetRoleList() async {
+    workerList.clear();
+    isLoading.value = true;
+    debugPrint(
+        "apiGetWorkerList **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}?store_id=${int.parse(storeId.value)}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("apiGetWorkerList RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
+        storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
   //Get Worker List Api
   Future apiGetWorkerDetail() async {
     isLoading.value = true;
@@ -547,6 +590,9 @@ class AddNewWorkerController extends GetxController {
         userImageOriginalLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ??
                 "";
+        roleId.value =   workerDetailResponse?.data?.storeUser?.storeUserRole?.role?.roleId??"";
+        storeUserRoleId.value =   workerDetailResponse?.data?.storeUser?.storeUserRole?.storeUserRoleId??"";
+
         List<worker_detail.StoreUserTiming>? storeUserTimings =
             workerDetailResponse?.data?.storeUser?.storeUserTimings ?? [];
         var concatenate = StringBuffer();
