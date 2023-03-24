@@ -596,18 +596,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       onCountryChanged: (value) {
                         addNewStoreController.countryCode.value =
                             "+${value.dialCode}";
-                        // loginController.countryCode.value =
-                        //     "+${value.dialCode}";
                       },
                       onChanged: (phone) {
                         addNewStoreController.phoneNumber.value =
                             phone.number.toString();
                         addNewStoreController.countryCode.value =
                             phone.countryCode.toString();
-                        // loginController.phoneNumber.value =
-                        //     phone.number.toString();
-                        // loginController.countryCode.value =
-                        //     phone.countryCode.toString();
                       },
                     ),
                     height20SizedBox,

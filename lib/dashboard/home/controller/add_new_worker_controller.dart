@@ -60,6 +60,8 @@ class AddNewWorkerController extends GetxController {
   RxString workerId = "0".obs;
   RxString roleId = "".obs;
   RxString storeUserRoleId = "".obs;
+  RxString countryCode = "".obs;
+  RxString phoneNumber = "".obs;
 
   Rx<XFile> categoryImage = XFile("").obs;
   late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
@@ -120,7 +122,9 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.imageUrl = userImageOriginalLinkFromServer.value.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
-    addWorkerRequest.phone = "+${mobileNoTextController.text.trim()}";
+    addWorkerRequest.phone =
+        countryCode.value.trim() + phoneNumber.value.trim();
+    addWorkerRequest.phoneCode = countryCode.value.trim();
     addWorkerRequest.email = emailTextController.text.trim();
     addWorkerRequest.roleId = int.parse(roleId.value.toString());
     List<add_worker.EmployeeTiming>? employeeTimings = [];
@@ -186,9 +190,9 @@ class AddNewWorkerController extends GetxController {
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
     StoreUserRole? storeUserRole = StoreUserRole();
     storeUserRole.roleId = int.parse(roleId.value);
-    storeUserRole.storeUserRoleId = storeUserRoleId.value!=""?
-        int.parse(storeUserRoleId.value):null;
-     editWorkerRequest.storeUserRole =storeUserRole;
+    storeUserRole.storeUserRoleId =
+        storeUserRoleId.value != "" ? int.parse(storeUserRoleId.value) : null;
+    editWorkerRequest.storeUserRole = storeUserRole;
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
         workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
@@ -294,7 +298,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  // Edit Worker Api
+  // Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
@@ -555,12 +559,12 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Get Worker List Api
+  //Get Worker Detail Api
   Future apiGetWorkerDetail() async {
     isLoading.value = true;
     selectedWeekDaysList.clear();
     debugPrint(
-        "GET  STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}");
+        "GET STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -584,14 +588,20 @@ class AddNewWorkerController extends GetxController {
             workerDetailResponse?.data?.storeUser?.user?.email ?? '';
         mobileNoTextController.text =
             workerDetailResponse?.data?.storeUser?.user?.phone ?? '';
+        phoneNumber.value = mobileNoTextController.text.trim();
+
         userImageDynamicLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
                 "";
         userImageOriginalLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ??
                 "";
-        roleId.value =   workerDetailResponse?.data?.storeUser?.storeUserRole?.role?.roleId??"";
-        storeUserRoleId.value =   workerDetailResponse?.data?.storeUser?.storeUserRole?.storeUserRoleId??"";
+        roleId.value = workerDetailResponse
+                ?.data?.storeUser?.storeUserRole?.role?.roleId ??
+            "";
+        storeUserRoleId.value = workerDetailResponse
+                ?.data?.storeUser?.storeUserRole?.storeUserRoleId ??
+            "";
 
         List<worker_detail.StoreUserTiming>? storeUserTimings =
             workerDetailResponse?.data?.storeUser?.storeUserTimings ?? [];
@@ -640,6 +650,8 @@ class AddNewWorkerController extends GetxController {
     startTimeTextController.clear();
     endTimeTextController.clear();
     selectedWeekDaysList.clear();
+    countryCode.value = "";
+    roleId.value = "";
     for (Categories day in weekDaysList) {
       day.isSelected = false;
     }

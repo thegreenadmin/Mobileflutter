@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -619,59 +620,118 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewWorkerController.mobileNoTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterMobileNoText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterMobileText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                    IntlPhoneField(
+                      controller: addNewWorkerController.mobileNoTextController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                      showDropdownIcon: false,
+                      flagsButtonMargin: const EdgeInsets.all(10),
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        prefixIcon: Image.asset("assets/calling.png"),
+                        alignLabelWithHint: true,
+                        hintText: StringConstants.mobileText,
+                        hintStyle: TextStyle(
+                            color: AppColors.blacklight, fontSize: 15),
+                        border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                        )),
+                        ),
+                      ),
+                      onCountryChanged: (value) {
+                        addNewWorkerController.countryCode.value =
+                            "+${value.dialCode}";
+                      },
+                      onChanged: (phone) {
+                        addNewWorkerController.phoneNumber.value =
+                            phone.number.toString();
+                        addNewWorkerController.countryCode.value =
+                            phone.countryCode.toString();
+                      },
+                    ),
+                    // TextFormField(
+                    //     textInputAction: TextInputAction.next,
+                    //     autofocus: false,
+                    //     inputFormatters: <TextInputFormatter>[
+                    //       LengthLimitingTextInputFormatter(100),
+                    //     ],
+                    //     style: const TextStyle(
+                    //         color: AppColors.black,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w500),
+                    //     controller:
+                    //         addNewWorkerController.mobileNoTextController,
+                    //     keyboardType: TextInputType.text,
+                    //     validator: (value) {
+                    //       if (value!.trim().isEmpty) {
+                    //         return AlertStringConstants.pleaseEnterMobileNoText;
+                    //       }
+                    //       return null;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       hintText: StringConstants.enterMobileText,
+                    //       hintStyle: const TextStyle(
+                    //           color: AppColors.grey, fontSize: 14),
+                    //       fillColor: Colors.white,
+                    //       border: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       errorBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.grey,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //     )),
                     height20SizedBox,
                     DropdownButtonFormField<String>(
                       isExpanded: true,
@@ -726,8 +786,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         );
                       }).toList(),
                       onChanged: (value) {
-                        addNewWorkerController.roleId.value =
-                            value.toString();
+                        addNewWorkerController.roleId.value = value.toString();
                       },
                     ),
                     height40SizedBox,

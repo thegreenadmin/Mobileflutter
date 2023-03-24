@@ -3,9 +3,11 @@
 
 import 'dart:convert';
 
-AddWorkerRequest addWorkerRequestFromJson(String str) => AddWorkerRequest.fromJson(json.decode(str));
+AddWorkerRequest addWorkerRequestFromJson(String str) =>
+    AddWorkerRequest.fromJson(json.decode(str));
 
-String addWorkerRequestToJson(AddWorkerRequest data) => json.encode(data.toJson());
+String addWorkerRequestToJson(AddWorkerRequest data) =>
+    json.encode(data.toJson());
 
 class AddWorkerRequest {
   AddWorkerRequest({
@@ -13,6 +15,7 @@ class AddWorkerRequest {
     this.employeeName,
     this.description,
     this.phone,
+    this.phoneCode,
     this.email,
     this.imageUrl,
     this.employeeTimings,
@@ -23,6 +26,7 @@ class AddWorkerRequest {
   String? employeeName;
   String? description;
   String? phone;
+  String? phoneCode;
   String? email;
   String? imageUrl;
   List<EmployeeTiming>? employeeTimings;
@@ -33,6 +37,7 @@ class AddWorkerRequest {
     String? employeeName,
     String? description,
     String? phone,
+    String? phoneCode,
     String? email,
     String? imageUrl,
     List<EmployeeTiming>? employeeTimings,
@@ -43,33 +48,42 @@ class AddWorkerRequest {
         employeeName: employeeName ?? this.employeeName,
         description: description ?? this.description,
         phone: phone ?? this.phone,
+        phoneCode: phoneCode ?? this.phoneCode,
         email: email ?? this.email,
         imageUrl: imageUrl ?? this.imageUrl,
         employeeTimings: employeeTimings ?? this.employeeTimings,
         roleId: roleId ?? this.roleId,
       );
 
-  factory AddWorkerRequest.fromJson(Map<String, dynamic> json) => AddWorkerRequest(
-    storeId: json["store_id"],
-    employeeName: json["employee_name"],
-    description: json["description"],
-    phone: json["phone"],
-    email: json["email"],
-    imageUrl: json["image_url"],
-    employeeTimings: json["employee_timings"] == null ? [] : List<EmployeeTiming>.from(json["employee_timings"]!.map((x) => EmployeeTiming.fromJson(x))),
-    roleId: json["role_id"],
-  );
+  factory AddWorkerRequest.fromJson(Map<String, dynamic> json) =>
+      AddWorkerRequest(
+        storeId: json["store_id"],
+        employeeName: json["employee_name"],
+        description: json["description"],
+        phone: json["phone"],
+        phoneCode: json["phone_code"],
+        email: json["email"],
+        imageUrl: json["image_url"],
+        employeeTimings: json["employee_timings"] == null
+            ? []
+            : List<EmployeeTiming>.from(json["employee_timings"]!
+                .map((x) => EmployeeTiming.fromJson(x))),
+        roleId: json["role_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_id": storeId,
-    "employee_name": employeeName,
-    "description": description,
-    "phone": phone,
-    "email": email,
-    "image_url": imageUrl,
-    "employee_timings": employeeTimings == null ? [] : List<dynamic>.from(employeeTimings!.map((x) => x.toJson())),
-    "role_id": roleId,
-  };
+        "store_id": storeId,
+        "employee_name": employeeName,
+        "description": description,
+        "phone": phone,
+        "phone_code": phoneCode,
+        "email": email,
+        "image_url": imageUrl,
+        "employee_timings": employeeTimings == null
+            ? []
+            : List<dynamic>.from(employeeTimings!.map((x) => x.toJson())),
+        "role_id": roleId,
+      };
 }
 
 class EmployeeTiming {
@@ -99,16 +113,16 @@ class EmployeeTiming {
       );
 
   factory EmployeeTiming.fromJson(Map<String, dynamic> json) => EmployeeTiming(
-    dayOfWeek: json["day_of_week"],
-    is24HrsActive: json["is_24_hrs_active"],
-    startTime: json["start_time"],
-    endTime: json["end_time"],
-  );
+        dayOfWeek: json["day_of_week"],
+        is24HrsActive: json["is_24_hrs_active"],
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "day_of_week": dayOfWeek,
-    "is_24_hrs_active": is24HrsActive,
-    "start_time": startTime,
-    "end_time": endTime,
-  };
+        "day_of_week": dayOfWeek,
+        "is_24_hrs_active": is24HrsActive,
+        "start_time": startTime,
+        "end_time": endTime,
+      };
 }
