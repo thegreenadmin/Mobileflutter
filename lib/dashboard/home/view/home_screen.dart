@@ -54,14 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Obx(() => Text(
-                                  "Hi, "
-                                  "${homeController.firstName!.value} ${homeController.lastName!.value}",
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                            Text(
+                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
                             const Text(
                               "Welcome to the greenmall",
                               style: TextStyle(

@@ -11,7 +11,8 @@ class RoleAndPermissionScreen extends StatefulWidget {
   const RoleAndPermissionScreen({super.key});
 
   @override
-  State<RoleAndPermissionScreen> createState() => _RoleAndPermissionScreenState();
+  State<RoleAndPermissionScreen> createState() =>
+      _RoleAndPermissionScreenState();
 }
 
 class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
@@ -47,7 +48,10 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           width10SizedBox,
                           Text(
                             StringConstants.roleAndPermissionText,
-                            style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -66,7 +70,10 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                 children: [
                   Text(
                     StringConstants.rolesText,
-                    style: const TextStyle(fontSize: 18.0, color: AppColors.black, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600),
                   ),
                   InkWell(
                       highlightColor: Colors.transparent,
@@ -74,12 +81,20 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                       onTap: () {
                         addNewRoleController.roleNameTextController.clear();
                         addNewRoleController.controllerIdsList.clear();
-                        for (int i = 0; i < addNewRoleController.moduleList.length; i++) {
-                          for (int j = 0; j < addNewRoleController.moduleList[i].controllers!.length; j++) {
-                            addNewRoleController.moduleList[i].controllers![j].isSelected = false;
+                        for (int i = 0;
+                            i < addNewRoleController.moduleList.length;
+                            i++) {
+                          for (int j = 0;
+                              j <
+                                  addNewRoleController
+                                      .moduleList[i].controllers!.length;
+                              j++) {
+                            addNewRoleController.moduleList[i].controllers![j]
+                                .isSelected = false;
                           }
                         }
-                        Get.to(const AddNewRoleScreen())!.then((value) => addNewRoleController.apiGetStoreRole());
+                        Get.to(const AddNewRoleScreen())!.then(
+                            (value) => addNewRoleController.apiGetStoreRole());
                       },
                       child: Row(
                         children: [
@@ -91,8 +106,10 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           width2SizedBox,
                           Text(
                             StringConstants.addRoleText,
-                            style:
-                                const TextStyle(fontSize: 18.0, color: AppColors.primary, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                fontSize: 18.0,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ))
@@ -118,7 +135,9 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                               Center(
                                 child: Text(
                                   StringConstants.noRolesFoundText,
-                                  style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16),
                                 ),
                               ),
                             ],
@@ -129,19 +148,25 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           return InkWell(
                             onTap: () {},
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
                               decoration: const BoxDecoration(
                                   color: AppColors.greylight,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
                                   )),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    addNewRoleController.storeRoleList[index].roleName ?? "",
+                                    addNewRoleController
+                                            .storeRoleList[index].roleName ??
+                                        "",
                                     style: const TextStyle(
-                                        fontSize: 16.0, color: AppColors.black, fontWeight: FontWeight.w500),
+                                        fontSize: 16.0,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   height4SizedBox,
                                   Row(
@@ -149,11 +174,14 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                       InkWell(
                                         onTap: () {
                                           addNewRoleController.roleId.value =
-                                              addNewRoleController.storeRoleList[index].roleId.toString();
+                                              addNewRoleController
+                                                  .storeRoleList[index].roleId
+                                                  .toString();
                                           addNewRoleController.apiDeleteRole();
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Image.asset(
                                             "assets/deleteicon.png",
                                             scale: 2.8,
@@ -164,13 +192,19 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                       InkWell(
                                         onTap: () async {
                                           addNewRoleController.roleId.value =
-                                              addNewRoleController.storeRoleList[index].roleId.toString();
-                                          await addNewRoleController.apiGetStoreRoleDetail();
+                                              addNewRoleController
+                                                  .storeRoleList[index].roleId
+                                                  .toString();
+                                          await addNewRoleController
+                                              .apiGetStoreRoleDetail();
                                           Get.to(const RoleUpdateScreen())!
-                                              .then((value) => addNewRoleController.apiGetStoreRole());
+                                              .then((value) =>
+                                                  addNewRoleController
+                                                      .apiGetStoreRole());
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Image.asset(
                                             "assets/pencil.png",
                                             scale: 2.8,

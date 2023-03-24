@@ -37,13 +37,13 @@ class _OffersScreenState extends State<OffersScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Obx(() => Text(
-                                  "Hi, ${offersController.firstName!.value} ${offersController.lastName!.value}",
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                )),
+                            Text(
+                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
                             height4SizedBox,
                             Text(
                               StringConstants.offersText,

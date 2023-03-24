@@ -43,7 +43,7 @@ class Data {
 class Role {
   String? roleId;
   String? roleName;
-  List<Permissions>? permissions;
+  List<Permission>? permissions;
 
   Role({this.roleId, this.roleName, this.permissions});
 
@@ -51,9 +51,9 @@ class Role {
     roleId = json['role_id'];
     roleName = json['role_name'];
     if (json['permissions'] != null) {
-      permissions = <Permissions>[];
+      permissions = <Permission>[];
       json['permissions'].forEach((v) {
-        permissions!.add(Permissions.fromJson(v));
+        permissions!.add(Permission.fromJson(v));
       });
     }
   }
@@ -69,21 +69,21 @@ class Role {
   }
 }
 
-class Permissions {
+class Permission {
   String? permissionId;
   String? controllerId;
   String? status;
   Controller? controller;
   bool? isSelected = true;
 
-  Permissions(
+  Permission(
       {this.permissionId,
       this.controllerId,
       this.status,
       this.controller,
       this.isSelected});
 
-  Permissions.fromJson(Map<String, dynamic> json) {
+  Permission.fromJson(Map<String, dynamic> json) {
     permissionId = json['permission_id'];
     controllerId = json['controller_id'];
     status = json['status'];

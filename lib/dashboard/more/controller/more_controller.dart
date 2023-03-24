@@ -17,37 +17,5 @@ class MoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    apiGetUserDetail();
-    Future.delayed(const Duration(milliseconds: 200), () {});
-  }
-
-  //Get User Detail Info Api
-  Future apiGetUserDetail() async {
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
-            headers,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        firstName!.value = value.body["data"]["user"]['first_name'] ?? "";
-        lastName!.value = value.body["data"]["user"]['last_name'] ?? "";
-        nickName!.value = value.body["data"]["user"]['nick_name'] ?? "-";
-        email.value = value.body["data"]["user"]['email'] ?? "";
-        phone.value = value.body["data"]["user"]['phone'] ?? "";
-      } else {
-        Utility.showToast(value.body['message'].toString());
-      }
-    });
   }
 }

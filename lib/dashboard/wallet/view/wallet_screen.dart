@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -108,14 +109,14 @@ class _WalletScreenState extends State<WalletScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Obx(() => Text(
-                                  "Hi, ${walletController.firstName!.value} ${walletController.lastName!.value}",
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontFamily: "Inter",
-                                      fontWeight: FontWeight.w400),
-                                )),
+                            Text(
+                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.black,
+                                  fontFamily: "Inter",
+                                  fontWeight: FontWeight.w400),
+                            ),
                             height4SizedBox,
                             Text(
                               StringConstants.walletText,

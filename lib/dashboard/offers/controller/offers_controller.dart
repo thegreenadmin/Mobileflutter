@@ -40,7 +40,7 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    apiGetUserDetail();
+
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -49,42 +49,6 @@ class OffersController extends GetxController {
       apiGetOwnerOffersList();
       role!.value = Role.storeOwnerRoleText;
     }
-  }
-
-  //Get User Detail Info Api
-  Future apiGetUserDetail() async {
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
-            headers,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
-        firstName!.value = getUserDetailModel.data!.user!.firstName!;
-        lastName!.value = getUserDetailModel.data!.user!.lastName!;
-        nickName!.value = getUserDetailModel.data!.user!.nickName!;
-        email!.value = getUserDetailModel.data!.user!.email!;
-        phone!.value = getUserDetailModel.data!.user!.phone!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
-        Utility.showToast(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-      } else {
-        Utility.showMessage(
-            StringConstants.alertText, value.body['message'].toString());
-      }
-    });
   }
 
   //Get Offers List of OWNER Api

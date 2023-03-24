@@ -39,7 +39,8 @@ class SearchStoreOwnerController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController workingDaysTextController = TextEditingController();
-  TextEditingController deliveryServicesTextController = TextEditingController();
+  TextEditingController deliveryServicesTextController =
+      TextEditingController();
 
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
@@ -85,7 +86,8 @@ class SearchStoreOwnerController extends GetxController {
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
-  late DeliveryServicesResponse deliveryServicesResponse = DeliveryServicesResponse();
+  late DeliveryServicesResponse deliveryServicesResponse =
+      DeliveryServicesResponse();
   RxList<DeliveryService> deliveryServices = <DeliveryService>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
@@ -390,19 +392,22 @@ class SearchStoreOwnerController extends GetxController {
         "GET deliveryServiceList  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl + ServerCommunicator().deliveryServiceList,
-        headers,
-        showLoading: false)
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().deliveryServiceList,
+            headers,
+            showLoading: false)
         .then((value) async {
       debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
-        deliveryServices.value = deliveryServicesResponse.data!.deliveryServices!;
+        deliveryServicesResponse =
+            DeliveryServicesResponse.fromJson(value.body);
+        deliveryServices.value =
+            deliveryServicesResponse.data!.deliveryServices!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -454,18 +459,18 @@ class SearchStoreOwnerController extends GetxController {
             value?.body["data"]['store']['store_addresses'] ?? [];
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
-        storeDeliveryServices.value=
+        storeDeliveryServices.value =
             value?.body["data"]['store']['store_delivery_services'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
-       if(storeDeliveryServices.isNotEmpty){
-         for (var sData in storeDeliveryServices) {
-           for (var element in deliveryServices) {
-             if (sData["delivery_service_id"] == element.id) {
-               element.isSelected = sData["is_enabled"];
-             }
-           }
-         }
-       }
+        if (storeDeliveryServices.isNotEmpty) {
+          for (var sData in storeDeliveryServices) {
+            for (var element in deliveryServices) {
+              if (sData["delivery_service_id"] == element.id) {
+                element.isSelected = sData["is_enabled"];
+              }
+            }
+          }
+        }
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =
@@ -492,29 +497,28 @@ class SearchStoreOwnerController extends GetxController {
         if (storeTimings.isNotEmpty) {
           for (int i = 0; i < storeTimings.length; i++) {
             is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
-            if(is247Time.value==true){
-              radioGroupValue.value=1;
-            }else{
+            if (is247Time.value == true) {
+              radioGroupValue.value = 1;
+            } else {
               radioGroupValue.value = 0;
               openingTimeTextController.text = Utility.formatDateTime(
-                  storeTimings[i]["opening_time"] ?? '',
-                  firstFormat: "hh:mm:ss",
-                  secFormat: "hh:mm a")
+                      storeTimings[i]["opening_time"] ?? '',
+                      firstFormat: "hh:mm:ss",
+                      secFormat: "hh:mm a")
                   .toString();
               openingTime.value = openingTimeTextController.text;
               closingTimeTextController.text = Utility.formatDateTime(
-                  storeTimings[i]["closing_time"] ?? '',
-                  firstFormat: "hh:mm:ss",
-                  secFormat: "hh:mm a")
+                      storeTimings[i]["closing_time"] ?? '',
+                      firstFormat: "hh:mm:ss",
+                      secFormat: "hh:mm a")
                   .toString();
               closingTime.value = closingTimeTextController.text;
             }
-
           }
         } else {
           is247Time.value = true;
         }
-        if( is247Time.value==false){
+        if (is247Time.value == false) {
           for (var sData in storeTimings) {
             for (var element in weekDaysList) {
               if (sData["day_of_week"] == element.id) {

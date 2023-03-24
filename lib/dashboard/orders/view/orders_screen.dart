@@ -123,13 +123,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Obx(() => Text(
-                                  "Hi, ${ordersController.firstName!.value} ${ordersController.lastName!.value}",
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                )),
+                            Text(
+                              "Hi, ${ordersController.firstName!.value} ${ordersController.lastName!.value}",
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
                             height4SizedBox,
                             Text(
                               StringConstants.ordersText,

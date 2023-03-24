@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -12,11 +13,11 @@ class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
 
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+
   @override
   void onInit() {
     super.onInit();
-    apiGetUserDetail();
-    Future.delayed(const Duration(milliseconds: 200), () {});
   }
 
   List<PopupMenuEntry<String>>? userTypeOptionsPopUpList(context) {
@@ -96,8 +97,13 @@ class HomeController extends GetxController {
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        firstName!.value = value.body["data"]["user"]['first_name'] ?? "";
-        lastName!.value = value.body["data"]["user"]['last_name'] ?? "";
+        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+        firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
+        lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
+        SharedPreferenceStorage.setData(
+            StringConstants.firstNameText, firstName!.value);
+        SharedPreferenceStorage.setData(
+            StringConstants.lastNameText, lastName!.value);
       } else {
         Utility.showToast(value.body['message']);
       }
