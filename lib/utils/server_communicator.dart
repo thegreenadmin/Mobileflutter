@@ -67,6 +67,7 @@ class ServerCommunicator {
   String storeCategoryList = 'shop/store/category/list';
   String storeOffersList = 'shop/store/offers/list';
   String storeFeatureProductList = 'shop/store/product/list';
+  String storeOfferDelete = 'store/offer/delete';
 
 //T
 //U

@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
-import 'package:thegreenmall/dashboard/offers/controller/add_offer_request_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/add_offer_request_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_offer_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
@@ -25,7 +26,7 @@ class AddOffersController extends GetxController {
 
   RxString discountValueType = "percentage".obs;
   RxString discountType = "".obs;
-  RxString storeIdValue = "".obs;
+  RxString storeIdValue = "0".obs;
   RxBool isLoading = false.obs;
   RxBool isStoreOffer = false.obs;
   RxString radioValue = "store".obs;
@@ -36,6 +37,7 @@ class AddOffersController extends GetxController {
 
   RxString storeId = "".obs;
   RxString offerId = "".obs;
+  RxString isFrom = "".obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
@@ -44,6 +46,7 @@ class AddOffersController extends GetxController {
 
   late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
+
   RxList<Map> selectedProducts = <Map>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -179,10 +182,14 @@ class AddOffersController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetStoreList();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    offerId.value = Get.arguments["offerId"] ?? "";
-    if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
-      apiGetOffersDetail();
+    isFrom.value = Get.arguments["isFrom"] ?? "";
+    if (isFrom.value == StringConstants.addOfferText) {
+    } else {
+      storeId.value = Get.arguments["storeId"] ?? "";
+      offerId.value = Get.arguments["offerId"] ?? "";
+      if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
+        apiGetOffersDetail();
+      }
     }
   }
 
@@ -237,17 +244,6 @@ class AddOffersController extends GetxController {
     offer.offerType = discountType.value.toLowerCase();
     offer.offerValue = int.parse(discountOrOfferTextController.text.trim());
     addOfferRequestModel.offer = offer;
-    // Map body = {
-    //   "store_id": storeIdValue.value,
-    //   "offer": {
-    //     "is_offer_for_store": isStoreOffer.value,
-    //     "offer_name": offerNameTextController.text.trim(),
-    //     "image_url": offerImageOrigionalLinkfromServer.value,
-    //     "offer_type": discountType.value.toLowerCase(),
-    //     "offer_value": int.parse(discountOrOfferTextController.text.trim())
-    //   },
-    //   "offer_products": isStoreOffer.value ? [] : selectedProducts.value
-    // };
     debugPrint("ADD OFFER BODY********** ${addOfferRequestModel.toJson()}");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -259,10 +255,11 @@ class AddOffersController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("ADD OFFER RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -291,7 +288,8 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
@@ -299,7 +297,7 @@ class AddOffersController extends GetxController {
           storeIdValue.value = storeList[0].storeId.toString();
           apiGetStoreProducts();
         }
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -346,10 +344,11 @@ class AddOffersController extends GetxController {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
       debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -376,7 +375,8 @@ class AddOffersController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET OFFER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getOfferDetailModel = GetOfferDetailModel.fromJson(value.body);
         offerNameTextController.text = getOfferDetailModel.data!.offerName!;
         discountOrOfferTextController.text =
@@ -388,12 +388,12 @@ class AddOffersController extends GetxController {
           radioValue.value = "product";
         }
         discountType.value = getOfferDetailModel.data!.offerType!;
-        List<OfferProduct> offerProducts = <OfferProduct>[];
-        for (int i = 0; i < offerProducts.length; i++) {
-          storeId.value = offerProducts[i].product!.storeId!;
-        }
+        // List<OfferProduct> offerProducts = <OfferProduct>[];
+        storeIdValue.value =
+            getOfferDetailModel.data!.store!.storeId.toString();
+
         update();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

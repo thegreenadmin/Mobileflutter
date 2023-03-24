@@ -88,7 +88,10 @@ class _OffersScreenState extends State<OffersScreen> {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () {
-                            Get.to(const AddOfferScreen())!.then((value) {
+                            Get.to(const AddOfferScreen(), arguments: {
+                              "isFrom": StringConstants.addOfferText,
+                            })!
+                                .then((value) {
                               offersController.role!.value ==
                                       Role.customerRoleText
                                   ? offersController.apiGetUserOffersList()
@@ -389,226 +392,268 @@ class _OffersScreenState extends State<OffersScreen> {
                             itemCount:
                                 offersController.getOwnerOfferlist.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    )),
-                                child: Column(children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: AppColors.white,
-                                                width: 1)),
-                                        child: CircleAvatar(
-                                          radius: 24.0,
-                                          backgroundImage: offersController
-                                                          .getOwnerOfferlist[
-                                                              index]
-                                                          .store!
-                                                          .logo!
-                                                          .dynamicUrl ==
-                                                      null ||
-                                                  offersController
-                                                      .getOwnerOfferlist[index]
-                                                      .store!
-                                                      .logo!
-                                                      .dynamicUrl!
-                                                      .isEmpty
-                                              ? const AssetImage(
-                                                  "assets/offercheck.png",
-                                                ) as ImageProvider
-                                              : NetworkImage(offersController
-                                                  .getOwnerOfferlist[index]
-                                                  .store!
-                                                  .logo!
-                                                  .dynamicUrl!),
-                                          backgroundColor: Colors.transparent,
+                              return Dismissible(
+                                background: Container(
+                                  color: AppColors.redlight,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: const <Widget>[
+                                        Icon(
+                                          Icons.delete,
+                                          color: AppColors.red,
                                         ),
-                                      ),
-                                      width10SizedBox,
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 230,
-                                                child: Text(
-                                                  offersController
-                                                          .getOwnerOfferlist[
-                                                              index]
-                                                          .store!
-                                                          .storeName ??
-                                                      "",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  style: const TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Get.to(
-                                                      const EditOfferScreen(),
-                                                      arguments: {
-                                                        "storeId": offersController
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                direction: DismissDirection.endToStart,
+                                resizeDuration:
+                                    const Duration(milliseconds: 200),
+                                key: UniqueKey(),
+                                onDismissed: (direction) async {
+                                  offersController.storeId!.value =
+                                      offersController.getOwnerOfferlist[index]
+                                              .store!.storeId ??
+                                          "";
+                                  offersController.offerId!.value =
+                                      offersController.getOwnerOfferlist[index]
+                                              .offerId ??
+                                          "";
+                                  await offersController.apiDeleteOffer();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.greylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      )),
+                                  child: Column(children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: AppColors.white,
+                                                  width: 1)),
+                                          child: CircleAvatar(
+                                            radius: 24.0,
+                                            backgroundImage: offersController
                                                             .getOwnerOfferlist[
                                                                 index]
                                                             .store!
-                                                            .storeId,
-                                                        "offerId": offersController
+                                                            .logo!
+                                                            .dynamicUrl ==
+                                                        null ||
+                                                    offersController
+                                                        .getOwnerOfferlist[
+                                                            index]
+                                                        .store!
+                                                        .logo!
+                                                        .dynamicUrl!
+                                                        .isEmpty
+                                                ? const AssetImage(
+                                                    "assets/offercheck.png",
+                                                  ) as ImageProvider
+                                                : NetworkImage(offersController
+                                                    .getOwnerOfferlist[index]
+                                                    .store!
+                                                    .logo!
+                                                    .dynamicUrl!),
+                                            backgroundColor: Colors.transparent,
+                                          ),
+                                        ),
+                                        width10SizedBox,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 230,
+                                                  child: Text(
+                                                    offersController
                                                             .getOwnerOfferlist[
                                                                 index]
-                                                            .offerId!
-                                                      });
-                                                },
-                                                child: Image.asset(
-                                                  "assets/edit.png",
-                                                  scale: 3,
+                                                            .store!
+                                                            .storeName ??
+                                                        "",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          height8SizedBox,
-                                          SizedBox(
-                                            width: 270,
-                                            child: Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/loc.png",
-                                                  scale: 3,
-                                                ),
-                                                width6SizedBox,
-                                                Text(
-                                                  offersController
-                                                          .getOwnerOfferlist[
-                                                              index]
-                                                          .store!
-                                                          .storeAddresses![0]
-                                                          .city ??
-                                                      "",
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Get.to(
+                                                        const EditOfferScreen(),
+                                                        arguments: {
+                                                          "isFrom":
+                                                              StringConstants
+                                                                  .editOfferText,
+                                                          "storeId": offersController
+                                                                  .getOwnerOfferlist[
+                                                                      index]
+                                                                  .store!
+                                                                  .storeId ??
+                                                              "",
+                                                          "offerId": offersController
+                                                                  .getOwnerOfferlist[
+                                                                      index]
+                                                                  .offerId ??
+                                                              ""
+                                                        });
+                                                  },
+                                                  child: Image.asset(
+                                                    "assets/edit.png",
+                                                    scale: 3,
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  height12SizedBox,
-                                  SizedBox(
-                                      height: 160,
-                                      width: WidgetConstants.screenWidth,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            alignment: Alignment.bottomCenter,
-                                            children: [
-                                              offersController
-                                                              .getOwnerOfferlist[
-                                                                  index]
-                                                              .image!
-                                                              .dynamicUrl ==
-                                                          null ||
-                                                      offersController
-                                                          .getOwnerOfferlist[
-                                                              index]
-                                                          .image!
-                                                          .dynamicUrl!
-                                                          .isEmpty
-                                                  ? Image.asset(
-                                                      "assets/medicine.png",
-                                                      width: WidgetConstants
-                                                              .screenWidth *
-                                                          0.8,
-                                                    )
-                                                  : Image.network(
-                                                      offersController
-                                                          .getOwnerOfferlist[
-                                                              index]
-                                                          .image!
-                                                          .dynamicUrl
-                                                          .toString(),
-                                                      fit: BoxFit.fill,
-                                                      width: WidgetConstants
-                                                              .screenWidth *
-                                                          0.8,
-                                                    ),
-                                              SizedBox(
-                                                height: 55,
-                                                child: Card(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  )),
-                                                  color: Colors.white,
-                                                  elevation: 2.0,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 12.0,
-                                                            right: 12,
-                                                            bottom: 10,
-                                                            top: 10),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          offersController
-                                                              .getOwnerOfferlist[
-                                                                  index]
-                                                              .offerName!,
-                                                          style: const TextStyle(
-                                                              color: AppColors
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 16),
-                                                        ),
-                                                      ],
+                                            height8SizedBox,
+                                            SizedBox(
+                                              width: 270,
+                                              child: Row(
+                                                children: [
+                                                  Image.asset(
+                                                    "assets/loc.png",
+                                                    scale: 3,
+                                                  ),
+                                                  width6SizedBox,
+                                                  Text(
+                                                    offersController
+                                                            .getOwnerOfferlist[
+                                                                index]
+                                                            .store!
+                                                            .storeAddresses![0]
+                                                            .city ??
+                                                        "",
+                                                    overflow: TextOverflow.fade,
+                                                    style: TextStyle(
+                                                        fontSize: 14.0,
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    height12SizedBox,
+                                    SizedBox(
+                                        height: 160,
+                                        width: WidgetConstants.screenWidth,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
+                                                offersController
+                                                                .getOwnerOfferlist[
+                                                                    index]
+                                                                .image!
+                                                                .dynamicUrl ==
+                                                            null ||
+                                                        offersController
+                                                            .getOwnerOfferlist[
+                                                                index]
+                                                            .image!
+                                                            .dynamicUrl!
+                                                            .isEmpty
+                                                    ? Image.asset(
+                                                        "assets/medicine.png",
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.8,
+                                                      )
+                                                    : Image.network(
+                                                        offersController
+                                                            .getOwnerOfferlist[
+                                                                index]
+                                                            .image!
+                                                            .dynamicUrl
+                                                            .toString(),
+                                                        fit: BoxFit.fill,
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.8,
+                                                      ),
+                                                SizedBox(
+                                                  height: 55,
+                                                  child: Card(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                      Radius.circular(10),
+                                                    )),
+                                                    color: Colors.white,
+                                                    elevation: 2.0,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 12.0,
+                                                              right: 12,
+                                                              bottom: 10,
+                                                              top: 10),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            offersController
+                                                                .getOwnerOfferlist[
+                                                                    index]
+                                                                .offerName!,
+                                                            style: const TextStyle(
+                                                                color: AppColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              height12SizedBox,
-                                            ],
-                                          ),
-                                        ],
-                                      ))
-                                ]),
+                                                height12SizedBox,
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                  ]),
+                                ),
                               );
                             })),
               ),

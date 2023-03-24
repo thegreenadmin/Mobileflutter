@@ -41,6 +41,7 @@ class StringConstants {
   static String adminText = "Admin";
   static String availabilityText = "Availability";
 
+
   //B
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
@@ -99,6 +100,7 @@ class StringConstants {
   static String enterPriceText = "Enter Price";
   static String enabledText = "Enabled ";
   static String employeeTimingText = "Employee Timing";
+  static String editOfferText = "Edit Offer";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -363,7 +365,8 @@ class AlertStringConstants {
   static String pleaseEnterTownOrCityText = "Please enter town or city";
   static String pleaseEnterZipCodeText = "Please enter zip code";
   static String pleaseEnterWeekDaysText = "Please select week days";
-  static String pleaseEnterDeliveryServicesText = "Please select delivery services";
+  static String pleaseEnterDeliveryServicesText =
+      "Please select delivery services";
   static String pleaseSelectOpeningTimeText = "Please select opening time";
   static String pleaseSelectClosingTimeText = "Please select closing time";
   static String pleaseEnterStateText = "Please enter state";

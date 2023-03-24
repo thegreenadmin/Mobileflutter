@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -64,13 +65,14 @@ class OtpVerificationController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         SharedPreferenceStorage.setData(Role.role.value, Role.customerRoleText);
         Get.offAll(() => BottomNavigation());
-      } else if (value.body["status"] == 409) {
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
         Utility.showToast(value.body['message']);
       } else {

@@ -23,34 +23,36 @@ class GetOfferDetailModel {
 }
 
 class Data {
+  Image? image;
   String? offerId;
   bool? isOfferForStore;
   String? offerName;
-  String? imageUrl;
   String? offerType;
   int? offerValue;
   bool? isExpired;
-  dynamic expiredAt;
+  String? expiredAt;
   String? createdAt;
   List<OfferProduct>? offerProducts;
+  Store? store;
 
   Data(
-      {this.offerId,
+      {this.image,
+      this.offerId,
       this.isOfferForStore,
       this.offerName,
-      this.imageUrl,
       this.offerType,
       this.offerValue,
       this.isExpired,
       this.expiredAt,
       this.createdAt,
-      this.offerProducts});
+      this.offerProducts,
+      this.store});
 
   Data.fromJson(Map<String, dynamic> json) {
+    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     isOfferForStore = json['is_offer_for_store'];
     offerName = json['offer_name'];
-    imageUrl = json['image_url'];
     offerType = json['offer_type'];
     offerValue = json['offer_value'];
     isExpired = json['is_expired'];
@@ -62,14 +64,17 @@ class Data {
         offerProducts!.add(new OfferProduct.fromJson(v));
       });
     }
+    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.image != null) {
+      data['image'] = this.image!.toJson();
+    }
     data['offer_id'] = this.offerId;
     data['is_offer_for_store'] = this.isOfferForStore;
     data['offer_name'] = this.offerName;
-    data['image_url'] = this.imageUrl;
     data['offer_type'] = this.offerType;
     data['offer_value'] = this.offerValue;
     data['is_expired'] = this.isExpired;
@@ -79,6 +84,28 @@ class Data {
       data['offer_products'] =
           this.offerProducts!.map((v) => v.toJson()).toList();
     }
+    if (this.store != null) {
+      data['store'] = this.store!.toJson();
+    }
+    return data;
+  }
+}
+
+class Image {
+  String? orignalUrl;
+  String? dynamicUrl;
+
+  Image({this.orignalUrl, this.dynamicUrl});
+
+  Image.fromJson(Map<String, dynamic> json) {
+    orignalUrl = json['orignal_url'];
+    dynamicUrl = json['dynamic_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orignal_url'] = this.orignalUrl;
+    data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
 }
@@ -215,21 +242,21 @@ class Product {
   }
 }
 
-class Image {
-  Null? orignalUrl;
-  Null? dynamicUrl;
+class Store {
+  String? storeId;
+  String? storeName;
 
-  Image({this.orignalUrl, this.dynamicUrl});
+  Store({this.storeId, this.storeName});
 
-  Image.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
+  Store.fromJson(Map<String, dynamic> json) {
+    storeId = json['store_id'];
+    storeName = json['store_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    data['store_id'] = this.storeId;
+    data['store_name'] = this.storeName;
     return data;
   }
 }

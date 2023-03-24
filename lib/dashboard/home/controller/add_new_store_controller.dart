@@ -37,7 +37,8 @@ class AddNewStoreController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController workingDaysTextController = TextEditingController();
-  TextEditingController deliveryServicesTextController = TextEditingController();
+  TextEditingController deliveryServicesTextController =
+      TextEditingController();
 
   RxBool autoValidate = false.obs;
   RxBool isStoreLogoSelected = false.obs;
@@ -47,7 +48,8 @@ class AddNewStoreController extends GetxController {
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
 
-  late DeliveryServicesResponse deliveryServicesResponse = DeliveryServicesResponse();
+  late DeliveryServicesResponse deliveryServicesResponse =
+      DeliveryServicesResponse();
   RxList<DeliveryService> deliveryServices = <DeliveryService>[].obs;
 
   late GetStatesModel getStateModel = GetStatesModel();
@@ -302,7 +304,7 @@ class AddNewStoreController extends GetxController {
               // {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
             ]
           : storeTimmingList,
-      "store_delivery_services":deliveryServicesList
+      "store_delivery_services": deliveryServicesList
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -359,14 +361,17 @@ class AddNewStoreController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().deliveryServiceList,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().deliveryServiceList,
             headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
-        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
-        deliveryServices.value = deliveryServicesResponse.data!.deliveryServices!;
+        deliveryServicesResponse =
+            DeliveryServicesResponse.fromJson(value.body);
+        deliveryServices.value =
+            deliveryServicesResponse.data!.deliveryServices!;
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

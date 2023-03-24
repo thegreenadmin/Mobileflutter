@@ -277,65 +277,76 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                           fontSize: 16),
                     ),
                     height8SizedBox,
-                    DropdownButtonFormField<String>(
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      hint: Text(
-                        StringConstants.selectStoreText,
-                        style: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                      ),
-                      items: addOffersController.storeList.map((dynamic value) {
-                        return DropdownMenuItem<String>(
-                          value: value.storeId,
-                          child: Text(
-                            value.storeName,
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) async {
-                        addOffersController.storeIdValue.value =
-                            value.toString();
-                        if (addOffersController.isStoreOffer.value == false) {
-                          await addOffersController.apiGetStoreProducts();
-                          setState(() {});
-                        }
-                        setState(() {});
-                      },
-                    ),
+                    Obx(() => addOffersController.storeList.isEmpty
+                        ? height0SizedBox
+                        : DropdownButtonFormField<String>(
+                            value: addOffersController.storeIdValue.value != ""
+                                ? addOffersController.storeList
+                                    .firstWhere((element) =>
+                                        element.storeId ==
+                                        addOffersController.storeIdValue.value)
+                                    .storeId
+                                : null,
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            hint: Text(
+                              StringConstants.selectTypeText,
+                              style: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                            ),
+                            items: addOffersController.storeList
+                                .map((dynamic value) {
+                              return DropdownMenuItem<String>(
+                                value: value.storeId,
+                                child: Text(
+                                  value.storeName,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) async {
+                              addOffersController.storeIdValue.value =
+                                  value.toString();
+                              if (addOffersController.isStoreOffer.value ==
+                                  false) {
+                                await addOffersController.apiGetStoreProducts();
+                                setState(() {});
+                              }
+                              setState(() {});
+                            },
+                          )),
                     height20SizedBox,
                     Obx(
                       () => addOffersController.isStoreOffer.value
