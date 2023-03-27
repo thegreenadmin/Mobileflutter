@@ -252,15 +252,8 @@ class AddNewRoleController extends GetxController {
         roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
         permissionListMerged.clear();
         for (int i = 0; i < controllerList.length; i++) {
-          bool isAdded = false;
-          for (int j = 0; j < permissionList.length; j++) {
-            if (permissionList[j].controllerId == controllerList[i].controllerId) {
-              isAdded = true;
-              permissionListMerged.add(permissionList[j]);
-              break;
-            }
-          }
-          if (!isAdded) {
+          var indexIs = permissionList.indexWhere((p0) => p0.controllerId == controllerList[i].controllerId);
+          if (indexIs == -1) {
             permissionListMerged.add(Permission(
                 permissionId: "",
                 controllerId: controllerList[i].controllerId,
@@ -270,6 +263,8 @@ class AddNewRoleController extends GetxController {
                     controllerName: controllerList[i].controllerName,
                     controllerKey: controllerList[i].controllerKey,
                     controllerDescription: controllerList[i].controllerDescription)));
+          } else {
+            permissionListMerged.add(permissionList[indexIs]);
           }
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
