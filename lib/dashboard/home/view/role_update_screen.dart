@@ -47,10 +47,7 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
                           width10SizedBox,
                           Text(
                             StringConstants.updateRoleText,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -66,195 +63,127 @@ class _RoleUpdateScreenState extends State<RoleUpdateScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Form(
               key: addNewRoleController.updateFormKey,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    height20SizedBox,
-                    Text(
-                      StringConstants.roleNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(200),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewRoleController.roleNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterRoleText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          hintText: StringConstants.enterRoleText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.permissionText,
-                      style: const TextStyle(
-                          fontSize: 22,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Expanded(
-                        child: Obx(
-                      () => addNewRoleController.moduleList.isEmpty
-                          ? addNewRoleController.isLoading.value == true
-                              ? height0SizedBox
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Center(
-                                      child: Image.asset(
-                                        "assets/nodata.png",
-                                        scale: 8,
-                                        color: AppColors.primary,
-                                      ),
-                                    ),
-                                    height4SizedBox,
-                                    Center(
-                                      child: Text(
-                                        StringConstants.noPermissionsFoundText,
-                                        style: const TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  addNewRoleController.permissionList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(children: [
-                                    Obx(
-                                      () => SizedBox(
-                                        height: 20,
-                                        width: 30,
-                                        child: Checkbox(
-                                          side: MaterialStateBorderSide
-                                              .resolveWith(
-                                            (states) => BorderSide(
-                                                width: 1.0,
-                                                color: AppColors.primary
-                                                    .withOpacity(0.5)),
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0)),
-                                          activeColor: AppColors.primary,
-                                          value: addNewRoleController
-                                              .permissionList[index].isSelected,
-                                          onChanged: (bool? value) {
-                                            if (addNewRoleController
-                                                    .permissionList[index]
-                                                    .isSelected ==
-                                                false) {
-                                              addNewRoleController.selectedRoles
-                                                  .add({
-                                                "permission_id":
-                                                    addNewRoleController
-                                                        .permissionList[index]
-                                                        .permissionId,
-                                                "controller_id":
-                                                    addNewRoleController
-                                                        .permissionList[index]
-                                                        .controllerId
-                                                        .toString(),
-                                                "status": value == true
-                                                    ? "active"
-                                                    : "deleted"
-                                              });
-                                              addNewRoleController
-                                                  .permissionList[index]
-                                                  .isSelected = true;
-
-                                              debugPrint(
-                                                  "Added${addNewRoleController.permissionList[index].isSelected}");
-                                              debugPrint(addNewRoleController
-                                                  .selectedRoles
-                                                  .toString());
-                                            } else {
-                                              addNewRoleController
-                                                  .controllerIdsList
-                                                  .removeWhere((item) =>
-                                                      item['controller_id'] ==
-                                                      addNewRoleController
-                                                          .permissionList[index]
-                                                          .controllerId);
-
-                                              addNewRoleController
-                                                  .permissionList[index]
-                                                  .isSelected = false;
-
-                                              debugPrint(addNewRoleController
-                                                  .selectedRoles
-                                                  .toString());
-                                            }
-                                            setState(() {});
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    width10SizedBox,
-                                    Text(addNewRoleController
-                                            .permissionList[index]
-                                            .controller!
-                                            .controllerName ??
-                                        "")
-                                  ]),
-                                );
-                              }),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                height20SizedBox,
+                Text(
+                  StringConstants.roleNameText,
+                  style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
+                ),
+                height4SizedBox,
+                TextFormField(
+                    textInputAction: TextInputAction.next,
+                    autofocus: false,
+                    inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(200),
+                    ],
+                    style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                    controller: addNewRoleController.roleNameTextController,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return AlertStringConstants.pleaseEnterRoleText;
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      errorMaxLines: 3,
+                      hintText: StringConstants.enterRoleText,
+                      hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+                      fillColor: Colors.white,
+                      border: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
+                        ),
+                      ),
                     )),
-                  ]),
+                height20SizedBox,
+                Text(
+                  StringConstants.permissionText,
+                  style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
+                ),
+                Expanded(
+                    child: Obx(
+                  () => addNewRoleController.moduleList.isEmpty
+                      ? addNewRoleController.isLoading.value == true
+                          ? height0SizedBox
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Image.asset(
+                                    "assets/nodata.png",
+                                    scale: 8,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                height4SizedBox,
+                                Center(
+                                  child: Text(
+                                    StringConstants.noPermissionsFoundText,
+                                    style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: addNewRoleController.permissionListMerged.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(children: [
+                                Obx(
+                                  () => SizedBox(
+                                    height: 20,
+                                    width: 30,
+                                    child: Checkbox(
+                                      side: MaterialStateBorderSide.resolveWith(
+                                        (states) => BorderSide(width: 1.0, color: AppColors.primary.withOpacity(0.5)),
+                                      ),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+                                      activeColor: AppColors.primary,
+                                      value: addNewRoleController.permissionListMerged[index].isSelected,
+                                      onChanged: (bool? value) {
+                                        addNewRoleController.permissionListMerged[index].isSelected = value;
+                                        addNewRoleController.permissionListMerged[index].status =
+                                            (value ?? false ? "active" : "deleted");
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                width10SizedBox,
+                                Text(addNewRoleController.permissionListMerged[index].controller!.controllerName ?? "")
+                              ]),
+                            );
+                          }),
+                )),
+              ]),
             ),
           ),
           Positioned(
