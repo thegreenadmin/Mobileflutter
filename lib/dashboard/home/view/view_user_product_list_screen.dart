@@ -39,7 +39,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl == null ||
                       storeHomeMainController.storeAddress.value.store!.image!.dynamicUrl!.isEmpty
                       ? const AssetImage(
-                      "assets/storeicon.png")
+                      "assets/nopicfound.png")
                   as ImageProvider
                       : NetworkImage(
                       storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl.toString() ?? ""),
@@ -88,7 +88,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               backgroundImage:  storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl == null ||
                                   storeHomeMainController.storeAddress.value.store!.logo!.dynamicUrl!.isEmpty
                                   ? const AssetImage(
-                                  "assets/storeicon.png")
+                                  "assets/nopicfound.png")
                               as ImageProvider
                                   : NetworkImage(
                                   storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl.toString() ?? ""),
@@ -167,7 +167,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   children: [
                     Center(
                       child: Image.asset(
-                        "assets/nodata.png",
+                        "assets/nopicfound.png",
                         scale: 8,
                         color: AppColors.primary,
                       ),
@@ -195,8 +195,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     ),
                     itemBuilder: (BuildContext context, int i) {
                         return InkWell(
-                          onTap: (){
-                            // Get.to(const AddToOrderScreen());
+                          onTap: ()async{
+                            await storeHomeMainController.apiGetShopProductDetailApi(productId:storeHomeMainController.featureProductList[i].productId.toString());
+                            Get.to(const AddToOrderScreen());
+
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +220,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                         fit: BoxFit.fill,height: 148,
                                       ): Image.asset(
                                         'assets/nopicfound.png',
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.fill,height: 148,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
