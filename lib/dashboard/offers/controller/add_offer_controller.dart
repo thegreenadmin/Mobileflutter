@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/add_offer_request_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_offer_detail_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_store_non_offer_product_model.dart';
@@ -29,7 +28,7 @@ class AddOffersController extends GetxController {
   RxString discountType = "".obs;
   RxString storeIdValue = "0".obs;
   RxBool isLoading = false.obs;
-  RxBool isStoreOffer = false.obs;
+  //RxBool isStoreOffer = false.obs;
   RxString radioValue = "store".obs;
   RxBool autoValidate = true.obs;
   Rx<XFile> categoryImage = XFile("").obs;
@@ -239,8 +238,8 @@ class AddOffersController extends GetxController {
     }
     addOfferRequestModel.storeId = storeIdValue.value;
     addOfferRequestModel.offerProducts =
-        isStoreOffer.value ? [] : offerProductList;
-    offer.isOfferForStore = isStoreOffer.value;
+        radioValue.value == "store" ? [] : offerProductList;
+    offer.isOfferForStore = radioValue.value == "store" ? true : false;
     offer.offerName = offerNameTextController.text.trim();
     offer.imageUrl = offerImageOrigionalLinkfromServer.value;
     offer.offerType = discountType.value.toLowerCase();
@@ -260,6 +259,7 @@ class AddOffersController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        radioValue.value = "";
         Get.back();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
@@ -363,7 +363,7 @@ class AddOffersController extends GetxController {
       "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
     );
     Map<String, String> headers = {
-      // 'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
@@ -380,16 +380,17 @@ class AddOffersController extends GetxController {
         offerNameTextController.text = getOfferDetailModel.data!.offerName!;
         discountOrOfferTextController.text =
             getOfferDetailModel.data!.offerValue!.toString();
-        isStoreOffer.value = getOfferDetailModel.data!.isOfferForStore ?? false;
-        if (isStoreOffer.value) {
+        offerImageDynamicLinkfromServer.value =
+            getOfferDetailModel.data!.image!.dynamicUrl!;
+        if (getOfferDetailModel.data!.isOfferForStore == true) {
           radioValue.value = "store";
         } else {
           radioValue.value = "product";
         }
-        discountType.value = getOfferDetailModel.data!.offerType!;
-        // List<OfferProduct> offerProducts = <OfferProduct>[];
         storeIdValue.value =
             getOfferDetailModel.data!.store!.storeId.toString();
+        discountType.value = getOfferDetailModel.data!.offerType!;
+        List<OfferProduct> offerProducts = <OfferProduct>[];
 
         update();
       } else if (value.body["status"] == ApiConstants.statusCode403) {

@@ -234,8 +234,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       onChanged: (value) {
                                         addOffersController.radioValue.value =
                                             value.toString();
-                                        addOffersController.isStoreOffer.value =
-                                            true;
+
                                         addOffersController.storeProductList
                                             .clear();
                                       },
@@ -253,8 +252,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       onChanged: (value) {
                                         addOffersController.radioValue.value =
                                             value.toString();
-                                        addOffersController.isStoreOffer.value =
-                                            false;
+
                                         addOffersController.storeProductList
                                             .clear();
                                       },
@@ -329,8 +327,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             addOffersController.storeIdValue.value =
                                 value.toString();
                             print(addOffersController.storeIdValue.value);
-                            if (addOffersController.isStoreOffer.value ==
-                                false) {
+                            if (addOffersController.radioValue.value !=
+                                "store") {
                               await addOffersController.apiGetStoreProducts();
                               setState(() {});
                             }
@@ -339,8 +337,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         )),
                     height20SizedBox,
                     Obx(
-                      () => addOffersController.isStoreOffer.value ||
-                              addOffersController.radioValue.value == "store"
+                      () => addOffersController.radioValue.value == "store"
                           ? height0SizedBox
                           : addOffersController.storeProductList.isEmpty
                               ? height0SizedBox

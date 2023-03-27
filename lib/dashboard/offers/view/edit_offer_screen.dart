@@ -227,40 +227,35 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                           children: [
                             Row(
                               children: [
-                                Radio(
-                                  activeColor: AppColors.primary,
-                                  value: "store",
-                                  groupValue:
-                                      addOffersController.radioValue.value,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      addOffersController.radioValue.value =
-                                          value.toString();
-
-                                      addOffersController.isStoreOffer.value =
-                                          true;
-                                    });
-                                  },
-                                ),
+                                Obx(() => Radio(
+                                      activeColor: AppColors.primary,
+                                      value: "store",
+                                      groupValue:
+                                          addOffersController.radioValue.value,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          addOffersController.radioValue.value =
+                                              value.toString();
+                                        });
+                                      },
+                                    )),
                                 Text(StringConstants.storeText)
                               ],
                             ),
                             Row(
                               children: [
-                                Radio(
-                                  activeColor: AppColors.primary,
-                                  value: "product",
-                                  groupValue:
-                                      addOffersController.radioValue.value,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      addOffersController.radioValue.value =
-                                          value.toString();
-                                      addOffersController.isStoreOffer.value =
-                                          false;
-                                    });
-                                  },
-                                ),
+                                Obx(() => Radio(
+                                      activeColor: AppColors.primary,
+                                      value: "product",
+                                      groupValue:
+                                          addOffersController.radioValue.value,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          addOffersController.radioValue.value =
+                                              value.toString();
+                                        });
+                                      },
+                                    )),
                                 Text(StringConstants.productText)
                               ],
                             ),
@@ -339,8 +334,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             onChanged: (value) async {
                               addOffersController.storeIdValue.value =
                                   value.toString();
-                              if (addOffersController.isStoreOffer.value ==
-                                  false) {
+                              if (addOffersController.radioValue.value !=
+                                  "store") {
                                 await addOffersController.apiGetStoreProducts();
                                 setState(() {});
                               }
@@ -349,7 +344,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                           )),
                     height20SizedBox,
                     Obx(
-                      () => addOffersController.isStoreOffer.value
+                      () => addOffersController.radioValue.value == "store"
                           ? height0SizedBox
                           : addOffersController.storeProductList.isEmpty
                               ? height0SizedBox
