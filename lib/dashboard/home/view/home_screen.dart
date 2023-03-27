@@ -21,10 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _current = 0;
-  final CarouselController _controller = CarouselController();
-
-  final HomeController homeController = Get.put(HomeController());
   List<String> imgList = [
     'assets/examplee.png',
     'assets/examplee.png',
@@ -33,6 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
     'assets/examplee.png',
     'assets/examplee.png',
   ];
+
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 )),
-                            const Text(
-                              "Welcome to the greenmall",
-                              style: TextStyle(
+                            Text(
+                              "${StringConstants.welcomeToText} ${StringConstants.appNameText}",
+                              style: const TextStyle(
                                   fontSize: 18,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w400),
@@ -109,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.white,
                                     )),
                                 width5SizedBox,
-                                const Text(
-                                  'Inbox',
-                                  style: TextStyle(
+                                Text(
+                                  StringConstants.inboxText,
+                                  style: const TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -167,9 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.white,
                                     )),
                                 width5SizedBox,
-                                const Text(
-                                  'Stores',
-                                  style: TextStyle(
+                                Text(
+                                  StringConstants.storesText,
+                                  style: const TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -227,95 +227,222 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            CarouselSlider(
-              items: imgList
-                  .map((item) => Center(
-                          child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6.0),
-                        child: Image.asset(item,
-                            fit: BoxFit.cover,
-                            width: WidgetConstants.screenWidth),
-                      )))
-                  .toList(),
-              carouselController: _controller,
-              options: CarouselOptions(
-                  enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  viewportFraction: 1.2,
-                  enlargeCenterPage: false,
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  }),
-            ),
-            height5SizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _controller.animateToPage(entry.key),
-                  child: Container(
-                    width: _current == entry.key ? 25 : 10,
-                    height: 5.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        shape: BoxShape.rectangle,
-                        color: _current == entry.key
-                            ? AppColors.primary
-                            : AppColors.grey),
+            Obx(() => homeController.role!.value == Role.customerRoleText
+                ? Column(children: [
+                    homeController.userCrouselImgList.isEmpty
+                        ? height0SizedBox
+                        : CarouselSlider(
+                            items: homeController.userCrouselImgList
+                                .map((item) => Center(
+                                        child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      child: Image.network(item,
+                                          fit: BoxFit.cover,
+                                          width: WidgetConstants.screenWidth),
+                                    )))
+                                .toList(),
+                            carouselController: _controller,
+                            options: CarouselOptions(
+                                enlargeStrategy:
+                                    CenterPageEnlargeStrategy.scale,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                viewportFraction: 1.2,
+                                enlargeCenterPage: false,
+                                autoPlay: true,
+                                aspectRatio: 2.0,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _current = index;
+                                  });
+                                }),
+                          ),
+                    height5SizedBox,
+                    Obx(() => homeController.userCrouselImgList.isEmpty
+                        ? height0SizedBox
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: homeController.userCrouselImgList
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              return GestureDetector(
+                                onTap: () =>
+                                    _controller.animateToPage(entry.key),
+                                child: Container(
+                                  width: _current == entry.key ? 25 : 10,
+                                  height: 5.0,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 4.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      shape: BoxShape.rectangle,
+                                      color: _current == entry.key
+                                          ? AppColors.primary
+                                          : AppColors.grey),
+                                ),
+                              );
+                            }).toList(),
+                          ))
+                  ])
+                : Column(
+                    children: [
+                      imgList.isEmpty
+                          ? height0SizedBox
+                          : CarouselSlider(
+                              items: imgList
+                                  .map((item) => Center(
+                                          child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(6.0),
+                                        child: Image.asset(item,
+                                            fit: BoxFit.cover,
+                                            width: WidgetConstants.screenWidth),
+                                      )))
+                                  .toList(),
+                              carouselController: _controller,
+                              options: CarouselOptions(
+                                  enlargeStrategy:
+                                      CenterPageEnlargeStrategy.scale,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  viewportFraction: 1.2,
+                                  enlargeCenterPage: false,
+                                  autoPlay: true,
+                                  aspectRatio: 2.0,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  }),
+                            ),
+                      height5SizedBox,
+                      imgList.isEmpty
+                          ? height0SizedBox
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: imgList.asMap().entries.map((entry) {
+                                return GestureDetector(
+                                  onTap: () =>
+                                      _controller.animateToPage(entry.key),
+                                  child: Container(
+                                    width: _current == entry.key ? 25 : 10,
+                                    height: 5.0,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        shape: BoxShape.rectangle,
+                                        color: _current == entry.key
+                                            ? AppColors.primary
+                                            : AppColors.grey),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                    ],
+                  )),
+            homeController.role!.value == Role.customerRoleText
+                ? homeController.featuredUserProductList.isEmpty
+                    ? height0SizedBox
+                    : Text(
+                        StringConstants.featuredProductText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22),
+                      )
+                :
+                // homeController.featuredUserProductList.isEmpty
+                //     ? height0SizedBox
+                //     :
+                Text(
+                    StringConstants.featuredProductText,
+                    style: const TextStyle(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22),
                   ),
-                );
-              }).toList(),
-            ),
-            Text(
-              StringConstants.featuredProductText,
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22),
-            ),
             height12SizedBox,
-            SizedBox(
-              height: WidgetConstants.screenHeight * 0.28,
-              width: WidgetConstants.screenWidth,
-              child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) {
-                  return width8SizedBox;
-                },
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: imgList.length,
-                itemBuilder: (BuildContext context, int index) => Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 150,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.asset(
-                          "assets/example.png",
-                          fit: BoxFit.cover,
+            homeController.role!.value == Role.customerRoleText
+                ? homeController.featuredUserProductList.isEmpty
+                    ? height0SizedBox
+                    : SizedBox(
+                        height: WidgetConstants.screenHeight * 0.28,
+                        width: WidgetConstants.screenWidth,
+                        child: ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) {
+                            return width8SizedBox;
+                          },
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    "assets/example.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              height8SizedBox,
+                              const Text(
+                                'Skin toner cosmetic',
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                         ),
+                      )
+                :
+                //  homeController.featuredUserProductList.isEmpty
+                //     ? height0SizedBox
+                //     :
+                SizedBox(
+                    height: WidgetConstants.screenHeight * 0.28,
+                    width: WidgetConstants.screenWidth,
+                    child: ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                        return width8SizedBox;
+                      },
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (BuildContext context, int index) => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.asset(
+                                "assets/example.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          height8SizedBox,
+                          const Text(
+                            'Skin toner cosmetic',
+                            style: TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
                       ),
                     ),
-                    height8SizedBox,
-                    const Text(
-                      'Skin toner cosmetic',
-                      style: TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  )
           ]),
         ),
       ),

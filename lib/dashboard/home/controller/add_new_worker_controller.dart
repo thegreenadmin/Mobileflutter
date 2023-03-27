@@ -121,11 +121,15 @@ class AddNewWorkerController extends GetxController {
     addWorkerRequest.employeeName = employeeNameTextController.text.trim();
     addWorkerRequest.imageUrl = userImageOriginalLinkFromServer.value.trim();
     addWorkerRequest.description = shortDescriptionTextController.text.trim();
-    addWorkerRequest.phone =
-        countryCode.value.trim() + phoneNumber.value.trim();
+    addWorkerRequest.phone = phoneNumber.value.trim();
     addWorkerRequest.phoneCode = countryCode.value.trim();
     addWorkerRequest.email = emailTextController.text.trim();
-    addWorkerRequest.roleId = int.parse(roleId.value.toString());
+    if (storeRoleList.isEmpty) {
+      addWorkerRequest.roleId = null;
+    } else {
+      addWorkerRequest.roleId = int.parse(roleId.value.toString());
+    }
+
     List<add_worker.EmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       if (element.isSelected == true) {
@@ -544,7 +548,7 @@ class AddNewWorkerController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("apiGetWorkerList RESPONSE *******${value?.body}");
+      debugPrint("API GET ROLE LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];

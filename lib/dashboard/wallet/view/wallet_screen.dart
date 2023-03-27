@@ -66,6 +66,76 @@ class _WalletScreenState extends State<WalletScreen> {
                         ],
                       ),
                       height15SizedBox,
+                      Text(
+                        StringConstants.amountText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height12SizedBox,
+                      TextFormField(
+                          keyboardType: TextInputType.phone,
+                          onChanged: (value) {
+                            //  signupController.firstName.value = value;
+                          },
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(40),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                          // controller: signupController.firstNameTextController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterFirstNameText;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: StringConstants.amountText,
+                            hintStyle: const TextStyle(color: AppColors.grey),
+                            labelText: StringConstants.amountText,
+                            labelStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blacklight,
+                                decoration: TextDecoration.none),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          )),
                       CustomButton(
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
@@ -99,162 +169,158 @@ class _WalletScreenState extends State<WalletScreen> {
           color: AppColors.primarylight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontFamily: "Inter",
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            height4SizedBox,
-                            Text(
-                              StringConstants.walletText,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
+                        Text(
+                          'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: AppColors.black,
+                              fontFamily: "Inter",
+                              fontWeight: FontWeight.w400),
                         ),
-                        Image.asset(
-                          "assets/homeMall.png",
-                          scale: 4,
+                        height4SizedBox,
+                        Text(
+                          StringConstants.walletText,
+                          style: const TextStyle(
+                              fontSize: 22,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600),
                         )
-                      ]),
-                ],
-              )),
+                      ],
+                    ),
+                    Image.asset(
+                      "assets/homeMall.png",
+                      scale: 4,
+                    )
+                  ])),
         ),
       ),
-      // body: Container(
-      //   height: WidgetConstants.screenHeight,
-      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      //   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      //     Stack(
-      //       alignment: Alignment.center,
-      //       children: [
-      //         Image.asset("assets/walletCard.png"),
-      //         height20SizedBox,
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           crossAxisAlignment: CrossAxisAlignment.center,
-      //           children: [
-      //             Image.asset(
-      //               "assets/dollar.png",
-      //               scale: 3.4,
-      //             ),
-      //             width15SizedBox,
-      //             Column(
-      //               children: [
-      //                 const Text(
-      //                   "\$30,420",
-      //                   style: TextStyle(
-      //                       color: AppColors.white,
-      //                       fontSize: 26,
-      //                       fontWeight: FontWeight.w500),
-      //                 ),
-      //                 height8SizedBox,
-      //                 const Text(
-      //                   "Total Balance",
-      //                   style: TextStyle(color: AppColors.white, fontSize: 18),
-      //                 ),
-      //                 height12SizedBox,
-      //                 InkWell(
-      //                   onTap: () {
-      //                     bottomSheetToAddMoney(context);
-      //                   },
-      //                   child: Image.asset(
-      //                     "assets/addMoney.png",
-      //                     scale: 3.5,
-      //                   ),
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         )
-      //       ],
-      //     ),
-      //     height20SizedBox,
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         Expanded(
-      //           flex: 3,
-      //           child: Column(
-      //             children: [
-      //               Image.asset(
-      //                 "assets/setting.png",
-      //                 scale: 3.5,
-      //               ),
-      //               Text(
-      //                 StringConstants.manageText,
-      //                 style: const TextStyle(
-      //                     fontSize: 16,
-      //                     color: AppColors.black,
-      //                     fontWeight: FontWeight.w500),
-      //               )
-      //             ],
-      //           ),
-      //         ),
-      //         // Divider(color: AppColors.red),
-      //         Container(
-      //           color: AppColors.grey,
-      //           width: 1,
-      //           height: 40,
-      //         ),
-      //         Expanded(
-      //           flex: 4,
-      //           child: Column(
-      //             children: [
-      //               Image.asset(
-      //                 "assets/pickup.png",
-      //                 scale: 3.5,
-      //               ),
-      //               Text(
-      //                 StringConstants.pickupPackageText,
-      //                 style: const TextStyle(
-      //                     fontSize: 16,
-      //                     color: AppColors.black,
-      //                     fontWeight: FontWeight.w500),
-      //               )
-      //             ],
-      //           ),
-      //         ),
+      body: Container(
+        height: WidgetConstants.screenHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset("assets/walletCard.png"),
+              height20SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/dollar.png",
+                    scale: 3.4,
+                  ),
+                  width15SizedBox,
+                  Column(
+                    children: [
+                      const Text(
+                        "\$30,420",
+                        style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      height8SizedBox,
+                      const Text(
+                        "Total Balance",
+                        style: TextStyle(color: AppColors.white, fontSize: 18),
+                      ),
+                      height12SizedBox,
+                      InkWell(
+                        onTap: () {
+                          bottomSheetToAddMoney(context);
+                        },
+                        child: Image.asset(
+                          "assets/addMoney.png",
+                          scale: 3.5,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+          height20SizedBox,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      "assets/setting.png",
+                      scale: 3.5,
+                    ),
+                    Text(
+                      StringConstants.manageText,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
+              // Divider(color: AppColors.red),
+              Container(
+                color: AppColors.grey,
+                width: 1,
+                height: 40,
+              ),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      "assets/pickup.png",
+                      scale: 3.5,
+                    ),
+                    Text(
+                      StringConstants.pickupPackageText,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
 
-      //         //FOR STORE OWNER
+              //FOR STORE OWNER
 
-      //         // Expanded(
-      //         //   flex: 4,
-      //         //   child: Column(
-      //         //     children: [
-      //         //       Image.asset(
-      //         //         "assets/addFunds.png",
-      //         //         scale: 3.5,
-      //         //       ),
-      //         //       Text(
-      //         //         StringConstants.addFundsText,
-      //         //         style: const TextStyle(
-      //         //             fontSize: 16,
-      //         //             color: AppColors.black,
-      //         //             fontWeight: FontWeight.w500),
-      //         //       )
-      //         //     ],
-      //         //   ),
-      //         // ),
-      //       ],
-      //     )
-      //   ]),
-      // ),
+              // Expanded(
+              //   flex: 4,
+              //   child: Column(
+              //     children: [
+              //       Image.asset(
+              //         "assets/addFunds.png",
+              //         scale: 3.5,
+              //       ),
+              //       Text(
+              //         StringConstants.addFundsText,
+              //         style: const TextStyle(
+              //             fontSize: 16,
+              //             color: AppColors.black,
+              //             fontWeight: FontWeight.w500),
+              //       )
+              //     ],
+              //   ),
+              // ),
+            ],
+          )
+        ]),
+      ),
     );
   }
 }

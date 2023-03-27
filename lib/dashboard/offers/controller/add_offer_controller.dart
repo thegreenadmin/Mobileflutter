@@ -348,6 +348,9 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
+        if (storeProductList.isEmpty && radioValue.value == "product") {
+          Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
+        }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

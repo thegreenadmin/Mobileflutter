@@ -680,8 +680,8 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         ),
                       ),
                       initialValue: addNewWorkerController.countryCode.value,
-                      // initialCountryCode:
-                      //     searchStoreOwnerController.countryCode.value,
+                      initialCountryCode:
+                          addNewWorkerController.countryCode.value,
                       onCountryChanged: (value) {
                         addNewWorkerController.countryCode.value =
                             "+${value.dialCode}";
@@ -693,60 +693,6 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                             phone.countryCode.toString();
                       },
                     ),
-                    // TextFormField(
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     readOnly: true,
-                    //     inputFormatters: <TextInputFormatter>[
-                    //       LengthLimitingTextInputFormatter(100),
-                    //     ],
-                    //     style: const TextStyle(
-                    //         color: AppColors.black,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w500),
-                    //     controller:
-                    //         addNewWorkerController.mobileNoTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value!.trim().isEmpty) {
-                    //         return AlertStringConstants.pleaseEnterMobileNoText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //       hintText: StringConstants.enterMobileText,
-                    //       hintStyle: const TextStyle(
-                    //           color: AppColors.grey, fontSize: 14),
-                    //       fillColor: Colors.white,
-                    //       border: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height20SizedBox,
                     Obx(
                       () => DropdownButtonFormField<String>(

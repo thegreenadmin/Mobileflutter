@@ -733,61 +733,64 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                     //       ),
                     //     )),
                     height20SizedBox,
-                    DropdownButtonFormField<String>(
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      hint: Text(
-                        StringConstants.selectTypeText,
-                        style: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                      ),
-                      items: addNewWorkerController.storeRoleList
-                          .map((dynamic value) {
-                        return DropdownMenuItem<String>(
-                          // String? quantityTypeId;
-                          // String? quantityTypeName;
-                          value: value.roleId,
-                          child: Text(
-                            value.roleName,
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        addNewWorkerController.roleId.value = value.toString();
-                      },
+                    Obx(
+                      () => addNewWorkerController.storeRoleList.isEmpty
+                          ? height0SizedBox
+                          : DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                border: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              hint: Text(
+                                StringConstants.selectTypeText,
+                                style: const TextStyle(
+                                    color: AppColors.grey, fontSize: 14),
+                              ),
+                              items: addNewWorkerController.storeRoleList
+                                  .map((dynamic value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.roleId,
+                                  child: Text(
+                                    value.roleName,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                addNewWorkerController.roleId.value =
+                                    value.toString();
+                              },
+                            ),
                     ),
                     height40SizedBox,
                     CustomButton(

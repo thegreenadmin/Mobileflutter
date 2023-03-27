@@ -67,7 +67,7 @@ class OffersController extends GetxController {
       "store_id": null,
       "page": 1,
       "page_size": 10,
-      "order_by": "offer_id",
+      "order_by": "offer_name",
       "order_type": "DESC",
       "filters": []
     };

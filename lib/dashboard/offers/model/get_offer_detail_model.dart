@@ -148,8 +148,8 @@ class Product {
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  int? productPrice;
-  int? sellingPrice;
+  dynamic productPrice;
+  dynamic sellingPrice;
   String? discountType;
   int? discountValue;
   bool? isProductReturnable;

@@ -9,7 +9,7 @@ class WidgetConstants {
 //String Constants used
 class StringConstants {
   //A
-  static String appNameText = "Thegreenmall";
+  static String appNameText = "thegreenmall";
   static String asYouShopInVariousStores =
       "As you shop in various stores at The Green Mall, feel free to mark your favorite products for easy reference.";
   static String accountText = "Account";
@@ -33,6 +33,7 @@ class StringConstants {
   static String addCategoriesText = "Add Categories";
   static String addMoneyToMyWalletText = "Add money to my wallet";
   static String alertText = "Alert";
+  static String amountText = "Amount";
   static String addDescriptionText = "Add Description";
   static String addNewText = "Add New";
   static String addWorkerText = "Add Worker";
@@ -40,7 +41,6 @@ class StringConstants {
   static String addRoleText = "Add Role";
   static String adminText = "Admin";
   static String availabilityText = "Availability";
-
 
   //B
   static String breadthText = "Breadth";
@@ -270,7 +270,7 @@ class StringConstants {
   static String theImageMustBeAtleaseText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
   static String twentyFourSevenText = "24x7";
-
+  static String theGreenMallText = "the green mall";
   //U
   static String usingOurSearchText =
       "Using our search feature, browse through\nnearby store to found the specific product\nfor you.";
@@ -332,7 +332,7 @@ class BottomNavStringConstants {
 
 //Alert Messages
 class AlertStringConstants {
-  //c
+  //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
   //E
@@ -341,7 +341,8 @@ class AlertStringConstants {
 
   //I
   static String invalidOtpText = "Invalid OTP";
-
+//N
+  static String noProductFoundForThisStore = "No Products Found For This Store";
   //O
   static String openingTimeAlertText =
       "Opening time can not be as closing time";

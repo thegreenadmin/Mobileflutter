@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-NearbyStoreListResponse nearbyStoreListResponseFromJson(String str) => NearbyStoreListResponse.fromJson(json.decode(str));
+NearbyStoreListResponse nearbyStoreListResponseFromJson(String str) =>
+    NearbyStoreListResponse.fromJson(json.decode(str));
 
-String nearbyStoreListResponseToJson(NearbyStoreListResponse data) => json.encode(data.toJson());
+String nearbyStoreListResponseToJson(NearbyStoreListResponse data) =>
+    json.encode(data.toJson());
 
 class NearbyStoreListResponse {
   NearbyStoreListResponse({
@@ -30,17 +32,18 @@ class NearbyStoreListResponse {
         data: data ?? this.data,
       );
 
-  factory NearbyStoreListResponse.fromJson(Map<String, dynamic> json) => NearbyStoreListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory NearbyStoreListResponse.fromJson(Map<String, dynamic> json) =>
+      NearbyStoreListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -62,14 +65,19 @@ class Data {
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    totalCount: json["total_count"],
-    storeAddresses: json["store_addresses"] == null ? [] : List<StoreAddress>.from(json["store_addresses"]!.map((x) => StoreAddress.fromJson(x))),
-  );
+        totalCount: json["total_count"],
+        storeAddresses: json["store_addresses"] == null
+            ? []
+            : List<StoreAddress>.from(
+                json["store_addresses"]!.map((x) => StoreAddress.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_count": totalCount,
-    "store_addresses": storeAddresses == null ? [] : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
-  };
+        "total_count": totalCount,
+        "store_addresses": storeAddresses == null
+            ? []
+            : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
+      };
 }
 
 class StoreAddress {
@@ -127,32 +135,32 @@ class StoreAddress {
       );
 
   factory StoreAddress.fromJson(Map<String, dynamic> json) => StoreAddress(
-    storeAddressId: json["store_address_id"],
-    addressName: json["address_name"],
-    longitude: json["longitude"]?.toDouble(),
-    latitude: json["latitude"]?.toDouble(),
-    addressLine1: json["address_line_1"],
-    addressLine2: json["address_line_2"],
-    landmark: json["landmark"],
-    city: json["city"],
-    postalCode: json["postal_code"],
-    distance: json["distance"]?.toDouble(),
-    store: json["store"] == null ? null : Store.fromJson(json["store"]),
-  );
+        storeAddressId: json["store_address_id"],
+        addressName: json["address_name"],
+        longitude: json["longitude"]?.toDouble(),
+        latitude: json["latitude"]?.toDouble(),
+        addressLine1: json["address_line_1"],
+        addressLine2: json["address_line_2"],
+        landmark: json["landmark"],
+        city: json["city"],
+        postalCode: json["postal_code"],
+        distance: json["distance"]?.toDouble(),
+        store: json["store"] == null ? null : Store.fromJson(json["store"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_address_id": storeAddressId,
-    "address_name": addressName,
-    "longitude": longitude,
-    "latitude": latitude,
-    "address_line_1": addressLine1,
-    "address_line_2": addressLine2,
-    "landmark": landmark,
-    "city": city,
-    "postal_code": postalCode,
-    "distance": distance,
-    "store": store?.toJson(),
-  };
+        "store_address_id": storeAddressId,
+        "address_name": addressName,
+        "longitude": longitude,
+        "latitude": latitude,
+        "address_line_1": addressLine1,
+        "address_line_2": addressLine2,
+        "landmark": landmark,
+        "city": city,
+        "postal_code": postalCode,
+        "distance": distance,
+        "store": store?.toJson(),
+      };
 }
 
 class Store {
@@ -202,34 +210,45 @@ class Store {
         isVerified: isVerified ?? this.isVerified,
         isEnabled: isEnabled ?? this.isEnabled,
         storeTimings: storeTimings ?? this.storeTimings,
-        storeDeliveryServices: storeDeliveryServices ?? this.storeDeliveryServices,
+        storeDeliveryServices:
+            storeDeliveryServices ?? this.storeDeliveryServices,
       );
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-    logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-    hasStoreOwner: json["has_store_owner"],
-    isFavouriteStore: json["is_favourite_store"],
-    storeId: json["store_id"],
-    storeName: json["store_name"],
-    isVerified: json["is_verified"],
-    isEnabled: json["is_enabled"],
-    storeTimings: json["store_timings"] == null ? [] : List<StoreTiming>.from(json["store_timings"]!.map((x) => StoreTiming.fromJson(x))),
-    storeDeliveryServices: json["store_delivery_services"] == null ? [] : List<StoreDeliveryService>.from(json["store_delivery_services"]!.map((x) => StoreDeliveryService.fromJson(x))),
-  );
+        logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
+        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        hasStoreOwner: json["has_store_owner"],
+        isFavouriteStore: json["is_favourite_store"],
+        storeId: json["store_id"],
+        storeName: json["store_name"],
+        isVerified: json["is_verified"],
+        isEnabled: json["is_enabled"],
+        storeTimings: json["store_timings"] == null
+            ? []
+            : List<StoreTiming>.from(
+                json["store_timings"]!.map((x) => StoreTiming.fromJson(x))),
+        storeDeliveryServices: json["store_delivery_services"] == null
+            ? []
+            : List<StoreDeliveryService>.from(json["store_delivery_services"]!
+                .map((x) => StoreDeliveryService.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "logo": logo?.toJson(),
-    "image": image?.toJson(),
-    "has_store_owner": hasStoreOwner,
-    "is_favourite_store": isFavouriteStore,
-    "store_id": storeId,
-    "store_name": storeName,
-    "is_verified": isVerified,
-    "is_enabled": isEnabled,
-    "store_timings": storeTimings == null ? [] : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
-    "store_delivery_services": storeDeliveryServices == null ? [] : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
-  };
+        "logo": logo?.toJson(),
+        "image": image?.toJson(),
+        "has_store_owner": hasStoreOwner,
+        "is_favourite_store": isFavouriteStore,
+        "store_id": storeId,
+        "store_name": storeName,
+        "is_verified": isVerified,
+        "is_enabled": isEnabled,
+        "store_timings": storeTimings == null
+            ? []
+            : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
+        "store_delivery_services": storeDeliveryServices == null
+            ? []
+            : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
+      };
 }
 
 class Image {
@@ -251,14 +270,14 @@ class Image {
       );
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
+        orignalUrl: json["orignal_url"],
+        dynamicUrl: json["dynamic_url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
-  };
+        "orignal_url": orignalUrl,
+        "dynamic_url": dynamicUrl,
+      };
 }
 
 class StoreDeliveryService {
@@ -284,28 +303,30 @@ class StoreDeliveryService {
     String? deliveryServiceName,
   }) =>
       StoreDeliveryService(
-        storeDeliveryServiceId: storeDeliveryServiceId ?? this.storeDeliveryServiceId,
+        storeDeliveryServiceId:
+            storeDeliveryServiceId ?? this.storeDeliveryServiceId,
         deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
         isEnabled: isEnabled ?? this.isEnabled,
         status: status ?? this.status,
         deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
       );
 
-  factory StoreDeliveryService.fromJson(Map<String, dynamic> json) => StoreDeliveryService(
-    storeDeliveryServiceId: json["store_delivery_service_id"],
-    deliveryServiceId: json["delivery_service_id"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    deliveryServiceName: json["delivery_service_name"],
-  );
+  factory StoreDeliveryService.fromJson(Map<String, dynamic> json) =>
+      StoreDeliveryService(
+        storeDeliveryServiceId: json["store_delivery_service_id"],
+        deliveryServiceId: json["delivery_service_id"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        deliveryServiceName: json["delivery_service_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_delivery_service_id": storeDeliveryServiceId,
-    "delivery_service_id": deliveryServiceId,
-    "is_enabled": isEnabled,
-    "status": status,
-    "delivery_service_name": deliveryServiceName,
-  };
+        "store_delivery_service_id": storeDeliveryServiceId,
+        "delivery_service_id": deliveryServiceId,
+        "is_enabled": isEnabled,
+        "status": status,
+        "delivery_service_name": deliveryServiceName,
+      };
 }
 
 class StoreTiming {
@@ -343,20 +364,20 @@ class StoreTiming {
       );
 
   factory StoreTiming.fromJson(Map<String, dynamic> json) => StoreTiming(
-    storeTimingId: json["store_timing_id"],
-    is24HoursActive: json["is_24_hours_active"],
-    dayOfWeek: json["day_of_week"],
-    openingTime: json["opening_time"],
-    closingTime: json["closing_time"],
-    status: json["status"],
-  );
+        storeTimingId: json["store_timing_id"],
+        is24HoursActive: json["is_24_hours_active"],
+        dayOfWeek: json["day_of_week"],
+        openingTime: json["opening_time"],
+        closingTime: json["closing_time"],
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_timing_id": storeTimingId,
-    "is_24_hours_active": is24HoursActive,
-    "day_of_week": dayOfWeek,
-    "opening_time": openingTime,
-    "closing_time": closingTime,
-    "status": status,
-  };
+        "store_timing_id": storeTimingId,
+        "is_24_hours_active": is24HoursActive,
+        "day_of_week": dayOfWeek,
+        "opening_time": openingTime,
+        "closing_time": closingTime,
+        "status": status,
+      };
 }
