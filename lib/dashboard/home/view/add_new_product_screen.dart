@@ -20,16 +20,7 @@ class AddNewProductScreen extends StatefulWidget {
 }
 
 class _AddNewProductScreenState extends State<AddNewProductScreen> {
-  final ManageStoreController manageStoreController =
-      Get.put(ManageStoreController());
-
-  @override
-  void initState() {
-    for (int i = 0; i < manageStoreController.categoriesList.length; i++) {
-      manageStoreController.categoriesList[i].isSelected = false;
-    }
-    super.initState();
-  }
+  final ManageStoreController manageStoreController = Get.put(ManageStoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +54,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             width: 250,
                             child: Text(
                               manageStoreController.categoryName.value,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
+                              style: const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
@@ -83,8 +71,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
           child: Form(
             key: manageStoreController.formKey,
             child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,10 +79,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       () => manageStoreController.imageFileList!.isEmpty
                           ? height0SizedBox
                           : Text(StringConstants.uploadProductPhotosText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
+                              style:
+                                  const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400)),
                     ),
                     Obx(
                       () => manageStoreController.imageFileList!.isEmpty
@@ -105,19 +90,15 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListView.separated(
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
+                                    separatorBuilder: (BuildContext context, int index) {
                                       return width8SizedBox;
                                     },
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: manageStoreController
-                                        .imageFileList!.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
+                                    itemCount: manageStoreController.imageFileList!.length,
+                                    itemBuilder: (BuildContext context, int index) {
                                       return Image.file(
-                                        File(manageStoreController
-                                            .imageFileList![index].path),
+                                        File(manageStoreController.imageFileList![index].path),
                                         fit: BoxFit.cover,
                                       );
                                     }),
@@ -157,16 +138,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                           strokeWidth: 1,
                                           dashPattern: const [4, 4],
                                           child: Container(
-                                            width: WidgetConstants.screenWidth *
-                                                0.3,
-                                            padding: const EdgeInsets.only(
-                                                top: 30, bottom: 30),
+                                            width: WidgetConstants.screenWidth * 0.3,
+                                            padding: const EdgeInsets.only(top: 30, bottom: 30),
                                             color: AppColors.primarylight,
                                             child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
                                                     "assets/upload.png",
@@ -183,25 +160,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 Flexible(
                                   flex: 6,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       height10SizedBox,
-                                      Text(
-                                          StringConstants
-                                              .uploadProductPhotosText,
+                                      Text(StringConstants.uploadProductPhotosText,
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500)),
+                                              color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w500)),
                                       height10SizedBox,
-                                      Text(
-                                          StringConstants
-                                              .theImageMustBeAtleaseText,
+                                      Text(StringConstants.theImageMustBeAtleaseText,
                                           style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400)),
+                                              color: AppColors.black, fontSize: 12, fontWeight: FontWeight.w400)),
                                       height10SizedBox,
                                     ],
                                   ),
@@ -213,10 +181,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.productNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -225,24 +190,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.productNameTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: manageStoreController.productNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterProductNameText;
+                            return AlertStringConstants.pleaseEnterProductNameText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.enterProductNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -276,10 +235,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.categoriesText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height10SizedBox,
                     Obx(
@@ -287,112 +243,71 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ? height0SizedBox
                           : SizedBox(
                               width: Get.width,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Wrap(
                                   children: [
-                                    Wrap(
-                                      children: [
-                                        for (var i = 0;
-                                            i <
-                                                manageStoreController
-                                                    .categoriesList.length;
-                                            i++)
-                                          InkWell(
-                                            onTap: () {
-                                              if (manageStoreController
-                                                      .categoriesList[i]
-                                                      .isSelected ==
-                                                  true) {
-                                                for (var item
-                                                    in manageStoreController
-                                                        .selectedCategories) {
-                                                  if (item['category_id'] ==
-                                                      manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryId) {
-                                                    item['status'] = "deleted";
-                                                  }
-                                                }
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .isSelected = false;
-                                              } else {
-                                                for (var item
-                                                    in manageStoreController
-                                                        .selectedCategories) {
-                                                  if (item['category_id'] ==
-                                                      manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryId) {
-                                                    item['status'] = "active";
-                                                  }
-                                                }
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .isSelected = true;
+                                    for (var i = 0; i < manageStoreController.categoriesList.length; i++)
+                                      InkWell(
+                                        onTap: () {
+                                          if (manageStoreController.categoriesList[i].isSelected == true) {
+                                            for (var item in manageStoreController.selectedCategories) {
+                                              if (item['category_id'] ==
+                                                  manageStoreController.categoriesList[i].categoryId) {
+                                                item['status'] = "deleted";
                                               }
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 15,
-                                                    right: 15,
-                                                    top: 10,
-                                                    bottom: 10),
-                                                margin: const EdgeInsets.all(3),
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.1),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset:
-                                                          const Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                  color: manageStoreController
-                                                              .categoriesList[i]
-                                                              .isSelected ==
-                                                          true
-                                                      ? AppColors.primary
-                                                      : AppColors.primarylight,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(100),
-                                                  ),
+                                            }
+                                            manageStoreController.categoriesList[i].isSelected = false;
+                                          } else {
+                                            for (var item in manageStoreController.selectedCategories) {
+                                              if (item['category_id'] ==
+                                                  manageStoreController.categoriesList[i].categoryId) {
+                                                item['status'] = "active";
+                                              }
+                                            }
+                                            manageStoreController.categoriesList[i].isSelected = true;
+                                          }
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                            padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                                            margin: const EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.1),
+                                                  spreadRadius: 5,
+                                                  blurRadius: 7,
+                                                  offset: const Offset(0, 2),
                                                 ),
-                                                child: Text(
-                                                  manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryName ??
-                                                      "",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: manageStoreController
-                                                                .categoriesList[
-                                                                    i]
-                                                                .isSelected ==
-                                                            true
-                                                        ? AppColors.primarylight
-                                                        : AppColors.primary,
-                                                  ),
-                                                )),
-                                          )
-                                      ],
-                                    ),
-                                  ]),
+                                              ],
+                                              color: manageStoreController.categoriesList[i].isSelected == true
+                                                  ? AppColors.primary
+                                                  : AppColors.primarylight,
+                                              borderRadius: const BorderRadius.all(
+                                                Radius.circular(100),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              manageStoreController.categoriesList[i].categoryName ?? "",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: manageStoreController.categoriesList[i].isSelected == true
+                                                    ? AppColors.primarylight
+                                                    : AppColors.primary,
+                                              ),
+                                            )),
+                                      )
+                                  ],
+                                ),
+                              ]),
                             ),
                     ),
                     height20SizedBox,
                     Text(
                       StringConstants.quantityUnitText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     Row(
@@ -433,11 +348,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                             hint: Text(
                               StringConstants.selectTypeText,
-                              style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
+                              style: const TextStyle(color: AppColors.grey, fontSize: 14),
                             ),
-                            items: manageStoreController.quantityTypeList
-                                .map((dynamic value) {
+                            items: manageStoreController.quantityTypeList.map((dynamic value) {
                               return DropdownMenuItem<String>(
                                 // String? quantityTypeId;
                                 // String? quantityTypeName;
@@ -445,15 +358,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 child: Text(
                                   value.quantityTypeName,
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                               );
                             }).toList(),
                             onChanged: (value) {
-                              manageStoreController.quantityValue.value =
-                                  value.toString();
+                              manageStoreController.quantityValue.value = value.toString();
                             },
                           ),
                         ),
@@ -466,24 +376,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               inputFormatters: <TextInputFormatter>[
                                 LengthLimitingTextInputFormatter(100),
                               ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller:
-                                  manageStoreController.quantityTextController,
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              controller: manageStoreController.quantityTextController,
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterQuantityText;
+                                  return AlertStringConstants.pleaseEnterQuantityText;
                                 }
                                 return null;
                               },
                               decoration: InputDecoration(
                                 hintText: StringConstants.enterQuantityText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
+                                hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                 fillColor: Colors.white,
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -520,10 +424,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.pricePerUnitText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -532,12 +433,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.pricePerUnitTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: manageStoreController.pricePerUnitTextController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -547,8 +444,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.enterPriceText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -582,10 +478,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.shortDescriptionText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -594,24 +487,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: manageStoreController
-                            .shortDescriptionTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: manageStoreController.shortDescriptionTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterShortDescriptionText;
+                            return AlertStringConstants.pleaseEnterShortDescriptionText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.shortDescriptionText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -645,10 +532,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.contentsAndStrainsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -657,24 +541,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: manageStoreController
-                            .contentsAndStrainsTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: manageStoreController.contentsAndStrainsTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterContentAndStrainText;
+                            return AlertStringConstants.pleaseEnterContentAndStrainText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -708,43 +586,30 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.additionalLinksToResearchText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     TextFormField(
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: [
-                          FilteringTextInputFormatter(RegExp(r"\s"),
-                              allow: false),
+                          FilteringTextInputFormatter(RegExp(r"\s"), allow: false),
                           LengthLimitingTextInputFormatter(25),
                         ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.additionalLinkTextController,
+                        style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                        controller: manageStoreController.additionalLinkTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterLinkText;
-                          } else if (!GetUtils.isURL(manageStoreController
-                              .additionalLinkTextController.text
-                              .trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidLinkText;
+                          } else if (!GetUtils.isURL(manageStoreController.additionalLinkTextController.text.trim())) {
+                            return AlertStringConstants.pleaseEnterValidLinkText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText:
-                              StringConstants.additionalLinksToResearchText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
+                          hintText: StringConstants.additionalLinksToResearchText,
+                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -778,10 +643,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.discountsOrOffersText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     Row(
@@ -822,25 +684,20 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             isExpanded: true,
                             hint: Text(
                               StringConstants.selectTypeText,
-                              style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
+                              style: const TextStyle(color: AppColors.grey, fontSize: 14),
                             ),
-                            items: <String>["Percentage", "Amount"]
-                                .map((String value) {
+                            items: <String>["Percentage", "Amount"].map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
                                   value,
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                               );
                             }).toList(),
                             onChanged: (v) {
-                              manageStoreController.discountType.value =
-                                  v.toString();
+                              manageStoreController.discountType.value = v.toString();
                             },
                           ),
                         ),
@@ -853,17 +710,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               inputFormatters: <TextInputFormatter>[
                                 LengthLimitingTextInputFormatter(100),
                               ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller: manageStoreController
-                                  .discountOrOfferTextController,
+                              style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              controller: manageStoreController.discountOrOfferTextController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: StringConstants.discountsOrOffersText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
+                                hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                 fillColor: Colors.white,
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -900,10 +752,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.featuredProductText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
                     DropdownButtonFormField<String>(
@@ -940,18 +789,14 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       isExpanded: true,
                       hint: Text(
                         StringConstants.selectTypeText,
-                        style: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
+                        style: const TextStyle(color: AppColors.grey, fontSize: 14),
                       ),
                       items: <String>["Yes", "No"].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
                             value,
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                            style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         );
                       }).toList(),
@@ -973,10 +818,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             children: [
                               Text(
                                 StringConstants.lengthText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                style:
+                                    TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                               ),
                               TextFormField(
                                   textInputAction: TextInputAction.next,
@@ -985,23 +828,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     LengthLimitingTextInputFormatter(100),
                                   ],
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .lengthTextController,
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                  controller: manageStoreController.lengthTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterLengthText;
+                                      return AlertStringConstants.pleaseEnterLengthText;
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.lengthText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
+                                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -1043,10 +881,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             children: [
                               Text(
                                 StringConstants.breadthText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                style:
+                                    TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                               ),
                               TextFormField(
                                   textInputAction: TextInputAction.next,
@@ -1055,23 +891,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     LengthLimitingTextInputFormatter(100),
                                   ],
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .breadthTextController,
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                  controller: manageStoreController.breadthTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterBreadthText;
+                                      return AlertStringConstants.pleaseEnterBreadthText;
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.breadthText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
+                                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -1117,10 +948,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             children: [
                               Text(
                                 StringConstants.heightText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                style:
+                                    TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                               ),
                               TextFormField(
                                   textInputAction: TextInputAction.next,
@@ -1129,23 +958,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     LengthLimitingTextInputFormatter(100),
                                   ],
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .heightTextController,
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                  controller: manageStoreController.heightTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterHeightText;
+                                      return AlertStringConstants.pleaseEnterHeightText;
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.heightText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
+                                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -1187,10 +1011,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             children: [
                               Text(
                                 StringConstants.weightText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                style:
+                                    TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                               ),
                               TextFormField(
                                   textInputAction: TextInputAction.next,
@@ -1199,23 +1021,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     LengthLimitingTextInputFormatter(100),
                                   ],
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .weightTextController,
+                                      color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                  controller: manageStoreController.weightTextController,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterWeightText;
+                                      return AlertStringConstants.pleaseEnterWeightText;
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.weightText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
+                                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                     fillColor: Colors.white,
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -1261,10 +1078,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             children: [
                               Text(
                                 StringConstants.returnAvailableText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                style:
+                                    TextStyle(color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                               ),
                               DropdownButtonFormField<String>(
                                 decoration: InputDecoration(
@@ -1300,29 +1115,23 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 isExpanded: true,
                                 hint: Text(
                                   StringConstants.selectTypeText,
-                                  style: const TextStyle(
-                                      color: AppColors.grey, fontSize: 14),
+                                  style: const TextStyle(color: AppColors.grey, fontSize: 14),
                                 ),
-                                items:
-                                    <String>["Yes", "No"].map((String value) {
+                                items: <String>["Yes", "No"].map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(
                                       value,
                                       style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
+                                          color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                                     ),
                                   );
                                 }).toList(),
                                 onChanged: (v) {
                                   if (v == "Yes") {
-                                    manageStoreController
-                                        .isProductReturnable.value = true;
+                                    manageStoreController.isProductReturnable.value = true;
                                   } else {
-                                    manageStoreController
-                                        .isProductReturnable.value = false;
+                                    manageStoreController.isProductReturnable.value = false;
                                   }
                                 },
                               ),
@@ -1330,9 +1139,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         ),
                         width12SizedBox,
-                        Obx(() => manageStoreController
-                                    .isProductReturnable.value ==
-                                true
+                        Obx(() => manageStoreController.isProductReturnable.value == true
                             ? Flexible(
                                 flex: 5,
                                 child: Column(
@@ -1341,65 +1148,52 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     Text(
                                       StringConstants.daysText,
                                       style: TextStyle(
-                                          color: AppColors.blacklight,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                          color: AppColors.blacklight, fontSize: 16, fontWeight: FontWeight.w400),
                                     ),
                                     TextFormField(
                                         textInputAction: TextInputAction.next,
                                         autofocus: false,
                                         inputFormatters: <TextInputFormatter>[
                                           LengthLimitingTextInputFormatter(100),
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
+                                          FilteringTextInputFormatter.digitsOnly,
                                         ],
                                         style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                        controller: manageStoreController
-                                            .daysTextController,
+                                            color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                                        controller: manageStoreController.daysTextController,
                                         keyboardType: TextInputType.number,
                                         validator: (value) {
                                           if (value!.trim().isEmpty) {
-                                            return AlertStringConstants
-                                                .pleaseEnterValidDaysText;
+                                            return AlertStringConstants.pleaseEnterValidDaysText;
                                           }
                                           return null;
                                         },
                                         decoration: InputDecoration(
                                           hintText: StringConstants.daysText,
-                                          hintStyle: const TextStyle(
-                                              color: AppColors.grey,
-                                              fontSize: 14),
+                                          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                                           fillColor: Colors.white,
                                           border: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
+                                            borderRadius: BorderRadius.circular(5.0),
                                             borderSide: const BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
                                           ),
                                           errorBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
+                                            borderRadius: BorderRadius.circular(5.0),
                                             borderSide: const BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
                                           ),
                                           focusedBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
+                                            borderRadius: BorderRadius.circular(5.0),
                                             borderSide: const BorderSide(
                                               color: AppColors.primary,
                                               width: 1.0,
                                             ),
                                           ),
                                           enabledBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
+                                            borderRadius: BorderRadius.circular(5.0),
                                             borderSide: const BorderSide(
                                               color: AppColors.grey,
                                               width: 1.0,
@@ -1456,6 +1250,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
+                        manageStoreController.selectedCategories.clear();
+                        for (int i = 0; i < manageStoreController.categoriesList.length; i++) {
+                          if (manageStoreController.categoriesList[i].isSelected ?? false) {
+                            manageStoreController.selectedCategories
+                                .add({"category_id": manageStoreController.categoriesList[i].categoryId});
+                          }
+                        }
                         manageStoreController.validateAndSubmit();
                       },
                       height: 50,
