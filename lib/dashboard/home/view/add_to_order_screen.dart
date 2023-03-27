@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class AddToOrderScreen extends StatefulWidget {
   const AddToOrderScreen({super.key});
@@ -14,107 +15,9 @@ class AddToOrderScreen extends StatefulWidget {
 }
 
 class _AddToOrderScreenState extends State<AddToOrderScreen> {
-  void addToCartDailogue(
-    BuildContext context,
-  ) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            height10SizedBox,
-            Center(
-              child: Image.asset(
-                'assets/tick.png',
-                scale: 3,
-              ),
-            ),
-            height10SizedBox,
-            Text(
-              StringConstants.itemAddedInCart,
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-              style: TextStyle(
-                  color: AppColors.blacklight,
-                  fontSize: 16,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
-            ),
-            height25SizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 120.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'More Product',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    Get.to(const CartScreen());
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 120.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      border: Border.all(color: AppColors.primary),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Go to Cart',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
-                            color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: const <Widget>[],
-      ),
-    );
-  }
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +28,19 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xff7c94b6),
+              decoration:  BoxDecoration(
+                color: const Color(0xff7c94b6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter:
-                      ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: AssetImage(
-                    "assets/inboxexample.png",
-                  ),
+                      const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image:    storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl == null ||
+                      storeHomeMainController.storeAddress.value.store!.image!.dynamicUrl!.isEmpty
+                      ? const AssetImage(
+                      "assets/storeicon.png")
+                  as ImageProvider
+                      : NetworkImage(
+                      storeHomeMainController.storeAddress.value.store?.image?.dynamicUrl.toString() ?? ""),
                 ),
               ),
               child: Padding(
@@ -157,7 +64,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 size: 24.0,
                               ),
                             ),
+                            storeHomeMainController.storeAddress.value.store?.isFavouriteStore==true?
                             Image.asset(
+                              "assets/liked.png",
+                              scale: 2.8,
+                            ): Image.asset(
                               "assets/favoutline.png",
                               scale: 2.8,
                             ),
@@ -170,11 +81,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: AppColors.white, width: 1)),
-                            child: const CircleAvatar(
+                            child: CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: AssetImage(
-                                "assets/inboxexample.png",
-                              ),
+                              backgroundImage:  storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl == null ||
+                                  storeHomeMainController.storeAddress.value.store!.logo!.dynamicUrl!.isEmpty
+                                  ? const AssetImage(
+                                  "assets/storeicon.png")
+                              as ImageProvider
+                                  : NetworkImage(
+                                  storeHomeMainController.storeAddress.value.store?.logo?.dynamicUrl.toString() ?? ""),
+
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -182,9 +98,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Ambrosia Store",
-                                style: TextStyle(
+                              Text(
+                                storeHomeMainController.storeAddress.value.store?.storeName??"",
+                                style: const TextStyle(
                                     color: AppColors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600),
@@ -198,16 +114,20 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     scale: 2,
                                   ),
                                   width4SizedBox,
-                                  const Text("Gate Village 10 Dubai 10017",
-                                      style: TextStyle(
+                                  Text(storeHomeMainController.storeAddress.value.addressLine1??"",
+                                      style: const TextStyle(
                                           color: AppColors.white,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400)),
                                 ],
                               ),
                               height8SizedBox,
-                              const Text("Store Hours 9:00 am to 9:00PM",
-                                  style: TextStyle(
+                              Text( storeHomeMainController.storeAddress.value.store!.storeTimings!.isNotEmpty?
+                              storeHomeMainController.storeAddress.value.store?.storeTimings?.first.is24HoursActive ==false?
+                              "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                  "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                  :   StringConstants.storeHoursText:  StringConstants.storeHoursText,
+                                  style: const TextStyle(
                                       color: AppColors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400))
@@ -222,7 +142,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: Obx(()=>Container(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,10 +159,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    flex: 3,
-                    child: Image.asset(
-                      "assets/example.png",
-                      scale: 5,
+                    flex: 5,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: storeHomeMainController.productDetailResponse.value.data?.product?.productImages == null
+                          ||  storeHomeMainController.productDetailResponse.value.data!.product!.productImages!.isEmpty?
+                      Image.asset(
+                        "assets/nopicfound.png",
+                        fit: BoxFit.fill,height: 120,
+                      ): Image.network(
+                        storeHomeMainController.productDetailResponse.value.data?.product?.productImages?.first.image?.dynamicUrl.toString()??"",
+                        fit: BoxFit.fill,height: 120,
+                      ),
                     ),
                   ),
                   width10SizedBox,
@@ -255,22 +183,26 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Supplement bottle",
-                                style: TextStyle(
+                            Text( storeHomeMainController.productDetailResponse.value.data?.product?.productName??"",
+                                style: const TextStyle(
                                     fontSize: 18,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600)),
+                            storeHomeMainController.productDetailResponse.value.data?.product?.isFavouriteProduct==true?
                             Image.asset(
-                              "assets/fav.png",
+                              "assets/liked.png",
                               scale: 2.8,
-                            )
+                            ): Image.asset(
+                              "assets/favoutline.png",
+                              scale: 2.8,
+                            ),
                           ],
                         ),
                         height8SizedBox,
                         SizedBox(
                           width: 200,
                           child: Text(
-                              "Lorem Ipsum is simply Lorem Ipsum is simply Lorem Ipsum is simply Lorem Ipsum is simply ",
+                              storeHomeMainController.productDetailResponse.value.data?.product?.description??"",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.blacklight,
@@ -286,9 +218,28 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 16)),
-                              const TextSpan(
-                                text: ' \$20.00',
-                                style: TextStyle(
+                              TextSpan(
+                                text: ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice??""}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: AppColors.black),
+                              ),
+                            ],
+                          ),
+                        ), height10SizedBox,
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.discountText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16)),
+                              TextSpan(
+                                text: ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue??""}%',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
                                     color: AppColors.black),
@@ -297,30 +248,38 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           ),
                         ),
                         height20SizedBox,
-                        Row(
+                        Obx(()=>Row(
                           children: [
                             InkWell(
+                                onTap:(){
+                                  storeHomeMainController.quantity.value =storeHomeMainController.quantity.value!=0?
+                                  storeHomeMainController.quantity.value-1:storeHomeMainController.quantity.value;
+                                },
                                 child: Image.asset(
-                              "assets/subtract.png",
-                              scale: 2.5,
-                            )),
+                                  "assets/subtract.png",
+                                  scale: 2.5,
+                                )),
                             width10SizedBox,
-                            const Text(
-                              "01",
-                              style: TextStyle(
+                            Text(
+                              storeHomeMainController.quantity.toString().length<2?
+                              storeHomeMainController.quantity.toString().padLeft(2, '0'):storeHomeMainController.quantity.toString(),
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
                                   color: AppColors.black),
                             ),
                             width10SizedBox,
                             InkWell(
+                              onTap:(){
+                                storeHomeMainController.quantity.value = storeHomeMainController.quantity.value+1;
+                              },
                               child: Image.asset(
                                 "assets/add.png",
                                 scale: 2.5,
                               ),
                             )
                           ],
-                        )
+                        ))
                       ],
                     ),
                   )
@@ -335,11 +294,63 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     color: AppColors.black),
               ),
               height10SizedBox,
-              const Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since ",
-                style: TextStyle(
+              Text(
+                storeHomeMainController.productDetailResponse.value.data?.product?.description??"",
+                style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
+                    color: AppColors.black),
+              ),
+              height20SizedBox,
+              Text(
+                StringConstants.otherDetailText,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    color: AppColors.black),
+              ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.categoriesText,
+                  textData:storeHomeMainController.productDetailResponse.value.data?.product?.productCategories?.first.category?.categoryName??"" ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.quantityUnitText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.featuredProductText,
+                  textData:storeHomeMainController.productDetailResponse.value.data?.product?.isFeaturedProduct==true?"Yes":"No" ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.lengthText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString()??"0"} feet"  ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.breadthText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString()??"0"} feet"  ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.heightText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString()??"0"} feet"  ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.weightText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString()??"0"} kg"  ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.returnAvailableText,
+                  textData:storeHomeMainController.productDetailResponse.value.data?.product?.isProductReturnable==true?"Yes":"No" ),
+              height20SizedBox,
+              _buildRowOtherDetail(title:StringConstants.daysText,
+                  textData:"${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString()??"0"} Days"  ),
+              height20SizedBox,
+              height20SizedBox,
+              Text(
+                StringConstants.ratingReviewText,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    color: AppColors.black),
+              ),
+              height20SizedBox,
+              const Text(
+                "4.4",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
                     color: AppColors.black),
               ),
               height20SizedBox,
@@ -350,7 +361,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  addToCartDailogue(context);
+                  storeHomeMainController.apiAddToCart(context);
+
                 },
                 height: 50,
                 text: StringConstants.addToOrderText,
@@ -361,8 +373,28 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               ),
             ],
           ),
-        ),
+        ),)
       ),
     );
   }
+
+  Row _buildRowOtherDetail({String title = "",String textData = "",})=> Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style:  TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: AppColors.blacklight),
+        ),
+        Text(
+          textData,
+          style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              color: AppColors.black),
+        ),
+      ],
+    );
 }

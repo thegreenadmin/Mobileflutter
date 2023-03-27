@@ -77,6 +77,7 @@ class StringConstants {
   static String deliveryBoyText = "Delivery Boy";
   static String daysText = "Days";
   static String deliveryMethodsText = "Delivery Methods";
+  static String discountText = "Discount:";
 
   //E
 
@@ -171,6 +172,7 @@ class StringConstants {
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
   static String offersText = "Offers";
+  static String otherDetailText = "Other Detail";
   static String ordersText = "Orders";
   static String orderText = "Order";
   static String orderSummaryText = "Order Summary";
@@ -214,6 +216,7 @@ class StringConstants {
   static String rolesText = "Roles";
   static String roleNameText = "Role Name";
   static String returnAvailableText = "Return Available";
+  static String ratingReviewText = "Rating & Review";
 
   //S
   static String signUpText = "Sign up";

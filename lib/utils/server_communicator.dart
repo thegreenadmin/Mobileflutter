@@ -12,10 +12,13 @@ class ServerCommunicator {
   String createStoreCategory = 'store/category/create';
   String categoryList = 'store/category/list';
   String createProduct = 'store/product/create';
+  String createCart = 'shop/store/cart/item/create';
+  String cartList = 'shop/store/cart/item/list';
 
 //D
   String deleteWorker = 'store/user/delete';
   String deliveryServiceList = 'store/delivery/service/list';
+  String deleteItemFromCart = 'shop/store/cart/item/delete';
 //E
   String editWorker = 'store/user/edit';
 //F
@@ -36,6 +39,8 @@ class ServerCommunicator {
 //O
   String otpVerify = 'user/otp/verify';
 //P
+
+  String productDetails = 'store/product/details';
 //Q
 //R
 
@@ -70,12 +75,15 @@ class ServerCommunicator {
   String storeFeatureProductList = 'shop/store/product/list';
   String storeOfferDelete = 'store/offer/delete';
   String storeNonOfferProductList = 'store/offer/non_offered_products/list';
+  String shopProductDetails = 'shop/store/product/details';
+  String shopStoreDetails = 'shop/store/details';
 
 //T
 //U
   String userDetail = 'user/details';
   String updateUser = 'user/details/update';
   String userStore = 'store/list';
+  String updateCart = 'shop/store/cart/item/update';
 
 //V
 //W
