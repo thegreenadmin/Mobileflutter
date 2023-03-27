@@ -87,12 +87,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.zipCodeTextController,
                   keyboardType: TextInputType.phone,
-                  // validator: (value) {
-                  //   if (value == null || value.trim().isEmpty) {
-                  //     return AlertStringConstants.pleaseEnterZipCodeText;
-                  //   }
-                  //   return null;
-                  // },
                   decoration: InputDecoration(
                     hintText: StringConstants.zipCodeText,
                     hintStyle: const TextStyle(color: AppColors.grey),
@@ -265,7 +259,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                               .openingTimeTextController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
-                          if (value?.trim() ==
+                            if (value?.trim() ==
                                 searchStoreUserController
                                     .closingTimeTextController.text) {
                               return AlertStringConstants.openingTimeAlertText;
@@ -357,7 +351,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 .closingTimeTextController,
                             keyboardType: TextInputType.phone,
                             validator: (value) {
-                               if (value?.trim() ==
+                              if (value?.trim() ==
                                   searchStoreUserController
                                       .openingTimeTextController.text) {
                                 return AlertStringConstants
@@ -385,8 +379,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 },
                               ))!;
                               searchStoreUserController
-                                .closingTimeTextController.text =
-                                    date.format(context).toString();
+                                  .closingTimeTextController
+                                  .text = date.format(context).toString();
                               searchStoreUserController.closingTime.value =
                                   "${date.hour}:${date.minute}:00";
                             },
@@ -482,10 +476,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 }).toList(),
                 onChanged: (v) {
                   if (v == "Yes") {
-                    // manageStoreController.isFeatured.value = true;
-                  } else {
-                    //manageStoreController.isFeatured.value = false;
-                  }
+                  } else {}
                 },
               ),
               height20SizedBox,
@@ -496,17 +487,21 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  if(searchStoreUserController.zipCodeTextController.text==""
-                  && searchStoreUserController.mileageTextController.text=="" &&
-                      searchStoreUserController.openingTimeTextController.text=="" &&
-                      searchStoreUserController.closingTimeTextController.text==""
-                  ){
-                    Utility.showToast(AlertStringConstants
-                        .pleaseSelectOneFilterText);
-                  }else{
-                    searchStoreUserController.apiGetNearByStores(isFilter:true);
+                  if (searchStoreUserController.zipCodeTextController.text == "" &&
+                      searchStoreUserController.mileageTextController.text ==
+                          "" &&
+                      searchStoreUserController
+                              .openingTimeTextController.text ==
+                          "" &&
+                      searchStoreUserController
+                              .closingTimeTextController.text ==
+                          "") {
+                    Utility.showToast(
+                        AlertStringConstants.pleaseSelectOneFilterText);
+                  } else {
+                    searchStoreUserController.apiGetNearByStores(
+                        isFilter: true);
                   }
-
                 },
                 height: 50,
                 text: StringConstants.saveText,

@@ -126,7 +126,6 @@ class SearchStoreOwnerController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-
     apiGetStoreList();
     apiGetDeliveryServices();
   }

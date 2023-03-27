@@ -328,6 +328,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           onChanged: (value) async {
                             addOffersController.storeIdValue.value =
                                 value.toString();
+                            print(addOffersController.storeIdValue.value);
                             if (addOffersController.isStoreOffer.value ==
                                 false) {
                               await addOffersController.apiGetStoreProducts();

@@ -221,7 +221,7 @@ class StringConstants {
   static String storeText = "Store";
   static String storesText = "Stores";
   static String storeHoursText = "Store hours: 24/7 hours";
-
+  static String storeHourText = "Store Hours";
   static String successText = "Success";
   static String sendConfirmationCodeText = "Send Confirmation Code";
   static String securityText = "Security";

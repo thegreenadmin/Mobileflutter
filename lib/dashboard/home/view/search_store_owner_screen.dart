@@ -55,12 +55,13 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                             Text('Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
-                                    ),
+                                Text(
+                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
@@ -105,10 +106,10 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                     ),
                                   ),
                                   height4SizedBox,
-                                  const Center(
+                                  Center(
                                     child: Text(
-                                      "No stores found",
-                                      style: TextStyle(
+                                      StringConstants.noStoresFoundText,
+                                      style: const TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontSize: 16),
                                     ),

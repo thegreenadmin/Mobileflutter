@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/add_offer_request_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_offer_detail_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_store_non_offer_product_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -41,8 +42,9 @@ class AddOffersController extends GetxController {
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
-  late GetStoreProductList getStoreProductList = GetStoreProductList();
-  RxList<Products> storeProductList = <Products>[].obs;
+  late GetStoreNonOfferProductList getStoreProductList =
+      GetStoreNonOfferProductList();
+  RxList<ProductsList> storeProductList = <ProductsList>[].obs;
 
   late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
@@ -307,11 +309,11 @@ class AddOffersController extends GetxController {
     });
   }
 
-//Get store products List Api
+//Get store products have no offer
   Future apiGetStoreProducts() async {
     isLoading.value = true;
     debugPrint(
-      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -323,21 +325,15 @@ class AddOffersController extends GetxController {
       "store_id": storeIdValue.value,
       "page": 1,
       "page_size": 10,
-      "order_by": "product_name",
-      "order_type": "ASC",
+      "order_by": "product_id",
+      "order_type": "DESC",
       "category_id": null,
-      "filters": [
-        // {
-        //   "filter_by": "is_featured_product",
-        //   "filter_value": false,
-        //   "operation": "eq"
-        // }
-      ]
+      "filters": []
     };
     UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -346,7 +342,7 @@ class AddOffersController extends GetxController {
       debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        getStoreProductList = GetStoreProductList.fromJson(value.body);
+        getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
         if (storeProductList.isEmpty && radioValue.value == "product") {
           Utility.showToast(AlertStringConstants.noProductFoundForThisStore);

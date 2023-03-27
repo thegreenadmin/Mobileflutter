@@ -18,6 +18,7 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
+
   bottomSheetToAddMoney(context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -121,7 +122,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 width: 1.0,
                               ),
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
                               borderSide: const BorderSide(
                                 color: AppColors.primary,

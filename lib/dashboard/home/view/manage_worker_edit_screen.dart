@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
-import '../../../utils/sizedbox_constants.dart';
-import '../controller/add_new_worker_controller.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageWorkerEditScreen extends StatefulWidget {
   const ManageWorkerEditScreen({super.key});
@@ -742,8 +742,6 @@ class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
                         items: addNewWorkerController.storeRoleList
                             .map((dynamic value) {
                           return DropdownMenuItem<String>(
-                            // String? quantityTypeId;
-                            // String? quantityTypeName;
                             value: value.roleId,
                             child: Text(
                               value.roleName,

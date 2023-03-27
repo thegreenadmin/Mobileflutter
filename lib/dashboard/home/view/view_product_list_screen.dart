@@ -22,7 +22,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(120.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -51,12 +51,16 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(() => Text(
-                                      manageStoreController.categoryName.value,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
+                                Obx(() => SizedBox(
+                                      width: 250,
+                                      child: Text(
+                                        manageStoreController
+                                            .categoryName.value,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     )),
                               ],
                             ),
@@ -79,12 +83,15 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => Text(
-                      manageStoreController.categoryName.value,
-                      style: const TextStyle(
-                          fontSize: 18.0,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
+                Obx(() => SizedBox(
+                      width: 200,
+                      child: Text(
+                        manageStoreController.categoryName.value,
+                        style: const TextStyle(
+                            fontSize: 18.0,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
                     )),
                 InkWell(
                     highlightColor: Colors.transparent,
@@ -107,6 +114,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       manageStoreController.breadthTextController.clear();
                       manageStoreController.heightTextController.clear();
                       manageStoreController.weightTextController.clear();
+                      manageStoreController.daysTextController.clear();
                       manageStoreController.isEnabled.value = false;
                       manageStoreController.imageFileList!.clear();
                     },
@@ -234,12 +242,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                                             .storeProductList[
                                                                 index]
                                                             .productImages![0]
-                                                            .imageUrl ==
+                                                            .image!
+                                                            .dynamicUrl ==
                                                         null ||
                                                     manageStoreController
                                                         .storeProductList[index]
                                                         .productImages![0]
-                                                        .imageUrl!
+                                                        .image!
+                                                        .dynamicUrl!
                                                         .isEmpty
                                                 ? Image.asset(
                                                     "assets/nopicfound.png",
@@ -248,7 +258,9 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                                     manageStoreController
                                                         .storeProductList[index]
                                                         .productImages![0]
-                                                        .imageUrl!)),
+                                                        .image!
+                                                        .dynamicUrl
+                                                        .toString())),
                                       ),
                                       width12SizedBox,
                                       Flexible(
