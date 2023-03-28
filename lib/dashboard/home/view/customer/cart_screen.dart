@@ -14,149 +14,7 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-bottomSheetChangePickupLocation(context) {
-  return showModalBottomSheet(
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(25), topLeft: Radius.circular(25))),
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(bottom: 30),
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    height15SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            StringConstants.selectLocationText,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              Get.back();
-                            },
-                            child: Image.asset(
-                              "assets/cross.png",
-                              scale: 3,
-                            ))
-                      ],
-                    ),
-                    height15SizedBox,
-                    ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) {
-                          return height12SizedBox;
-                        },
-                        itemCount: 3,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: const BoxDecoration(
-                                color: AppColors.greylight,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                )),
-                            child: Column(children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        width: 200,
-                                        child: Text(
-                                          "Gate Village 10 , Dubai 10017",
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      height6SizedBox,
-                                      const SizedBox(
-                                        width: 200,
-                                        child: Text(
-                                          "Lorem Ipsum is simply dummy ",
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  false
-                                      ? Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Image.asset(
-                                              "assets/circle.png",
-                                              scale: 3.5,
-                                            ),
-                                            Image.asset(
-                                              "assets/whitetick.png",
-                                              scale: 4,
-                                            ),
-                                          ],
-                                        )
-                                      : Image.asset(
-                                          "assets/circleunfill.png",
-                                          scale: 4,
-                                        ),
-                                ],
-                              ),
-                            ]),
-                          );
-                        }),
-                    height10SizedBox,
-                    CustomButton(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.primary, AppColors.primary],
-                      ),
-                      onTap: () {},
-                      height: 50,
-                      text: StringConstants.changeText,
-                      borderRadius: 12,
-                      fontWeight: FontWeight.w500,
-                      iconL: false,
-                      fontSize: 16,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
-      }).then((value) => {});
-}
+
 
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
@@ -443,31 +301,24 @@ class _CartScreenState extends State<CartScreen> {
                                             scale: 2.5,
                                           ),
                                           width10SizedBox,
-                                          const Text(
-                                            "Gate Village 10 , Dubai 10017",
-                                            style: TextStyle(
+                                          Text(
+                                           "${storeHomeMainController.selectedUserAddress.value.addressLine1},${storeHomeMainController.selectedUserAddress.value.city},"
+                                               "${storeHomeMainController.selectedUserAddress.value.state?.stateName},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName},",
+                                            style: const TextStyle(
+                                              overflow: TextOverflow.visible,
                                                 color: AppColors.black,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         ],
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 25.0),
-                                        child: Text(
-                                          "3 .5 Miles away",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                   width10SizedBox,
                                   InkWell(
                                     onTap: () {
-                                      bottomSheetChangePickupLocation(context);
+                                      storeHomeMainController.userAddress.isNotEmpty?
+                                      storeHomeMainController.bottomSheetChangePickupLocation(context):null;
                                     },
                                     child: Container(
                                       height: 40.0,

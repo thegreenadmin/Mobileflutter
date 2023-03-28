@@ -70,7 +70,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                 .favStoreAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.to(const StoreHomeMainScreen());
+                              Get.to(const StoreHomeMainScreen(), arguments: {
+                                "storeAddress": searchStoreUserController
+                                    .storeAddresses[index]
+                              });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -174,8 +177,13 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                             ),
                                             height4SizedBox,
                                             Text(
-                                                "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}",
+                                                searchStoreUserController
+                                                    .storeAddresses[index].store!
+                                                    .storeTimings!.isNotEmpty ? searchStoreUserController.storeAddresses[index].store
+                                                    ?.storeTimings?.first.is24HoursActive == false
+                                                    ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                    "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                    : StringConstants.storeHoursText : StringConstants.storeHoursText,
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,
@@ -187,20 +195,12 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .favStoreAddresses[index]
-                                                    .store
-                                                    ?.isFavouriteStore ==
-                                                true
+                                        searchStoreUserController.favStoreAddresses[index].store?.isFavouriteStore == true
                                             ? InkWell(
                                                 onTap: () {
                                                   searchStoreUserController
                                                       .apiRemoveFavouriteStore(
-                                                          searchStoreUserController
-                                                              .favStoreAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
+                                                          searchStoreUserController.favStoreAddresses[index].store?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   "assets/liked.png",
@@ -227,97 +227,69 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                     )
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/inStore.png",
-                                            scale: 2.5,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.inStoreText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                SizedBox(
+                                  height: 50,
+                                  width: WidgetConstants.screenWidth,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.separated(
+                                            separatorBuilder: (BuildContext context, int index) {
+                                              return width10SizedBox;
+                                            },
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?.length??0,
+                                            itemBuilder: (_, i) {
+                                              return   Row(
+                                                children: [
+                                                  searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceId=="1"?
+                                                  Image.asset(
+                                                    "assets/inStore.png",
+                                                    scale: 2.5,
+                                                  ): searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceId=="2"?
+                                                  Image.asset(
+                                                    "assets/delivery.png",
+                                                    scale: 2.7,
+                                                  ):Image.asset(
+                                                    "assets/curb.png", scale: 2.1,),
+                                                  width3SizedBox,
+                                                  Text(
+                                                    searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceName??"",
+                                                    style: const TextStyle(
+                                                        fontSize: 12.0,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+
+                                                ],
+                                              );
+                                            }),
+                                      ),width10SizedBox,
+                                      RawMaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {},
+                                        constraints: const BoxConstraints(),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8.0, 8.0, 8.0, 8.0),
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                              width: 1.0,
+                                              color: AppColors.primary),
+                                          borderRadius:
+                                          BorderRadius.circular(28.0),
+                                        ),
+                                        fillColor: AppColors.primary,
+                                        child: Text(
+                                          StringConstants.orderHereText,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14.0,
+                                              color: AppColors.white),
+                                        ),
                                       ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/delivery.png",
-                                            scale: 2.5,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.deliveryText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/curb.png",
-                                            scale: 1.8,
-                                          ),
-                                          width3SizedBox,
-                                          Text(
-                                            StringConstants.curbSideText,
-                                            style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    RawMaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {},
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          8.0, 8.0, 8.0, 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1.0,
-                                            color: AppColors.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(28.0),
-                                      ),
-                                      fillColor: AppColors.primary,
-                                      child: Text(
-                                        StringConstants.orderHereText,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14.0,
-                                            color: AppColors.white),
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                    ],
+                                  ),
+                                ),
                               ]),
                             ),
                           );

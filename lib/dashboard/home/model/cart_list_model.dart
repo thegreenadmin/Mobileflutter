@@ -46,28 +46,52 @@ class CartListResponse {
 class Data {
   Data({
     this.cartTotalPrice,
+    this.cartSubTotal,
+    this.cartTotalDiscount,
+    this.cartTotalTax,
+    this.cartDeliveryServiceCharge,
     this.cartItems,
   });
 
   double? cartTotalPrice;
+  double? cartSubTotal;
+  int? cartTotalDiscount;
+  double? cartTotalTax;
+  int? cartDeliveryServiceCharge;
   List<CartItem>? cartItems;
 
   Data copyWith({
     double? cartTotalPrice,
+    double? cartSubTotal,
+    int? cartTotalDiscount,
+    double? cartTotalTax,
+    int? cartDeliveryServiceCharge,
     List<CartItem>? cartItems,
   }) =>
       Data(
         cartTotalPrice: cartTotalPrice ?? this.cartTotalPrice,
+        cartSubTotal: cartSubTotal ?? this.cartSubTotal,
+        cartTotalDiscount: cartTotalDiscount ?? this.cartTotalDiscount,
+        cartTotalTax: cartTotalTax ?? this.cartTotalTax,
+        cartDeliveryServiceCharge: cartDeliveryServiceCharge ?? this.cartDeliveryServiceCharge,
         cartItems: cartItems ?? this.cartItems,
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     cartTotalPrice: json["cart_total_price"]?.toDouble(),
+    cartSubTotal: json["cart_sub_total"]?.toDouble(),
+    cartTotalDiscount: json["cart_total_discount"],
+    cartTotalTax: json["cart_total_tax"]?.toDouble(),
+    cartDeliveryServiceCharge: json["cart_delivery_service_charge"],
     cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "cart_total_price": cartTotalPrice,
+    "cart_sub_total": cartSubTotal,
+    "cart_total_discount": cartTotalDiscount,
+    "cart_total_tax": cartTotalTax,
+    "cart_delivery_service_charge": cartDeliveryServiceCharge,
     "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
   };
 }
@@ -78,6 +102,7 @@ class CartItem {
     this.quantity,
     this.offerPrice,
     this.totalPrice,
+    this.totalDiscount,
     this.offer,
     this.product,
   });
@@ -86,7 +111,8 @@ class CartItem {
   int? quantity;
   double? offerPrice;
   double? totalPrice;
-  Offer? offer;
+  int? totalDiscount;
+  dynamic offer;
   Product? product;
 
   CartItem copyWith({
@@ -94,7 +120,8 @@ class CartItem {
     int? quantity,
     double? offerPrice,
     double? totalPrice,
-    Offer? offer,
+    int? totalDiscount,
+    dynamic offer,
     Product? product,
   }) =>
       CartItem(
@@ -102,6 +129,7 @@ class CartItem {
         quantity: quantity ?? this.quantity,
         offerPrice: offerPrice ?? this.offerPrice,
         totalPrice: totalPrice ?? this.totalPrice,
+        totalDiscount: totalDiscount ?? this.totalDiscount,
         offer: offer ?? this.offer,
         product: product ?? this.product,
       );
@@ -111,7 +139,8 @@ class CartItem {
     quantity: json["quantity"],
     offerPrice: json["offer_price"]?.toDouble(),
     totalPrice: json["total_price"]?.toDouble(),
-    offer: json["offer"] == null ? null : Offer.fromJson(json["offer"]),
+    totalDiscount: json["total_discount"],
+    offer: json["offer"],
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
   );
 
@@ -120,108 +149,9 @@ class CartItem {
     "quantity": quantity,
     "offer_price": offerPrice,
     "total_price": totalPrice,
-    "offer": offer?.toJson(),
+    "total_discount": totalDiscount,
+    "offer": offer,
     "product": product?.toJson(),
-  };
-}
-
-class Offer {
-  Offer({
-    this.image,
-    this.offerId,
-    this.isOfferForStore,
-    this.offerName,
-    this.offerType,
-    this.offerValue,
-    this.isExpired,
-    this.createdAt,
-    this.status,
-  });
-
-  Image? image;
-  String? offerId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? offerType;
-  int? offerValue;
-  bool? isExpired;
-  DateTime? createdAt;
-  String? status;
-
-  Offer copyWith({
-    Image? image,
-    String? offerId,
-    bool? isOfferForStore,
-    String? offerName,
-    String? offerType,
-    int? offerValue,
-    bool? isExpired,
-    DateTime? createdAt,
-    String? status,
-  }) =>
-      Offer(
-        image: image ?? this.image,
-        offerId: offerId ?? this.offerId,
-        isOfferForStore: isOfferForStore ?? this.isOfferForStore,
-        offerName: offerName ?? this.offerName,
-        offerType: offerType ?? this.offerType,
-        offerValue: offerValue ?? this.offerValue,
-        isExpired: isExpired ?? this.isExpired,
-        createdAt: createdAt ?? this.createdAt,
-        status: status ?? this.status,
-      );
-
-  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-    offerId: json["offer_id"],
-    isOfferForStore: json["is_offer_for_store"],
-    offerName: json["offer_name"],
-    offerType: json["offer_type"],
-    offerValue: json["offer_value"],
-    isExpired: json["is_expired"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    status: json["status"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "image": image?.toJson(),
-    "offer_id": offerId,
-    "is_offer_for_store": isOfferForStore,
-    "offer_name": offerName,
-    "offer_type": offerType,
-    "offer_value": offerValue,
-    "is_expired": isExpired,
-    "createdAt": createdAt?.toIso8601String(),
-    "status": status,
-  };
-}
-
-class Image {
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
   };
 }
 
@@ -371,5 +301,34 @@ class Product {
     "status": status,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
+
+class Image {
+  Image({
+    this.orignalUrl,
+    this.dynamicUrl,
+  });
+
+  dynamic orignalUrl;
+  dynamic dynamicUrl;
+
+  Image copyWith({
+    dynamic orignalUrl,
+    dynamic dynamicUrl,
+  }) =>
+      Image(
+        orignalUrl: orignalUrl ?? this.orignalUrl,
+        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+      );
+
+  factory Image.fromJson(Map<String, dynamic> json) => Image(
+    orignalUrl: json["orignal_url"],
+    dynamicUrl: json["dynamic_url"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "orignal_url": orignalUrl,
+    "dynamic_url": dynamicUrl,
   };
 }

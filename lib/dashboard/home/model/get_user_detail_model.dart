@@ -96,6 +96,7 @@ class UserAddresses {
   String? city;
   String? postalCode;
   State? state;
+  bool? isSelected;
 
   UserAddresses(
       {this.userAddressId,
@@ -104,6 +105,7 @@ class UserAddresses {
       this.addressLine2,
       this.city,
       this.postalCode,
+      this.isSelected,
       this.state});
 
   UserAddresses.fromJson(Map<String, dynamic> json) {

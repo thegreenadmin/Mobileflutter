@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart' as feature_product;
+import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart' as nearby;
 import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart' as categories;
 import 'package:thegreenmall/dashboard/home/model/store_offers_list_model.dart' as offers;
@@ -11,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -37,6 +39,9 @@ class StoreHomeMainController extends GetxController {
   late feature_product.FeatureProductListResponse featureProductListResponse =
   feature_product.FeatureProductListResponse();
   RxList<feature_product.Product> featureProductList = <feature_product.Product>[].obs;
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+  RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
+  Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
   RxInt selectedIndex = 0.obs;
   RxInt quantity = 0.obs;
@@ -62,6 +67,7 @@ class StoreHomeMainController extends GetxController {
     storeAddress.value = Get.arguments["storeAddress"];
     // setupScrollController(Get.context);
     apiGetStoreDetailsApi();
+    apiGetUserDetailsApi();
     onIndexChange(0);
   }
 
@@ -111,6 +117,42 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
+  //Get Categories Api
+  Future apiGetUserDetailsApi() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+    Map<String, String> headers = {
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+        headers,
+        showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+
+      debugPrint("GET USER DETAIL *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
+        userAddress.value = getUserDetailModel.data!.user!.userAddresses!;
+        if(userAddress.isNotEmpty){
+          selectedUserAddress.value = userAddress.first;
+        }
+
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
   //Get Cart List Api
   Future apiGetCartListApi() async {
     isLoading.value = true;
@@ -125,8 +167,7 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&is_featured_category=false",
-            headers,
-            showLoading: true)
+            headers, showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET  Cart List  *******${value?.body}");
@@ -515,4 +556,134 @@ class StoreHomeMainController extends GetxController {
       }
     });
   }
+  bottomSheetChangePickupLocation(context) {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(25), topLeft: Radius.circular(25))),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return ListView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 30),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          height15SizedBox,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  StringConstants.selectLocationText,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: Image.asset(
+                                    "assets/cross.png",
+                                    scale: 3,
+                                  ))
+                            ],
+                          ),
+                          height15SizedBox,
+                          ListView.separated(
+                              separatorBuilder: (BuildContext context, int index) {
+                                return height12SizedBox;
+                              },
+                              itemCount: userAddress.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: (){
+                                    selectedUserAddress.value = userAddress[index];
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    decoration: const BoxDecoration(
+                                        color: AppColors.greylight,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        )),
+                                    child: Column(children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                               SizedBox(
+                                                width: 200,
+                                                child: Text(
+                                                  "${userAddress[index].addressLine1},${userAddress[index].city},"
+                                                      "${userAddress[index].state?.stateName},${userAddress[index].state?.country?.countryName},",
+                                                  style: const TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: AppColors.black,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ),
+
+                                            ],
+                                          ),
+                                          userAddress[index].userAddressId==selectedUserAddress.value.userAddressId? Image.asset(
+                                            "assets/whitetick.png",
+                                            scale: 3.5,
+                                          ):Image.asset(
+                                            "assets/circleunfill.png",
+                                            scale: 4,
+                                          ),
+                                        ],
+                                      ),
+                                    ]),
+                                  ),
+                                );
+                              }),
+                          height10SizedBox,
+                          CustomButton(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [AppColors.primary, AppColors.primary],
+                            ),
+                            onTap: () {
+                            },
+                            height: 50,
+                            text: StringConstants.changeText,
+                            borderRadius: 12,
+                            fontWeight: FontWeight.w500,
+                            iconL: false,
+                            fontSize: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              });
+        }).then((value) => {});
+  }
+
 }
