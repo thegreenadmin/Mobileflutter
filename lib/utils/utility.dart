@@ -36,7 +36,9 @@ class Utility {
   }
 
   static void showSuccessMessage(String title, String message) {
-    Get.snackbar(title, message, duration: const Duration(seconds: 2), snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(title, message,
+        duration: const Duration(seconds: 2),
+        snackPosition: SnackPosition.BOTTOM);
   }
 
   static String loadImageUrl(String url) {
@@ -67,7 +69,8 @@ class Utility {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  textStyle: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold)),
               child: Text(buttonText),
               onPressed: () => Get.back(result: true),
               // ** result: returns this value up the call stack **
@@ -78,13 +81,15 @@ class Utility {
     ));
   }
 
-  static String parseDateTime(DateTime timestamp, {String format = 'MMM d, h:mm a'}) {
+  static String parseDateTime(DateTime timestamp,
+      {String format = 'MMM d, h:mm a'}) {
     final dateTime = timestamp.toLocal();
     return DateFormat(format).format(dateTime).toString();
   }
 
   static String formatDateTime(String timestamp,
-      {String firstFormat = 'MMM d, h:mm a', secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
+      {String firstFormat = 'MMM d, h:mm a',
+      secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
     DateTime parseDate = DateFormat(firstFormat).parse(timestamp.toString());
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat(secFormat);
@@ -107,7 +112,8 @@ class Utility {
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
     return await Geolocator.getCurrentPosition();
   }

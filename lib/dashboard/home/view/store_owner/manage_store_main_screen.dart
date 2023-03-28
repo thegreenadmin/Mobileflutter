@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/my_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/my_store_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -81,7 +81,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(170.0),
+        preferredSize: const Size.fromHeight(180.0),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -170,7 +170,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                         child: Text(
                                             searchStoreOwnerController
                                                 .storeLocation.value,
-                                            maxLines: 2,
+                                            maxLines: 1,
                                             style: const TextStyle(
                                                 color: AppColors.white,
                                                 fontSize: 16,

@@ -468,7 +468,7 @@ class AddOffersController extends GetxController {
       },
       "offer_products": selectedProducts
     };
-    debugPrint("UPDATE OFFER BODY**********" + body.toString());
+    debugPrint("UPDATE OFFER BODY**********$body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .putWithHeadersApi(

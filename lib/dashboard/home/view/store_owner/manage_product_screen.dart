@@ -147,12 +147,16 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   ),
                                 ),
                                 width10SizedBox,
-                                Text(
-                                  manageStoreController.storeName.value,
-                                  style: const TextStyle(
-                                      fontSize: 22,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    manageStoreController.storeName.value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 22,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
                               ],
                             ),
@@ -185,7 +189,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                     onTap: () {
                       Get.to(() => const AddNewCategoriesScreen(), arguments: {
                         "storeId": manageStoreController.storeId.value,
-                        "isFeaturedTypeSelected":
+                        "isFeaturedSelectedType":
                             manageStoreController.isFeaturedTypeSelected.value,
                       })!
                           .then((value) {

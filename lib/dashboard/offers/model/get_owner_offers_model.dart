@@ -124,7 +124,7 @@ class Store {
   Image? logo;
   String? storeId;
   String? storeName;
-  List<StoreAddresses>? storeAddresses;
+  List<StoreAddresse>? storeAddresses;
 
   Store({this.logo, this.storeId, this.storeName, this.storeAddresses});
 
@@ -133,9 +133,9 @@ class Store {
     storeId = json['store_id'];
     storeName = json['store_name'];
     if (json['store_addresses'] != null) {
-      storeAddresses = <StoreAddresses>[];
+      storeAddresses = <StoreAddresse>[];
       json['store_addresses'].forEach((v) {
-        storeAddresses!.add(StoreAddresses.fromJson(v));
+        storeAddresses!.add(StoreAddresse.fromJson(v));
       });
     }
   }
@@ -154,7 +154,7 @@ class Store {
   }
 }
 
-class StoreAddresses {
+class StoreAddresse {
   String? storeAddressId;
   String? addressName;
   double? longitude;
@@ -165,7 +165,7 @@ class StoreAddresses {
   String? city;
   State? state;
 
-  StoreAddresses(
+  StoreAddresse(
       {this.storeAddressId,
       this.addressName,
       this.longitude,
@@ -176,7 +176,7 @@ class StoreAddresses {
       this.city,
       this.state});
 
-  StoreAddresses.fromJson(Map<String, dynamic> json) {
+  StoreAddresse.fromJson(Map<String, dynamic> json) {
     storeAddressId = json['store_address_id'];
     addressName = json['address_name'];
     longitude = json['longitude'];

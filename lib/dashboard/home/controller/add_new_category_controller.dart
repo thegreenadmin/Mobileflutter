@@ -37,6 +37,7 @@ class AddNewCategoryController extends GetxController {
     categoryId.value = Get.arguments["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
         Get.arguments["isFeaturedSelectedType"] ?? false;
+    print(Get.arguments["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }

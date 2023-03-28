@@ -168,6 +168,7 @@ class StringConstants {
   static String noPermissionsFoundText = " No permissions found";
   static String noRolesFoundText = "No Roles found";
   static String noOffersFoundText = "No Offers found";
+  static String noText = "No";
 
   //O
   static String ownAStoreText = "Own a Store?";
@@ -183,8 +184,7 @@ class StringConstants {
   static String openingTimeText = "Opening Time";
   static String organisationTypeText = "Organisation Type";
   static String offerFor = "Offer For";
-    static String okayText = "Okay";
-  
+  static String okayText = "Okay";
 
   //P
   static String profileText = "Profile";
@@ -320,7 +320,7 @@ class StringConstants {
 
   //Y
   static String your420MarketPlace = "Your 420 Market Place";
-
+  static String yesText = "Yes";
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";
@@ -338,6 +338,8 @@ class BottomNavStringConstants {
 
 //Alert Messages
 class AlertStringConstants {
+  //A
+  static String areYouSureText = "Are you sure you want to delete this?";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";

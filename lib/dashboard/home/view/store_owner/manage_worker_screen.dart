@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_worker_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
 
@@ -88,8 +84,8 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                 Obx(
                   () => Text(
                     addNewWorkerController.workerList.length > 1
-                        ? "${addNewWorkerController.workerList.length} ${ StringConstants.membersText}"
-                        : "${addNewWorkerController.workerList.length} ${ StringConstants.memberText}",
+                        ? "${addNewWorkerController.workerList.length} ${StringConstants.membersText}"
+                        : "${addNewWorkerController.workerList.length} ${StringConstants.memberText}",
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: AppColors.black,
@@ -138,10 +134,10 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                 ),
                               ),
                               height4SizedBox,
-                               Center(
+                              Center(
                                 child: Text(
-                                    StringConstants.noWorkersFoundText,
-                                  style: TextStyle(
+                                  StringConstants.noWorkersFoundText,
+                                  style: const TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontSize: 16),
                                 ),
@@ -299,10 +295,15 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                             ),
                                             height8SizedBox,
                                             SizedBox(
-                                              width: 190,
+                                              width: 200,
                                               child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text( "${StringConstants.storesText}:",
+                                                  Text(
+                                                    "${StringConstants.storesText}:",
                                                     style: TextStyle(
                                                         fontSize: 12.0,
                                                         color: AppColors
@@ -310,14 +311,18 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                         fontWeight:
                                                             FontWeight.w400),
                                                   ),
-                                                  Text(
-                                                    addNewWorkerController
-                                                        .storeName.value,
-                                                    style: const TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                  SizedBox(
+                                                    width: 120,
+                                                    child: Text(
+                                                      addNewWorkerController
+                                                          .storeName.value,
+                                                      style: const TextStyle(
+                                                          fontSize: 12.0,
+                                                          color:
+                                                              AppColors.black,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -366,7 +371,8 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Image.asset(
                                                         "assets/watch.png",
@@ -385,7 +391,8 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,
-                                                                  fontSize: 12.0,
+                                                                  fontSize:
+                                                                      12.0,
                                                                   color: AppColors
                                                                       .blacklight),
                                                             ),
@@ -398,7 +405,6 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                                 ],
                                               ),
                                             ),
-
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,

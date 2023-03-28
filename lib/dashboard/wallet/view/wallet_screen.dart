@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
-
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -238,7 +237,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       height12SizedBox,
                       InkWell(
                         onTap: () {
-                          bottomSheetToAddMoney(context);
+                          //  bottomSheetToAddMoney(context);
                         },
                         child: Image.asset(
                           "assets/addMoney.png",

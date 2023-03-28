@@ -3,9 +3,13 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
+import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
+import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -23,18 +27,27 @@ class HomeController extends GetxController {
   late NearbyStoreListResponse nearbyStoreListResponse =
       NearbyStoreListResponse();
 
+  late OwnerFeaturedProductModel ownerFeaturedProductModel =
+      OwnerFeaturedProductModel();
+  RxList<ProductsList> ownerFeatureProductList = <ProductsList>[].obs;
+
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
   RxList<String> userCrouselImgList = <String>[].obs;
+  RxList<String> ownerCrouselImgList = <String>[].obs;
 
   RxString? role = "".obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
 
-  late FeatureProductListResponse featureProductListResponse =
-      FeatureProductListResponse();
-  RxList<Product> featuredUserProductList = <Product>[].obs;
+  late GetOwnerOffersListModel getOwnerOffersListModel =
+      GetOwnerOffersListModel();
+  RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
+
+  UserFeaturedProductModel userFeaturedProductModel =
+      UserFeaturedProductModel();
+  RxList<DataList> featuredUserProductList = <DataList>[].obs;
 
   @override
   void onInit() {
@@ -43,10 +56,12 @@ class HomeController extends GetxController {
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserNearByStores();
+      apiGetUserOffersList();
       apiGetUserFeaturedProducts();
     } else {
       role!.value = Role.storeOwnerRoleText;
+      apiGetOwnerOffersList();
+      apiGetOwnerFeaturedProducts();
     }
   }
 
@@ -144,7 +159,8 @@ class HomeController extends GetxController {
   }
 
   //Get Nearby Stores Api [USER]
-  Future apiGetUserNearByStores({bool isFilter = false}) async {
+  Future apiGetUserOffersList() async {
+    userCrouselImgList.clear();
     nearbyStoreListResponse = NearbyStoreListResponse();
     debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
@@ -180,7 +196,7 @@ class HomeController extends GetxController {
         storeAddresses.value = nearbyStoreListResponse.data!.storeAddresses!;
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
-            if (i == 5) {
+            if (i >= 5) {
               break;
             }
             userCrouselImgList
@@ -208,16 +224,15 @@ class HomeController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     Map data = {
       "q": "",
       "store_id": null,
       "page": 1,
-      "page_size": 100,
+      "page_size": 5,
       "order_by": "product_id",
       "order_type": "DESC",
       "category_id": null,
-      "is_favourite_products": true,
+      "is_favourite_products": false,
       "filters": [
         {
           "filter_by": "is_featured_product",
@@ -240,10 +255,99 @@ class HomeController extends GetxController {
       isLoading!.value = false;
       debugPrint("FEATURED PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        featureProductListResponse =
-            FeatureProductListResponse.fromJson(value?.body);
+        userFeaturedProductModel =
+            UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
-            featureProductListResponse.data?.products ?? [];
+            userFeaturedProductModel.data!.products!;
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Get Offers List Api [OWNER]
+  Future apiGetOwnerOffersList() async {
+    ownerCrouselImgList.clear();
+    isLoading!.value = true;
+    debugPrint(
+        "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    Map body = {
+      "store_id": null,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "offer_name",
+      "order_type": "DESC",
+      "filters": []
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading!.value = false;
+      debugPrint("OWNER OFFERS LIST BODY ******* $body");
+      debugPrint("OWNER OFFERS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
+        getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
+        if (getOwnerOfferlist.isNotEmpty) {
+          for (int i = 0; i < getOwnerOfferlist.length; i++) {
+            if (i >= 5) {
+              break;
+            }
+            ownerCrouselImgList.add(getOwnerOfferlist[i].image!.dynamicUrl!);
+          }
+        }
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Feature ProductList Store Api [Owner]
+  Future apiGetOwnerFeaturedProducts() async {
+    isLoading!.value = true;
+    debugPrint("OWNER FEATURED PRODUCT URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopHomeFeaturedProducts}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().shopHomeFeaturedProducts,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading!.value = false;
+      debugPrint("OWNER FEATURED PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        ownerFeaturedProductModel =
+            OwnerFeaturedProductModel.fromJson(value?.body);
+        ownerFeatureProductList.value =
+            ownerFeaturedProductModel.data?.products ?? [];
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

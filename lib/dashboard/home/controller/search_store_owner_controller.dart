@@ -11,7 +11,9 @@ import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -95,6 +97,10 @@ class SearchStoreOwnerController extends GetxController {
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
 
+  late GetOwnerOffersListModel getOwnerOffersListModel =
+      GetOwnerOffersListModel();
+  RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
+
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
 
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
@@ -128,6 +134,7 @@ class SearchStoreOwnerController extends GetxController {
     selectedIndex.value = 0;
     apiGetStoreList();
     apiGetDeliveryServices();
+    apiGetOwnerOffersList();
   }
 
   bool validateAndSave() {
@@ -244,6 +251,49 @@ class SearchStoreOwnerController extends GetxController {
                 ),
               ));
         });
+  }
+
+  //Get Offers List Api [OWNER]
+  Future apiGetOwnerOffersList() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    Map body = {
+      "store_id": storeId.value,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "offer_name",
+      "order_type": "DESC",
+      "filters": []
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("OWNER OFFERS LIST BODY ******* $body");
+      debugPrint("OWNER OFFERS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
+        getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
 //Get featured products List Api

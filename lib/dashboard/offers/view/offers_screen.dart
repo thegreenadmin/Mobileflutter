@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
+import 'package:thegreenmall/utils/alert_dailogue.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -424,6 +425,12 @@ class _OffersScreenState extends State<OffersScreen> {
                                       offersController.getOwnerOfferlist[index]
                                               .offerId ??
                                           "";
+
+                                  // AlertDailogueClass.ageAlertDailogue(
+                                  //   context,
+                                  //   AlertStringConstants.areYouSureText,
+                                  //   () => offersController.apiDeleteOffer(),
+                                  // );
                                   await offersController.apiDeleteOffer();
                                 },
                                 child: Container(
@@ -527,7 +534,6 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           : offersController
                                                               .apiGetOwnerOffersList();
                                                     });
-                                                    
                                                   },
                                                   child: Image.asset(
                                                     "assets/edit.png",
