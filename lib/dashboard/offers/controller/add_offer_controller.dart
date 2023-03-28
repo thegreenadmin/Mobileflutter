@@ -26,7 +26,7 @@ class AddOffersController extends GetxController {
 
   RxString discountValueType = "percentage".obs;
   RxString discountType = "".obs;
-  RxString storeIdValue = "0".obs;
+  RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
   //RxBool isStoreOffer = false.obs;
   RxString radioValue = "store".obs;
@@ -40,15 +40,16 @@ class AddOffersController extends GetxController {
   RxString isFrom = "".obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
-
+  RxList<dynamic> selectedProducts = <dynamic>[].obs;
   late GetStoreNonOfferProductList getStoreProductList =
       GetStoreNonOfferProductList();
   RxList<ProductsList> storeProductList = <ProductsList>[].obs;
 
   late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
+  List<OfferProduct> offerProducts = <OfferProduct>[];
 
-  RxList<Map> selectedProducts = <Map>[].obs;
+  RxList<OfferProduct> productMergedList = <OfferProduct>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
     return showDialog(
@@ -204,7 +205,7 @@ class AddOffersController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(isValidateFromAddOffer) async {
     if (validateAndSave()) {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
@@ -212,7 +213,7 @@ class AddOffersController extends GetxController {
         } else if (discountType.value.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseSelectDiscountType);
         } else {
-          await apiAddOffer();
+          isValidateFromAddOffer ? await apiAddOffer() : await apiUpdateOffer();
         }
       } catch (_) {}
     } else {
@@ -344,8 +345,41 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
-        if (storeProductList.isEmpty && radioValue.value == "product") {
-          Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
+        if (isFrom.value == StringConstants.editOfferText) {
+          offerProducts.addAll(getOfferDetailModel.data!.offerProducts!);
+          productMergedList.addAll(offerProducts);
+
+          for (int i = 0; i < storeProductList.length; i++) {
+            productMergedList.add(OfferProduct(
+              offerProductId: storeProductList[i].productId,
+              product: Product(
+                description: storeProductList[i].description,
+                discountType: storeProductList[i].discountType,
+                discountValue: storeProductList[i].discountValue,
+                isEnabled: storeProductList[i].isEnabled,
+                height: storeProductList[i].height,
+                isFeaturedProduct: storeProductList[i].isFeaturedProduct,
+                length: storeProductList[i].length,
+                storeId: storeProductList[i].storeId,
+                isProductReturnable: storeProductList[i].isProductReturnable,
+                productId: storeProductList[i].productId,
+                productName: storeProductList[i].productName,
+                quantity: storeProductList[i].quantity,
+                productPrice: storeProductList[i].productPrice,
+                returnDaysCount: storeProductList[i].returnDaysCount,
+                weight: storeProductList[i].weight,
+                width: storeProductList[i].width,
+                status: "deleted",
+                createdAt: storeProductList[i].createdAt,
+                updatedAt: storeProductList[i].updatedAt,
+                //   quantityTypeId: storeProductList[i].quantity,
+              ),
+            ));
+          }
+        } else {
+          if (storeProductList.isEmpty && radioValue.value == "product") {
+            Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
+          }
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
@@ -381,7 +415,9 @@ class AddOffersController extends GetxController {
         discountOrOfferTextController.text =
             getOfferDetailModel.data!.offerValue!.toString();
         offerImageDynamicLinkfromServer.value =
-            getOfferDetailModel.data!.image!.dynamicUrl!;
+            getOfferDetailModel.data!.image!.dynamicUrl ?? "";
+        offerImageOrigionalLinkfromServer.value =
+            getOfferDetailModel.data!.image!.orignalUrl ?? "";
         if (getOfferDetailModel.data!.isOfferForStore == true) {
           radioValue.value = "store";
         } else {
@@ -390,9 +426,63 @@ class AddOffersController extends GetxController {
         storeIdValue.value =
             getOfferDetailModel.data!.store!.storeId.toString();
         discountType.value = getOfferDetailModel.data!.offerType!;
-        List<OfferProduct> offerProducts = <OfferProduct>[];
+
+        await apiGetStoreProducts();
 
         update();
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Update Offer Api
+  Future apiUpdateOffer() async {
+    selectedProducts.clear();
+    for (int i = 0; i < productMergedList.length; i++) {
+      selectedProducts.add({
+        "offer_product_id": productMergedList[i].offerProductId!,
+        "product_id": productMergedList[i].product!.productId,
+        "status": productMergedList[i].product!.status
+      });
+    }
+    debugPrint(
+        "UPDATE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferEdit}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {
+      "store_id": storeIdValue.value,
+      "offer": {
+        "offer_id": offerId.value,
+        "offer_name": offerNameTextController.text.trim(),
+        "image_url": offerImageOrigionalLinkfromServer.value.trim(),
+        "offer_value": discountOrOfferTextController.text.trim(),
+        //"is_expired": false
+      },
+      "offer_products": selectedProducts
+    };
+    debugPrint("UPDATE OFFER BODY**********" + body.toString());
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .putWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferEdit,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("UPDATE OFFER RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        radioValue.value = "";
+        Get.back();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

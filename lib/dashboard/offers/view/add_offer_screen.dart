@@ -551,6 +551,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
                                       .pleaseEnterDiscountOrOfferText;
+                                } else if (int.parse(value) == 0) {
+                                  return AlertStringConstants.invalidAmountText;
                                 }
                                 return null;
                               },
@@ -600,7 +602,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit();
+                        addOffersController.validateAndSubmit(true);
                       },
                       height: 50,
                       text: StringConstants.saveText,

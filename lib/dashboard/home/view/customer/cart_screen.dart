@@ -228,7 +228,7 @@ class _CartScreenState extends State<CartScreen> {
                                 separatorBuilder: (BuildContext context, int index) {
                                   return height12SizedBox;
                                 },
-                                itemCount: storeHomeMainController.cartItems.length??0,
+                                itemCount: storeHomeMainController.cartItems.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context, int i) {

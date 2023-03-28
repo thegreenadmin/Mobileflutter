@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/add_categories_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/category_edit_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/view_product_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_categories_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/category_edit_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/view_product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -183,7 +183,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(() => const AddCategoriesScreen(), arguments: {
+                      Get.to(() => const AddNewCategoriesScreen(), arguments: {
                         "storeId": manageStoreController.storeId.value,
                         "isFeaturedTypeSelected":
                             manageStoreController.isFeaturedTypeSelected.value,

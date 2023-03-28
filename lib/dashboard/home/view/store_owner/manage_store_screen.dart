@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_product_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_worker_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/role_and_permission_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_detail_edit_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_product_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_worker_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/role_and_permission_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/store_detail_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/personal_info_edit_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_detail_edit_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/store_detail_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';

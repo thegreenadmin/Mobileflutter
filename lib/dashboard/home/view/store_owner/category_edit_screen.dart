@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/add_category_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_category_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -16,8 +16,8 @@ class CategoryEditScreen extends StatefulWidget {
 }
 
 class _CategoryEditScreenState extends State<CategoryEditScreen> {
-  AddCategoryController addCategoryController =
-      Get.put(AddCategoryController());
+  AddNewCategoryController addNewCategoryController =
+      Get.put(AddNewCategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addCategoryController.updateformKey,
+            key: addNewCategoryController.updateformKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -86,11 +86,11 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                     ),
                     height25SizedBox,
                     Obx(
-                      () => addCategoryController
+                      () => addNewCategoryController
                               .categoryImageDynamicLinkfromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
-                                addCategoryController
+                                addNewCategoryController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -126,7 +126,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                             )
                           : InkWell(
                               onTap: () {
-                                addCategoryController
+                                addNewCategoryController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -143,7 +143,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: Image.network(
-                                            addCategoryController
+                                            addNewCategoryController
                                                 .categoryImageDynamicLinkfromServer
                                                 .value,
                                             fit: BoxFit.cover)),
@@ -171,7 +171,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            addCategoryController.categoryNameTextController,
+                            addNewCategoryController.categoryNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -222,7 +222,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addCategoryController.validateAndSubmitUpdate();
+                        addNewCategoryController.validateAndSubmitUpdate();
                       },
                       height: 50,
                       text: StringConstants.saveAndUpdateCategoryText,

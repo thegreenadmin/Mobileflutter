@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/dashboard/offers/model/delete_offer_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
@@ -40,7 +39,6 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -51,12 +49,11 @@ class OffersController extends GetxController {
     }
   }
 
-  //Get Offers List of OWNER Api
+  //Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -95,7 +92,7 @@ class OffersController extends GetxController {
     });
   }
 
-  //Get Offers List of USER Api
+  //Get Offers List Api [USER]
   Future apiGetUserOffersList() async {
     isLoading!.value = true;
     debugPrint(

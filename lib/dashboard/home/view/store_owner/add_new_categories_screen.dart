@@ -2,22 +2,22 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/add_category_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/add_new_category_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddCategoriesScreen extends StatefulWidget {
-  const AddCategoriesScreen({super.key});
+class AddNewCategoriesScreen extends StatefulWidget {
+  const AddNewCategoriesScreen({super.key});
 
   @override
-  State<AddCategoriesScreen> createState() => _AddCategoriesScreenState();
+  State<AddNewCategoriesScreen> createState() => _AddNewCategoriesScreenState();
 }
 
-class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
-  AddCategoryController addCategoryController =
-      Get.put(AddCategoryController());
+class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
+  AddNewCategoryController addNewCategoryController =
+      Get.put(AddNewCategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addCategoryController.formKey,
+            key: addNewCategoryController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -82,11 +82,11 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                     ),
                     height25SizedBox,
                     Obx(
-                      () => addCategoryController
+                      () => addNewCategoryController
                               .categoryImageDynamicLinkfromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
-                                addCategoryController
+                                addNewCategoryController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -122,7 +122,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                             )
                           : InkWell(
                               onTap: () {
-                                addCategoryController
+                                addNewCategoryController
                                     .showSelectionDialog(context);
                               },
                               child: Row(
@@ -139,7 +139,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: Image.network(
-                                            addCategoryController
+                                            addNewCategoryController
                                                 .categoryImageDynamicLinkfromServer
                                                 .value,
                                             fit: BoxFit.cover)),
@@ -167,7 +167,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
-                            addCategoryController.categoryNameTextController,
+                            addNewCategoryController.categoryNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -218,7 +218,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addCategoryController.validateAndSubmit();
+                        addNewCategoryController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveAndAddProductText,

@@ -109,7 +109,7 @@ class StringConstants {
   static String faqText = "FAQ";
   static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
-  static String filterText = " Filter";
+  static String filterOptionsText = "Filter Options";
   static String enterRoleText = "Enter Role";
 
   //G
@@ -160,6 +160,7 @@ class StringConstants {
   static String inboxMessages = "Inbox Messages";
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
+  static String noFavFoundText = "No favourite\nproduct found";
   static String noStoresFoundText = "No stores found";
   static String noWorkersFoundText = "No workers found";
   static String noNearbyStoreFoundText = "No nearby store found";
@@ -182,6 +183,8 @@ class StringConstants {
   static String openingTimeText = "Opening Time";
   static String organisationTypeText = "Organisation Type";
   static String offerFor = "Offer For";
+    static String okayText = "Okay";
+  
 
   //P
   static String profileText = "Profile";
@@ -344,6 +347,10 @@ class AlertStringConstants {
 
   //I
   static String invalidOtpText = "Invalid OTP";
+  static String invalidAmountText = "Invalid amount";
+  static String invalidQuantityText = "Invalid quantity";
+  static String invalidInputText = "Invalid input";
+
 //N
   static String noProductFoundForThisStore = "No Products Found For This Store";
   //O
@@ -411,9 +418,13 @@ class AlertStringConstants {
   static String pleaseEnterOfferNameText = "Please enter offer name";
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
+  static String pleaseEnterAmountText = "Please enter amount";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";
+  //T
+  static String above18Text =
+      "The greenmall application is recommended for 18 above age group only!";
 }
 
 class Role {

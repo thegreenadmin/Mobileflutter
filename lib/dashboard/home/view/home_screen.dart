@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/history_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/history_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/search_store_owner_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/search_store_owner_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -232,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     homeController.userCrouselImgList.isEmpty
                         ? height0SizedBox
                         : CarouselSlider(
-                            items: homeController.userCrouselImgList
+                            items: homeController.userCrouselImgList.take(5)
                                 .map((item) => Center(
                                         child: ClipRRect(
                                       borderRadius: BorderRadius.circular(6.0),

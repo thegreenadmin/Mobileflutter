@@ -8,7 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 
-import '../../../utils/sizedbox_constants.dart';
+import '../../../../utils/sizedbox_constants.dart';
 
 class ViewProductListEditScreen extends StatefulWidget {
   const ViewProductListEditScreen({super.key});

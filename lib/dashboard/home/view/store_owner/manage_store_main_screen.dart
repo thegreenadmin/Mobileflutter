@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_store_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/my_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/my_store_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';

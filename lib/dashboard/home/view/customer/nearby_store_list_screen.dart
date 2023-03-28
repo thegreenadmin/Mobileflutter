@@ -5,23 +5,22 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/search_store_user_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 
-import 'package:thegreenmall/dashboard/home/view/store_home_main_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class FavouriteStoreListScreen extends StatefulWidget {
-  const FavouriteStoreListScreen({super.key});
+class NearbyStoreListScreen extends StatefulWidget {
+  const NearbyStoreListScreen({super.key});
 
   @override
-  State<FavouriteStoreListScreen> createState() =>
-      _FavouriteStoreListScreenState();
+  State<NearbyStoreListScreen> createState() => _NearbyStoreListScreenState();
 }
 
-class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
+class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
@@ -33,7 +32,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             child: Obx(
-              () => searchStoreUserController.favStoreAddresses.isEmpty
+              () => searchStoreUserController.storeAddresses.isEmpty
                   ? searchStoreUserController.isDataLoading.value == true
                       ? height0SizedBox
                       : Column(
@@ -59,18 +58,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                         )
                   : ListView.builder(
                       controller: searchStoreUserController.scrollController,
-                      itemCount:
-                          searchStoreUserController.favStoreAddresses.length +
-                              (searchStoreUserController.isFavLoading.value
-                                  ? 1
-                                  : 0),
+                      itemCount: searchStoreUserController
+                              .storeAddresses.length +
+                          (searchStoreUserController.isLoading.value ? 1 : 0),
+                      primary: false,
+                      shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         if (index <
-                            searchStoreUserController
-                                .favStoreAddresses.length) {
+                            searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.to(const StoreHomeMainScreen());
+                              Get.to(const StoreHomeMainScreen(), arguments: {
+                                "storeAddress": searchStoreUserController
+                                    .storeAddresses[index]
+                              });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -98,17 +99,16 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                           child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundImage: searchStoreUserController
-                                                            .favStoreAddresses[
+                                                            .storeAddresses[
                                                                 index]
                                                             .store
-                                                            ?.logo
+                                                            ?.image
                                                             ?.dynamicUrl ==
                                                         null ||
                                                     searchStoreUserController
-                                                        .favStoreAddresses[
-                                                            index]
+                                                        .storeAddresses[index]
                                                         .store!
-                                                        .logo!
+                                                        .image!
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? const AssetImage(
@@ -116,10 +116,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                     as ImageProvider
                                                 : NetworkImage(
                                                     searchStoreUserController
-                                                            .favStoreAddresses[
+                                                            .storeAddresses[
                                                                 index]
                                                             .store
-                                                            ?.logo
+                                                            ?.image
                                                             ?.dynamicUrl
                                                             .toString() ??
                                                         ""),
@@ -133,7 +133,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                           children: [
                                             Text(
                                               searchStoreUserController
-                                                      .favStoreAddresses[index]
+                                                      .storeAddresses[index]
                                                       .store
                                                       ?.storeName ??
                                                   "",
@@ -145,7 +145,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                             height4SizedBox,
                                             Visibility(
                                               visible: searchStoreUserController
-                                                  .favStoreAddresses[index]
+                                                  .storeAddresses[index]
                                                   .store!
                                                   .storeTimings!
                                                   .isNotEmpty,
@@ -158,10 +158,12 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                   width4SizedBox,
                                                   Text(
                                                     searchStoreUserController
-                                                            .favStoreAddresses[
+                                                            .storeAddresses[
                                                                 index]
                                                             .addressLine1 ??
                                                         "",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         fontSize: 14.0,
                                                         color: AppColors
@@ -174,8 +176,25 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                             ),
                                             height4SizedBox,
                                             Text(
-                                                "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}",
+                                                searchStoreUserController
+                                                        .storeAddresses[index]
+                                                        .store!
+                                                        .storeTimings!
+                                                        .isNotEmpty
+                                                    ? searchStoreUserController
+                                                                .storeAddresses[
+                                                                    index]
+                                                                .store
+                                                                ?.storeTimings
+                                                                ?.first
+                                                                .is24HoursActive ==
+                                                            false
+                                                        ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                            "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                        : StringConstants
+                                                            .storeHoursText
+                                                    : StringConstants
+                                                        .storeHoursText,
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,
@@ -188,7 +207,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                     Row(
                                       children: [
                                         searchStoreUserController
-                                                    .favStoreAddresses[index]
+                                                    .storeAddresses[index]
                                                     .store
                                                     ?.isFavouriteStore ==
                                                 true
@@ -197,7 +216,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                   searchStoreUserController
                                                       .apiRemoveFavouriteStore(
                                                           searchStoreUserController
-                                                              .favStoreAddresses[
+                                                              .storeAddresses[
                                                                   index]
                                                               .store
                                                               ?.storeId);
@@ -209,9 +228,13 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                  // searchStoreUserController.apiCreateFavouriteStore(
-                                                  //     searchStoreUserController.favStoreAddresses[
-                                                  //     index].store?.storeId);
+                                                  searchStoreUserController
+                                                      .apiCreateFavouriteStore(
+                                                          searchStoreUserController
+                                                              .storeAddresses[
+                                                                  index]
+                                                              .store
+                                                              ?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   "assets/fav.png",
@@ -231,11 +254,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
+                                    Visibility(
+                                      visible: searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .isNotEmpty &&
+                                          searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .any((element) =>
+                                                  element.deliveryServiceId ==
+                                                  "1"),
+                                      replacement: shrinkSizedBox,
                                       child: Row(
                                         children: [
                                           Image.asset(
@@ -252,11 +284,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                         ],
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
+                                    Visibility(
+                                      visible: searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .isNotEmpty &&
+                                          searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .any((element) =>
+                                                  element.deliveryServiceId ==
+                                                  "2"),
+                                      replacement: shrinkSizedBox,
                                       child: Row(
                                         children: [
                                           Image.asset(
@@ -273,11 +314,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                         ],
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() =>
-                                            const SearchStoreUserScreen());
-                                      },
+                                    Visibility(
+                                      visible: searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .isNotEmpty &&
+                                          searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .storeDeliveryServices!
+                                              .any((element) =>
+                                                  element.deliveryServiceId ==
+                                                  "3"),
+                                      replacement: shrinkSizedBox,
                                       child: Row(
                                         children: [
                                           Image.asset(
@@ -321,14 +371,12 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                               ]),
                             ),
                           );
-                        } else if (searchStoreUserController
-                            .isFavLoading.value) {
-                          Timer(const Duration(milliseconds: 30), () {
+                        } else if (searchStoreUserController.isLoading.value) {
+                          Timer(const Duration(milliseconds: 10), () {
                             searchStoreUserController.scrollController.jumpTo(
                                 searchStoreUserController
                                     .scrollController.position.maxScrollExtent);
                           });
-
                           return _loadingIndicator();
                         } else {
                           return const SizedBox();
@@ -346,7 +394,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: CupertinoActivityIndicator(
-            radius: 20,
+            radius: 15,
             color: Theme.of(context).primaryColor,
           ),
         ));

@@ -15,21 +15,9 @@ class SplashScreen extends StatelessWidget {
   Future<void> navigationPage() async {
     if (SharedPreferenceStorage.getData('token') != null) {
       Get.offAll(() => BottomNavigation());
-      debugPrint("I am in Dashboard");
     } else {
-      debugPrint("I am in Start Journey View");
       Get.offNamed('/onboardView');
     }
-
-    // String? token = SharedPreferenceStorage.getData('token') ?? "";
-    // bool? onBoard = SharedPreferenceStorage.getData('onBoard') ?? false;
-    // if (token!.isNotEmpty && onBoard!) {
-    //   Get.offAll(() => BottomNavigation());
-    // } else if (token.isEmpty && onBoard!) {
-    //   Get.offAll(() => const StartJourneyScreen());
-    // } else {
-    //   Get.offAll(() => const OnBoardMainScreen());
-    // }
   }
 
   @override

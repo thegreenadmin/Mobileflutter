@@ -67,6 +67,7 @@ class ServerCommunicator {
   String storeRoleEdit = 'store/role/edit';
   String storeQuantityTypeList = 'store/quantity_type/list';
   String storeOfferCreate = 'store/offer/create';
+  String storeOfferEdit = 'store/offer/edit';
   String storeOfferList = 'store/offer/list';
   String shopeOffersList = 'shop/offers/list';
   String storeOffersDetails = 'store/offer/details';

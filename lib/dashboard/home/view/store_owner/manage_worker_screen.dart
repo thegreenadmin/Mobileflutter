@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/add_new_store_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/add_new_worker_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_store_main_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_worker_edit_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_worker_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-import '../controller/add_new_worker_controller.dart';
-import '../model/categories_model.dart';
+import '../../controller/add_new_worker_controller.dart';
+import '../../model/categories_model.dart';
 
 class ManageWorkerScreen extends StatefulWidget {
   const ManageWorkerScreen({super.key});

@@ -180,6 +180,9 @@ class HomeController extends GetxController {
         storeAddresses.value = nearbyStoreListResponse.data!.storeAddresses!;
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
+            if (i == 5) {
+              break;
+            }
             userCrouselImgList
                 .add(storeAddresses[i].store!.image!.dynamicUrl!.toString());
           }

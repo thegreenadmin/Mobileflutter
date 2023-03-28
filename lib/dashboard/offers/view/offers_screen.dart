@@ -500,9 +500,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    Get.to(
-                                                        const EditOfferScreen(),
-                                                        arguments: {
+                                                    Get.to(const EditOfferScreen(),
+                                                            arguments: {
                                                           "isFrom":
                                                               StringConstants
                                                                   .editOfferText,
@@ -517,7 +516,18 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                       index]
                                                                   .offerId ??
                                                               ""
-                                                        });
+                                                        })!
+                                                        .then((value) {
+                                                      offersController.role!
+                                                                  .value ==
+                                                              Role
+                                                                  .customerRoleText
+                                                          ? offersController
+                                                              .apiGetUserOffersList()
+                                                          : offersController
+                                                              .apiGetOwnerOffersList();
+                                                    });
+                                                    
                                                   },
                                                   child: Image.asset(
                                                     "assets/edit.png",

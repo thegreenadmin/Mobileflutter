@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/add_new_role_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/role_update_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_role_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/role_update_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';

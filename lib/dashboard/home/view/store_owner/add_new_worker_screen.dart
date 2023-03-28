@@ -8,7 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
-import '../../../utils/sizedbox_constants.dart';
+import '../../../../utils/sizedbox_constants.dart';
 
 class AddNewWorkerScreen extends StatefulWidget {
   const AddNewWorkerScreen({super.key});

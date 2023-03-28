@@ -50,7 +50,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.filterText,
+                                StringConstants.filterOptionsText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -75,6 +75,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               height15SizedBox,
+              Center(
+                  child: Image.asset(
+                "assets/greenmall420.png",
+                scale: 4,
+              )),
+              height30SizedBox,
               TextFormField(
                   textInputAction: TextInputAction.next,
                   autofocus: false,
@@ -290,8 +296,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
 
                             searchStoreUserController.openingTime.value =
                                 "${date.hour}:${date.minute}:00";
-
-                            print("${date.hour}:${date.minute}:00");
                           },
                           decoration: InputDecoration(
                               errorMaxLines: 3,

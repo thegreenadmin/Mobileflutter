@@ -167,6 +167,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                                   ],
                                 )
                           : ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 60),
                               itemCount: addNewRoleController.moduleList.length,
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int i) {

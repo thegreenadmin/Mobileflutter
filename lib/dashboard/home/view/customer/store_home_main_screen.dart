@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/store_favourite_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_home_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_menu_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';

@@ -14,7 +14,7 @@ class StoreFavouriteScreen extends StatefulWidget {
 
 class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
   final StoreHomeMainController storeHomeMainController =
-  Get.put(StoreHomeMainController());
+      Get.put(StoreHomeMainController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,33 +23,34 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
-            child: Obx(()=>
-                 storeHomeMainController.featureProductList.isEmpty
+              child: Obx(
+            () => storeHomeMainController.featureProductList.isEmpty
                 ? storeHomeMainController.isLoading.value == true
-                ? height0SizedBox
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          "assets/nodata.png",
-                          scale: 8,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      height4SizedBox,
-                      Center(
-                        child: Text(
-                          StringConstants.noProductFoundText,
-                          style: const TextStyle(
-                              fontStyle: FontStyle.italic, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  )
+                    ? height0SizedBox
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Image.asset(
+                              "assets/nodata.png",
+                              scale: 8,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          height4SizedBox,
+                          Center(
+                            child: Text(
+                              StringConstants.noFavFoundText,
+                              style: const TextStyle(
+                                  fontStyle: FontStyle.italic, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      )
                 : GridView.builder(
-                    itemCount: storeHomeMainController.featureProductList.length,
+                    itemCount:
+                        storeHomeMainController.featureProductList.length,
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: (WidgetConstants.screenWidth + 120) /
@@ -72,25 +73,43 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               child: Stack(
                                 alignment: Alignment.topRight,
                                 children: [
-                                  storeHomeMainController.featureProductList[i].productImages!.isNotEmpty &&
-                                      storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl!=null
-                                      ?Image.network(
-                                    storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl,
-                                    fit: BoxFit.fill,height: 160,
-                                  ): Image.asset(
-                                    'assets/nopicfound.png',
-                                    fit: BoxFit.fill,
-                                  ),
+                                  storeHomeMainController.featureProductList[i]
+                                              .productImages!.isNotEmpty &&
+                                          storeHomeMainController
+                                                  .featureProductList[i]
+                                                  .productImages
+                                                  ?.first
+                                                  .image
+                                                  ?.dynamicUrl !=
+                                              null
+                                      ? Image.network(
+                                          storeHomeMainController
+                                              .featureProductList[i]
+                                              .productImages
+                                              ?.first
+                                              .image
+                                              ?.dynamicUrl,
+                                          fit: BoxFit.fill,
+                                          height: 160,
+                                        )
+                                      : Image.asset(
+                                          'assets/nopicfound.png',
+                                          fit: BoxFit.fill,
+                                        ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: storeHomeMainController.featureProductList[i].isFavouriteProduct==true
-                                        ?Image.asset(
-                                      "assets/liked.png",
-                                      scale: 3,
-                                    ):Image.asset(
-                                      "assets/fav.png",
-                                      scale: 3,
-                                    ),
+                                    child: storeHomeMainController
+                                                .featureProductList[i]
+                                                .isFavouriteProduct ==
+                                            true
+                                        ? Image.asset(
+                                            "assets/liked.png",
+                                            scale: 3,
+                                          )
+                                        : Image.asset(
+                                            "assets/fav.png",
+                                            scale: 3,
+                                          ),
                                   )
                                 ],
                               ),
@@ -101,7 +120,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                storeHomeMainController.featureProductList[i].productName??"",
+                                storeHomeMainController
+                                        .featureProductList[i].productName ??
+                                    "",
                                 style: const TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
@@ -109,7 +130,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               ),
                               height4SizedBox,
                               Text(
-                                storeHomeMainController.featureProductList[i].description??"",
+                                storeHomeMainController
+                                        .featureProductList[i].description ??
+                                    "",
                                 maxLines: 2,
                                 style: TextStyle(
                                     color: AppColors.blacklight,
@@ -118,7 +141,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               ),
                               height4SizedBox,
                               Text(
-                                "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice??""}",
+                                "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
                                 style: const TextStyle(
                                     color: AppColors.black,
                                     fontSize: 14,
@@ -129,8 +152,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                         ],
                       );
                     },
-                  ),)
-          ),
+                  ),
+          )),
         ]),
       ),
     );

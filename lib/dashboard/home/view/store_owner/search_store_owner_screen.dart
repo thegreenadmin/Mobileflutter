@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/add_new_store_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/manage_store_main_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -24,11 +24,11 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(90.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 40),
               child: Column(
                 children: [
                   Row(
@@ -86,7 +86,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
       body: Stack(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
             child: Column(
               children: [
                 Expanded(
@@ -339,7 +339,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                     .start,
                                                             children: [
                                                               Flexible(
-                                                                flex: 5,
+                                                                flex: 4,
                                                                 child: Row(
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
@@ -372,7 +372,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                               ),
                                                               width5SizedBox,
                                                               Flexible(
-                                                                flex: 5,
+                                                                flex: 6,
                                                                 child: Row(
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment

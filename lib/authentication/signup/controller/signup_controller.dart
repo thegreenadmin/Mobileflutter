@@ -67,7 +67,7 @@ class SignupController extends GetxController {
               height: 15,
             ),
             Text(
-              "The greenmall application is recommended for 18 above age group only!",
+              AlertStringConstants.above18Text,
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,
@@ -90,10 +90,10 @@ class SignupController extends GetxController {
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Okay",
-                        style: TextStyle(
+                        StringConstants.okayText,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
                             color: Colors.white),
@@ -116,10 +116,10 @@ class SignupController extends GetxController {
                       border: Border.all(color: AppColors.primary),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'Cancel',
-                        style: TextStyle(
+                        StringConstants.cancelText,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
                             color: AppColors.primary),
