@@ -70,7 +70,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                 .favStoreAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.to(const StoreHomeMainScreen());
+                              Get.to(const StoreHomeMainScreen(), arguments: {
+                                "storeAddress": searchStoreUserController
+                                    .storeAddresses[index]
+                              });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
