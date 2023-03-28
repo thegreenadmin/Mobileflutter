@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-CartListResponse cartListResponseFromJson(String str) => CartListResponse.fromJson(json.decode(str));
+CartListResponse cartListResponseFromJson(String str) =>
+    CartListResponse.fromJson(json.decode(str));
 
-String cartListResponseToJson(CartListResponse data) => json.encode(data.toJson());
+String cartListResponseToJson(CartListResponse data) =>
+    json.encode(data.toJson());
 
 class CartListResponse {
   CartListResponse({
@@ -30,17 +32,18 @@ class CartListResponse {
         data: data ?? this.data,
       );
 
-  factory CartListResponse.fromJson(Map<String, dynamic> json) => CartListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory CartListResponse.fromJson(Map<String, dynamic> json) =>
+      CartListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -53,8 +56,8 @@ class Data {
     this.cartItems,
   });
 
-  double? cartTotalPrice;
-  double? cartSubTotal;
+  dynamic cartTotalPrice;
+  dynamic cartSubTotal;
   int? cartTotalDiscount;
   double? cartTotalTax;
   int? cartDeliveryServiceCharge;
@@ -73,27 +76,33 @@ class Data {
         cartSubTotal: cartSubTotal ?? this.cartSubTotal,
         cartTotalDiscount: cartTotalDiscount ?? this.cartTotalDiscount,
         cartTotalTax: cartTotalTax ?? this.cartTotalTax,
-        cartDeliveryServiceCharge: cartDeliveryServiceCharge ?? this.cartDeliveryServiceCharge,
+        cartDeliveryServiceCharge:
+            cartDeliveryServiceCharge ?? this.cartDeliveryServiceCharge,
         cartItems: cartItems ?? this.cartItems,
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    cartTotalPrice: json["cart_total_price"]?.toDouble(),
-    cartSubTotal: json["cart_sub_total"]?.toDouble(),
-    cartTotalDiscount: json["cart_total_discount"],
-    cartTotalTax: json["cart_total_tax"]?.toDouble(),
-    cartDeliveryServiceCharge: json["cart_delivery_service_charge"],
-    cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
-  );
+        cartTotalPrice: json["cart_total_price"]?.toDouble(),
+        cartSubTotal: json["cart_sub_total"]?.toDouble(),
+        cartTotalDiscount: json["cart_total_discount"],
+        cartTotalTax: json["cart_total_tax"]?.toDouble(),
+        cartDeliveryServiceCharge: json["cart_delivery_service_charge"],
+        cartItems: json["cart_items"] == null
+            ? []
+            : List<CartItem>.from(
+                json["cart_items"]!.map((x) => CartItem.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "cart_total_price": cartTotalPrice,
-    "cart_sub_total": cartSubTotal,
-    "cart_total_discount": cartTotalDiscount,
-    "cart_total_tax": cartTotalTax,
-    "cart_delivery_service_charge": cartDeliveryServiceCharge,
-    "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
-  };
+        "cart_total_price": cartTotalPrice,
+        "cart_sub_total": cartSubTotal,
+        "cart_total_discount": cartTotalDiscount,
+        "cart_total_tax": cartTotalTax,
+        "cart_delivery_service_charge": cartDeliveryServiceCharge,
+        "cart_items": cartItems == null
+            ? []
+            : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
+      };
 }
 
 class CartItem {
@@ -135,24 +144,25 @@ class CartItem {
       );
 
   factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
-    cartItemId: json["cart_item_id"],
-    quantity: json["quantity"],
-    offerPrice: json["offer_price"]?.toDouble(),
-    totalPrice: json["total_price"]?.toDouble(),
-    totalDiscount: json["total_discount"],
-    offer: json["offer"],
-    product: json["product"] == null ? null : Product.fromJson(json["product"]),
-  );
+        cartItemId: json["cart_item_id"],
+        quantity: json["quantity"],
+        offerPrice: json["offer_price"]?.toDouble(),
+        totalPrice: json["total_price"]?.toDouble(),
+        totalDiscount: json["total_discount"],
+        offer: json["offer"],
+        product:
+            json["product"] == null ? null : Product.fromJson(json["product"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "cart_item_id": cartItemId,
-    "quantity": quantity,
-    "offer_price": offerPrice,
-    "total_price": totalPrice,
-    "total_discount": totalDiscount,
-    "offer": offer,
-    "product": product?.toJson(),
-  };
+        "cart_item_id": cartItemId,
+        "quantity": quantity,
+        "offer_price": offerPrice,
+        "total_price": totalPrice,
+        "total_discount": totalDiscount,
+        "offer": offer,
+        "product": product?.toJson(),
+      };
 }
 
 class Product {
@@ -254,54 +264,58 @@ class Product {
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    productId: json["product_id"],
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-    storeId: json["store_id"],
-    quantityTypeId: json["quantity_type_id"],
-    quantity: json["quantity"],
-    isFeaturedProduct: json["is_featured_product"],
-    productName: json["product_name"],
-    description: json["description"],
-    productPrice: json["product_price"]?.toDouble(),
-    sellingPrice: json["selling_price"]?.toDouble(),
-    discountType: json["discount_type"],
-    discountValue: json["discount_value"],
-    isProductReturnable: json["is_product_returnable"],
-    returnDaysCount: json["return_days_count"],
-    length: json["length"],
-    width: json["width"],
-    height: json["height"],
-    weight: json["weight"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-  );
+        productId: json["product_id"],
+        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        storeId: json["store_id"],
+        quantityTypeId: json["quantity_type_id"],
+        quantity: json["quantity"],
+        isFeaturedProduct: json["is_featured_product"],
+        productName: json["product_name"],
+        description: json["description"],
+        productPrice: json["product_price"]?.toDouble(),
+        sellingPrice: json["selling_price"]?.toDouble(),
+        discountType: json["discount_type"],
+        discountValue: json["discount_value"],
+        isProductReturnable: json["is_product_returnable"],
+        returnDaysCount: json["return_days_count"],
+        length: json["length"],
+        width: json["width"],
+        height: json["height"],
+        weight: json["weight"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "product_id": productId,
-    "image": image?.toJson(),
-    "store_id": storeId,
-    "quantity_type_id": quantityTypeId,
-    "quantity": quantity,
-    "is_featured_product": isFeaturedProduct,
-    "product_name": productName,
-    "description": description,
-    "product_price": productPrice,
-    "selling_price": sellingPrice,
-    "discount_type": discountType,
-    "discount_value": discountValue,
-    "is_product_returnable": isProductReturnable,
-    "return_days_count": returnDaysCount,
-    "length": length,
-    "width": width,
-    "height": height,
-    "weight": weight,
-    "is_enabled": isEnabled,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-  };
+        "product_id": productId,
+        "image": image?.toJson(),
+        "store_id": storeId,
+        "quantity_type_id": quantityTypeId,
+        "quantity": quantity,
+        "is_featured_product": isFeaturedProduct,
+        "product_name": productName,
+        "description": description,
+        "product_price": productPrice,
+        "selling_price": sellingPrice,
+        "discount_type": discountType,
+        "discount_value": discountValue,
+        "is_product_returnable": isProductReturnable,
+        "return_days_count": returnDaysCount,
+        "length": length,
+        "width": width,
+        "height": height,
+        "weight": weight,
+        "is_enabled": isEnabled,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+      };
 }
 
 class Image {
@@ -323,12 +337,12 @@ class Image {
       );
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
+        orignalUrl: json["orignal_url"],
+        dynamicUrl: json["dynamic_url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
-  };
+        "orignal_url": orignalUrl,
+        "dynamic_url": dynamicUrl,
+      };
 }

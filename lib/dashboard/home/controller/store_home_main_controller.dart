@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart' as feature_product;
+import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
+    as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart' as nearby;
-import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart' as categories;
-import 'package:thegreenmall/dashboard/home/model/store_offers_list_model.dart' as offers;
-import 'package:thegreenmall/dashboard/home/model/user_product_detail_model.dart' as product;
+import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
+    as nearby;
+import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart'
+    as categories;
+import 'package:thegreenmall/dashboard/home/model/store_offers_list_model.dart'
+    as offers;
+import 'package:thegreenmall/dashboard/home/model/user_product_detail_model.dart'
+    as product;
 import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
-import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart' as store;
+import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
+    as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -22,23 +28,26 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class StoreHomeMainController extends GetxController {
   Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
 
-  late store.StoreDetailsResponse storeDetailsResponse = store.StoreDetailsResponse();
-  late offers.StoreOffersListResponse offersListResponse = offers.StoreOffersListResponse();
+  late store.StoreDetailsResponse storeDetailsResponse =
+      store.StoreDetailsResponse();
+  late offers.StoreOffersListResponse offersListResponse =
+      offers.StoreOffersListResponse();
   RxList<offers.Offer> offersList = <offers.Offer>[].obs;
 
   late categories.StoreCategoriesListResponse categoriesListResponse =
-  categories.StoreCategoriesListResponse();
+      categories.StoreCategoriesListResponse();
   RxList<categories.Category> categoriesList = <categories.Category>[].obs;
   Rx<categories.Category> category = categories.Category().obs;
 
-  Rx<product.ShopProductDetailResponse>productDetailResponse =
-  product.ShopProductDetailResponse().obs;
+  Rx<product.ShopProductDetailResponse> productDetailResponse =
+      product.ShopProductDetailResponse().obs;
   late cart.CartListResponse cartListResponse = cart.CartListResponse();
   RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
 
   late feature_product.FeatureProductListResponse featureProductListResponse =
-  feature_product.FeatureProductListResponse();
-  RxList<feature_product.Product> featureProductList = <feature_product.Product>[].obs;
+      feature_product.FeatureProductListResponse();
+  RxList<feature_product.Product> featureProductList =
+      <feature_product.Product>[].obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
@@ -90,7 +99,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -124,14 +134,14 @@ class StoreHomeMainController extends GetxController {
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
-        headers,
-        showLoading: true)
+            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
 
@@ -139,10 +149,9 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userAddress.value = getUserDetailModel.data!.user!.userAddresses!;
-        if(userAddress.isNotEmpty){
+        if (userAddress.isNotEmpty) {
           selectedUserAddress.value = userAddress.first;
         }
-
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -160,14 +169,16 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&is_featured_category=false",
-            headers, showLoading: true)
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET  Cart List  *******${value?.body}");
@@ -185,24 +196,28 @@ class StoreHomeMainController extends GetxController {
   }
 
   // Add To CartApi
-  Future apiAddToCart( BuildContext context,) async {
+  Future apiAddToCart(
+    BuildContext context,
+  ) async {
     isLoading.value = true;
     debugPrint("Add To Cart  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     Map<String, dynamic> data = {
-      "product_id": int.parse(productDetailResponse.value.data?.product?.productId??"0"),
+      "product_id": int.parse(
+          productDetailResponse.value.data?.product?.productId ?? "0"),
       "quantity": quantity.value
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-        data,
+            data,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().createCart}",
             headers,
             showLoading: true)
@@ -224,16 +239,17 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Update Cart Api
-  Future apiUpdateCart({int cartItemId = 0,quantity=0}) async {
+  Future apiUpdateCart({int cartItemId = 0, quantity = 0}) async {
     isLoading.value = true;
     debugPrint("Update Cart  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().updateCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
-    Map<String, dynamic> data ={
+    Map<String, dynamic> data = {
       "cart_item_id": cartItemId,
       "quantity": quantity
     };
@@ -241,7 +257,7 @@ class StoreHomeMainController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .putWithHeadersApi(
-        data,
+            data,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().updateCart}",
             headers,
             showLoading: false)
@@ -268,17 +284,18 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
-    Map<String, dynamic> data ={
+    Map<String, dynamic> data = {
       "cart_item_id": cartItemId,
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .deleteWithHeadersApi(
-        data,
+            data,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}",
             headers,
             showLoading: false)
@@ -297,10 +314,9 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-
   void addToCartDailogue(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -368,11 +384,10 @@ class StoreHomeMainController extends GetxController {
                   width: 20,
                 ),
                 InkWell(
-                  onTap: () async{
+                  onTap: () async {
                     Get.back();
                     await apiGetCartListApi();
                     Get.to(const CartScreen());
-
                   },
                   child: Container(
                     height: 50.0,
@@ -416,12 +431,14 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeAddress.value.store?.storeId}",
-            headers, showLoading: true)
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        offersListResponse = offers.StoreOffersListResponse.fromJson(value?.body);
+        offersListResponse =
+            offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
@@ -447,7 +464,8 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}",
-            headers, showLoading: false)
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("  Store Details*******${value?.body}");
@@ -464,7 +482,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Get Shop  Product Detail Api
-  Future apiGetShopProductDetailApi({String productId=""}) async {
+  Future apiGetShopProductDetailApi({String productId = ""}) async {
     isLoading.value = true;
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId");
@@ -477,13 +495,15 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId",
-            headers, showLoading: true)
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
-        productDetailResponse.value = product.ShopProductDetailResponse.fromJson(value?.body);
-       update();
+        productDetailResponse.value =
+            product.ShopProductDetailResponse.fromJson(value?.body);
+        update();
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -556,6 +576,7 @@ class StoreHomeMainController extends GetxController {
       }
     });
   }
+
   bottomSheetChangePickupLocation(context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -566,124 +587,126 @@ class StoreHomeMainController extends GetxController {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                      child: Column(
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(bottom: 30),
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      height15SizedBox,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          height15SizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  StringConstants.selectLocationText,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black,
-                                  ),
-                                ),
+                          Flexible(
+                            child: Text(
+                              StringConstants.selectLocationText,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
                               ),
-                              InkWell(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: Image.asset(
-                                    "assets/cross.png",
-                                    scale: 3,
-                                  ))
-                            ],
+                            ),
                           ),
-                          height15SizedBox,
-                          ListView.separated(
-                              separatorBuilder: (BuildContext context, int index) {
-                                return height12SizedBox;
+                          InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.back();
                               },
-                              itemCount: userAddress.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: (){
-                                    selectedUserAddress.value = userAddress[index];
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    decoration: const BoxDecoration(
-                                        color: AppColors.greylight,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
-                                        )),
-                                    child: Column(children: [
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment:
+                              child: Image.asset(
+                                "assets/cross.png",
+                                scale: 3,
+                              ))
+                        ],
+                      ),
+                      height15SizedBox,
+                      ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) {
+                            return height12SizedBox;
+                          },
+                          itemCount: userAddress.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                selectedUserAddress.value = userAddress[index];
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: const BoxDecoration(
+                                    color: AppColors.greylight,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    )),
+                                child: Column(children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                               SizedBox(
-                                                width: 200,
-                                                child: Text(
-                                                  "${userAddress[index].addressLine1},${userAddress[index].city},"
-                                                      "${userAddress[index].state?.stateName},${userAddress[index].state?.country?.countryName},",
-                                                  style: const TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: AppColors.black,
-                                                      fontWeight: FontWeight.w500),
-                                                ),
-                                              ),
-
-                                            ],
-                                          ),
-                                          userAddress[index].userAddressId==selectedUserAddress.value.userAddressId? Image.asset(
-                                            "assets/whitetick.png",
-                                            scale: 3.5,
-                                          ):Image.asset(
-                                            "assets/circleunfill.png",
-                                            scale: 4,
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            child: Text(
+                                              "${userAddress[index].addressLine1},${userAddress[index].city},"
+                                              "${userAddress[index].state?.stateName},${userAddress[index].state?.country?.countryName},",
+                                              style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ]),
+                                      userAddress[index].userAddressId ==
+                                              selectedUserAddress
+                                                  .value.userAddressId
+                                          ? Image.asset(
+                                              "assets/whitetick.png",
+                                              scale: 3.5,
+                                            )
+                                          : Image.asset(
+                                              "assets/circleunfill.png",
+                                              scale: 4,
+                                            ),
+                                    ],
                                   ),
-                                );
-                              }),
-                          height10SizedBox,
-                          CustomButton(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [AppColors.primary, AppColors.primary],
-                            ),
-                            onTap: () {
-                            },
-                            height: 50,
-                            text: StringConstants.changeText,
-                            borderRadius: 12,
-                            fontWeight: FontWeight.w500,
-                            iconL: false,
-                            fontSize: 16,
-                          ),
-                        ],
+                                ]),
+                              ),
+                            );
+                          }),
+                      height10SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {},
+                        height: 50,
+                        text: StringConstants.changeText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
                       ),
-                    ),
-                  ],
-                );
-              });
+                    ],
+                  ),
+                ),
+              ],
+            );
+          });
         }).then((value) => {});
   }
-
 }

@@ -50,7 +50,7 @@ class LoginController extends GetxController {
   //Login Api
   Future apiGenerateOtp() async {
     Map data = {
-      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim()
     };
     debugPrint("LOGIN BODY********** $data");

@@ -52,7 +52,7 @@ class OtpVerificationController extends GetxController {
   Future apiOtpVerify() async {
     var rng = Random();
     Map data = {
-      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
       "otp": otpTextController.text.trim(),
       "device_id": rng.nextInt(100).toString(), //Random numbers

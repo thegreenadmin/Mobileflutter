@@ -184,7 +184,7 @@ class SignupController extends GetxController {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
       "email": emailTextController.text.trim(),
-      "phone": countryCode.value.trim() + phoneNumber.value.trim(),
+      "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
       "dob": dateTextController.text.trim()
     };
@@ -214,10 +214,7 @@ class SignupController extends GetxController {
 
   //Login Api
   Future apiGenerateOtp() async {
-    Map data = {
-      "phone": countryCode.value + phoneNumber.value,
-      "phone_code": countryCode.value
-    };
+    Map data = {"phone": phoneNumber.value, "phone_code": countryCode.value};
     debugPrint("LOGIN BODY********** $data");
     debugPrint(
         "LOGIN URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
