@@ -176,14 +176,15 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               ),
                                             ),
                                             height4SizedBox,
-                                            Text(
+                                            Text(searchStoreUserController
+                                                .storeAddresses.isNotEmpty?
                                                 searchStoreUserController
                                                     .storeAddresses[index].store!
                                                     .storeTimings!.isNotEmpty ? searchStoreUserController.storeAddresses[index].store
                                                     ?.storeTimings?.first.is24HoursActive == false
                                                     ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                     "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                    : StringConstants.storeHoursText : StringConstants.storeHoursText,
+                                                    : StringConstants.storeHoursText : StringConstants.storeHoursText: StringConstants.storeHoursText,
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,

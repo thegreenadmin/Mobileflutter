@@ -31,8 +31,8 @@ class StoreHomeMainController extends GetxController {
   RxList<categories.Category> categoriesList = <categories.Category>[].obs;
   Rx<categories.Category> category = categories.Category().obs;
 
-  Rx<product.ShopProductDetailResponse>productDetailResponse =
-  product.ShopProductDetailResponse().obs;
+  Rx<product.ShopProductDetailResponse>productDetailResponse = product.ShopProductDetailResponse().obs;
+
   late cart.CartListResponse cartListResponse = cart.CartListResponse();
   RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
 
@@ -483,7 +483,10 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         productDetailResponse.value = product.ShopProductDetailResponse.fromJson(value?.body);
-       update();
+       if(productDetailResponse.value.data!.product!.cartItems!.isNotEmpty){
+       quantity.value =  productDetailResponse.value.data!.product!.cartItems!.first.quantity!;
+       }
+        update();
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
