@@ -15,12 +15,12 @@ class ShopProductDetailResponse {
     this.data,
   });
 
-  dynamic status;
+  int? status;
   String? message;
   Data? data;
 
   ShopProductDetailResponse copyWith({
-    dynamic status,
+    int? status,
     String? message,
     Data? data,
   }) =>
@@ -95,28 +95,27 @@ class Product {
     this.productImages,
     this.productContents,
     this.productLinks,
-    this.count,
+    this.cartItems,
   });
 
   String? productId;
   bool? isFavouriteProduct;
   String? storeId;
   String? quantityTypeId;
-  dynamic quantity;
+  int? quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
   dynamic productPrice;
-  dynamic sellingPrice;
+  double? sellingPrice;
   String? discountType;
-  dynamic discountValue;
+  int? discountValue;
   bool? isProductReturnable;
-  dynamic returnDaysCount;
-  dynamic length;
-  dynamic width;
-  dynamic height;
-  dynamic weight;
-  dynamic count;
+  int? returnDaysCount;
+  int? length;
+  int? width;
+  int? height;
+  int? weight;
   bool? isEnabled;
   String? status;
   DateTime? createdAt;
@@ -126,27 +125,27 @@ class Product {
   List<ProductImage>? productImages;
   List<ProductContent>? productContents;
   List<ProductLink>? productLinks;
+  List<CartItem>? cartItems;
 
   Product copyWith({
     String? productId,
     bool? isFavouriteProduct,
     String? storeId,
     String? quantityTypeId,
-    dynamic quantity,
+    int? quantity,
     bool? isFeaturedProduct,
     String? productName,
     String? description,
-    dynamic productPrice,
-    dynamic sellingPrice,
+    double? productPrice,
+    double? sellingPrice,
     String? discountType,
-    dynamic discountValue,
+    int? discountValue,
     bool? isProductReturnable,
-    dynamic returnDaysCount,
-    dynamic length,
-    dynamic width,
-    dynamic height,
-    dynamic count,
-    dynamic weight,
+    int? returnDaysCount,
+    int? length,
+    int? width,
+    int? height,
+    int? weight,
     bool? isEnabled,
     String? status,
     DateTime? createdAt,
@@ -156,12 +155,12 @@ class Product {
     List<ProductImage>? productImages,
     List<ProductContent>? productContents,
     List<ProductLink>? productLinks,
+    List<CartItem>? cartItems,
   }) =>
       Product(
         productId: productId ?? this.productId,
         isFavouriteProduct: isFavouriteProduct ?? this.isFavouriteProduct,
         storeId: storeId ?? this.storeId,
-        count: count ?? this.count,
         quantityTypeId: quantityTypeId ?? this.quantityTypeId,
         quantity: quantity ?? this.quantity,
         isFeaturedProduct: isFeaturedProduct ?? this.isFeaturedProduct,
@@ -186,6 +185,7 @@ class Product {
         productImages: productImages ?? this.productImages,
         productContents: productContents ?? this.productContents,
         productLinks: productLinks ?? this.productLinks,
+        cartItems: cartItems ?? this.cartItems,
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -197,8 +197,8 @@ class Product {
     isFeaturedProduct: json["is_featured_product"],
     productName: json["product_name"],
     description: json["description"],
-    productPrice: json["product_price"],
-    sellingPrice: json["selling_price"],
+    productPrice: json["product_price"]?.toDouble(),
+    sellingPrice: json["selling_price"]?.toDouble(),
     discountType: json["discount_type"],
     discountValue: json["discount_value"],
     isProductReturnable: json["is_product_returnable"],
@@ -216,6 +216,7 @@ class Product {
     productImages: json["product_images"] == null ? [] : List<ProductImage>.from(json["product_images"]!.map((x) => ProductImage.fromJson(x))),
     productContents: json["product_contents"] == null ? [] : List<ProductContent>.from(json["product_contents"]!.map((x) => ProductContent.fromJson(x))),
     productLinks: json["product_links"] == null ? [] : List<ProductLink>.from(json["product_links"]!.map((x) => ProductLink.fromJson(x))),
+    cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -246,6 +247,36 @@ class Product {
     "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
     "product_contents": productContents == null ? [] : List<dynamic>.from(productContents!.map((x) => x.toJson())),
     "product_links": productLinks == null ? [] : List<dynamic>.from(productLinks!.map((x) => x.toJson())),
+    "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
+  };
+}
+
+class CartItem {
+  CartItem({
+    this.cartItemId,
+    this.quantity,
+  });
+
+  String? cartItemId;
+  int? quantity;
+
+  CartItem copyWith({
+    String? cartItemId,
+    int? quantity,
+  }) =>
+      CartItem(
+        cartItemId: cartItemId ?? this.cartItemId,
+        quantity: quantity ?? this.quantity,
+      );
+
+  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
+    cartItemId: json["cart_item_id"],
+    quantity: json["quantity"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "cart_item_id": cartItemId,
+    "quantity": quantity,
   };
 }
 
@@ -325,14 +356,14 @@ class ProductContent {
   String? productContentId;
   String? heading;
   String? paragraph;
-  dynamic order;
+  int? order;
   String? status;
 
   ProductContent copyWith({
     String? productContentId,
     String? heading,
     String? paragraph,
-    dynamic order,
+    int? order,
     String? status,
   }) =>
       ProductContent(
@@ -369,13 +400,13 @@ class ProductImage {
   });
 
   String? productImageId;
-  dynamic order;
+  int? order;
   String? status;
   Image? image;
 
   ProductImage copyWith({
     String? productImageId,
-    dynamic order,
+    int? order,
     String? status,
     Image? image,
   }) =>
@@ -442,14 +473,14 @@ class ProductLink {
   String? productLinkId;
   String? name;
   String? link;
-  dynamic order;
+  int? order;
   String? status;
 
   ProductLink copyWith({
     String? productLinkId,
     String? name,
     String? link,
-    dynamic order,
+    int? order,
     String? status,
   }) =>
       ProductLink(

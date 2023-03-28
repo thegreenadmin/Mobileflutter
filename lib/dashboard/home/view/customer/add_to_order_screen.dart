@@ -146,15 +146,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               height8SizedBox,
                               Text(
                                   storeHomeMainController.storeAddress.value
-                                          .store!.storeTimings!.isNotEmpty
-                                      ? storeHomeMainController
-                                                  .storeAddress
-                                                  .value
-                                                  .store
-                                                  ?.storeTimings
-                                                  ?.first
-                                                  .is24HoursActive ==
-                                              false
+                                          .store!.storeTimings!.isNotEmpty ? storeHomeMainController
+                                                  .storeAddress.value.store
+                                                  ?.storeTimings?.first.is24HoursActive == false
                                           ? "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                               "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                           : StringConstants.storeHoursText
@@ -196,8 +190,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: storeHomeMainController.productDetailResponse.value
-                                      .data?.product?.productImages ==
-                                  null ||
+                                      .data?.product?.productImages == null ||
                               storeHomeMainController.productDetailResponse
                                   .value.data!.product!.productImages!.isEmpty
                           ? Image.asset(
@@ -312,15 +305,20 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               children: [
                                 InkWell(
                                     onTap: () {
-                                      storeHomeMainController.quantity.value =
-                                          storeHomeMainController
-                                                      .quantity.value !=
-                                                  0
-                                              ? storeHomeMainController
-                                                      .quantity.value -
-                                                  1
-                                              : storeHomeMainController
-                                                  .quantity.value;
+                                      if( storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.isNotEmpty){
+                                        storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.first.quantity!-1;
+                                      }else{
+                                        storeHomeMainController.quantity.value =
+                                        storeHomeMainController
+                                            .quantity.value !=
+                                            0
+                                            ? storeHomeMainController
+                                            .quantity.value -
+                                            1
+                                            : storeHomeMainController
+                                            .quantity.value;
+                                      }
+
                                     },
                                     child: Image.asset(
                                       "assets/subtract.png",
@@ -328,15 +326,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     )),
                                 width10SizedBox,
                                 Text(
-                                  storeHomeMainController.quantity
-                                              .toString()
-                                              .length <
-                                          2
-                                      ? storeHomeMainController.quantity
-                                          .toString()
-                                          .padLeft(2, '0')
-                                      : storeHomeMainController.quantity
-                                          .toString(),
+                                    storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.isNotEmpty?
+                                    storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.first.quantity.toString().length < 2?
+                                    storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.first.quantity.toString().padLeft(2,'0')
+                                        : storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.first.quantity.toString()
+                                        : storeHomeMainController.quantity.toString().length < 2
+                                      ? storeHomeMainController.quantity.toString().padLeft(2,'0')
+                                      : storeHomeMainController.quantity.toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
@@ -345,9 +341,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 width10SizedBox,
                                 InkWell(
                                   onTap: () {
-                                    storeHomeMainController.quantity.value =
-                                        storeHomeMainController.quantity.value +
-                                            1;
+                                    if( storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.isNotEmpty){
+                                      storeHomeMainController.productDetailResponse.value.data!.product!.cartItems!.first.quantity!+1;
+                                    }else{
+                                      storeHomeMainController.quantity.value =
+                                      storeHomeMainController
+                                          .quantity.value != 0
+                                          ? storeHomeMainController
+                                          .quantity.value + 1
+                                          : storeHomeMainController.quantity.value;
+                                    }
                                   },
                                   child: Image.asset(
                                     "assets/add.png",
