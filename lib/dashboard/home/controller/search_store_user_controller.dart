@@ -170,15 +170,10 @@ class SearchStoreUserController extends GetxController {
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
             element.store?.isFavouriteStore = true;
+            favStoreAddresses.add(element);
           }
         }
-        if (favStoreAddresses.isNotEmpty) {
-          for (var element in favStoreAddresses) {
-            if (element.store?.storeId == id) {
-              favStoreAddresses.add(element);
-            }
-          }
-        }
+
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -219,15 +214,10 @@ class SearchStoreUserController extends GetxController {
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
             element.store?.isFavouriteStore = false;
+            favStoreAddresses.remove(element);
           }
         }
-        if (favStoreAddresses.isNotEmpty) {
-          for (var element in favStoreAddresses) {
-            if (element.store?.storeId == id) {
-              favStoreAddresses.remove(element);
-            }
-          }
-        }
+
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

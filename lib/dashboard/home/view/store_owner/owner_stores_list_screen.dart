@@ -123,299 +123,285 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                             },
                             itemCount: ownerStoresController.storeList.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Dismissible(
-                                background: Container(
-                                  color: AppColors.redlight,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.delete,
-                                          color: AppColors.red,
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                direction: DismissDirection.endToStart,
-                                resizeDuration:
-                                    const Duration(milliseconds: 200),
-                                key: UniqueKey(),
-                                onDismissed: (direction) {},
-                                child: InkWell(
-                                  onTap: () async {
-                                    ownerStoresController.storeId.value =
-                                        ownerStoresController
-                                                .storeList[index].storeId ??
-                                            "";
+                              return InkWell(
+                                onTap: () async {
+                                  ownerStoresController.storeId.value =
+                                      ownerStoresController
+                                              .storeList[index].storeId ??
+                                          "";
 
-                                    ownerStoresController.storeName.value =
-                                        ownerStoresController
-                                                .storeList[index].storeName ??
-                                            "";
+                                  ownerStoresController.storeName.value =
+                                      ownerStoresController
+                                              .storeList[index].storeName ??
+                                          "";
 
-                                    ownerStoresController.storeLocation.value =
-                                        ownerStoresController
-                                            .storeList[index]
-                                            .storeAddresses![
-                                                ownerStoresController
-                                                    .addressListIndex!.value]
-                                            .addressLine1!;
+                                  ownerStoresController.storeLocation.value =
+                                      ownerStoresController
+                                          .storeList[index]
+                                          .storeAddresses![ownerStoresController
+                                              .addressListIndex!.value]
+                                          .addressLine1!;
 
-                                    ownerStoresController.storeLocation.value =
-                                        ownerStoresController
-                                            .storeList[index]
-                                            .storeAddresses![
-                                                ownerStoresController
-                                                    .addressListIndex!.value]
-                                            .addressLine1!;
+                                  ownerStoresController.storeLocation.value =
+                                      ownerStoresController
+                                          .storeList[index]
+                                          .storeAddresses![ownerStoresController
+                                              .addressListIndex!.value]
+                                          .addressLine1!;
 
-                                    ownerStoresController.storeImage!.value =
-                                        ownerStoresController.storeList[index]
-                                                .image!.dynamicUrl ??
-                                            "";
+                                  ownerStoresController.storeImage!.value =
+                                      ownerStoresController.storeList[index]
+                                              .image!.dynamicUrl ??
+                                          "";
 
-                                    ownerStoresController.storeLogo!.value =
-                                        ownerStoresController.storeList[index]
-                                                .logo!.dynamicUrl ??
-                                            "";
+                                  ownerStoresController.storeLogo!.value =
+                                      ownerStoresController.storeList[index]
+                                              .logo!.dynamicUrl ??
+                                          "";
 
-                                    await ownerStoresController
-                                        .apiGetParticularStore();
+                                  await ownerStoresController
+                                      .apiGetParticularStore();
 
-                                    await ownerStoresController
-                                        .apiGetFeaturedProducts();
-                                    ownerStoresController.onInit();
+                                  await ownerStoresController
+                                      .apiGetFeaturedProducts();
+                                  ownerStoresController.onInit();
 
-                                    await Get.to(
-                                        () => const ManageStoreMainScreen());
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    decoration: const BoxDecoration(
-                                        color: AppColors.greylight,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
-                                        )),
-                                    child: Column(children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Flexible(
-                                            flex: 2,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                      color: AppColors.white,
-                                                      width: 1)),
-                                              child: CircleAvatar(
-                                                radius: 24.0,
-                                                backgroundImage:
-                                                    ownerStoresController
-                                                                .storeList[
-                                                                    index]
-                                                                .logo!
-                                                                .dynamicUrl !=
-                                                            null
-                                                        ? NetworkImage(
-                                                            ownerStoresController
-                                                                .storeList[
-                                                                    index]
-                                                                .logo!
-                                                                .dynamicUrl
-                                                                .toString())
-                                                        : const AssetImage(
-                                                            "assets/nopicfound.png",
-                                                          ) as ImageProvider,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                              ),
+                                  await Get.to(
+                                      () => const ManageStoreMainScreen());
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.greylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      )),
+                                  child: Column(children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          flex: 2,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: CircleAvatar(
+                                              radius: 24.0,
+                                              backgroundImage:
+                                                  ownerStoresController
+                                                              .storeList[index]
+                                                              .logo!
+                                                              .dynamicUrl !=
+                                                          null
+                                                      ? NetworkImage(
+                                                          ownerStoresController
+                                                              .storeList[index]
+                                                              .logo!
+                                                              .dynamicUrl
+                                                              .toString())
+                                                      : const AssetImage(
+                                                          "assets/nopicfound.png",
+                                                        ) as ImageProvider,
+                                              backgroundColor:
+                                                  Colors.transparent,
                                             ),
                                           ),
-                                          width10SizedBox,
-                                          Flexible(
-                                            flex: 8,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 190,
-                                                  child: Text(
-                                                    ownerStoresController
-                                                            .storeList[index]
-                                                            .storeName ??
-                                                        "",
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
+                                        ),
+                                        width10SizedBox,
+                                        Flexible(
+                                          flex: 8,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 190,
+                                                child: Text(
+                                                  ownerStoresController
+                                                          .storeList[index]
+                                                          .storeName ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                 ),
-                                                height8SizedBox,
-                                                ListView.separated(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    separatorBuilder:
-                                                        (BuildContext context,
-                                                            int i) {
-                                                      return height0SizedBox;
-                                                    },
-                                                    itemCount:
-                                                        ownerStoresController
-                                                            .storeList[index]
-                                                            .storeAddresses!
-                                                            .length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int i) {
+                                              ),
+                                              height8SizedBox,
+                                              ListView.separated(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  separatorBuilder:
+                                                      (BuildContext context,
+                                                          int i) {
+                                                    return height0SizedBox;
+                                                  },
+                                                  itemCount:
                                                       ownerStoresController
-                                                          .addressListIndex!
-                                                          .value = i;
-                                                      return Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Image.asset(
-                                                                  "assets/loc.png",
-                                                                  scale: 3,
-                                                                ),
-                                                                width3SizedBox,
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    ownerStoresController
-                                                                            .storeList[index]
-                                                                            .storeAddresses![i]
-                                                                            .addressLine1 ??
-                                                                        "",
-                                                                    style: const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w400,
-                                                                        fontSize:
-                                                                            12.0,
-                                                                        color: AppColors
-                                                                            .black),
-                                                                  ),
-                                                                ),
-                                                              ]),
-                                                          height10SizedBox,
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                          .storeList[index]
+                                                          .storeAddresses!
+                                                          .length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int i) {
+                                                    ownerStoresController
+                                                        .addressListIndex!
+                                                        .value = i;
+                                                    return Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              Flexible(
-                                                                flex: 4,
-                                                                child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                        "${StringConstants.cityText}: ",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                AppColors.blacklight,
-                                                                            fontWeight: FontWeight.w400,
-                                                                            fontSize: 12)),
-                                                                    Expanded(
-                                                                      child:
-                                                                          Text(
-                                                                        ownerStoresController.storeList[index].storeAddresses![i].city ??
-                                                                            "",
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                AppColors.black,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontSize: 12),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                              Image.asset(
+                                                                "assets/loc.png",
+                                                                scale: 3,
+                                                              ),
+                                                              width3SizedBox,
+                                                              Expanded(
+                                                                child: Text(
+                                                                  ownerStoresController
+                                                                          .storeList[
+                                                                              index]
+                                                                          .storeAddresses![
+                                                                              i]
+                                                                          .addressLine1 ??
+                                                                      "",
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      color: AppColors
+                                                                          .black),
                                                                 ),
                                                               ),
-                                                              width5SizedBox,
-                                                              Flexible(
-                                                                flex: 6,
-                                                                child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                        "${StringConstants.stateText}: ",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                AppColors.blacklight,
-                                                                            fontWeight: FontWeight.w400,
-                                                                            fontSize: 12)),
-                                                                    Expanded(
-                                                                      child:
-                                                                          Text(
-                                                                        ownerStoresController.storeList[index].storeAddresses![i].state!.stateName ??
-                                                                            "",
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                AppColors.black,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontSize: 12),
-                                                                      ),
+                                                            ]),
+                                                        height10SizedBox,
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Flexible(
+                                                              flex: 4,
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      "${StringConstants.cityText}: ",
+                                                                      style: TextStyle(
+                                                                          color: AppColors
+                                                                              .blacklight,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              12)),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      ownerStoresController
+                                                                              .storeList[index]
+                                                                              .storeAddresses![i]
+                                                                              .city ??
+                                                                          "",
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              12),
                                                                     ),
-                                                                  ],
-                                                                ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      );
-                                                    }),
-                                                height8SizedBox,
-                                              ],
-                                            ),
+                                                            ),
+                                                            width5SizedBox,
+                                                            Flexible(
+                                                              flex: 6,
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      "${StringConstants.stateText}: ",
+                                                                      style: TextStyle(
+                                                                          color: AppColors
+                                                                              .blacklight,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              12)),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      ownerStoresController
+                                                                              .storeList[index]
+                                                                              .storeAddresses![i]
+                                                                              .state!
+                                                                              .stateName ??
+                                                                          "",
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              12),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    );
+                                                  }),
+                                              height8SizedBox,
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0, left: 10),
-                                            child: Image.asset(
-                                              "assets/edit.png",
-                                              scale: 2.8,
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20.0, left: 10),
+                                          child: Image.asset(
+                                            "assets/edit.png",
+                                            scale: 2.8,
                                           ),
-                                        ],
-                                      ),
-                                    ]),
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
                                 ),
                               );
                             }))),

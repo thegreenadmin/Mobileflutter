@@ -55,6 +55,8 @@ class StoreHomeMainController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
   RxInt quantity = 0.obs;
+  RxString storeDeliveryServiceId = "0".obs;
+  RxString userAddressId = "0".obs;
   RxString productId = "".obs;
 
   RxBool isLoading = false.obs;
@@ -142,7 +144,7 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
@@ -167,7 +169,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetCartListApi() async {
     isLoading.value = true;
     debugPrint("GET Cart List URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -175,9 +177,10 @@ class StoreHomeMainController extends GetxController {
     };
 
     debugPrint("TOKEN ********** $headers");
+
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&is_featured_category=false",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -212,7 +215,7 @@ class StoreHomeMainController extends GetxController {
     Map<String, dynamic> data = {
       "product_id": int.parse(
           productDetailResponse.value.data?.product?.productId ?? "0"),
-      "quantity": quantity.value
+      "items_count": quantity.value
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -252,7 +255,7 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, dynamic> data = {
       "cart_item_id": cartItemId,
-      "quantity": quantity
+      "items_count": quantity
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -346,7 +349,7 @@ class StoreHomeMainController extends GetxController {
               height: 15,
             ),
             Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+              "Please continue shopping with thegreenmall",
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,
@@ -360,6 +363,8 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
+                    Get.back();
+                    Get.back();
                     Get.back();
                   },
                   child: Container(
@@ -562,7 +567,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");

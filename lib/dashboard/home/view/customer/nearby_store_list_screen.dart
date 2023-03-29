@@ -84,11 +84,12 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                   )),
                               child: Column(children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
@@ -127,120 +128,86 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           ),
                                         ),
                                         width10SizedBox,
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              searchStoreUserController
-                                                      .storeAddresses[index]
-                                                      .store
-                                                      ?.storeName ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  fontSize: 17.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            height4SizedBox,
-                                            Visibility(
-                                              visible: searchStoreUserController
-                                                  .storeAddresses[index]
-                                                  .store!
-                                                  .storeTimings!
-                                                  .isNotEmpty,
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/loc.png",
-                                                    scale: 3.2,
-                                                  ),
-                                                  width4SizedBox,
-                                                  Text(
-                                                    searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .addressLine1 ??
-                                                        "",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ],
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.5,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                searchStoreUserController.storeAddresses[index].store?.storeName ?? "",
+                                                style: const TextStyle(
+                                                    fontSize: 17.0, color: AppColors.black, fontWeight: FontWeight.w600),
                                               ),
-                                            ),
-                                            height4SizedBox,
-                                            Text(
-                                                searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .store!
-                                                        .storeTimings!
-                                                        .isNotEmpty
-                                                    ? searchStoreUserController
-                                                                .storeAddresses[
-                                                                    index]
-                                                                .store
-                                                                ?.storeTimings
-                                                                ?.first
-                                                                .is24HoursActive ==
-                                                            false
-                                                        ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                            "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                        : StringConstants
-                                                            .storeHoursText
-                                                    : StringConstants
-                                                        .storeHoursText,
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ],
+                                              height4SizedBox,
+                                              Visibility(
+                                                visible: searchStoreUserController
+                                                    .storeAddresses[index].store!.storeTimings!.isNotEmpty,
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/loc.png", scale: 3.2,
+                                                    ),
+                                                    width4SizedBox,
+                                                    Expanded(
+                                                      child: Text(
+                                                        searchStoreUserController.storeAddresses[index].addressLine1 ?? "",
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                        softWrap: false,
+                                                          style: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: AppColors.blacklight,
+                                                            fontWeight: FontWeight.w500),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              height4SizedBox,
+                                              Text(
+                                                  searchStoreUserController.storeAddresses[index]
+                                                          .store!.storeTimings!.isNotEmpty
+                                                      ? searchStoreUserController
+                                                                  .storeAddresses[index].store?.storeTimings?.first.is24HoursActive == false
+                                                          ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                              "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                          : StringConstants.storeHoursText : StringConstants.storeHoursText,
+                                                  style: TextStyle(
+                                                      fontSize: 14.0, color: AppColors.blacklight,
+                                                      fontWeight: FontWeight.w500)),
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .storeAddresses[index]
-                                                    .store
-                                                    ?.isFavouriteStore ==
-                                                true
+                                        searchStoreUserController.storeAddresses[index].store?.isFavouriteStore == true
                                             ? InkWell(
-                                                onTap: () {
-                                                  searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
-                                                          searchStoreUserController
-                                                              .storeAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
-                                                },
-                                                child: Image.asset(
-                                                  "assets/liked.png",
-                                                  scale: 3.2,
-                                                ),
-                                              )
+                                          onTap: () {
+                                            searchStoreUserController
+                                                .apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
+                                          },
+                                          child: Image.asset(
+                                            "assets/liked.png",
+                                            scale: 3.2,
+                                          ),
+                                        )
                                             : InkWell(
-                                                onTap: () {
-                                                  searchStoreUserController
-                                                      .apiCreateFavouriteStore(
-                                                          searchStoreUserController
-                                                              .storeAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
-                                                },
-                                                child: Image.asset(
-                                                  "assets/fav.png",
-                                                  scale: 3.2,
-                                                ),
-                                              ),
+                                          onTap: () {
+                                            searchStoreUserController
+                                                .apiCreateFavouriteStore(
+                                                searchStoreUserController
+                                                    .storeAddresses[
+                                                index]
+                                                    .store
+                                                    ?.storeId);
+                                          },
+                                          child: Image.asset(
+                                            "assets/fav.png",
+                                            scale: 3.2,
+                                          ),
+                                        ),
                                         width10SizedBox,
                                         Image.asset(
                                           "assets/info.png",
@@ -248,6 +215,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         )
                                       ],
                                     )
+
                                   ],
                                 ),
                                 SizedBox(
@@ -359,8 +327,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                         } else if (searchStoreUserController.isLoading.value) {
                           Timer(const Duration(milliseconds: 10), () {
                             searchStoreUserController.scrollController.jumpTo(
-                                searchStoreUserController
-                                    .scrollController.position.maxScrollExtent);
+                                searchStoreUserController.scrollController.position.maxScrollExtent);
                           });
                           return _loadingIndicator();
                         } else {

@@ -28,6 +28,7 @@ class AccountController extends GetxController {
   RxBool isInboxMessagesNotify = false.obs;
   RxBool isTippingNotify = false.obs;
   RxBool autoValidate = false.obs;
+  RxBool isFromCart = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -59,6 +60,7 @@ class AccountController extends GetxController {
   void onInit() {
     super.onInit();
     //getDetail();
+    isFromCart.value = Get.arguments["isFromCart"] ?? false;
     apiGetUserDetailApi();
     Future.delayed(const Duration(milliseconds: 200), () {});
   }
@@ -158,7 +160,8 @@ class AccountController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.clear();
         countriesList.addAll(
@@ -200,7 +203,8 @@ class AccountController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
@@ -260,9 +264,9 @@ class AccountController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await Get.offAll(BottomNavigation());
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
@@ -273,6 +277,13 @@ class AccountController extends GetxController {
         postalCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+        if (isFromCart.value) {
+          Get.back();
+          Get.back();
+          Get.back();
+        } else {
+          await Get.offAll(BottomNavigation());
+        }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
