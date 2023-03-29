@@ -241,7 +241,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                 .dynamicUrl
                                                                 .toString())
                                                         : const AssetImage(
-                                                            "assets/userAccount.png",
+                                                            "assets/nopicfound.png",
                                                           ) as ImageProvider,
                                                 backgroundColor:
                                                     Colors.transparent,

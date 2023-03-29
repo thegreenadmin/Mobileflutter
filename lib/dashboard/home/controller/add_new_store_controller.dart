@@ -298,14 +298,11 @@ class AddNewStoreController extends GetxController {
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",
-        "city": townOrCityTextController.text.trim()
+        "city": townOrCityTextController.text.trim(),
+        "postal_code": zipCodeTextController.text.trim()
       },
       "is_24_hours_active": is247Time.value,
-      "store_timings": is247Time.value == true
-          ? [
-              // {"is_24_hours_active": is247Time.value, "day_of_week": "", "opening_time": "", "closing_time": ""}
-            ]
-          : storeTimmingList,
+      "store_timings": is247Time.value == true ? [] : storeTimmingList,
       "store_delivery_services": deliveryServicesList
     };
     Map<String, String> headers = {
@@ -356,7 +353,7 @@ class AddNewStoreController extends GetxController {
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     debugPrint(
-        "GET deliveryServiceList  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
+        "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -369,7 +366,7 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
+      debugPrint("GET DELIVERY LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);

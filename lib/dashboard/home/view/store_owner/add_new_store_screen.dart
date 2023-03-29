@@ -696,12 +696,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         controller:
                             addNewStoreController.addressLine2TextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAddressText;
-                          }
-                          return null;
-                        },
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine2Text,
                           hintStyle: const TextStyle(

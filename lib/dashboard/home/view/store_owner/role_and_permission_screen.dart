@@ -145,76 +145,127 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                     : ListView.builder(
                         itemCount: addNewRoleController.storeRoleList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {},
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  )),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    addNewRoleController
-                                            .storeRoleList[index].roleName ??
-                                        "",
-                                    style: const TextStyle(
-                                        fontSize: 16.0,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  height4SizedBox,
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          addNewRoleController.roleId.value =
-                                              addNewRoleController
-                                                  .storeRoleList[index].roleId
-                                                  .toString();
-                                          addNewRoleController.apiDeleteRole();
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Image.asset(
-                                            "assets/deleteicon.png",
-                                            scale: 2.8,
-                                          ),
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 20),
+                            decoration: const BoxDecoration(
+                                color: AppColors.greylight,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                )),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  addNewRoleController
+                                          .storeRoleList[index].roleName ??
+                                      "",
+                                  style: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                height4SizedBox,
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        return await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                StringConstants.alertText,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.black,
+                                                    fontSize: 20),
+                                              ),
+                                              content: Text(
+                                                  AlertStringConstants
+                                                      .areYouSureText,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: AppColors.black,
+                                                      fontSize: 22)),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          AppColors.primary,
+                                                    ),
+                                                    onPressed: () {
+                                                      Get.back();
+                                                      addNewRoleController
+                                                              .roleId.value =
+                                                          addNewRoleController
+                                                              .storeRoleList[
+                                                                  index]
+                                                              .roleId
+                                                              .toString();
+                                                      addNewRoleController
+                                                          .apiDeleteRole();
+                                                    },
+                                                    child: Text(StringConstants
+                                                        .deleteText)),
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        AppColors.primary,
+                                                  ),
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: Text(StringConstants
+                                                      .cancelText),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        // addNewRoleController.roleId.value =
+                                        //     addNewRoleController
+                                        //         .storeRoleList[index].roleId
+                                        //         .toString();
+                                        // addNewRoleController.apiDeleteRole();
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Image.asset(
+                                          "assets/deleteicon.png",
+                                          scale: 2.8,
                                         ),
                                       ),
-                                      width12SizedBox,
-                                      InkWell(
-                                        onTap: () async {
-                                          addNewRoleController.roleId.value =
-                                              addNewRoleController
-                                                  .storeRoleList[index].roleId
-                                                  .toString();
-                                          await addNewRoleController
-                                              .apiGetStoreRoleDetail();
-                                          Get.to(const RoleUpdateScreen())!
-                                              .then((value) =>
-                                                  addNewRoleController
-                                                      .apiGetStoreRole());
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Image.asset(
-                                            "assets/pencil.png",
-                                            scale: 2.8,
-                                          ),
+                                    ),
+                                    width12SizedBox,
+                                    InkWell(
+                                      onTap: () async {
+                                        addNewRoleController.roleId.value =
+                                            addNewRoleController
+                                                .storeRoleList[index].roleId
+                                                .toString();
+                                        await addNewRoleController
+                                            .apiGetStoreRoleDetail();
+                                        Get.to(const RoleUpdateScreen())!.then(
+                                            (value) => addNewRoleController
+                                                .apiGetStoreRole());
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Image.asset(
+                                          "assets/pencil.png",
+                                          scale: 2.8,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           );
                         })),

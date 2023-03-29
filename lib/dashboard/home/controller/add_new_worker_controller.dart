@@ -151,7 +151,7 @@ class AddNewWorkerController extends GetxController {
       }
     }
     addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("addWorkerRequest ***${addWorkerRequest.toJson()}*");
+    debugPrint("ADD WORKER BODY ***${addWorkerRequest.toJson()}*");
 
     UserProvider()
         .postWithHeadersApi(
@@ -191,11 +191,13 @@ class AddNewWorkerController extends GetxController {
     editWorkerRequest.storeId = int.parse(storeId.value);
     editWorkerRequest.storeUserId = int.parse(workerId.value);
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
-    StoreUserRole? storeUserRole = StoreUserRole();
-    storeUserRole.roleId = int.parse(roleId.value);
-    storeUserRole.storeUserRoleId =
-        storeUserRoleId.value != "" ? int.parse(storeUserRoleId.value) : null;
-    editWorkerRequest.storeUserRole = storeUserRole;
+    editWorkerRequest.roleId =
+        roleId.value != "" ? int.parse(roleId.value) : null;
+    //StoreUserRole? storeUserRole = StoreUserRole();
+    //storeUserRole.roleId = roleId.value != "" ? int.parse(roleId.value) : null;
+    // storeUserRole.storeUserRoleId =
+    //     storeUserRoleId.value != "" ? int.parse(storeUserRoleId.value) : null;
+    // editWorkerRequest.storeUserRole = storeUserRole;
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
         workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
@@ -276,7 +278,7 @@ class AddNewWorkerController extends GetxController {
       }
     }
     editWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("EDIT Request ***${editWorkerRequest.toJson()}*");
+    debugPrint("EDIT WORKER BOSY ***${editWorkerRequest.toJson()}");
 
     UserProvider()
         .putWithHeadersApi(
@@ -285,7 +287,7 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("EDIT RESPONSE *******${value!.body}");
+      debugPrint("EDIT WORKER RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
         resetForm();
@@ -505,7 +507,7 @@ class AddNewWorkerController extends GetxController {
     workerList.clear();
     isLoading.value = true;
     debugPrint(
-        "apiGetWorkerList **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
+        "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -517,7 +519,7 @@ class AddNewWorkerController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("apiGetWorkerList RESPONSE *******${value?.body}");
+      debugPrint("WORKER LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ?? [];
@@ -536,7 +538,7 @@ class AddNewWorkerController extends GetxController {
     workerList.clear();
     isLoading.value = true;
     debugPrint(
-        "apiGetWorkerList **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
+        "API ROLE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -593,7 +595,8 @@ class AddNewWorkerController extends GetxController {
             workerDetailResponse?.data?.storeUser?.user?.phone ?? '';
         phoneNumber.value = mobileNoTextController.text.trim();
         countryCode.value =
-            workerDetailResponse?.data?.storeUser?.user?.phoneCode ?? '';
+            workerDetailResponse!.data!.storeUser!.user!.phoneCode!.trim();
+        print("COUNTRY CODE-----------" + countryCode.value.toString());
         userImageDynamicLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
                 "";

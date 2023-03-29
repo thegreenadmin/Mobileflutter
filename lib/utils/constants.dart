@@ -78,6 +78,7 @@ class StringConstants {
   static String daysText = "Days";
   static String deliveryMethodsText = "Delivery Methods";
   static String discountText = "Discount:";
+  static String deleteText = "Delete";
 
   //E
 
@@ -160,12 +161,14 @@ class StringConstants {
   static String inboxMessages = "Inbox Messages";
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
-  static String noFavFoundText = "No favourite\nproduct found";
+  static String noOrdersFoundText = "No orders found";
+  static String noFavouriteStoresFoundText = "No favourite stores found";
+  static String noPreviousStoresFoundText = "No previous stores found";
   static String noStoresFoundText = "No stores found";
   static String noWorkersFoundText = "No workers found";
   static String noNearbyStoreFoundText = "No nearby store found";
   static String noCategoriesFoundText = "No Categories found";
-  static String noPermissionsFoundText = " No permissions found";
+  static String noPermissionsFoundText = "No permissions found";
   static String noRolesFoundText = "No Roles found";
   static String noOffersFoundText = "No Offers found";
   static String noText = "No";
@@ -315,6 +318,7 @@ class StringConstants {
   static String welcomeToText = "Welcome to";
   static String weightText = "Weight";
   static String workingDaysText = "Working Days";
+  static String welcomeToGreenMallText = "Welcome to thegreenmall";
 
   //X
 
@@ -339,7 +343,7 @@ class BottomNavStringConstants {
 //Alert Messages
 class AlertStringConstants {
   //A
-  static String areYouSureText = "Are you sure you want to delete this?";
+  static String areYouSureText = "Are you sure you want to delete this item?";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";

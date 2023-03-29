@@ -50,7 +50,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                             height4SizedBox,
                             Center(
                               child: Text(
-                                StringConstants.noNearbyStoreFoundText,
+                                StringConstants.noFavouriteStoresFoundText,
                                 style: const TextStyle(
                                     fontStyle: FontStyle.italic, fontSize: 16),
                               ),
@@ -176,15 +176,32 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               ),
                                             ),
                                             height4SizedBox,
-                                            Text(searchStoreUserController
-                                                .storeAddresses.isNotEmpty?
+                                            Text(
                                                 searchStoreUserController
-                                                    .storeAddresses[index].store!
-                                                    .storeTimings!.isNotEmpty ? searchStoreUserController.storeAddresses[index].store
-                                                    ?.storeTimings?.first.is24HoursActive == false
-                                                    ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                    "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                    : StringConstants.storeHoursText : StringConstants.storeHoursText: StringConstants.storeHoursText,
+                                                        .storeAddresses
+                                                        .isNotEmpty
+                                                    ? searchStoreUserController
+                                                            .storeAddresses[
+                                                                index]
+                                                            .store!
+                                                            .storeTimings!
+                                                            .isNotEmpty
+                                                        ? searchStoreUserController
+                                                                    .storeAddresses[
+                                                                        index]
+                                                                    .store
+                                                                    ?.storeTimings
+                                                                    ?.first
+                                                                    .is24HoursActive ==
+                                                                false
+                                                            ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                            : StringConstants
+                                                                .storeHoursText
+                                                        : StringConstants
+                                                            .storeHoursText
+                                                    : StringConstants
+                                                        .storeHoursText,
                                                 style: TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.blacklight,
@@ -196,12 +213,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController.favStoreAddresses[index].store?.isFavouriteStore == true
+                                        searchStoreUserController
+                                                    .favStoreAddresses[index]
+                                                    .store
+                                                    ?.isFavouriteStore ==
+                                                true
                                             ? InkWell(
                                                 onTap: () {
                                                   searchStoreUserController
                                                       .apiRemoveFavouriteStore(
-                                                          searchStoreUserController.favStoreAddresses[index].store?.storeId);
+                                                          searchStoreUserController
+                                                              .favStoreAddresses[
+                                                                  index]
+                                                              .store
+                                                              ?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   "assets/liked.png",
@@ -235,37 +260,70 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                     children: [
                                       Expanded(
                                         child: ListView.separated(
-                                            separatorBuilder: (BuildContext context, int index) {
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                    int index) {
                                               return width10SizedBox;
                                             },
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?.length??0,
+                                            itemCount: searchStoreUserController
+                                                    .storeAddresses[index]
+                                                    .store
+                                                    ?.storeDeliveryServices
+                                                    ?.length ??
+                                                0,
                                             itemBuilder: (_, i) {
-                                              return   Row(
+                                              return Row(
                                                 children: [
-                                                  searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceId=="1"?
-                                                  Image.asset(
-                                                    "assets/inStore.png",
-                                                    scale: 2.5,
-                                                  ): searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceId=="2"?
-                                                  Image.asset(
-                                                    "assets/delivery.png",
-                                                    scale: 2.7,
-                                                  ):Image.asset(
-                                                    "assets/curb.png", scale: 2.1,),
+                                                  searchStoreUserController
+                                                              .storeAddresses[
+                                                                  index]
+                                                              .store
+                                                              ?.storeDeliveryServices?[
+                                                                  i]
+                                                              .deliveryServiceId ==
+                                                          "1"
+                                                      ? Image.asset(
+                                                          "assets/inStore.png",
+                                                          scale: 2.5,
+                                                        )
+                                                      : searchStoreUserController
+                                                                  .storeAddresses[
+                                                                      index]
+                                                                  .store
+                                                                  ?.storeDeliveryServices?[
+                                                                      i]
+                                                                  .deliveryServiceId ==
+                                                              "2"
+                                                          ? Image.asset(
+                                                              "assets/delivery.png",
+                                                              scale: 2.7,
+                                                            )
+                                                          : Image.asset(
+                                                              "assets/curb.png",
+                                                              scale: 2.1,
+                                                            ),
                                                   width3SizedBox,
                                                   Text(
-                                                    searchStoreUserController.storeAddresses[index].store?.storeDeliveryServices?[i].deliveryServiceName??"",
+                                                    searchStoreUserController
+                                                            .storeAddresses[
+                                                                index]
+                                                            .store
+                                                            ?.storeDeliveryServices?[
+                                                                i]
+                                                            .deliveryServiceName ??
+                                                        "",
                                                     style: const TextStyle(
                                                         fontSize: 12.0,
-                                                        fontWeight: FontWeight.w500),
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
-
                                                 ],
                                               );
                                             }),
-                                      ),width10SizedBox,
+                                      ),
+                                      width10SizedBox,
                                       RawMaterialButton(
                                         elevation: 0,
                                         onPressed: () {},
@@ -277,7 +335,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               width: 1.0,
                                               color: AppColors.primary),
                                           borderRadius:
-                                          BorderRadius.circular(28.0),
+                                              BorderRadius.circular(28.0),
                                         ),
                                         fillColor: AppColors.primary,
                                         child: Text(

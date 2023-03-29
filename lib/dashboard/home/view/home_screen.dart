@@ -214,72 +214,132 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: WidgetConstants.screenHeight,
+          //height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Obx(() => homeController.role!.value == Role.customerRoleText
-                ? Column(children: [
-                    homeController.userCrouselImgList.isEmpty
-                        ? height0SizedBox
-                        : CarouselSlider(
-                            items: homeController.userCrouselImgList
-                                .take(5)
-                                .map((item) => Center(
-                                        child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      child: Image.network(item,
-                                          fit: BoxFit.cover,
-                                          width: WidgetConstants.screenWidth),
-                                    )))
-                                .toList(),
-                            carouselController: _controller,
-                            options: CarouselOptions(
-                                enlargeStrategy:
-                                    CenterPageEnlargeStrategy.scale,
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                viewportFraction: 1.2,
-                                enlargeCenterPage: false,
-                                autoPlay: true,
-                                aspectRatio: 2.0,
-                                onPageChanged: (index, reason) {
-                                  setState(() {
-                                    _current = index;
-                                  });
-                                }),
-                          ),
-                    height5SizedBox,
-                    Obx(() => homeController.userCrouselImgList.isEmpty
-                        ? height0SizedBox
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: homeController.userCrouselImgList
-                                .asMap()
-                                .entries
-                                .map((entry) {
-                              return GestureDetector(
-                                onTap: () =>
-                                    _controller.animateToPage(entry.key),
-                                child: Container(
-                                  width: _current == entry.key ? 25 : 10,
-                                  height: 5.0,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 4.0),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      shape: BoxShape.rectangle,
-                                      color: _current == entry.key
-                                          ? AppColors.primary
-                                          : AppColors.grey),
-                                ),
-                              );
-                            }).toList(),
-                          ))
-                  ])
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                        homeController.isLoading!.value == true
+                            ? height0SizedBox
+                            : homeController.userCrouselImgList.isEmpty
+                                ? SizedBox(
+                                    height: homeController
+                                            .featuredUserProductList.isEmpty
+                                        ? WidgetConstants.screenHeight
+                                        : 280,
+                                    child: Center(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              "assets/greenmall420.png"),
+                                          Text(
+                                            StringConstants
+                                                .welcomeToGreenMallText,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.primary),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : CarouselSlider(
+                                    items: homeController.userCrouselImgList
+                                        .take(5)
+                                        .map((item) => Center(
+                                                child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              child: Image.network(item,
+                                                  fit: BoxFit.cover,
+                                                  width: WidgetConstants
+                                                      .screenWidth),
+                                            )))
+                                        .toList(),
+                                    carouselController: _controller,
+                                    options: CarouselOptions(
+                                        enlargeStrategy:
+                                            CenterPageEnlargeStrategy.scale,
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        viewportFraction: 1.2,
+                                        enlargeCenterPage: false,
+                                        autoPlay: true,
+                                        aspectRatio: 2.0,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _current = index;
+                                          });
+                                        }),
+                                  ),
+                        height5SizedBox,
+                        Obx(() => homeController.userCrouselImgList.isEmpty
+                            ? height0SizedBox
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: homeController.userCrouselImgList
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        _controller.animateToPage(entry.key),
+                                    child: Container(
+                                      width: _current == entry.key ? 25 : 10,
+                                      height: 5.0,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 4.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          shape: BoxShape.rectangle,
+                                          color: _current == entry.key
+                                              ? AppColors.primary
+                                              : AppColors.grey),
+                                    ),
+                                  );
+                                }).toList(),
+                              ))
+                      ])
                 : Column(
                     children: [
                       homeController.ownerCrouselImgList.isEmpty
-                          ? height0SizedBox
+                          ? homeController.isLoading!.value == true
+                              ? height0SizedBox
+                              : SizedBox(
+                                  height: homeController
+                                          .ownerFeatureProductList.isEmpty
+                                      ? WidgetConstants.screenHeight
+                                      : 280,
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset("assets/greenmall420.png"),
+                                        Text(
+                                          StringConstants
+                                              .welcomeToGreenMallText,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontStyle: FontStyle.italic,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.primary),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
                           : CarouselSlider(
                               items: homeController.ownerCrouselImgList
                                   .map((item) => Center(
@@ -336,6 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                     ],
                   )),
+            height5SizedBox,
             Obx(
               () => homeController.role!.value == Role.customerRoleText
                   ? homeController.featuredUserProductList.isEmpty

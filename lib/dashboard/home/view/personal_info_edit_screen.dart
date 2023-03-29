@@ -314,12 +314,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                         controller: accountController.addressLine2TextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAddressText;
-                          }
-                          return null;
-                        },
+                       
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine2Text,
                           hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),

@@ -138,7 +138,7 @@ class HomeController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
@@ -250,7 +250,7 @@ class HomeController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("FEATURED PRODUCT RESPONSE *******${value?.body}");
@@ -339,7 +339,7 @@ class HomeController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().shopHomeFeaturedProducts,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER FEATURED PRODUCT RESPONSE *******${value?.body}");

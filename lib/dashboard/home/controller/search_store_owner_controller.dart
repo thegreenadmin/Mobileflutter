@@ -439,7 +439,7 @@ class SearchStoreOwnerController extends GetxController {
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     debugPrint(
-        "GET deliveryServiceList  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
+        "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -452,7 +452,7 @@ class SearchStoreOwnerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET deliveryServiceList  RESPONSE *******${value!.body}");
+      debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);

@@ -269,12 +269,55 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           direction: DismissDirection.endToStart,
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
-                          onDismissed: (direction) {
-                            manageStoreController.categoryId.value =
-                                manageStoreController
-                                    .categoriesList[index].categoryId
-                                    .toString();
-                            manageStoreController.apiDeleteCategory();
+                          confirmDismiss: (DismissDirection direction) async {
+                            return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    StringConstants.alertText,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.black,
+                                        fontSize: 20),
+                                  ),
+                                  content: Text(
+                                      AlertStringConstants.areYouSureText,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.black,
+                                          fontSize: 22)),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                        ),
+                                        onPressed: () {
+                                          Get.back();
+                                          manageStoreController
+                                                  .categoryId.value =
+                                              manageStoreController
+                                                  .categoriesList[index]
+                                                  .categoryId
+                                                  .toString();
+                                          manageStoreController
+                                              .apiDeleteCategory();
+                                        },
+                                        child:
+                                            Text(StringConstants.deleteText)),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary,
+                                      ),
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: Text(StringConstants.cancelText),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           child: InkWell(
                             onTap: () {

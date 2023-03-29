@@ -193,13 +193,63 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                             direction: DismissDirection.endToStart,
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
-                            onDismissed: (direction) {
-                              manageStoreController.productId.value =
-                                  manageStoreController
-                                      .storeProductList[index].productId
-                                      .toString();
-                              manageStoreController.apiDeleteProduct();
+                            confirmDismiss: (DismissDirection direction) async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      StringConstants.alertText,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black,
+                                          fontSize: 20),
+                                    ),
+                                    content: Text(
+                                        AlertStringConstants.areYouSureText,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.black,
+                                            fontSize: 22)),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppColors.primary,
+                                          ),
+                                          onPressed: () {
+                                            Get.back();
+                                            manageStoreController
+                                                    .productId.value =
+                                                manageStoreController
+                                                    .storeProductList[index]
+                                                    .productId
+                                                    .toString();
+                                            manageStoreController
+                                                .apiDeleteProduct();
+                                          },
+                                          child:
+                                              Text(StringConstants.deleteText)),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                        ),
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: Text(StringConstants.cancelText),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
+                            // onDismissed: (direction) {
+                            //   manageStoreController.productId.value =
+                            //       manageStoreController
+                            //           .storeProductList[index].productId
+                            //           .toString();
+                            //   manageStoreController.apiDeleteProduct();
+                            // },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),

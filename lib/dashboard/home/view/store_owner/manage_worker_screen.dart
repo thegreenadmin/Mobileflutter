@@ -184,13 +184,64 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                             direction: DismissDirection.endToStart,
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
-                            onDismissed: (direction) {
-                              addNewWorkerController.workerId.value =
-                                  addNewWorkerController
-                                      .workerList[index].storeUserId
-                                      .toString();
-                              addNewWorkerController.apiDeleteWorker();
+
+                            confirmDismiss: (DismissDirection direction) async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      StringConstants.alertText,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black,
+                                          fontSize: 20),
+                                    ),
+                                    content: Text(
+                                        AlertStringConstants.areYouSureText,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.black,
+                                            fontSize: 22)),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppColors.primary,
+                                          ),
+                                          onPressed: () {
+                                            Get.back();
+                                            addNewWorkerController
+                                                    .workerId.value =
+                                                addNewWorkerController
+                                                    .workerList[index]
+                                                    .storeUserId
+                                                    .toString();
+                                            addNewWorkerController
+                                                .apiDeleteWorker();
+                                          },
+                                          child:
+                                              Text(StringConstants.deleteText)),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                        ),
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: Text(StringConstants.cancelText),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
+                            // onDismissed: (direction) {
+                            //   addNewWorkerController.workerId.value =
+                            //       addNewWorkerController
+                            //           .workerList[index].storeUserId
+                            //           .toString();
+                            //   addNewWorkerController.apiDeleteWorker();
+                            // },
                             child: InkWell(
                               onTap: () async {
                                 addNewWorkerController.workerId.value =
