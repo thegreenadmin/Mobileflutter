@@ -458,7 +458,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  storeHomeMainController.apiAddToCart(context);
+                  if(storeHomeMainController.quantity.value!=0){
+                    storeHomeMainController.apiAddToCart(context);
+                  }else{
+                    Utility.showToast("Please add at least one item in cart");
+                  }
+
                 },
                 height: 50,
                 text: StringConstants.addToOrderText,

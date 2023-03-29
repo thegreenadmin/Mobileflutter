@@ -21,7 +21,6 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
       final res = await ioClient.get(Uri.parse(url), headers: headers);
-      // final res = await get(url, headers: headers);
       if (showLoading) Get.back();
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {

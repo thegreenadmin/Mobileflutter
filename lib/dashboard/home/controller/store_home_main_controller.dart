@@ -55,6 +55,8 @@ class StoreHomeMainController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
   RxInt quantity = 0.obs;
+  RxString storeDeliveryServiceId = "0".obs;
+  RxString userAddressId = "0".obs;
   RxString productId = "".obs;
 
   RxBool isLoading = false.obs;
@@ -142,7 +144,7 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
@@ -167,7 +169,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetCartListApi() async {
     isLoading.value = true;
     debugPrint("GET Cart List URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -175,12 +177,11 @@ class StoreHomeMainController extends GetxController {
     };
 
     debugPrint("TOKEN ********** $headers");
+
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&is_featured_category=false",
-            headers,
-            showLoading: true)
-        .then((value) async {
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
+            headers, showLoading: true).then((value) async {
       isLoading.value = false;
       debugPrint("GET  Cart List  *******${value?.body}");
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
@@ -212,7 +213,7 @@ class StoreHomeMainController extends GetxController {
     Map<String, dynamic> data = {
       "product_id": int.parse(
           productDetailResponse.value.data?.product?.productId ?? "0"),
-      "quantity": quantity.value
+      "items_count": quantity.value
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -252,7 +253,7 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, dynamic> data = {
       "cart_item_id": cartItemId,
-      "quantity": quantity
+      "items_count": quantity
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -562,7 +563,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");

@@ -27,6 +27,7 @@ class AccountController extends GetxController {
   RxBool isInboxMessagesNotify = false.obs;
   RxBool isTippingNotify = false.obs;
   RxBool autoValidate = false.obs;
+  RxBool isFromCart = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -58,6 +59,7 @@ class AccountController extends GetxController {
   void onInit() {
     super.onInit();
     //getDetail();
+    isFromCart.value = Get.arguments["isFromCart"]??false;
     apiGetUserDetailApi();
     Future.delayed(const Duration(milliseconds: 200), () {});
   }
@@ -260,7 +262,6 @@ class AccountController extends GetxController {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == 201 || value.body["status"] == 200) {
         Utility.showToast(value.body['message']);
-        await Get.offAll(BottomNavigation());
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
@@ -271,6 +272,13 @@ class AccountController extends GetxController {
         postalCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+        if(isFromCart.value){
+           Get.back();
+           Get.back();
+           Get.back();
+        }else{ await Get.offAll(BottomNavigation());}
+
+
       } else if (value.body["status"] == 403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

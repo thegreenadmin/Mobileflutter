@@ -297,40 +297,42 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   ),
                                 ),
                                 height5SizedBox,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      storeHomeMainController
-                                              .featureProductList[i]
-                                              .productName ??
-                                          "",
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    height4SizedBox,
-                                    Text(
-                                      storeHomeMainController
-                                              .featureProductList[i]
-                                              .description ??
-                                          "",
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          color: AppColors.blacklight,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    height4SizedBox,
-                                    Text(
-                                      "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        storeHomeMainController
+                                                .featureProductList[i]
+                                                .productName ??
+                                            "",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      height4SizedBox,
+                                      Text(
+                                        storeHomeMainController
+                                                .featureProductList[i].description ??
+                                            "",
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          overflow: TextOverflow.visible,
+                                            color: AppColors.blacklight,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      height4SizedBox,
+                                      Text(
+                                        "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

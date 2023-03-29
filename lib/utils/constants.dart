@@ -20,6 +20,8 @@ class StringConstants {
   static String appWalletText = "App Wallet";
   static String appTermsAndPoliciesText = "Application Terms & Policies";
   static String addressText = "Address";
+  static String addText = "Add";
+  static String addAddressText = "Add Address";
   static String addressLine1Text = "Address Line1";
   static String addressLine2Text = "Address Line2";
   static String aboutProductText = "About Product";
@@ -274,6 +276,7 @@ class StringConstants {
   static String transactionHistoryText = "Transaction History";
   static String townOrCityText = "Town or City";
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
+  static String totalText = "Total";
   static String taxText = "Tax";
   static String okText = "Ok";
   static String theImageMustBeAtleaseText =

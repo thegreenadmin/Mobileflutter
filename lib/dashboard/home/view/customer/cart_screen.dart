@@ -7,6 +7,8 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../account_screen.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
@@ -176,16 +178,16 @@ class _CartScreenState extends State<CartScreen> {
                                                   children: [
                                                     InkWell(
                                                         onTap: (){
-                                                          storeHomeMainController.cartItems[i].quantity!=0?
-                                                          storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].quantity!-1):null;
+                                                          storeHomeMainController.cartItems[i].itemsCount!=0?
+                                                          storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].itemsCount!-1):null;
                                                         },
                                                         child: Image.asset(
                                                           "assets/subtract.png",
                                                           scale: 3,
                                                         )),
                                                     width6SizedBox,
-                                                    Text(storeHomeMainController.cartItems[i].quantity.toString().length <2?
-                                                      storeHomeMainController.cartItems[i].quantity.toString().padLeft(2, '0'):storeHomeMainController.cartItems[i].quantity.toString(),
+                                                    Text(storeHomeMainController.cartItems[i].itemsCount.toString().length <2?
+                                                      storeHomeMainController.cartItems[i].itemsCount.toString().padLeft(2, '0'):storeHomeMainController.cartItems[i].itemsCount.toString(),
                                                       style: const TextStyle(
                                                           fontWeight: FontWeight.w600,
                                                           fontSize: 14,
@@ -194,7 +196,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     width6SizedBox,
                                                     InkWell(
                                                       onTap: (){
-                                                        storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].quantity!+1);
+                                                        storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].itemsCount!+1);
                                                       },
                                                       child: Image.asset(
                                                         "assets/add.png",
@@ -236,22 +238,27 @@ class _CartScreenState extends State<CartScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?.length??0,
                               itemBuilder: (_, i) {
-                                return   CustomButton(
+                                return  Obx(()=> CustomButton(
                                   width: WidgetConstants.screenWidth * 0.3,
                                   border: Border.all(color: AppColors.primary),
-                                  gradient: const LinearGradient(
+                                  gradient: LinearGradient(
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
-                                    colors: [AppColors.white, AppColors.white],
+                                    colors:
+                                    storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
+                                        ? [AppColors.primary, AppColors.primary]:
+                                    [AppColors.white, AppColors.white],
                                   ),
-                                  onTap: () {
-
+                                  onTap: () async{
+                                    storeHomeMainController.storeDeliveryServiceId.value =  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()??"0";
+                                    await storeHomeMainController.apiGetCartListApi();
                                   },
                                   height: 45,
                                   text:  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].deliveryServiceId=="1"?
                                   StringConstants.inStoreText:storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].deliveryServiceId=="2"?
                                   StringConstants.deliveryText: StringConstants.curbSideText,
-                                  textColor: AppColors.primary,
+                                  textColor:  storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
+                                      ? AppColors.white:AppColors.primary,
                                   borderRadius: 12,
                                   fontWeight: FontWeight.w500,
                                   iconL: true,
@@ -260,15 +267,20 @@ class _CartScreenState extends State<CartScreen> {
                                   Image.asset(
                                     "assets/inStore.png",
                                     scale: 2.8,
+                                    color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
+                                        ? AppColors.white:AppColors.primary,
                                   ):storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].deliveryServiceId=="2"?
                                   Image.asset(
                                     "assets/delivery.png",
-                                    scale: 2.8,
-                                  ): Image.asset(
+                                    scale: 2.8,  color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
+                                      ? AppColors.white:AppColors.primary,
+                                  ):
+                                  Image.asset(
                                     "assets/curb.png",
-                                    scale: 2.8,
+                                    scale: 2.8,  color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
+                                      ? AppColors.white:AppColors.primary,
                                   ),
-                                );
+                                ));
                               }),
                         ),
                         height20SizedBox,
@@ -282,7 +294,7 @@ class _CartScreenState extends State<CartScreen> {
                         height20SizedBox,
                         Container(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: const BoxDecoration(
                                 color: AppColors.greylight,
                                 borderRadius: BorderRadius.all(
@@ -291,19 +303,17 @@ class _CartScreenState extends State<CartScreen> {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                                  Row(
                                         children: [
                                           Image.asset(
                                             "assets/loc.png",
                                             scale: 2.5,
                                           ),
                                           width10SizedBox,
-                                          Text(
-                                           "${storeHomeMainController.selectedUserAddress.value.addressLine1},${storeHomeMainController.selectedUserAddress.value.city},"
-                                               "${storeHomeMainController.selectedUserAddress.value.state?.stateName},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName},",
+                                          Text(storeHomeMainController.selectedUserAddress.value.addressLine1==null  && storeHomeMainController.selectedUserAddress.value.city ==null?
+                                          StringConstants.addAddressText:
+                                           "${storeHomeMainController.selectedUserAddress.value.addressLine1??""},${storeHomeMainController.selectedUserAddress.value.city??""},"
+                                               "${storeHomeMainController.selectedUserAddress.value.state?.stateName??""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName??""},",
                                             style: const TextStyle(
                                               overflow: TextOverflow.visible,
                                                 color: AppColors.black,
@@ -312,11 +322,12 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
                                   width10SizedBox,
                                   InkWell(
                                     onTap: () {
+                                      storeHomeMainController.selectedUserAddress.value.addressLine1==null  && storeHomeMainController.selectedUserAddress.value.city ==null?
+                                          Get.to(const AccountScreen(),arguments: ({"isFromCart": true}))
+                                          :
                                       storeHomeMainController.userAddress.isNotEmpty?
                                       storeHomeMainController.bottomSheetChangePickupLocation(context):null;
                                     },
@@ -330,6 +341,8 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                       child: Center(
                                         child: Text(
+                                          storeHomeMainController.selectedUserAddress.value.addressLine1==null  && storeHomeMainController.selectedUserAddress.value.city ==null?
+                                          StringConstants.addText:
                                           StringConstants.changeText,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w500,
@@ -372,7 +385,7 @@ class _CartScreenState extends State<CartScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                          Text(
-                                          "\$${ storeHomeMainController.cartListResponse.data?.cartTotalPrice?.toStringAsFixed(2)??"0"}",
+                                          "\$${ storeHomeMainController.cartListResponse.data?.cartSubTotal?.toStringAsFixed(2)??"0"}",
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
@@ -391,9 +404,9 @@ class _CartScreenState extends State<CartScreen> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                        const Text(
-                                          "\$40.00",
-                                          style: TextStyle(
+                                        Text(
+                                          "\$${ storeHomeMainController.cartListResponse.data?.cartTotalTax?.toStringAsFixed(2)??"0"}",
+                                          style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -411,9 +424,29 @@ class _CartScreenState extends State<CartScreen> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                        const Text(
-                                          "\$40.00",
-                                          style: TextStyle(
+                                        Text(
+                                          "\$${ storeHomeMainController.cartListResponse.data?.cartDeliveryServiceCharge?.toStringAsFixed(2)??"0"}",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    height10SizedBox,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          StringConstants.totalText,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          "\$${ storeHomeMainController.cartListResponse.data?.cartTotalPrice?.toStringAsFixed(2)??"0"}",
+                                          style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
