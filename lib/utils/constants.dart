@@ -27,7 +27,7 @@ class StringConstants {
   static String activeOffersText = "Active Offers";
   static String addOfferText = "Add Offer";
   static String activeOrderText = "Active Orders";
-  static String addANewStoreText = "Add a new Store";
+  static String addANewStoreText = "Add a new store";
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
   static String addCategoriesText = "Add Categories";

@@ -49,7 +49,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               Text(
                                 StringConstants.personalInformationText,
                                 style: const TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 20,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
                               ),
@@ -57,7 +57,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ),
                           Image.asset(
                             "assets/homeMall.png",
-                            scale: 4,
+                            scale: 5,
                           )
                         ]),
                   ],

@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-WorkerListResponse workerListResponseFromJson(String str) => WorkerListResponse.fromJson(json.decode(str));
+WorkerListResponse workerListResponseFromJson(String str) =>
+    WorkerListResponse.fromJson(json.decode(str));
 
-String workerListResponseToJson(WorkerListResponse data) => json.encode(data.toJson());
+String workerListResponseToJson(WorkerListResponse data) =>
+    json.encode(data.toJson());
 
 class WorkerListResponse {
   WorkerListResponse({
@@ -30,17 +32,18 @@ class WorkerListResponse {
         data: data ?? this.data,
       );
 
-  factory WorkerListResponse.fromJson(Map<String, dynamic> json) => WorkerListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory WorkerListResponse.fromJson(Map<String, dynamic> json) =>
+      WorkerListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -62,14 +65,19 @@ class Data {
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    totalCount: json["total_count"],
-    storeUsers: json["store_users"] == null ? [] : List<StoreUser>.from(json["store_users"]!.map((x) => StoreUser.fromJson(x))),
-  );
+        totalCount: json["total_count"],
+        storeUsers: json["store_users"] == null
+            ? []
+            : List<StoreUser>.from(
+                json["store_users"]!.map((x) => StoreUser.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_count": totalCount,
-    "store_users": storeUsers == null ? [] : List<dynamic>.from(storeUsers!.map((x) => x.toJson())),
-  };
+        "total_count": totalCount,
+        "store_users": storeUsers == null
+            ? []
+            : List<dynamic>.from(storeUsers!.map((x) => x.toJson())),
+      };
 }
 
 class StoreUser {
@@ -79,7 +87,7 @@ class StoreUser {
     this.isVerified,
     this.verifiedAt,
     this.user,
-    this.storeUserRole,
+    this.role,
     this.storeUserTimings,
   });
 
@@ -88,7 +96,7 @@ class StoreUser {
   bool? isVerified;
   DateTime? verifiedAt;
   User? user;
-  dynamic storeUserRole;
+  dynamic role;
   List<StoreUserTiming>? storeUserTimings;
 
   StoreUser copyWith({
@@ -97,7 +105,7 @@ class StoreUser {
     bool? isVerified,
     DateTime? verifiedAt,
     User? user,
-    dynamic storeUserRole,
+    String? role,
     List<StoreUserTiming>? storeUserTimings,
   }) =>
       StoreUser(
@@ -106,29 +114,36 @@ class StoreUser {
         isVerified: isVerified ?? this.isVerified,
         verifiedAt: verifiedAt ?? this.verifiedAt,
         user: user ?? this.user,
-        storeUserRole: storeUserRole ?? this.storeUserRole,
+        role: role ?? this.role,
         storeUserTimings: storeUserTimings ?? this.storeUserTimings,
       );
 
   factory StoreUser.fromJson(Map<String, dynamic> json) => StoreUser(
-    storeUserId: json["store_user_id"],
-    isStoreOwner: json["is_store_owner"],
-    isVerified: json["is_verified"],
-    verifiedAt: json["verifiedAt"] == null ? null : DateTime.parse(json["verifiedAt"]),
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    storeUserRole: json["store_user_role"],
-    storeUserTimings: json["store_user_timings"] == null ? [] : List<StoreUserTiming>.from(json["store_user_timings"]!.map((x) => StoreUserTiming.fromJson(x))),
-  );
+        storeUserId: json["store_user_id"],
+        isStoreOwner: json["is_store_owner"],
+        isVerified: json["is_verified"],
+        verifiedAt: json["verifiedAt"] == null
+            ? null
+            : DateTime.parse(json["verifiedAt"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        role: json["role"],
+        storeUserTimings: json["store_user_timings"] == null
+            ? []
+            : List<StoreUserTiming>.from(json["store_user_timings"]!
+                .map((x) => StoreUserTiming.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_user_id": storeUserId,
-    "is_store_owner": isStoreOwner,
-    "is_verified": isVerified,
-    "verifiedAt": verifiedAt?.toIso8601String(),
-    "user": user?.toJson(),
-    "store_user_role": storeUserRole,
-    "store_user_timings": storeUserTimings == null ? [] : List<dynamic>.from(storeUserTimings!.map((x) => x.toJson())),
-  };
+        "store_user_id": storeUserId,
+        "is_store_owner": isStoreOwner,
+        "is_verified": isVerified,
+        "verifiedAt": verifiedAt?.toIso8601String(),
+        "user": user?.toJson(),
+        "role": role,
+        "store_user_timings": storeUserTimings == null
+            ? []
+            : List<dynamic>.from(storeUserTimings!.map((x) => x.toJson())),
+      };
 }
 
 class StoreUserTiming {
@@ -165,23 +180,24 @@ class StoreUserTiming {
         status: status ?? this.status,
       );
 
-  factory StoreUserTiming.fromJson(Map<String, dynamic> json) => StoreUserTiming(
-    storeUserTimingId: json["store_user_timing_id"],
-    dayOfWeek: json["day_of_week"],
-    is24HrsActive: json["is_24_hrs_active"],
-    startTime: json["start_time"],
-    endTime: json["end_time"],
-    status: json["status"],
-  );
+  factory StoreUserTiming.fromJson(Map<String, dynamic> json) =>
+      StoreUserTiming(
+        storeUserTimingId: json["store_user_timing_id"],
+        dayOfWeek: json["day_of_week"],
+        is24HrsActive: json["is_24_hrs_active"],
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_user_timing_id": storeUserTimingId,
-    "day_of_week": dayOfWeek,
-    "is_24_hrs_active": is24HrsActive,
-    "start_time": startTime,
-    "end_time": endTime,
-    "status": status,
-  };
+        "store_user_timing_id": storeUserTimingId,
+        "day_of_week": dayOfWeek,
+        "is_24_hrs_active": is24HrsActive,
+        "start_time": startTime,
+        "end_time": endTime,
+        "status": status,
+      };
 }
 
 class User {
@@ -200,7 +216,7 @@ class User {
   String? phone;
   String? firstName;
   String? lastName;
-  List<dynamic>? userAddresses;
+  List<UserAddress>? userAddresses;
   Image? image;
 
   User copyWith({
@@ -209,7 +225,7 @@ class User {
     String? phone,
     String? firstName,
     String? lastName,
-    List<dynamic>? userAddresses,
+    List<UserAddress>? userAddresses,
     Image? image,
   }) =>
       User(
@@ -223,24 +239,29 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    userId: json["user_id"],
-    email: json["email"],
-    phone: json["phone"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    userAddresses: json["user_addresses"] == null ? [] : List<dynamic>.from(json["user_addresses"]!.map((x) => x)),
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-  );
+        userId: json["user_id"],
+        email: json["email"],
+        phone: json["phone"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        userAddresses: json["user_addresses"] == null
+            ? []
+            : List<UserAddress>.from(
+                json["user_addresses"]!.map((x) => UserAddress.fromJson(x))),
+        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "user_id": userId,
-    "email": email,
-    "phone": phone,
-    "first_name": firstName,
-    "last_name": lastName,
-    "user_addresses": userAddresses == null ? [] : List<dynamic>.from(userAddresses!.map((x) => x)),
-    "image": image?.toJson(),
-  };
+        "user_id": userId,
+        "email": email,
+        "phone": phone,
+        "first_name": firstName,
+        "last_name": lastName,
+        "user_addresses": userAddresses == null
+            ? []
+            : List<dynamic>.from(userAddresses!.map((x) => x.toJson())),
+        "image": image?.toJson(),
+      };
 }
 
 class Image {
@@ -262,12 +283,65 @@ class Image {
       );
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
+        orignalUrl: json["orignal_url"],
+        dynamicUrl: json["dynamic_url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
-  };
+        "orignal_url": orignalUrl,
+        "dynamic_url": dynamicUrl,
+      };
+}
+
+class UserAddress {
+  UserAddress({
+    this.userAddressId,
+    this.addressName,
+    this.addressLine1,
+    this.addressLine2,
+    this.city,
+    this.postalCode,
+  });
+
+  String? userAddressId;
+  String? addressName;
+  String? addressLine1;
+  String? addressLine2;
+  String? city;
+  String? postalCode;
+
+  UserAddress copyWith({
+    String? userAddressId,
+    String? addressName,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? postalCode,
+  }) =>
+      UserAddress(
+        userAddressId: userAddressId ?? this.userAddressId,
+        addressName: addressName ?? this.addressName,
+        addressLine1: addressLine1 ?? this.addressLine1,
+        addressLine2: addressLine2 ?? this.addressLine2,
+        city: city ?? this.city,
+        postalCode: postalCode ?? this.postalCode,
+      );
+
+  factory UserAddress.fromJson(Map<String, dynamic> json) => UserAddress(
+        userAddressId: json["user_address_id"],
+        addressName: json["address_name"],
+        addressLine1: json["address_line_1"],
+        addressLine2: json["address_line_2"],
+        city: json["city"],
+        postalCode: json["postal_code"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_address_id": userAddressId,
+        "address_name": addressName,
+        "address_line_1": addressLine1,
+        "address_line_2": addressLine2,
+        "city": city,
+        "postal_code": postalCode,
+      };
 }

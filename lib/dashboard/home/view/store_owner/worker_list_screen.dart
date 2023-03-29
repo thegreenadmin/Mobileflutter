@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/manage_worker_edit_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/edit_worker_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -9,14 +9,14 @@ import 'package:thegreenmall/utils/utility.dart';
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
 
-class ManageWorkerScreen extends StatefulWidget {
-  const ManageWorkerScreen({super.key});
+class WorkerListScreen extends StatefulWidget {
+  const WorkerListScreen({super.key});
 
   @override
-  State<ManageWorkerScreen> createState() => _ManageWorkerScreenState();
+  State<WorkerListScreen> createState() => _WorkerListScreenState();
 }
 
-class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
+class _WorkerListScreenState extends State<WorkerListScreen> {
   final AddNewWorkerController addNewWorkerController =
       Get.put(AddNewWorkerController());
 
@@ -248,7 +248,7 @@ class _ManageWorkerScreenState extends State<ManageWorkerScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                Get.to(() => const ManageWorkerEditScreen());
+                                Get.to(() => const EditWorkerScreen());
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

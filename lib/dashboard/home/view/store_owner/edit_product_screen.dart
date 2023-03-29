@@ -10,15 +10,14 @@ import 'package:thegreenmall/utils/custom_button.dart';
 
 import '../../../../utils/sizedbox_constants.dart';
 
-class ViewProductListEditScreen extends StatefulWidget {
-  const ViewProductListEditScreen({super.key});
+class EditProductScreen extends StatefulWidget {
+  const EditProductScreen({super.key});
 
   @override
-  State<ViewProductListEditScreen> createState() =>
-      _ViewProductListEditScreenState();
+  State<EditProductScreen> createState() => _EditProductScreenState();
 }
 
-class _ViewProductListEditScreenState extends State<ViewProductListEditScreen> {
+class _EditProductScreenState extends State<EditProductScreen> {
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 

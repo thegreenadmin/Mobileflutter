@@ -24,7 +24,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import '../model/categories_model.dart';
 
-class SearchStoreOwnerController extends GetxController {
+class OwnerStoresController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController storeNameTextController = TextEditingController();
@@ -333,10 +333,10 @@ class SearchStoreOwnerController extends GetxController {
       isLoading.value = false;
       debugPrint("GET FEATURED PRODUCTS LIST BODY *******$body");
       debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 || value.body["status"] == ApiConstants.statusCode201) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -371,7 +371,7 @@ class SearchStoreOwnerController extends GetxController {
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == ApiConstants.statusCode200 || res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
           editStoreLogoOrigionalLinkfromServer.value =
               responseData['data']['urls']['orignal_url'];
@@ -421,11 +421,11 @@ class SearchStoreOwnerController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 || value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -453,12 +453,12 @@ class SearchStoreOwnerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data!.deliveryServices!;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -483,7 +483,8 @@ class SearchStoreOwnerController extends GetxController {
             showLoading: false)
         .then((value) async {
       log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
         editStoreImageDynamicLinkfromServer.value =
             value?.body["data"]['store']['image']["dynamic_url"] ?? "";
@@ -504,7 +505,7 @@ class SearchStoreOwnerController extends GetxController {
         phoneNumber.value = phoneTextController.text;
         countryCode.value =
             value?.body["data"]['store']['store_phone_code'] ?? "";
-        print("Country code----->" + countryCode.value);
+
         emailTextController.text =
             value?.body["data"]['store']['store_email'] ?? "";
         einTextController.text =
@@ -648,7 +649,8 @@ class SearchStoreOwnerController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         print(value);
         Utility.showToast(value?.body['message']);
         Get.back();
@@ -666,7 +668,7 @@ class SearchStoreOwnerController extends GetxController {
         stateTextController.clear();
         countryTextController.clear();
         countryCode.value = "";
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -693,7 +695,8 @@ class SearchStoreOwnerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.clear();
         countriesList.addAll(
@@ -731,7 +734,8 @@ class SearchStoreOwnerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);

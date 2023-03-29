@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -204,7 +205,7 @@ class AddNewCategoryController extends GetxController {
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
-      } else if (res.statusCode == 403) {
+      } else if (res.statusCode == ApiConstants.statusCode403) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -248,7 +249,7 @@ class AddNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back();
       } else {
@@ -272,7 +273,7 @@ class AddNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET CATEGORY DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
             value.body["data"]['category']['category_name'] ?? "";
         categoryImageDynamicLinkfromServer.value =
@@ -281,7 +282,7 @@ class AddNewCategoryController extends GetxController {
             value.body["data"]['category']['image']['orignal_url'] ?? "";
         isFeaturedCategory.value =
             value.body["data"]['category']['is_featured_category'] ?? false;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -318,12 +319,13 @@ class AddNewCategoryController extends GetxController {
         .then((value) async {
       print(value);
       debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

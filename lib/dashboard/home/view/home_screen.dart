@@ -6,7 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/history_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/search_store_owner_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               } else {
                                 Get.to(
-                                  () => const SearchStoreOwnerScreen(),
+                                  () => const OwnerStoresListScreen(),
                                   arguments: {
                                     "firstName":
                                         homeController.firstName!.value,
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          //height: WidgetConstants.screenHeight,
+          height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -226,10 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? height0SizedBox
                             : homeController.userCrouselImgList.isEmpty
                                 ? SizedBox(
-                                    height: homeController
-                                            .featuredUserProductList.isEmpty
-                                        ? WidgetConstants.screenHeight
-                                        : 280,
+                                    height: WidgetConstants.screenHeight * 0.50,
                                     child: Center(
                                       child: Column(
                                         crossAxisAlignment:
@@ -315,10 +312,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? homeController.isLoading!.value == true
                               ? height0SizedBox
                               : SizedBox(
-                                  height: homeController
-                                          .ownerFeatureProductList.isEmpty
-                                      ? WidgetConstants.screenHeight
-                                      : 280,
+                                  height: WidgetConstants.screenHeight * 0.50,
                                   child: Center(
                                     child: Column(
                                       crossAxisAlignment:

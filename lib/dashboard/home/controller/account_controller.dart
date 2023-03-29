@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -98,7 +99,8 @@ class AccountController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
@@ -130,7 +132,7 @@ class AccountController extends GetxController {
           }
         }
         await apiGetCountries();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -156,7 +158,7 @@ class AccountController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.clear();
         countriesList.addAll(
@@ -172,7 +174,7 @@ class AccountController extends GetxController {
           }
         }
         apiGetStates();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -198,7 +200,7 @@ class AccountController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
@@ -214,7 +216,7 @@ class AccountController extends GetxController {
           stateIndex.value = 0;
           stateId.value = statesList[0].stateId.toString();
         }
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -258,7 +260,7 @@ class AccountController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         await Get.offAll(BottomNavigation());
         firstNameTextController.clear();
@@ -271,7 +273,7 @@ class AccountController extends GetxController {
         postalCodeTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

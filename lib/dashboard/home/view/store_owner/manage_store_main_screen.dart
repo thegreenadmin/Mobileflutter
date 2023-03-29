@@ -15,8 +15,8 @@ class ManageStoreMainScreen extends StatefulWidget {
 }
 
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
-  final SearchStoreOwnerController searchStoreOwnerController =
-      Get.put(SearchStoreOwnerController());
+  final OwnerStoresController ownerStoresController =
+      Get.put(OwnerStoresController());
 
   RxList horizontalTabList = [
     StringConstants.myStoreText,
@@ -43,11 +43,11 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                     splashColor: Colors.transparent,
                     onTap: () {
                       setState(() {
-                        searchStoreOwnerController.selectedIndex.value = i;
+                        ownerStoresController.selectedIndex.value = i;
                         if (i == 0) {
-                          searchStoreOwnerController.apiGetFeaturedProducts();
+                          ownerStoresController.apiGetFeaturedProducts();
                         } else {
-                          searchStoreOwnerController.selectedIndex.value = i;
+                          ownerStoresController.selectedIndex.value = i;
                         }
                       });
                     },
@@ -59,15 +59,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight:
-                              searchStoreOwnerController.selectedIndex.value ==
-                                      i
+                              ownerStoresController.selectedIndex.value == i
                                   ? FontWeight.w500
                                   : FontWeight.w400,
-                          color:
-                              searchStoreOwnerController.selectedIndex.value ==
-                                      i
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
+                          color: ownerStoresController.selectedIndex.value == i
+                              ? AppColors.primary
+                              : AppColors.blacklight,
                         ),
                       ),
                     ));
@@ -92,12 +89,11 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   fit: BoxFit.cover,
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: searchStoreOwnerController.storeImage!.value.isEmpty
+                  image: ownerStoresController.storeImage!.value.isEmpty
                       ? const AssetImage(
                           "assets/nopicfound.png",
                         ) as ImageProvider
-                      : NetworkImage(
-                          searchStoreOwnerController.storeImage!.value),
+                      : NetworkImage(ownerStoresController.storeImage!.value),
                 ),
               ),
               child: Padding(
@@ -132,13 +128,13 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     color: AppColors.white, width: 1)),
                             child: CircleAvatar(
                               radius: 28.0,
-                              backgroundImage: searchStoreOwnerController
+                              backgroundImage: ownerStoresController
                                       .storeLogo!.value.isEmpty
                                   ? const AssetImage(
                                       "assets/nopicfound.png",
                                     ) as ImageProvider
-                                  : NetworkImage(searchStoreOwnerController
-                                      .storeLogo!.value),
+                                  : NetworkImage(
+                                      ownerStoresController.storeLogo!.value),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -148,8 +144,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Obx(() => Text(
-                                      searchStoreOwnerController
-                                          .storeName.value,
+                                      ownerStoresController.storeName.value,
                                       maxLines: 2,
                                       style: const TextStyle(
                                           color: AppColors.white,
@@ -168,7 +163,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     Obx(
                                       () => Expanded(
                                         child: Text(
-                                            searchStoreOwnerController
+                                            ownerStoresController
                                                 .storeLocation.value,
                                             maxLines: 1,
                                             style: const TextStyle(
@@ -180,15 +175,14 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   ],
                                 ),
                                 height8SizedBox,
-                                Obx(() => searchStoreOwnerController
-                                        .is247Time.value
+                                Obx(() => ownerStoresController.is247Time.value
                                     ? Text(StringConstants.storeHoursText,
                                         style: const TextStyle(
                                             color: AppColors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400))
                                     : Text(
-                                        "${StringConstants.storeHourText} ${searchStoreOwnerController.openingTime.value} to ${searchStoreOwnerController.closingTime.value}",
+                                        "${StringConstants.storeHourText} ${ownerStoresController.openingTime.value} to ${ownerStoresController.closingTime.value}",
                                         style: const TextStyle(
                                             color: AppColors.white,
                                             fontSize: 14,
@@ -211,9 +205,9 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
           const Divider(
             thickness: 1,
           ),
-          searchStoreOwnerController.selectedIndex.value == 0
+          ownerStoresController.selectedIndex.value == 0
               ? const Expanded(child: MyStoreScreen())
-              : searchStoreOwnerController.selectedIndex.value == 1
+              : ownerStoresController.selectedIndex.value == 1
                   ? const Expanded(child: ManageStoreScreen())
                   : const Expanded(child: MyStoreScreen())
         ],

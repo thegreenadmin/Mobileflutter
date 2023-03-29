@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/role_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -161,12 +162,13 @@ class AddNewWorkerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message'] ?? "");
         resetForm();
         await apiGetWorkerList();
         Get.back();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -193,11 +195,7 @@ class AddNewWorkerController extends GetxController {
     editWorkerRequest.description = shortDescriptionTextController.text.trim();
     editWorkerRequest.roleId =
         roleId.value != "" ? int.parse(roleId.value) : null;
-    //StoreUserRole? storeUserRole = StoreUserRole();
-    //storeUserRole.roleId = roleId.value != "" ? int.parse(roleId.value) : null;
-    // storeUserRole.storeUserRoleId =
-    //     storeUserRoleId.value != "" ? int.parse(storeUserRoleId.value) : null;
-    // editWorkerRequest.storeUserRole = storeUserRole;
+
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
         workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
@@ -288,12 +286,13 @@ class AddNewWorkerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("EDIT WORKER RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         resetForm();
         await apiGetWorkerList();
         Get.back();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -327,14 +326,15 @@ class AddNewWorkerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("deleteWorker RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
         await apiGetWorkerList();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value.body["status"] == 409) {
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetWorkerList();
       } else {
@@ -450,14 +450,15 @@ class AddNewWorkerController extends GetxController {
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
         userImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
         userImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
-      } else if (res.statusCode == 403) {
+      } else if (res.statusCode == ApiConstants.statusCode403) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -489,10 +490,11 @@ class AddNewWorkerController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET USER STORE LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getUserStoreListModel = GetUserStoreListModel.fromJson(value.body);
         getUserStoreList.value = getUserStoreListModel.data!.stores!;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -507,23 +509,24 @@ class AddNewWorkerController extends GetxController {
     workerList.clear();
     isLoading.value = true;
     debugPrint(
-        "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
+        "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?page=1&page_size=100&store_id=${int.parse(storeId.value)}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("WORKER LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -551,10 +554,11 @@ class AddNewWorkerController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("API GET ROLE LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -582,7 +586,8 @@ class AddNewWorkerController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET  STORE USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         workerDetailResponse =
             worker_detail.WorkerDetailResponse.fromJson(value?.body);
         employeeNameTextController.text =
@@ -596,19 +601,16 @@ class AddNewWorkerController extends GetxController {
         phoneNumber.value = mobileNoTextController.text.trim();
         countryCode.value =
             workerDetailResponse!.data!.storeUser!.user!.phoneCode!.trim();
-        print("COUNTRY CODE-----------" + countryCode.value.toString());
+
         userImageDynamicLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
                 "";
         userImageOriginalLinkFromServer.value =
             workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ??
                 "";
-        roleId.value = workerDetailResponse
-                ?.data?.storeUser?.storeUserRole?.role?.roleId ??
-            "";
-        storeUserRoleId.value = workerDetailResponse
-                ?.data?.storeUser?.storeUserRole?.storeUserRoleId ??
-            "";
+
+        roleId.value =
+            workerDetailResponse?.data?.storeUser?.role?.roleId ?? "";
 
         List<worker_detail.StoreUserTiming>? storeUserTimings =
             workerDetailResponse?.data?.storeUser?.storeUserTimings ?? [];
@@ -636,7 +638,7 @@ class AddNewWorkerController extends GetxController {
           }
         }
         workingDaysTextController.text = concatenate.toString();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

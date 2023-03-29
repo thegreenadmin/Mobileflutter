@@ -8,14 +8,14 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class CategoryEditScreen extends StatefulWidget {
-  const CategoryEditScreen({super.key});
+class AddNewCategoryScreen extends StatefulWidget {
+  const AddNewCategoryScreen({super.key});
 
   @override
-  State<CategoryEditScreen> createState() => _CategoryEditScreenState();
+  State<AddNewCategoryScreen> createState() => _AddNewCategoryScreenState();
 }
 
-class _CategoryEditScreenState extends State<CategoryEditScreen> {
+class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   AddNewCategoryController addNewCategoryController =
       Get.put(AddNewCategoryController());
 
@@ -28,49 +28,45 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                StringConstants.updateCategoryText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
                           ),
-                          Image.asset(
-                            "assets/homeMall.png",
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
+                          width10SizedBox,
+                          Text(
+                            StringConstants.addCategoriesText,
+                            style: const TextStyle(
+                                fontSize: 22,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        "assets/homeMall.png",
+                        scale: 4,
+                      )
+                    ])),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addNewCategoryController.updateformKey,
+            key: addNewCategoryController.formKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -78,7 +74,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.updateCategoryImageText,
+                      StringConstants.uploadCategoriesImageText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
@@ -154,7 +150,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                     ),
                     height35SizedBox,
                     Text(
-                      StringConstants.categoryNameText,
+                      StringConstants.categoriesNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -222,10 +218,10 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController.validateAndSubmitUpdate();
+                        addNewCategoryController.validateAndSubmit();
                       },
                       height: 50,
-                      text: StringConstants.saveAndUpdateCategoryText,
+                      text: StringConstants.saveAndAddProductText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

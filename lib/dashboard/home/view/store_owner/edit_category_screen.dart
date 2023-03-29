@@ -8,14 +8,14 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class AddNewCategoriesScreen extends StatefulWidget {
-  const AddNewCategoriesScreen({super.key});
+class EditCategoryScreen extends StatefulWidget {
+  const EditCategoryScreen({super.key});
 
   @override
-  State<AddNewCategoriesScreen> createState() => _AddNewCategoriesScreenState();
+  State<EditCategoryScreen> createState() => _EditCategoryScreenState();
 }
 
-class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
+class _EditCategoryScreenState extends State<EditCategoryScreen> {
   AddNewCategoryController addNewCategoryController =
       Get.put(AddNewCategoryController());
 
@@ -28,45 +28,49 @@ class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
             color: AppColors.primarylight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                              size: 24.0,
-                            ),
+                          Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.black,
+                                  size: 24.0,
+                                ),
+                              ),
+                              width10SizedBox,
+                              Text(
+                                StringConstants.updateCategoryText,
+                                style: const TextStyle(
+                                    fontSize: 22,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
                           ),
-                          width10SizedBox,
-                          Text(
-                            StringConstants.addCategoriesText,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Image.asset(
-                        "assets/homeMall.png",
-                        scale: 4,
-                      )
-                    ])),
+                          Image.asset(
+                            "assets/homeMall.png",
+                            scale: 4,
+                          )
+                        ]),
+                  ],
+                )),
           )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addNewCategoryController.formKey,
+            key: addNewCategoryController.updateformKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -74,7 +78,7 @@ class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.uploadCategoriesImageText,
+                      StringConstants.updateCategoryImageText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
@@ -150,7 +154,7 @@ class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
                     ),
                     height35SizedBox,
                     Text(
-                      StringConstants.categoriesNameText,
+                      StringConstants.categoryNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -218,10 +222,10 @@ class _AddNewCategoriesScreenState extends State<AddNewCategoriesScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController.validateAndSubmit();
+                        addNewCategoryController.validateAndSubmitUpdate();
                       },
                       height: 50,
-                      text: StringConstants.saveAndAddProductText,
+                      text: StringConstants.saveAndUpdateCategoryText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

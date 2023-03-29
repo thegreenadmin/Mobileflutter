@@ -10,14 +10,14 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class ManageWorkerEditScreen extends StatefulWidget {
-  const ManageWorkerEditScreen({super.key});
+class EditWorkerScreen extends StatefulWidget {
+  const EditWorkerScreen({super.key});
 
   @override
-  State<ManageWorkerEditScreen> createState() => _ManageWorkerEditScreenState();
+  State<EditWorkerScreen> createState() => _EditWorkerScreenState();
 }
 
-class _ManageWorkerEditScreenState extends State<ManageWorkerEditScreen> {
+class _EditWorkerScreenState extends State<EditWorkerScreen> {
   final AddNewWorkerController addNewWorkerController =
       Get.put(AddNewWorkerController());
 

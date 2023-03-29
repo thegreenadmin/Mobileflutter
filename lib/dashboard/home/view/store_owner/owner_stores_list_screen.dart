@@ -9,16 +9,16 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class SearchStoreOwnerScreen extends StatefulWidget {
-  const SearchStoreOwnerScreen({super.key});
+class OwnerStoresListScreen extends StatefulWidget {
+  const OwnerStoresListScreen({super.key});
 
   @override
-  State<SearchStoreOwnerScreen> createState() => _SearchStoreOwnerScreenState();
+  State<OwnerStoresListScreen> createState() => _OwnerStoresListScreenState();
 }
 
-class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
-  final SearchStoreOwnerController searchStoreOwnerController =
-      Get.put(SearchStoreOwnerController());
+class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
+  final OwnerStoresController ownerStoresController =
+      Get.put(OwnerStoresController());
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +90,8 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
             child: Column(
               children: [
                 Expanded(
-                    child: Obx(() => searchStoreOwnerController
-                            .storeList.isEmpty
-                        ? searchStoreOwnerController.isLoading.value == true
+                    child: Obx(() => ownerStoresController.storeList.isEmpty
+                        ? ownerStoresController.isLoading.value == true
                             ? height0SizedBox
                             : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -122,8 +121,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                 (BuildContext context, int index) {
                               return height12SizedBox;
                             },
-                            itemCount:
-                                searchStoreOwnerController.storeList.length,
+                            itemCount: ownerStoresController.storeList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Dismissible(
                                 background: Container(
@@ -151,54 +149,48 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                 onDismissed: (direction) {},
                                 child: InkWell(
                                   onTap: () async {
-                                    searchStoreOwnerController.storeId.value =
-                                        searchStoreOwnerController
+                                    ownerStoresController.storeId.value =
+                                        ownerStoresController
                                                 .storeList[index].storeId ??
                                             "";
 
-                                    searchStoreOwnerController.storeName.value =
-                                        searchStoreOwnerController
+                                    ownerStoresController.storeName.value =
+                                        ownerStoresController
                                                 .storeList[index].storeName ??
                                             "";
 
-                                    searchStoreOwnerController
-                                            .storeLocation.value =
-                                        searchStoreOwnerController
+                                    ownerStoresController.storeLocation.value =
+                                        ownerStoresController
                                             .storeList[index]
                                             .storeAddresses![
-                                                searchStoreOwnerController
+                                                ownerStoresController
                                                     .addressListIndex!.value]
                                             .addressLine1!;
 
-                                    searchStoreOwnerController
-                                            .storeLocation.value =
-                                        searchStoreOwnerController
+                                    ownerStoresController.storeLocation.value =
+                                        ownerStoresController
                                             .storeList[index]
                                             .storeAddresses![
-                                                searchStoreOwnerController
+                                                ownerStoresController
                                                     .addressListIndex!.value]
                                             .addressLine1!;
 
-                                    searchStoreOwnerController.storeImage!
-                                        .value = searchStoreOwnerController
-                                            .storeList[index]
-                                            .image!
-                                            .dynamicUrl ??
-                                        "";
+                                    ownerStoresController.storeImage!.value =
+                                        ownerStoresController.storeList[index]
+                                                .image!.dynamicUrl ??
+                                            "";
 
-                                    searchStoreOwnerController.storeLogo!
-                                        .value = searchStoreOwnerController
-                                            .storeList[index]
-                                            .logo!
-                                            .dynamicUrl ??
-                                        "";
+                                    ownerStoresController.storeLogo!.value =
+                                        ownerStoresController.storeList[index]
+                                                .logo!.dynamicUrl ??
+                                            "";
 
-                                    await searchStoreOwnerController
+                                    await ownerStoresController
                                         .apiGetParticularStore();
 
-                                    await searchStoreOwnerController
+                                    await ownerStoresController
                                         .apiGetFeaturedProducts();
-                                    searchStoreOwnerController.onInit();
+                                    ownerStoresController.onInit();
 
                                     await Get.to(
                                         () => const ManageStoreMainScreen());
@@ -227,14 +219,14 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                               child: CircleAvatar(
                                                 radius: 24.0,
                                                 backgroundImage:
-                                                    searchStoreOwnerController
+                                                    ownerStoresController
                                                                 .storeList[
                                                                     index]
                                                                 .logo!
                                                                 .dynamicUrl !=
                                                             null
                                                         ? NetworkImage(
-                                                            searchStoreOwnerController
+                                                            ownerStoresController
                                                                 .storeList[
                                                                     index]
                                                                 .logo!
@@ -258,7 +250,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                 SizedBox(
                                                   width: 190,
                                                   child: Text(
-                                                    searchStoreOwnerController
+                                                    ownerStoresController
                                                             .storeList[index]
                                                             .storeName ??
                                                         "",
@@ -280,14 +272,14 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                       return height0SizedBox;
                                                     },
                                                     itemCount:
-                                                        searchStoreOwnerController
+                                                        ownerStoresController
                                                             .storeList[index]
                                                             .storeAddresses!
                                                             .length,
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int i) {
-                                                      searchStoreOwnerController
+                                                      ownerStoresController
                                                           .addressListIndex!
                                                           .value = i;
                                                       return Column(
@@ -313,7 +305,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                 width3SizedBox,
                                                                 Expanded(
                                                                   child: Text(
-                                                                    searchStoreOwnerController
+                                                                    ownerStoresController
                                                                             .storeList[index]
                                                                             .storeAddresses![i]
                                                                             .addressLine1 ??
@@ -358,7 +350,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        searchStoreOwnerController.storeList[index].storeAddresses![i].city ??
+                                                                        ownerStoresController.storeList[index].storeAddresses![i].city ??
                                                                             "",
                                                                         style: const TextStyle(
                                                                             color:
@@ -391,7 +383,7 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        searchStoreOwnerController.storeList[index].storeAddresses![i].state!.stateName ??
+                                                                        ownerStoresController.storeList[index].storeAddresses![i].state!.stateName ??
                                                                             "",
                                                                         style: const TextStyle(
                                                                             color:
@@ -444,8 +436,8 @@ class _SearchStoreOwnerScreenState extends State<SearchStoreOwnerScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(const AddNewStoreScreen())!.then(
-                    (value) => searchStoreOwnerController.apiGetStoreList());
+                Get.to(const AddNewStoreScreen())!
+                    .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,
               text: StringConstants.addANewStoreText,

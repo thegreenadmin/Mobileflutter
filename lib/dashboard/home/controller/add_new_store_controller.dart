@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/model/delivery_services_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
@@ -245,7 +246,8 @@ class AddNewStoreController extends GetxController {
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
           storeLogoOrigionalLinkfromServer.value =
               responseData['data']['urls']['orignal_url'];
@@ -260,7 +262,7 @@ class AddNewStoreController extends GetxController {
         }
 
         return responseData;
-      } else if (res.statusCode == 403) {
+      } else if (res.statusCode == ApiConstants.statusCode403) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -321,7 +323,8 @@ class AddNewStoreController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Future.delayed(const Duration(milliseconds: 200), () {
           Get.back();
@@ -339,7 +342,7 @@ class AddNewStoreController extends GetxController {
         deliveryServicesTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -367,12 +370,13 @@ class AddNewStoreController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET DELIVERY LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data!.deliveryServices!;
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -399,14 +403,15 @@ class AddNewStoreController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getCountriesModel = GetCountriesModel.fromJson(value.body);
         countriesList.value = getCountriesModel.data!.countries!;
         if (countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
         }
         apiGetStates();
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -433,7 +438,8 @@ class AddNewStoreController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value.body);
         statesList.value = getStateModel.data!.states!;
         if (stateId.value.isNotEmpty) {
@@ -445,7 +451,7 @@ class AddNewStoreController extends GetxController {
         } else {
           stateId.value = statesList[0].stateId.toString();
         }
-      } else if (value.body["status"] == 403) {
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

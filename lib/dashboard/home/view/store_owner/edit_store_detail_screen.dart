@@ -14,16 +14,16 @@ import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class StoreDetailEditScreen extends StatefulWidget {
-  const StoreDetailEditScreen({super.key});
+class EditStoreDetailScreen extends StatefulWidget {
+  const EditStoreDetailScreen({super.key});
 
   @override
-  State<StoreDetailEditScreen> createState() => _StoreDetailEditScreenState();
+  State<EditStoreDetailScreen> createState() => _EditStoreDetailScreenState();
 }
 
-class _StoreDetailEditScreenState extends State<StoreDetailEditScreen> {
-  final SearchStoreOwnerController searchStoreOwnerController =
-      Get.put(SearchStoreOwnerController());
+class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
+  final OwnerStoresController searchStoreOwnerController =
+      Get.put(OwnerStoresController());
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_categories_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/category_edit_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/view_product_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_category_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/edit_category_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -187,7 +187,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(() => const AddNewCategoriesScreen(), arguments: {
+                      Get.to(() => const AddNewCategoryScreen(), arguments: {
                         "storeId": manageStoreController.storeId.value,
                         "isFeaturedSelectedType":
                             manageStoreController.isFeaturedTypeSelected.value,
@@ -331,7 +331,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                       "";
                               manageStoreController.apiGetStoreProducts();
 
-                              Get.to(const ViewProductScreen());
+                              Get.to(const ProductListScreen());
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -419,7 +419,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .categoryId ??
                                                 "";
 
-                                        Get.to(const CategoryEditScreen(),
+                                        Get.to(const EditCategoryScreen(),
                                                 arguments: {
                                               "storeId": manageStoreController
                                                   .storeId.value,

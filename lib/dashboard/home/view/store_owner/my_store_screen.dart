@@ -14,8 +14,8 @@ class MyStoreScreen extends StatefulWidget {
 }
 
 class _MyStoreScreenState extends State<MyStoreScreen> {
-  final SearchStoreOwnerController searchStoreOwnerController =
-      Get.put(SearchStoreOwnerController());
+  final OwnerStoresController ownerStoresController =
+      Get.put(OwnerStoresController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(
-                () => searchStoreOwnerController.getOwnerOfferlist.isEmpty
-                    ? searchStoreOwnerController.isLoading.value == true
+                () => ownerStoresController.getOwnerOfferlist.isEmpty
+                    ? ownerStoresController.isLoading.value == true
                         ? height0SizedBox
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,12 +60,12 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                           },
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: searchStoreOwnerController
-                              .getOwnerOfferlist.length,
+                          itemCount:
+                              ownerStoresController.getOwnerOfferlist.length,
                           itemBuilder: (BuildContext context, int index) =>
                               ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: searchStoreOwnerController
+                            child: ownerStoresController
                                     .getOwnerOfferlist[index]
                                     .image!
                                     .dynamicUrl!
@@ -75,7 +75,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     fit: BoxFit.fill,
                                   )
                                 : Image.network(
-                                    searchStoreOwnerController
+                                    ownerStoresController
                                         .getOwnerOfferlist[index]
                                         .image!
                                         .dynamicUrl!,
@@ -88,7 +88,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
               ),
               height30SizedBox,
               Obx(
-                () => searchStoreOwnerController.storeProductList.isEmpty
+                () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox
                     : Text(
                         StringConstants.featuredProductText,
@@ -99,7 +99,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                       ),
               ),
               Obx(
-                () => searchStoreOwnerController.storeProductList.isEmpty
+                () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox
                     : SizedBox(
                         height: 280,
@@ -109,8 +109,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                           },
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: searchStoreOwnerController
-                              .storeProductList.length,
+                          itemCount:
+                              ownerStoresController.storeProductList.length,
                           itemBuilder: (BuildContext context, int i) => Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                         BorderRadius.all(Radius.circular(20))),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  child: searchStoreOwnerController
+                                  child: ownerStoresController
                                           .storeProductList[i]
                                           .productImages!
                                           .isEmpty
@@ -132,7 +132,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           fit: BoxFit.fill,
                                         )
                                       : Image.network(
-                                          searchStoreOwnerController
+                                          ownerStoresController
                                               .storeProductList[i]
                                               .productImages![0]
                                               .image!
@@ -147,7 +147,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    searchStoreOwnerController
+                                    ownerStoresController
                                             .storeProductList[i].productName ??
                                         "",
                                     style: const TextStyle(
@@ -159,8 +159,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   SizedBox(
                                     width: 160,
                                     child: Text(
-                                      searchStoreOwnerController
-                                              .storeProductList[i]
+                                      ownerStoresController.storeProductList[i]
                                               .description ??
                                           "",
                                       maxLines: 2,
@@ -172,7 +171,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   ),
                                   height4SizedBox,
                                   Text(
-                                    "\$${searchStoreOwnerController.storeProductList[i].productPrice}",
+                                    "\$${ownerStoresController.storeProductList[i].productPrice}",
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,

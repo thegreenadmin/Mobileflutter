@@ -141,7 +141,8 @@ class HomeController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == 201 || value.body["status"] == 200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
@@ -191,7 +192,8 @@ class HomeController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET NEARBY STORES *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         storeAddresses.value = nearbyStoreListResponse.data!.storeAddresses!;
         if (storeAddresses.isNotEmpty) {
@@ -204,7 +206,7 @@ class HomeController extends GetxController {
           }
         }
         update();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -254,12 +256,13 @@ class HomeController extends GetxController {
         .then((value) async {
       isLoading!.value = false;
       debugPrint("FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
             userFeaturedProductModel.data!.products!;
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -343,12 +346,13 @@ class HomeController extends GetxController {
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         ownerFeaturedProductModel =
             OwnerFeaturedProductModel.fromJson(value?.body);
         ownerFeatureProductList.value =
             ownerFeaturedProductModel.data?.products ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
