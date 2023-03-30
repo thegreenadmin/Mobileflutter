@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/inbox_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class InboxScreen extends StatefulWidget {
@@ -145,7 +146,7 @@ class _InboxScreenState extends State<InboxScreen> {
                               ],
                             ),
                             Image.asset(
-                              "assets/homeMall.png",
+                              ImageConstants.homeMall,
                               scale: 4,
                             )
                           ]),
@@ -186,7 +187,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                 child: const CircleAvatar(
                                   radius: 24.0,
                                   backgroundImage: AssetImage(
-                                    "assets/inboxexample.png",
+                                    ImageConstants.inboxexample,
                                   ),
                                   backgroundColor: Colors.transparent,
                                 ),

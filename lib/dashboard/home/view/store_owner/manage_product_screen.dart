@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_category_scree
 import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MangeProductScreen extends StatefulWidget {
@@ -161,7 +162,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               ],
                             ),
                             Image.asset(
-                              "assets/homeMall.png",
+                              ImageConstants.homeMall,
                               scale: 4,
                             )
                           ]),
@@ -226,7 +227,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           children: [
                             Center(
                               child: Image.asset(
-                                "assets/nodata.png",
+                                ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
                               ),
@@ -438,7 +439,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         padding:
                                             const EdgeInsets.only(left: 10),
                                         child: Image.asset(
-                                          "assets/circleedit.png",
+                                          ImageConstants.circleedit,
                                           scale: 2.5,
                                         ),
                                       ),

@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
@@ -61,7 +62,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/homeMall.png",
+                            ImageConstants.homeMall,
                             scale: 5,
                           )
                         ]),

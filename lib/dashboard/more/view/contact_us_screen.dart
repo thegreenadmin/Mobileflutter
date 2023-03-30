@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/more/controller/contact_us_controller.dar
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/homeMall.png",
+                            ImageConstants.homeMall,
                             scale: 4,
                           )
                         ]),
@@ -77,7 +78,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     width: WidgetConstants.screenWidth,
                     height: MediaQuery.of(context).size.height * .25,
                     color: AppColors.primarylight,
-                    child: Image.asset("assets/image.png"),
+                    child: Image.asset(
+                      ImageConstants.image,
+                    ),
                   ),
                   Container(
                     padding:

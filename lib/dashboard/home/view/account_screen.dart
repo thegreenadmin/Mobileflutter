@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/personal_info_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -61,7 +62,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/homeMall.png",
+                            ImageConstants.homeMall,
                             scale: 4,
                           )
                         ]),
@@ -79,7 +80,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: Row(
                   children: [
                     Image.asset(
-                      "assets/userAccount.png",
+                      ImageConstants.userAccount,
                       scale: 3,
                     ),
                     width10SizedBox,
@@ -140,7 +141,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               fontWeight: FontWeight.w500),
                         ),
                         Image.asset(
-                          "assets/switch.png",
+                          ImageConstants.switchicon,
                           scale: 2.6,
                         ),
                       ],
@@ -176,7 +177,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           Row(
                             children: [
                               Image.asset(
-                                "assets/person.png",
+                                ImageConstants.person,
                                 color: AppColors.primary,
                                 scale: 3.5,
                               ),
@@ -189,7 +190,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/arrowForward.png",
+                            ImageConstants.arrowForward,
                             scale: 3.4,
                             color: AppColors.blacklight,
                           )
@@ -210,7 +211,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           Row(
                             children: [
                               Image.asset(
-                                "assets/cards.png",
+                                ImageConstants.cards,
                                 color: AppColors.primary,
                                 scale: 3.5,
                               ),
@@ -223,7 +224,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/arrowForward.png",
+                            ImageConstants.arrowForward,
                             scale: 3.4,
                             color: AppColors.blacklight,
                           )
@@ -244,7 +245,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           Row(
                             children: [
                               Image.asset(
-                                "assets/transactionHistory.png",
+                                ImageConstants.transactionHistory,
                                 color: AppColors.primary,
                                 scale: 3.5,
                               ),
@@ -257,7 +258,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/arrowForward.png",
+                            ImageConstants.arrowForward,
                             scale: 3.4,
                             color: AppColors.blacklight,
                           )
@@ -278,7 +279,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           Row(
                             children: [
                               Image.asset(
-                                "assets/accountId.png",
+                                ImageConstants.accountId,
                                 color: AppColors.primary,
                                 scale: 3.5,
                               ),
@@ -291,7 +292,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/arrowForward.png",
+                            ImageConstants.arrowForward,
                             scale: 3.4,
                             color: AppColors.blacklight,
                           )

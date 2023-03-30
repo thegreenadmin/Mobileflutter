@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -63,7 +64,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -131,7 +132,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
-                                                    "assets/uploadpic.png",
+                                                    ImageConstants.uploadpic,
                                                     scale: 2.5,
                                                   ),
                                                 ]),
@@ -199,7 +200,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       .isStoreLogoSelected.value = true;
                                 },
                                 child: Image.asset(
-                                  "assets/picupload.png",
+                                  ImageConstants.picupload,
                                   scale: 2.5,
                                 ),
                               ),
@@ -245,7 +246,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
@@ -561,7 +562,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                       flagsButtonMargin: const EdgeInsets.all(10),
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        prefixIcon: Image.asset("assets/calling.png"),
+                        prefixIcon: Image.asset(
+                          ImageConstants.calling,
+                        ),
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(
@@ -610,59 +613,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             phone.countryCode.toString();
                       },
                     ),
-                    // TextFormField(
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     inputFormatters: <TextInputFormatter>[
-                    //       LengthLimitingTextInputFormatter(100),
-                    //     ],
-                    //     style: const TextStyle(
-                    //         color: AppColors.black,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w500),
-                    //     controller:
-                    //         searchStoreOwnerController.phoneTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value!.trim().isEmpty) {
-                    //         return AlertStringConstants.pleaseEnterPhoneText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //       hintText: StringConstants.phoneNumberText,
-                    //       hintStyle: const TextStyle(
-                    //           color: AppColors.grey, fontSize: 14),
-                    //       fillColor: Colors.white,
-                    //       border: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height20SizedBox,
                     Text(
                       StringConstants.addressText,

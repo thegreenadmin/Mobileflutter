@@ -43,6 +43,7 @@ class StringConstants {
   static String addRoleText = "Add Role";
   static String adminText = "Admin";
   static String availabilityText = "Availability";
+  static String addYourText = "Add your";
 
   //B
   static String breadthText = "Breadth";
@@ -72,6 +73,7 @@ class StringConstants {
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
   static String cancelText = "Cancel";
+  static String createYourText = "Create your";
   //D
   static String deliveryText = "Delivery";
   static String deleteAccountText = "Delete Account";
@@ -81,6 +83,8 @@ class StringConstants {
   static String deliveryMethodsText = "Delivery Methods";
   static String discountText = "Discount:";
   static String deleteText = "Delete";
+  static String didNotGetACodeText = "Didn’t get a code?";
+  
 
   //E
 
@@ -114,6 +118,7 @@ class StringConstants {
   static String featuredText = "Featured";
   static String filterOptionsText = "Filter Options";
   static String enterRoleText = "Enter Role";
+  static String findStoreText = "Find Store";
 
   //G
   static String getInTouchText = "Get In touch";
@@ -158,6 +163,7 @@ class StringConstants {
 
   //N
   static String nearbyText = "Nearby";
+  static String nearYouText = " near you";
   static String notificationPreferencesText = "Notification Preferences";
   static String nameText = "Name";
   static String inboxMessages = "Inbox Messages";
@@ -212,7 +218,7 @@ class StringConstants {
   static String primaryStoreText = "Primary Store";
   static String pickupOptionsText = "Pick-up Options";
   static String permissionText = "Permission";
-  static String productText = "Product";
+  static String productText = " Product";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -225,6 +231,7 @@ class StringConstants {
   static String roleNameText = "Role Name";
   static String returnAvailableText = "Return Available";
   static String ratingReviewText = "Rating & Review";
+  static String resendText = "Resend";
 
   //S
   static String signUpText = "Sign up";
@@ -269,6 +276,7 @@ class StringConstants {
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";
   static String selectStoreText = "Select Store";
+  static String shopYourFavouriteText = "Shop your favorite";
 
   //T
   static String termsOfServiceText = "Terms of service";
@@ -436,6 +444,7 @@ class AlertStringConstants {
       "The greenmall application is recommended for 18 above age group only!";
 }
 
+//Roles in app
 class Role {
   static RxString role = "".obs;
   static String storeOwnerRoleText = "StoreOwnerRole";

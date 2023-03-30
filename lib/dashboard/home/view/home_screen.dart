@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_s
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: Image.asset(
-                                      "assets/message.png",
+                                      ImageConstants.message,
                                       scale: 2.5,
                                       color: AppColors.white,
                                     )),
@@ -153,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: Image.asset(
-                                      "assets/storeUnion.png",
+                                      ImageConstants.storeUnion,
                                       scale: 2.2,
                                       color: AppColors.white,
                                     )),
@@ -184,14 +185,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               fillColor: AppColors.white,
                               child: Image.asset(
-                                "assets/union.png",
+                                ImageConstants.union,
                                 scale: 2.4,
                               )),
                           width10SizedBox,
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                Get.to(const AccountScreen(),arguments: {"isFromCart":false});
+                                Get.to(const AccountScreen(),
+                                    arguments: {"isFromCart": false});
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -201,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               fillColor: AppColors.white,
                               child: Image.asset(
-                                "assets/user.png",
+                                ImageConstants.user,
                                 scale: 2.5,
                               )),
                         ],
@@ -235,7 +237,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
-                                              "assets/greenmall420.png"),
+                                            ImageConstants.greenmall420,
+                                          ),
                                           Text(
                                             StringConstants
                                                 .welcomeToGreenMallText,
@@ -320,7 +323,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Image.asset("assets/greenmall420.png"),
+                                        Image.asset(
+                                          ImageConstants.greenmall420,
+                                        ),
                                         Text(
                                           StringConstants
                                               .welcomeToGreenMallText,
@@ -456,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .productImages!
                                                   .isEmpty
                                           ? Image.asset(
-                                              "assets/nopicfound.png",
+                                              ImageConstants.nopicfound,
                                               fit: BoxFit.fill,
                                               width:
                                                   WidgetConstants.screenWidth *
@@ -531,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .productImages!
                                                   .isEmpty
                                           ? Image.asset(
-                                              "assets/nopicfound.png",
+                                              ImageConstants.nopicfound,
                                               fit: BoxFit.fill,
                                               width:
                                                   WidgetConstants.screenWidth *

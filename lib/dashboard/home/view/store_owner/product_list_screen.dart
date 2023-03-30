@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_product_scr
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -67,7 +68,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -148,7 +149,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  "assets/nodata.png",
+                                  ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
                                 ),
@@ -243,13 +244,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 },
                               );
                             },
-                            // onDismissed: (direction) {
-                            //   manageStoreController.productId.value =
-                            //       manageStoreController
-                            //           .storeProductList[index].productId
-                            //           .toString();
-                            //   manageStoreController.apiDeleteProduct();
-                            // },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
@@ -301,7 +295,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? Image.asset(
-                                                    "assets/nopicfound.png",
+                                                   ImageConstants.nopicfound,
                                                   )
                                                 : Image.network(
                                                     manageStoreController
@@ -390,7 +384,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                       const EdgeInsets.only(
                                                           left: 10),
                                                   child: Image.asset(
-                                                    "assets/circleedit.png",
+                                                 ImageConstants.circleedit,
                                                     scale: 2.5,
                                                   ),
                                                 ),

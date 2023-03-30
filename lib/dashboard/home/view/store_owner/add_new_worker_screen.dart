@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import '../../../../utils/sizedbox_constants.dart';
 
@@ -61,7 +62,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/homeMall.png",
+                            ImageConstants.homeMall,
                             scale: 4,
                           )
                         ]),
@@ -106,7 +107,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                         ? const CircleAvatar(
                                             radius: 50.0,
                                             backgroundImage: AssetImage(
-                                              "assets/userAccount.png",
+                                              ImageConstants.userAccount,
                                             ),
                                             backgroundColor:
                                                 AppColors.primarylight,
@@ -139,7 +140,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     .showSelectionDialog(context);
                               },
                               child: Image.asset(
-                                "assets/uploadbutton.png",
+                                ImageConstants.uploadbutton,
                                 scale: 3,
                               ),
                             ),
@@ -634,7 +635,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                       flagsButtonMargin: const EdgeInsets.all(10),
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        prefixIcon: Image.asset("assets/calling.png"),
+                        prefixIcon: Image.asset(ImageConstants.calling),
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(

@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_role_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_role_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class RoleAndPermissionScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -126,7 +127,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  "assets/nodata.png",
+                                  ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
                                 ),
@@ -236,7 +237,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         padding:
                                             const EdgeInsets.only(left: 10),
                                         child: Image.asset(
-                                          "assets/deleteicon.png",
+                                          ImageConstants.deleteicon,
                                           scale: 2.8,
                                         ),
                                       ),
@@ -258,7 +259,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         padding:
                                             const EdgeInsets.only(left: 10),
                                         child: Image.asset(
-                                          "assets/pencil.png",
+                                          ImageConstants.pencil,
                                           scale: 2.8,
                                         ),
                                       ),

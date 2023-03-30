@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -61,7 +62,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -129,7 +130,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
-                                                    "assets/uploadpic.png",
+                                                    ImageConstants.uploadpic,
                                                     scale: 2.5,
                                                   ),
                                                 ]),
@@ -197,7 +198,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       .isStoreLogoSelected.value = true;
                                 },
                                 child: Image.asset(
-                                  "assets/picupload.png",
+                                   ImageConstants.picupload,
                                   scale: 2.5,
                                 ),
                               ),
@@ -243,7 +244,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                               ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
@@ -559,7 +560,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       flagsButtonMargin: const EdgeInsets.all(10),
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        prefixIcon: Image.asset("assets/calling.png"),
+                        prefixIcon: Image.asset(   ImageConstants.calling,),
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(

@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/role_and_permission
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageStoreScreen extends StatefulWidget {
@@ -61,13 +62,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 child: const CircleAvatar(
                                   radius: 28.0,
                                   backgroundImage: AssetImage(
-                                    "assets/blackcircle.png",
+                                    ImageConstants.blackcircle,
                                   ),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
                               Image.asset(
-                                "assets/editstore.png",
+                                ImageConstants.editstore,
                                 scale: 3,
                               ),
                             ],
@@ -128,13 +129,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 child: const CircleAvatar(
                                   radius: 28.0,
                                   backgroundImage: AssetImage(
-                                    "assets/blackcircle.png",
+                                    ImageConstants.blackcircle,
                                   ),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
                               Image.asset(
-                                "assets/manageproduct.png",
+                                ImageConstants.manageproduct,
                                 scale: 3,
                               ),
                             ],
@@ -194,13 +195,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 child: const CircleAvatar(
                                   radius: 28.0,
                                   backgroundImage: AssetImage(
-                                    "assets/blackcircle.png",
+                                    ImageConstants.blackcircle,
                                   ),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
                               Image.asset(
-                                "assets/worker.png",
+                                ImageConstants.whorker,
                                 scale: 3,
                               ),
                             ],
@@ -260,13 +261,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 child: const CircleAvatar(
                                   radius: 28.0,
                                   backgroundImage: AssetImage(
-                                    "assets/blackcircle.png",
+                                    ImageConstants.blackcircle,
                                   ),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
                               Image.asset(
-                                "assets/role.png",
+                                ImageConstants.role,
                                 scale: 3,
                               ),
                             ],

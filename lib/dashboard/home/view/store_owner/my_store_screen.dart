@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MyStoreScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  "assets/nodata.png",
+                             ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
                                 ),
@@ -71,7 +71,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     .dynamicUrl!
                                     .isEmpty
                                 ? Image.asset(
-                                    'assets/nopicfound.png',
+                                       ImageConstants.nopicfound,
                                     fit: BoxFit.fill,
                                   )
                                 : Image.network(
@@ -128,7 +128,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           .productImages!
                                           .isEmpty
                                       ? Image.asset(
-                                          'assets/nopicfound.png',
+                                           ImageConstants.nopicfound,
                                           fit: BoxFit.fill,
                                         )
                                       : Image.network(

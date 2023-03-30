@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -142,7 +143,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -165,7 +166,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/nodata.png",
+                      ImageConstants.nodata,
                       scale: 8,
                       color: AppColors.primary,
                     ),
@@ -180,7 +181,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                 ],
               )
-                  //ListView.separated(
+                  // ListView.separated(
                   //       separatorBuilder: (BuildContext context, int index) {
                   //         return height12SizedBox;
                   //       },

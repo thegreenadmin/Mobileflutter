@@ -5,6 +5,7 @@ import 'package:thegreenmall/authentication/otpverification/controller/otp_verif
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -59,7 +60,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/otpVerification.png",
+                          ImageConstants.otpVerification,
                           scale: 2.4,
                         ),
                         height40SizedBox,
@@ -135,21 +136,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         InkWell(
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
-                          onTap: () {
-                            // signupController.apiResendOtp();
-                          },
+                          onTap: () {},
                           child: Center(
                             child: Text.rich(
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                      text: "Didn’t get a code?",
+                                      text: StringConstants.didNotGetACodeText,
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: AppColors.blacklight)),
-                                  const TextSpan(
-                                    text: ' Resend',
-                                    style: TextStyle(
+                                  TextSpan(
+                                    text:  " ${StringConstants.resendText}",
+                                    style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                         color: AppColors.primary),
@@ -176,7 +175,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             fontSize: 16,
                             iconR: true,
                             imageR: Image.asset(
-                              "assets/arrowright.png",
+                              ImageConstants.arrowright,
                               scale: 3,
                             )),
                         height20SizedBox,

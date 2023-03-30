@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.d
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class AddNewRoleScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -150,7 +151,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                                   children: [
                                     Center(
                                       child: Image.asset(
-                                        "assets/nodata.png",
+                                        ImageConstants.nodata,
                                         scale: 8,
                                         color: AppColors.primary,
                                       ),

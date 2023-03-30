@@ -25,7 +25,6 @@ class ApiConstants {
   static int statusCode401 = 401;
 //This response code is reserved for future use. The initial aim for creating this code was using it for digital payment systems, however this status code is used very rarely and no standard convention exists.
   static int statusCode402 = 402;
-
   //The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.
   static int statusCode403 = 403;
   //The server cannot find the requested resource.

@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -60,7 +61,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 Get.back();
                               },
                               child: Image.asset(
-                                "assets/cross.png",
+                                ImageConstants.cross,
                                 scale: 3,
                               ))
                         ],
@@ -182,7 +183,6 @@ class _WalletScreenState extends State<WalletScreen> {
                           style: const TextStyle(
                               fontSize: 20,
                               color: AppColors.black,
-                              fontFamily: "Inter",
                               fontWeight: FontWeight.w400),
                         ),
                         height4SizedBox,
@@ -196,7 +196,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       ],
                     ),
                     Image.asset(
-                      "assets/homeMall.png",
+                      ImageConstants.homeMall,
                       scale: 4,
                     )
                   ])),
@@ -209,14 +209,16 @@ class _WalletScreenState extends State<WalletScreen> {
           Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset("assets/walletCard.png"),
+              Image.asset(
+                ImageConstants.walletCard,
+              ),
               height20SizedBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/dollar.png",
+                    ImageConstants.dollar,
                     scale: 3.4,
                   ),
                   width15SizedBox,
@@ -240,7 +242,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           //  bottomSheetToAddMoney(context);
                         },
                         child: Image.asset(
-                          "assets/addMoney.png",
+                          ImageConstants.addMoney,
                           scale: 3.5,
                         ),
                       ),
@@ -259,7 +261,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      "assets/setting.png",
+                      ImageConstants.setting,
                       scale: 3.5,
                     ),
                     Text(
@@ -283,7 +285,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      "assets/pickup.png",
+                      ImageConstants.pickUp,
                       scale: 3.5,
                     ),
                     Text(

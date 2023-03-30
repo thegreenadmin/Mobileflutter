@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-import '../utils/constants.dart';
 
 // ignore: must_be_immutable
 class CustomButton extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_scre
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_worker_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import '../../controller/add_new_worker_controller.dart';
@@ -65,7 +66,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -128,7 +129,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  "assets/nodata.png",
+                                  ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
                                 ),
@@ -184,7 +185,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             direction: DismissDirection.endToStart,
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
-
                             confirmDismiss: (DismissDirection direction) async {
                               return await showDialog(
                                 context: context,
@@ -235,13 +235,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 },
                               );
                             },
-                            // onDismissed: (direction) {
-                            //   addNewWorkerController.workerId.value =
-                            //       addNewWorkerController
-                            //           .workerList[index].storeUserId
-                            //           .toString();
-                            //   addNewWorkerController.apiDeleteWorker();
-                            // },
                             child: InkWell(
                               onTap: () async {
                                 addNewWorkerController.workerId.value =
@@ -303,8 +296,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                     )
                                                   : const CircleAvatar(
                                                       radius: 36.0,
-                                                      backgroundImage: AssetImage(
-                                                          "assets/userAccount.png"),
+                                                      backgroundImage:
+                                                          AssetImage(
+                                                        ImageConstants
+                                                            .userAccount,
+                                                      ),
                                                       backgroundColor:
                                                           Colors.transparent,
                                                     ),
@@ -386,7 +382,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
-                                                  "assets/loc.png",
+                                                  ImageConstants.loc,
                                                   scale: 2.5,
                                                 ),
                                                 width5SizedBox,
@@ -426,7 +422,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                             .start,
                                                     children: [
                                                       Image.asset(
-                                                        "assets/watch.png",
+                                                        ImageConstants.watch,
                                                         scale: 2.5,
                                                       ),
                                                       width5SizedBox,
@@ -463,7 +459,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
-                                                  "assets/email.png",
+                                                  ImageConstants.email,
                                                   scale: 4,
                                                   color: AppColors.blacklight,
                                                 ),
@@ -495,7 +491,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
-                                                  "assets/calling.png",
+                                                  ImageConstants.calling,
                                                   color: AppColors.blacklight,
                                                   scale: 4,
                                                 ),
@@ -526,7 +522,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                         padding:
                                             const EdgeInsets.only(left: 10),
                                         child: Image.asset(
-                                          "assets/circleedit.png",
+                                          ImageConstants.circleedit,
                                           scale: 2.8,
                                         ),
                                       ),

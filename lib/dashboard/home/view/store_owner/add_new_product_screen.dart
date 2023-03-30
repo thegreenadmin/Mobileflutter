@@ -9,8 +9,8 @@ import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.d
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-
-import '../../../../utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class AddNewProductScreen extends StatefulWidget {
   const AddNewProductScreen({super.key});
@@ -64,7 +64,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -125,7 +125,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 manageStoreController.selectImages(true);
                               },
                               child: Image.asset(
-                                "assets/uploadbutton.png",
+                                ImageConstants.uploadbutton,
                                 scale: 3,
                               ),
                             ),
@@ -161,7 +161,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
-                                                    "assets/upload.png",
+                                                    ImageConstants.upload,
                                                     scale: 2.5,
                                                   ),
                                                 ]),

@@ -12,9 +12,8 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -130,7 +129,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: InputDecoration(
                           isDense: true,
                           prefixIcon: Image.asset(
-                            "assets/profile.png",
+                            ImageConstants.profile,
                             scale: 2.8,
                           ),
                           hintText: StringConstants.firstNameText,
@@ -195,7 +194,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
-                            "assets/profile.png",
+                            ImageConstants.profile,
                             scale: 2.8,
                           ),
                           hintText: StringConstants.lastNameText,
@@ -263,7 +262,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
-                            "assets/email.png",
+                            ImageConstants.email,
                             scale: 3,
                           ),
                           hintText: StringConstants.emailText,
@@ -320,7 +319,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         prefixIcon: Image.asset(
-                          "assets/calling.png",
+                          ImageConstants.calling,
                           scale: 2.8,
                         ),
                         alignLabelWithHint: true,
@@ -457,7 +456,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           prefixIcon: Image.asset(
-                            "assets/calendar.png",
+                            ImageConstants.calendar,
                             scale: 2.8,
                           ),
                         ),
@@ -522,7 +521,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         iconR: true,
                         fontSize: 16,
                         imageR: Image.asset(
-                          "assets/arrowright.png",
+                          ImageConstants.arrowright,
                           scale: 3,
                         )),
                     height20SizedBox,

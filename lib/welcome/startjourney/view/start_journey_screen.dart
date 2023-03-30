@@ -4,6 +4,7 @@ import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/welcome/startjourney/controller/start_journey_controller.dart';
@@ -28,7 +29,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
             height: WidgetConstants.screenHeight,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/startJourneyBg.png"),
+                image: AssetImage(ImageConstants.startJourneyBg),
                 fit: BoxFit.cover,
               ),
             ),
@@ -37,10 +38,10 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
             child: Column(
               children: [
-                Image.asset("assets/greenmall420.png"),
+                Image.asset(ImageConstants.greenmall420),
                 height10SizedBox,
                 Image.asset(
-                  "assets/420.png",
+                  ImageConstants.fourtwenty,
                   scale: 3,
                 ),
               ],
@@ -113,7 +114,6 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               ))
         ],
       )),
-      //  ),
     );
   }
 }

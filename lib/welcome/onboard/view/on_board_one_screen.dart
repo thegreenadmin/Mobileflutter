@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OnBoardOne extends StatefulWidget {
@@ -22,7 +23,7 @@ class OnBoardOneState extends State<OnBoardOne> {
               child: Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/onBoardBg.png"),
+                        image: AssetImage(ImageConstants.onBoardBg),
                         fit: BoxFit.cover)),
               ),
             ),
@@ -38,18 +39,18 @@ class OnBoardOneState extends State<OnBoardOne> {
                         padding: const EdgeInsets.only(top: 0),
                         height: WidgetConstants.screenHeight * 0.40,
                         width: WidgetConstants.screenWidth,
-                        child: Image.asset("assets/onBoardOne.png")),
+                        child: Image.asset(ImageConstants.onBoardOne)),
                     height20SizedBox,
-                    const Text.rich(
+                    Text.rich(
                       TextSpan(
                         children: [
                           TextSpan(
-                              text: "Find Store",
-                              style: TextStyle(
+                              text: StringConstants.findStoreText,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 24)),
                           TextSpan(
-                            text: ' near you',
-                            style: TextStyle(
+                            text: StringConstants.nearYouText,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 24,
                                 color: AppColors.primary),

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
-import 'package:thegreenmall/utils/alert_dailogue.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -56,7 +56,7 @@ class _OffersScreenState extends State<OffersScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -121,7 +121,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      "assets/nodata.png",
+                                      ImageConstants.nodata,
                                       scale: 8,
                                       color: AppColors.primary,
                                     ),
@@ -178,7 +178,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       .dynamicUrl!
                                                       .isEmpty
                                               ? const AssetImage(
-                                                  "assets/nopicfound.png",
+                                                  ImageConstants.nopicfound,
                                                 ) as ImageProvider
                                               : NetworkImage(offersController
                                                   .getUserOfferlist[index]
@@ -213,7 +213,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                             child: Row(
                                               children: [
                                                 Image.asset(
-                                                  "assets/loc.png",
+                                                  ImageConstants.loc,
                                                   scale: 3,
                                                 ),
                                                 width6SizedBox,
@@ -282,7 +282,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 .dynamicUrl!
                                                                 .isEmpty
                                                         ? Image.asset(
-                                                            "assets/medicine.png",
+                                                            ImageConstants
+                                                                .medicine,
                                                             width: WidgetConstants
                                                                     .screenWidth *
                                                                 0.8,
@@ -368,7 +369,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      "assets/nodata.png",
+                                      ImageConstants.nodata,
                                       scale: 8,
                                       color: AppColors.primary,
                                     ),
@@ -469,7 +470,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? const AssetImage(
-                                                    "assets/nopicfound.png",
+                                                    ImageConstants.nopicfound,
                                                   ) as ImageProvider
                                                 : NetworkImage(offersController
                                                     .getOwnerOfferlist[index]
@@ -536,7 +537,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                     });
                                                   },
                                                   child: Image.asset(
-                                                    "assets/edit.png",
+                                                    ImageConstants.edit,
                                                     scale: 3,
                                                   ),
                                                 ),
@@ -548,7 +549,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                               child: Row(
                                                 children: [
                                                   Image.asset(
-                                                    "assets/loc.png",
+                                                    ImageConstants.loc,
                                                     scale: 3,
                                                   ),
                                                   width6SizedBox,
@@ -601,7 +602,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             .dynamicUrl!
                                                             .isEmpty
                                                     ? Image.asset(
-                                                        "assets/medicine.png",
+                                                        ImageConstants.medicine,
                                                         width: WidgetConstants
                                                                 .screenWidth *
                                                             0.8,

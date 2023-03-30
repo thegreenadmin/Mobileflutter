@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_s
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -74,7 +75,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -99,7 +100,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      "assets/nodata.png",
+                                      ImageConstants.nodata,
                                       scale: 8,
                                       color: AppColors.primary,
                                     ),
@@ -205,7 +206,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                               .dynamicUrl
                                                               .toString())
                                                       : const AssetImage(
-                                                          "assets/nopicfound.png",
+                                                          ImageConstants
+                                                              .nopicfound,
                                                         ) as ImageProvider,
                                               backgroundColor:
                                                   Colors.transparent,
@@ -271,7 +273,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                     .start,
                                                             children: [
                                                               Image.asset(
-                                                                "assets/loc.png",
+                                                                ImageConstants
+                                                                    .loc,
                                                                 scale: 3,
                                                               ),
                                                               width3SizedBox,
@@ -395,7 +398,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                           padding: const EdgeInsets.only(
                                               top: 20.0, left: 10),
                                           child: Image.asset(
-                                            "assets/edit.png",
+                                            ImageConstants.edit,
                                             scale: 2.8,
                                           ),
                                         ),

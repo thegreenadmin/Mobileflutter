@@ -9,6 +9,7 @@ import 'package:thegreenmall/authentication/login/controller/login_controller.da
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -61,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Get.back();
               },
               style: OutlinedButton.styleFrom(
-                minimumSize: Size.zero, // Set this
+                minimumSize: Size.zero,
                 padding: EdgeInsets.zero,
                 side: BorderSide(width: 0.0, color: AppColors.blacklight),
                 shape: const CircleBorder(),
@@ -117,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           flagsButtonMargin: const EdgeInsets.all(10),
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                            prefixIcon: Image.asset("assets/calling.png"),
+                            prefixIcon: Image.asset(ImageConstants.calling),
                             alignLabelWithHint: true,
                             hintText: StringConstants.mobileText,
                             hintStyle: const TextStyle(
@@ -180,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             iconL: false,
                             fontSize: 16,
                             imageR: Image.asset(
-                              "assets/arrowright.png",
+                             ImageConstants.arrowright,
                               scale: 3,
                             )),
                       ],

@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/my_store_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageStoreMainScreen extends StatefulWidget {
@@ -90,8 +91,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
                   image: ownerStoresController.storeImage!.value.isEmpty
-                      ? const AssetImage(
-                          "assets/nopicfound.png",
+                      ?  const AssetImage(
+                         ImageConstants.nopicfound,
                         ) as ImageProvider
                       : NetworkImage(ownerStoresController.storeImage!.value),
                 ),
@@ -155,7 +156,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 Row(
                                   children: [
                                     Image.asset(
-                                      "assets/loc.png",
+                                        ImageConstants.loc,
                                       color: AppColors.white,
                                       scale: 2,
                                     ),

@@ -184,6 +184,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  gato:
+    dependency: transitive
+    description:
+      name: gato
+      sha256: "03fa3a33d50f71a912e30827ddf47c89e06e9acfd2b6b178aff0e1aa2f1e8b90"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5+1"
   geocoder2:
     dependency: "direct main"
     description:
@@ -256,6 +264,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  global_configs:
+    dependency: "direct main"
+    description:
+      name: global_configs
+      sha256: "579eece00dc57e29ee08ec2a611d5aae586a31c94d71d2c72a40c1a82e1fb072"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   google_api_headers:
     dependency: transitive
     description:

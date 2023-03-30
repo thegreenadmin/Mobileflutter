@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_category_controll
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class AddNewCategoryScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -108,7 +109,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,

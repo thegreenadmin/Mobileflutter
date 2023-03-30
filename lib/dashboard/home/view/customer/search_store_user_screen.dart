@@ -8,6 +8,7 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
@@ -33,7 +34,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   TabController? _tabController;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
-  var kGoogleApiKey = "AIzaSyApn9TIiD-soa2XRoqHvaZTLMY0zT7o-7Y";
+  var kGoogleApiKey = "";
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
@@ -278,7 +279,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     });
   }
 
+  late GlobalConfigs secureData;
+
   void updateCurrentLocation() async {
+    secureData =
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     Position currentLocation = await Utility.fetchCurrentLocation();
     updateMap(currentLocation.latitude, currentLocation.longitude);
   }

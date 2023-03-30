@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:get/get.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OnBoardTwo extends StatefulWidget {
@@ -23,7 +23,7 @@ class OnBoardTwoState extends State<OnBoardTwo> {
               child: Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage("assets/onBoardBg.png"),
+                  image: AssetImage(ImageConstants.onBoardBg),
                   fit: BoxFit.cover,
                 )),
               ),
@@ -39,19 +39,19 @@ class OnBoardTwoState extends State<OnBoardTwo> {
                     Container(
                         padding: const EdgeInsets.only(top: 0),
                         height: WidgetConstants.screenHeight * 0.40,
-                        //width: WidgetConstants.screenWidth * 0.35,
-                        child: Image.asset("assets/onBoardTwo.png")),
+                        child: Image.asset(ImageConstants.onBoardTwo)),
                     height20SizedBox,
-                    const Text.rich(
+                    Text.rich(
                       TextSpan(
                         children: [
                           TextSpan(
-                              text: "Shop your favorite",
-                              style: TextStyle(
+                              text: StringConstants.shopYourFavouriteText,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 24)),
                           TextSpan(
-                            text: ' product',
-                            style: TextStyle(
+                            text:
+                                " ${StringConstants.productText.toLowerCase()}",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 24,
                                 color: AppColors.primary),

@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -55,7 +56,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -79,7 +80,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   Row(
                     children: [
                       Image.asset(
-                        "assets/aboutUs.png",
+                        ImageConstants.aboutUs,
                         color: AppColors.primary,
                         scale: 2.5,
                       ),
@@ -92,7 +93,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     ],
                   ),
                   Image.asset(
-                    "assets/arrowForward.png",
+                    ImageConstants.arrowForward,
                     scale: 3.4,
                     color: AppColors.blacklight,
                   )
@@ -114,7 +115,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 Row(
                   children: [
                     Image.asset(
-                      "assets/faq.png",
+                      ImageConstants.faq,
                       color: AppColors.primary,
                       scale: 2.5,
                     ),
@@ -127,7 +128,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   ],
                 ),
                 Image.asset(
-                  "assets/arrowForward.png",
+                  ImageConstants.arrowForward,
                   scale: 3.4,
                   color: AppColors.blacklight,
                 )
@@ -150,7 +151,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 Row(
                   children: [
                     Image.asset(
-                      "assets/contactUs.png",
+                      ImageConstants.contactUs,
                       color: AppColors.primary,
                       scale: 2.5,
                     ),
@@ -163,7 +164,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   ],
                 ),
                 Image.asset(
-                  "assets/arrowForward.png",
+                  ImageConstants.arrowForward,
                   scale: 3.4,
                   color: AppColors.blacklight,
                 )
@@ -184,7 +185,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 Row(
                   children: [
                     Image.asset(
-                      "assets/terms.png",
+                      ImageConstants.terms,
                       color: AppColors.primary,
                       scale: 2.5,
                     ),
@@ -197,7 +198,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   ],
                 ),
                 Image.asset(
-                  "assets/arrowForward.png",
+                  ImageConstants.arrowForward,
                   scale: 3.4,
                   color: AppColors.blacklight,
                 )
@@ -218,7 +219,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 Row(
                   children: [
                     Image.asset(
-                      "assets/privacy.png",
+                      ImageConstants.privacy,
                       color: AppColors.primary,
                       scale: 2.5,
                     ),
@@ -231,7 +232,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   ],
                 ),
                 Image.asset(
-                  "assets/arrowForward.png",
+                  ImageConstants.arrowForward,
                   scale: 3.4,
                   color: AppColors.blacklight,
                 )
