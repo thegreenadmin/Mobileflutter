@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/tool_tip.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProductListScreen extends StatefulWidget {
@@ -61,6 +62,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back();
+
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -181,12 +183,35 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              storeHomeMainController.category.value.categoryName ?? "",
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: AppColors.black),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  storeHomeMainController.category.value.categoryName ?? "",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                      color: AppColors.black),
+                ),
+                PopupMenuButton(
+                  offset: const Offset(0, 25),
+                  shape: const TooltipShape(),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: Image.asset(ImageConstants.productFilter,scale: 2.5,),
+                  onSelected: (String value) async {
+                    FocusScope.of(context)
+                        .requestFocus(FocusNode());
+                  },
+                  itemBuilder: (context) =>
+                  createOptionsPopUpList(Get.context)!,
+                ),
+                // InkWell(
+                //     onTap: (){
+                //
+                //     },
+                //     child: Image.asset(ImageConstants.productFilter,scale: 2.5,))
+              ],
             ),
             height20SizedBox,
             Obx(
@@ -346,4 +371,66 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
       ),
     );
   }
+
+
+  List<PopupMenuEntry<String>>? createOptionsPopUpList(context) {
+    return List.generate(2, (index) {
+      if (index == 0) {
+        return PopupMenuItem<String>(
+          value: StringConstants.lowToHighText,
+          child: Column(
+            children: [
+              SizedBox(
+                width: 130,
+                child: GestureDetector(
+                  onTap: () async {
+                    await storeHomeMainController.apiFeatureProductListApi(categoryId: storeHomeMainController.category.value.categoryId??"0",
+                        orderBy:"2",orderType: "2");
+                  Get.back();
+                    },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.lowToHighText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+        return PopupMenuItem<String>(
+          value: StringConstants.heightToLowText,
+          child: SizedBox(
+            width: 130,
+            child: GestureDetector(
+              onTap: () async{
+                await  storeHomeMainController.apiFeatureProductListApi(categoryId: storeHomeMainController.category.value.categoryId??"0",
+                    orderBy:"2",);
+                Get.back();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.heightToLowText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+    });
+  }
+
 }

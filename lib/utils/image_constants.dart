@@ -56,7 +56,7 @@ class ImageConstants {
   static const String image = '$assetsIcon/image.png';
   static const String inboxexample = '$assetsIcon/inboxexample.png';
   static const String info = '$assetsIcon/info.png';
-  static const String instore = '$assetsIcon/instore.png';
+  static const String instore = '$assetsIcon/inStore.png';
   //L
   static const String liked = '$assetsIcon/liked.png';
   static const String loc = '$assetsIcon/loc.png';
@@ -91,6 +91,7 @@ class ImageConstants {
   static const String profile = '$assetsIcon/profile.png';
   static const String pickUp = '$assetsIcon/pickup.png';
   static const String person = '$assetsIcon/person.png';
+  static const String productFilter = '$assetsIcon/productFilter.png';
   //R
   static const String role = '$assetsIcon/role.png';
   //S

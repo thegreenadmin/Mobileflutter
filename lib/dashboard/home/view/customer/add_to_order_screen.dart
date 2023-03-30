@@ -61,6 +61,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
+                                storeHomeMainController.itemsCount.value = 0;
                                 Get.back();
                               },
                               icon: const Icon(
@@ -309,13 +310,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   children: [
                                     InkWell(
                                         onTap: () {
-                                            storeHomeMainController.quantity.value =
+                                            storeHomeMainController.itemsCount.value =
                                             storeHomeMainController
-                                                .quantity.value != 0
+                                                .itemsCount.value != 0
                                                 ? storeHomeMainController
-                                                .quantity.value - 1
+                                                .itemsCount.value - 1
                                                 : storeHomeMainController
-                                                .quantity.value;
+                                                .itemsCount.value;
                                         },
                                         child: Image.asset(
                                           ImageConstants.subtract,
@@ -323,9 +324,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         )),
                                     width10SizedBox,
                                     Text(
-                                        storeHomeMainController.quantity.toString().length < 2
-                                          ? storeHomeMainController.quantity.toString().padLeft(2,'0')
-                                          : storeHomeMainController.quantity.toString(),
+                                        storeHomeMainController.itemsCount.toString().length < 2
+                                          ? storeHomeMainController.itemsCount.toString().padLeft(2,'0')
+                                          : storeHomeMainController.itemsCount.toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -334,10 +335,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     width10SizedBox,
                                     InkWell(
                                       onTap: () {
-                                          storeHomeMainController.quantity.value =
-                                          storeHomeMainController.quantity.value + 1;
+                                          storeHomeMainController.itemsCount.value =
+                                          storeHomeMainController.itemsCount.value + 1;
                                           print("storeHomeMainController.quantity add");
-                                          print(storeHomeMainController.quantity.value.toString());
+                                          print(storeHomeMainController.itemsCount.value.toString());
 
                                       },
                                       child: Image.asset(
@@ -462,7 +463,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () {
-                      if(storeHomeMainController.quantity.value!=0){
+                      if(storeHomeMainController.itemsCount.value!=0){
                         storeHomeMainController.apiAddToCart(context);
                       }else{
                         Utility.showToast("Please add at least one item in cart");

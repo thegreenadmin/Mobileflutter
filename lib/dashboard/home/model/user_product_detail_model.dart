@@ -254,11 +254,11 @@ class Product {
 class CartItem {
   CartItem({
     this.cartItemId,
-    this.quantity,
+    this.itemsCount,
   });
 
   String? cartItemId;
-  int? quantity;
+  int? itemsCount;
 
   CartItem copyWith({
     String? cartItemId,
@@ -266,17 +266,17 @@ class CartItem {
   }) =>
       CartItem(
         cartItemId: cartItemId ?? this.cartItemId,
-        quantity: quantity ?? this.quantity,
+        itemsCount: itemsCount ?? this.itemsCount,
       );
 
   factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
     cartItemId: json["cart_item_id"],
-    quantity: json["quantity"],
+    itemsCount: json["items_count"],
   );
 
   Map<String, dynamic> toJson() => {
     "cart_item_id": cartItemId,
-    "quantity": quantity,
+    "items_count": itemsCount,
   };
 }
 

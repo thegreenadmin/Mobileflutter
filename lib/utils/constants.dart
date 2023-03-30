@@ -130,6 +130,7 @@ class StringConstants {
   static String helpText = "Help";
   static String historyText = "History";
   static String heightText = "Height";
+  static String heightToLowText = "High to low";
 
   //I
   static String inboxText = "Inbox";
@@ -147,6 +148,7 @@ class StringConstants {
   static String lastNameText = "Last Name";
   static String logoutText = "Logout";
   static String lengthText = "Length";
+  static String lowToHighText = "Low to tigh";
   //M
   static String messageText = "Message";
   static String moreText = "More";

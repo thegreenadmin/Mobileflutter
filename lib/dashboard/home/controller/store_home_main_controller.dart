@@ -61,7 +61,7 @@ class StoreHomeMainController extends GetxController {
 
 
   RxInt selectedIndex = 0.obs;
-  RxInt quantity = 0.obs;
+  RxInt itemsCount = 0.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
@@ -281,7 +281,7 @@ class StoreHomeMainController extends GetxController {
     Map<String, dynamic> data = {
       "product_id": int.parse(
           productDetailResponse.value.data?.product?.productId ?? "0"),
-      "items_count": quantity.value
+      "items_count": itemsCount.value
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -296,7 +296,7 @@ class StoreHomeMainController extends GetxController {
 
       debugPrint("Add To Cart  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
-        quantity.value = 0;
+        itemsCount.value = 0;
         addToCartDailogue(context);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -574,8 +574,8 @@ class StoreHomeMainController extends GetxController {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
         if (productDetailResponse.value.data!.product!.cartItems!.isNotEmpty) {
-          quantity.value = productDetailResponse
-              .value.data!.product!.cartItems!.first.quantity!;
+          itemsCount.value = productDetailResponse
+              .value.data!.product!.cartItems!.first.itemsCount!;
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
@@ -592,6 +592,8 @@ class StoreHomeMainController extends GetxController {
   Future apiFeatureProductListApi(
       {bool isFavouriteProducts = false,
       isFeaturedProduct = false,
+        String orderBy = "1",
+        String orderType = "1",
       String categoryId = "0"}) async {
     isLoading.value = true;
     debugPrint("FeatureProductList URL**********"
@@ -607,8 +609,8 @@ class StoreHomeMainController extends GetxController {
       "store_id": storeAddress.value.store?.storeId,
       "page": 1,
       "page_size": 100,
-      "order_by": "product_id",
-      "order_type": "DESC",
+      "order_by": orderBy=="1"? "product_id" :"selling_price",
+      "order_type": orderType=="1"? "DESC" :"ASC",
       "category_id": isFeaturedProduct == false && categoryId != "0"
           ? int.parse(categoryId)
           : null,
@@ -632,7 +634,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: false)
+            showLoading: orderBy=="2"?true:false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");

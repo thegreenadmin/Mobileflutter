@@ -48,7 +48,6 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     apiGetNearByStores();
     setupScrollController(Get.context);
   }
