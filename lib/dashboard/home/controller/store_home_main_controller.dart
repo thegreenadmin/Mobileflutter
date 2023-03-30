@@ -247,6 +247,7 @@ class StoreHomeMainController extends GetxController {
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
+
         Utility.showToast(value?.body['message']);
       }
     });
