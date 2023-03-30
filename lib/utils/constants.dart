@@ -52,6 +52,7 @@ class StringConstants {
   //C
   static String createYourAccountText = "Create your Account";
   static String createAccountText = "Create account";
+  static String continueShoppingText = "Continue Shopping";
   static String createAnAccountText = "Create an account";
   static String createAccountDetailText =
       "Enter your details to create an\naccount";
@@ -197,6 +198,7 @@ class StringConstants {
   static String organisationTypeText = "Organisation Type";
   static String offerFor = "Offer For";
   static String okayText = "Okay";
+  static String orderConfirmationText = "Order Confirmation";
 
   //P
   static String profileText = "Profile";
@@ -281,6 +283,7 @@ class StringConstants {
   static String shopYourFavouriteText = "Shop your favorite";
 
   //T
+  static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
   static String termsAndConditionsText = "Terms & Conditions";
   static String transactionHistoryText = "Transaction History";

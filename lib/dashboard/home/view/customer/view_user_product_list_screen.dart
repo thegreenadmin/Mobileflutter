@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -40,7 +39,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               null ||
                           storeHomeMainController.storeAddress.value.store!
                               .image!.dynamicUrl!.isEmpty
-                      ? const AssetImage("assets/nopicfound.png")
+                      ? const AssetImage(ImageConstants.nopicfound,)
                           as ImageProvider
                       : NetworkImage(storeHomeMainController
                               .storeAddress.value.store?.image?.dynamicUrl
@@ -73,11 +72,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                         ?.isFavouriteStore ==
                                     true
                                 ? Image.asset(
-                                    "assets/liked.png",
+                              ImageConstants.liked,
                                     scale: 2.8,
                                   )
                                 : Image.asset(
-                                    "assets/favoutline.png",
+                              ImageConstants.favoutline,
                                     scale: 2.8,
                                   ),
                           ]),
@@ -100,7 +99,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                           null ||
                                       storeHomeMainController.storeAddress.value
                                           .store!.logo!.dynamicUrl!.isEmpty
-                                  ? const AssetImage("assets/nopicfound.png")
+                                  ? const AssetImage(ImageConstants.nopicfound,)
                                       as ImageProvider
                                   : NetworkImage(storeHomeMainController
                                           .storeAddress
@@ -130,7 +129,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               Row(
                                 children: [
                                   Image.asset(
-                                    "assets/loc.png",
+                                    ImageConstants.loc,
                                     color: AppColors.white,
                                     scale: 2,
                                   ),
@@ -200,7 +199,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           children: [
                             Center(
                               child: Image.asset(
-                                "assets/nopicfound.png",
+                                ImageConstants.nopicfound,
                                 scale: 8,
                                 color: AppColors.primary,
                               ),
@@ -274,7 +273,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 height: 148,
                                               )
                                             : Image.asset(
-                                                'assets/nopicfound.png',
+                                          ImageConstants.nopicfound,
                                                 fit: BoxFit.fill,
                                                 height: 148,
                                               ),
@@ -285,11 +284,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                       .isFavouriteProduct ==
                                                   true
                                               ? Image.asset(
-                                                  "assets/liked.png",
+                                            ImageConstants.liked,
                                                   scale: 3,
                                                 )
                                               : Image.asset(
-                                                  "assets/fav.png",
+                                            ImageConstants.fav,
                                                   scale: 3,
                                                 ),
                                         )

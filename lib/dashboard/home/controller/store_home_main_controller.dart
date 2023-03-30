@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
@@ -18,9 +19,11 @@ import 'package:thegreenmall/dashboard/home/model/user_store_details_response.da
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -77,6 +80,13 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
+  RxList<Categories> stepInd = [
+    Categories(id: 1,name: "Received",isSelected: false),
+    Categories(id: 2,name: "InProgress",isSelected: false),
+    Categories(id: 3,name: "Ready to Pick",isSelected: false),
+    Categories(id: 4,name: "Complete",isSelected: false),
+  ].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -85,7 +95,6 @@ class StoreHomeMainController extends GetxController {
     apiGetStoreDetailsApi();
     apiGetUserDetailsApi();
     onIndexChange(0);
-
   }
 
   void onIndexChange(int i) async {
@@ -121,11 +130,12 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("GET  Store Categories  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201
+          || value?.body["status"] == ApiConstants.statusCode200) {
         categoriesListResponse =
             categories.StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -154,13 +164,13 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("GET USER DETAIL *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userAddress.value = getUserDetailModel.data!.user!.userAddresses!;
         if (userAddress.isNotEmpty) {
           selectedUserAddress.value = userAddress.first;
         }
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -191,11 +201,11 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET  Cart List  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartData.value = cartListResponse.data?? cart.Data();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -242,9 +252,9 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("  Place Order *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Get.to(const OrderConfirmationScreen());
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -285,10 +295,10 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("Add To Cart  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         quantity.value = 0;
         addToCartDailogue(context);
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -324,9 +334,9 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Update Cart  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         apiGetCartListApi();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -361,9 +371,9 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Delete Cart  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         apiGetCartListApi();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -388,7 +398,7 @@ class StoreHomeMainController extends GetxController {
             height10SizedBox,
             Center(
               child: Image.asset(
-                'assets/tick.png',
+                ImageConstants.tick,
                 scale: 3,
               ),
             ),
@@ -497,11 +507,11 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         offersListResponse =
             offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -530,9 +540,9 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("  Store Details*******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse = store.StoreDetailsResponse.fromJson(value?.body);
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -560,7 +570,7 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
         if (productDetailResponse.value.data!.product!.cartItems!.isNotEmpty) {
@@ -568,7 +578,7 @@ class StoreHomeMainController extends GetxController {
               .value.data!.product!.cartItems!.first.quantity!;
         }
         update();
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -626,12 +636,12 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         featureProductListResponse =
             feature_product.FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =
             featureProductListResponse.data?.products ?? [];
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -683,7 +693,7 @@ class StoreHomeMainController extends GetxController {
                                 Get.back();
                               },
                               child: Image.asset(
-                                "assets/cross.png",
+                                ImageConstants.cross,
                                 scale: 3,
                               ))
                         ],
@@ -737,11 +747,11 @@ class StoreHomeMainController extends GetxController {
                                               selectedUserAddress
                                                   .value.userAddressId
                                           ? Image.asset(
-                                              "assets/whitetick.png",
+                                        ImageConstants.whitetick,
                                               scale: 3.5,
                                             )
                                           : Image.asset(
-                                              "assets/circleunfill.png",
+                                        ImageConstants.circleunfill,
                                               scale: 4,
                                             ),
                                     ],

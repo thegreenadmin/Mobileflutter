@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.da
 import 'package:thegreenmall/dashboard/home/view/customer/view_user_product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreMenuScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                     children: [
                       Center(
                         child: Image.asset(
-                          "assets/nodata.png",
+                          ImageConstants.nodata,
                           scale: 8,
                           color: AppColors.primary,
                         ),
@@ -97,7 +98,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                     radius: 25.0,
                                     backgroundImage:
                                     storeHomeMainController.categoriesList[index].image?.dynamicUrl == null
-                                        ? const AssetImage("assets/storeicon.png")
+                                        ? const AssetImage(ImageConstants.nopicfound,)
                                     as ImageProvider : NetworkImage(storeHomeMainController.categoriesList[index].image?.dynamicUrl.toString() ?? ""),
                                     backgroundColor: Colors.transparent,
                                   ),

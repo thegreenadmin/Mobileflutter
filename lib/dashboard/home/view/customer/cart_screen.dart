@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import '../account_screen.dart';
@@ -63,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
                               ],
                             ),
                             Image.asset(
-                              "assets/homeMall.png",
+                              ImageConstants.homeMall,
                               scale: 4,
                             )
                           ]),
@@ -124,7 +125,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       storeHomeMainController.cartItems[i].product?.image?.dynamicUrl??"",
                                                       fit: BoxFit.cover,
                                                     ): Image.asset(
-                                                        "assets/nopicfound.png",
+                                                      ImageConstants.nopicfound,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -187,7 +188,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                 storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].itemsCount!-1):null;
                                                               },
                                                               child: Image.asset(
-                                                                "assets/subtract.png",
+                                                                ImageConstants.subtract,
                                                                 scale: 3,
                                                               )),
                                                           width6SizedBox,
@@ -204,7 +205,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               storeHomeMainController.apiUpdateCart(cartItemId:int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"),quantity:storeHomeMainController.cartItems[i].itemsCount!+1);
                                                             },
                                                             child: Image.asset(
-                                                              "assets/add.png",
+                                                              ImageConstants.add,
                                                               scale: 3,
                                                             ),
                                                           )
@@ -217,7 +218,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 InkWell(
                                                     onTap: (){
                                                       storeHomeMainController.apiDeleteCart(cartItemId: int.parse(storeHomeMainController.cartItems[i].cartItemId??"0"));
-                                                    },child: Image.asset("assets/deleteicon.png",scale: 3.0,)),
+                                                    },child: Image.asset(ImageConstants.deleteicon,scale: 3.0,)),
                                               ],
                                             ),
                                           ]),
@@ -270,18 +271,18 @@ class _CartScreenState extends State<CartScreen> {
                                         fontSize: 16,
                                         imageL:storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].deliveryServiceId=="1"?
                                         Image.asset(
-                                          "assets/inStore.png",
+                                          ImageConstants.instore,
                                           scale: 2.8,
                                           color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
                                               ? AppColors.white:AppColors.primary,
                                         ):storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].deliveryServiceId=="2"?
                                         Image.asset(
-                                          "assets/delivery.png",
+                                          ImageConstants.delivery,
                                           scale: 2.8,  color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
                                             ? AppColors.white:AppColors.primary,
                                         ):
                                         Image.asset(
-                                          "assets/curb.png",
+                                          ImageConstants.curb,
                                           scale: 2.8,  color: storeHomeMainController.storeDeliveryServiceId.value ==  storeHomeMainController.storeDetailsResponse.data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
                                             ? AppColors.white:AppColors.primary,
                                         ),
@@ -311,7 +312,7 @@ class _CartScreenState extends State<CartScreen> {
                                         Row(
                                               children: [
                                                 Image.asset(
-                                                  "assets/loc.png",
+                                                  ImageConstants.loc,
                                                   scale: 2.5,
                                                 ),
                                                 width10SizedBox,

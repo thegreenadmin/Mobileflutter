@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -220,7 +221,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                     null ||
                                 storeHomeMainController.storeAddress.value
                                     .store!.image!.dynamicUrl!.isEmpty
-                            ? const AssetImage("assets/storeicon.png")
+                            ? const AssetImage(ImageConstants.nopicfound,)
                                 as ImageProvider
                             : NetworkImage(storeHomeMainController
                                     .storeAddress.value.store?.image?.dynamicUrl
@@ -254,11 +255,11 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                               .store?.isFavouriteStore ==
                                           true
                                       ? Image.asset(
-                                          "assets/liked.png",
+                                    ImageConstants.liked,
                                           scale: 2.8,
                                         )
                                       : Image.asset(
-                                          "assets/favoutline.png",
+                                    ImageConstants.favoutline,
                                           scale: 2.8,
                                         ),
                                 ]),
@@ -287,7 +288,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                 .dynamicUrl!
                                                 .isEmpty
                                         ? const AssetImage(
-                                                "assets/storeicon.png")
+                                      ImageConstants.nopicfound,)
                                             as ImageProvider
                                         : NetworkImage(storeHomeMainController
                                                 .storeAddress
@@ -317,7 +318,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                     Row(
                                       children: [
                                         Image.asset(
-                                          "assets/loc.png",
+                                          ImageConstants.loc,
                                           color: AppColors.white,
                                           scale: 2,
                                         ),
@@ -362,12 +363,12 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                 fontWeight: FontWeight.w400)),
                                         width10SizedBox,
                                         Image.asset(
-                                          "assets/door.png",
+                                          ImageConstants.door,
                                           scale: 2.5,
                                         ),
                                         width8SizedBox,
                                         Image.asset(
-                                          "assets/call.png",
+                                          ImageConstants.call,
                                           scale: 2.5,
                                         )
                                       ],

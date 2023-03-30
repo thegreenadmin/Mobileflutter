@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StorePreviousScreen extends StatefulWidget {
@@ -43,13 +44,13 @@ class _StorePreviousScreenState extends State<StorePreviousScreen> {
                           alignment: Alignment.topRight,
                           children: [
                             Image.asset(
-                              'assets/exampleee.png',
+                              ImageConstants.nopicfound,
                               fit: BoxFit.fill,
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Image.asset(
-                                "assets/fav.png",
+                                ImageConstants.fav,
                                 scale: 3,
                               ),
                             )

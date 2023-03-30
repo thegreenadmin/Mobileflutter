@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -39,7 +40,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               null ||
                           storeHomeMainController.storeAddress.value.store!
                               .image!.dynamicUrl!.isEmpty
-                      ? const AssetImage("assets/storeicon.png")
+                      ? const AssetImage(ImageConstants.nopicfound)
                           as ImageProvider
                       : NetworkImage(storeHomeMainController
                               .storeAddress.value.store?.image?.dynamicUrl
@@ -72,11 +73,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         ?.isFavouriteStore ==
                                     true
                                 ? Image.asset(
-                                    "assets/liked.png",
+                              ImageConstants.liked,
                                     scale: 2.8,
                                   )
                                 : Image.asset(
-                                    "assets/favoutline.png",
+                              ImageConstants.favoutline,
                                     scale: 2.8,
                                   ),
                           ]),
@@ -99,7 +100,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           null ||
                                       storeHomeMainController.storeAddress.value
                                           .store!.logo!.dynamicUrl!.isEmpty
-                                  ? const AssetImage("assets/storeicon.png")
+                                  ? const AssetImage(ImageConstants.nopicfound)
                                       as ImageProvider
                                   : NetworkImage(storeHomeMainController
                                           .storeAddress
@@ -129,7 +130,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               Row(
                                 children: [
                                   Image.asset(
-                                    "assets/loc.png",
+                                    ImageConstants.loc,
                                     color: AppColors.white,
                                     scale: 2,
                                   ),
@@ -197,7 +198,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   storeHomeMainController.productDetailResponse
                                       .value.data!.product!.productImages!.isEmpty
                               ? Image.asset(
-                                  "assets/nopicfound.png",
+                            ImageConstants.nopicfound,
                                   fit: BoxFit.fill,
                                   height: 120,
                                 )
@@ -240,11 +241,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             .data?.product?.isFavouriteProduct ==
                                         true
                                     ? Image.asset(
-                                        "assets/liked.png",
+                                  ImageConstants.liked,
                                         scale: 2.8,
                                       )
                                     : Image.asset(
-                                        "assets/favoutline.png",
+                                  ImageConstants.favoutline,
                                         scale: 2.8,
                                       ),
                               ],
@@ -317,7 +318,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                 .quantity.value;
                                         },
                                         child: Image.asset(
-                                          "assets/subtract.png",
+                                          ImageConstants.subtract,
                                           scale: 2.5,
                                         )),
                                     width10SizedBox,
@@ -340,7 +341,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
                                       },
                                       child: Image.asset(
-                                        "assets/add.png",
+                                        ImageConstants.add,
                                         scale: 2.5,
                                       ),
                                     )

@@ -1,3 +1,4 @@
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -5,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -39,7 +41,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       null ||
                       storeHomeMainController.storeAddress.value.store!
                           .image!.dynamicUrl!.isEmpty
-                      ? const AssetImage("assets/storeicon.png")
+                      ? const AssetImage(ImageConstants.storeicon)
                   as ImageProvider
                       : NetworkImage(storeHomeMainController
                       .storeAddress.value.store?.image?.dynamicUrl
@@ -72,11 +74,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 ?.isFavouriteStore ==
                                 true
                                 ? Image.asset(
-                              "assets/liked.png",
+                              ImageConstants.liked,
                               scale: 2.8,
                             )
                                 : Image.asset(
-                              "assets/favoutline.png",
+                              ImageConstants.favoutline,
                               scale: 2.8,
                             ),
                           ]),
@@ -129,7 +131,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               Row(
                                 children: [
                                   Image.asset(
-                                    "assets/loc.png",
+                                    ImageConstants.loc,
                                     color: AppColors.white,
                                     scale: 2,
                                   ),
@@ -168,179 +170,134 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
           ],
         ),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-              child: Obx(
-                    () => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      height40SizedBox,
-                      Image.asset("assets/tick.png"),
-                      Text(
-                        StringConstants.orderText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.black),
-                      ),
-                      height20SizedBox,
-
-                      height10SizedBox,
-                      Text(
-                        storeHomeMainController.productDetailResponse.value.data
-                            ?.product?.description ??
-                            "",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: AppColors.black),
-                      ),
-                      height20SizedBox,
-                      Text(
-                        StringConstants.otherDetailText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.black),
-                      ),
-                      height20SizedBox,
-
-                      height20SizedBox,
-                      Text(
-                        StringConstants.ratingReviewText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.black),
-                      ),
-                      height20SizedBox,
-                      const Text(
-                        "4.4",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.black),
-                      ),
-                      height20SizedBox,
-                      CustomButton(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [AppColors.primary, AppColors.primary],
-                        ),
-                        onTap: () {
-                          if(storeHomeMainController.quantity.value!=0){
-                            storeHomeMainController.apiAddToCart(context);
-                          }else{
-                            Utility.showToast("Please add at least one item in cart");
-                          }
-
-                        },
-                        height: 50,
-                        text: StringConstants.addToOrderText,
-                        borderRadius: 12,
-                        fontWeight: FontWeight.w500,
-                        iconL: false,
-                        fontSize: 16,
-                      ),
-                      height80SizedBox,
-                    ],
-                  ),
-                ),
-              )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: WidgetConstants.screenHeight*0.1,
-              color: AppColors.primaryBackgroundLight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          StringConstants.payNowText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          StringConstants.clickCollectText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 22.0,
-                              backgroundColor: Colors.white,
-                              child: Image.asset("assets/cart.png",height: 16),),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: Container(
-                                  padding: const EdgeInsets.all(1.5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.red,
-                                    borderRadius: BorderRadius.circular(8.5),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 15,
-                                    minHeight: 15,
-                                  ),
-                                  child:  Obx(()=>
-                                      Text(
-                                        storeHomeMainController.cartItems.length.toString()??"0",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),)
-                              ),
-                            )
-                          ],
-                        ),
-                        width8SizedBox,
-                        CustomButton(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.primary, AppColors.primary],
-                          ),
-                          onTap: () {
-                            Get.to(const CartScreen());
-                          },
-                          height: 45,
-                          width: 120,
-                          text: StringConstants.checkOutText,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconL: false,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            height40SizedBox,
+            Image.asset( ImageConstants.tickBorder,scale:2.2),
+            height20SizedBox,
+            Text(
+              StringConstants.orderConfirmationText,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                  color: AppColors.black),
             ),
-          ),
-        ],
+            height8SizedBox,
+            Text(
+              StringConstants.thankOrderText,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: AppColors.black),
+            ),
+
+            height20SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.black),
+                ),
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.primary),
+                ),
+              ],
+            ),
+            height10SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.black),
+                ),
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.primary),
+                ),
+              ],
+            ),   height10SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 16,
+                      color: AppColors.black),
+                ),
+                Text(
+                  StringConstants.otherDetailText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 16,
+                      color: AppColors.primary),
+                ),
+              ],
+            ),
+            height40SizedBox,
+            EasyStepper(
+              activeStep: 0,
+              lineLength: 55,
+              stepShape: StepShape.circle,
+              borderThickness: 0,
+              padding: 0,
+              stepRadius: 22,
+              lineColor: AppColors.grey,
+              lineType: LineType.normal,
+              activeStepBorderType: BorderType.normal,
+              unreachedStepBorderType: BorderType.normal,
+              finishedStepBorderColor: AppColors.primary,
+              finishedStepTextColor: AppColors.primary,
+              finishedStepBackgroundColor:AppColors.primary,
+              activeStepIconColor: AppColors.primary,
+              showLoadingAnimation: false,
+              unreachedStepIconColor: AppColors.black,
+              unreachedStepTextColor:  AppColors.black,
+              steps:List<EasyStep>.generate(storeHomeMainController.stepInd.length, (index) =>
+                    EasyStep(
+                      customStep: false ?
+                      Image.asset(ImageConstants.blueTick):
+                      Image.asset(ImageConstants.blackTick),
+                      title: storeHomeMainController.stepInd[index].name??"",),),
+              onStepReached: (index) {},
+            ),
+            height40SizedBox,
+            CustomButton(
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.primary, AppColors.primary],
+              ),
+              onTap: () {},
+              height: 50,
+              width: WidgetConstants.screenWidth * 0.5,
+              text: StringConstants.continueShoppingText,
+              borderRadius: 12,
+              fontWeight: FontWeight.w500,
+              iconL: false,
+              fontSize: 16,
+            ),
+            height30SizedBox,
+
+          ],
+        ),
       ),
     );
   }

@@ -13,6 +13,8 @@ class ImageConstants {
   static const String bag = '$assetsIcon/bag.png';
   static const String blackcircle = '$assetsIcon/blackcircle.png';
   static const String bottle = '$assetsIcon/bottle.png';
+  static const String blueTick = '$assetsIcon/blueTick.png';
+  static const String blackTick = '$assetsIcon/blackTick.png';
   //C
   static const String calendar = '$assetsIcon/calendar.png';
   static const String call = '$assetsIcon/call.png';
@@ -105,6 +107,7 @@ class ImageConstants {
   //T
   static const String terms = '$assetsIcon/terms.png';
   static const String tick = '$assetsIcon/tick.png';
+  static const String tickBorder = '$assetsIcon/tickWithBorder.png';
   static const String transactionHistory = '$assetsIcon/transactionHistory.png';
   //U
   static const String union = '$assetsIcon/union.png';
