@@ -72,6 +72,8 @@ class StringConstants {
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
   static String cancelText = "Cancel";
+  static String checkOutText = "Check Out";
+  static String clickCollectText = "Click & Collect";
   //D
   static String deliveryText = "Delivery";
   static String deleteAccountText = "Delete Account";
@@ -213,6 +215,7 @@ class StringConstants {
   static String pickupOptionsText = "Pick-up Options";
   static String permissionText = "Permission";
   static String productText = "Product";
+  static String payNowText = "Pay Now";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
