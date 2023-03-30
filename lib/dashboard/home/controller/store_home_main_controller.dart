@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
@@ -15,6 +16,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -44,14 +46,16 @@ class StoreHomeMainController extends GetxController {
 
   late cart.CartListResponse cartListResponse = cart.CartListResponse();
   RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
-
+  Rx<cart.Data> cartData = cart.Data().obs;
   late feature_product.FeatureProductListResponse featureProductListResponse =
       feature_product.FeatureProductListResponse();
+
   RxList<feature_product.Product> featureProductList =
       <feature_product.Product>[].obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
+
 
   RxInt selectedIndex = 0.obs;
   RxInt quantity = 0.obs;
@@ -81,6 +85,7 @@ class StoreHomeMainController extends GetxController {
     apiGetStoreDetailsApi();
     apiGetUserDetailsApi();
     onIndexChange(0);
+
   }
 
   void onIndexChange(int i) async {
@@ -189,11 +194,62 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == 201 || value?.body["status"] == 200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
+        cartData.value = cartListResponse.data?? cart.Data();
       } else if (value?.body["status"] == 403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //  Place Order Api
+  Future apiPlaceOrder() async {
+    isLoading.value = true;
+    debugPrint("api Place Order URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    List selectedItems = [];
+    for (var element in cartItems) {
+      selectedItems.add(
+        {
+          "cart_item_id":int.parse(element.cartItemId.toString()),
+          "items_count": element.itemsCount,
+        }
+      );
+    }
+
+    Map<String, dynamic> data = {
+      "store_id": int.parse(storeAddress.value.store?.storeId.toString()??"0"),
+      "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
+      "user_address_id":int.parse(userAddressId.value.toString()),
+      "cart_items": selectedItems
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}",
+            headers, showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+
+      debugPrint("  Place Order *******${value?.body}");
+      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+        Get.to(const OrderConfirmationScreen());
+      } else if (value?.body["status"] == 403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+
         Utility.showToast(value?.body['message']);
       }
     });
@@ -500,8 +556,7 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId",
-            headers,
-            showLoading: true)
+            headers, showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");

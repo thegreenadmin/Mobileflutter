@@ -237,6 +237,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                           .featureProductList[i].productId
                                           .toString());
                               Get.to(const AddToOrderScreen());
+                              await storeHomeMainController.apiGetCartListApi();
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

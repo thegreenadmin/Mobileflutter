@@ -41,6 +41,7 @@ class ServerCommunicator {
 //P
 
   String productDetails = 'store/product/details';
+  String placeOrder = 'order/create';
 //Q
 //R
 
