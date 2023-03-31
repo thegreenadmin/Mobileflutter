@@ -18,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.d
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -108,7 +109,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           ],
                         ),
                         Image.asset(
-                          "assets/homeMall.png",
+                          ImageConstants.homeMall,
                           scale: 4,
                         )
                       ]),
@@ -189,7 +190,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         filled: true,
                         isDense: true,
                         prefixIcon: Image.asset(
-                          "assets/search.png",
+                          ImageConstants.search,
                           scale: 4,
                         ),
                         hintText: StringConstants.searchText,
@@ -268,7 +269,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   void updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
     final Uint8List markerIcon =
-        await getBytesFromAsset('assets/marker.png', 60);
+        await getBytesFromAsset(ImageConstants.marker, 60);
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.fromBytes(markerIcon),

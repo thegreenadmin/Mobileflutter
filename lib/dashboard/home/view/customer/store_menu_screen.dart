@@ -38,28 +38,28 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
               child: Obx(
             () => storeHomeMainController.categoriesList.isEmpty
                 ? storeHomeMainController.isLoading.value == true
-                    ? height0SizedBox
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              ImageConstants.nodata,
-                              scale: 8,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          height4SizedBox,
-                          Center(
-                            child: Text(
-                              StringConstants.noCategoriesFoundText,
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      )
+                ? height0SizedBox
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          ImageConstants.nodata,
+                          scale: 8,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      height4SizedBox,
+                      Center(
+                        child: Text(
+                          StringConstants.noCategoriesFoundText,
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  )
                 : ListView.separated(
                     separatorBuilder: (BuildContext context, int index) {
                       return height6SizedBox;
@@ -90,7 +90,23 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: AppColors.white, width: 1)),
+                                  child: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundImage:
+                                    storeHomeMainController.categoriesList[index].image?.dynamicUrl == null
+                                        ? const AssetImage(ImageConstants.nopicfound,)
+                                    as ImageProvider : NetworkImage(storeHomeMainController.categoriesList[index].image?.dynamicUrl.toString() ?? ""),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                                width10SizedBox,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(

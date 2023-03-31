@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -59,7 +60,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                             ],
                           ),
                           Image.asset(
-                            "assets/homeMall.png",
+                            ImageConstants.homeMall,
                             scale: 4,
                           )
                         ]),
@@ -77,7 +78,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
               height15SizedBox,
               Center(
                   child: Image.asset(
-                "assets/greenmall420.png",
+                    ImageConstants.greenmall420,
                 scale: 4,
               )),
               height30SizedBox,

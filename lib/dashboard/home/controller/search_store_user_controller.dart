@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -47,7 +48,6 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     apiGetNearByStores();
     setupScrollController(Get.context);
   }
@@ -101,7 +101,8 @@ class SearchStoreUserController extends GetxController {
       isFavLoading.value = false;
       isDataLoading.value = false;
       debugPrint("GET NEARBY STORES *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201
+          || value?.body["status"] ==ApiConstants.statusCode200 ) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         List<StoreAddress>? storeAddressesNewList = [];
         storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses;
@@ -131,7 +132,7 @@ class SearchStoreUserController extends GetxController {
           favStoreAddresses.clear();
           Get.back();
         }
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -165,7 +166,7 @@ class SearchStoreUserController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Create Favourite Store *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201  || value?.body["status"] == ApiConstants.statusCode200 ) {
         Utility.showToast(value?.body['message']);
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
@@ -174,7 +175,7 @@ class SearchStoreUserController extends GetxController {
           }
         }
 
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -209,7 +210,7 @@ class SearchStoreUserController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Remove Favourite Store *******${value?.body}");
-      if (value?.body["status"] == 201 || value?.body["status"] == 200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
         Utility.showToast(value?.body['message']);
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
@@ -218,7 +219,7 @@ class SearchStoreUserController extends GetxController {
           }
         }
 
-      } else if (value?.body["status"] == 403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

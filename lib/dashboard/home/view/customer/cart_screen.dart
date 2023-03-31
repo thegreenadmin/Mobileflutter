@@ -5,12 +5,12 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import '../account_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
-
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -18,7 +18,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +59,7 @@ class _CartScreenState extends State<CartScreen> {
                               ],
                             ),
                             Image.asset(
-                              "assets/homeMall.png",
+                              ImageConstants.homeMall,
                               scale: 4,
                             )
                           ]),
@@ -136,7 +135,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     fit: BoxFit.cover,
                                                   )
                                                 : Image.asset(
-                                                    "assets/nopicfound.png",
+                                                    ImageConstants.nopicfound,
                                                     fit: BoxFit.cover,
                                                   ),
                                           ),
@@ -235,7 +234,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             : null;
                                                       },
                                                       child: Image.asset(
-                                                        "assets/subtract.png",
+                                                        ImageConstants.subtract,
                                                         scale: 3,
                                                       )),
                                                   width6SizedBox,
@@ -279,7 +278,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   1);
                                                     },
                                                     child: Image.asset(
-                                                      "assets/add.png",
+                                                      ImageConstants.add,
                                                       scale: 3,
                                                     ),
                                                   )
@@ -300,7 +299,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               "0"));
                                             },
                                             child: Image.asset(
-                                              "assets/deleteicon.png",
+                                              ImageConstants.deleteicon,
                                               scale: 3.0,
                                             )),
                                       ],
@@ -426,7 +425,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   .deliveryServiceId ==
                                               "1"
                                           ? Image.asset(
-                                              "assets/inStore.png",
+                                              ImageConstants.instore,
                                               scale: 2.8,
                                               color: storeHomeMainController
                                                           .storeDeliveryServiceId
@@ -453,7 +452,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       .deliveryServiceId ==
                                                   "2"
                                               ? Image.asset(
-                                                  "assets/delivery.png",
+                                                  ImageConstants.delivery,
                                                   scale: 2.8,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
@@ -471,7 +470,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       : AppColors.primary,
                                                 )
                                               : Image.asset(
-                                                  "assets/curb.png",
+                                                  ImageConstants.curb,
                                                   scale: 2.8,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
@@ -515,7 +514,7 @@ class _CartScreenState extends State<CartScreen> {
                                   Row(
                                     children: [
                                       Image.asset(
-                                        "assets/loc.png",
+                                        ImageConstants.loc,
                                         scale: 2.5,
                                       ),
                                       width10SizedBox,

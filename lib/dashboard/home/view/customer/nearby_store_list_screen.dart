@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
-
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -41,7 +40,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                           children: [
                             Center(
                               child: Image.asset(
-                                "assets/nodata.png",
+                                ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
                               ),
@@ -113,7 +112,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? const AssetImage(
-                                                        "assets/nopicfound.png")
+                                              ImageConstants.nopicfound,)
                                                     as ImageProvider
                                                 : NetworkImage(
                                                     searchStoreUserController
@@ -145,7 +144,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 child: Row(
                                                   children: [
                                                     Image.asset(
-                                                      "assets/loc.png", scale: 3.2,
+                                                      ImageConstants.loc, scale: 3.2,
                                                     ),
                                                     width4SizedBox,
                                                     Expanded(
@@ -189,7 +188,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 .apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
                                           },
                                           child: Image.asset(
-                                            "assets/liked.png",
+                                            ImageConstants.liked,
                                             scale: 3.2,
                                           ),
                                         )
@@ -204,13 +203,13 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                     ?.storeId);
                                           },
                                           child: Image.asset(
-                                            "assets/fav.png",
+                                            ImageConstants.fav,
                                             scale: 3.2,
                                           ),
                                         ),
                                         width10SizedBox,
                                         Image.asset(
-                                          "assets/info.png",
+                                          ImageConstants.info,
                                           scale: 3.2,
                                         )
                                       ],
@@ -250,7 +249,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                               .deliveryServiceId ==
                                                           "1"
                                                       ? Image.asset(
-                                                          "assets/inStore.png",
+                                                    ImageConstants.instore,
                                                           scale: 2.5,
                                                         )
                                                       : searchStoreUserController
@@ -262,11 +261,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                                   .deliveryServiceId ==
                                                               "2"
                                                           ? Image.asset(
-                                                              "assets/delivery.png",
+                                                    ImageConstants.delivery,
                                                               scale: 2.7,
                                                             )
                                                           : Image.asset(
-                                                              "assets/curb.png",
+                                                    ImageConstants.curb,
                                                               scale: 2.1,
                                                             ),
                                                   width3SizedBox,

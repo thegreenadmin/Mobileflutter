@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreFavouriteScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                         children: [
                           Center(
                             child: Image.asset(
-                              "assets/nodata.png",
+                              ImageConstants.nodata,
                               scale: 8,
                               color: AppColors.primary,
                             ),
@@ -93,7 +94,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                           height: 160,
                                         )
                                       : Image.asset(
-                                          'assets/nopicfound.png',
+                                    ImageConstants.nopicfound,
                                           fit: BoxFit.fill,
                                         ),
                                   Padding(
@@ -103,11 +104,11 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                                 .isFavouriteProduct ==
                                             true
                                         ? Image.asset(
-                                            "assets/liked.png",
+                                      ImageConstants.liked,
                                             scale: 3,
                                           )
                                         : Image.asset(
-                                            "assets/fav.png",
+                                      ImageConstants.fav,
                                             scale: 3,
                                           ),
                                   )

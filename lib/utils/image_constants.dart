@@ -13,6 +13,8 @@ class ImageConstants {
   static const String bag = '$assetsIcon/bag.png';
   static const String blackcircle = '$assetsIcon/blackcircle.png';
   static const String bottle = '$assetsIcon/bottle.png';
+  static const String blueTick = '$assetsIcon/blueTick.png';
+  static const String blackTick = '$assetsIcon/blackTick.png';
   //C
   static const String calendar = '$assetsIcon/calendar.png';
   static const String call = '$assetsIcon/call.png';
@@ -54,7 +56,7 @@ class ImageConstants {
   static const String image = '$assetsIcon/image.png';
   static const String inboxexample = '$assetsIcon/inboxexample.png';
   static const String info = '$assetsIcon/info.png';
-  static const String instore = '$assetsIcon/instore.png';
+  static const String instore = '$assetsIcon/inStore.png';
   //L
   static const String liked = '$assetsIcon/liked.png';
   static const String loc = '$assetsIcon/loc.png';
@@ -89,6 +91,7 @@ class ImageConstants {
   static const String profile = '$assetsIcon/profile.png';
   static const String pickUp = '$assetsIcon/pickup.png';
   static const String person = '$assetsIcon/person.png';
+  static const String productFilter = '$assetsIcon/productFilter.png';
   //R
   static const String role = '$assetsIcon/role.png';
   //S
@@ -105,6 +108,7 @@ class ImageConstants {
   //T
   static const String terms = '$assetsIcon/terms.png';
   static const String tick = '$assetsIcon/tick.png';
+  static const String tickBorder = '$assetsIcon/tickWithBorder.png';
   static const String transactionHistory = '$assetsIcon/transactionHistory.png';
   //U
   static const String union = '$assetsIcon/union.png';

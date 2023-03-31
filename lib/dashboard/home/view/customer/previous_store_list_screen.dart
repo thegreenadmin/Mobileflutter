@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_scre
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PreviousStoreListScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
             children: [
               Center(
                 child: Image.asset(
-                  "assets/nodata.png",
+                  ImageConstants.nodata,
                   scale: 8,
                   color: AppColors.primary,
                 ),
