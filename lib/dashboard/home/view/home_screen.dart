@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              Get.to(const InboxScreen());
+                              // Get.to(const InboxScreen());
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                Get.to(const HistoryScreen());
+                                //Get.to(const HistoryScreen());
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),

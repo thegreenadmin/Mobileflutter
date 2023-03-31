@@ -62,11 +62,13 @@ class StoreHomeMainController extends GetxController {
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
   RxInt selectedIndex = 0.obs;
+  RxInt activeStep = 0.obs;
   RxInt itemsCount = 0.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
   RxBool isFromHome = false.obs;
+  RxString orderStatus = "".obs;
 
   RxBool isLoading = false.obs;
   RxString storeId = "".obs;
@@ -83,10 +85,10 @@ class StoreHomeMainController extends GetxController {
   }
 
   RxList<Categories> stepInd = [
-    Categories(id: 1, name: "Received", isSelected: false),
-    Categories(id: 2, name: "InProgress", isSelected: false),
-    Categories(id: 3, name: "Ready to Pick", isSelected: false),
-    Categories(id: 4, name: "Complete", isSelected: false),
+    Categories(id: 0,name: "Received", isSelected: false),
+    Categories(id: 1,name: "InProgress", isSelected: false),
+    Categories(id: 2,name: "Ready to Pick", isSelected: false),
+    Categories(id: 3,name: "Complete", isSelected: false),
   ].obs;
 
   @override
@@ -273,8 +275,9 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("  Place Order *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+       print(value?.body["data"]["order_id"]);
+        orderStatus.value = value?.body["data"]["order_id"];
         Get.to(const OrderConfirmationScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
