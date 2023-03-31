@@ -130,7 +130,7 @@ class StringConstants {
   static String helpText = "Help";
   static String historyText = "History";
   static String heightText = "Height";
-  static String heightToLowText = "High to low";
+  static String highToLowText = "High to low";
 
   //I
   static String inboxText = "Inbox";
@@ -148,7 +148,7 @@ class StringConstants {
   static String lastNameText = "Last Name";
   static String logoutText = "Logout";
   static String lengthText = "Length";
-  static String lowToHighText = "Low to tigh";
+  static String lowToHighText = "Low to high";
   //M
   static String messageText = "Message";
   static String moreText = "More";
@@ -225,6 +225,7 @@ class StringConstants {
   static String permissionText = "Permission";
   static String productText = " Product";
   static String payNowText = "Pay Now";
+  static String priceText = "price";
 
   //Q
   static String quantityUnitText = "Quantity Unit";

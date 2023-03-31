@@ -40,8 +40,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               null ||
                           storeHomeMainController.storeAddress.value.store!
                               .image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.nopicfound,)
-                          as ImageProvider
+                      ? const AssetImage(
+                          ImageConstants.nopicfound,
+                        ) as ImageProvider
                       : NetworkImage(storeHomeMainController
                               .storeAddress.value.store?.image?.dynamicUrl
                               .toString() ??
@@ -62,7 +63,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back();
-
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -74,11 +74,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                         ?.isFavouriteStore ==
                                     true
                                 ? Image.asset(
-                              ImageConstants.liked,
+                                    ImageConstants.liked,
                                     scale: 2.8,
                                   )
                                 : Image.asset(
-                              ImageConstants.favoutline,
+                                    ImageConstants.favoutline,
                                     scale: 2.8,
                                   ),
                           ]),
@@ -101,8 +101,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                           null ||
                                       storeHomeMainController.storeAddress.value
                                           .store!.logo!.dynamicUrl!.isEmpty
-                                  ? const AssetImage(ImageConstants.nopicfound,)
-                                      as ImageProvider
+                                  ? const AssetImage(
+                                      ImageConstants.nopicfound,
+                                    ) as ImageProvider
                                   : NetworkImage(storeHomeMainController
                                           .storeAddress
                                           .value
@@ -198,13 +199,15 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   shape: const TooltipShape(),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: Image.asset(ImageConstants.productFilter,scale: 2.5,),
+                  icon: Image.asset(
+                    ImageConstants.productFilter,
+                    scale: 2.5,
+                  ),
                   onSelected: (String value) async {
-                    FocusScope.of(context)
-                        .requestFocus(FocusNode());
+                    FocusScope.of(context).requestFocus(FocusNode());
                   },
                   itemBuilder: (context) =>
-                  createOptionsPopUpList(Get.context)!,
+                      createOptionsPopUpList(Get.context)!,
                 ),
                 // InkWell(
                 //     onTap: (){
@@ -298,7 +301,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 height: 148,
                                               )
                                             : Image.asset(
-                                          ImageConstants.nopicfound,
+                                                ImageConstants.nopicfound,
                                                 fit: BoxFit.fill,
                                                 height: 148,
                                               ),
@@ -309,11 +312,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                       .isFavouriteProduct ==
                                                   true
                                               ? Image.asset(
-                                            ImageConstants.liked,
+                                                  ImageConstants.liked,
                                                   scale: 3,
                                                 )
                                               : Image.asset(
-                                            ImageConstants.fav,
+                                                  ImageConstants.fav,
                                                   scale: 3,
                                                 ),
                                         )
@@ -374,7 +377,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     );
   }
 
-
   List<PopupMenuEntry<String>>? createOptionsPopUpList(context) {
     return List.generate(2, (index) {
       if (index == 0) {
@@ -386,19 +388,23 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    await storeHomeMainController.apiFeatureProductListApi(categoryId: storeHomeMainController.category.value.categoryId??"0",
-                        orderBy:"2",orderType: "2");
-                  Get.back();
-                    },
+                    await storeHomeMainController.apiFeatureProductListApi(
+                        categoryId:
+                            storeHomeMainController.category.value.categoryId ??
+                                "0",
+                        orderBy: "2",
+                        orderType: "2");
+                    Get.back();
+                  },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        StringConstants.lowToHighText,
+                        "${StringConstants.priceText} ${StringConstants.lowToHighText.toLowerCase()}",
                         style: const TextStyle(
                             color: AppColors.black,
                             fontFamily: "",
-                            fontSize: 14),
+                            fontSize: 16),
                       ),
                     ],
                   ),
@@ -408,31 +414,32 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           ),
         );
       }
-        return PopupMenuItem<String>(
-          value: StringConstants.heightToLowText,
-          child: SizedBox(
-            width: 130,
-            child: GestureDetector(
-              onTap: () async{
-                await  storeHomeMainController.apiFeatureProductListApi(categoryId: storeHomeMainController.category.value.categoryId??"0",
-                    orderBy:"2",);
-                Get.back();
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.heightToLowText,
-                    style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 14),
-                  ),
-                ],
-              ),
+      return PopupMenuItem<String>(
+        value: StringConstants.highToLowText,
+        child: SizedBox(
+          width: 130,
+          child: GestureDetector(
+            onTap: () async {
+              await storeHomeMainController.apiFeatureProductListApi(
+                categoryId:
+                    storeHomeMainController.category.value.categoryId ?? "0",
+                orderBy: "2",
+              );
+              Get.back();
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${StringConstants.priceText} ${StringConstants.highToLowText.toLowerCase()}",
+                  style: const TextStyle(
+                      color: AppColors.black, fontFamily: "", fontSize: 16),
+                ),
+              ],
             ),
           ),
-        );
-
+        ),
+      );
     });
   }
-
 }

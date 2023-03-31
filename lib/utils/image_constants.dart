@@ -123,6 +123,6 @@ class ImageConstants {
   static const String walletfill = '$assetsIcon/walletfill.png';
   static const String watch = '$assetsIcon/watch.png';
   static const String whitetick = '$assetsIcon/whitetick.png';
-  static const String whorker = '$assetsIcon/whorker.png';
-  static const String whorkerpic = '$assetsIcon/whorkerpic.png';
+  static const String worker = '$assetsIcon/worker.png';
+  static const String workerpic = '$assetsIcon/workerpic.png';
 }

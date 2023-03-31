@@ -91,8 +91,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
                   image: ownerStoresController.storeImage!.value.isEmpty
-                      ?  const AssetImage(
-                         ImageConstants.nopicfound,
+                      ? const AssetImage(
+                          ImageConstants.nopicfound,
                         ) as ImageProvider
                       : NetworkImage(ownerStoresController.storeImage!.value),
                 ),
@@ -132,7 +132,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                               backgroundImage: ownerStoresController
                                       .storeLogo!.value.isEmpty
                                   ? const AssetImage(
-                                      "assets/nopicfound.png",
+                                      ImageConstants.nopicfound,
                                     ) as ImageProvider
                                   : NetworkImage(
                                       ownerStoresController.storeLogo!.value),
@@ -156,7 +156,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 Row(
                                   children: [
                                     Image.asset(
-                                        ImageConstants.loc,
+                                      ImageConstants.loc,
                                       color: AppColors.white,
                                       scale: 2,
                                     ),
