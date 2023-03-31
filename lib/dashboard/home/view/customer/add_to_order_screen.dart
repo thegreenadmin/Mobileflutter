@@ -376,71 +376,78 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         color: AppColors.black),
                   ),
                   height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.categoriesText,
-                      textData: storeHomeMainController
-                              .productDetailResponse
-                              .value
-                              .data
-                              ?.product
-                              ?.productCategories
-                              ?.first
-                              .category
-                              ?.categoryName ??
-                          ""),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.quantityUnitText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.featuredProductText,
-                      textData: storeHomeMainController.productDetailResponse.value
-                                  .data?.product?.isFeaturedProduct ==
-                              true
-                          ? "Yes"
-                          : "No"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.lengthText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} feet"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.breadthText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} feet"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.heightText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} feet"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.weightText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} kg"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.returnAvailableText,
-                      textData: storeHomeMainController.productDetailResponse.value
-                                  .data?.product?.isProductReturnable ==
-                              true
-                          ? "Yes"
-                          : "No"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.daysText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
-                  height20SizedBox,
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.productCategories?.first.category?.categoryName !=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.categoriesText,
+                        textData: storeHomeMainController.productDetailResponse.value.data?.product
+                                ?.productCategories?.first.category?.categoryName ?? ""),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.quantity !=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.quantityUnitText,
+                        textData:
+                            "${storeHomeMainController.productDetailResponse.value.
+                            data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.isFeaturedProduct!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.featuredProductText,
+                        textData: storeHomeMainController.productDetailResponse.value
+                                    .data?.product?.isFeaturedProduct ==
+                                true ? "Yes" : "No"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.length!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.lengthText,
+                        textData:
+                            "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} feet"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.width!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.breadthText,
+                        textData:
+                            "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} feet"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.height!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.heightText,
+                        textData:
+                            "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} feet"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.weight!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.weightText,
+                        textData:
+                            "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} kg"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.isProductReturnable!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.returnAvailableText,
+                        textData: storeHomeMainController.productDetailResponse.value
+                                    .data?.product?.isProductReturnable ==
+                                true ? "Yes" : "No"),
+                  ),
+                  Visibility(
+                    visible: storeHomeMainController.
+                    productDetailResponse.value.data?.product?.
+                    returnDaysCount!=null,
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.daysText,
+                        textData: "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
+                  ),
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
                     style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontWeight: FontWeight.w600, fontSize: 20,
                         color: AppColors.black),
                   ),
                   height20SizedBox,
@@ -448,8 +455,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     "4.4",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        color: AppColors.black),
+                        fontSize: 20, color: AppColors.black),
                   ),
                   height20SizedBox,
                   CustomButton(
@@ -464,7 +470,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       }else{
                         Utility.showToast("Please add at least one item in cart");
                       }
-
                     },
                     height: 50,
                     text: StringConstants.addToOrderText,
@@ -572,27 +577,32 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     );
   }
 
-  Row _buildRowOtherDetail({
+  Column _buildRowOtherDetail({
     String title = "",
     String textData = "",
   }) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Column(
         children: [
-          Text(
-            title,
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: AppColors.blacklight),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: AppColors.blacklight),
+              ),
+              Text(
+                textData,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: AppColors.black),
+              ),
+            ],
           ),
-          Text(
-            textData,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: AppColors.black),
-          ),
+          height20SizedBox
         ],
       );
 }

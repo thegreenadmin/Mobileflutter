@@ -68,7 +68,8 @@ class AddNewRoleController extends GetxController {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+          Utility.showToast(
+              AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
           await apiCreateRole();
         }
@@ -104,17 +105,20 @@ class AddNewRoleController extends GetxController {
     debugPrint(
         "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}",
+            headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE ROLE  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getRoleListModel = GetRoleListModel.fromJson(value.body);
         storeRoleList.value = getRoleListModel.data!.storeRoles!;
       } else if (value.body["status"] == ApiConstants.statusCode403) {
@@ -135,22 +139,28 @@ class AddNewRoleController extends GetxController {
     List<Permissions> permissionsList = <Permissions>[];
 
     for (int i = 0; i < controllerIdsList.length; i++) {
-      permissionsList.add(Permissions(controllerId: int.parse(controllerIdsList[i]['controller_id'])));
+      permissionsList.add(Permissions(
+          controllerId: int.parse(controllerIdsList[i]['controller_id'])));
     }
     createRoleRequestModel.permissions = permissionsList;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("CREATE ROLE BODY********** ${createRoleRequestModel.toJson()}");
-    debugPrint("CREATE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleCreate}");
+    debugPrint(
+        "CREATE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleCreate}");
     UserProvider()
         .postWithHeadersApi(
-            createRoleRequestModel, ServerCommunicator().baseUrl + ServerCommunicator().storeRoleCreate, headers,
+            createRoleRequestModel,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeRoleCreate,
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Future.delayed(const Duration(milliseconds: 200), () {
           Get.back();
@@ -171,20 +181,26 @@ class AddNewRoleController extends GetxController {
     debugPrint(
         "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().storeControllerList, headers,
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeControllerList,
+            headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE CONTROLLER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStoreControllerModel = GetStoreControllerModel.fromJson(value.body);
         moduleList.value = getStoreControllerModel.data!.modules!;
         for (int i = 0; i < moduleList.length; i++) {
-          controllerList.addAll(moduleList[i].controllers as Iterable<Controllers>);
+          controllerList
+              .addAll(moduleList[i].controllers as Iterable<Controllers>);
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
@@ -198,22 +214,28 @@ class AddNewRoleController extends GetxController {
 
 //Delete Store Role
   Future apiDeleteRole() async {
-    debugPrint("DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
+    debugPrint(
+        "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     deleteRoleRequestModel.storeId = int.parse(storeId.value);
     deleteRoleRequestModel.roleId = int.parse(roleId.value);
 
-    debugPrint("DELETE ROLE  BODY ************* ${getStoreDetailModel.toJson()}");
+    debugPrint(
+        "DELETE ROLE  BODY ************* ${getStoreDetailModel.toJson()}");
     UserProvider()
         .deleteWithHeadersApi(
-            deleteRoleRequestModel, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}", headers,
+            deleteRoleRequestModel,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         await apiGetStoreRole();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
@@ -235,7 +257,8 @@ class AddNewRoleController extends GetxController {
     debugPrint(
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -246,13 +269,15 @@ class AddNewRoleController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET ROLE DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
         roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
         permissionListMerged.clear();
         for (int i = 0; i < controllerList.length; i++) {
-          var indexIs = permissionList.indexWhere((p0) => p0.controllerId == controllerList[i].controllerId);
+          var indexIs = permissionList.indexWhere(
+              (p0) => p0.controllerId == controllerList[i].controllerId);
           if (indexIs == -1) {
             permissionListMerged.add(Permission(
                 permissionId: "",
@@ -262,7 +287,8 @@ class AddNewRoleController extends GetxController {
                 controller: Controller(
                     controllerName: controllerList[i].controllerName,
                     controllerKey: controllerList[i].controllerKey,
-                    controllerDescription: controllerList[i].controllerDescription)));
+                    controllerDescription:
+                        controllerList[i].controllerDescription)));
           } else {
             permissionListMerged.add(permissionList[indexIs]);
           }
@@ -295,16 +321,22 @@ class AddNewRoleController extends GetxController {
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("EDIT ROLE BODY********** $data");
-    debugPrint("EDIT ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleEdit}");
+    debugPrint(
+        "EDIT ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleEdit}");
     UserProvider()
-        .putWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().storeRoleEdit, headers,
+        .putWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeRoleEdit,
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("EDIT ROLE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Future.delayed(const Duration(milliseconds: 200), () {
           Get.back();

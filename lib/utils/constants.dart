@@ -130,7 +130,7 @@ class StringConstants {
   static String helpText = "Help";
   static String historyText = "History";
   static String heightText = "Height";
-  static String heightToLowText = "High to low";
+  static String highToLowText = "High to low";
 
   //I
   static String inboxText = "Inbox";
@@ -148,7 +148,7 @@ class StringConstants {
   static String lastNameText = "Last Name";
   static String logoutText = "Logout";
   static String lengthText = "Length";
-  static String lowToHighText = "Low to tigh";
+  static String lowToHighText = "Low to high";
   //M
   static String messageText = "Message";
   static String moreText = "More";
@@ -228,6 +228,7 @@ class StringConstants {
   static String permissionText = "Permission";
   static String productText = " Product";
   static String payNowText = "Pay Now";
+  static String priceText = "price";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -385,6 +386,9 @@ class AlertStringConstants {
   //O
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
+        static String only5MaximumImagesCanSelectText =
+      "Only 5 maximum images can select at a time";
+      
 
   //P
   static String pleaseEnterNameText = "Please enter name";
@@ -448,6 +452,8 @@ class AlertStringConstants {
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
+   static String pleaseAddAtleastOneItemText = "Please add at least one item in cart";
+  
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

@@ -177,8 +177,8 @@ class Store {
     this.storeDeliveryServices,
   });
 
-  Image? logo;
-  Image? image;
+  Images? logo;
+  Images? image;
   bool? hasStoreOwner;
   bool? isFavouriteStore;
   String? storeId;
@@ -189,8 +189,8 @@ class Store {
   List<StoreDeliveryService>? storeDeliveryServices;
 
   Store copyWith({
-    Image? logo,
-    Image? image,
+    Images? logo,
+    Images? image,
     bool? hasStoreOwner,
     bool? isFavouriteStore,
     String? storeId,
@@ -215,8 +215,8 @@ class Store {
       );
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-        logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
+        image: json["image"] == null ? null : Images.fromJson(json["image"]),
         hasStoreOwner: json["has_store_owner"],
         isFavouriteStore: json["is_favourite_store"],
         storeId: json["store_id"],
@@ -251,8 +251,8 @@ class Store {
       };
 }
 
-class Image {
-  Image({
+class Images {
+  Images({
     this.orignalUrl,
     this.dynamicUrl,
   });
@@ -260,16 +260,16 @@ class Image {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Image copyWith({
+  Images copyWith({
     String? orignalUrl,
     String? dynamicUrl,
   }) =>
-      Image(
+      Images(
         orignalUrl: orignalUrl ?? this.orignalUrl,
         dynamicUrl: dynamicUrl ?? this.dynamicUrl,
       );
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory Images.fromJson(Map<String, dynamic> json) => Images(
         orignalUrl: json["orignal_url"],
         dynamicUrl: json["dynamic_url"],
       );
@@ -381,3 +381,5 @@ class StoreTiming {
         "status": status,
       };
 }
+
+

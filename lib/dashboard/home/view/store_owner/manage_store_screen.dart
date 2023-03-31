@@ -201,7 +201,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 ),
                               ),
                               Image.asset(
-                                ImageConstants.whorker,
+                                ImageConstants.worker,
                                 scale: 3,
                               ),
                             ],

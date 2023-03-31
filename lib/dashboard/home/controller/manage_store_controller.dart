@@ -13,6 +13,7 @@ import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.d
     as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -62,7 +63,7 @@ class ManageStoreController extends GetxController {
   RxString lastProductLink = "".obs;
   RxString quantityValue = "".obs;
   InputAddProduct inputData = InputAddProduct();
-
+  List<XFile> selectedImages = <XFile>[];
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
   late quantity_model.QuantityListResponse quantityListResponse =
@@ -82,10 +83,21 @@ class ManageStoreController extends GetxController {
 
   selectImages(clearImages) async {
     if (clearImages) imageFileList!.clear();
-    final List<XFile> selectedImages = await imagePicker.pickMultiImage();
+    selectedImages.clear();
+    selectedImages = await imagePicker.pickMultiImage(
+      imageQuality: 85,
+      maxHeight: 200,
+      maxWidth: 200,
+    );
     if (selectedImages.isNotEmpty) {
+      if (selectedImages.length >= 5) {
+        return Utility.showToast(
+            AlertStringConstants.only5MaximumImagesCanSelectText);
+      }
+      //else {
       imageFileList!.addAll(selectedImages);
       apiUploadMultipleImage(imageUrlList.length);
+      // }
     }
   }
 

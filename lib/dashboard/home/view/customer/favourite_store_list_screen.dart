@@ -105,14 +105,14 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                             .favStoreAddresses[
                                                                 index]
                                                             .store
-                                                            ?.logo
+                                                            ?.image
                                                             ?.dynamicUrl ==
                                                         null ||
                                                     searchStoreUserController
                                                         .favStoreAddresses[
                                                             index]
                                                         .store!
-                                                        .logo!
+                                                        .image!
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? const AssetImage(
@@ -123,7 +123,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                             .favStoreAddresses[
                                                                 index]
                                                             .store
-                                                            ?.logo
+                                                            ?.image
                                                             ?.dynamicUrl
                                                             .toString() ??
                                                         ""),
@@ -131,103 +131,68 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                           ),
                                         ),
                                         width10SizedBox,
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              searchStoreUserController
-                                                      .favStoreAddresses[index]
-                                                      .store
-                                                      ?.storeName ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  fontSize: 17.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            height4SizedBox,
-                                            Visibility(
-                                              visible: searchStoreUserController
-                                                  .favStoreAddresses[index]
-                                                  .store!
-                                                  .storeTimings!
-                                                  .isNotEmpty,
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    ImageConstants.loc,
-                                                    scale: 3.2,
-                                                  ),
-                                                  width4SizedBox,
-                                                  Text(
-                                                    searchStoreUserController
-                                                            .favStoreAddresses[
-                                                                index]
-                                                            .addressLine1 ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ],
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.5,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                searchStoreUserController.favStoreAddresses[index].store?.storeName ?? "",
+                                                style: const TextStyle(
+                                                    fontSize: 17.0, color: AppColors.black, fontWeight: FontWeight.w600),
                                               ),
-                                            ),
-                                            height4SizedBox,
-                                            Text(
-                                                searchStoreUserController
-                                                        .storeAddresses
-                                                        .isNotEmpty
-                                                    ? searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .store!
-                                                            .storeTimings!
-                                                            .isNotEmpty
-                                                        ? searchStoreUserController
-                                                                    .storeAddresses[
-                                                                        index]
-                                                                    .store
-                                                                    ?.storeTimings
-                                                                    ?.first
-                                                                    .is24HoursActive ==
-                                                                false
-                                                            ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                                "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                            : StringConstants
-                                                                .storeHoursText
-                                                        : StringConstants
-                                                            .storeHoursText
-                                                    : StringConstants
-                                                        .storeHoursText,
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ],
+                                              height4SizedBox,
+                                              Visibility(
+                                                visible: searchStoreUserController
+                                                    .favStoreAddresses[index].store!.storeTimings!.isNotEmpty,
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      ImageConstants.loc, scale: 3.2,
+                                                    ),
+                                                    width4SizedBox,
+                                                    Expanded(
+                                                      child: Text(
+                                                        searchStoreUserController.favStoreAddresses[index].addressLine1 ?? "",
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                        softWrap: false,
+                                                        style: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: AppColors.blacklight,
+                                                            fontWeight: FontWeight.w500),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              height4SizedBox,
+                                              Text(
+                                                  searchStoreUserController.favStoreAddresses[index]
+                                                      .store!.storeTimings!.isNotEmpty
+                                                      ? searchStoreUserController
+                                                      .favStoreAddresses[index].store?.storeTimings?.first.is24HoursActive == false
+                                                      ? "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.openingTime ?? "0",
+                                                      firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                      "${Utility.formatDateTime(searchStoreUserController.favStoreAddresses[index].store?.storeTimings?.first.closingTime ?? "0",
+                                                      firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                      : StringConstants.storeHoursText : StringConstants.storeHoursText,
+                                                  style: TextStyle(
+                                                      fontSize: 14.0, color: AppColors.blacklight,
+                                                      fontWeight: FontWeight.w500)),
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .favStoreAddresses[index]
-                                                    .store
-                                                    ?.isFavouriteStore ==
+                                        searchStoreUserController.favStoreAddresses[index].store?.isFavouriteStore ==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
                                                   searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
-                                                          searchStoreUserController
-                                                              .favStoreAddresses[
-                                                                  index]
-                                                              .store
-                                                              ?.storeId);
+                                                      .apiRemoveFavouriteStore(searchStoreUserController.favStoreAddresses[index].store?.storeId);
                                                 },
                                                 child: Image.asset(
                                                   ImageConstants.liked,

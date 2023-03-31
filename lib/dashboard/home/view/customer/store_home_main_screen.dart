@@ -221,8 +221,9 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                     null ||
                                 storeHomeMainController.storeAddress.value
                                     .store!.image!.dynamicUrl!.isEmpty
-                            ? const AssetImage(ImageConstants.nopicfound,)
-                                as ImageProvider
+                            ? const AssetImage(
+                                ImageConstants.nopicfound,
+                              ) as ImageProvider
                             : NetworkImage(storeHomeMainController
                                     .storeAddress.value.store?.image?.dynamicUrl
                                     .toString() ??
@@ -255,11 +256,11 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                               .store?.isFavouriteStore ==
                                           true
                                       ? Image.asset(
-                                    ImageConstants.liked,
+                                          ImageConstants.liked,
                                           scale: 2.8,
                                         )
                                       : Image.asset(
-                                    ImageConstants.favoutline,
+                                          ImageConstants.favoutline,
                                           scale: 2.8,
                                         ),
                                 ]),
@@ -288,8 +289,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                 .dynamicUrl!
                                                 .isEmpty
                                         ? const AssetImage(
-                                      ImageConstants.nopicfound,)
-                                            as ImageProvider
+                                            ImageConstants.nopicfound,
+                                          ) as ImageProvider
                                         : NetworkImage(storeHomeMainController
                                                 .storeAddress
                                                 .value
@@ -367,9 +368,14 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                           scale: 2.5,
                                         ),
                                         width8SizedBox,
-                                        Image.asset(
-                                          ImageConstants.call,
-                                          scale: 2.5,
+                                        InkWell(
+                                          highlightColor: Colors.transparent,
+                                          splashColor: Colors.transparent,
+                                          onTap: () {},
+                                          child: Image.asset(
+                                            ImageConstants.call,
+                                            scale: 2.5,
+                                          ),
                                         )
                                       ],
                                     )
