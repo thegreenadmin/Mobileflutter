@@ -300,7 +300,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 height5SizedBox,
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         storeHomeMainController
@@ -315,11 +316,12 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                       height4SizedBox,
                                       Text(
                                         storeHomeMainController
-                                                .featureProductList[i].description ??
+                                                .featureProductList[i]
+                                                .description ??
                                             "",
                                         maxLines: 2,
                                         style: TextStyle(
-                                          overflow: TextOverflow.visible,
+                                            overflow: TextOverflow.visible,
                                             color: AppColors.blacklight,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400),
