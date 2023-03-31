@@ -36,16 +36,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
                   image: storeHomeMainController.storeAddress.value.store?.image
-                                  ?.dynamicUrl ==
-                              null ||
+                                  ?.dynamicUrl == null ||
                           storeHomeMainController.storeAddress.value.store!
                               .image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.nopicfound)
-                          as ImageProvider
+                      ? const AssetImage(ImageConstants.nopicfound) as ImageProvider
                       : NetworkImage(storeHomeMainController
                               .storeAddress.value.store?.image?.dynamicUrl
-                              .toString() ??
-                          ""),
+                              .toString() ?? ""),
                 ),
               ),
               child: Padding(
@@ -71,8 +68,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ),
                             ),
                             storeHomeMainController.storeAddress.value.store
-                                        ?.isFavouriteStore ==
-                                    true
+                                        ?.isFavouriteStore == true
                                 ? Image.asset(
                               ImageConstants.liked,
                                     scale: 2.8,

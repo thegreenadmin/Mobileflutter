@@ -186,11 +186,14 @@ class StringConstants {
   static String noText = "No";
 
   //O
+  static String orderIDText = "Order ID";
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
   static String offersText = "Offers";
   static String otherDetailText = "Other Detail";
   static String ordersText = "Orders";
+  static String orderStatusText = "Order Status";
+  static String ordersConfirmationNumberText = "Order Confirmation Number";
   static String orderText = "Order";
   static String orderSummaryText = "Order Summary";
   static String offerNameText = "Offer Name";
@@ -238,6 +241,7 @@ class StringConstants {
   static String returnAvailableText = "Return Available";
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
+  static String received = "Received";
 
   //S
   static String signUpText = "Sign up";
@@ -260,6 +264,7 @@ class StringConstants {
   static String sendMessageText = "Send Message";
   static String screenLockText = "Screen Lock";
   static String stateText = "State";
+  static String statusText = "Status";
   static String storeTermsOfService = "Store Terms of service";
   static String storePolicyText = "Store Policy";
   static String subtotalText = "Subtotal";

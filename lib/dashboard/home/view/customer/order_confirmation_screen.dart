@@ -1,6 +1,7 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -195,38 +196,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             ),
 
             height20SizedBox,
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  StringConstants.otherDetailText,
+                  StringConstants.ordersConfirmationNumberText,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: AppColors.black),
                 ),
                 Text(
-                  StringConstants.otherDetailText,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: AppColors.primary),
-                ),
-              ],
-            ),
-            height10SizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  StringConstants.otherDetailText,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: AppColors.black),
-                ),
-                Text(
-                  StringConstants.otherDetailText,
+                  storeHomeMainController.orderStatus.value,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -238,22 +220,22 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  StringConstants.otherDetailText,
+                  StringConstants.orderStatusText,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 16,
                       color: AppColors.black),
                 ),
                 Text(
-                  StringConstants.otherDetailText,
+                  StringConstants.received,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 16,
-                      color: AppColors.primary),
+                      color: AppColors.green),
                 ),
               ],
             ),
             height40SizedBox,
             EasyStepper(
-              activeStep: 0,
+              activeStep: storeHomeMainController.activeStep.value,
               lineLength: 55,
               stepShape: StepShape.circle,
               borderThickness: 0,
@@ -272,7 +254,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               unreachedStepTextColor:  AppColors.black,
               steps:List<EasyStep>.generate(storeHomeMainController.stepInd.length, (index) =>
                     EasyStep(
-                      customStep: false ?
+                      customStep: storeHomeMainController.activeStep.value
+                          == storeHomeMainController.stepInd[index].id?.toInt() ?
                       Image.asset(ImageConstants.blueTick):
                       Image.asset(ImageConstants.blackTick),
                       title: storeHomeMainController.stepInd[index].name??"",),),
@@ -285,7 +268,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 end: Alignment.bottomCenter,
                 colors: [AppColors.primary, AppColors.primary],
               ),
-              onTap: () {},
+              onTap: () {
+                Get.offAll(BottomNavigation());
+              },
               height: 50,
               width: WidgetConstants.screenWidth * 0.5,
               text: StringConstants.continueShoppingText,
