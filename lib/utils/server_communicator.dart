@@ -38,7 +38,8 @@ class ServerCommunicator {
   String nearByStoreList = 'shop/stores/list/nearby';
 //O
   String otpVerify = 'user/otp/verify';
-  String orderList = 'order/status/list';
+  String orderStatusList = 'order/status/list';
+  String orderList = 'order/list';
 //P
 
   String productDetails = 'store/product/details';

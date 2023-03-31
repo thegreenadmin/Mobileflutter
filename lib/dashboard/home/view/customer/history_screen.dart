@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/history_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -14,7 +13,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final HistoryController historyController = HistoryController();
+  final HistoryController historyController = Get.put(HistoryController());
 
   Container _orderHistoryTab() {
     return Container(
@@ -36,17 +35,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 onTap: () {
                   if (historyController.isCurrentMonthSelected.value == true) {
                   } else {
-                    historyController.isCurrentMonthSelected.value =
-                        !historyController.isCurrentMonthSelected.value;
+                    historyController.isCurrentMonthSelected.value = !historyController.isCurrentMonthSelected.value;
                   }
+                  historyController.historyList!.value = historyController.pastHistoryModel.data!.orders!;
+                  setState(() {});
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: historyController.isCurrentMonthSelected.value
-                      ? AppColors.primarylight
-                      : AppColors.white,
+                  color: historyController.isCurrentMonthSelected.value ? AppColors.primarylight : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,9 +55,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: historyController.isCurrentMonthSelected.value
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                          color:
+                              historyController.isCurrentMonthSelected.value ? AppColors.primary : AppColors.blacklight,
                         ),
                       ),
                     ],
@@ -70,17 +67,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 onTap: () {
                   if (historyController.isCurrentMonthSelected.value == false) {
                   } else {
-                    historyController.isCurrentMonthSelected.value =
-                        !historyController.isCurrentMonthSelected.value;
+                    historyController.isCurrentMonthSelected.value = !historyController.isCurrentMonthSelected.value;
                   }
+                  historyController.historyList!.value = historyController.orderHistoryModel.data!.orders!;
+                  setState(() {});
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: historyController.isCurrentMonthSelected.value
-                      ? AppColors.white
-                      : AppColors.primarylight,
+                  color: historyController.isCurrentMonthSelected.value ? AppColors.white : AppColors.primarylight,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,9 +87,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: historyController.isCurrentMonthSelected.value
-                              ? AppColors.blacklight
-                              : AppColors.primary,
+                          color:
+                              historyController.isCurrentMonthSelected.value ? AppColors.blacklight : AppColors.primary,
                         ),
                       ),
                     ],
@@ -137,10 +132,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               width10SizedBox,
                               Text(
                                 StringConstants.historyText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
+                                style:
+                                    const TextStyle(fontSize: 22, color: AppColors.black, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -158,18 +151,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
           children: [
             _orderHistoryTab(),
             height20SizedBox,
-            Obx(() => Expanded(
-                  child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return height12SizedBox;
-                      },
-                      itemCount: historyController.historyList.length,
+            Expanded(
+              child: GetBuilder<HistoryController>(
+                  builder: (_dx) => ListView.builder(
+                      itemCount: _dx.historyList!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {},
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                             decoration: const BoxDecoration(
                                 color: AppColors.greylight,
                                 borderRadius: BorderRadius.all(
@@ -183,10 +173,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     flex: 2,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: AppColors.white,
-                                              width: 1)),
+                                          shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
                                       child: const CircleAvatar(
                                         radius: 25.0,
                                         backgroundImage: AssetImage(
@@ -202,8 +189,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text.rich(
                                               TextSpan(
@@ -211,25 +197,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   TextSpan(
                                                       text: "Order ID",
                                                       style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
+                                                          color: AppColors.blacklight,
+                                                          fontWeight: FontWeight.w400,
                                                           fontSize: 14)),
                                                   TextSpan(
-                                                    text: ': #45123',
+                                                    text: ': #${_dx.historyList![index].orderId!}',
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                        fontWeight: FontWeight.w600,
                                                         fontSize: 14,
-                                                        color: AppColors
-                                                            .blacklight),
+                                                        color: AppColors.blacklight),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             width15SizedBox,
-                                            Text("20 Feb 2023",
+                                            Text(_dx.historyList![index].orderDate!,
                                                 style: TextStyle(
                                                     color: AppColors.blacklight,
                                                     fontWeight: FontWeight.w400,
@@ -238,29 +220,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ),
                                         height8SizedBox,
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                                historyController
-                                                    .historyList[index],
+                                            Text(_dx.historyList![index].status!,
                                                 style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 16)),
-                                            const Text(
-                                              "\$ 30.15",
+                                                    color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16)),
+                                            Text(
+                                              "\$ ${_dx.historyList![index].store!}",
                                               style: TextStyle(
-                                                  color: AppColors.primary,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16),
+                                                  color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
                                             ),
                                           ],
                                         ),
                                         height6SizedBox,
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text.rich(
                                               TextSpan(
@@ -268,18 +242,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   TextSpan(
                                                       text: "City: ",
                                                       style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
+                                                          color: AppColors.blacklight,
+                                                          fontWeight: FontWeight.w400,
                                                           fontSize: 14)),
                                                   TextSpan(
                                                     text: "",
                                                     style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                        color: AppColors.blacklight,
+                                                        fontWeight: FontWeight.w600,
                                                         fontSize: 14),
                                                   ),
                                                 ],
@@ -291,18 +261,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   TextSpan(
                                                       text: "Mobile: ",
                                                       style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
+                                                          color: AppColors.blacklight,
+                                                          fontWeight: FontWeight.w400,
                                                           fontSize: 14)),
                                                   TextSpan(
                                                     text: "",
                                                     style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                        color: AppColors.blacklight,
+                                                        fontWeight: FontWeight.w600,
                                                         fontSize: 14),
                                                   ),
                                                 ],
@@ -317,20 +283,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ),
                                         height6SizedBox,
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: const [
                                             Text("New york: ",
                                                 style: TextStyle(
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 14)),
+                                                    color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
                                             Text(
                                               "+1230 4562 12",
                                               style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14),
+                                                  color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14),
                                             ),
                                           ],
                                         )
@@ -342,8 +303,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ]),
                           ),
                         );
-                      }),
-                )),
+                      })),
+            ),
           ],
         ),
       ),

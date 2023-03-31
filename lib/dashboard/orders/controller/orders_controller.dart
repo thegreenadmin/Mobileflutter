@@ -1,7 +1,6 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart';
-
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -31,18 +30,15 @@ class OrdersController extends GetxController {
   Future apiGetOrderStatusListApi() async {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}",
-        headers,
-        showLoading: false)
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}", headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Order Status List *******${value?.body}");
@@ -57,5 +53,4 @@ class OrdersController extends GetxController {
       }
     });
   }
-
 }
