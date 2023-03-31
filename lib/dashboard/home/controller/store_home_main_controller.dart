@@ -67,6 +67,7 @@ class StoreHomeMainController extends GetxController {
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
   RxBool isFromHome = false.obs;
+
   RxBool isLoading = false.obs;
   RxString storeId = "".obs;
   final scrollController = ScrollController();
@@ -94,14 +95,13 @@ class StoreHomeMainController extends GetxController {
     isFromHome.value = Get.arguments["isFromHome"] ?? false;
     if (isFromHome.value) {
       Future.delayed(const Duration(milliseconds: 500), () {
-// Here you can write your code
-
         storeId.value = Get.arguments["storeId"] ?? "";
         productId.value = Get.arguments["productId"] ?? "";
         nearby.Store store = nearby.Store();
         store.storeId = storeId.value;
         storeAddress.value.store = store;
         apiGetStoreDetailsApi();
+        apiGetCartListApi();
         setupScrollController(Get.context);
         apiGetShopProductDetailApi(productId: productId.value);
         onIndexChange(0);
@@ -216,10 +216,10 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET  Cart List  *******${value?.body}");
+      debugPrint("GET CART LIST BOdY  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
@@ -396,6 +396,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Delete Cart  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);

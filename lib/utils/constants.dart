@@ -381,6 +381,9 @@ class AlertStringConstants {
   //O
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
+        static String only5MaximumImagesCanSelectText =
+      "Only 5 maximum images can select at a time";
+      
 
   //P
   static String pleaseEnterNameText = "Please enter name";
@@ -444,6 +447,8 @@ class AlertStringConstants {
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
+   static String pleaseAddAtleastOneItemText = "Please add at least one item in cart";
+  
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

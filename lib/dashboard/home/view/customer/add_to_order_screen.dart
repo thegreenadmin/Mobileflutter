@@ -255,12 +255,25 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         padding: const EdgeInsets.only(
                             left: 20.0, right: 20, top: 50),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: AppColors.white,
+                                      size: 24.0,
+                                    ),
+                                  ),
                                   Image.asset(
                                     ImageConstants.loc,
                                     color: AppColors.white,
@@ -417,7 +430,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       .productImages!
                                       .isEmpty
                               ? Image.asset(
-                            ImageConstants.nopicfound,
+                                  ImageConstants.nopicfound,
                                   fit: BoxFit.fill,
                                   height: 120,
                                 )
@@ -468,11 +481,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             ?.isFavouriteProduct ==
                                         true
                                     ? Image.asset(
-                                  ImageConstants.liked,
+                                        ImageConstants.liked,
                                         scale: 2.8,
                                       )
                                     : Image.asset(
-                                  ImageConstants.favoutline,
+                                        ImageConstants.favoutline,
                                         scale: 2.8,
                                       ),
                               ],
@@ -536,13 +549,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   children: [
                                     InkWell(
                                         onTap: () {
-                                            storeHomeMainController.itemsCount.value =
-                                            storeHomeMainController
-                                                .itemsCount.value != 0
-                                                ? storeHomeMainController
-                                                .itemsCount.value - 1
-                                                : storeHomeMainController
-                                                .itemsCount.value;
+                                          storeHomeMainController.itemsCount
+                                              .value = storeHomeMainController
+                                                      .itemsCount.value !=
+                                                  0
+                                              ? storeHomeMainController
+                                                      .itemsCount.value -
+                                                  1
+                                              : storeHomeMainController
+                                                  .itemsCount.value;
                                         },
                                         child: Image.asset(
                                           ImageConstants.subtract,
@@ -550,9 +565,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         )),
                                     width10SizedBox,
                                     Text(
-                                        storeHomeMainController.itemsCount.toString().length < 2
-                                          ? storeHomeMainController.itemsCount.toString().padLeft(2,'0')
-                                          : storeHomeMainController.itemsCount.toString(),
+                                      storeHomeMainController.itemsCount
+                                                  .toString()
+                                                  .length <
+                                              2
+                                          ? storeHomeMainController.itemsCount
+                                              .toString()
+                                              .padLeft(2, '0')
+                                          : storeHomeMainController.itemsCount
+                                              .toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -561,11 +582,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     width10SizedBox,
                                     InkWell(
                                       onTap: () {
-                                          storeHomeMainController.itemsCount.value =
-                                          storeHomeMainController.itemsCount.value + 1;
-                                          print("storeHomeMainController.quantity add");
-                                          print(storeHomeMainController.itemsCount.value.toString());
-
+                                        storeHomeMainController.itemsCount
+                                            .value = storeHomeMainController
+                                                .itemsCount.value +
+                                            1;
+                                        print(
+                                            "storeHomeMainController.quantity add");
+                                        print(storeHomeMainController
+                                            .itemsCount.value
+                                            .toString());
                                       },
                                       child: Image.asset(
                                         ImageConstants.add,
@@ -665,7 +690,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
                   height20SizedBox,
-                  height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
                     style: const TextStyle(
@@ -689,11 +713,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () {
-                      if(storeHomeMainController.itemsCount.value!=0){
+                      if (storeHomeMainController.itemsCount.value != 0) {
                         storeHomeMainController.apiAddToCart(context);
                       } else {
                         Utility.showToast(
-                            "Please add at least one item in cart");
+                            AlertStringConstants.pleaseAddAtleastOneItemText);
                       }
                     },
                     height: 50,
@@ -720,20 +744,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           StringConstants.payNowText,
                           style: const TextStyle(
                               color: AppColors.black,
-                              fontSize: 14,
+                              fontSize: 20,
                               fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          StringConstants.clickCollectText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),

@@ -81,7 +81,6 @@ class ServerCommunicator {
   String shopProductDetails = 'shop/store/product/details';
   String shopStoreDetails = 'shop/store/details';
   String shopHomeFeaturedProducts = 'store/home/featured_products';
-  
 
 //T
 //U

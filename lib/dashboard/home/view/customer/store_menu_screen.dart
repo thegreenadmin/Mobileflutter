@@ -68,6 +68,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
                         onTap: () {
                           Get.to(const UserProductListScreen());
                           storeHomeMainController.apiFeatureProductListApi(

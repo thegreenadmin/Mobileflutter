@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/history_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
@@ -284,30 +285,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         height5SizedBox,
                         Obx(() => homeController.userCrouselImgList.isEmpty
                             ? height0SizedBox
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.userCrouselImgList
-                                    .asMap()
-                                    .entries
-                                    .map((entry) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        _controller.animateToPage(entry.key),
-                                    child: Container(
-                                      width: _current == entry.key ? 25 : 10,
-                                      height: 5.0,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 4.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          shape: BoxShape.rectangle,
-                                          color: _current == entry.key
-                                              ? AppColors.primary
-                                              : AppColors.grey),
-                                    ),
-                                  );
-                                }).toList(),
+                            : InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {},
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: homeController.userCrouselImgList
+                                      .asMap()
+                                      .entries
+                                      .map((entry) {
+                                    return GestureDetector(
+                                      onTap: () =>
+                                          _controller.animateToPage(entry.key),
+                                      child: Container(
+                                        width: _current == entry.key ? 25 : 10,
+                                        height: 5.0,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 4.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            shape: BoxShape.rectangle,
+                                            color: _current == entry.key
+                                                ? AppColors.primary
+                                                : AppColors.grey),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ))
                       ])
                 : Column(
@@ -437,6 +443,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 homeController.featuredUserProductList.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                               onTap: () {
                                 Get.to(const AddToOrderScreen(), arguments: {
                                   "isFromHome": true,
@@ -464,6 +472,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             index]
                                                         .productImages ==
                                                     null ||
+                                                homeController
+                                                    .featuredUserProductList[
+                                                        index]
+                                                    .productImages!
+                                                    .isEmpty ||
                                                 homeController
                                                         .featuredUserProductList[
                                                             index]

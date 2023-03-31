@@ -202,7 +202,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w400,
                                             color: AppColors.black,
-                                            fontSize: 22)),
+                                            fontSize: 20)),
                                     actions: <Widget>[
                                       ElevatedButton(
                                           style: ElevatedButton.styleFrom(
