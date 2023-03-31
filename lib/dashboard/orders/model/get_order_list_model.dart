@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-OrderListResponse orderListResponseFromJson(String str) => OrderListResponse.fromJson(json.decode(str));
+OrderStatusListResponse orderListResponseFromJson(String str) => OrderStatusListResponse.fromJson(json.decode(str));
 
-String orderListResponseToJson(OrderListResponse data) => json.encode(data.toJson());
+String orderListResponseToJson(OrderStatusListResponse data) => json.encode(data.toJson());
 
-class OrderListResponse {
-  OrderListResponse({
+class OrderStatusListResponse {
+  OrderStatusListResponse({
     this.status,
     this.message,
     this.data,
@@ -17,23 +17,23 @@ class OrderListResponse {
 
   dynamic status;
   String? message;
-  List<OrderList>? data;
+  List<OrderStatusList>? data;
 
-  OrderListResponse copyWith({
+  OrderStatusListResponse copyWith({
     dynamic status,
     String? message,
-    List<OrderList>? data,
+    List<OrderStatusList>? data,
   }) =>
-      OrderListResponse(
+      OrderStatusListResponse(
         status: status ?? this.status,
         message: message ?? this.message,
         data: data ?? this.data,
       );
 
-  factory OrderListResponse.fromJson(Map<String, dynamic> json) => OrderListResponse(
+  factory OrderStatusListResponse.fromJson(Map<String, dynamic> json) => OrderStatusListResponse(
     status: json["status"],
     message: json["message"],
-    data: json["data"] == null ? [] : List<OrderList>.from(json["data"]!.map((x) => OrderList.fromJson(x))),
+    data: json["data"] == null ? [] : List<OrderStatusList>.from(json["data"]!.map((x) => OrderStatusList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -43,8 +43,8 @@ class OrderListResponse {
   };
 }
 
-class OrderList {
-  OrderList({
+class OrderStatusList {
+  OrderStatusList({
     this.orderStateNumber,
     this.orderStatusName,
     this.onlyUserAccess,
@@ -60,7 +60,7 @@ class OrderList {
   String? status;
   String? orderStatusId;
 
-  OrderList copyWith({
+  OrderStatusList copyWith({
     dynamic orderStateNumber,
     String? orderStatusName,
     bool? onlyUserAccess,
@@ -68,7 +68,7 @@ class OrderList {
     String? status,
     String? orderStatusId,
   }) =>
-      OrderList(
+      OrderStatusList(
         orderStateNumber: orderStateNumber ?? this.orderStateNumber,
         orderStatusName: orderStatusName ?? this.orderStatusName,
         onlyUserAccess: onlyUserAccess ?? this.onlyUserAccess,
@@ -77,7 +77,7 @@ class OrderList {
         orderStatusId: orderStatusId ?? this.orderStatusId,
       );
 
-  factory OrderList.fromJson(Map<String, dynamic> json) => OrderList(
+  factory OrderStatusList.fromJson(Map<String, dynamic> json) => OrderStatusList(
     orderStateNumber: json["order_state_number"],
     orderStatusName: json["order_status_name"],
     onlyUserAccess: json["only_user_access"],

@@ -18,28 +18,19 @@ class OrdersController extends GetxController {
   RxString email = "".obs;
   RxString phone = "".obs;
 
-  late OrderListResponse orderListResponse = OrderListResponse();
-  RxList<OrderList> orderList = <OrderList>[].obs;
-
-  RxList orderListData = [
-    "Click & Collect",
-    "Happy Shop",
-    "Ambrosia Store",
-    "Click & Collect",
-    "Happy Shop",
-    "Ambrosia Store"
-  ].obs;
+  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
+  RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    apiGetOrderListApi();
+    apiGetOrderStatusListApi();
   }
 
-  //Get Order List Api
-  Future apiGetOrderListApi() async {
+  //Get Order Status List Api
+  Future apiGetOrderStatusListApi() async {
     isLoading.value = true;
-    debugPrint("Order List URL**********"
+    debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
       'Authorization':
@@ -54,9 +45,9 @@ class OrdersController extends GetxController {
         showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Order List *******${value?.body}");
+      debugPrint("Order Status List *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
-        orderListResponse = OrderListResponse.fromJson(value?.body);
+        orderStatusListResponse = OrderStatusListResponse.fromJson(value?.body);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
