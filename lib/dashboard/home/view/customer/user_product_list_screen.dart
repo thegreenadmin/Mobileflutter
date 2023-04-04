@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class UserProductListScreen extends StatefulWidget {
   const UserProductListScreen({super.key});
@@ -26,8 +25,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     return Scaffold(
       appBar:const UserStoreOrderAppBar(),
       body: Container(
-        // height: ,
-        // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,24 +124,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                     child: Stack(
                                       alignment: Alignment.topRight,
                                       children: [
-                                        storeHomeMainController
-                                                    .featureProductList[i]
-                                                    .productImages!
-                                                    .isNotEmpty &&
-                                                storeHomeMainController
-                                                        .featureProductList[i]
-                                                        .productImages
-                                                        ?.first
-                                                        .image
-                                                        ?.dynamicUrl !=
-                                                    null
+                                        storeHomeMainController.featureProductList[i].productImages!.isNotEmpty &&
+                                                storeHomeMainController.featureProductList[i].productImages?.first.image
+                                                        ?.dynamicUrl != null
                                             ? Image.network(
-                                                storeHomeMainController
-                                                    .featureProductList[i]
-                                                    .productImages
-                                                    ?.first
-                                                    .image
-                                                    ?.dynamicUrl,
+                                                storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl,
                                                 fit: BoxFit.fill,
                                                 height: 148,
                                               )
@@ -155,18 +139,26 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                               ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: storeHomeMainController
-                                                      .featureProductList[i]
-                                                      .isFavouriteProduct ==
-                                                  true
-                                              ? Image.asset(
-                                                  ImageConstants.liked,
-                                                  scale: 3,
-                                                )
-                                              : Image.asset(
-                                                  ImageConstants.fav,
-                                                  scale: 3,
-                                                ),
+                                          child: storeHomeMainController.featureProductList[i]
+                                                      .isFavouriteProduct == true
+                                              ? InkWell(onTap: (){
+                                                storeHomeMainController.
+                                                apiRemoveFavouriteProduct(storeHomeMainController
+                                                    .featureProductList[i].productId);
+                                                },
+                                                child: Image.asset(
+                                                    ImageConstants.liked,
+                                                    scale: 3,
+                                                  ),
+                                              )
+                                              :InkWell(onTap: (){
+                                                 storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
+                                                .featureProductList[i].productId);},
+                                                child: Image.asset(
+                                                    ImageConstants.fav,
+                                                    scale: 3,
+                                                  ),
+                                              ),
                                         )
                                       ],
                                     ),

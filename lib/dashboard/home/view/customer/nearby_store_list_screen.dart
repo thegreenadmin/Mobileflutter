@@ -183,8 +183,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         searchStoreUserController.storeAddresses[index].store?.isFavouriteStore == true
                                             ? InkWell(
                                           onTap: () {
-                                            searchStoreUserController
-                                                .apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
+                                            searchStoreUserController.apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
                                           },
                                           child: Image.asset(
                                             ImageConstants.liked,

@@ -54,22 +54,13 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                     .image!
                     .dynamicUrl ==
                     null ||
-                    storeHomeMainController
-                        .storeDetailsResponse
-                        .value
-                        .data!
-                        .store!
-                        .image!
+                    storeHomeMainController.storeDetailsResponse.value.data!.store!.image!
                         .dynamicUrl!
                         .isEmpty
                     ? const AssetImage(ImageConstants.storeicon)
                 as ImageProvider
                     : NetworkImage(storeHomeMainController
-                    .storeDetailsResponse
-                    .value
-                    .data!
-                    .store!
-                    .image!
+                    .storeDetailsResponse.value.data!.store!.image!
                     .dynamicUrl!),
               ),
             ),
@@ -97,13 +88,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               size: 24.0,
                             ),
                           ),
-                          storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .isFavouriteStore ==
-                              true
+                          storeHomeMainController.isFavouriteStore.value == true
                               ? Image.asset(
                             ImageConstants.liked,
                             scale: 2.8,
@@ -288,8 +273,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                 )),
           )
               : height0SizedBox
-              :
-              Container(
+              : Container(
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
@@ -317,7 +301,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Obx(()=> Row(
+                    Row(
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -334,31 +318,28 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               size: 24.0,
                             ),
                           ),
-                          storeHomeMainController.storeAddress.value
-                              .store?.isFavouriteStore ==
-                              true
+                          // storeHomeMainController.storeAddress.value.store?.isFavouriteStore == true
+                           storeHomeMainController.isFavouriteStore.value == true
                               ? InkWell(
-                            onTap: (){
-                              storeHomeMainController
-                                  .apiRemoveFavouriteStore(storeHomeMainController.storeAddress.value.store?.storeId);
-                            },
-                            child: Image.asset(
-                              ImageConstants.liked,
-                              scale: 2.8,
-                            ),
-                          )
-                              : InkWell(
+                              onTap: (){
+                                storeHomeMainController
+                                    .apiRemoveFavouriteStore(storeHomeMainController.storeAddress.value.store?.storeId);
+                              },
+                              child: Image.asset(
+                                ImageConstants.liked,
+                                scale: 2.8,
+                              ),
+                            ) : InkWell(
                             onTap: (){
                               storeHomeMainController
                                   .apiCreateFavouriteStore(storeHomeMainController.storeAddress.value.store?.storeId);
-
                             },
                             child: Image.asset(
                               ImageConstants.favoutline,
                               scale: 2.8,
                             ),
                           ),
-                        ]),),
+                        ]),
                     height10SizedBox,
                     Row(
                       children: [
