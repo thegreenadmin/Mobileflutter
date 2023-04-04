@@ -58,7 +58,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         .image!
                                         .dynamicUrl!
                                         .isEmpty
-                                ? const AssetImage("assets/storeicon.png")
+                                ? const AssetImage(ImageConstants.storeicon)
                                     as ImageProvider
                                 : NetworkImage(storeHomeMainController
                                     .storeDetailsResponse
@@ -100,11 +100,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                   .isFavouriteStore ==
                                               true
                                           ? Image.asset(
-                                              "assets/liked.png",
+                                              ImageConstants.liked,
                                               scale: 2.8,
                                             )
                                           : Image.asset(
-                                              "assets/favoutline.png",
+                                              ImageConstants.fav,
                                               scale: 2.8,
                                             ),
                                     ]),
@@ -136,7 +136,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                     .dynamicUrl!
                                                     .isEmpty
                                             ? const AssetImage(
-                                                    "assets/storeicon.png")
+                                                    ImageConstants.storeicon)
                                                 as ImageProvider
                                             : NetworkImage(
                                                 storeHomeMainController
@@ -172,7 +172,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         Row(
                                           children: [
                                             Image.asset(
-                                              "assets/loc.png",
+                                              ImageConstants.loc,
                                               color: AppColors.white,
                                               scale: 2,
                                             ),
@@ -243,7 +243,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     null ||
                                 storeHomeMainController.storeAddress.value
                                     .store!.image!.dynamicUrl!.isEmpty
-                            ? const AssetImage("assets/storeicon.png")
+                            ? const AssetImage(ImageConstants.nopicfound)
                                 as ImageProvider
                             : NetworkImage(storeHomeMainController
                                     .storeAddress.value.store?.image?.dynamicUrl
@@ -283,11 +283,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               .store?.isFavouriteStore ==
                                           true
                                       ? Image.asset(
-                                          "assets/liked.png",
+                                          ImageConstants.liked,
                                           scale: 2.8,
                                         )
                                       : Image.asset(
-                                          "assets/favoutline.png",
+                                          ImageConstants.fav,
                                           scale: 2.8,
                                         ),
                                 ]),
@@ -316,7 +316,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                 .dynamicUrl!
                                                 .isEmpty
                                         ? const AssetImage(
-                                                "assets/storeicon.png")
+                                                ImageConstants.nopicfound)
                                             as ImageProvider
                                         : NetworkImage(storeHomeMainController
                                                 .storeAddress
@@ -346,7 +346,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     Row(
                                       children: [
                                         Image.asset(
-                                          "assets/loc.png",
+                                          ImageConstants.loc,
                                           color: AppColors.white,
                                           scale: 2,
                                         ),
@@ -766,8 +766,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               CircleAvatar(
                                 radius: 22.0,
                                 backgroundColor: Colors.white,
-                                child:
-                                    Image.asset("assets/cart.png", height: 16),
+                                child: Image.asset(ImageConstants.cart,
+                                    height: 16),
                               ),
                               Positioned(
                                 right: 0,

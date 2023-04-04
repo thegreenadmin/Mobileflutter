@@ -78,7 +78,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
               height15SizedBox,
               Center(
                   child: Image.asset(
-                    ImageConstants.greenmall420,
+                ImageConstants.greenmall420,
                 scale: 4,
               )),
               height30SizedBox,
@@ -504,8 +504,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     Utility.showToast(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
-                    searchStoreUserController.apiGetNearByStores(
-                        isFilter: true);
+                    searchStoreUserController.apiGetStoresBySelectedTabs(
+                        isFilter: true,isPreviousStores:false );
                   }
                 },
                 height: 50,

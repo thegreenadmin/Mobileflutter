@@ -1,9 +1,7 @@
 import 'package:easy_stepper/easy_stepper.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -15,12 +13,13 @@ class OrderConfirmationScreen extends StatefulWidget {
   const OrderConfirmationScreen({super.key});
 
   @override
-  State<OrderConfirmationScreen> createState() => _OrderConfirmationScreenState();
+  State<OrderConfirmationScreen> createState() =>
+      _OrderConfirmationScreenState();
 }
 
 class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   final StoreHomeMainController storeHomeMainController =
-  Get.put(StoreHomeMainController());
+      Get.put(StoreHomeMainController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +35,23 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter:
-                  const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                      const ColorFilter.mode(Colors.black45, BlendMode.darken),
                   image: storeHomeMainController.storeAddress.value.store?.image
-                      ?.dynamicUrl ==
-                      null ||
-                      storeHomeMainController.storeAddress.value.store!
-                          .image!.dynamicUrl!.isEmpty
+                                  ?.dynamicUrl ==
+                              null ||
+                          storeHomeMainController.storeAddress.value.store!
+                              .image!.dynamicUrl!.isEmpty
                       ? const AssetImage(ImageConstants.storeicon)
-                  as ImageProvider
+                          as ImageProvider
                       : NetworkImage(storeHomeMainController
-                      .storeAddress.value.store?.image?.dynamicUrl
-                      .toString() ??
-                      ""),
+                              .storeAddress.value.store?.image?.dynamicUrl
+                              .toString() ??
+                          ""),
                 ),
               ),
               child: Padding(
                   padding:
-                  const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -72,16 +71,16 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               ),
                             ),
                             storeHomeMainController.storeAddress.value.store
-                                ?.isFavouriteStore ==
-                                true
+                                        ?.isFavouriteStore ==
+                                    true
                                 ? Image.asset(
-                              ImageConstants.liked,
-                              scale: 2.8,
-                            )
+                                    ImageConstants.liked,
+                                    scale: 2.8,
+                                  )
                                 : Image.asset(
-                              ImageConstants.favoutline,
-                              scale: 2.8,
-                            ),
+                                    ImageConstants.favoutline,
+                                    scale: 2.8,
+                                  ),
                           ]),
                       height10SizedBox,
                       Row(
@@ -94,24 +93,24 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             child: CircleAvatar(
                               radius: 28.0,
                               backgroundImage: storeHomeMainController
-                                  .storeAddress
-                                  .value
-                                  .store
-                                  ?.logo
-                                  ?.dynamicUrl ==
-                                  null ||
-                                  storeHomeMainController.storeAddress.value
-                                      .store!.logo!.dynamicUrl!.isEmpty
-                                  ? const AssetImage("assets/storeicon.png")
-                              as ImageProvider
+                                              .storeAddress
+                                              .value
+                                              .store
+                                              ?.logo
+                                              ?.dynamicUrl ==
+                                          null ||
+                                      storeHomeMainController.storeAddress.value
+                                          .store!.logo!.dynamicUrl!.isEmpty
+                                  ? const AssetImage(ImageConstants.nopicfound)
+                                      as ImageProvider
                                   : NetworkImage(storeHomeMainController
-                                  .storeAddress
-                                  .value
-                                  .store
-                                  ?.logo
-                                  ?.dynamicUrl
-                                  .toString() ??
-                                  ""),
+                                          .storeAddress
+                                          .value
+                                          .store
+                                          ?.logo
+                                          ?.dynamicUrl
+                                          .toString() ??
+                                      ""),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -121,7 +120,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             children: [
                               Text(
                                 storeHomeMainController
-                                    .storeAddress.value.store?.storeName ??
+                                        .storeAddress.value.store?.storeName ??
                                     "",
                                 style: const TextStyle(
                                     color: AppColors.white,
@@ -139,7 +138,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   width4SizedBox,
                                   Text(
                                       storeHomeMainController.storeAddress.value
-                                          .addressLine1 ??
+                                              .addressLine1 ??
                                           "",
                                       style: const TextStyle(
                                           color: AppColors.white,
@@ -150,12 +149,18 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               height8SizedBox,
                               Text(
                                   storeHomeMainController.storeAddress.value
-                                      .store!.storeTimings!.isNotEmpty ? storeHomeMainController
-                                      .storeAddress.value.store
-                                      ?.storeTimings?.first.is24HoursActive == false
-                                      ? "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                      "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                      : StringConstants.storeHoursText
+                                          .store!.storeTimings!.isNotEmpty
+                                      ? storeHomeMainController
+                                                  .storeAddress
+                                                  .value
+                                                  .store
+                                                  ?.storeTimings
+                                                  ?.first
+                                                  .is24HoursActive ==
+                                              false
+                                          ? "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                              "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                          : StringConstants.storeHoursText
                                       : StringConstants.storeHoursText,
                                   style: const TextStyle(
                                       color: AppColors.white,
@@ -177,8 +182,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             height40SizedBox,
-            Image.asset( ImageConstants.tickBorder,scale:2.2),
-            height20SizedBox,
+            Image.asset(ImageConstants.tickBorder, scale: 1.2),
+            height8SizedBox,
             Text(
               StringConstants.orderConfirmationText,
               style: const TextStyle(
@@ -194,9 +199,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   fontSize: 16,
                   color: AppColors.black),
             ),
-
             height20SizedBox,
-
+            const Divider(
+              height: 20,
+              color: AppColors.grey,
+            ),
+            height12SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -215,25 +223,33 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       color: AppColors.primary),
                 ),
               ],
-            ),   height10SizedBox,
+            ),
+            height12SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   StringConstants.orderStatusText,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                       color: AppColors.black),
                 ),
                 Text(
                   StringConstants.received,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                       color: AppColors.green),
                 ),
               ],
             ),
-            height40SizedBox,
+            height10SizedBox,
+            const Divider(
+              height: 20,
+              color: AppColors.grey,
+            ),
+            height30SizedBox,
             EasyStepper(
               activeStep: storeHomeMainController.activeStep.value,
               lineLength: 55,
@@ -247,18 +263,21 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               unreachedStepBorderType: BorderType.normal,
               finishedStepBorderColor: AppColors.primary,
               finishedStepTextColor: AppColors.primary,
-              finishedStepBackgroundColor:AppColors.primary,
+              finishedStepBackgroundColor: AppColors.primary,
               activeStepIconColor: AppColors.primary,
               showLoadingAnimation: false,
               unreachedStepIconColor: AppColors.black,
-              unreachedStepTextColor:  AppColors.black,
-              steps:List<EasyStep>.generate(storeHomeMainController.stepInd.length, (index) =>
-                    EasyStep(
-                      customStep: storeHomeMainController.activeStep.value
-                          == storeHomeMainController.stepInd[index].id?.toInt() ?
-                      Image.asset(ImageConstants.blueTick):
-                      Image.asset(ImageConstants.blackTick),
-                      title: storeHomeMainController.stepInd[index].name??"",),),
+              unreachedStepTextColor: AppColors.black,
+              steps: List<EasyStep>.generate(
+                storeHomeMainController.stepInd.length,
+                (index) => EasyStep(
+                  customStep: storeHomeMainController.activeStep.value ==
+                          storeHomeMainController.stepInd[index].id?.toInt()
+                      ? Image.asset(ImageConstants.blueTick)
+                      : Image.asset(ImageConstants.blackTick),
+                  title: storeHomeMainController.stepInd[index].name ?? "",
+                ),
+              ),
               onStepReached: (index) {},
             ),
             height40SizedBox,
@@ -280,7 +299,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               fontSize: 16,
             ),
             height30SizedBox,
-
           ],
         ),
       ),

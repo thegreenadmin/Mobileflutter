@@ -333,7 +333,8 @@ class OwnerStoresController extends GetxController {
       isLoading.value = false;
       debugPrint("GET FEATURED PRODUCTS LIST BODY *******$body");
       debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 || value.body["status"] == ApiConstants.statusCode201) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
       } else if (value.body["status"] == ApiConstants.statusCode403) {
@@ -371,7 +372,8 @@ class OwnerStoresController extends GetxController {
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
-      if (res.statusCode == ApiConstants.statusCode200 || res.statusCode == ApiConstants.statusCode201) {
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
           editStoreLogoOrigionalLinkfromServer.value =
               responseData['data']['urls']['orignal_url'];
@@ -421,7 +423,8 @@ class OwnerStoresController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 || value.body["status"] == ApiConstants.statusCode201) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
@@ -453,7 +456,8 @@ class OwnerStoresController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
@@ -750,6 +754,43 @@ class OwnerStoresController extends GetxController {
           stateIndex.value = 0;
           stateId.value = statesList[0].stateId.toString();
         }
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Delete Store api
+  Future apiDeleteStore({String storeId = ""}) async {
+    debugPrint(
+        "DELETE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"store_id": storeId};
+
+    debugPrint("DELETE STORE BODY ************* $body");
+    UserProvider()
+        .deleteWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE STORE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        await apiGetStoreList();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+        await apiGetStoreList();
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

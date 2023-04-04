@@ -1,41 +1,208 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/order_history_model.dart';
+import 'package:thegreenmall/dashboard/home/model/get_owner_order_history_model.dart'
+    as owner;
+import 'package:thegreenmall/dashboard/home/model/get_user_order_history_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class HistoryController extends GetxController {
-  RxList<Orders>? historyList = <Orders>[].obs;
-  OrderHistoryModel orderHistoryModel = OrderHistoryModel();
-  OrderHistoryModel pastHistoryModel = OrderHistoryModel();
+  GetUserOrderHistoryModel getUserOrderHistoryModel =
+      GetUserOrderHistoryModel();
+  RxList<Orders>? userOrderHistoryList = <Orders>[].obs;
+
+  owner.GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
+      owner.GetOwnerOrderHistoryModel();
+  RxList<owner.Orders>? ownerOrderHistoryList = <owner.Orders>[].obs;
+
   RxBool isCurrentMonthSelected = true.obs;
+  RxBool isLoading = true.obs;
+  RxString? role = "".obs;
+  RxInt selectedIndex = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(milliseconds: 200), () {
-      isCurrentMonthSelected.value = true;
-      apiCurrentHistory();
-    });
+    isCurrentMonthSelected.value = true;
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      role!.value = Role.customerRoleText;
+      apiGetUserOrderHistory();
+    } else {
+      role!.value = Role.storeOwnerRoleText;
+      apiGetOwnerOrderHistory();
+    }
   }
 
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
-    var firstDayNextMonth = DateTime(firstDayThisMonth.year, firstDayThisMonth.month + 1, firstDayThisMonth.day);
+    var firstDayNextMonth = DateTime(firstDayThisMonth.year,
+        firstDayThisMonth.month + 1, firstDayThisMonth.day);
     return firstDayNextMonth.difference(firstDayThisMonth).inDays;
   }
 
-  //Add Category Api
-  Future apiCurrentHistory() async {
-    debugPrint("CURRENT_HISTORY**********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+  void onIndexChange(int i) async {
+    selectedIndex.value = i;
+    switch (i) {
+      case 0: //Jan
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-01-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}");
+        }
+        break;
+
+      case 1: //Feb
+        {
+          int year = DateTime.now().year;
+          debugPrint(selectedIndex.value.toString());
+          bool isLeapYear(int year) =>
+              (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-02-01",
+              endDateOfMonth: isLeapYear(year)
+                  ? "${DateTime.now().year}-02-29"
+                  : "${DateTime.now().year}-02-28");
+        }
+        break;
+      case 2: //March
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-03-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-03-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 3: //April
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-04-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-04-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 4: //May
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-05-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-05-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 5: //june
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-06-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-06-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 6: //july
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-07-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-07-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 7: //aug
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-08-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-08-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 8: //sept
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-09-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-09-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 9: //oct
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-10-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-10-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 10: //Nov
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-11-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-11-${daysInMonth(DateTime.now())}");
+        }
+        break;
+      case 11: //Dec
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth: "${DateTime.now().year}-12-01",
+              endDateOfMonth:
+                  "${DateTime.now().year}-12-${daysInMonth(DateTime.now())}");
+        }
+        break;
+
+      default:
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetUserOrderHistory(
+              startDateOfMonth:
+                  "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}",
+              endDateOfMonth:
+                  "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}");
+        }
+        break;
+    }
+  }
+
+  RxList horizontalTabList = [
+    StringConstants.janText,
+    StringConstants.febText,
+    StringConstants.marchText,
+    StringConstants.aprilText,
+    StringConstants.mayText,
+    StringConstants.juneText,
+    StringConstants.julyText,
+    StringConstants.augText,
+    StringConstants.sepText,
+    StringConstants.octText,
+    StringConstants.novText,
+    StringConstants.decText,
+  ].obs;
+
+  //Api get current and past history of [USER]
+  Future apiGetUserOrderHistory(
+      {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    String currentMonth = "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+    String currentMonth =
+        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
 
     Map body = {
       "store_id": null,
@@ -43,60 +210,84 @@ class HistoryController extends GetxController {
       "page_size": null,
       "order_by": "order_id",
       "order_type": "DESC",
-      "from_date": "${DateTime.now().year}-$currentMonth-01",
-      "to_date": "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}",
+      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-01"
+          : startDateOfMonth,
+      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
+          : endDateOfMonth,
       "only_active_orders": true,
       "order_statuses": []
     };
-    debugPrint("ADD CATEGORY BODY********** $body");
+    debugPrint("USER ORDER HISTORY API BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(body, ServerCommunicator().baseUrl + ServerCommunicator().orderList, headers,
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().orderList,
+            headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
-        orderHistoryModel = OrderHistoryModel.fromJson(value.body);
-        historyList!.value = orderHistoryModel.data!.orders!;
+      isLoading.value = false;
+      debugPrint("USER ORDER HISTORY URL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getUserOrderHistoryModel =
+            GetUserOrderHistoryModel.fromJson(value.body);
+        userOrderHistoryList!.value = getUserOrderHistoryModel.data!.orders!;
         update();
-        apiPastHistory();
       } else {
         Utility.showToast(value.body['message']);
       }
     });
   }
 
-  //Add Category Api
-  Future apiPastHistory() async {
-    debugPrint("PAST_HISTORY**********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+  //Api get current and past history of [OWNER]
+  Future apiGetOwnerOrderHistory(
+      {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    String previousMonth = "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month - 2}";
-    String currentMonth = "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+    String currentMonth =
+        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+
     Map body = {
       "store_id": null,
       "page": null,
       "page_size": null,
       "order_by": "order_id",
       "order_type": "DESC",
-      "from_date": "${DateTime.now().year}-$previousMonth-01",
-      "to_date": "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}",
+      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-01"
+          : startDateOfMonth,
+      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
+          : endDateOfMonth,
       "only_active_orders": true,
       "order_statuses": []
     };
-    debugPrint("ADD CATEGORY BODY********** $body");
+    debugPrint("OWNER ORDER HISTORY BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(body, ServerCommunicator().baseUrl + ServerCommunicator().orderList, headers,
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOrderList,
+            headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
-        pastHistoryModel = OrderHistoryModel.fromJson(value.body);
+      isLoading.value = false;
+      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getUserOrderHistoryModel =
+            GetUserOrderHistoryModel.fromJson(value.body);
+        userOrderHistoryList!.value = getUserOrderHistoryModel.data!.orders!;
+        update();
       } else {
         Utility.showToast(value.body['message']);
       }

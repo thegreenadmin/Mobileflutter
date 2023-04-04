@@ -82,7 +82,7 @@ class Utility {
   }
 
   static String parseDateTime(DateTime timestamp,
-      {String format = 'MMM d, h:mm a'}) {
+      {String format = 'MMM d, h:mm a', required String secFormat}) {
     final dateTime = timestamp.toLocal();
     return DateFormat(format).format(dateTime).toString();
   }

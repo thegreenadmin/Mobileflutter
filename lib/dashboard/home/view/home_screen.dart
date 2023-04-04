@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/history_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/inbox_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/history/history_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/user_stores_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -120,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Role.role.value) ==
                                   Role.customerRoleText) {
                                 Get.to(
-                                  const SearchStoreUserScreen(),
+                                  const UserStoresScreen(),
                                   arguments: {
                                     "firstName":
                                         homeController.firstName!.value,
@@ -177,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                //Get.to(const HistoryScreen());
+                                Get.to(const HistoryScreen());
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -256,7 +254,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )
                                 : CarouselSlider(
                                     items: homeController.userCrouselImgList
-                                        .take(5)
                                         .map((item) => Center(
                                                 child: ClipRRect(
                                               borderRadius:

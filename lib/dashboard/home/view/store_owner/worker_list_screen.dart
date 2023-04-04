@@ -210,14 +210,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                           ),
                                           onPressed: () {
                                             Get.back();
-                                            addNewWorkerController
-                                                    .workerId.value =
-                                                addNewWorkerController
-                                                    .workerList[index]
-                                                    .storeUserId
-                                                    .toString();
-                                            addNewWorkerController
-                                                .apiDeleteWorker();
+                                         
+                                         
                                           },
                                           child:
                                               Text(StringConstants.deleteText)),
