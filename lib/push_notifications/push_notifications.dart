@@ -40,7 +40,7 @@ getNotification() {
     RemoteNotification? notification = message!.notification;
     debugPrint("notification data---------------" + message.data.toString());
     debugPrint("notification data 123 ---------------" +
-        message.notification.toString());
+        message.data['pinpoint']['notification'].toString());
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
