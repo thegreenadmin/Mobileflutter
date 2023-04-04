@@ -5,7 +5,8 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
-import 'package:thegreenmall/dashboard/home/view/account_screen.dart';
+import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
+import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -21,11 +22,15 @@ class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? email = "".obs;
+  RxString? productId = "".obs;
+  RxString? storeId = "".obs;
+
   RxBool? isLoading = false.obs;
+
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
-  late NearbyStoreListResponse nearbyStoreListResponse =
-      NearbyStoreListResponse();
+  late GetUserOfferModel userOffersModel = GetUserOfferModel();
+  RxList<Offers> userOfferList = <Offers>[].obs;
 
   late OwnerFeaturedProductModel ownerFeaturedProductModel =
       OwnerFeaturedProductModel();
@@ -162,56 +167,42 @@ class HomeController extends GetxController {
   //Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
     userCrouselImgList.clear();
-    nearbyStoreListResponse = NearbyStoreListResponse();
-    debugPrint("GET GET NEARBY STORES URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
+    debugPrint("GET USER OFFER STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map data = {
-      "q": "",
-      "page": 1,
-      "page_size": 10,
-      "longitude": 37.0902,
-      "latitude": 95.7129,
-      "postal_code": "",
-      "mileage": 100,
-      "is_open_now": "",
-      "opening_time": "00:00:00",
-      "closing_time": "24:00:00",
-      "is_favourite_store": null
-    };
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET NEARBY STORES *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
-        storeAddresses.value = nearbyStoreListResponse.data!.storeAddresses!;
-        if (storeAddresses.isNotEmpty) {
-          for (int i = 0; i < storeAddresses.length; i++) {
-            if (i >= 5) {
-              break;
-            }
-            userCrouselImgList
-                .add(storeAddresses[i].store!.image!.dynamicUrl!.toString());
+      debugPrint("GET USER OFFER STORES RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        userOffersModel = GetUserOfferModel.fromJson(value.body);
+        userOfferList.value = userOffersModel.data!.offers!;
+        for (int i = 0; i < userOfferList.length; i++) {
+          storeId!.value = userOfferList[i].storeId.toString();
+
+          if (i >= 5) {
+            break;
           }
+          userCrouselImgList
+              .add(userOfferList[i].image!.dynamicUrl!.toString());
         }
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
-        Utility.showToast(value?.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showToast(value.body['message']);
       }
     });
   }
@@ -219,7 +210,7 @@ class HomeController extends GetxController {
   //Feature ProductList Store Api [USER]
   Future apiGetUserFeaturedProducts() async {
     isLoading!.value = true;
-    debugPrint("FEATURED PRODUCT URL**********"
+    debugPrint("USER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -245,7 +236,7 @@ class HomeController extends GetxController {
     };
 
     debugPrint("TOKEN ********** $headers");
-    debugPrint("FEATURED PRODUCT BODY ********** ${data.toString()}");
+    debugPrint("USER FEATURED PRODUCT BODY ********** ${data.toString()}");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -255,7 +246,7 @@ class HomeController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading!.value = false;
-      debugPrint("FEATURED PRODUCT RESPONSE *******${value?.body}");
+      debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =

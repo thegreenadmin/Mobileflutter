@@ -44,6 +44,8 @@ class StringConstants {
   static String adminText = "Admin";
   static String availabilityText = "Availability";
   static String addYourText = "Add your";
+  static String aprilText = "April";
+  static String augText = "August";
 
   //B
   static String breadthText = "Breadth";
@@ -87,6 +89,7 @@ class StringConstants {
   static String discountText = "Discount:";
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
+  static String decText = "December";
 
   //E
 
@@ -121,6 +124,7 @@ class StringConstants {
   static String filterOptionsText = "Filter Options";
   static String enterRoleText = "Enter Role";
   static String findStoreText = "Find Store";
+  static String febText = "February";
 
   //G
   static String getInTouchText = "Get In touch";
@@ -139,6 +143,9 @@ class StringConstants {
   static String itemsText = "Items";
 
   //J
+  static String janText = "January";
+  static String juneText = "June";
+  static String julyText = "July";
 
   //K
 
@@ -164,6 +171,8 @@ class StringConstants {
   static String memberText = "Member";
   static String managerText = "Manager";
   static String mileageText = "Mileage";
+  static String marchText = "March";
+  static String mayText = "May";
 
   //N
   static String nearbyText = "Nearby";
@@ -204,6 +213,8 @@ class StringConstants {
   static String offerFor = "Offer For";
   static String okayText = "Okay";
   static String orderConfirmationText = "Order Confirmation";
+  static String octText = "October";
+  static String novText = "November";
 
   //P
   static String profileText = "Profile";
@@ -289,6 +300,7 @@ class StringConstants {
   static String storeOpeningText = "Store Opening";
   static String selectStoreText = "Select Store";
   static String shopYourFavouriteText = "Shop your favorite";
+  static String sepText = "September";
 
   //T
   static String thankOrderText = "Thank you for your Order !!";
@@ -383,12 +395,13 @@ class AlertStringConstants {
 
 //N
   static String noProductFoundForThisStore = "No Products Found For This Store";
+  static String noHistoryFoundText = "No History Found";
+
   //O
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
-        static String only5MaximumImagesCanSelectText =
+  static String only5MaximumImagesCanSelectText =
       "Only 5 maximum images can select at a time";
-      
 
   //P
   static String pleaseEnterNameText = "Please enter name";
@@ -452,8 +465,8 @@ class AlertStringConstants {
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
-   static String pleaseAddAtleastOneItemText = "Please add at least one item in cart";
-  
+  static String pleaseAddAtleastOneItemText =
+      "Please add at least one item in cart";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

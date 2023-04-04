@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "454165179084",
+    "project_id": "thegreenmall",
+    "storage_bucket": "thegreenmall.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454165179084:android:dd3419f251cc1505ee7069",
+        "android_client_info": {
+          "package_name": "com.app.thegreenmall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454165179084-3ofkb9tsas9ik0ukbl93ti2lthg8u91p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByjKewbMj4UrivNJfwtEZ0KAXtCNj62qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454165179084-3ofkb9tsas9ik0ukbl93ti2lthg8u91p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

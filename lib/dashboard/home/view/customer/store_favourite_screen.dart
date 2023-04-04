@@ -94,7 +94,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                           height: 160,
                                         )
                                       : Image.asset(
-                                    ImageConstants.nopicfound,
+                                          ImageConstants.nopicfound,
                                           fit: BoxFit.fill,
                                         ),
                                   Padding(
@@ -104,11 +104,11 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                                 .isFavouriteProduct ==
                                             true
                                         ? Image.asset(
-                                      ImageConstants.liked,
+                                            ImageConstants.liked,
                                             scale: 3,
                                           )
                                         : Image.asset(
-                                      ImageConstants.fav,
+                                            ImageConstants.fav,
                                             scale: 3,
                                           ),
                                   )

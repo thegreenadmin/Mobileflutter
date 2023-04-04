@@ -3,16 +3,13 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class SearchStoreUserController extends GetxController {
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
-  RxString openingTime = "".obs;
-  RxString closingTime = "".obs;
   TextEditingController zipCodeTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();
   TextEditingController storeOpeningTextController = TextEditingController();
@@ -24,6 +21,12 @@ class SearchStoreUserController extends GetxController {
       NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
   RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
+  var kGoogleApiKey = "";
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+  RxString openingTime = "".obs;
+  RxString closingTime = "".obs;
+  RxInt selectedIndex = 0.obs;
 
   RxInt page = 1.obs;
   RxInt type = 0.obs;
@@ -65,7 +68,6 @@ class SearchStoreUserController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     Map data = {
       "q": "",
       "page": page.value,
@@ -165,6 +167,7 @@ class SearchStoreUserController extends GetxController {
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
             element.store?.isFavouriteStore = true;
+            favStoreAddresses.add(element);
           }
         }
 

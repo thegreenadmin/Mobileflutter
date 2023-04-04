@@ -1,11 +1,11 @@
-class OrderHistoryModel {
+class GetUserOrderHistoryModel {
   int? status;
   String? message;
   Data? data;
 
-  OrderHistoryModel({this.status, this.message, this.data});
+  GetUserOrderHistoryModel({this.status, this.message, this.data});
 
-  OrderHistoryModel.fromJson(Map<String, dynamic> json) {
+  GetUserOrderHistoryModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -157,13 +157,15 @@ class Orders {
       data['store'] = this.store!.toJson();
     }
     if (this.orderHistories != null) {
-      data['order_histories'] = this.orderHistories!.map((v) => v.toJson()).toList();
+      data['order_histories'] =
+          this.orderHistories!.map((v) => v.toJson()).toList();
     }
     if (this.orderItems != null) {
       data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
     }
     if (this.orderDeliveryAddresses != null) {
-      data['order_delivery_addresses'] = this.orderDeliveryAddresses!.map((v) => v.toJson()).toList();
+      data['order_delivery_addresses'] =
+          this.orderDeliveryAddresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -171,31 +173,60 @@ class Orders {
 
 class Store {
   String? storeId;
-  String? logoUrl;
   String? storeName;
   bool? isVerified;
   bool? isEnabled;
-  String? imageUrl;
+  Image? image;
+  Image? logo;
 
-  Store({this.storeId, this.logoUrl, this.storeName, this.isVerified, this.isEnabled, this.imageUrl});
+  Store(
+      {this.storeId,
+      this.storeName,
+      this.isVerified,
+      this.isEnabled,
+      this.image,
+      this.logo});
 
   Store.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
-    logoUrl = json['logo_url'];
     storeName = json['store_name'];
     isVerified = json['is_verified'];
     isEnabled = json['is_enabled'];
-    imageUrl = json['image_url'];
+    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    logo = json['logo'] != null ? new Image.fromJson(json['logo']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['store_id'] = this.storeId;
-    data['logo_url'] = this.logoUrl;
     data['store_name'] = this.storeName;
     data['is_verified'] = this.isVerified;
     data['is_enabled'] = this.isEnabled;
-    data['image_url'] = this.imageUrl;
+    if (this.image != null) {
+      data['image'] = this.image!.toJson();
+    }
+    if (this.logo != null) {
+      data['logo'] = this.logo!.toJson();
+    }
+    return data;
+  }
+}
+
+class Image {
+  String? orignalUrl;
+  String? dynamicUrl;
+
+  Image({this.orignalUrl, this.dynamicUrl});
+
+  Image.fromJson(Map<String, dynamic> json) {
+    orignalUrl = json['orignal_url'];
+    dynamicUrl = json['dynamic_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orignal_url'] = this.orignalUrl;
+    data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
 }
@@ -207,14 +238,21 @@ class OrderHistories {
   String? updatedAt;
   OrderStatus? orderStatus;
 
-  OrderHistories({this.orderHistoryId, this.orderStatusId, this.createdAt, this.updatedAt, this.orderStatus});
+  OrderHistories(
+      {this.orderHistoryId,
+      this.orderStatusId,
+      this.createdAt,
+      this.updatedAt,
+      this.orderStatus});
 
   OrderHistories.fromJson(Map<String, dynamic> json) {
     orderHistoryId = json['order_history_id'];
     orderStatusId = json['order_status_id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    orderStatus = json['order_status'] != null ? new OrderStatus.fromJson(json['order_status']) : null;
+    orderStatus = json['order_status'] != null
+        ? new OrderStatus.fromJson(json['order_status'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -255,8 +293,8 @@ class OrderItems {
   int? orderItemCount;
   int? orderItemPrice;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
   String? discountName;
   String? discountType;
   int? discountValue;

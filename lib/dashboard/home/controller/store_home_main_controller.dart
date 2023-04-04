@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
@@ -58,17 +59,28 @@ class StoreHomeMainController extends GetxController {
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
-
   RxInt selectedIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt itemsCount = 0.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
+  RxBool isFromHome = false.obs;
   RxString orderStatus = "".obs;
 
   RxBool isLoading = false.obs;
+  RxString storeId = "".obs;
+  final scrollController = ScrollController();
 
+  void setupScrollController(context) {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels != 0) {
+          // apiGetStoreCategoriesApi();
+        }
+      }
+    });
+  }
 
   RxList<Categories> stepInd = [
     Categories(id: 0,name: "Received", isSelected: false),
@@ -80,10 +92,27 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeAddress.value = Get.arguments["storeAddress"];
-    apiGetStoreDetailsApi();
-    apiGetUserDetailsApi();
-    onIndexChange(0);
+    isFromHome.value = Get.arguments["isFromHome"] ?? false;
+    if (isFromHome.value) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        storeId.value = Get.arguments["storeId"] ?? "";
+        productId.value = Get.arguments["productId"] ?? "";
+        nearby.Store store = nearby.Store();
+        store.storeId = storeId.value;
+        storeAddress.value.store = store;
+        apiGetStoreDetailsApi();
+        apiGetCartListApi();
+        setupScrollController(Get.context);
+        apiGetShopProductDetailApi(productId: productId.value);
+        onIndexChange(0);
+      });
+    } else {
+      storeAddress.value = Get.arguments["storeAddress"] ?? {};
+      setupScrollController(Get.context);
+      apiGetStoreDetailsApi();
+      apiGetUserDetailsApi();
+      onIndexChange(0);
+    }
   }
 
   void onIndexChange(int i) async {
@@ -101,7 +130,7 @@ class StoreHomeMainController extends GetxController {
   //Get Categories Api
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
-    debugPrint("GET Store Categories URL**********"
+    debugPrint("GET STORE CATEGORIES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -119,8 +148,8 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("GET  Store Categories  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201
-          || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         categoriesListResponse =
             categories.StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
@@ -134,7 +163,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get Categories Api
+  //Get User detail Api
   Future apiGetUserDetailsApi() async {
     isLoading.value = true;
     debugPrint(
@@ -153,7 +182,8 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
 
       debugPrint("GET USER DETAIL *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userAddress.value = getUserDetailModel.data!.user!.userAddresses!;
         if (userAddress.isNotEmpty) {
@@ -172,7 +202,7 @@ class StoreHomeMainController extends GetxController {
   //Get Cart List Api
   Future apiGetCartListApi() async {
     isLoading.value = true;
-    debugPrint("GET Cart List URL**********"
+    debugPrint("GET CART LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -186,11 +216,12 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET  Cart List  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("GET CART LIST BOdY  *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartData.value = cartListResponse.data?? cart.Data();
@@ -207,7 +238,7 @@ class StoreHomeMainController extends GetxController {
   //  Place Order Api
   Future apiPlaceOrder() async {
     isLoading.value = true;
-    debugPrint("api Place Order URL**********"
+    debugPrint("API PLACE ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -217,18 +248,17 @@ class StoreHomeMainController extends GetxController {
 
     List selectedItems = [];
     for (var element in cartItems) {
-      selectedItems.add(
-        {
-          "cart_item_id":int.parse(element.cartItemId.toString()),
-          "items_count": element.itemsCount,
-        }
-      );
+      selectedItems.add({
+        "cart_item_id": int.parse(element.cartItemId.toString()),
+        "items_count": element.itemsCount,
+      });
     }
 
     Map<String, dynamic> data = {
-      "store_id": int.parse(storeAddress.value.store?.storeId.toString()??"0"),
+      "store_id":
+          int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id":int.parse(userAddressId.value.toString()),
+      "user_address_id": int.parse(userAddressId.value.toString()),
       "cart_items": selectedItems
     };
 
@@ -261,7 +291,7 @@ class StoreHomeMainController extends GetxController {
     BuildContext context,
   ) async {
     isLoading.value = true;
-    debugPrint("Add To Cart  URL**********"
+    debugPrint("ADD TO CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -302,7 +332,7 @@ class StoreHomeMainController extends GetxController {
   //Update Cart Api
   Future apiUpdateCart({int cartItemId = 0, quantity = 0}) async {
     isLoading.value = true;
-    debugPrint("Update Cart  URL**********"
+    debugPrint("UPDATE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().updateCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -325,7 +355,8 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Update Cart  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -340,7 +371,7 @@ class StoreHomeMainController extends GetxController {
   //Delete Cart Api
   Future apiDeleteCart({int cartItemId = 0}) async {
     isLoading.value = true;
-    debugPrint("Delete Cart  URL**********"
+    debugPrint("DELETE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -362,7 +393,9 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Delete Cart  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -498,7 +531,8 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         offersListResponse =
             offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
@@ -515,13 +549,12 @@ class StoreHomeMainController extends GetxController {
   //Get Store Details Api
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
-    debugPrint("  Store Details URL**********"
+    debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(

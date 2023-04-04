@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-QuantityListResponse quantityListResponseFromJson(String str) => QuantityListResponse.fromJson(json.decode(str));
+QuantityListResponse quantityListResponseFromJson(String str) =>
+    QuantityListResponse.fromJson(json.decode(str));
 
-String quantityListResponseToJson(QuantityListResponse data) => json.encode(data.toJson());
+String quantityListResponseToJson(QuantityListResponse data) =>
+    json.encode(data.toJson());
 
 class QuantityListResponse {
   QuantityListResponse({
@@ -30,17 +32,18 @@ class QuantityListResponse {
         data: data ?? this.data,
       );
 
-  factory QuantityListResponse.fromJson(Map<String, dynamic> json) => QuantityListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory QuantityListResponse.fromJson(Map<String, dynamic> json) =>
+      QuantityListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -58,12 +61,17 @@ class Data {
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    quantityTypes: json["quantity_types"] == null ? [] : List<QuantityType>.from(json["quantity_types"]!.map((x) => QuantityType.fromJson(x))),
-  );
+        quantityTypes: json["quantity_types"] == null
+            ? []
+            : List<QuantityType>.from(
+                json["quantity_types"]!.map((x) => QuantityType.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "quantity_types": quantityTypes == null ? [] : List<dynamic>.from(quantityTypes!.map((x) => x.toJson())),
-  };
+        "quantity_types": quantityTypes == null
+            ? []
+            : List<dynamic>.from(quantityTypes!.map((x) => x.toJson())),
+      };
 }
 
 class QuantityType {
@@ -85,12 +93,12 @@ class QuantityType {
       );
 
   factory QuantityType.fromJson(Map<String, dynamic> json) => QuantityType(
-    quantityTypeId: json["quantity_type_id"],
-    quantityTypeName: json["quantity_type_name"],
-  );
+        quantityTypeId: json["quantity_type_id"],
+        quantityTypeName: json["quantity_type_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "quantity_type_id": quantityTypeId,
-    "quantity_type_name": quantityTypeName,
-  };
+        "quantity_type_id": quantityTypeId,
+        "quantity_type_name": quantityTypeName,
+      };
 }

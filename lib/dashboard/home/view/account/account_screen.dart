@@ -3,7 +3,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/personal_info_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';

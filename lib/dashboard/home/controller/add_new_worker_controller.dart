@@ -138,21 +138,23 @@ class AddNewWorkerController extends GetxController {
         add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
         employeeTiming.dayOfWeek = element.id;
         employeeTiming.is24HrsActive = is247Time.value;
+        print(startTimeTextController.text);
+        print(endTimeTextController.text);
         employeeTiming.startTime = Utility.formatDateTime(
                 startTimeTextController.text,
-                firstFormat: "hh:mm a",
+                firstFormat: "hh:mm",
                 secFormat: "hh:mm:ss")
             .toString();
         employeeTiming.endTime = Utility.formatDateTime(
                 endTimeTextController.text,
-                firstFormat: "hh:mm a",
+                firstFormat: "hh:mm",
                 secFormat: "hh:mm:ss")
             .toString();
         employeeTimings.add(employeeTiming);
       }
     }
     addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("ADD WORKER BODY ***${addWorkerRequest.toJson()}*");
+    debugPrint("ADD WORKER BODY ***********${addWorkerRequest.toJson()}");
 
     UserProvider()
         .postWithHeadersApi(

@@ -210,14 +210,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                           ),
                                           onPressed: () {
                                             Get.back();
-                                            addNewWorkerController
-                                                    .workerId.value =
-                                                addNewWorkerController
-                                                    .workerList[index]
-                                                    .storeUserId
-                                                    .toString();
-                                            addNewWorkerController
-                                                .apiDeleteWorker();
                                           },
                                           child:
                                               Text(StringConstants.deleteText)),
@@ -350,7 +342,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "${StringConstants.storesText}:",
+                                                    "${StringConstants.storesText}: ",
                                                     style: TextStyle(
                                                         fontSize: 12.0,
                                                         color: AppColors
