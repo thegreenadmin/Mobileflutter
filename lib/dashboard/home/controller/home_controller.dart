@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
@@ -53,11 +54,19 @@ class HomeController extends GetxController {
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
   RxList<DataList> featuredUserProductList = <DataList>[].obs;
-
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
   @override
   void onInit() {
     super.onInit();
     apiGetUserDetail();
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -158,6 +167,7 @@ class HomeController extends GetxController {
             StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
+        getCurrentLocation();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -167,8 +177,10 @@ class HomeController extends GetxController {
   //Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
     userCrouselImgList.clear();
-    debugPrint("GET USER OFFER STORES URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}");
+    debugPrint(
+      "GET USER OFFER STORES URL**********"
+      "${ServerCommunicator().baseUrl + ServerCommunicator().shopStoreHomeOffers + "?longitude=" + lng.toString() + "&latitude=" + lat.toString()}&mileage=&page=1&page_size=20",
+    );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -178,7 +190,8 @@ class HomeController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl + ServerCommunicator().shopStoreHomeOffers + "?longitude=" + lng.toString() + "&latitude=" + lat.toString()}&mileage=&page=1&page_size=20",
+            // "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude= +37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {

@@ -158,557 +158,630 @@ class _OrdersScreenState extends State<OrdersScreen> {
               )),
         ),
       ),
-      // body: Container(
-      //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      //     child:
-      //     Column(
-      //       children: [
-      //         ordersController.role!.value == Role.customerRoleText
-      //             ? Center(
-      //                 child: ordersTab(),
-      //               )
-      //             : height0SizedBox,
-      //         height25SizedBox,
-      //         ordersController.role!.value == Role.customerRoleText
-      //             ? Obx(
-      //                 () => ordersController.orderList.isEmpty
-      //                     ? ordersController.isLoading.value == true
-      //                         ? height0SizedBox
-      //                         : Expanded(
-      //                             child: Column(
-      //                               mainAxisAlignment: MainAxisAlignment.center,
-      //                               crossAxisAlignment:
-      //                                   CrossAxisAlignment.center,
-      //                               children: [
-      //                                 Center(
-      //                                   child: Image.asset(
-      //                                     ImageConstants.nodata,
-      //                                     scale: 8,
-      //                                     color: AppColors.primary,
-      //                                   ),
-      //                                 ),
-      //                                 height4SizedBox,
-      //                                 Center(
-      //                                   child: Text(
-      //                                     StringConstants.noOrdersFoundText,
-      //                                     style: const TextStyle(
-      //                                         fontStyle: FontStyle.italic,
-      //                                         fontSize: 16),
-      //                                   ),
-      //                                 ),
-      //                               ],
-      //                             ),
-      //                           )
-      //                     : Expanded(
-      //                         child: ListView.separated(
-      //                             controller: ordersController.scrollController,
-      //                             separatorBuilder:
-      //                                 (BuildContext context, int index) {
-      //                               return height12SizedBox;
-      //                             },
-      //                             itemCount: ordersController.orderList.length +
-      //                                 (ordersController.isLoading.value
-      //                                     ? 1
-      //                                     : 0),
-      //                             itemBuilder: (BuildContext context, int i) {
-      //                               if (i < ordersController.orderList.length) {
-      //                                 return InkWell(
-      //                                   onTap: () {},
-      //                                   child: Container(
-      //                                     padding: const EdgeInsets.symmetric(
-      //                                         horizontal: 10, vertical: 10),
-      //                                     decoration: const BoxDecoration(
-      //                                         color: AppColors.primarylight,
-      //                                         borderRadius: BorderRadius.all(
-      //                                           Radius.circular(10.0),
-      //                                         )),
-      //                                     child: Column(children: [
-      //                                       Row(
-      //                                         mainAxisAlignment:
-      //                                             MainAxisAlignment.start,
-      //                                         crossAxisAlignment:
-      //                                             CrossAxisAlignment.start,
-      //                                         children: [
-      //                                           Container(
-      //                                             decoration: BoxDecoration(
-      //                                                 shape: BoxShape.circle,
-      //                                                 border: Border.all(
-      //                                                     color:
-      //                                                         AppColors.primary,
-      //                                                     width: 1)),
-      //                                             child: CircleAvatar(
-      //                                               radius: 22.0,
-      //                                               backgroundImage: ordersController
-      //                                                               .orderList[
-      //                                                                   i]
-      //                                                               .store
-      //                                                               ?.image
-      //                                                               ?.dynamicUrl ==
-      //                                                           null ||
-      //                                                       ordersController
-      //                                                           .orderList[i]
-      //                                                           .store!
-      //                                                           .image!
-      //                                                           .dynamicUrl!
-      //                                                           .isEmpty
-      //                                                   ? const AssetImage(
-      //                                                       ImageConstants
-      //                                                           .nopicfound,
-      //                                                     ) as ImageProvider
-      //                                                   : NetworkImage(
-      //                                                       ordersController
-      //                                                               .orderList[
-      //                                                                   i]
-      //                                                               .store
-      //                                                               ?.image
-      //                                                               ?.dynamicUrl
-      //                                                               .toString() ??
-      //                                                           ""),
-      //                                               backgroundColor:
-      //                                                   Colors.transparent,
-      //                                             ),
-      //                                           ),
-      //                                           width5SizedBox,
-      //                                           Expanded(
-      //                                             child: Column(
-      //                                               mainAxisSize:
-      //                                                   MainAxisSize.max,
-      //                                               crossAxisAlignment:
-      //                                                   CrossAxisAlignment
-      //                                                       .start,
-      //                                               children: [
-      //                                                 Row(
-      //                                                   mainAxisAlignment:
-      //                                                       MainAxisAlignment
-      //                                                           .spaceBetween,
-      //                                                   crossAxisAlignment:
-      //                                                       CrossAxisAlignment
-      //                                                           .end,
-      //                                                   children: [
-      //                                                     Text.rich(
-      //                                                       TextSpan(
-      //                                                         children: [
-      //                                                           TextSpan(
-      //                                                               text: StringConstants
-      //                                                                   .orderIDText,
-      //                                                               style: TextStyle(
-      //                                                                   color: AppColors
-      //                                                                       .blacklight,
-      //                                                                   fontWeight:
-      //                                                                       FontWeight
-      //                                                                           .w400,
-      //                                                                   fontSize:
-      //                                                                       14)),
-      //                                                           TextSpan(
-      //                                                             text:
-      //                                                                 ': ${ordersController.orderList[i].orderId ?? "0"}',
-      //                                                             style: TextStyle(
-      //                                                                 fontWeight:
-      //                                                                     FontWeight
-      //                                                                         .w600,
-      //                                                                 fontSize:
-      //                                                                     14,
-      //                                                                 color: AppColors
-      //                                                                     .blacklight),
-      //                                                           ),
-      //                                                         ],
-      //                                                       ),
-      //                                                     ),
-      //                                                     width20SizedBox,
-      //                                                     Text.rich(
-      //                                                       TextSpan(
-      //                                                         children: [
-      //                                                           TextSpan(
-      //                                                               text: Utility.formatDateTime(
-      //                                                                   '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
-      //                                                                   firstFormat:
-      //                                                                       "yyyy-MM-dd HH:mm:ss",
-      //                                                                   secFormat:
-      //                                                                       "dd MMM yyyy"), //"14 Feb",
-      //                                                               style: TextStyle(
-      //                                                                   color: AppColors
-      //                                                                       .blacklight,
-      //                                                                   fontWeight:
-      //                                                                       FontWeight
-      //                                                                           .w400,
-      //                                                                   fontSize:
-      //                                                                       14)),
-      //                                                           TextSpan(
-      //                                                             text:
-      //                                                                 "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
-      //                                                             style: TextStyle(
-      //                                                                 color: AppColors
-      //                                                                     .blacklight,
-      //                                                                 fontWeight:
-      //                                                                     FontWeight
-      //                                                                         .w400,
-      //                                                                 fontSize:
-      //                                                                     14),
-      //                                                           ),
-      //                                                         ],
-      //                                                       ),
-      //                                                     ),
-      //                                                   ],
-      //                                                 ),
-      //                                                 height8SizedBox,
-      //                                                 Row(
-      //                                                   mainAxisAlignment:
-      //                                                       MainAxisAlignment
-      //                                                           .spaceBetween,
-      //                                                   children: [
-      //                                                     SizedBox(
-      //                                                       width: 180,
-      //                                                       child: Text(
-      //                                                           ordersController
-      //                                                                   .orderList[
-      //                                                                       i]
-      //                                                                   .store
-      //                                                                   ?.storeName ??
-      //                                                               "",
-      //                                                           style: const TextStyle(
-      //                                                               color: AppColors
-      //                                                                   .black,
-      //                                                               fontWeight:
-      //                                                                   FontWeight
-      //                                                                       .w500,
-      //                                                               fontSize:
-      //                                                                   16)),
-      //                                                     ),
-      //                                                     Text(
-      //                                                       "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
-      //                                                       style: const TextStyle(
-      //                                                           color: AppColors
-      //                                                               .primary,
-      //                                                           fontWeight:
-      //                                                               FontWeight
-      //                                                                   .w600,
-      //                                                           fontSize: 16),
-      //                                                     ),
-      //                                                   ],
-      //                                                 ),
-      //                                               ],
-      //                                             ),
-      //                                           )
-      //                                         ],
-      //                                       ),
-      //                                       height6SizedBox,
-      //                                       Row(
-      //                                         mainAxisAlignment:
-      //                                             MainAxisAlignment
-      //                                                 .spaceBetween,
-      //                                         children: [
-      //                                           Text.rich(
-      //                                             softWrap: true,
-      //                                             TextSpan(
-      //                                               children: [
-      //                                                 TextSpan(
-      //                                                     text: StringConstants
-      //                                                         .statusText,
-      //                                                     style: const TextStyle(
-      //                                                         color: AppColors
-      //                                                             .black,
-      //                                                         fontWeight:
-      //                                                             FontWeight
-      //                                                                 .w400,
-      //                                                         fontSize: 14)),
-      //                                                 TextSpan(
-      //                                                   text:
-      //                                                       ": ${ordersController.orderList[i].status?.toUpperCase()}",
-      //                                                   style: const TextStyle(
-      //                                                       color: AppColors
-      //                                                           .yellow,
-      //                                                       fontWeight:
-      //                                                           FontWeight.w600,
-      //                                                       fontSize: 14),
-      //                                                 ),
-      //                                               ],
-      //                                             ),
-      //                                           ),
-      //                                           Row(
-      //                                             children: [
-      //                                               Text.rich(
-      //                                                 TextSpan(
-      //                                                   children: [
-      //                                                     TextSpan(
-      //                                                         text: StringConstants
-      //                                                             .productText,
-      //                                                         style: const TextStyle(
-      //                                                             color:
-      //                                                                 AppColors
-      //                                                                     .black,
-      //                                                             fontWeight:
-      //                                                                 FontWeight
-      //                                                                     .w400,
-      //                                                             fontSize:
-      //                                                                 14)),
-      //                                                     TextSpan(
-      //                                                       text:
-      //                                                           ": ${ordersController.orderList[i].orderItems?.length?.toString()}",
-      //                                                       style: const TextStyle(
-      //                                                           color: AppColors
-      //                                                               .primary,
-      //                                                           fontWeight:
-      //                                                               FontWeight
-      //                                                                   .w600,
-      //                                                           fontSize: 14),
-      //                                                     ),
-      //                                                   ],
-      //                                                 ),
-      //                                               ),
-      //                                               Icon(
-      //                                                 Icons.chevron_right,
-      //                                                 color:
-      //                                                     AppColors.blacklight,
-      //                                                 size: 22.0,
-      //                                               ),
-      //                                             ],
-      //                                           ),
-      //                                         ],
-      //                                       )
-      //                                     ]),
-      //                                   ),
-      //                                 );
-      //                               } else if (ordersController
-      //                                   .isLoading.value) {
-      //                                 Timer(const Duration(milliseconds: 10),
-      //                                     () {
-      //                                   ordersController.scrollController
-      //                                       .jumpTo(ordersController
-      //                                           .scrollController
-      //                                           .position
-      //                                           .maxScrollExtent);
-      //                                 });
-      //                                 return _loadingIndicator();
-      //                               } else {
-      //                                 return const SizedBox();
-      //                               }
-      //                             }),
-      //                       ),
-      //               )
-      //             : Expanded(
-      //                 child: ListView.separated(
-      //                     separatorBuilder: (BuildContext context, int index) {
-      //                       return height12SizedBox;
-      //                     },
-      //                     itemCount: 5,
-      //                     itemBuilder: (BuildContext context, int i) {
-      //                       return InkWell(
-      //                         onTap: () {},
-      //                         child: Container(
-      //                           padding: const EdgeInsets.symmetric(
-      //                               horizontal: 10, vertical: 10),
-      //                           decoration: const BoxDecoration(
-      //                               color: AppColors.primarylight,
-      //                               borderRadius: BorderRadius.all(
-      //                                 Radius.circular(10.0),
-      //                               )),
-      //                           child: Column(children: [
-      //                             Row(
-      //                               mainAxisAlignment: MainAxisAlignment.start,
-      //                               crossAxisAlignment:
-      //                                   CrossAxisAlignment.start,
-      //                               children: [
-      //                                 Container(
-      //                                   decoration: BoxDecoration(
-      //                                       shape: BoxShape.circle,
-      //                                       border: Border.all(
-      //                                           color: AppColors.primary,
-      //                                           width: 1)),
-      //                                   child: CircleAvatar(
-      //                                     radius: 22.0,
-      //                                     backgroundImage:
-      //                                         // ordersController.orderList[i]
-      //                                         //     .store?.image?.dynamicUrl == null ||
-      //                                         //     ordersController.orderList[i]
-      //                                         //         .store!.image!.dynamicUrl!.isEmpty
-      //                                         //     ?
-      //                                         const AssetImage(
-      //                                       ImageConstants.nopicfound,
-      //                                     ) as ImageProvider,
-      //                                     // : NetworkImage(
-      //                                     // ordersController.orderList[i]
-      //                                     //     .store?.image?.dynamicUrl.toString() ?? ""),
-      //                                     backgroundColor: Colors.transparent,
-      //                                   ),
-      //                                 ),
-      //                                 width5SizedBox,
-      //                                 Expanded(
-      //                                   child: Column(
-      //                                     mainAxisSize: MainAxisSize.max,
-      //                                     crossAxisAlignment:
-      //                                         CrossAxisAlignment.start,
-      //                                     children: [
-      //                                       Row(
-      //                                         mainAxisAlignment:
-      //                                             MainAxisAlignment
-      //                                                 .spaceBetween,
-      //                                         crossAxisAlignment:
-      //                                             CrossAxisAlignment.end,
-      //                                         children: [
-      //                                           Text.rich(
-      //                                             TextSpan(
-      //                                               children: [
-      //                                                 TextSpan(
-      //                                                     text: StringConstants
-      //                                                         .orderIDText,
-      //                                                     style: TextStyle(
-      //                                                         color: AppColors
-      //                                                             .blacklight,
-      //                                                         fontWeight:
-      //                                                             FontWeight
-      //                                                                 .w400,
-      //                                                         fontSize: 14)),
-      //                                                 TextSpan(
-      //                                                   text:
-      //                                                       ': ${ordersController.orderList[i].orderId ?? "0"}',
-      //                                                   style: TextStyle(
-      //                                                       fontWeight:
-      //                                                           FontWeight.w600,
-      //                                                       fontSize: 14,
-      //                                                       color: AppColors
-      //                                                           .blacklight),
-      //                                                 ),
-      //                                               ],
-      //                                             ),
-      //                                           ),
-      //                                           width20SizedBox,
-      //                                           Text.rich(
-      //                                             TextSpan(
-      //                                               children: [
-      //                                                 TextSpan(
-      //                                                     text: Utility.formatDateTime(
-      //                                                         '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
-      //                                                         firstFormat:
-      //                                                             "yyyy-MM-dd HH:mm:ss",
-      //                                                         secFormat:
-      //                                                             "dd MMM yyyy"), //"14 Feb",
-      //                                                     style: TextStyle(
-      //                                                         color: AppColors
-      //                                                             .blacklight,
-      //                                                         fontWeight:
-      //                                                             FontWeight
-      //                                                                 .w400,
-      //                                                         fontSize: 14)),
-      //                                                 TextSpan(
-      //                                                   text:
-      //                                                       "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
-      //                                                   style: TextStyle(
-      //                                                       color: AppColors
-      //                                                           .blacklight,
-      //                                                       fontWeight:
-      //                                                           FontWeight.w400,
-      //                                                       fontSize: 14),
-      //                                                 ),
-      //                                               ],
-      //                                             ),
-      //                                           ),
-      //                                         ],
-      //                                       ),
-      //                                       height8SizedBox,
-      //                                       Row(
-      //                                         mainAxisAlignment:
-      //                                             MainAxisAlignment
-      //                                                 .spaceBetween,
-      //                                         children: [
-      //                                           SizedBox(
-      //                                             width: 180,
-      //                                             child: Text(
-      //                                                 ordersController
-      //                                                         .orderList[i]
-      //                                                         .store
-      //                                                         ?.storeName ??
-      //                                                     "",
-      //                                                 style: const TextStyle(
-      //                                                     color:
-      //                                                         AppColors.black,
-      //                                                     fontWeight:
-      //                                                         FontWeight.w500,
-      //                                                     fontSize: 16)),
-      //                                           ),
-      //                                           Text(
-      //                                             "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
-      //                                             style: const TextStyle(
-      //                                                 color: AppColors.primary,
-      //                                                 fontWeight:
-      //                                                     FontWeight.w600,
-      //                                                 fontSize: 16),
-      //                                           ),
-      //                                         ],
-      //                                       ),
-      //                                     ],
-      //                                   ),
-      //                                 )
-      //                               ],
-      //                             ),
-      //                             height6SizedBox,
-      //                             Row(
-      //                               mainAxisAlignment:
-      //                                   MainAxisAlignment.spaceBetween,
-      //                               children: [
-      //                                 Text.rich(
-      //                                   softWrap: true,
-      //                                   TextSpan(
-      //                                     children: [
-      //                                       TextSpan(
-      //                                           text:
-      //                                               StringConstants.statusText,
-      //                                           style: const TextStyle(
-      //                                               color: AppColors.black,
-      //                                               fontWeight: FontWeight.w400,
-      //                                               fontSize: 14)),
-      //                                       TextSpan(
-      //                                         text:
-      //                                             ": ${ordersController.orderList[i].status?.toUpperCase()}",
-      //                                         style: const TextStyle(
-      //                                             color: AppColors.yellow,
-      //                                             fontWeight: FontWeight.w600,
-      //                                             fontSize: 14),
-      //                                       ),
-      //                                     ],
-      //                                   ),
-      //                                 ),
-      //                                 Row(
-      //                                   children: [
-      //                                     Text.rich(
-      //                                       TextSpan(
-      //                                         children: [
-      //                                           TextSpan(
-      //                                               text: StringConstants
-      //                                                   .productText,
-      //                                               style: const TextStyle(
-      //                                                   color: AppColors.black,
-      //                                                   fontWeight:
-      //                                                       FontWeight.w400,
-      //                                                   fontSize: 14)),
-      //                                           TextSpan(
-      //                                             text:
-      //                                                 ": ${ordersController.orderList[i].orderItems?.length?.toString()}",
-      //                                             style: const TextStyle(
-      //                                                 color: AppColors.primary,
-      //                                                 fontWeight:
-      //                                                     FontWeight.w600,
-      //                                                 fontSize: 14),
-      //                                           ),
-      //                                         ],
-      //                                       ),
-      //                                     ),
-      //                                     Icon(
-      //                                       Icons.chevron_right,
-      //                                       color: AppColors.blacklight,
-      //                                       size: 22.0,
-      //                                     ),
-      //                                   ],
-      //                                 ),
-      //                               ],
-      //                             )
-      //                           ]),
-      //                         ),
-      //                       );
-      //                     }),
-      //               ),
-      // ],
-      //  )
-      //  ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        // child: Column(
+        //   children: [
+        //     ordersController.role!.value == Role.customerRoleText
+        //         ? Center(
+        //             child: ordersTab(),
+        //           )
+        //         : height0SizedBox,
+        //     height25SizedBox,
+        //     ordersController.role!.value == Role.customerRoleText
+        //         ? Obx(
+        //             () => ordersController.orderList.isEmpty
+        //                 ? ordersController.isLoading.value == true
+        //                     ? height0SizedBox
+        //                     : Expanded(
+        //                         child: Column(
+        //                           mainAxisAlignment: MainAxisAlignment.center,
+        //                           crossAxisAlignment:
+        //                               CrossAxisAlignment.center,
+        //                           children: [
+        //                             Center(
+        //                               child: Image.asset(
+        //                                 ImageConstants.nodata,
+        //                                 scale: 8,
+        //                                 color: AppColors.primary,
+        //                               ),
+        //                             ),
+        //                             height4SizedBox,
+        //                             Center(
+        //                               child: Text(
+        //                                 StringConstants.noOrdersFoundText,
+        //                                 style: const TextStyle(
+        //                                     fontStyle: FontStyle.italic,
+        //                                     fontSize: 16),
+        //                               ),
+        //                             ),
+        //                           ],
+        //                         ),
+        //                       )
+        //                 : Expanded(
+        //                     child: ListView.separated(
+        //                         controller: ordersController.scrollController,
+        //                         separatorBuilder:
+        //                             (BuildContext context, int index) {
+        //                           return height12SizedBox;
+        //                         },
+        //                         itemCount: ordersController.orderList.length +
+        //                             (ordersController.isLoading.value
+        //                                 ? 1
+        //                                 : 0),
+        //                         itemBuilder: (BuildContext context, int i) {
+        //                           if (i < ordersController.orderList.length) {
+        //                             return InkWell(
+        //                               onTap: () {},
+        //                               child: Container(
+        //                                 padding: const EdgeInsets.symmetric(
+        //                                     horizontal: 10, vertical: 10),
+        //                                 decoration: const BoxDecoration(
+        //                                     color: AppColors.primarylight,
+        //                                     borderRadius: BorderRadius.all(
+        //                                       Radius.circular(10.0),
+        //                                     )),
+        //                                 child: Column(children: [
+        //                                   Row(
+        //                                     mainAxisAlignment:
+        //                                         MainAxisAlignment.start,
+        //                                     crossAxisAlignment:
+        //                                         CrossAxisAlignment.start,
+        //                                     children: [
+        //                                       Container(
+        //                                         decoration: BoxDecoration(
+        //                                             shape: BoxShape.circle,
+        //                                             border: Border.all(
+        //                                                 color:
+        //                                                     AppColors.primary,
+        //                                                 width: 1)),
+        //                                         child: CircleAvatar(
+        //                                           radius: 22.0,
+        //                                           backgroundImage: ordersController
+        //                                                           .orderList[
+        //                                                               i]
+        //                                                           .store
+        //                                                           ?.image
+        //                                                           ?.dynamicUrl ==
+        //                                                       null ||
+        //                                                   ordersController
+        //                                                       .orderList[i]
+        //                                                       .store!
+        //                                                       .image!
+        //                                                       .dynamicUrl!
+        //                                                       .isEmpty
+        //                                               ? const AssetImage(
+        //                                                   ImageConstants
+        //                                                       .nopicfound,
+        //                                                 ) as ImageProvider
+        //                                               : NetworkImage(
+        //                                                   ordersController
+        //                                                           .orderList[
+        //                                                               i]
+        //                                                           .store
+        //                                                           ?.image
+        //                                                           ?.dynamicUrl
+        //                                                           .toString() ??
+        //                                                       ""),
+        //                                           backgroundColor:
+        //                                               Colors.transparent,
+        //                                         ),
+        //                                       ),
+        //                                       width5SizedBox,
+        //                                       Expanded(
+        //                                         child: Column(
+        //                                           mainAxisSize:
+        //                                               MainAxisSize.max,
+        //                                           crossAxisAlignment:
+        //                                               CrossAxisAlignment
+        //                                                   .start,
+        //                                           children: [
+        //                                             Row(
+        //                                               mainAxisAlignment:
+        //                                                   MainAxisAlignment
+        //                                                       .spaceBetween,
+        //                                               crossAxisAlignment:
+        //                                                   CrossAxisAlignment
+        //                                                       .end,
+        //                                               children: [
+        //                                                 Text.rich(
+        //                                                   TextSpan(
+        //                                                     children: [
+        //                                                       TextSpan(
+        //                                                           text: StringConstants
+        //                                                               .orderIDText,
+        //                                                           style: TextStyle(
+        //                                                               color: AppColors
+        //                                                                   .blacklight,
+        //                                                               fontWeight:
+        //                                                                   FontWeight
+        //                                                                       .w400,
+        //                                                               fontSize:
+        //                                                                   14)),
+        //                                                       TextSpan(
+        //                                                         text:
+        //                                                             ': ${ordersController.orderList[i].orderId ?? "0"}',
+        //                                                         style: TextStyle(
+        //                                                             fontWeight:
+        //                                                                 FontWeight
+        //                                                                     .w600,
+        //                                                             fontSize:
+        //                                                                 14,
+        //                                                             color: AppColors
+        //                                                                 .blacklight),
+        //                                                       ),
+        //                                                     ],
+        //                                                   ),
+        //                                                 ),
+        //                                                 width20SizedBox,
+        //                                                 Text.rich(
+        //                                                   TextSpan(
+        //                                                     children: [
+        //                                                       TextSpan(
+        //                                                           text: Utility.formatDateTime(
+        //                                                               '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
+        //                                                               firstFormat:
+        //                                                                   "yyyy-MM-dd HH:mm:ss",
+        //                                                               secFormat:
+        //                                                                   "dd MMM yyyy"), //"14 Feb",
+        //                                                           style: TextStyle(
+        //                                                               color: AppColors
+        //                                                                   .blacklight,
+        //                                                               fontWeight:
+        //                                                                   FontWeight
+        //                                                                       .w400,
+        //                                                               fontSize:
+        //                                                                   14)),
+        //                                                       TextSpan(
+        //                                                         text:
+        //                                                             "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
+        //                                                         style: TextStyle(
+        //                                                             color: AppColors
+        //                                                                 .blacklight,
+        //                                                             fontWeight:
+        //                                                                 FontWeight
+        //                                                                     .w400,
+        //                                                             fontSize:
+        //                                                                 14),
+        //                                                       ),
+        //                                                     ],
+        //                                                   ),
+        //                                                 ),
+        //                                               ],
+        //                                             ),
+        //                                             height8SizedBox,
+        //                                             Row(
+        //                                               mainAxisAlignment:
+        //                                                   MainAxisAlignment
+        //                                                       .spaceBetween,
+        //                                               children: [
+        //                                                 SizedBox(
+        //                                                   width: 180,
+        //                                                   child: Text(
+        //                                                       ordersController
+        //                                                               .orderList[
+        //                                                                   i]
+        //                                                               .store
+        //                                                               ?.storeName ??
+        //                                                           "",
+        //                                                       style: const TextStyle(
+        //                                                           color: AppColors
+        //                                                               .black,
+        //                                                           fontWeight:
+        //                                                               FontWeight
+        //                                                                   .w500,
+        //                                                           fontSize:
+        //                                                               16)),
+        //                                                 ),
+        //                                                 Text(
+        //                                                   "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
+        //                                                   style: const TextStyle(
+        //                                                       color: AppColors
+        //                                                           .primary,
+        //                                                       fontWeight:
+        //                                                           FontWeight
+        //                                                               .w600,
+        //                                                       fontSize: 16),
+        //                                                 ),
+        //                                               ],
+        //                                             ),
+        //                                           ],
+        //                                         ),
+        //                                       )
+        //                                     ],
+        //                                   ),
+        //                                   height6SizedBox,
+        //                                   Row(
+        //                                     mainAxisAlignment:
+        //                                         MainAxisAlignment
+        //                                             .spaceBetween,
+        //                                     children: [
+        //                                       Text.rich(
+        //                                         softWrap: true,
+        //                                         TextSpan(
+        //                                           children: [
+        //                                             TextSpan(
+        //                                                 text: StringConstants
+        //                                                     .statusText,
+        //                                                 style: const TextStyle(
+        //                                                     color: AppColors
+        //                                                         .black,
+        //                                                     fontWeight:
+        //                                                         FontWeight
+        //                                                             .w400,
+        //                                                     fontSize: 14)),
+        //                                             TextSpan(
+        //                                               text:
+        //                                                   ": ${ordersController.orderList[i].status?.toUpperCase()}",
+        //                                               style: const TextStyle(
+        //                                                   color: AppColors
+        //                                                       .yellow,
+        //                                                   fontWeight:
+        //                                                       FontWeight.w600,
+        //                                                   fontSize: 14),
+        //                                             ),
+        //                                           ],
+        //                                         ),
+        //                                       ),
+        //                                       Row(
+        //                                         children: [
+        //                                           Text.rich(
+        //                                             TextSpan(
+        //                                               children: [
+        //                                                 TextSpan(
+        //                                                     text: StringConstants
+        //                                                         .productText,
+        //                                                     style: const TextStyle(
+        //                                                         color:
+        //                                                             AppColors
+        //                                                                 .black,
+        //                                                         fontWeight:
+        //                                                             FontWeight
+        //                                                                 .w400,
+        //                                                         fontSize:
+        //                                                             14)),
+        //                                                 TextSpan(
+        //                                                   text:
+        //                                                       ": ${ordersController.orderList[i].orderItems?.length.toString()}",
+        //                                                   style: const TextStyle(
+        //                                                       color: AppColors
+        //                                                           .primary,
+        //                                                       fontWeight:
+        //                                                           FontWeight
+        //                                                               .w600,
+        //                                                       fontSize: 14),
+        //                                                 ),
+        //                                               ],
+        //                                             ),
+        //                                           ),
+        //                                           Icon(
+        //                                             Icons.chevron_right,
+        //                                             color:
+        //                                                 AppColors.blacklight,
+        //                                             size: 22.0,
+        //                                           ),
+        //                                         ],
+        //                                       ),
+        //                                     ],
+        //                                   )
+        //                                 ]),
+        //                               ),
+        //                             );
+        //                           } else if (ordersController
+        //                               .isLoading.value) {
+        //                             Timer(const Duration(milliseconds: 10),
+        //                                 () {
+        //                               ordersController.scrollController
+        //                                   .jumpTo(ordersController
+        //                                       .scrollController
+        //                                       .position
+        //                                       .maxScrollExtent);
+        //                             });
+        //                             return _loadingIndicator();
+        //                           } else {
+        //                             return const SizedBox();
+        //                           }
+        //                         }),
+        //                   ),
+        //           )
+        //         : Obx(
+        //             () => ordersController.storeOrderList.isEmpty
+        //                 ? ordersController.isLoading.value == true
+        //                     ? height0SizedBox
+        //                     : Expanded(
+        //                         child: Column(
+        //                           mainAxisAlignment: MainAxisAlignment.center,
+        //                           crossAxisAlignment:
+        //                               CrossAxisAlignment.center,
+        //                           children: [
+        //                             Center(
+        //                               child: Image.asset(
+        //                                 ImageConstants.nodata,
+        //                                 scale: 8,
+        //                                 color: AppColors.primary,
+        //                               ),
+        //                             ),
+        //                             height4SizedBox,
+        //                             Center(
+        //                               child: Text(
+        //                                 StringConstants.noOrdersFoundText,
+        //                                 style: const TextStyle(
+        //                                     fontStyle: FontStyle.italic,
+        //                                     fontSize: 16),
+        //                               ),
+        //                             ),
+        //                           ],
+        //                         ),
+        //                       )
+        //                 : Expanded(
+        //                     child: ListView.separated(
+        //                         separatorBuilder:
+        //                             (BuildContext context, int index) {
+        //                           return height12SizedBox;
+        //                         },
+        //                         itemCount:
+        //                             ordersController.storeOrderList.length +
+        //                                 (ordersController.isLoading.value
+        //                                     ? 1
+        //                                     : 0),
+        //                         itemBuilder: (BuildContext context, int i) {
+        //                           return InkWell(
+        //                             onTap: () {},
+        //                             child: Container(
+        //                               padding: const EdgeInsets.symmetric(
+        //                                   horizontal: 10, vertical: 10),
+        //                               decoration: const BoxDecoration(
+        //                                   color: AppColors.primarylight,
+        //                                   borderRadius: BorderRadius.all(
+        //                                     Radius.circular(10.0),
+        //                                   )),
+        //                               child: Column(children: [
+        //                                 Row(
+        //                                   mainAxisAlignment:
+        //                                       MainAxisAlignment.start,
+        //                                   crossAxisAlignment:
+        //                                       CrossAxisAlignment.start,
+        //                                   children: [
+        //                                     Container(
+        //                                       decoration: BoxDecoration(
+        //                                           shape: BoxShape.circle,
+        //                                           border: Border.all(
+        //                                               color:
+        //                                                   AppColors.primary,
+        //                                               width: 1)),
+        //                                       child: CircleAvatar(
+        //                                         radius: 22.0,
+        //                                         backgroundImage: ordersController
+        //                                                         .storeOrderList[
+        //                                                             i]
+        //                                                         .store
+        //                                                         ?.image
+        //                                                         ?.dynamicUrl ==
+        //                                                     null ||
+        //                                                 ordersController
+        //                                                     .storeOrderList[i]
+        //                                                     .store!
+        //                                                     .image!
+        //                                                     .dynamicUrl!
+        //                                                     .isEmpty
+        //                                             ? const AssetImage(
+        //                                                 ImageConstants
+        //                                                     .nopicfound,
+        //                                               ) as ImageProvider
+        //                                             : NetworkImage(
+        //                                                 ordersController
+        //                                                         .storeOrderList[
+        //                                                             i]
+        //                                                         .store
+        //                                                         ?.image
+        //                                                         ?.dynamicUrl
+        //                                                         .toString() ??
+        //                                                     ""),
+        //                                         backgroundColor:
+        //                                             Colors.transparent,
+        //                                       ),
+        //                                     ),
+        //                                     width5SizedBox,
+        //                                     Expanded(
+        //                                       child: Column(
+        //                                         mainAxisSize:
+        //                                             MainAxisSize.max,
+        //                                         crossAxisAlignment:
+        //                                             CrossAxisAlignment.start,
+        //                                         children: [
+        //                                           Row(
+        //                                             mainAxisAlignment:
+        //                                                 MainAxisAlignment
+        //                                                     .spaceBetween,
+        //                                             crossAxisAlignment:
+        //                                                 CrossAxisAlignment
+        //                                                     .end,
+        //                                             children: [
+        //                                               Text.rich(
+        //                                                 TextSpan(
+        //                                                   children: [
+        //                                                     TextSpan(
+        //                                                         text: StringConstants
+        //                                                             .orderIDText,
+        //                                                         style: TextStyle(
+        //                                                             color: AppColors
+        //                                                                 .blacklight,
+        //                                                             fontWeight:
+        //                                                                 FontWeight
+        //                                                                     .w400,
+        //                                                             fontSize:
+        //                                                                 14)),
+        //                                                     TextSpan(
+        //                                                       text:
+        //                                                           ': ${ordersController.storeOrderList[i].orderId ?? "0"}',
+        //                                                       style: TextStyle(
+        //                                                           fontWeight:
+        //                                                               FontWeight
+        //                                                                   .w600,
+        //                                                           fontSize:
+        //                                                               14,
+        //                                                           color: AppColors
+        //                                                               .blacklight),
+        //                                                     ),
+        //                                                   ],
+        //                                                 ),
+        //                                               ),
+        //                                               width20SizedBox,
+        //                                               Text.rich(
+        //                                                 TextSpan(
+        //                                                   children: [
+        //                                                     TextSpan(
+        //                                                         text: Utility.formatDateTime(
+        //                                                             '${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}',
+        //                                                             firstFormat:
+        //                                                                 "yyyy-MM-dd HH:mm:ss",
+        //                                                             secFormat:
+        //                                                                 "dd MMM yyyy"), //"14 Feb",
+        //                                                         style: TextStyle(
+        //                                                             color: AppColors
+        //                                                                 .blacklight,
+        //                                                             fontWeight:
+        //                                                                 FontWeight
+        //                                                                     .w400,
+        //                                                             fontSize:
+        //                                                                 14)),
+        //                                                     TextSpan(
+        //                                                       text:
+        //                                                           "-${Utility.formatDateTime('${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
+        //                                                       style: TextStyle(
+        //                                                           color: AppColors
+        //                                                               .blacklight,
+        //                                                           fontWeight:
+        //                                                               FontWeight
+        //                                                                   .w400,
+        //                                                           fontSize:
+        //                                                               14),
+        //                                                     ),
+        //                                                   ],
+        //                                                 ),
+        //                                               ),
+        //                                             ],
+        //                                           ),
+        //                                           height8SizedBox,
+        //                                           Row(
+        //                                             mainAxisAlignment:
+        //                                                 MainAxisAlignment
+        //                                                     .spaceBetween,
+        //                                             children: [
+        //                                               SizedBox(
+        //                                                 width: 180,
+        //                                                 child: Text(
+        //                                                     ordersController
+        //                                                             .storeOrderList[
+        //                                                                 i]
+        //                                                             .store
+        //                                                             ?.storeName ??
+        //                                                         "",
+        //                                                     style: const TextStyle(
+        //                                                         color:
+        //                                                             AppColors
+        //                                                                 .black,
+        //                                                         fontWeight:
+        //                                                             FontWeight
+        //                                                                 .w500,
+        //                                                         fontSize:
+        //                                                             16)),
+        //                                               ),
+        //                                               Text(
+        //                                                 "\$${ordersController.storeOrderList[i].totalAmount?.toStringAsFixed(2)}",
+        //                                                 style: const TextStyle(
+        //                                                     color: AppColors
+        //                                                         .primary,
+        //                                                     fontWeight:
+        //                                                         FontWeight
+        //                                                             .w600,
+        //                                                     fontSize: 16),
+        //                                               ),
+        //                                             ],
+        //                                           ),
+        //                                         ],
+        //                                       ),
+        //                                     )
+        //                                   ],
+        //                                 ),
+        //                                 height6SizedBox,
+        //                                 Row(
+        //                                   mainAxisAlignment:
+        //                                       MainAxisAlignment.spaceBetween,
+        //                                   children: [
+        //                                     Text.rich(
+        //                                       softWrap: true,
+        //                                       TextSpan(
+        //                                         children: [
+        //                                           TextSpan(
+        //                                               text: StringConstants
+        //                                                   .statusText,
+        //                                               style: const TextStyle(
+        //                                                   color:
+        //                                                       AppColors.black,
+        //                                                   fontWeight:
+        //                                                       FontWeight.w400,
+        //                                                   fontSize: 14)),
+        //                                           TextSpan(
+        //                                             text:
+        //                                                 ": ${ordersController.storeOrderList[i].status?.toUpperCase()}",
+        //                                             style: const TextStyle(
+        //                                                 color:
+        //                                                     AppColors.yellow,
+        //                                                 fontWeight:
+        //                                                     FontWeight.w600,
+        //                                                 fontSize: 14),
+        //                                           ),
+        //                                         ],
+        //                                       ),
+        //                                     ),
+        //                                     Row(
+        //                                       children: [
+        //                                         Text.rich(
+        //                                           TextSpan(
+        //                                             children: [
+        //                                               TextSpan(
+        //                                                   text: StringConstants
+        //                                                       .productText,
+        //                                                   style: const TextStyle(
+        //                                                       color: AppColors
+        //                                                           .black,
+        //                                                       fontWeight:
+        //                                                           FontWeight
+        //                                                               .w400,
+        //                                                       fontSize: 14)),
+        //                                               TextSpan(
+        //                                                 text:
+        //                                                     ": ${ordersController.storeOrderList[i].orderItems?.length.toString()}",
+        //                                                 style: const TextStyle(
+        //                                                     color: AppColors
+        //                                                         .primary,
+        //                                                     fontWeight:
+        //                                                         FontWeight
+        //                                                             .w600,
+        //                                                     fontSize: 14),
+        //                                               ),
+        //                                             ],
+        //                                           ),
+        //                                         ),
+        //                                         Icon(
+        //                                           Icons.chevron_right,
+        //                                           color: AppColors.blacklight,
+        //                                           size: 22.0,
+        //                                         ),
+        //                                       ],
+        //                                     ),
+        //                                   ],
+        //                                 )
+        //                               ]),
+        //                             ),
+        //                           );
+        //                         }),
+        //                   ),
+        //           )
+        //   ],
+        // )
+      ),
     );
   }
 

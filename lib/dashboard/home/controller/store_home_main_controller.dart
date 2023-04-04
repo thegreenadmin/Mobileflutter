@@ -35,7 +35,6 @@ class StoreHomeMainController extends GetxController {
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
-
   late offers.StoreOffersListResponse offersListResponse =
       offers.StoreOffersListResponse();
 
@@ -818,5 +817,88 @@ class StoreHomeMainController extends GetxController {
             );
           });
         }).then((value) => {});
+  }
+
+//Create Favourite Store Api
+  Future apiCreateFavouriteStore(String? id) async {
+    isLoading.value = true;
+    debugPrint("Create Favourite Store URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map data = {"store_id": int.parse(id ?? "0")};
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().createFavouriteStore,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Create Favourite Store *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        nearby.StoreAddress address = storeAddress.value;
+        address.store?.isFavouriteStore = true;
+        storeAddress.value = address;
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+//Remove Favourite Store Api
+  Future apiRemoveFavouriteStore(String? id) async {
+    isLoading.value = true;
+    debugPrint("Remove Favourite Store URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map data = {"store_id": int.parse(id ?? "0")};
+
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("data ********** ${data.toString()}");
+    UserProvider()
+        .deleteWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().removeFavouriteStore,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Remove Favourite Store *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        nearby.StoreAddress address = storeAddress.value;
+        address.store?.isFavouriteStore = false;
+        storeAddress.value = address;
+        print("Remove Favourite Store:===========");
+        print(storeAddress.value.store?.isFavouriteStore);
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 }

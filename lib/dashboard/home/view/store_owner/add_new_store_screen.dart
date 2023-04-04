@@ -198,7 +198,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       .isStoreLogoSelected.value = true;
                                 },
                                 child: Image.asset(
-                                   ImageConstants.picupload,
+                                  ImageConstants.picupload,
                                   scale: 2.5,
                                 ),
                               ),
@@ -244,7 +244,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                               ImageConstants.upload,
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
@@ -560,7 +560,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       flagsButtonMargin: const EdgeInsets.all(10),
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
-                        prefixIcon: Image.asset(   ImageConstants.calling,),
+                        prefixIcon: Image.asset(
+                          ImageConstants.calling,
+                        ),
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(
@@ -912,13 +914,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               );
                             }).toList(),
                             onChanged: (CountriesList? newValue) {
-                              setState(() {
-                                addNewStoreController.countryDropdownValue
-                                    .value = newValue!.countryName.toString();
-                                addNewStoreController.countryId!.value =
-                                    newValue.countryId.toString();
-                                addNewStoreController.apiGetStates();
-                              });
+                              addNewStoreController.countryDropdownValue.value =
+                                  newValue!.countryName.toString();
+                              addNewStoreController.countryId!.value =
+                                  newValue.countryId.toString();
+                              addNewStoreController.apiGetStates();
                             },
                           )),
                     height20SizedBox,
@@ -976,13 +976,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               );
                             }).toList(),
                             onChanged: (StatesList? newValue) {
-                              setState(() {
-                                addNewStoreController.stateDropdownValue.value =
-                                    newValue!.stateName.toString();
-                                addNewStoreController.stateId.value =
-                                    newValue.stateId.toString();
-                                debugPrint(addNewStoreController.stateId.value);
-                              });
+                              addNewStoreController.stateDropdownValue.value =
+                                  newValue!.stateName.toString();
+                              addNewStoreController.stateId.value =
+                                  newValue.stateId.toString();
+                              debugPrint(addNewStoreController.stateId.value);
                             },
                           )),
                     height25SizedBox,

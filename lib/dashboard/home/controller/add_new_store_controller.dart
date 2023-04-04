@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -89,14 +91,22 @@ class AddNewStoreController extends GetxController {
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
   RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
-
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
   @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 200), () {
       apiGetCountries();
       apiGetDeliveryServices();
+      getCurrentLocation();
     });
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
   }
 
   bool validateAndSave() {
@@ -295,8 +305,8 @@ class AddNewStoreController extends GetxController {
       "store_address": {
         "state_id": stateId.value.trim(),
         "address_name": "home",
-        "longitude": 37.0902,
-        "latitude": 95.7129,
+        "longitude": lng,
+        "latitude": lat,
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
         "landmark": "",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -35,73 +36,35 @@ class SearchStoreUserController extends GetxController {
   RxBool isFavLoading = false.obs;
   RxBool isOpenNow = false.obs;
   RxBool isDataLoading = false.obs;
-
+  RxInt type = 0.obs;
   final scrollController = ScrollController();
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
 
   void setupScrollController(context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          apiGetStoresBySelectedTabs(isFilter: false, isPreviousStores: false);
+          apiGetNearByStores();
         }
       }
     });
   }
 
-  RxList horizontalTabList = [
-    StringConstants.nearbyText,
-    StringConstants.previousText,
-    StringConstants.favoriteText,
-  ].obs;
-
-  void onIndexChange(int i) async {
-    selectedIndex.value = i;
-    switch (i) {
-      case 0: //Nearby
-        {
-          debugPrint(selectedIndex.value.toString());
-          apiGetStoresBySelectedTabs(isFilter: false, isPreviousStores: false);
-        }
-        break;
-
-      case 1: //Previous
-        {
-          debugPrint(selectedIndex.value.toString());
-          apiGetStoresBySelectedTabs(isFilter: false, isPreviousStores: true);
-        }
-        break;
-      case 2: //Fav
-        {
-          debugPrint(selectedIndex.value.toString());
-          apiGetStoresBySelectedTabs(isFilter: false, isPreviousStores: true);
-        }
-        break;
-
-      default:
-        {
-          debugPrint(selectedIndex.value.toString());
-          apiGetStoresBySelectedTabs(isFilter: true, isPreviousStores: false);
-        }
-        break;
-    }
-  }
-
   @override
   void onInit() {
     super.onInit();
-    apiGetStoresBySelectedTabs(isFilter: false, isPreviousStores: false);
     setupScrollController(Get.context);
   }
 
-  //Get Stores Api
-  Future apiGetStoresBySelectedTabs(
-      {bool isFilter = false, bool isPreviousStores = false}) async {
+  //Get Nearby Stores Api
+  Future apiGetNearByStores({
+    bool isFilter = false,
+  }) async {
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
-    isFavLoading.value = favStoreAddresses.isNotEmpty ? true : false;
-
-    debugPrint("GET STORES BY TABS URL **********"
+    debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -112,8 +75,8 @@ class SearchStoreUserController extends GetxController {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": 37.0902,
-      "latitude": 95.7129,
+      "longitude": lng,
+      "latitude": lat,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
@@ -128,11 +91,12 @@ class SearchStoreUserController extends GetxController {
           ? Utility.formatDateTime(closingTimeTextController.text,
               firstFormat: "hh:mm a", secFormat: "hh:mm:ss")
           : "24:00:00",
-      "is_favourite_store": null,
-      "show_previous_stores": isPreviousStores ? true : null
+      "is_favourite_store": type.value == 2 ? true : null,
+      "show_previous_stores": type.value == 1 ? true : null
     };
+
     debugPrint("TOKEN ********** $headers");
-    debugPrint("GET STORES BY TABS BODY ********** $data");
+    debugPrint("GET NEARBY STORES BOSY*******$data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -143,7 +107,7 @@ class SearchStoreUserController extends GetxController {
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
-      debugPrint("GET STORES BY TABS RESPONSE*******${value?.body}");
+      debugPrint("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);

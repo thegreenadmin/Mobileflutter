@@ -26,15 +26,18 @@ class OrdersController extends GetxController {
   RxString phone = "".obs;
   RxString? role = "".obs;
   RxInt page = 1.obs;
+
   late OrderListResponse orderListResponse = OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
+  late OrderStatusListResponse orderStatusListResponse =
+      OrderStatusListResponse();
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<Order> orderList = <Order>[].obs;
+
 
   @override
   void onInit() {
     super.onInit();
-    isActiveOrders.value=true;
+    isActiveOrders.value = true;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -55,34 +58,37 @@ class OrdersController extends GetxController {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          if ( role!.value == Role.customerRoleText) {
+          if (role!.value == Role.customerRoleText) {
             apiGetOrderListApi(isActiveOrder: true);
-          }else {
+          } else {
             apiGetStoreOrderListApi();
           }
         }
       }
     });
   }
+
   //Get Order Status List Api
   Future apiGetOrderStatusListApi() async {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .getWithHeadersApi(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}",
-        headers,
-        showLoading: false)
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}",
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Order Status List *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         orderStatusListResponse = OrderStatusListResponse.fromJson(value?.body);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -95,7 +101,8 @@ class OrdersController extends GetxController {
   }
 
   //Get Order List Api
-  Future apiGetOrderListApi({ bool isActiveOrder = true, int orderStatusId=0}) async {
+  Future apiGetOrderListApi(
+      {bool isActiveOrder = true, int orderStatusId = 0}) async {
     isDataLoading.value = true;
     isLoading.value = orderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
@@ -103,35 +110,41 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
-     Map<String, dynamic> data = {
-       "store_id": null,
-       "page": page.value,
-       "page_size": 5,
-       "order_by": "order_id",
-       "order_type": "DESC",
-       "from_date": null,
-       "to_date": null,
-       "only_active_orders": orderStatusId==0? isActiveOrder :null,
-       "order_statuses": orderStatusId!=0
-           ?[{"order_status_id": orderStatusId,"as":"orders"}]:[]
-     };
+    Map<String, dynamic> data = {
+      "store_id": null,
+      "page": page.value,
+      "page_size": 5,
+      "order_by": "order_id",
+      "order_type": "DESC",
+      "from_date": null,
+      "to_date": null,
+      "only_active_orders": orderStatusId == 0 ? isActiveOrder : null,
+      "order_statuses": orderStatusId != 0
+          ? [
+              {"order_status_id": orderStatusId, "as": "orders"}
+            ]
+          : []
+    };
 
     debugPrint("data ********** ${jsonEncode(data)}");
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
-        .postWithHeadersApi(data,
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}",
-        headers, showLoading:  page.value == 1)
+        .postWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}",
+            headers,
+            showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Order List *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         orderListResponse = OrderListResponse.fromJson(value?.body);
         List<Order>? orders = [];
-        orders = orderListResponse.data!.orders?.orders??[];
+        orders = orderListResponse.data!.orders?.orders ?? [];
         if (orders.isNotEmpty) {
           if (page.value == 1) {
             orderList.value = [];
@@ -152,43 +165,48 @@ class OrdersController extends GetxController {
   }
 
   //Get Store Order List Api
-  Future apiGetStoreOrderListApi({ bool isActiveOrder = true, int orderStatusId=0}) async {
-    isLoading.value = true; isDataLoading.value = true;
+  Future apiGetStoreOrderListApi(
+      {bool isActiveOrder = true, int orderStatusId = 0}) async {
+    isLoading.value = true;
+    isDataLoading.value = true;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
-     Map<String, dynamic> data = {
-       "store_id": null,
-       "page":page.value,
-       "page_size": 20,
-       "order_by": "order_id",
-       "order_type": "DESC",
-       "from_date": null,
-       "to_date": null,
-       "order_statuses": [
-         {"order_status_id": 2},
-         {"order_status_id": 3},
-         {"order_status_id": 5}
-       ]
-     };
+    Map<String, dynamic> data = {
+      "store_id": null,
+      "page": page.value,
+      "page_size": 20,
+      "order_by": "order_id",
+      "order_type": "DESC",
+      "from_date": null,
+      "to_date": null,
+      "order_statuses": [
+        {"order_status_id": 2},
+        {"order_status_id": 3},
+        {"order_status_id": 5}
+      ]
+    };
 
     debugPrint("data ********** ${jsonEncode(data)}");
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
-        .postWithHeadersApi(data,
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}",
-        headers, showLoading: true)
+        .postWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}",
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Order  List *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         orderListResponse = OrderListResponse.fromJson(value?.body);
-        orderList.value = orderListResponse.data?.orders?.orders??[];
+        orderList.value = orderListResponse.data?.orders?.orders ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -198,6 +216,4 @@ class OrdersController extends GetxController {
       }
     });
   }
-
-
 }
