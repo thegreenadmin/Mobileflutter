@@ -372,7 +372,7 @@ class _CartScreenState extends State<CartScreen> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: storeHomeMainController
-                                    .storeDetailsResponse
+                                    .storeDetailsResponse.value
                                     .data
                                     ?.store
                                     ?.storeDeliveryServices
@@ -390,7 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   .storeDeliveryServiceId
                                                   .value ==
                                               storeHomeMainController
-                                                  .storeDetailsResponse
+                                                  .storeDetailsResponse.value
                                                   .data
                                                   ?.store
                                                   ?.storeDeliveryServices?[i]
@@ -406,7 +406,7 @@ class _CartScreenState extends State<CartScreen> {
                                       storeHomeMainController
                                           .storeDeliveryServiceId
                                           .value = storeHomeMainController
-                                              .storeDetailsResponse
+                                              .storeDetailsResponse.value
                                               .data
                                               ?.store
                                               ?.storeDeliveryServices?[i]
@@ -418,7 +418,7 @@ class _CartScreenState extends State<CartScreen> {
                                     },
                                     height: 45,
                                     text: storeHomeMainController
-                                                .storeDetailsResponse
+                                                .storeDetailsResponse.value
                                                 .data
                                                 ?.store
                                                 ?.storeDeliveryServices?[i]
@@ -426,7 +426,7 @@ class _CartScreenState extends State<CartScreen> {
                                             "1"
                                         ? StringConstants.inStoreText
                                         : storeHomeMainController
-                                                    .storeDetailsResponse
+                                                    .storeDetailsResponse.value
                                                     .data
                                                     ?.store
                                                     ?.storeDeliveryServices?[i]
@@ -437,7 +437,7 @@ class _CartScreenState extends State<CartScreen> {
                                     textColor: storeHomeMainController
                                                 .storeDeliveryServiceId.value ==
                                             storeHomeMainController
-                                                .storeDetailsResponse
+                                                .storeDetailsResponse.value
                                                 .data
                                                 ?.store
                                                 ?.storeDeliveryServices?[i]
@@ -450,7 +450,7 @@ class _CartScreenState extends State<CartScreen> {
                                     iconL: true,
                                     fontSize: 16,
                                     imageL: storeHomeMainController
-                                                .storeDetailsResponse
+                                                .storeDetailsResponse.value
                                                 .data
                                                 ?.store
                                                 ?.storeDeliveryServices?[i]
@@ -463,7 +463,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         .storeDeliveryServiceId
                                                         .value ==
                                                     storeHomeMainController
-                                                        .storeDetailsResponse
+                                                        .storeDetailsResponse.value
                                                         .data
                                                         ?.store
                                                         ?.storeDeliveryServices?[
@@ -474,7 +474,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 : AppColors.primary,
                                           )
                                         : storeHomeMainController
-                                                    .storeDetailsResponse
+                                                    .storeDetailsResponse.value
                                                     .data
                                                     ?.store
                                                     ?.storeDeliveryServices?[i]
@@ -487,7 +487,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             .storeDeliveryServiceId
                                                             .value ==
                                                         storeHomeMainController
-                                                            .storeDetailsResponse
+                                                            .storeDetailsResponse.value
                                                             .data
                                                             ?.store
                                                             ?.storeDeliveryServices?[
@@ -504,7 +504,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             .storeDeliveryServiceId
                                                             .value ==
                                                         storeHomeMainController
-                                                            .storeDetailsResponse
+                                                            .storeDetailsResponse.value
                                                             .data
                                                             ?.store
                                                             ?.storeDeliveryServices?[

@@ -24,7 +24,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const UserStoreOrderAppBar(),
+      appBar:  const UserStoreOrderAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(

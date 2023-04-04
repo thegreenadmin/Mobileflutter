@@ -33,8 +33,8 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class StoreHomeMainController extends GetxController {
   Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
 
-  late store.StoreDetailsResponse storeDetailsResponse =
-      store.StoreDetailsResponse();
+  Rx<store.StoreDetailsResponse> storeDetailsResponse =
+      store.StoreDetailsResponse().obs;
   late offers.StoreOffersListResponse offersListResponse =
       offers.StoreOffersListResponse();
   RxList<offers.Offer> offersList = <offers.Offer>[].obs;
@@ -565,7 +565,7 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
       debugPrint("  Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
-        storeDetailsResponse = store.StoreDetailsResponse.fromJson(value?.body);
+        storeDetailsResponse.value = store.StoreDetailsResponse.fromJson(value?.body);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
