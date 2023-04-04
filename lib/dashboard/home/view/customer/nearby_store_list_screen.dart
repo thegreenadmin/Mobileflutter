@@ -14,7 +14,6 @@ import 'package:thegreenmall/utils/utility.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
-
   @override
   State<NearbyStoreListScreen> createState() => _NearbyStoreListScreenState();
 }
@@ -55,7 +54,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             ),
                           ],
                         )
-                  : ListView.builder(
+                      : ListView.builder(
                       controller: searchStoreUserController.scrollController,
                       itemCount: searchStoreUserController
                               .storeAddresses.length +

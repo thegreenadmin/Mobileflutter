@@ -218,6 +218,17 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           TabBar(
             unselectedLabelColor: AppColors.blacklight,
             labelColor: AppColors.primary,
+            onTap: (i){
+              searchStoreUserController.storeAddresses.clear();
+              searchStoreUserController.page.value = 1;
+              searchStoreUserController.type.value = i;
+              debugPrint("apiGetNearByStores index :- ${i.toString()}");
+              debugPrint(searchStoreUserController.page.value.toString());
+
+              searchStoreUserController.apiGetNearByStores();
+
+
+            },
             tabs: [
               Tab(
                 child: Text(
@@ -246,8 +257,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               controller: _tabController,
               children: const [
                 Center(child: NearbyStoreListScreen()),
-                Center(child: PreviousStoreListScreen()),
-                Center(child: FavouriteStoreListScreen()),
+                Center(child: NearbyStoreListScreen()),
+                Center(child: NearbyStoreListScreen()),
+                // Center(child: PreviousStoreListScreen()),
+                // Center(child: FavouriteStoreListScreen()),
               ],
             ),
           ),

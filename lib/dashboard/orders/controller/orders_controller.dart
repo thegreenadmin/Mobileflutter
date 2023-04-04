@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_order_status_list_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_store_order_list_model.dart';
 
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -25,10 +26,12 @@ class OrdersController extends GetxController {
   RxString phone = "".obs;
   RxString? role = "".obs;
   RxInt page = 1.obs;
+  late StoreOrderListResponse storeOrderListResponse = StoreOrderListResponse();
   late OrderListResponse orderListResponse = OrderListResponse();
   late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<Order> orderList = <Order>[].obs;
+  RxList<StoreOrder> storeOrderList = <StoreOrder>[].obs;
 
   @override
   void onInit() {
@@ -153,7 +156,8 @@ class OrdersController extends GetxController {
 
   //Get Store Order List Api
   Future apiGetStoreOrderListApi({ bool isActiveOrder = true, int orderStatusId=0}) async {
-    isLoading.value = true; isDataLoading.value = true;
+    isLoading.value = true;
+    // isDataLoading.value = true;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
     Map<String, String> headers = {
@@ -164,8 +168,8 @@ class OrdersController extends GetxController {
 
      Map<String, dynamic> data = {
        "store_id": null,
-       "page":page.value,
-       "page_size": 20,
+       "page": 1,
+       "page_size": 100,
        "order_by": "order_id",
        "order_type": "DESC",
        "from_date": null,
@@ -187,8 +191,8 @@ class OrdersController extends GetxController {
       isLoading.value = false;
       debugPrint("Store Order  List *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
-        orderListResponse = OrderListResponse.fromJson(value?.body);
-        orderList.value = orderListResponse.data?.orders?.orders??[];
+        storeOrderListResponse = StoreOrderListResponse.fromJson(value?.body);
+        storeOrderList.value = storeOrderListResponse.data?.orders?.orders??[];
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

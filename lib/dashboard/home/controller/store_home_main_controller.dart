@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
@@ -70,17 +69,6 @@ class StoreHomeMainController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  final scrollController = ScrollController();
-
-  void setupScrollController(context) {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          // apiGetStoreCategoriesApi();
-        }
-      }
-    });
-  }
 
   RxList<Categories> stepInd = [
     Categories(id: 0,name: "Received", isSelected: false),
@@ -93,7 +81,6 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     storeAddress.value = Get.arguments["storeAddress"];
-    // setupScrollController(Get.context);
     apiGetStoreDetailsApi();
     apiGetUserDetailsApi();
     onIndexChange(0);
@@ -788,5 +775,81 @@ class StoreHomeMainController extends GetxController {
             );
           });
         }).then((value) => {});
+  }
+
+
+  //Create Favourite Store Api
+  Future apiCreateFavouriteStore(String? id) async {
+    isLoading.value = true;
+    debugPrint("Create Favourite Store URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map data = {"store_id": int.parse(id ?? "0")};
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+        data,
+        ServerCommunicator().baseUrl +
+            ServerCommunicator().createFavouriteStore,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Create Favourite Store *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201  || value?.body["status"] == ApiConstants.statusCode200 ) {
+        Utility.showToast(value?.body['message']);
+        storeAddress.value.store?.isFavouriteStore = true;
+      } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Remove Favourite Store Api
+  Future apiRemoveFavouriteStore(String? id) async {
+    isLoading.value =  true;
+    debugPrint("Remove Favourite Store URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map data = {"store_id": int.parse(id ?? "0")};
+
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("data ********** ${data.toString()}");
+    UserProvider()
+        .deleteWithHeadersApi(
+        data,
+        ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Remove Favourite Store *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
+        Utility.showToast(value?.body['message']);
+        storeAddress.value.store?.isFavouriteStore = false;
+
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 }

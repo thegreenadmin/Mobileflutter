@@ -26,6 +26,7 @@ class SearchStoreUserController extends GetxController {
   RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
 
   RxInt page = 1.obs;
+  RxInt type = 0.obs;
   RxInt initialIndex = 0.obs;
 
   RxBool isLoading = false.obs;
@@ -53,11 +54,10 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Nearby Stores Api
-  Future apiGetNearByStores({bool isFilter = false}) async {
+  Future apiGetNearByStores({bool isFilter = false, }) async {
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
-    isFavLoading.value = favStoreAddresses.isNotEmpty ? true : false;
     debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
     Map<String, String> headers = {
@@ -86,7 +86,8 @@ class SearchStoreUserController extends GetxController {
           ? Utility.formatDateTime(closingTimeTextController.text,
               firstFormat: "hh:mm a", secFormat: "hh:mm:ss")
           : "24:00:00",
-      "is_favourite_store": null
+      "is_favourite_store": type.value==2 ? true :null,
+      "show_previous_stores": type.value==1 ? true :null
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -109,14 +110,8 @@ class SearchStoreUserController extends GetxController {
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             storeAddresses.value = [];
-            favStoreAddresses.value = [];
           }
           storeAddresses.addAll(storeAddressesNewList);
-          for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {
-              favStoreAddresses.add(element);
-            }
-          }
         }
         storeAddresses.toSet().toList();
         page.value++;
@@ -129,7 +124,6 @@ class SearchStoreUserController extends GetxController {
           isOpenNow.value = false;
           initialIndex.value = 0;
           storeAddresses.clear();
-          favStoreAddresses.clear();
           Get.back();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
@@ -171,7 +165,6 @@ class SearchStoreUserController extends GetxController {
         for (var element in storeAddresses) {
           if (element.store?.storeId == id) {
             element.store?.isFavouriteStore = true;
-            favStoreAddresses.add(element);
           }
         }
 
@@ -203,8 +196,7 @@ class SearchStoreUserController extends GetxController {
     UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
+            ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
@@ -213,9 +205,10 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
         Utility.showToast(value?.body['message']);
         for (var element in storeAddresses) {
-          if (element.store?.storeId == id) {
+          if (element.store?.storeId == id && type.value!= 2) {
             element.store?.isFavouriteStore = false;
-            favStoreAddresses.remove(element);
+          }else{
+            storeAddresses.remove(element);
           }
         }
 
