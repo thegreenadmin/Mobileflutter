@@ -9,6 +9,7 @@ FirebaseMessaging messaging = FirebaseMessaging.instance;
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: "Main Navigator");
 
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'roomie_notifications', // id
   'roomie notifications', // title

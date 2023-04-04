@@ -512,8 +512,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     Utility.showToast(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
-                    searchStoreUserController.apiGetStoresBySelectedTabs(
-                        isFilter: true, isPreviousStores: false);
+                    searchStoreUserController.apiGetNearByStores(
+                        isFilter: true,);
                   }
                 },
                 height: 50,

@@ -222,9 +222,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
-              debugPrint("apiGetNearByStores index :- ${i.toString()}");
-              debugPrint(searchStoreUserController.page.value.toString());
-
               searchStoreUserController.apiGetNearByStores();
 
 
