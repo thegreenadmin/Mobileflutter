@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/input_add_product.dart';
 import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
     as quantity_model;
+import 'package:thegreenmall/dashboard/home/view/store_owner/manage_product_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -141,6 +142,7 @@ class ManageStoreController extends GetxController {
           Utility.showToast("Please select categories");
         } else {
           apiCreateProduct();
+          await apiGetProductList();
         }
       } catch (_) {}
     } else {

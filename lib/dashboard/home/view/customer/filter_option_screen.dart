@@ -220,7 +220,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 isExpanded: true,
                 hint: Text(
                   StringConstants.storeOpeningText,
-                  style: const TextStyle(color: AppColors.grey, fontSize: 16),
+                  style: TextStyle(
+                    color: AppColors.blacklight,
+                  ),
                 ),
                 items: <String>["Open Now", "Closed"].map((String value) {
                   return DropdownMenuItem<String>(
@@ -301,6 +303,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                           decoration: InputDecoration(
                               errorMaxLines: 3,
                               hintText: StringConstants.openingTimeText,
+                              hintStyle: TextStyle(
+                                  color: AppColors.blacklight,
+                                  fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -392,6 +397,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                             decoration: InputDecoration(
                               errorMaxLines: 3,
                               hintText: StringConstants.closingTimeText,
+                              hintStyle: TextStyle(
+                                  color: AppColors.blacklight,
+                                  fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
@@ -462,8 +470,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 isExpanded: true,
                 hint: Text(
                   StringConstants.pickupOptionsText,
-                  style: const TextStyle(
-                    color: AppColors.grey,
+                  style: TextStyle(
+                    color: AppColors.blacklight,
                   ),
                 ),
                 items: <String>["In Store", "Delivery", "Curb Side"]
@@ -505,7 +513,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
                     searchStoreUserController.apiGetStoresBySelectedTabs(
-                        isFilter: true,isPreviousStores:false );
+                        isFilter: true, isPreviousStores: false);
                   }
                 },
                 height: 50,

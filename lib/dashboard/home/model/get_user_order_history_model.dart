@@ -293,8 +293,8 @@ class OrderItems {
   int? orderItemCount;
   int? orderItemPrice;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
   String? discountName;
   String? discountType;
   int? discountValue;

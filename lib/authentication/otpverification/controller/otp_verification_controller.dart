@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,14 +19,22 @@ class OtpVerificationController extends GetxController {
 
   RxString phoneNumber = "".obs;
   RxString countryCode = "".obs;
-
   RxBool autoValidate = false.obs;
+  RxString? fcmToken = "".obs;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   void onInit() {
     super.onInit();
     phoneNumber.value = Get.arguments["phoneNumber"];
     countryCode.value = Get.arguments["countryCode"];
+    getFcmToken();
+  }
+
+  getFcmToken() async {
+    fcmToken!.value = (await messaging.getToken())!;
+
+    debugPrint("FCM TOKEN *************" + fcmToken.toString());
   }
 
   bool otpValidateAndSave() {
@@ -56,7 +66,8 @@ class OtpVerificationController extends GetxController {
       "phone_code": countryCode.value.trim(),
       "otp": otpTextController.text.trim(),
       "device_id": rng.nextInt(100).toString(), //Random numbers
-      "device_token": "1234567"
+      "device_token": fcmToken!.value.trim(),
+      "device_type": Platform.isAndroid ? "GCM" : "APNS"
     };
     debugPrint("OTP VERIFY BODY********** $data");
     debugPrint(
