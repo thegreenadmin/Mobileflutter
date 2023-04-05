@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
@@ -68,6 +69,7 @@ class StoreHomeMainController extends GetxController {
   RxString productId = "".obs;
   RxBool isFromHome = false.obs;
   RxBool isFavouriteStore = false.obs;
+  RxBool isDeleteCartItem = false.obs;
   RxBool isFavouriteProduct = false.obs;
   RxString orderStatus = "".obs;
 
@@ -103,7 +105,9 @@ class StoreHomeMainController extends GetxController {
         nearby.Store store = nearby.Store();
         store.storeId = storeId.value;
         storeAddress.value.store = store;
-        isFavouriteStore.value = store.isFavouriteStore??false;
+        Future.delayed(const Duration(milliseconds: 100), () {
+          isFavouriteStore.value = store.isFavouriteStore??false;
+        });
         apiGetStoreDetailsApi();
         apiGetCartListApi();
         setupScrollController(Get.context);
@@ -112,7 +116,9 @@ class StoreHomeMainController extends GetxController {
       });
     } else {
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      isFavouriteStore.value = storeAddress.value.store?.isFavouriteStore??false;
+      Future.delayed(const Duration(milliseconds: 100), () {
+        isFavouriteStore.value = storeAddress.value.store?.isFavouriteStore ??false;
+      });
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
       apiGetUserDetailsApi();
@@ -230,6 +236,10 @@ class StoreHomeMainController extends GetxController {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartData.value = cartListResponse.data ?? cart.Data();
+        if(isDeleteCartItem.value == true && cartListResponse.data!.cartItems!.isEmpty){
+          isDeleteCartItem.value = false;
+          Get.offAll(BottomNavigation());
+        }
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -365,6 +375,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Update Cart  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        isDeleteCartItem.value =true;
         apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -404,7 +415,9 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
+        isDeleteCartItem.value = true;
         apiGetCartListApi();
+
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -571,11 +584,11 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("  Store Details*******${value?.body}");
+      debugPrint("Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+        debugPrint("isFavouriteStore before *******${  isFavouriteStore.value}");
         storeDetailsResponse.value = store.StoreDetailsResponse.fromJson(value?.body);
-        isFavouriteStore.value = storeDetailsResponse.value.data?.store?.isFavouriteStore??false;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -669,7 +682,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: orderBy == "2" ? true : false)
+            showLoading: true ) //orderBy == "2" ? true : false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
@@ -849,9 +862,9 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-         storeAddress.value.store?.isFavouriteStore = true;
         isFavouriteStore.value =true;
-        update();
+         storeAddress.value.store?.isFavouriteStore = true;
+
       } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -890,9 +903,10 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        storeAddress.value.store?.isFavouriteStore = false;
         isFavouriteStore.value = false;
-        update();
+        storeAddress.value.store?.isFavouriteStore = false;
+
+
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -929,11 +943,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Create Favourite Product *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
         Utility.showToast(value?.body['message']);
-        for (var element in featureProductList) {
-          if (element.productId == id ) {
-            element.isFavouriteProduct = true;
-          }
-        }
+        apiFeatureProductListApi();
         isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
         Utility.showToast(value?.body['message']);
@@ -971,11 +981,8 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Remove Favourite Product *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
         Utility.showToast(value?.body['message']);
-        for (var element in featureProductList) {
-          if(element.productId ==id){
-            element.isFavouriteProduct = false;
-          }
-        }
+
+        apiFeatureProductListApi();
         isFavouriteProduct.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);

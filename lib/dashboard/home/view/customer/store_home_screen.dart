@@ -290,14 +290,26 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                             index]
                                                         .isFavouriteProduct ==
                                                     true
-                                                ? Image.asset(
-                                                    ImageConstants.liked,
-                                                    scale: 3,
-                                                  )
-                                                : Image.asset(
-                                                    ImageConstants.fav,
-                                                    scale: 3,
-                                                  ),
+                                                ? InkWell(onTap: (){
+                                                    storeHomeMainController.
+                                                    apiRemoveFavouriteProduct(storeHomeMainController
+                                                        .featureProductList[index].productId);
+                                                  },
+                                                  child: Image.asset(
+                                                      ImageConstants.liked,
+                                                      scale: 3,
+                                                    ),
+                                                )
+                                                :  InkWell(onTap: (){
+                                                    storeHomeMainController.
+                                                    apiCreateFavouriteProduct(storeHomeMainController
+                                                        .featureProductList[index].productId);
+                                                  },
+                                                  child: Image.asset(
+                                                      ImageConstants.fav,
+                                                      scale: 3,
+                                                    ),
+                                                ),
                                           )
                                         ],
                                       ),

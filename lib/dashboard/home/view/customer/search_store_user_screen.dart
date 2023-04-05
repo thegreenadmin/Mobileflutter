@@ -255,8 +255,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 Center(child: NearbyStoreListScreen()),
                 Center(child: NearbyStoreListScreen()),
                 Center(child: NearbyStoreListScreen()),
-                // Center(child: PreviousStoreListScreen()),
-                // Center(child: FavouriteStoreListScreen()),
               ],
             ),
           ),

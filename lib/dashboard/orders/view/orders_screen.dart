@@ -21,7 +21,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   final OrdersController ordersController = Get.put(OrdersController());
 
-  Container ordersTab() {
+  Container userOrdersTab() {
     return Container(
       height: 47,
       width: WidgetConstants.screenWidth * 0.90,
@@ -113,6 +113,101 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 
+  Container storeOrdersTab() {
+    return Container(
+      height: 47,
+      width: WidgetConstants.screenWidth * 0.90,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        border: Border.all(
+            width: 0, //
+            color: AppColors.blacklight),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(4),
+        ),
+      ),
+      child: Obx(() => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  if (ordersController.isActiveOrders.value == true) {
+                  } else {
+                    ordersController.isActiveOrders.value =
+                        !ordersController.isActiveOrders.value;
+                    ordersController.apiGetOrderListApi(isActiveOrder: true);
+                  }
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(4),
+                  height: 47,
+                  width: WidgetConstants.screenWidth * 0.40,
+                  color: ordersController.isActiveOrders.value
+                      ? AppColors.primarylight
+                      : AppColors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringConstants.activeOrderText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: ordersController.isActiveOrders.value
+                              ? AppColors.primary
+                              : AppColors.blacklight,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  if (ordersController.isActiveOrders.value == false) {
+                  } else {
+                    ordersController.isActiveOrders.value =
+                        !ordersController.isActiveOrders.value;
+                    ordersController.apiGetOrderListApi(
+                        isActiveOrder: false, orderStatusId: 5);
+                  }
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(4),
+                  height: 47,
+                  width: WidgetConstants.screenWidth * 0.40,
+                  color: ordersController.isActiveOrders.value
+                      ? AppColors.white
+                      : AppColors.primarylight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringConstants.completedOrders,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: ordersController.isActiveOrders.value
+                              ? AppColors.blacklight
+                              : AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )),
+    );
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,9 +259,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
         //   children: [
         //     ordersController.role!.value == Role.customerRoleText
         //         ? Center(
-        //             child: ordersTab(),
+        //             child: userOrdersTab(),
         //           )
-        //         : height0SizedBox,
+        //         : Center(
+        //             child: storeOrdersTab(),
+        //           ),
         //     height25SizedBox,
         //     ordersController.role!.value == Role.customerRoleText
         //         ? Obx(

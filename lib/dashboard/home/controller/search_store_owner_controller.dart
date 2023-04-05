@@ -134,10 +134,14 @@ class OwnerStoresController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    apiGetStoreList();
-    apiGetDeliveryServices();
-    apiGetOwnerOffersList();
-    getCurrentLocation();
+    getApiData();
+  }
+
+  getApiData()async{
+   await apiGetStoreList();
+   await apiGetDeliveryServices();
+   await apiGetOwnerOffersList();
+   await getCurrentLocation();
   }
 
   getCurrentLocation() async {
@@ -450,7 +454,7 @@ class OwnerStoresController extends GetxController {
 
   //Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
-    deliveryServices.clear();
+
     debugPrint(
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     Map<String, String> headers = {
@@ -471,7 +475,12 @@ class OwnerStoresController extends GetxController {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
-            deliveryServicesResponse.data!.deliveryServices!;
+            deliveryServicesResponse.data?.deliveryServices??[];
+
+        print(deliveryServices.isNotEmpty);
+
+        print(deliveryServices.isNotEmpty);
+        print(deliveryServices.length);
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -519,7 +528,6 @@ class OwnerStoresController extends GetxController {
         phoneNumber.value = phoneTextController.text;
         countryCode.value =
             value?.body["data"]['store']['store_phone_code'] ?? "";
-
         emailTextController.text =
             value?.body["data"]['store']['store_email'] ?? "";
         einTextController.text =
@@ -531,11 +539,14 @@ class OwnerStoresController extends GetxController {
         storeDeliveryServices.value =
             value?.body["data"]['store']['store_delivery_services'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
+        print("storeDeliveryServices is NotEmpty====== ${storeDeliveryServices.isNotEmpty}");
+        print("deliveryServices is NotEmpty====== ${deliveryServices.isNotEmpty}");
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {
             for (var element in deliveryServices) {
-              if (sData["delivery_service_id"] == element.id) {
-                element.isSelected = sData["is_enabled"];
+              if (element.id==sData["delivery_service_id"]) {
+                element.isSelected = true;
+                print("delivery_service_id====== ${element.toJson()}");
               }
             }
           }
