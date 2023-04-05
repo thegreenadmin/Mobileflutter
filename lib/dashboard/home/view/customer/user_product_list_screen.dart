@@ -178,8 +178,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         ),
       ),
       body: Container(
-        // height: ,
-        // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,13 +309,33 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                       .featureProductList[i]
                                                       .isFavouriteProduct ==
                                                   true
-                                              ? Image.asset(
-                                                  ImageConstants.liked,
-                                                  scale: 3,
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    storeHomeMainController
+                                                        .apiRemoveFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                                    i]
+                                                                .productId);
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstants.liked,
+                                                    scale: 3,
+                                                  ),
                                                 )
-                                              : Image.asset(
-                                                  ImageConstants.fav,
-                                                  scale: 3,
+                                              : InkWell(
+                                                  onTap: () {
+                                                    storeHomeMainController
+                                                        .apiCreateFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                                    i]
+                                                                .productId);
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstants.fav,
+                                                    scale: 3,
+                                                  ),
                                                 ),
                                         )
                                       ],

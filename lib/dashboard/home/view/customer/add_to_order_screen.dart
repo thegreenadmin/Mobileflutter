@@ -92,32 +92,28 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productName ??
-                                        "",
+                                    storeHomeMainController.productDetailResponse.value.data?.product?.productName ?? "",
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600)),
-                                storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.isFavouriteProduct ==
-                                        true
-                                    ? Image.asset(
-                                        ImageConstants.liked,
-                                        scale: 2.8,
-                                      )
-                                    : Image.asset(
-                                        ImageConstants.favoutline,
-                                        scale: 2.8,
-                                      ),
+                                storeHomeMainController.isFavouriteProduct.value == true
+                                    ? InkWell(onTap: (){
+                                  storeHomeMainController.apiRemoveFavouriteProduct( storeHomeMainController.productDetailResponse.value
+                                      .data?.product?.productId);},
+                                      child: Image.asset(
+                                  ImageConstants.liked,
+                                          scale: 2.8,
+                                        ),
+                                    )
+                                    : InkWell(onTap: (){
+                                  storeHomeMainController.apiCreateFavouriteProduct( storeHomeMainController.productDetailResponse.value
+                                      .data?.product?.productId);},
+                                      child: Image.asset(
+                                  ImageConstants.fav,
+                                          scale: 2.8,
+                                        ),
+                                    ),
                               ],
                             ),
                             height8SizedBox,
