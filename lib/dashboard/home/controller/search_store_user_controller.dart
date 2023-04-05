@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -176,10 +174,16 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        for (var element in storeAddresses) {
-          if (element.store?.storeId == id) {
-            element.store?.isFavouriteStore = true;
-            favStoreAddresses.add(element);
+        if(type.value == 2){
+          storeAddresses.clear();
+          page.value = 1;
+          apiGetNearByStores();
+        }else{
+          for (var element in storeAddresses) {
+            if (element.store?.storeId == id) {
+              element.store?.isFavouriteStore = true;
+              favStoreAddresses.add(element);
+            }
           }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
@@ -210,8 +214,7 @@ class SearchStoreUserController extends GetxController {
     UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
+            ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
@@ -220,10 +223,16 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        for (var element in storeAddresses) {
-          if (element.store?.storeId == id) {
-            element.store?.isFavouriteStore = false;
-            favStoreAddresses.remove(element);
+        if(type.value == 2){
+          storeAddresses.clear();
+          page.value = 1;
+          apiGetNearByStores();
+        }else{
+            for (var element in storeAddresses) {
+            if (element.store?.storeId == id) {
+              element.store?.isFavouriteStore = false;
+              favStoreAddresses.remove(element);
+            }
           }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode403) {

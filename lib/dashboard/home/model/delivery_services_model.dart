@@ -70,7 +70,7 @@ class DeliveryService {
   DeliveryService({
     this.id,
     this.name,
-    this.isSelected = false,
+    this.isSelected,
   });
 
   String? id;

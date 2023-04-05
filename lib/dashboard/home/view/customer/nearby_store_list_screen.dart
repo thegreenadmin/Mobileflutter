@@ -47,7 +47,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             height4SizedBox,
                             Center(
                               child: Text(
-                                StringConstants.noNearbyStoreFoundText,
+                                searchStoreUserController.type.value==0?
+                                StringConstants.noNearbyStoreFoundText:
+                                searchStoreUserController.type.value==1?
+                                StringConstants.noPreviousStoresFoundText:
+                                StringConstants.noFavouriteStoresFoundText,
                                 style: const TextStyle(
                                     fontStyle: FontStyle.italic, fontSize: 16),
                               ),
@@ -183,8 +187,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         searchStoreUserController.storeAddresses[index].store?.isFavouriteStore == true
                                             ? InkWell(
                                           onTap: () {
-                                            searchStoreUserController.apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId);
-                                          },
+                                            searchStoreUserController.apiRemoveFavouriteStore(searchStoreUserController.storeAddresses[index].store?.storeId,);
+                                            },
                                           child: Image.asset(
                                             ImageConstants.liked,
                                             scale: 3.2,
@@ -194,11 +198,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           onTap: () {
                                             searchStoreUserController
                                                 .apiCreateFavouriteStore(
-                                                searchStoreUserController
-                                                    .storeAddresses[
-                                                index]
-                                                    .store
-                                                    ?.storeId);
+                                                searchStoreUserController.storeAddresses[index].store?.storeId,
+                                            );
                                           },
                                           child: Image.asset(
                                             ImageConstants.fav,
@@ -239,11 +240,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               return Row(
                                                 children: [
                                                   searchStoreUserController
-                                                              .storeAddresses[
-                                                                  index]
+                                                              .storeAddresses[index]
                                                               .store
-                                                              ?.storeDeliveryServices?[
-                                                                  i]
+                                                              ?.storeDeliveryServices?[i]
                                                               .deliveryServiceId ==
                                                           "1"
                                                       ? Image.asset(
@@ -251,11 +250,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                           scale: 2.5,
                                                         )
                                                       : searchStoreUserController
-                                                                  .storeAddresses[
-                                                                      index]
+                                                                  .storeAddresses[index]
                                                                   .store
-                                                                  ?.storeDeliveryServices?[
-                                                                      i]
+                                                                  ?.storeDeliveryServices?[i]
                                                                   .deliveryServiceId ==
                                                               "2"
                                                           ? Image.asset(

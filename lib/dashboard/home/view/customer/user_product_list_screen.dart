@@ -54,11 +54,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   itemBuilder: (context) =>
                       createOptionsPopUpList(Get.context)!,
                 ),
-                // InkWell(
-                //     onTap: (){
-                //
-                //     },
-                //     child: Image.asset(ImageConstants.productFilter,scale: 2.5,))
               ],
             ),
             height20SizedBox,
@@ -160,7 +155,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                               )
                                               :InkWell(onTap: (){
                                                  storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
-                                                .featureProductList[i].productId);},
+                                                .featureProductList[i].productId);
+                                                 },
                                                 child: Image.asset(
                                                     ImageConstants.fav,
                                                     scale: 3,
@@ -248,7 +244,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     children: [
                       Text(
                         "${StringConstants.priceText} ${StringConstants.lowToHighText.toLowerCase()}",
-                        style:  TextStyle(
+                        style:  const TextStyle(
                             color: AppColors.black,
                             fontFamily: "",
                             fontSize: 16),
