@@ -9,7 +9,6 @@ FirebaseMessaging messaging = FirebaseMessaging.instance;
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: "Main Navigator");
 
-
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'roomie_notifications', // id
   'roomie notifications', // title
@@ -41,7 +40,7 @@ getNotification() {
     RemoteNotification? notification = message!.notification;
     debugPrint("notification data---------------" + message.data.toString());
     debugPrint("notification data 123 ---------------" +
-        message.notification.toString());
+        message.data['pinpoint.notification.silentPush'].toString());
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {

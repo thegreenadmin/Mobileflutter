@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -127,7 +128,8 @@ class OwnerStoresController extends GetxController {
     Categories(id: 6, name: "Saturday", isSelected: false),
     Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
-
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
   @override
   void onInit() {
     super.onInit();
@@ -135,6 +137,14 @@ class OwnerStoresController extends GetxController {
     apiGetStoreList();
     apiGetDeliveryServices();
     apiGetOwnerOffersList();
+    getCurrentLocation();
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
   }
 
   bool validateAndSave() {
@@ -620,8 +630,8 @@ class OwnerStoresController extends GetxController {
         "store_address_id": int.parse(storeAddressId!.value),
         "state_id": stateId.value,
         "address_name": "home",
-        "longitude": 37.0902,
-        "latitude": 95.7129,
+        "longitude": lng,
+        "latitude": lat,
         "postal_code": postalCodeTextController.text.trim(),
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),

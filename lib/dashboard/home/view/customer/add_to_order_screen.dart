@@ -24,12 +24,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  const UserStoreOrderAppBar(),
+      appBar: const UserStoreOrderAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
               child: Obx(
-                () => Container(
+            () => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,12 +49,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         flex: 5,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
-                          child: storeHomeMainController.productDetailResponse.value
-                                          .data?.product?.productImages == null ||
-                                  storeHomeMainController.productDetailResponse
-                                      .value.data!.product!.productImages!.isEmpty
+                          child: storeHomeMainController.productDetailResponse
+                                          .value.data?.product?.productImages ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productImages!
+                                      .isEmpty
                               ? Image.asset(
-                            ImageConstants.nopicfound,
+                                  ImageConstants.nopicfound,
                                   fit: BoxFit.fill,
                                   height: 120,
                                 )
@@ -169,13 +175,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   children: [
                                     InkWell(
                                         onTap: () {
-                                            storeHomeMainController.itemsCount.value =
-                                            storeHomeMainController
-                                                .itemsCount.value != 0
-                                                ? storeHomeMainController
-                                                .itemsCount.value - 1
-                                                : storeHomeMainController
-                                                .itemsCount.value;
+                                          storeHomeMainController.itemsCount
+                                              .value = storeHomeMainController
+                                                      .itemsCount.value !=
+                                                  0
+                                              ? storeHomeMainController
+                                                      .itemsCount.value -
+                                                  1
+                                              : storeHomeMainController
+                                                  .itemsCount.value;
                                         },
                                         child: Image.asset(
                                           ImageConstants.subtract,
@@ -183,9 +191,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         )),
                                     width10SizedBox,
                                     Text(
-                                        storeHomeMainController.itemsCount.toString().length < 2
-                                          ? storeHomeMainController.itemsCount.toString().padLeft(2,'0')
-                                          : storeHomeMainController.itemsCount.toString(),
+                                      storeHomeMainController.itemsCount
+                                                  .toString()
+                                                  .length <
+                                              2
+                                          ? storeHomeMainController.itemsCount
+                                              .toString()
+                                              .padLeft(2, '0')
+                                          : storeHomeMainController.itemsCount
+                                              .toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -194,8 +208,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     width10SizedBox,
                                     InkWell(
                                       onTap: () {
-                                          storeHomeMainController.itemsCount.value =
-                                          storeHomeMainController.itemsCount.value + 1;
+                                        storeHomeMainController.itemsCount
+                                            .value = storeHomeMainController
+                                                .itemsCount.value +
+                                            1;
+                                        print(
+                                            "storeHomeMainController.quantity add");
+                                        print(storeHomeMainController
+                                            .itemsCount.value
+                                            .toString());
                                       },
                                       child: Image.asset(
                                         ImageConstants.add,
@@ -236,73 +257,64 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         color: AppColors.black),
                   ),
                   height20SizedBox,
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.productCategories?.first.category?.categoryName !=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.categoriesText,
-                        textData: storeHomeMainController.productDetailResponse.value.data?.product
-                                ?.productCategories?.first.category?.categoryName ?? ""),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.quantity !=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.quantityUnitText,
-                        textData:
-                            "${storeHomeMainController.productDetailResponse.value.
-                            data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.isFeaturedProduct!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.featuredProductText,
-                        textData: storeHomeMainController.productDetailResponse.value
-                                    .data?.product?.isFeaturedProduct ==
-                                true ? "Yes" : "No"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.length!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.lengthText,
-                        textData:
-                            "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} feet"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.width!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.breadthText,
-                        textData:
-                            "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} feet"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.height!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.heightText,
-                        textData:
-                            "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} feet"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.weight!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.weightText,
-                        textData:
-                            "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} kg"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.productDetailResponse.value.data?.product?.isProductReturnable!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.returnAvailableText,
-                        textData: storeHomeMainController.productDetailResponse.value
-                                    .data?.product?.isProductReturnable ==
-                                true ? "Yes" : "No"),
-                  ),
-                  Visibility(
-                    visible: storeHomeMainController.
-                    productDetailResponse.value.data?.product?.
-                    returnDaysCount!=null,
-                    child: _buildRowOtherDetail(
-                        title: StringConstants.daysText,
-                        textData: "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
-                  ),
+                  _buildRowOtherDetail(
+                      title: StringConstants.categoriesText,
+                      textData: storeHomeMainController
+                              .productDetailResponse
+                              .value
+                              .data
+                              ?.product
+                              ?.productCategories
+                              ?.first
+                              .category
+                              ?.categoryName ??
+                          ""),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.quantityUnitText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.featuredProductText,
+                      textData: storeHomeMainController.productDetailResponse
+                                  .value.data?.product?.isFeaturedProduct ==
+                              true
+                          ? "Yes"
+                          : "No"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.lengthText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} feet"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.breadthText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} feet"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.heightText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} feet"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.weightText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} kg"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.returnAvailableText,
+                      textData: storeHomeMainController.productDetailResponse
+                                  .value.data?.product?.isProductReturnable ==
+                              true
+                          ? "Yes"
+                          : "No"),
+                  height20SizedBox,
+                  _buildRowOtherDetail(
+                      title: StringConstants.daysText,
+                      textData:
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
@@ -316,7 +328,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     "4.4",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20, color: AppColors.black),
+                        fontSize: 20,
+                        color: AppColors.black),
                   ),
                   height20SizedBox,
                   CustomButton(
@@ -326,10 +339,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () {
-                      if(storeHomeMainController.itemsCount.value!=0){
+                      if (storeHomeMainController.itemsCount.value != 0) {
                         storeHomeMainController.apiAddToCart(context);
-                      }else{
-                        Utility.showToast("Please add at least one item in cart");
+                      } else {
+                        Utility.showToast(
+                            AlertStringConstants.pleaseAddAtleastOneItemText);
                       }
                     },
                     height: 50,
@@ -347,7 +361,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: WidgetConstants.screenHeight*0.1,
+              height: WidgetConstants.screenHeight * 0.1,
               color: AppColors.primaryBackgroundLight,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -356,20 +370,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           StringConstants.payNowText,
                           style: const TextStyle(
                               color: AppColors.black,
-                              fontSize: 14,
+                              fontSize: 20,
                               fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          StringConstants.clickCollectText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -445,32 +453,27 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     );
   }
 
-  Column _buildRowOtherDetail({
+  Row _buildRowOtherDetail({
     String title = "",
     String textData = "",
   }) =>
-      Column(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: AppColors.blacklight),
-              ),
-              Text(
-                textData,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: AppColors.black),
-              ),
-            ],
+          Text(
+            title,
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: AppColors.blacklight),
           ),
-          height20SizedBox
+          Text(
+            textData,
+            style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: AppColors.black),
+          ),
         ],
       );
 }

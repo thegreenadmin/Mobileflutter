@@ -70,7 +70,8 @@ class _CartScreenState extends State<CartScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -35,6 +35,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   TabController? _tabController;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
+
   var kGoogleApiKey = "";
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -173,9 +174,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         language: "en",
                         components: []);
                     searchStoreUserController.searchController.text =
-                        p?.description?.toString()??"";
+                        p!.description!.toString();
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p?.description.toString()??"",
+                        address: p.description.toString(),
                         googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
@@ -218,13 +219,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           TabBar(
             unselectedLabelColor: AppColors.blacklight,
             labelColor: AppColors.primary,
-            onTap: (i){
+            onTap: (i) {
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
               searchStoreUserController.apiGetNearByStores();
-
-
             },
             tabs: [
               Tab(
@@ -274,6 +273,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         zoom: 14.15);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    searchStoreUserController.lat = lat;
+    searchStoreUserController.lng = lng;
+    await searchStoreUserController.apiGetNearByStores();
+    updateMarker(lat, lng);
   }
 
   void updateMarker(latitude, longitude) async {
@@ -297,6 +300,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     Position currentLocation = await Utility.fetchCurrentLocation();
+
     updateMap(currentLocation.latitude, currentLocation.longitude);
   }
 

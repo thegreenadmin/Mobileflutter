@@ -124,9 +124,17 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                     child: Stack(
                                       alignment: Alignment.topRight,
                                       children: [
-                                        storeHomeMainController.featureProductList[i].productImages!.isNotEmpty &&
-                                                storeHomeMainController.featureProductList[i].productImages?.first.image
-                                                        ?.dynamicUrl != null
+                                        storeHomeMainController
+                                                    .featureProductList[i]
+                                                    .productImages!
+                                                    .isNotEmpty &&
+                                                storeHomeMainController
+                                                        .featureProductList[i]
+                                                        .productImages
+                                                        ?.first
+                                                        .image
+                                                        ?.dynamicUrl !=
+                                                    null
                                             ? Image.network(
                                                 storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl,
                                                 fit: BoxFit.fill,

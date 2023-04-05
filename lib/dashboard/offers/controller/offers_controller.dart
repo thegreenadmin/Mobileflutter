@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/offers/model/delete_offer_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
@@ -35,10 +36,12 @@ class OffersController extends GetxController {
   RxList<Stores> getUserOfferlist = <Stores>[].obs;
   late DeleteOfferRequestModel deleteOfferRequestModel =
       DeleteOfferRequestModel();
-
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
   @override
   void onInit() {
     super.onInit();
+
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -47,6 +50,13 @@ class OffersController extends GetxController {
       apiGetOwnerOffersList();
       role!.value = Role.storeOwnerRoleText;
     }
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
   }
 
   //Get Offers List Api [OWNER]
@@ -96,7 +106,7 @@ class OffersController extends GetxController {
   Future apiGetUserOffersList() async {
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=100&page=1&page_size=20",
+      "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=$lng&latitude=$lng +&mileage=100&page=1&page_size=20",
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -107,7 +117,7 @@ class OffersController extends GetxController {
 
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=100&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=$lng&latitude=$lng +&mileage=100&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {
