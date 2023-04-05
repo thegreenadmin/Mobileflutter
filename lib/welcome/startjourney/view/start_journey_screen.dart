@@ -89,26 +89,31 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                     iconL: false,
                   ),
                   height30SizedBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        StringConstants.ownAStoreText,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        StringConstants.registerHereText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.underline,
+                  InkWell(
+                    onTap: () {
+                      Get.to(const SignupScreen());
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          StringConstants.ownAStoreText,
+                          style: const TextStyle(
                             fontSize: 16,
-                            color: AppColors.white),
-                      ),
-                    ],
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          StringConstants.registerHereText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                              fontSize: 16,
+                              color: AppColors.white),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ))

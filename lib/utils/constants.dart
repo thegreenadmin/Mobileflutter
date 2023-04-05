@@ -254,6 +254,7 @@ class StringConstants {
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
   static String received = "Received";
+  static String roleText = "Role";
 
   //S
   static String signUpText = "Sign up";

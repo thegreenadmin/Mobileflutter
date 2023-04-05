@@ -295,7 +295,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         .dynamicUrl!
                                                         .isEmpty
                                                 ? Image.asset(
-                                                   ImageConstants.nopicfound,
+                                                    ImageConstants.nopicfound,
+                                                    fit: BoxFit.fill,
+                                                    height: 100,
+                                                    width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.3,
                                                   )
                                                 : Image.network(
                                                     manageStoreController
@@ -303,7 +308,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         .productImages![0]
                                                         .image!
                                                         .dynamicUrl
-                                                        .toString())),
+                                                        .toString(),
+                                                    fit: BoxFit.fill,
+                                                    height: 100,
+                                                    width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.3,
+                                                  )),
                                       ),
                                       width12SizedBox,
                                       Flexible(
@@ -384,7 +395,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                       const EdgeInsets.only(
                                                           left: 10),
                                                   child: Image.asset(
-                                                 ImageConstants.circleedit,
+                                                    ImageConstants.circleedit,
                                                     scale: 2.5,
                                                   ),
                                                 ),

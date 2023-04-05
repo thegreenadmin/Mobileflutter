@@ -462,7 +462,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller:
                                   manageStoreController.quantityTextController,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants

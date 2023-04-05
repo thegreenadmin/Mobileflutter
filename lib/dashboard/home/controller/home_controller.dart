@@ -202,7 +202,6 @@ class HomeController extends GetxController {
         userOfferList.value = userOffersModel.data!.offers!;
         for (int i = 0; i < userOfferList.length; i++) {
           storeId!.value = userOfferList[i].storeId.toString();
-
           if (i >= 5) {
             break;
           }

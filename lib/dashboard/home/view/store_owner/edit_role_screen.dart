@@ -168,8 +168,8 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                                   ],
                                 )
                           : ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 60),
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: addNewRoleController
                                   .permissionListMerged.length,
                               itemBuilder: (BuildContext context, int index) {

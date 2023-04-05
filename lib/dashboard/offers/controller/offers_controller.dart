@@ -38,10 +38,10 @@ class OffersController extends GetxController {
       DeleteOfferRequestModel();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+
   @override
   void onInit() {
     super.onInit();
-
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;

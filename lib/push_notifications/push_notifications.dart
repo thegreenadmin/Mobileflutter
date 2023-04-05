@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,8 +11,8 @@ final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: "Main Navigator");
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'roomie_notifications', // id
-  'roomie notifications', // title
+  'thegreenmall_notifications', // id
+  'thegreenmall_notifications', // title
   description:
       'This channel is used for important notifications.', // description
   importance: Importance.max,
@@ -38,9 +39,8 @@ notificationPermission() async {
 getNotification() {
   FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
     RemoteNotification? notification = message!.notification;
-    debugPrint("notification data---------------" + message.data.toString());
-    debugPrint("notification data 123 ---------------" +
-        message.data['pinpoint.notification.silentPush'].toString());
+    debugPrint("notification data---------------" + message.toString());
+
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
@@ -66,15 +66,25 @@ getNotification() {
 getNotificationOpenedApp() {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     debugPrint("getNotificationOpenedApp data---" + message.data.toString());
-    selectNotification(json.encode(message.data) as NotificationResponse);
+    selectNotification(NotificationResponse(
+      notificationResponseType:
+          NotificationResponseType.selectedNotificationAction,
+      payload: json.encode(message),
+    ));
   });
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   debugPrint(
-      "firebaseMessagingBackgroundHandler data---" + message.data.toString());
-  // await Firebase.initializeApp();
-  selectNotification(json.encode(message.data) as NotificationResponse);
+      "firebaseMessagingBackgroundHandler data 12345---" + message.toString());
+
+  //await Firebase.initializeApp();
+
+  selectNotification(NotificationResponse(
+    notificationResponseType:
+        NotificationResponseType.selectedNotificationAction,
+    payload: jsonEncode(message),
+  ));
 }
 
 Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
@@ -84,6 +94,7 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 }
 
 void selectNotification(NotificationResponse payload) async {
+  print("payload---------->" + payload.toString());
   // debugPrint("selectNotification" + json.decode(payload!).toString());
   // RealTimeNotification notificationData =
   //     RealTimeNotification.fromJson(json.decode(payload));

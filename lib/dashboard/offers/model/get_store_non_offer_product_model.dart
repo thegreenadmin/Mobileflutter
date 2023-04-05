@@ -49,7 +49,7 @@ class Data {
 }
 
 class ProductsList {
-  bool? isSelected;
+  bool? isSelected = false;
   String? productId;
   String? storeId;
   int? quantity;
@@ -76,7 +76,8 @@ class ProductsList {
   List<ProductContents>? productContents;
 
   ProductsList(
-      {this.productId,
+      {this.isSelected,
+      this.productId,
       this.storeId,
       this.quantity,
       this.isFeaturedProduct,

@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.da
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class AddOfferScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -107,7 +108,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
@@ -374,6 +375,9 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                         .storeProductList[i]
                                                         .isSelected = true;
                                                     print(addOffersController
+                                                        .storeProductList[i]
+                                                        .isSelected);
+                                                    print(addOffersController
                                                         .selectedProducts);
                                                   } else {
                                                     addOffersController
@@ -388,6 +392,9 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = false;
+                                                    print(addOffersController
+                                                        .storeProductList[i]
+                                                        .isSelected);
                                                     print(addOffersController
                                                         .selectedProducts);
                                                   }

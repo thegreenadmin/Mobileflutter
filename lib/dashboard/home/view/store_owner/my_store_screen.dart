@@ -36,7 +36,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                             ImageConstants.nodata,
+                                  ImageConstants.nodata,
                                   scale: 8,
                                   color: AppColors.primary,
                                 ),
@@ -71,7 +71,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     .dynamicUrl!
                                     .isEmpty
                                 ? Image.asset(
-                                       ImageConstants.nopicfound,
+                                    ImageConstants.nopicfound,
                                     fit: BoxFit.fill,
                                   )
                                 : Image.network(
@@ -98,6 +98,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                             fontSize: 22),
                       ),
               ),
+              height15SizedBox,
               Obx(
                 () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox
@@ -105,19 +106,18 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                         height: 280,
                         child: ListView.separated(
                           separatorBuilder: (BuildContext context, int index) {
-                            return width8SizedBox;
+                            return width10SizedBox;
                           },
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount:
                               ownerStoresController.storeProductList.length,
                           itemBuilder: (BuildContext context, int i) => Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                height: 180,
-                                width: 150,
+                                height: 150,
+                                width: 140,
                                 decoration: const BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
@@ -128,7 +128,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           .productImages!
                                           .isEmpty
                                       ? Image.asset(
-                                           ImageConstants.nopicfound,
+                                          ImageConstants.nopicfound,
                                           fit: BoxFit.fill,
                                         )
                                       : Image.network(
@@ -157,13 +157,14 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   ),
                                   height4SizedBox,
                                   SizedBox(
-                                    width: 160,
+                                    width: 130,
                                     child: Text(
                                       ownerStoresController.storeProductList[i]
                                               .description ??
                                           "",
                                       maxLines: 2,
                                       style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
                                           color: AppColors.blacklight,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400),
@@ -171,7 +172,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   ),
                                   height4SizedBox,
                                   Text(
-                                    "\$${ownerStoresController.storeProductList[i].productPrice}",
+                                    "\$${ownerStoresController.storeProductList[i].productPrice!.toStringAsFixed(2)}",
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,

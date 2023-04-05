@@ -983,7 +983,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               debugPrint(addNewStoreController.stateId.value);
                             },
                           )),
-                    height25SizedBox,
+                    height20SizedBox,
                     Text(
                       StringConstants.storeTimingText,
                       style: const TextStyle(
@@ -1076,7 +1076,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         )
                       ],
                     ),
-                    height25SizedBox,
+                    Obx(
+                      () => addNewStoreController.is247Time.value
+                          ? height0SizedBox
+                          : height25SizedBox,
+                    ),
                     Obx(
                       () => addNewStoreController.is247Time.value != true
                           ? Row(
@@ -1350,7 +1354,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             )
                           : height0SizedBox,
                     ),
-                    height20SizedBox,
+                    Obx(
+                      () => addNewStoreController.is247Time.value
+                          ? height0SizedBox
+                          : height20SizedBox,
+                    ),
                     Obx(() => addNewStoreController.is247Time.value != true
                         ? Text(
                             StringConstants.workingDaysText,
@@ -1400,7 +1408,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               list: addNewStoreController.weekDaysList)
                           : height0SizedBox,
                     ),
-                    height10SizedBox,
+                    height15SizedBox,
                     Text(
                       StringConstants.deliveryMethodsText,
                       style: TextStyle(
