@@ -290,8 +290,8 @@ class OrderStatus {
 class OrderItems {
   String? orderId;
   String? productId;
-  int? orderItemCount;
-  int? orderItemPrice;
+  dynamic orderItemCount;
+  dynamic orderItemPrice;
   String? serviceChargeType;
   dynamic serviceChargeValue;
   dynamic totalServiceCharged;
