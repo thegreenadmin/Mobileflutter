@@ -913,7 +913,7 @@ class StoreHomeMainController extends GetxController {
         ServerCommunicator().baseUrl +
             ServerCommunicator().createFavouriteProduct,
         headers,
-        showLoading: false)
+        showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Create Favourite Product *******${value?.body}");
@@ -955,7 +955,7 @@ class StoreHomeMainController extends GetxController {
         data,
         ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteProduct,
         headers,
-        showLoading: false)
+        showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Remove Favourite Product *******${value?.body}");

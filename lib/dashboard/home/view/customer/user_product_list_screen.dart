@@ -139,8 +139,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                               ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: storeHomeMainController.featureProductList[i]
-                                                      .isFavouriteProduct == true
+                                          child: storeHomeMainController.featureProductList[i].isFavouriteProduct == true
                                               ? InkWell(onTap: (){
                                                 storeHomeMainController.
                                                 apiRemoveFavouriteProduct(storeHomeMainController
