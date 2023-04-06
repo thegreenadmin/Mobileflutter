@@ -193,6 +193,7 @@ class StringConstants {
   static String noRolesFoundText = "No Roles found";
   static String noOffersFoundText = "No Offers found";
   static String noText = "No";
+  static String newOrderText = "New Order";
 
   //O
   static String orderIDText = "Order ID";
@@ -217,6 +218,7 @@ class StringConstants {
   static String novText = "November";
 
   //P
+  static String pendingOrderText = "Pending Order";
   static String profileText = "Profile";
   static String passcodeLockText = "Passcode Lock";
   static String previousText = "Previous";
@@ -246,6 +248,7 @@ class StringConstants {
 
   //R
   static String registerHereText = " Register Here!!";
+  static String receivedOrderText = "Received Order";
   static String removeText = "Remove";
   static String roleAndPermissionText = "Role & Permission";
   static String rolesText = "Roles";

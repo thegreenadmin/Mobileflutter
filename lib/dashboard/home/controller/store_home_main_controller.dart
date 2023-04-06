@@ -18,7 +18,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/order_confirmation_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -87,12 +87,6 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  RxList<Categories> stepInd = [
-    Categories(id: 0, name: "Received", isSelected: false),
-    Categories(id: 1, name: "InProgress", isSelected: false),
-    Categories(id: 2, name: "Ready to Pick", isSelected: false),
-    Categories(id: 3, name: "Complete", isSelected: false),
-  ].obs;
 
   @override
   void onInit() {
@@ -214,7 +208,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetCartListApi() async {
     isLoading.value = true;
     debugPrint("GET CART LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -225,7 +219,7 @@ class StoreHomeMainController extends GetxController {
 
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()/*userAddressId.value.toString()*/}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -273,11 +267,13 @@ class StoreHomeMainController extends GetxController {
       "store_id":
           int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": int.parse(userAddressId.value.toString()),
+      "user_address_id": int.parse(selectedUserAddress.value.userAddressId.toString()),
+      // "user_address_id": int.parse(userAddressId.value.toString()),
       "cart_items": selectedItems
     };
 
     debugPrint("TOKEN ********** $headers");
+    debugPrint("PARAMETERS ********** $data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -290,9 +286,8 @@ class StoreHomeMainController extends GetxController {
       debugPrint("  Place Order *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        print(value?.body["data"]["order_id"]);
         orderStatus.value = value?.body["data"]["order_id"];
-        Get.to(const OrderConfirmationScreen());
+        Get.to(const OrderConfirmationScreen(),arguments: {"orderStatus":orderStatus.value});
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

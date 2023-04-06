@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final orderListResponse = orderListResponseFromJson(jsonString);
+//     final storeOrderListResponse = storeOrderListResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-OrderListResponse orderListResponseFromJson(String str) => OrderListResponse.fromJson(json.decode(str));
+StoreOrderListResponse storeOrderListResponseFromJson(String str) => StoreOrderListResponse.fromJson(json.decode(str));
 
-String orderListResponseToJson(OrderListResponse data) => json.encode(data.toJson());
+String storeOrderListResponseToJson(StoreOrderListResponse data) => json.encode(data.toJson());
 
-class OrderListResponse {
-  OrderListResponse({
+class StoreOrderListResponse {
+  StoreOrderListResponse({
     this.status,
     this.message,
     this.data,
@@ -19,18 +19,18 @@ class OrderListResponse {
   String? message;
   Data? data;
 
-  OrderListResponse copyWith({
+  StoreOrderListResponse copyWith({
     int? status,
     String? message,
     Data? data,
   }) =>
-      OrderListResponse(
+      StoreOrderListResponse(
         status: status ?? this.status,
         message: message ?? this.message,
         data: data ?? this.data,
       );
 
-  factory OrderListResponse.fromJson(Map<String, dynamic> json) => OrderListResponse(
+  factory StoreOrderListResponse.fromJson(Map<String, dynamic> json) => StoreOrderListResponse(
     status: json["status"],
     message: json["message"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -50,11 +50,11 @@ class Data {
   });
 
   int? totalCount;
-  List<Order>? orders;
+  List<StoreOrder>? orders;
 
   Data copyWith({
     int? totalCount,
-    List<Order>? orders,
+    List<StoreOrder>? orders,
   }) =>
       Data(
         totalCount: totalCount ?? this.totalCount,
@@ -63,7 +63,7 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     totalCount: json["total_count"],
-    orders: json["orders"] == null ? [] : List<Order>.from(json["orders"]!.map((x) => Order.fromJson(x))),
+    orders: json["orders"] == null ? [] : List<StoreOrder>.from(json["orders"]!.map((x) => StoreOrder.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -72,8 +72,8 @@ class Data {
   };
 }
 
-class Order {
-  Order({
+class StoreOrder {
+  StoreOrder({
     this.userId,
     this.storeId,
     this.deliveryServiceId,
@@ -121,7 +121,7 @@ class Order {
   List<OrderItem>? orderItems;
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
 
-  Order copyWith({
+  StoreOrder copyWith({
     String? userId,
     String? storeId,
     String? deliveryServiceId,
@@ -145,7 +145,7 @@ class Order {
     List<OrderItem>? orderItems,
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
   }) =>
-      Order(
+      StoreOrder(
         userId: userId ?? this.userId,
         storeId: storeId ?? this.storeId,
         deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
@@ -170,7 +170,7 @@ class Order {
         orderDeliveryAddresses: orderDeliveryAddresses ?? this.orderDeliveryAddresses,
       );
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
+  factory StoreOrder.fromJson(Map<String, dynamic> json) => StoreOrder(
     userId: json["user_id"],
     storeId: json["store_id"],
     deliveryServiceId: json["delivery_service_id"],
