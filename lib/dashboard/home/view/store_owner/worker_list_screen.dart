@@ -366,62 +366,62 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                 ],
                                               ),
                                             ),
-                                            addNewWorkerController
-                                                            .workerList[index]
-                                                            .user!
-                                                            .userAddresses !=
-                                                        null &&
-                                                    addNewWorkerController
-                                                        .workerList[index]
-                                                        .user!
-                                                        .userAddresses!
-                                                        .isNotEmpty
-                                                ? height8SizedBox
-                                                : height0SizedBox,
-                                            Visibility(
-                                              visible: addNewWorkerController
-                                                          .workerList[index]
-                                                          .user!
-                                                          .userAddresses !=
-                                                      null &&
-                                                  addNewWorkerController
-                                                      .workerList[index]
-                                                      .user!
-                                                      .userAddresses!
-                                                      .isNotEmpty,
-                                              replacement: height0SizedBox,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Image.asset(
-                                                    ImageConstants.loc,
-                                                    scale: 2.5,
-                                                  ),
-                                                  width5SizedBox,
-                                                  SizedBox(
-                                                    width: 120,
-                                                    child: Text(
-                                                      addNewWorkerController
-                                                              .workerList[index]
-                                                              .user!
-                                                              .userAddresses!
-                                                              .first
-                                                              .addressLine1 ??
-                                                          "",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 12.0,
-                                                          color: AppColors
-                                                              .blacklight),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            // addNewWorkerController
+                                            //                 .workerList[index]
+                                            //                 .user!
+                                            //                 .userAddresses !=
+                                            //             null &&
+                                            //         addNewWorkerController
+                                            //             .workerList[index]
+                                            //             .user!
+                                            //             .userAddresses!
+                                            //             .isNotEmpty
+                                            //     ? height8SizedBox
+                                            //     : height0SizedBox,
+                                            // Visibility(
+                                            //   visible: addNewWorkerController
+                                            //               .workerList[index]
+                                            //               .user!
+                                            //               .userAddresses !=
+                                            //           null &&
+                                            //       addNewWorkerController
+                                            //           .workerList[index]
+                                            //           .user!
+                                            //           .userAddresses!
+                                            //           .isNotEmpty,
+                                            //   replacement: height0SizedBox,
+                                            //   child: Row(
+                                            //     mainAxisAlignment:
+                                            //         MainAxisAlignment.start,
+                                            //     crossAxisAlignment:
+                                            //         CrossAxisAlignment.start,
+                                            //     children: [
+                                            //       Image.asset(
+                                            //         ImageConstants.loc,
+                                            //         scale: 2.5,
+                                            //       ),
+                                            //       width5SizedBox,
+                                            //       SizedBox(
+                                            //         width: 120,
+                                            //         child: Text(
+                                            //           addNewWorkerController
+                                            //                   .workerList[index]
+                                            //                   .user!
+                                            //                   .userAddresses!
+                                            //                   .first
+                                            //                   .addressLine1 ??
+                                            //               "",
+                                            //           style: TextStyle(
+                                            //               fontWeight:
+                                            //                   FontWeight.w400,
+                                            //               fontSize: 12.0,
+                                            //               color: AppColors
+                                            //                   .blacklight),
+                                            //         ),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
                                             height8SizedBox,
                                             Visibility(
                                               visible: addNewWorkerController

@@ -23,15 +23,15 @@ class GetUserOrderHistoryModel {
 }
 
 class Data {
-  List<Orders>? orders;
+  List<Order>? orders;
 
   Data({this.orders});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['orders'] != null) {
-      orders = <Orders>[];
+      orders = <Order>[];
       json['orders'].forEach((v) {
-        orders!.add(new Orders.fromJson(v));
+        orders!.add(new Order.fromJson(v));
       });
     }
   }
@@ -45,11 +45,11 @@ class Data {
   }
 }
 
-class Orders {
+class Order {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  int? deliveryCharge;
+  dynamic deliveryCharge;
   String? taxType;
   double? taxValue;
   double? totalTaxCharged;
@@ -69,7 +69,7 @@ class Orders {
   List<OrderItems>? orderItems;
   List<OrderDeliveryAddresses>? orderDeliveryAddresses;
 
-  Orders(
+  Order(
       {this.userId,
       this.storeId,
       this.deliveryServiceId,
@@ -93,7 +93,7 @@ class Orders {
       this.orderItems,
       this.orderDeliveryAddresses});
 
-  Orders.fromJson(Map<String, dynamic> json) {
+  Order.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     storeId = json['store_id'];
     deliveryServiceId = json['delivery_service_id'];
@@ -298,7 +298,7 @@ class OrderItems {
   String? discountName;
   String? discountType;
   int? discountValue;
-  double? totalDiscount;
+  dynamic totalDiscount;
   String? status;
   String? createdAt;
   String? updatedAt;

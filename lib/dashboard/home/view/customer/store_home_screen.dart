@@ -278,10 +278,13 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                       "",
                                                   fit: BoxFit.fill,
                                                   height: 180,
+                                                  width: 180,
                                                 )
                                               : Image.asset(
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
+                                                  height: 180,
+                                                  width: 180,
                                                 ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -290,26 +293,34 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                             index]
                                                         .isFavouriteProduct ==
                                                     true
-                                                ? InkWell(onTap: (){
-                                                    storeHomeMainController.
-                                                    apiRemoveFavouriteProduct(storeHomeMainController
-                                                        .featureProductList[index].productId);
-                                                  },
-                                                  child: Image.asset(
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      storeHomeMainController
+                                                          .apiRemoveFavouriteProduct(
+                                                              storeHomeMainController
+                                                                  .featureProductList[
+                                                                      index]
+                                                                  .productId);
+                                                    },
+                                                    child: Image.asset(
                                                       ImageConstants.liked,
                                                       scale: 3,
                                                     ),
-                                                )
-                                                :  InkWell(onTap: (){
-                                                    storeHomeMainController.
-                                                    apiCreateFavouriteProduct(storeHomeMainController
-                                                        .featureProductList[index].productId);
-                                                  },
-                                                  child: Image.asset(
+                                                  )
+                                                : InkWell(
+                                                    onTap: () {
+                                                      storeHomeMainController
+                                                          .apiCreateFavouriteProduct(
+                                                              storeHomeMainController
+                                                                  .featureProductList[
+                                                                      index]
+                                                                  .productId);
+                                                    },
+                                                    child: Image.asset(
                                                       ImageConstants.fav,
                                                       scale: 3,
                                                     ),
-                                                ),
+                                                  ),
                                           )
                                         ],
                                       ),

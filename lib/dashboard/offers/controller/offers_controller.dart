@@ -158,8 +158,13 @@ class OffersController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE OFFER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
+      if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
+        if (role!.value == Role.customerRoleText) {
+          apiGetUserOffersList();
+        } else {
+          apiGetOwnerOffersList();
+        }
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);

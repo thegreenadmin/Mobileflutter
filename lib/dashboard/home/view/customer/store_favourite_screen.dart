@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -61,96 +62,112 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                       crossAxisCount: 2,
                     ),
                     itemBuilder: (BuildContext context, int i) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Card(
-                            shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            elevation: 0,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  storeHomeMainController.featureProductList[i]
-                                              .productImages!.isNotEmpty &&
-                                          storeHomeMainController
-                                                  .featureProductList[i]
-                                                  .productImages
-                                                  ?.first
-                                                  .image
-                                                  ?.dynamicUrl !=
-                                              null
-                                      ? Image.network(
-                                          storeHomeMainController
-                                              .featureProductList[i]
-                                              .productImages
-                                              ?.first
-                                              .image
-                                              ?.dynamicUrl,
-                                          fit: BoxFit.fill,
-                                          height: 160,
-                                        )
-                                      : Image.asset(
-                                          ImageConstants.nopicfound,
-                                          fit: BoxFit.fill,
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: storeHomeMainController
+                      return InkWell(
+                        onTap: () async {
+                          await storeHomeMainController
+                              .apiGetShopProductDetailApi(
+                                  productId: storeHomeMainController
+                                      .featureProductList[i].productId
+                                      .toString());
+                          Get.to(const AddToOrderScreen());
+                          await storeHomeMainController.apiGetCartListApi();
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Card(
+                              shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              elevation: 0,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    storeHomeMainController
                                                 .featureProductList[i]
-                                                .isFavouriteProduct ==
-                                            true
-                                        ? Image.asset(
-                                            ImageConstants.liked,
-                                            scale: 3,
+                                                .productImages!
+                                                .isNotEmpty &&
+                                            storeHomeMainController
+                                                    .featureProductList[i]
+                                                    .productImages
+                                                    ?.first
+                                                    .image
+                                                    ?.dynamicUrl !=
+                                                null
+                                        ? Image.network(
+                                            storeHomeMainController
+                                                .featureProductList[i]
+                                                .productImages
+                                                ?.first
+                                                .image
+                                                ?.dynamicUrl,
+                                            fit: BoxFit.fill,
+                                            height: 148,
+                                            width: 148,
                                           )
                                         : Image.asset(
-                                            ImageConstants.fav,
-                                            scale: 3,
+                                            ImageConstants.nopicfound,
+                                            fit: BoxFit.fill,
+                                            height: 148,
+                                            width: 148,
                                           ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: storeHomeMainController
+                                                  .featureProductList[i]
+                                                  .isFavouriteProduct ==
+                                              true
+                                          ? Image.asset(
+                                              ImageConstants.liked,
+                                              scale: 3,
+                                            )
+                                          : Image.asset(
+                                              ImageConstants.fav,
+                                              scale: 3,
+                                            ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          height5SizedBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                storeHomeMainController
-                                        .featureProductList[i].productName ??
-                                    "",
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              height4SizedBox,
-                              Text(
-                                storeHomeMainController
-                                        .featureProductList[i].description ??
-                                    "",
-                                maxLines: 2,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              height4SizedBox,
-                              Text(
-                                "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ],
+                            height5SizedBox,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  storeHomeMainController
+                                          .featureProductList[i].productName ??
+                                      "",
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                height4SizedBox,
+                                Text(
+                                  storeHomeMainController
+                                          .featureProductList[i].description ??
+                                      "",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                height4SizedBox,
+                                Text(
+                                  "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

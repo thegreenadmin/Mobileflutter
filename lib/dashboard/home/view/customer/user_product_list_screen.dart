@@ -23,7 +23,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:const UserStoreOrderAppBar(),
+      appBar: const UserStoreOrderAppBar(),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
@@ -131,37 +131,56 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                         ?.dynamicUrl !=
                                                     null
                                             ? Image.network(
-                                                storeHomeMainController.featureProductList[i].productImages?.first.image?.dynamicUrl,
+                                                storeHomeMainController
+                                                    .featureProductList[i]
+                                                    .productImages
+                                                    ?.first
+                                                    .image
+                                                    ?.dynamicUrl,
                                                 fit: BoxFit.fill,
                                                 height: 148,
+                                                width: 148,
                                               )
                                             : Image.asset(
                                                 ImageConstants.nopicfound,
                                                 fit: BoxFit.fill,
                                                 height: 148,
+                                                width: 148,
                                               ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: storeHomeMainController.featureProductList[i].isFavouriteProduct == true
-                                              ? InkWell(onTap: (){
-                                                storeHomeMainController.
-                                                apiRemoveFavouriteProduct(storeHomeMainController
-                                                    .featureProductList[i].productId);
-                                                },
-                                                child: Image.asset(
+                                          child: storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct ==
+                                                  true
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    storeHomeMainController
+                                                        .apiRemoveFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                                    i]
+                                                                .productId);
+                                                  },
+                                                  child: Image.asset(
                                                     ImageConstants.liked,
                                                     scale: 3,
                                                   ),
-                                              )
-                                              :InkWell(onTap: (){
-                                                 storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
-                                                .featureProductList[i].productId);
-                                                 },
-                                                child: Image.asset(
+                                                )
+                                              : InkWell(
+                                                  onTap: () {
+                                                    storeHomeMainController
+                                                        .apiCreateFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                                    i]
+                                                                .productId);
+                                                  },
+                                                  child: Image.asset(
                                                     ImageConstants.fav,
                                                     scale: 3,
                                                   ),
-                                              ),
+                                                ),
                                         )
                                       ],
                                     ),
@@ -244,7 +263,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     children: [
                       Text(
                         "${StringConstants.priceText} ${StringConstants.lowToHighText.toLowerCase()}",
-                        style:  const TextStyle(
+                        style: const TextStyle(
                             color: AppColors.black,
                             fontFamily: "",
                             fontSize: 16),

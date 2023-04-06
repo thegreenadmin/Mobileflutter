@@ -40,7 +40,6 @@ getNotification() {
   FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
     RemoteNotification? notification = message!.notification;
     debugPrint("notification data---------------" + message.toString());
-
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
@@ -66,6 +65,7 @@ getNotification() {
 getNotificationOpenedApp() {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     debugPrint("getNotificationOpenedApp data---" + message.data.toString());
+    getNotification();
     selectNotification(NotificationResponse(
       notificationResponseType:
           NotificationResponseType.selectedNotificationAction,
@@ -77,7 +77,7 @@ getNotificationOpenedApp() {
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   debugPrint(
       "firebaseMessagingBackgroundHandler data 12345---" + message.toString());
-
+  getNotification();
   //await Firebase.initializeApp();
 
   selectNotification(NotificationResponse(

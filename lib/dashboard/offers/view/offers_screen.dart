@@ -424,17 +424,67 @@ class _OffersScreenState extends State<OffersScreen> {
                                 resizeDuration:
                                     const Duration(milliseconds: 200),
                                 key: UniqueKey(),
-                                onDismissed: (direction) async {
-                                  offersController.storeId!.value =
-                                      offersController.getOwnerOfferlist[index]
-                                              .store!.storeId ??
-                                          "";
-                                  offersController.offerId!.value =
-                                      offersController.getOwnerOfferlist[index]
-                                              .offerId ??
-                                          "";
+                                confirmDismiss:
+                                    (DismissDirection direction) async {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          StringConstants.alertText,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.black,
+                                              fontSize: 20),
+                                        ),
+                                        content: Text(
+                                            AlertStringConstants.areYouSureText,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.black,
+                                                fontSize: 20)),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    AppColors.primary,
+                                              ),
+                                              onPressed: () async {
+                                                Get.back();
+                                                offersController.storeId!
+                                                    .value = offersController
+                                                        .getOwnerOfferlist[
+                                                            index]
+                                                        .store!
+                                                        .storeId ??
+                                                    "";
+                                                offersController.offerId!
+                                                    .value = offersController
+                                                        .getOwnerOfferlist[
+                                                            index]
+                                                        .offerId ??
+                                                    "";
 
-                                  await offersController.apiDeleteOffer();
+                                                await offersController
+                                                    .apiDeleteOffer();
+                                              },
+                                              child: Text(
+                                                  StringConstants.deleteText)),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  AppColors.primary,
+                                            ),
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: Text(
+                                                StringConstants.cancelText),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

@@ -33,7 +33,6 @@ class OrdersController extends GetxController {
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<Order> orderList = <Order>[].obs;
 
-
   @override
   void onInit() {
     super.onInit();

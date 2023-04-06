@@ -29,6 +29,7 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+
   var initializationSettingsAndroid =
       const AndroidInitializationSettings('notification_icon');
   var initializationSettingsIOS = const DarwinInitializationSettings();
@@ -36,9 +37,14 @@ Future<void> main() async {
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
   );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onDidReceiveBackgroundNotificationResponse: selectNotification,
+      onDidReceiveNotificationResponse: selectNotification);
+
   flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onDidReceiveBackgroundNotificationResponse: selectNotification,
       onDidReceiveNotificationResponse: selectNotification);
+
   getNotificationOpenedApp();
   getNotification();
 

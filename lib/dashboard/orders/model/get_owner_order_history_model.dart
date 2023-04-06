@@ -23,31 +23,12 @@ class GetOwnerOrderHistoryModel {
 }
 
 class Data {
-  Orders? orders;
-
-  Data({this.orders});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    orders =
-        json['orders'] != null ? new Orders.fromJson(json['orders']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.orders != null) {
-      data['orders'] = this.orders!.toJson();
-    }
-    return data;
-  }
-}
-
-class Orders {
   int? totalCount;
   List<Orders>? orders;
 
-  Orders({this.totalCount, this.orders});
+  Data({this.totalCount, this.orders});
 
-  Orders.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['orders'] != null) {
       orders = <Orders>[];
@@ -67,11 +48,11 @@ class Orders {
   }
 }
 
-class Order {
+class Orders {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  int? deliveryCharge;
+  dynamic deliveryCharge;
   String? taxType;
   double? taxValue;
   double? totalTaxCharged;
@@ -91,7 +72,7 @@ class Order {
   List<OrderItems>? orderItems;
   List<OrderDeliveryAddresses>? orderDeliveryAddresses;
 
-  Order(
+  Orders(
       {this.userId,
       this.storeId,
       this.deliveryServiceId,
@@ -115,7 +96,7 @@ class Order {
       this.orderItems,
       this.orderDeliveryAddresses});
 
-  Order.fromJson(Map<String, dynamic> json) {
+  Orders.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     storeId = json['store_id'];
     deliveryServiceId = json['delivery_service_id'];
@@ -313,14 +294,14 @@ class OrderItems {
   String? orderId;
   String? productId;
   int? orderItemCount;
-  double? orderItemPrice;
+  int? orderItemPrice;
   String? serviceChargeType;
   double? serviceChargeValue;
   double? totalServiceCharged;
   String? discountName;
   String? discountType;
   int? discountValue;
-  double? totalDiscount;
+  dynamic totalDiscount;
   String? status;
   String? createdAt;
   String? updatedAt;

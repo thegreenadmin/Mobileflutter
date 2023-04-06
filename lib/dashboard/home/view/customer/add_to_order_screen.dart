@@ -92,28 +92,52 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    storeHomeMainController.productDetailResponse.value.data?.product?.productName ?? "",
+                                    storeHomeMainController
+                                            .productDetailResponse
+                                            .value
+                                            .data
+                                            ?.product
+                                            ?.productName ??
+                                        "",
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600)),
-                                storeHomeMainController.isFavouriteProduct.value == true
-                                    ? InkWell(onTap: (){
-                                  storeHomeMainController.apiRemoveFavouriteProduct( storeHomeMainController.productDetailResponse.value
-                                      .data?.product?.productId);},
-                                      child: Image.asset(
-                                  ImageConstants.liked,
+                                storeHomeMainController
+                                            .isFavouriteProduct.value ==
+                                        true
+                                    ? InkWell(
+                                        onTap: () {
+                                          storeHomeMainController
+                                              .apiRemoveFavouriteProduct(
+                                                  storeHomeMainController
+                                                      .productDetailResponse
+                                                      .value
+                                                      .data
+                                                      ?.product
+                                                      ?.productId);
+                                        },
+                                        child: Image.asset(
+                                          ImageConstants.liked,
                                           scale: 2.8,
                                         ),
-                                    )
-                                    : InkWell(onTap: (){
-                                  storeHomeMainController.apiCreateFavouriteProduct( storeHomeMainController.productDetailResponse.value
-                                      .data?.product?.productId);},
-                                      child: Image.asset(
-                                  ImageConstants.fav,
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          storeHomeMainController
+                                              .apiCreateFavouriteProduct(
+                                                  storeHomeMainController
+                                                      .productDetailResponse
+                                                      .value
+                                                      .data
+                                                      ?.product
+                                                      ?.productId);
+                                        },
+                                        child: Image.asset(
+                                          ImageConstants.fav,
                                           scale: 2.8,
                                         ),
-                                    ),
+                                      ),
                               ],
                             ),
                             height8SizedBox,
@@ -286,17 +310,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   _buildRowOtherDetail(
                       title: StringConstants.lengthText,
                       textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} feet"),
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.breadthText,
                       textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} feet"),
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.heightText,
                       textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} feet"),
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.weightText,

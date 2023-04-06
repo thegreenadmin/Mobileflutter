@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/history_controller.dart';
+import 'package:thegreenmall/dashboard/orders/controller/history_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -40,8 +41,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     historyController.isCurrentMonthSelected.value =
                         !historyController.isCurrentMonthSelected.value;
                   }
-
-                  historyController.apiGetUserOrderHistory();
+                  historyController.role!.value == Role.customerRoleText
+                      ? historyController.apiGetUserOrderHistory()
+                      : historyController.apiGetOwnerOrderHistory();
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
@@ -76,7 +78,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     historyController.isCurrentMonthSelected.value =
                         !historyController.isCurrentMonthSelected.value;
                   }
-                  historyController.apiGetUserOrderHistory();
+                  historyController.role!.value == Role.customerRoleText
+                      ? historyController.apiGetUserOrderHistory()
+                      : historyController.apiGetOwnerOrderHistory();
 
                   historyController.onIndexChange(0);
                 },
@@ -171,7 +175,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
+          preferredSize: const Size.fromHeight(70.0),
           child: Container(
             color: AppColors.primarylight,
             child: Padding(
@@ -215,7 +219,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 )),
           )),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             _orderHistoryTab(),
@@ -511,10 +515,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               return width40SizedBox;
                             },
                             itemCount:
-                                historyController.userOrderHistoryList!.length,
+                                historyController.ownerOrderHistoryList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  print("StoreId -------->" +
+                                      historyController
+                                          .ownerOrderHistoryList![index]
+                                          .store!
+                                          .storeId
+                                          .toString());
+                                  Get.to(const OrdersHomeMainScreen(),
+                                      arguments: {
+                                        "storeId",
+                                        historyController
+                                            .ownerOrderHistoryList![index]
+                                            .store!
+                                            .storeId
+                                            .toString()
+                                      });
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
@@ -539,14 +559,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             child: CircleAvatar(
                                               radius: 25.0,
                                               backgroundImage: historyController
-                                                              .userOrderHistoryList![
+                                                              .ownerOrderHistoryList![
                                                                   index]
                                                               .store!
                                                               .image!
                                                               .dynamicUrl ==
                                                           null ||
                                                       historyController
-                                                          .userOrderHistoryList![
+                                                          .ownerOrderHistoryList![
                                                               index]
                                                           .store!
                                                           .image!
@@ -556,14 +576,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                           ImageConstants
                                                               .nopicfound)
                                                       as ImageProvider
-                                                  : NetworkImage(
-                                                      historyController
-                                                          .userOrderHistoryList![
-                                                              index]
-                                                          .store!
-                                                          .image!
-                                                          .dynamicUrl
-                                                          .toString()),
+                                                  : NetworkImage(historyController
+                                                      .ownerOrderHistoryList![
+                                                          index]
+                                                      .store!
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString()),
                                               backgroundColor:
                                                   Colors.transparent,
                                             ),
@@ -593,7 +612,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                 fontSize: 14)),
                                                         TextSpan(
                                                           text:
-                                                              ': #${historyController.userOrderHistoryList![index].orderId!}',
+                                                              ': #${historyController.ownerOrderHistoryList![index].orderId!}',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -610,7 +629,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       Utility.parseDateTime(
                                                         DateTime.parse(
                                                           historyController
-                                                              .userOrderHistoryList![
+                                                              .ownerOrderHistoryList![
                                                                   index]
                                                               .orderDate!
                                                               .trim(),
@@ -633,7 +652,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 children: [
                                                   Text(
                                                       historyController
-                                                              .userOrderHistoryList![
+                                                              .ownerOrderHistoryList![
                                                                   index]
                                                               .store!
                                                               .storeName ??
@@ -645,7 +664,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                               FontWeight.w500,
                                                           fontSize: 16)),
                                                   Text(
-                                                    "\$${historyController.userOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    "\$${historyController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -698,7 +717,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 children: [
                                                   Text(
                                                       historyController
-                                                          .userOrderHistoryList![
+                                                          .ownerOrderHistoryList![
                                                               index]
                                                           .orderDeliveryAddresses!
                                                           .first
@@ -711,7 +730,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                           fontSize: 14)),
                                                   Text(
                                                     historyController
-                                                            .userOrderHistoryList![
+                                                            .ownerOrderHistoryList![
                                                                 index]
                                                             .customerPhone ??
                                                         "",

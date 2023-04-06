@@ -6,7 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/history/history_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/history_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_stores_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';

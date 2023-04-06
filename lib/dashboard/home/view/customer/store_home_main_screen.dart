@@ -110,6 +110,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     Get.back();
+                    storeHomeMainController.onIndexChange(0);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +120,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                         style: const TextStyle(
                             color: AppColors.black,
                             fontFamily: "",
-                            fontSize: 18),
+                            fontSize: 14),
                       ),
                     ],
                   ),
@@ -144,7 +145,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   Text(
                     StringConstants.contactText,
                     style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 18),
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
                   ),
                 ],
               ),
@@ -167,7 +168,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   Text(
                     StringConstants.storePolicyText,
                     style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 18),
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
                   ),
                 ],
               ),
@@ -190,7 +191,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   Text(
                     StringConstants.termsAndConditionsText,
                     style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 18),
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
                   ),
                 ],
               ),
