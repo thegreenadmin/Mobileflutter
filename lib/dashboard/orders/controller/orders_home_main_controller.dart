@@ -23,7 +23,7 @@ class OrdersHomeMainController extends GetxController {
   GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
       GetOwnerOrderHistoryModel();
   RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -35,7 +35,7 @@ class OrdersHomeMainController extends GetxController {
       role!.value = Role.customerRoleText;
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOrderHistory();
+      apiGetOwnerOrderHistory(orderStatus: {});
     }
   }
 

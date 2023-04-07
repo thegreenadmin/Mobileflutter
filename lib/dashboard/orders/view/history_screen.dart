@@ -176,7 +176,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70.0),
+          preferredSize: const Size.fromHeight(80.0),
           child: Container(
             color: AppColors.primarylight,
             child: Padding(
@@ -269,12 +269,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {
                                   Get.to(() => const OrderConfirmationScreen(),
                                       arguments: {
-                                        "storeId",
-                                        historyController
-                                            .ownerOrderHistoryList![index]
-                                            .store!
-                                            .storeId
-                                            .toString()
+                                        "storeId": historyController
+                                                .userOrderHistoryList![index]
+                                                .store!
+                                                .storeId ??
+                                            "",
+                                        "orderStatus": historyController
+                                                .userOrderHistoryList![index]
+                                                .orderId ??
+                                            ""
                                       });
                                 },
                                 child: Container(
@@ -532,12 +535,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {
                                   Get.to(() => const OrdersHomeMainScreen(),
                                       arguments: {
-                                        "storeId",
-                                        historyController
+                                        "storeId": historyController
                                             .ownerOrderHistoryList![index]
                                             .store!
                                             .storeId
-                                            .toString()
+                                            .toString(),
+                                        "orderStatus": historyController
+                                                .ownerOrderHistoryList![index]
+                                                .orderId ??
+                                            ""
                                       });
                                 },
                                 child: Container(
