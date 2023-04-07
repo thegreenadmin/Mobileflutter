@@ -993,7 +993,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .value = newValue!.stateName.toString();
                             searchStoreOwnerController.stateId.value =
                                 newValue.stateId.toString();
-                            print(searchStoreOwnerController.stateId.value);
                           },
                         )),
                     height25SizedBox,
@@ -1025,10 +1024,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                         .value = value?.toInt() ?? 0;
                                     searchStoreOwnerController.is247Time.value =
                                         false;
-                                    print(searchStoreOwnerController
-                                        .radioGroupValue.value);
-                                    print(searchStoreOwnerController
-                                        .is247Time.value);
                                   },
                                 ),
                               ),
@@ -1079,10 +1074,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             .weekDaysList) {
                                       element.isSelected = false;
                                     }
-                                    print(searchStoreOwnerController
-                                        .radioGroupValue.value);
-                                    print(searchStoreOwnerController
-                                        .is247Time.value);
                                   },
                                 ),
                               ),
@@ -1502,13 +1493,11 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           searchStoreOwnerController.deliveryServicesList.clear();
                           if (searchStoreOwnerController
                               .storeDeliveryServices.isNotEmpty) {
-                            for (int i = 0;
-                                i < searchStoreOwnerController.deliveryServices.length; i++) {
+                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
+
                               for (var element in searchStoreOwnerController.storeDeliveryServices) {
-                                if (element["delivery_service_id"] ==
-                                    searchStoreOwnerController.deliveryServices[i].id) {
-                                  searchStoreOwnerController
-                                      .deliveryServicesList.add({
+                                if (element["delivery_service_id"] == searchStoreOwnerController.deliveryServices[i].id) {
+                                  searchStoreOwnerController.deliveryServicesList.add({
                                     "store_delivery_service_id": element["store_delivery_service_id"],
                                     "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
                                     "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
@@ -1516,9 +1505,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   });
                                 }
                               }
-                              if (searchStoreOwnerController
-                                      .deliveryServices[i].isSelected ==
-                                  true) {
+
+                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true &&
+                                  !searchStoreOwnerController
+                                      .storeDeliveryServices.any((element) => element["delivery_service_id"]== searchStoreOwnerController.deliveryServices[i].id)) {
                                 searchStoreOwnerController.deliveryServicesList
                                     .add({
                                   "delivery_service_id":

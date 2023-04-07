@@ -51,6 +51,7 @@ class StringConstants {
   //B
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
+  static String backToShoppingText = "Back To Shopping";
 
   //C
   static String createYourAccountText = "Create your Account";
@@ -81,6 +82,7 @@ class StringConstants {
   static String checkOutText = "Check Out";
   static String clickCollectText = "Click & Collect";
   static String completedText = "Completed";
+  static String cancelOrderText = "Cancel Order";
 
   //D
   static String deliveryText = "Delivery";
@@ -263,6 +265,10 @@ class StringConstants {
   static String resendText = "Resend";
   static String receivedText = "Received";
   static String roleText = "Role";
+  static String rateNowText = "Rate Now";
+  static String ratingText = "Rating";
+  static String returnOrderText = "Return Order";
+  static String returnRequestSentText = "Return Request Sent";
 
   //S
   static String signUpText = "Sign up";
@@ -359,6 +365,7 @@ class StringConstants {
 
   //W
   static String websiteText = "Website";
+  static String writeReasonText = "Write Reason";
   static String walletText = "Wallet";
   static String welcomeToText = "Welcome to";
   static String weightText = "Weight";
@@ -370,6 +377,7 @@ class StringConstants {
   //Y
   static String your420MarketPlace = "Your 420 Market Place";
   static String yesText = "Yes";
+  static String yourThoughtText = "Your Thought";
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";
