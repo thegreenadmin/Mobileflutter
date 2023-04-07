@@ -1499,15 +1499,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
-                          searchStoreOwnerController.deliveryServicesList
-                              .clear();
+                          searchStoreOwnerController.deliveryServicesList.clear();
                           if (searchStoreOwnerController
                               .storeDeliveryServices.isNotEmpty) {
                             for (int i = 0;
-                                i <
-                                    searchStoreOwnerController
-                                        .deliveryServices.length;
-                                i++) {
+                                i < searchStoreOwnerController
+                                        .deliveryServices.length; i++) {
                               for (var element in searchStoreOwnerController
                                   .storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==

@@ -36,8 +36,7 @@ class OrdersController extends GetxController {
       store.StoreDetailsResponse().obs;
   late StoreOrderListResponse storeOrderListResponse = StoreOrderListResponse();
   late OrderListResponse orderListResponse = OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse =
-      OrderStatusListResponse();
+  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<Order> orderList = <Order>[].obs;
   RxList<StoreOrder> storeOrderList = <StoreOrder>[].obs;
