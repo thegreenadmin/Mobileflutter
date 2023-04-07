@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -41,10 +42,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   if (ordersController.isActiveOrders.value == true) {
+                    ordersController.orderStatusId.value = 2;
                     ordersController.page.value = 1;
                     ordersController.orderList.clear();
                     ordersController.apiGetOrderListApi();
                   } else {
+                    ordersController.orderStatusId.value = 2;
                     ordersController.isActiveOrders.value =
                         !ordersController.isActiveOrders.value;
                     ordersController.page.value = 1;
@@ -369,8 +372,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               ordersController
                                                       .orderList[i].storeId ??
                                                   "";
-                                          Get.to(
-                                              const OrderConfirmationScreen());
+                                          ordersController.apiGetStoreDetailsApi();
+                                          Get.to(() =>  const OrderConfirmationScreen());
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
@@ -392,7 +395,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                           color:
-                                                              AppColors.primary,
+                                                              AppColors.white,
                                                           width: 1)),
                                                   child: CircleAvatar(
                                                     radius: 22.0,
@@ -689,7 +692,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         ordersController
                                             .storeOrderList.length) {
                                       return InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Get.to(() => const OrdersHomeMainScreen(),
+                                              arguments: {
+                                                "storeId": ordersController
+                                                    .storeOrderList[i]
+                                                    .store?.storeId
+                                                    .toString()??"",
+                                                "orderStatus": ordersController
+                                                    .storeOrderList[i]
+                                                    .orderId ??
+                                                    ""
+                                              });
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 10),
@@ -710,7 +725,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                           color:
-                                                              AppColors.primary,
+                                                          AppColors.white,
                                                           width: 1)),
                                                   child: CircleAvatar(
                                                     radius: 22.0,

@@ -54,7 +54,9 @@ class OrdersController extends GetxController {
     super.onInit();
     orderStatus.value =
         Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
-    storeId.value = Get.arguments["storeId"] ?? "";
+    if( Get.arguments["storeId"] != null){
+      storeId.value =  Get.arguments["storeId"] ?? "";
+    }
     isActiveOrders.value = true;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
