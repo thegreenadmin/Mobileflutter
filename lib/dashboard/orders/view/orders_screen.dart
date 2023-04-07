@@ -372,10 +372,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         onTap: () {
                                           ordersController.storeId.value =
                                               ordersController
-                                                      .orderList[i].storeId ??
-                                                  "";
-                                          ordersController
-                                              .apiGetStoreDetailsApi();
+                                                      .orderList[i].storeId ?? "";
+                                          ordersController.orderStatus.value =
+                                              ordersController
+                                                      .orderList[i].orderId ?? "";
+                                          ordersController.apiGetStoreDetailsApi();
+                                          ordersController.apiGetOrderDetailsApi();
                                           Get.to(
                                               () =>
                                                   const OrderConfirmationScreen(),

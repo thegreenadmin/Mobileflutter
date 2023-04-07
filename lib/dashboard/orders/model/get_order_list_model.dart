@@ -17,12 +17,12 @@ class OrderListResponse {
     this.data,
   });
 
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
   OrderListResponse copyWith({
-    int? status,
+    dynamic status,
     String? message,
     Data? data,
   }) =>
@@ -52,11 +52,11 @@ class Data {
     this.orders,
   });
 
-  int? totalCount;
+  dynamic totalCount;
   List<Order>? orders;
 
   Data copyWith({
-    int? totalCount,
+    dynamic totalCount,
     List<Order>? orders,
   }) =>
       Data(
@@ -108,11 +108,11 @@ class Order {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  int? deliveryCharge;
+  dynamic deliveryCharge;
   String? taxType;
-  double? taxValue;
-  double? totalTaxCharged;
-  double? totalAmount;
+  dynamic taxValue;
+  dynamic totalTaxCharged;
+  dynamic totalAmount;
   String? customerName;
   String? customerEmail;
   String? customerPhone;
@@ -132,11 +132,11 @@ class Order {
     String? userId,
     String? storeId,
     String? deliveryServiceId,
-    int? deliveryCharge,
+    dynamic deliveryCharge,
     String? taxType,
-    double? taxValue,
-    double? totalTaxCharged,
-    double? totalAmount,
+    dynamic taxValue,
+    dynamic totalTaxCharged,
+    dynamic totalAmount,
     String? customerName,
     String? customerEmail,
     String? customerPhone,
@@ -423,15 +423,15 @@ class OrderItem {
 
   String? orderId;
   String? productId;
-  int? orderItemCount;
+  dynamic orderItemCount;
   dynamic orderItemPrice;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
   String? discountName;
   String? discountType;
-  int? discountValue;
-  double? totalDiscount;
+  dynamic discountValue;
+  dynamic totalDiscount;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -440,15 +440,15 @@ class OrderItem {
   OrderItem copyWith({
     String? orderId,
     String? productId,
-    int? orderItemCount,
-    int? orderItemPrice,
+    dynamic orderItemCount,
+    dynamic orderItemPrice,
     String? serviceChargeType,
-    double? serviceChargeValue,
-    double? totalServiceCharged,
+    dynamic serviceChargeValue,
+    dynamic totalServiceCharged,
     String? discountName,
     String? discountType,
-    int? discountValue,
-    double? totalDiscount,
+    dynamic discountValue,
+    dynamic totalDiscount,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,

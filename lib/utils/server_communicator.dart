@@ -26,6 +26,7 @@ class ServerCommunicator {
   String fileUploadMultiple = 'file/upload/multiple';
   String createFavouriteStore = 'user/store/favourite/create';
   String createFavouriteProduct = 'user/product/favourite/create';
+  String cancelOrder = 'order/cancel/create';
 
 //G
   String generateOtp = 'user/otp/generate';
@@ -41,6 +42,7 @@ class ServerCommunicator {
   String otpVerify = 'user/otp/verify';
   String orderStatusList = 'order/status/list';
   String orderList = 'order/list';
+  String orderDetail = 'order/details';
 //P
 
   String productDetails = 'store/product/details';

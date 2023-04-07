@@ -321,7 +321,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            height40SizedBox,
+            height30SizedBox,
             Image.asset(ImageConstants.tickBorder, scale: 1.2),
             height8SizedBox,
             Text(
@@ -339,7 +339,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   fontSize: 16,
                   color: AppColors.black),
             ),
-            height20SizedBox,
+            height10SizedBox,
             const Divider(
               height: 20,
               color: AppColors.grey,
@@ -390,7 +390,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               color: AppColors.grey,
             ),
             height30SizedBox,
-            EasyStepper(
+            Obx(()=>EasyStepper(
               activeStep: ordersController.activeStep.value,
               lineLength: 55,
               stepShape: StepShape.circle,
@@ -410,38 +410,264 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               unreachedStepTextColor: AppColors.black,
               steps: List<EasyStep>.generate(
                 ordersController.stepInd.length,
-                (index) => EasyStep(
-                  customStep: ordersController.activeStep.value ==
-                          ordersController.stepInd[index].id?.toInt()
+                    (index) => EasyStep(
+                  customStep:
+                      ordersController.stepInd[index].isSelected==true
                       ? Image.asset(ImageConstants.blueTick)
                       : Image.asset(ImageConstants.blackTick),
                   title: ordersController.stepInd[index].name ?? "",
                 ),
               ),
               onStepReached: (index) {},
-            ),
-            height40SizedBox,
-            CustomButton(
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.primary, AppColors.primary],
-              ),
-              onTap: () {
-                Get.offAll(BottomNavigation());
-              },
-              height: 50,
-              width: WidgetConstants.screenWidth * 0.5,
-              text: StringConstants.continueShoppingText,
-              borderRadius: 12,
-              fontWeight: FontWeight.w500,
-              iconL: false,
-              fontSize: 16,
-            ),
+            ),),
             height30SizedBox,
+            Obx(()=>Visibility(
+              visible: ordersController.activeStep.value==0,
+              child: Column(
+                children: [
+                  CustomButton(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.primary, AppColors.primary],
+                    ),
+                    onTap: () {
+                      Get.offAll(BottomNavigation());
+                    },
+                    height: 50,
+                    width: WidgetConstants.screenWidth * 0.5,
+                    text: StringConstants.continueShoppingText,
+                    borderRadius: 12,
+                    fontWeight: FontWeight.w500,
+                    iconL: false,
+                    fontSize: 16,
+                  ),
+                  height20SizedBox
+                ],
+              ),
+            ),),
+            Obx(()=> Visibility(
+              visible: ordersController.activeStep.value!=3,
+              child: CustomButton(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.white, AppColors.white],
+                ),
+                onTap: () {
+                  // ordersController.apiCancelOrder();
+                },
+                height: 50,
+                border: Border.all(
+                  color: AppColors.blacklight,
+                  width: 1,
+                ),
+                textColor:AppColors.red,
+                width: WidgetConstants.screenWidth * 0.5,
+                text: StringConstants.cancelOrderText,
+                borderRadius: 12,
+                fontWeight: FontWeight.w500,
+                iconL: false,
+                fontSize: 16,
+              ),
+            ),),
+            Obx(()=> Visibility(
+                visible: ordersController.activeStep.value==3,
+                child: buildOrderItems()),),
           ],
         ),
       ),
     );
   }
+
+  Widget buildOrderItems(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          StringConstants.itemsText,
+          style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+              color: AppColors.black),
+        ),
+        height20SizedBox,
+        SizedBox(
+          height: WidgetConstants.screenHeight *0.15,
+          child: Stack(
+            children: [
+
+              SizedBox(
+                height: WidgetConstants.screenHeight *0.15,
+                child: ListView.separated(
+                  separatorBuilder:
+                  (BuildContext context, int index) {
+                  return height8SizedBox;
+                  }, padding: const EdgeInsets.only(bottom: 60),
+                  itemCount: ordersController.activeStep.value+1,
+                  itemBuilder: (BuildContext context, int i) {
+                    return  InkWell(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: const BoxDecoration(
+                              color: AppColors.primarylight,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              )),
+                          child: Column(children: [
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color:
+                                          AppColors.white,
+                                          width: 1)),
+                                  child: CircleAvatar(
+                                    radius: 22.0,
+                                    backgroundImage:  const AssetImage(
+                                      ImageConstants
+                                          .nopicfound,
+                                    ) as ImageProvider,
+                                    backgroundColor:
+                                    Colors.transparent,
+                                  ),
+                                ),
+                                width5SizedBox,
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize:
+                                    MainAxisSize.max,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Text(
+                                        StringConstants.itemsText,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            color: AppColors.black),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment
+                                            .end,
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                    text: StringConstants
+                                                        .orderIDText,
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
+                                                        fontSize:
+                                                        14)),
+                                                TextSpan(
+                                                  text:
+                                                  ': "0"}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w600,
+                                                      fontSize:
+                                                      14,
+                                                      color: AppColors
+                                                          .blacklight),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          width20SizedBox,
+                                        ],
+                                      ),
+                                      height8SizedBox,
+
+                                    ],
+                                  ),
+                                ),
+                                CustomButton(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [AppColors.white, AppColors.white],
+                                  ),
+                                  onTap: () {
+                                    ordersController
+                                        .bottomSheetRateNow(
+                                        context);
+                                  },
+                                  height: 45,
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  textColor:AppColors.primary,
+                                  width: WidgetConstants.screenWidth * 0.3,
+                                  text: StringConstants.rateNowText,
+                                  borderRadius: 12,
+                                  fontWeight: FontWeight.w500,
+                                  iconL: false,
+                                  fontSize: 14,
+                                ),
+                              ],
+                            ),
+                          ]),
+                        ),
+                      );
+                  }),
+              ),
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CustomButton(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.white, AppColors.white],
+                  ),
+                  onTap: () {
+                    ordersController
+                        .bottomSheetReturnOrder(
+                        context);
+                  },
+                  height: 50,
+                  border: Border.all(
+                    color: AppColors.blacklight,
+                    width: 1,
+                  ),
+                  textColor:AppColors.red,
+                  width: WidgetConstants.screenWidth * 0.5,
+                  text: StringConstants.returnOrderText,
+                  borderRadius: 12,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  fontSize: 16,
+                ),
+              )
+
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
 }

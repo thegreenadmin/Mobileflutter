@@ -597,9 +597,7 @@ class OwnerStoresController extends GetxController {
           for (var sData in storeDeliveryServices) {
             for (var element in deliveryServices) {
               if (element.id == sData["delivery_service_id"]) {
-                element.isSelected = true;
-                debugPrint("deliveryServices element: ===== ${element.toJson()}");
-
+                element.isSelected = sData["is_enabled"];
               }
             }
           }
