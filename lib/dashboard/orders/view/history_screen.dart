@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/history_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -265,7 +266,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 historyController.userOrderHistoryList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.to(() => const OrderConfirmationScreen(),
+                                      arguments: {
+                                        "storeId",
+                                        historyController
+                                            .ownerOrderHistoryList![index]
+                                            .store!
+                                            .storeId
+                                            .toString()
+                                      });
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
@@ -519,13 +530,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  print("StoreId -------->" +
-                                      historyController
-                                          .ownerOrderHistoryList![index]
-                                          .store!
-                                          .storeId
-                                          .toString());
-                                  Get.to(const OrdersHomeMainScreen(),
+                                  Get.to(() => const OrdersHomeMainScreen(),
                                       arguments: {
                                         "storeId",
                                         historyController

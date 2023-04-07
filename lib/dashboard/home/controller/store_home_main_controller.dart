@@ -18,7 +18,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/order_confirmation_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -87,13 +87,6 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  RxList<Categories> stepInd = [
-    Categories(id: 0, name: "Received", isSelected: false),
-    Categories(id: 1, name: "InProgress", isSelected: false),
-    Categories(id: 2, name: "Ready to Pick", isSelected: false),
-    Categories(id: 3, name: "Complete", isSelected: false),
-  ].obs;
-
   @override
   void onInit() {
     super.onInit();
@@ -106,7 +99,7 @@ class StoreHomeMainController extends GetxController {
         store.storeId = storeId.value;
         storeAddress.value.store = store;
         Future.delayed(const Duration(milliseconds: 100), () {
-          isFavouriteStore.value = store.isFavouriteStore??false;
+          isFavouriteStore.value = store.isFavouriteStore ?? false;
         });
         apiGetStoreDetailsApi();
         apiGetCartListApi();
@@ -117,7 +110,8 @@ class StoreHomeMainController extends GetxController {
     } else {
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
       Future.delayed(const Duration(milliseconds: 100), () {
-        isFavouriteStore.value = storeAddress.value.store?.isFavouriteStore ??false;
+        isFavouriteStore.value =
+            storeAddress.value.store?.isFavouriteStore ?? false;
       });
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
@@ -214,7 +208,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetCartListApi() async {
     isLoading.value = true;
     debugPrint("GET CART LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -225,7 +219,7 @@ class StoreHomeMainController extends GetxController {
 
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${userAddressId.value.toString()}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -236,7 +230,8 @@ class StoreHomeMainController extends GetxController {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartData.value = cartListResponse.data ?? cart.Data();
-        if(isDeleteCartItem.value == true && cartListResponse.data!.cartItems!.isEmpty){
+        if (isDeleteCartItem.value == true &&
+            cartListResponse.data!.cartItems!.isEmpty) {
           isDeleteCartItem.value = false;
           Get.offAll(BottomNavigation());
         }
@@ -273,11 +268,14 @@ class StoreHomeMainController extends GetxController {
       "store_id":
           int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": int.parse(userAddressId.value.toString()),
+      "user_address_id":
+          int.parse(selectedUserAddress.value.userAddressId.toString()),
+      // "user_address_id": int.parse(userAddressId.value.toString()),
       "cart_items": selectedItems
     };
 
     debugPrint("TOKEN ********** $headers");
+    debugPrint("PARAMETERS ********** $data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -290,9 +288,9 @@ class StoreHomeMainController extends GetxController {
       debugPrint("  Place Order *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        print(value?.body["data"]["order_id"]);
         orderStatus.value = value?.body["data"]["order_id"];
-        Get.to(const OrderConfirmationScreen());
+        Get.to(const OrderConfirmationScreen(),
+            arguments: {"orderStatus": orderStatus.value});
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -375,7 +373,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Update Cart  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        isDeleteCartItem.value =true;
+        isDeleteCartItem.value = true;
         apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -417,7 +415,6 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
         apiGetCartListApi();
-
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -585,10 +582,12 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Details*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
-        debugPrint("isFavouriteStore before *******${  isFavouriteStore.value}");
-        storeDetailsResponse.value = store.StoreDetailsResponse.fromJson(value?.body);
-        } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
+        storeDetailsResponse.value =
+            store.StoreDetailsResponse.fromJson(value?.body);
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -682,7 +681,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: true ) //orderBy == "2" ? true : false)
+            showLoading: true) //orderBy == "2" ? true : false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
@@ -862,10 +861,9 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        isFavouriteStore.value =true;
-         storeAddress.value.store?.isFavouriteStore = true;
-
-      } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
+        isFavouriteStore.value = true;
+        storeAddress.value.store?.isFavouriteStore = true;
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -905,8 +903,6 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
         storeAddress.value.store?.isFavouriteStore = false;
-
-
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -925,7 +921,7 @@ class StoreHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -933,19 +929,20 @@ class StoreHomeMainController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-        data,
-        ServerCommunicator().baseUrl +
-            ServerCommunicator().createFavouriteProduct,
-        headers,
-        showLoading: false)
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().createFavouriteProduct,
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Create Favourite Product *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         apiFeatureProductListApi();
         isFavouriteProduct.value = true;
-      } else if (value?.body["status"] == ApiConstants.statusCode403 ) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -957,13 +954,13 @@ class StoreHomeMainController extends GetxController {
 
   //Remove Favourite Product Api
   Future apiRemoveFavouriteProduct(String? id) async {
-    isLoading.value =  true;
+    isLoading.value = true;
     debugPrint("Remove Favourite Product URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteProduct}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -972,14 +969,16 @@ class StoreHomeMainController extends GetxController {
     debugPrint("data ********** ${data.toString()}");
     UserProvider()
         .deleteWithHeadersApi(
-        data,
-        ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteProduct,
-        headers,
-        showLoading: false)
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().removeFavouriteProduct,
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Remove Favourite Product *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200 ) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 
         apiFeatureProductListApi();

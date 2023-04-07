@@ -1,11 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
@@ -20,26 +20,72 @@ class OrdersHomeMainController extends GetxController {
   RxString storeId = "".obs;
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
-
+  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
+      GetOwnerOrderHistoryModel();
+  RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
+  
   @override
   void onInit() {
+    super.onInit();
+    selectedIndex.value = 0;
     storeId.value = Get.arguments["storeId"] ?? "";
-    print("StoreId -------->" + storeId.value.toString());
+    apiGetStoreDetails();
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
     } else {
       role!.value = Role.storeOwnerRoleText;
-     // apiGetStoreDetails();
+      apiGetOwnerOrderHistory();
     }
-    super.onInit();
+  }
+
+  int daysInMonth(DateTime date) {
+    var firstDayThisMonth = DateTime(date.year, date.month, date.day);
+    var firstDayNextMonth = DateTime(firstDayThisMonth.year,
+        firstDayThisMonth.month + 1, firstDayThisMonth.day);
+    return firstDayNextMonth.difference(firstDayThisMonth).inDays;
+  }
+
+  void onIndexChange(int i) async {
+    selectedIndex.value = i;
+    switch (i) {
+      case 0: //Active Orders
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetOwnerOrderHistory(orderStatus: {});
+        }
+        break;
+      case 1: //Inprogress Orders
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "6"});
+        }
+        break;
+      case 2: //Pickup Orders
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "9"});
+        }
+        break;
+      case 3: //Completed Orders
+        {
+          debugPrint(selectedIndex.value.toString());
+          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "5"});
+        }
+        break;
+      default:
+        {
+          debugPrint(selectedIndex.value.toString());
+        }
+        break;
+    }
   }
 
   RxList horizontalTabList = [
-    StringConstants.storeText,
-    StringConstants.menuText,
-    StringConstants.favoriteText,
-    StringConstants.optionsText,
+    StringConstants.activeText,
+    StringConstants.inProgress,
+    StringConstants.pickupText,
+    StringConstants.completedText,
   ].obs;
 
   //Get Store Details Api
@@ -71,6 +117,60 @@ class OrdersHomeMainController extends GetxController {
         await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Api get current and past history of [OWNER]
+  Future apiGetOwnerOrderHistory(
+      {String startDateOfMonth = "",
+      String endDateOfMonth = "",
+      orderStatus = Map<String, String>}) async {
+    isLoading.value = true;
+    debugPrint(
+        "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    String currentMonth =
+        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+
+    Map body = {
+      "store_id": null,
+      "page": null,
+      "page_size": null,
+      "order_by": "order_id",
+      "order_type": "DESC",
+      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-01"
+          : startDateOfMonth,
+      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
+          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
+          : endDateOfMonth,
+      "only_active_orders": true,
+      "order_statuses": [orderStatus]
+    };
+    debugPrint("OWNER ORDER HISTORY BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeOrderList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getOwnerOrderHistoryModel =
+            GetOwnerOrderHistoryModel.fromJson(value.body);
+        ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
       }
     });
   }

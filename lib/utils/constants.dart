@@ -46,6 +46,7 @@ class StringConstants {
   static String addYourText = "Add your";
   static String aprilText = "April";
   static String augText = "August";
+  static String activeText = "Active";
 
   //B
   static String breadthText = "Breadth";
@@ -79,6 +80,8 @@ class StringConstants {
   static String createYourText = "Create your";
   static String checkOutText = "Check Out";
   static String clickCollectText = "Click & Collect";
+  static String completedText = "Completed";
+
   //D
   static String deliveryText = "Delivery";
   static String deleteAccountText = "Delete Account";
@@ -141,6 +144,7 @@ class StringConstants {
   static String inStoreText = "In store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";
+  static String inProgress = "In-progress";
 
   //J
   static String janText = "January";
@@ -193,6 +197,7 @@ class StringConstants {
   static String noRolesFoundText = "No Roles found";
   static String noOffersFoundText = "No Offers found";
   static String noText = "No";
+  static String newOrderText = "New Order";
 
   //O
   static String orderIDText = "Order ID";
@@ -217,6 +222,7 @@ class StringConstants {
   static String novText = "November";
 
   //P
+  static String pendingOrderText = "Pending Order";
   static String profileText = "Profile";
   static String passcodeLockText = "Passcode Lock";
   static String previousText = "Previous";
@@ -246,6 +252,7 @@ class StringConstants {
 
   //R
   static String registerHereText = " Register Here!!";
+  static String receivedOrderText = "Received Order";
   static String removeText = "Remove";
   static String roleAndPermissionText = "Role & Permission";
   static String rolesText = "Roles";
@@ -397,6 +404,7 @@ class AlertStringConstants {
 //N
   static String noProductFoundForThisStore = "No Products Found For This Store";
   static String noHistoryFoundText = "No History Found";
+  static String noDataFoundText = "No Data Found";
 
   //O
   static String openingTimeAlertText =
