@@ -267,17 +267,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.to(() => const OrderConfirmationScreen(),
-                                      arguments: {
-                                        "isFromTransaction": true,
-                                        "storeId": historyController
-                                                .userOrderHistoryList![index]
-                                                .store!
-                                                .storeId ?? "",
-                                        "orderStatus": historyController
-                                                .userOrderHistoryList![index]
-                                                .orderId ?? ""
-                                      });
+                                  // Get.to(() => const OrderConfirmationScreen(),
+                                  //     arguments: {
+                                  //       "isFromTransaction": true,
+                                  //       "storeId": historyController
+                                  //               .userOrderHistoryList![index]
+                                  //               .store!
+                                  //               .storeId ?? "",
+                                  //       "orderStatus": historyController
+                                  //               .userOrderHistoryList![index]
+                                  //               .orderId ?? ""
+                                  //     });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -532,18 +532,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.to(() => const OrdersHomeMainScreen(),
-                                      arguments: {
-                                        "storeId": historyController
-                                            .ownerOrderHistoryList![index]
-                                            .store!
-                                            .storeId
-                                            .toString(),
-                                        "orderStatus": historyController
-                                                .ownerOrderHistoryList![index]
-                                                .orderId ??
-                                            ""
-                                      });
+                                  // Get.to(() => const OrdersHomeMainScreen(),
+                                  //     arguments: {
+                                  //       "storeId": historyController
+                                  //           .ownerOrderHistoryList![index]
+                                  //           .store!
+                                  //           .storeId
+                                  //           .toString(),
+                                  //       "orderStatus": historyController
+                                  //               .ownerOrderHistoryList![index]
+                                  //               .orderId ??
+                                  //           ""
+                                  //     });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

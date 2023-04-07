@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_store_order_detail_model.dart'
+    as orderdetail;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -18,11 +20,20 @@ class OrdersHomeMainController extends GetxController {
   RxString? role = "".obs;
   RxInt selectedIndex = 0.obs;
   RxString storeId = "".obs;
+  RxString orderId = "".obs;
+  RxString customerName = "".obs;
+  RxString orderDate = "".obs;
+  RxString orderAmount = "".obs;
+
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
   GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
       GetOwnerOrderHistoryModel();
   RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
+
+  Rx<orderdetail.GetStoreOrderDetailModel> getStoreOrderDetailModel =
+      orderdetail.GetStoreOrderDetailModel().obs;
+  RxList<orderdetail.OrderItems> getOrderItems = <orderdetail.OrderItems>[].obs;
 
   @override
   void onInit() {
@@ -52,19 +63,19 @@ class OrdersHomeMainController extends GetxController {
       case 0: //Active Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {});
+          apiGetOwnerOrderHistory();
         }
         break;
       case 1: //Inprogress Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "6"});
+          apiGetOwnerOrderHistory();
         }
         break;
       case 2: //Pickup Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "9"});
+          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "6"});
         }
         break;
       case 3: //Completed Orders
@@ -143,8 +154,17 @@ class OrdersHomeMainController extends GetxController {
       "order_type": "DESC",
       "from_date": null,
       "to_date": null,
-      "only_active_orders": true,
-      "order_statuses": [orderStatus]
+      "only_active_orders": null,
+      "order_statuses": selectedIndex.value == 0
+          ? []
+          : selectedIndex.value == 1
+              ? [
+                  {"order_status_id": "4"}, //"confirmed"
+                  {"order_status_id": "6"}, //"shipped"
+                  {"order_status_id": "9"}, //"pickup request"
+                  {"order_status_id": "8"} //"cancel request"
+                ]
+              : [orderStatus]
     };
     debugPrint("OWNER ORDER HISTORY BODY********** $body");
     debugPrint("TOKEN ********** $headers");
@@ -162,6 +182,149 @@ class OrdersHomeMainController extends GetxController {
         getOwnerOrderHistoryModel =
             GetOwnerOrderHistoryModel.fromJson(value.body);
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get Store Order Details Api
+  Future apiGetStoreOrderDetail() async {
+    isLoading.value = true;
+    debugPrint("STORE ORDER DETAIL URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreOrderDetailModel.value =
+            orderdetail.GetStoreOrderDetailModel.fromJson(value?.body);
+        customerName.value =
+            getStoreOrderDetailModel.value.data!.order!.customerName.toString();
+        orderDate.value =
+            // getStoreOrderDetailModel.value.data!.order!.orderDate.toString();
+            Utility.parseDateTime(
+          DateTime.parse(
+              getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
+          secFormat: '',
+        ).toString();
+        orderAmount.value = getStoreOrderDetailModel
+            .value.data!.order!.totalAmount
+            .toStringAsFixed(2);
+        orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
+        storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
+        getOrderItems.value =
+            getStoreOrderDetailModel.value.data!.order!.orderItems!;
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+//Mark store order ready
+  apiMarkOrderReady({String storeId = "", String orderId = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"store_id": storeId, "order_id": orderId};
+    debugPrint("MARK ORDER CONFIRM BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeOrderConfirm,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Mark store order ready
+  apiMarkReadyForPick({String storeId = "", String orderId = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"store_id": storeId, "order_id": orderId};
+    debugPrint("MARK ORDER SHIPPED BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeOrderShipped,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER SHIPPED RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Mark store order ready
+  apiMarkDelivered({String storeId = "", String orderId = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"store_id": storeId, "order_id": orderId};
+    debugPrint("MARK ORDER COMPLETE BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeOrderDelivered,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         update();
       } else {
         Utility.showToast(value.body['message']);

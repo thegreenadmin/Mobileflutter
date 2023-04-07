@@ -56,9 +56,7 @@ dependencies:
   firebase_messaging: ^14.4.0
   firebase_core: ^2.9.0
   flutter_local_notifications: ^13.0.0
-  amplify_core: ^0.6.13
-  amplify_analytics_pinpoint: ^0.6.13
-  amplify_flutter: ^0.6.13
+  
 
 
 

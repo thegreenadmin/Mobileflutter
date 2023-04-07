@@ -1,5 +1,5 @@
 class GetOwnerOrderHistoryModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -23,7 +23,7 @@ class GetOwnerOrderHistoryModel {
 }
 
 class Data {
-  int? totalCount;
+  dynamic totalCount;
   List<Orders>? orders;
 
   Data({this.totalCount, this.orders});
@@ -293,14 +293,14 @@ class OrderStatus {
 class OrderItems {
   String? orderId;
   String? productId;
-  int? orderItemCount;
-  int? orderItemPrice;
+  dynamic orderItemCount;
+  dynamic orderItemPrice;
   String? serviceChargeType;
   double? serviceChargeValue;
   double? totalServiceCharged;
   String? discountName;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   dynamic totalDiscount;
   String? status;
   String? createdAt;

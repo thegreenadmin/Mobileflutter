@@ -81,6 +81,7 @@ class StringConstants {
   static String checkOutText = "Check Out";
   static String clickCollectText = "Click & Collect";
   static String completedText = "Completed";
+  static String completeText = "Complete";
 
   //D
   static String deliveryText = "Delivery";
@@ -220,6 +221,7 @@ class StringConstants {
   static String orderConfirmationText = "Order Confirmation";
   static String octText = "October";
   static String novText = "November";
+  static String orderReadyText = "Order Ready";
 
   //P
   static String pendingOrderText = "Pending Order";
@@ -250,6 +252,7 @@ class StringConstants {
 
   //Q
   static String quantityUnitText = "Quantity Unit";
+  static String qtyText = "Qty";
 
   //R
   static String registerHereText = " Register Here!!";
@@ -263,6 +266,7 @@ class StringConstants {
   static String resendText = "Resend";
   static String receivedText = "Received";
   static String roleText = "Role";
+  static String readyForPickUpText = "Ready for Pick Up";
 
   //S
   static String signUpText = "Sign up";
@@ -340,7 +344,7 @@ class StringConstants {
   static String uploadCategoriesImageText = " Upload Categories Image";
   static String uploadStoreImageText = " Upload Store Image";
   static String updateText = "Update";
-  static String unitPriceText = "Unit price:";
+  static String unitPriceText = "Unit price";
   static String userProfileText = "User Profile";
   static String uploadProductPhotosText = "Upload product photos";
   static String updateWorkerText = "Update Worker";

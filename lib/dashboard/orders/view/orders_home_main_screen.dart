@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -327,15 +328,22 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
-                            Get.to(() => const OrdersHomeMainScreen(),
-                                arguments: {
-                                  "storeId",
-                                  ordersHomeMainController
-                                      .ownerOrderHistoryList![index]
-                                      .store!
-                                      .storeId
-                                      .toString()
-                                });
+                            ordersHomeMainController.storeId.value =
+                                ordersHomeMainController
+                                        .ownerOrderHistoryList![index]
+                                        .storeId ??
+                                    "";
+
+                            ordersHomeMainController.orderId.value =
+                                ordersHomeMainController
+                                        .ownerOrderHistoryList![index]
+                                        .orderId ??
+                                    "";
+
+                            ordersHomeMainController.apiGetStoreOrderDetail();
+                            Get.to(
+                              () => const MarkOrderStatusScreen(),
+                            );
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

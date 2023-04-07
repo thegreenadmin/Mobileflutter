@@ -8,7 +8,6 @@ import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 
 RemoteMessage? initialRemoteMessage;
 
