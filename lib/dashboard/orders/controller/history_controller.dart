@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class HistoryController extends GetxController {
   GetUserOrderHistoryModel getUserOrderHistoryModel =
@@ -23,6 +24,7 @@ class HistoryController extends GetxController {
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
+  RxString? storeId = "".obs;
   RxInt selectedIndex = 0.obs;
 
   @override

@@ -134,21 +134,15 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    String currentMonth =
-        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
 
     Map body = {
-      "store_id": null,
+      "store_id": storeId.value,
       "page": null,
       "page_size": null,
       "order_by": "order_id",
       "order_type": "DESC",
-      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-01"
-          : startDateOfMonth,
-      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
-          : endDateOfMonth,
+      "from_date": null,
+      "to_date": null,
       "only_active_orders": true,
       "order_statuses": [orderStatus]
     };

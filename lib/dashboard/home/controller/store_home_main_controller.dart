@@ -290,7 +290,8 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
         Get.to(const OrderConfirmationScreen(),
-            arguments: {"orderStatus": orderStatus.value});
+            arguments: {"orderStatus": orderStatus.value,
+            "isFromTransaction":false});
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

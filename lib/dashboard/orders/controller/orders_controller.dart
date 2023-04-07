@@ -36,7 +36,8 @@ class OrdersController extends GetxController {
       store.StoreDetailsResponse().obs;
   late StoreOrderListResponse storeOrderListResponse = StoreOrderListResponse();
   late OrderListResponse orderListResponse = OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
+  late OrderStatusListResponse orderStatusListResponse =
+      OrderStatusListResponse();
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<Order> orderList = <Order>[].obs;
   RxList<StoreOrder> storeOrderList = <StoreOrder>[].obs;
@@ -52,9 +53,14 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments == null
+        ? false
+        : Get.arguments['isFromTransaction'] ?? false) {
+      storeId.value = Get.arguments["storeId"] ?? "";
+      apiGetStoreDetailsApi();
+    }
     orderStatus.value =
         Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
-    storeId.value = Get.arguments["storeId"] ?? "";
     isActiveOrders.value = true;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
@@ -66,7 +72,6 @@ class OrdersController extends GetxController {
       apiGetStoreOrderListApi();
       page.value = 1;
     }
-    apiGetStoreDetailsApi();
     apiGetOrderStatusListApi();
     setupScrollController(Get.context);
   }
@@ -96,7 +101,6 @@ class OrdersController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .getWithHeadersApi(

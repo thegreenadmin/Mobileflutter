@@ -269,6 +269,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {
                                   Get.to(() => const OrderConfirmationScreen(),
                                       arguments: {
+                                        "isFromTransaction": true,
                                         "storeId": historyController
                                                 .userOrderHistoryList![index]
                                                 .store!

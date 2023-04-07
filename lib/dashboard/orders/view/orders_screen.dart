@@ -369,8 +369,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               ordersController
                                                       .orderList[i].storeId ??
                                                   "";
+                                          ordersController
+                                              .apiGetStoreDetailsApi();
                                           Get.to(
-                                              const OrderConfirmationScreen());
+                                              () =>
+                                                  const OrderConfirmationScreen(),
+                                              arguments: {
+                                                "isFromTransaction": false,
+                                                "storeId": ordersController
+                                                        .orderList[i]
+                                                        .store
+                                                        ?.storeId
+                                                        .toString() ??
+                                                    "",
+                                              });
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
