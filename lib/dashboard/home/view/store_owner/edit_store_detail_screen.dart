@@ -1503,23 +1503,15 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           if (searchStoreOwnerController
                               .storeDeliveryServices.isNotEmpty) {
                             for (int i = 0;
-                                i < searchStoreOwnerController
-                                        .deliveryServices.length; i++) {
-                              for (var element in searchStoreOwnerController
-                                  .storeDeliveryServices) {
+                                i < searchStoreOwnerController.deliveryServices.length; i++) {
+                              for (var element in searchStoreOwnerController.storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==
-                                    searchStoreOwnerController
-                                        .deliveryServices[i].id) {
+                                    searchStoreOwnerController.deliveryServices[i].id) {
                                   searchStoreOwnerController
-                                      .deliveryServicesList
-                                      .add({
-                                    "store_delivery_service_id":
-                                        element["store_delivery_service_id"],
-                                    "delivery_service_id":
-                                        searchStoreOwnerController
-                                            .deliveryServices[i].id,
-                                    "is_enabled": searchStoreOwnerController
-                                        .deliveryServices[i].isSelected,
+                                      .deliveryServicesList.add({
+                                    "store_delivery_service_id": element["store_delivery_service_id"],
+                                    "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
+                                    "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
                                     "status": "active"
                                   });
                                 }

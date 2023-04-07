@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -41,10 +42,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   if (ordersController.isActiveOrders.value == true) {
+                    ordersController.orderStatusId.value = 2;
                     ordersController.page.value = 1;
                     ordersController.orderList.clear();
                     ordersController.apiGetOrderListApi();
                   } else {
+                    ordersController.orderStatusId.value = 2;
                     ordersController.isActiveOrders.value =
                         !ordersController.isActiveOrders.value;
                     ordersController.page.value = 1;
@@ -157,8 +160,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   padding: const EdgeInsets.all(6),
-                  // width: WidgetConstants.screenWidth * 0.2,
-                  color: ordersController.isActiveOrders.value
+                  width: WidgetConstants.screenWidth * 0.25,
+                  color: ordersController.orderStatusId.value == 2
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -166,10 +169,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        StringConstants.newOrderText,
+                        StringConstants.newText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusId.value == 2
                               ? AppColors.primary
@@ -195,20 +198,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
-                  height: 47, padding: const EdgeInsets.all(6),
-                  // width: WidgetConstants.screenWidth * 0.2,
-                  color: ordersController.isActiveOrders.value
-                      ? AppColors.white
-                      : AppColors.primarylight,
+                  height: 47,
+                  padding: const EdgeInsets.all(6),
+                  width: WidgetConstants.screenWidth * 0.25,
+                  color: ordersController.orderStatusId.value == 3
+                      ? AppColors.primarylight
+                      : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        StringConstants.pendingOrderText,
+                        StringConstants.pendingText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusId.value == 3
                               ? AppColors.primary
@@ -234,20 +238,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
-                  height: 47, padding: const EdgeInsets.all(6),
-                  // width: WidgetConstants.screenWidth * 0.2,
-                  color: ordersController.isActiveOrders.value
-                      ? AppColors.white
-                      : AppColors.primarylight,
+                  height: 47,
+                  padding: const EdgeInsets.all(6),
+                  width: WidgetConstants.screenWidth * 0.25,
+                  color: ordersController.orderStatusId.value == 5
+                      ? AppColors.primarylight
+                      : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        StringConstants.receivedOrderText,
+                        StringConstants.receivedText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusId.value == 5
                               ? AppColors.primary
@@ -404,7 +409,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                           color:
-                                                              AppColors.primary,
+                                                              AppColors.white,
                                                           width: 1)),
                                                   child: CircleAvatar(
                                                     radius: 22.0,
@@ -583,7 +588,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               fontSize: 14)),
                                                       TextSpan(
                                                         text:
-                                                            ": ${ordersController.orderList[i].status?.toUpperCase()}",
+                                                            ": ${ordersController.orderList[i].status}",
                                                         style: const TextStyle(
                                                             color: AppColors
                                                                 .yellow,
@@ -701,7 +706,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         ordersController
                                             .storeOrderList.length) {
                                       return InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Get.to(
+                                              () =>
+                                                  const OrdersHomeMainScreen(),
+                                              arguments: {
+                                                "storeId": ordersController
+                                                        .storeOrderList[i]
+                                                        .store
+                                                        ?.storeId
+                                                        .toString() ??
+                                                    "",
+                                                "orderStatus": ordersController
+                                                        .storeOrderList[i]
+                                                        .orderId ??
+                                                    ""
+                                              });
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 10),
@@ -722,7 +743,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                           color:
-                                                              AppColors.primary,
+                                                              AppColors.white,
                                                           width: 1)),
                                                   child: CircleAvatar(
                                                     radius: 22.0,
@@ -902,7 +923,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               fontSize: 14)),
                                                       TextSpan(
                                                         text:
-                                                            ": ${ordersController.storeOrderList[i].status?.toUpperCase()}",
+                                                            ": ${ordersController.storeOrderList[i].status}",
                                                         style: const TextStyle(
                                                             color: AppColors
                                                                 .yellow,

@@ -197,7 +197,7 @@ class StringConstants {
   static String noRolesFoundText = "No Roles found";
   static String noOffersFoundText = "No Offers found";
   static String noText = "No";
-  static String newOrderText = "New Order";
+  static String newText = "New";
 
   //O
   static String orderIDText = "Order ID";
@@ -246,6 +246,7 @@ class StringConstants {
   static String productText = " Product";
   static String payNowText = "Pay Now";
   static String priceText = "price";
+  static String pendingText = "Pending";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -260,7 +261,7 @@ class StringConstants {
   static String returnAvailableText = "Return Available";
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
-  static String received = "Received";
+  static String receivedText = "Received";
   static String roleText = "Role";
 
   //S

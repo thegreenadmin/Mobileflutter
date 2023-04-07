@@ -273,12 +273,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         "storeId": historyController
                                                 .userOrderHistoryList![index]
                                                 .store!
-                                                .storeId ??
-                                            "",
+                                                .storeId ?? "",
                                         "orderStatus": historyController
                                                 .userOrderHistoryList![index]
-                                                .orderId ??
-                                            ""
+                                                .orderId ?? ""
                                       });
                                 },
                                 child: Container(

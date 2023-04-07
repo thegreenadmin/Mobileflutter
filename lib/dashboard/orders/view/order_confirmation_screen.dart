@@ -376,7 +376,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       color: AppColors.black),
                 ),
                 Text(
-                  StringConstants.received,
+                  StringConstants.receivedText,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
