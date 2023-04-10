@@ -46,7 +46,7 @@ class OrdersHomeMainController extends GetxController {
       role!.value = Role.customerRoleText;
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOrderHistory(orderStatus: {});
+      apiGetOwnerOrderHistory();
     }
   }
 
@@ -206,19 +206,21 @@ class OrdersHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("STORE ORDER DETAIL RESPONSE **********${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStoreOrderDetailModel.value =
-            orderdetail.GetStoreOrderDetailModel.fromJson(value?.body);
+            orderdetail.GetStoreOrderDetailModel.fromJson(value.body);
         customerName.value =
             getStoreOrderDetailModel.value.data!.order!.customerName.toString();
         orderDate.value =
-            // getStoreOrderDetailModel.value.data!.order!.orderDate.toString();
+            //  getStoreOrderDetailModel.value.data!.order!.orderDate.toString();
             Utility.parseDateTime(
           DateTime.parse(
               getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
           secFormat: '',
         ).toString();
+        print(" orderDate.value ------->" + orderDate.value.toString());
         orderAmount.value = getStoreOrderDetailModel
             .value.data!.order!.totalAmount
             .toStringAsFixed(2);
@@ -226,12 +228,12 @@ class OrdersHomeMainController extends GetxController {
         storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
-        Utility.showToast(value?.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showToast(value.body['message']);
       }
     });
   }
@@ -268,7 +270,7 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order ready
+  //Mark store order ready for Pick
   apiMarkReadyForPick({String storeId = "", String orderId = ""}) async {
     isLoading.value = true;
     debugPrint(
@@ -300,7 +302,7 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order ready
+  //Mark store order delivered
   apiMarkDelivered({String storeId = "", String orderId = ""}) async {
     isLoading.value = true;
     debugPrint(

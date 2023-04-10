@@ -131,6 +131,7 @@ class StringConstants {
   static String enterRoleText = "Enter Role";
   static String findStoreText = "Find Store";
   static String febText = "February";
+  static String fullFillOrdersText = "Fulfill Orders";
 
   //G
   static String getInTouchText = "Get In touch";
@@ -224,6 +225,8 @@ class StringConstants {
   static String octText = "October";
   static String novText = "November";
   static String orderReadyText = "Order Ready";
+  static String orderedDateText = "Ordered Date";
+  static String orderAmountText = "Order Amount";
 
   //P
   static String pendingOrderText = "Pending Order";
@@ -273,6 +276,8 @@ class StringConstants {
   static String ratingText = "Rating";
   static String returnOrderText = "Return Order";
   static String returnRequestSentText = "Return Request Sent";
+  static String returnRequestText = "Return Request";
+  static String rejectText = "Reject";
 
   //S
   static String signUpText = "Sign up";

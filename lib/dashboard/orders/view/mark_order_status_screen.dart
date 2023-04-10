@@ -238,27 +238,23 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Fulfill Orders" +
-                                " - " +
-                                "#" +
-                                ordersHomeMainController.orderId.value
-                                    .toString(),
+                            "${StringConstants.fullFillOrdersText} - #${ordersHomeMainController.orderId.value}",
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
-                          height12SizedBox,
+                          height20SizedBox,
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Flexible(
-                                flex: 2,
+                                flex: 3,
                                 child: Container(
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                           color: AppColors.white, width: 1)),
                                   child: const CircleAvatar(
-                                    radius: 35.0,
+                                    radius: 30.0,
                                     backgroundImage: AssetImage(
                                       ImageConstants.userAccount,
                                     ),
@@ -268,7 +264,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                               ),
                               width10SizedBox,
                               Flexible(
-                                flex: 8,
+                                flex: 7,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -281,28 +277,25 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                             fontSize: 16)),
                                     height4SizedBox,
                                     Row(children: [
-                                      Text("Ordered Date" + ": ",
+                                      Text(
+                                          "${StringConstants.orderedDateText}: ",
                                           style: TextStyle(
                                               color: AppColors.blacklight,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
-                                      // Obx(() => Text(
-                                      //     Utility.parseDateTime(
-                                      //       DateTime.parse(
-                                      //         ordersHomeMainController
-                                      //             .orderDate.value,
-                                      //       ),
-                                      //       secFormat: '',
-                                      //     ).toString(),
-                                      //     style: const TextStyle(
-                                      //         color: AppColors.black,
-                                      //         fontWeight: FontWeight.w500,
-                                      //         fontSize: 14))),
+                                      Text(
+                                          ordersHomeMainController
+                                              .orderDate.value,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14)),
                                     ]),
                                     height4SizedBox,
                                     Row(
                                       children: [
-                                        Text("Order Amount" + ": ",
+                                        Text(
+                                            "${StringConstants.orderAmountText}: ",
                                             style: TextStyle(
                                                 color: AppColors.blacklight,
                                                 fontWeight: FontWeight.w400,
@@ -366,7 +359,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                               onTap: () {},
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
+                                    horizontal: 10, vertical: 5),
                                 decoration: const BoxDecoration(
                                     color: AppColors.greylight,
                                     borderRadius: BorderRadius.all(
@@ -437,6 +430,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 16)),
+                                            height5SizedBox,
                                             Text(
                                                 ordersHomeMainController
                                                         .getOrderItems[index]
@@ -470,11 +464,11 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                             .product!
                                                             .quantity
                                                             .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                AppColors.black,
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                                FontWeight.w600,
                                                             fontSize: 14)),
                                                   ],
                                                 ),
@@ -489,17 +483,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                                 FontWeight.w500,
                                                             fontSize: 14)),
                                                     Text(
-                                                        ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .productPrice
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
+                                                        "\$${ordersHomeMainController.getOrderItems[index].product!.productPrice}",
+                                                        style: const TextStyle(
+                                                            color:
+                                                                AppColors.black,
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                                FontWeight.w600,
                                                             fontSize: 14)),
                                                   ],
                                                 )

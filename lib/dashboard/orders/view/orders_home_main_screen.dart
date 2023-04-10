@@ -246,7 +246,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       height: 20,
                                       width: WidgetConstants.screenWidth * 0.7,
                                       child: Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                               ordersHomeMainController
