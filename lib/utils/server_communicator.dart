@@ -14,6 +14,9 @@ class ServerCommunicator {
   String createProduct = 'store/product/create';
   String createCart = 'shop/store/cart/item/create';
   String cartList = 'shop/store/cart/item/list';
+  String createFavouriteStore = 'user/store/favourite/create';
+  String createFavouriteProduct = 'user/product/favourite/create';
+  String cancelOrder = 'order/cancel/create';
 
 //D
   String deleteWorker = 'store/user/delete';
@@ -24,9 +27,7 @@ class ServerCommunicator {
 //F
   String fileUpload = 'file/upload/single';
   String fileUploadMultiple = 'file/upload/multiple';
-  String createFavouriteStore = 'user/store/favourite/create';
-  String createFavouriteProduct = 'user/product/favourite/create';
-  String cancelOrder = 'order/cancel/create';
+
 
 //G
   String generateOtp = 'user/otp/generate';
