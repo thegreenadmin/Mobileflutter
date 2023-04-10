@@ -295,6 +295,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
         Get.to(const OrderConfirmationScreen(), arguments: {
+          "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false
         });

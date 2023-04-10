@@ -61,14 +61,14 @@ class OrdersController extends GetxController {
   void onInit() {
     super.onInit();
     if (Get.arguments == null
-        ? false
-        : Get.arguments['isFromTransaction'] ?? false) {
+        ?false
+        : Get.arguments['storeId']!="" ) {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
     if (Get.arguments == null
-        ?false
-        : Get.arguments['storeId'] ?? false) {
+        ? false
+        : Get.arguments['isFromTransaction'] ?? false) {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
