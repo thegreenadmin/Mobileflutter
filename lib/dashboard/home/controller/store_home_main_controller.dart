@@ -63,7 +63,7 @@ class StoreHomeMainController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
   RxInt activeStep = 0.obs;
-  RxInt itemsCount = 0.obs;
+  RxInt itemsCount = 1.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
@@ -346,7 +346,7 @@ class StoreHomeMainController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        itemsCount.value = 0;
+        itemsCount.value = 1;
         addToCartDailogue(context);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
@@ -590,9 +590,7 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}",
-            headers,
-            showLoading: false)
-        .then((value) async {
+        headers, showLoading: false).then((value) async {
       isLoading.value = false;
       debugPrint("Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -617,23 +615,20 @@ class StoreHomeMainController extends GetxController {
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId");
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
+    UserProvider().getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId",
-            headers,
-            showLoading: false)
-        .then((value) async {
+            headers, showLoading: false).then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
+        isFavouriteProduct.value = productDetailResponse.value.data?.product?.isFavouriteProduct??false;
         if (productDetailResponse.value.data!.product!.cartItems!.isNotEmpty) {
           itemsCount.value = productDetailResponse
               .value.data!.product!.cartItems!.first.itemsCount!;
@@ -940,6 +935,7 @@ class StoreHomeMainController extends GetxController {
 
     Map data = {"product_id": int.parse(id ?? "0")};
 
+    debugPrint("Create Favourite Product body ********** $data");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(

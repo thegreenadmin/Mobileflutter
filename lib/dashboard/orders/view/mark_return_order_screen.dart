@@ -72,6 +72,95 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                 horizontal: 25, vertical: 25),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Obx(() => SizedBox(
+                    height: 150,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${StringConstants.fullFillOrdersText} - #${ordersHomeMainController.orderId.value}",
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          ),
+                          height20SizedBox,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: AppColors.white, width: 1)),
+                                  child: const CircleAvatar(
+                                    radius: 30.0,
+                                    backgroundImage: AssetImage(
+                                      ImageConstants.userAccount,
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                              width10SizedBox,
+                              Flexible(
+                                flex: 7,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        ordersHomeMainController
+                                            .customerName.value,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16)),
+                                    height4SizedBox,
+                                    Row(children: [
+                                      Text(
+                                          "${StringConstants.orderedDateText}: ",
+                                          style: TextStyle(
+                                              color: AppColors.blacklight,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14)),
+                                      Text(
+                                          ordersHomeMainController
+                                              .orderDate.value,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14)),
+                                    ]),
+                                    height4SizedBox,
+                                    Row(
+                                      children: [
+                                        Text(
+                                            "${StringConstants.orderAmountText}: ",
+                                            style: TextStyle(
+                                                color: AppColors.blacklight,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14)),
+                                        Obx(() => Text(
+                                          "\$${ordersHomeMainController.orderAmount.value}",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14),
+                                        )),
+                                      ],
+                                    ),
+                                    height6SizedBox,
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            height: 20,
+                            color: AppColors.blacklight,
+                          ),
+                        ]),
+                  )),
               Obx(() => Expanded(
                   child: ordersHomeMainController.getOrderItems.isEmpty
                       ? ordersHomeMainController.isLoading.value == true
@@ -126,12 +215,19 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                         child: Container(
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
+                                                border: Border.all(color: AppColors.white,
                                                     width: 1)),
-                                            child: Image.asset(
-                                                ImageConstants.nopicfound)),
-                                      ),
+                                            child: ordersHomeMainController
+                                                .getOrderItems[index].product!
+                                                .productImages!.first.image!.dynamicUrl == null ||
+                                                ordersHomeMainController.getOrderItems[index].product!.productImages!.first
+                                                    .image!.dynamicUrl!.isEmpty
+                                                ? Image.asset(ImageConstants.nopicfound,)
+                                                :  Image.network(
+                                                ordersHomeMainController
+                                                    .getOrderItems[index]
+                                                    .product!.productImages!
+                                                    .first.image!.dynamicUrl.toString()),),),
                                       width10SizedBox,
                                       Flexible(
                                         flex: 8,
@@ -232,26 +328,52 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
           ),
           Positioned(
             bottom: 20,
-            left: 50,
-            right: 50,
-            child: CustomButton(
-              border: Border.all(
-                color: AppColors.primary,
-              ),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.primary, AppColors.primary],
-              ),
-              onTap: () {},
-              height: 50,
-              text: StringConstants.rejectText,
-              textColor: AppColors.white,
-              borderRadius: 14,
-              fontWeight: FontWeight.w500,
-              iconL: false,
-              iconR: false,
-              fontSize: 16,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  border: Border.all(
+                    color: AppColors.blacklight,
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.white, AppColors.white],
+                  ),
+                  onTap: () {},
+                  height: 50,
+                  width: WidgetConstants.screenWidth *0.42,
+                  text: StringConstants.rejectText,
+                  textColor: AppColors.red,
+                  borderRadius: 14,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  iconR: false,
+                  fontSize: 16,
+                ),
+                CustomButton(
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.primary, AppColors.primary],
+                  ),
+                  onTap: () {},
+                  height: 50,
+                  width: WidgetConstants.screenWidth *0.42,
+                  text: StringConstants.acceptText,
+                  textColor: AppColors.white,
+                  borderRadius: 14,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  iconR: false,
+                  fontSize: 16,
+                ),
+              ],
             ),
           ),
         ],

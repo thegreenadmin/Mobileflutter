@@ -768,20 +768,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                             .storeOrderList.length) {
                                       return InkWell(
                                         onTap: () {
-                                          Get.to(
-                                              () =>
-                                                  const OrdersHomeMainScreen(),
+                                          ordersController.orderStatusId.value == 7?
+                                          Get.to(() => const MarkReturnOrderScreen(),
+                                              arguments: {
+                                                "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
+                                                "orderId": ordersController.storeOrderList[i].orderId.toString() ?? "",
+                                              })
+                                              : Get.to(() => const OrdersHomeMainScreen(),
                                               arguments: {
                                                 "storeId": ordersController
-                                                        .storeOrderList[i]
-                                                        .store
-                                                        ?.storeId
-                                                        .toString() ??
-                                                    "",
-                                                "orderStatus": ordersController
-                                                        .storeOrderList[i]
-                                                        .orderId ??
-                                                    "",
+                                                        .storeOrderList[i].store?.storeId.toString() ?? "",
+                                                "orderStatus": ordersController.storeOrderList[i].orderId ?? "",
                                               });
                                         },
                                         child: Container(

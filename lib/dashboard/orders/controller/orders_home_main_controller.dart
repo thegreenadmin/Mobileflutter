@@ -39,15 +39,12 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
+    orderId.value = Get.arguments==null?"":Get.arguments["orderId"] ?? "";
     storeId.value = Get.arguments["storeId"] ?? "";
     apiGetStoreDetails();
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
-      role!.value = Role.customerRoleText;
-    } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderHistory();
-    }
+      apiGetStoreOrderDetail();
   }
 
   int daysInMonth(DateTime date) {
