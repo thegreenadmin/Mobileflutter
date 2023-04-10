@@ -192,6 +192,7 @@ class StringConstants {
   static String noProductFoundText = "No products found";
   static String noOrdersFoundText = "No orders found";
   static String noFavouriteStoresFoundText = "No favourite stores found";
+  static String noFavouriteProductFoundText = "No favourite product found";
   static String noPreviousStoresFoundText = "No previous stores found";
   static String noStoresFoundText = "No stores found";
   static String noWorkersFoundText = "No workers found";
@@ -252,7 +253,7 @@ class StringConstants {
   static String permissionText = "Permission";
   static String productText = " Product";
   static String payNowText = "Pay Now";
-  static String priceText = "price";
+  static String priceText = "Price";
   static String pendingText = "Pending";
 
   //Q

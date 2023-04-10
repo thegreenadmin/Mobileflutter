@@ -46,7 +46,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: storeHomeMainController.productDetailResponse
@@ -63,6 +63,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ImageConstants.nopicfound,
                                   fit: BoxFit.fill,
                                   height: 120,
+                                  width: 120,
                                 )
                               : Image.network(
                                   storeHomeMainController
@@ -119,7 +120,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
-                                          scale: 2.8,
+                                          scale: 2.9,
                                         ),
                                       )
                                     : InkWell(
@@ -135,12 +136,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         },
                                         child: Image.asset(
                                           ImageConstants.fav,
-                                          scale: 2.8,
+                                          scale: 2.9,
                                         ),
                                       ),
                               ],
                             ),
-                            height8SizedBox,
+                            height4SizedBox,
                             SizedBox(
                               width: 200,
                               child: Text(
@@ -152,12 +153,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       color: AppColors.blacklight,
                                       fontWeight: FontWeight.w400)),
                             ),
-                            height20SizedBox,
+                            height10SizedBox,
                             Text.rich(
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                      text: StringConstants.unitPriceText,
+                                      text: "${StringConstants.unitPriceText}:",
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w400,
@@ -173,7 +174,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ],
                               ),
                             ),
-                            height10SizedBox,
+                            height8SizedBox,
                             Text.rich(
                               TextSpan(
                                 children: [
@@ -236,11 +237,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             .value = storeHomeMainController
                                                 .itemsCount.value +
                                             1;
-                                        print(
-                                            "storeHomeMainController.quantity add");
-                                        print(storeHomeMainController
-                                            .itemsCount.value
-                                            .toString());
                                       },
                                       child: Image.asset(
                                         ImageConstants.add,

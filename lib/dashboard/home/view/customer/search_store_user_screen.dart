@@ -137,7 +137,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         height: 250,
                         width: WidgetConstants.screenWidth,
                         child: GoogleMap(
+                          myLocationButtonEnabled: false,
                           mapType: MapType.normal,
+                          zoomControlsEnabled: false,
                           initialCameraPosition: _kGooglePlex,
                           markers: Set<Marker>.of(markers.values),
                           onMapCreated: (GoogleMapController controller) {
@@ -152,7 +154,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             Get.to(const FilterOptionScreen());
                           },
                           child: Image.asset(
-                            "assets/filterbutton.png",
+                            ImageConstants.filterbutton,
                             scale: 3,
                           ),
                         ))

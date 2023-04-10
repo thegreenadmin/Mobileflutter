@@ -28,7 +28,6 @@ class ServerCommunicator {
   String fileUpload = 'file/upload/single';
   String fileUploadMultiple = 'file/upload/multiple';
 
-
 //G
   String generateOtp = 'user/otp/generate';
 //H
@@ -93,6 +92,7 @@ class ServerCommunicator {
   String storeOrderConfirm = 'store/order/confirm/create';
   String storeOrderShipped = 'store/order/shipped/create';
   String storeOrderDelivered = 'store/order/delivered/create';
+  String storeTransaction = 'store/transaction/list';
 
 //T
 //U

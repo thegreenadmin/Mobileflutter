@@ -208,7 +208,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetCartListApi() async {
     isLoading.value = true;
     debugPrint(
-        "GET CART LIST storeDeliveryServiceId********** ${storeDeliveryServiceId.value.toString() == "0"}");
+        "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
     debugPrint("GET CART LIST URL**********"
         "${storeDeliveryServiceId.value.toString() == "0" ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}"}");
     Map<String, String> headers = {
@@ -229,7 +229,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CART LIST BOdY  *******${value?.body}");
+      debugPrint("GET CART LIST BODY *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
@@ -280,7 +280,7 @@ class StoreHomeMainController extends GetxController {
     };
 
     debugPrint("TOKEN ********** $headers");
-    debugPrint("PARAMETERS ********** $data");
+    debugPrint("API PLACE ORDER BODY ********** $data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -290,7 +290,7 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
 
-      debugPrint("  Place Order *******${value?.body}");
+      debugPrint("API PLACE ORDER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
@@ -337,7 +337,8 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
 
-      debugPrint("Add To Cart  *******${value?.body}");
+      debugPrint("ADD TO CART RESPONSE  *******${value?.body}");
+
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 0;
@@ -377,7 +378,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Update Cart  *******${value?.body}");
+      debugPrint("UPDATE CART RESPONSE  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
@@ -416,7 +417,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Delete Cart  *******${value?.body}");
+      debugPrint("DELETE CART RESPONSE  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);

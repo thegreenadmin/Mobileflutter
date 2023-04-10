@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart'as order_list;
+import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart'
+    as order_list;
 import 'package:thegreenmall/dashboard/orders/model/get_order_status_list_model.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_store_order_list_model.dart' as store_order;
+import 'package:thegreenmall/dashboard/orders/model/get_store_order_list_model.dart'
+    as store_order;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart';
@@ -41,13 +43,17 @@ class OrdersController extends GetxController {
   RxInt orderStatusId = 2.obs;
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
-  late store_order.StoreOrderListResponse storeOrderListResponse = store_order.StoreOrderListResponse();
-  late order_list.OrderListResponse orderListResponse = order_list.OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
+  late store_order.StoreOrderListResponse storeOrderListResponse =
+      store_order.StoreOrderListResponse();
+  late order_list.OrderListResponse orderListResponse =
+      order_list.OrderListResponse();
+  late OrderStatusListResponse orderStatusListResponse =
+      OrderStatusListResponse();
   late OrderDetailResponse orderDetailResponse = OrderDetailResponse();
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<order_list.Order> orderList = <order_list.Order>[].obs;
-  RxList<store_order.StoreOrder> storeOrderList = <store_order.StoreOrder>[].obs;
+  RxList<store_order.StoreOrder> storeOrderList =
+      <store_order.StoreOrder>[].obs;
   RxBool isFavouriteStore = false.obs;
 
   RxList<Categories> stepInd = [
@@ -66,9 +72,7 @@ class OrdersController extends GetxController {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    if (Get.arguments == null
-        ?false
-        : Get.arguments['storeId'] ?? false) {
+    if (Get.arguments == null ? false : Get.arguments['storeId'] ?? false) {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
@@ -107,7 +111,6 @@ class OrdersController extends GetxController {
     });
   }
 
-
   bottomSheetRateNow(context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -118,129 +121,127 @@ class OrdersController extends GetxController {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                      child: Column(
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(bottom: 30),
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      height15SizedBox,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          height15SizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  StringConstants.ratingText,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: Image.asset(
-                                    ImageConstants.cross,
-                                    scale: 2.5,
-                                  ))
-                            ],
-                          ),
-                          height15SizedBox,
-                          Text(
-                            StringConstants.yourThoughtText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          height4SizedBox,
-                          TextFormField(
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                              ],
+                          Flexible(
+                            child: Text(
+                              StringConstants.ratingText,
                               style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              // controller:
-                              // manageStoreController.productNameTextController,
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterProductNameText;
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                hintText: StringConstants.yourThoughtText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
-                          height10SizedBox,
-                          CustomButton(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [AppColors.primary, AppColors.primary],
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
+                              ),
                             ),
-                            onTap: () {
-
-                            },
-                            height: 50,
-                            text: StringConstants.submitText,
-                            borderRadius: 12,
-                            fontWeight: FontWeight.w500,
-                            iconL: false,
-                            fontSize: 16,
                           ),
+                          InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Image.asset(
+                                ImageConstants.cross,
+                                scale: 2.5,
+                              ))
                         ],
                       ),
-                    ),
-                  ],
-                );
-              });
+                      height15SizedBox,
+                      Text(
+                        StringConstants.yourThoughtText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      TextFormField(
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          // controller:
+                          // manageStoreController.productNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterProductNameText;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: StringConstants.yourThoughtText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          )),
+                      height10SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {},
+                        height: 50,
+                        text: StringConstants.submitText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          });
         }).then((value) => {});
   }
 
@@ -254,135 +255,135 @@ class OrdersController extends GetxController {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                      child: Column(
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(bottom: 30),
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      height15SizedBox,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          height15SizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  StringConstants.returnOrderText,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: Image.asset(
-                                    ImageConstants.cross,
-                                    scale: 2.5,
-                                  ))
-                            ],
-                          ),
-                          height15SizedBox,
-                          Text(
-                            StringConstants.writeReasonText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          height4SizedBox,
-                          TextFormField(
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                              ],
+                          Flexible(
+                            child: Text(
+                              StringConstants.returnOrderText,
                               style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              // controller:
-                              // manageStoreController.productNameTextController,
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterProductNameText;
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                hintText: StringConstants.yourThoughtText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
-                          height10SizedBox,
-                          CustomButton(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [AppColors.primary, AppColors.primary],
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
+                              ),
                             ),
-                            onTap: () {
-                              addToCartDialog(context);
-                            },
-                            height: 50,
-                            text: StringConstants.submitText,
-                            borderRadius: 12,
-                            fontWeight: FontWeight.w500,
-                            iconL: false,
-                            fontSize: 16,
                           ),
+                          InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Image.asset(
+                                ImageConstants.cross,
+                                scale: 2.5,
+                              ))
                         ],
                       ),
-                    ),
-                  ],
-                );
-              });
+                      height15SizedBox,
+                      Text(
+                        StringConstants.writeReasonText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      TextFormField(
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          // controller:
+                          // manageStoreController.productNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterProductNameText;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: StringConstants.yourThoughtText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          )),
+                      height10SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {
+                          addToCartDialog(context);
+                        },
+                        height: 50,
+                        text: StringConstants.submitText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          });
         }).then((value) => {});
   }
 
   void addToCartDialog(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -576,7 +577,8 @@ class OrdersController extends GetxController {
       debugPrint("Store Order  List *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        storeOrderListResponse = store_order.StoreOrderListResponse.fromJson(value?.body);
+        storeOrderListResponse =
+            store_order.StoreOrderListResponse.fromJson(value?.body);
         List<store_order.StoreOrder>? orders = [];
         orders = storeOrderListResponse.data!.orders ?? [];
         if (orders.isNotEmpty) {
@@ -597,7 +599,6 @@ class OrdersController extends GetxController {
       }
     });
   }
-
 
   //Get Store Details Api
   Future apiGetStoreDetailsApi() async {
@@ -653,21 +654,41 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse = OrderDetailResponse.fromJson(value?.body);
-        activeStep.value = orderDetailResponse.data?.order?.orderHistories?.first.orderStatusId =="2"
-         && orderDetailResponse.data?.order?.orderHistories?.first.isCurrentStatus==true?
-        0:orderDetailResponse.data?.order?.orderHistories?.first.orderStatusId =="3"
-            && orderDetailResponse.data?.order?.orderHistories?.first.isCurrentStatus==true?1:
-        orderDetailResponse.data?.order?.orderHistories?.first.orderStatusId =="6"
-            && orderDetailResponse.data?.order?.orderHistories?.first.isCurrentStatus==true?2:
-        orderDetailResponse.data?.order?.orderHistories?.first.orderStatusId =="5"
-            && orderDetailResponse.data?.order?.orderHistories?.first.isCurrentStatus==true?3:0;
+        activeStep.value = orderDetailResponse
+                        .data?.order?.orderHistories?.first.orderStatusId ==
+                    "2" &&
+                orderDetailResponse
+                        .data?.order?.orderHistories?.first.isCurrentStatus ==
+                    true
+            ? 0
+            : orderDetailResponse
+                            .data?.order?.orderHistories?.first.orderStatusId ==
+                        "3" &&
+                    orderDetailResponse.data?.order?.orderHistories?.first
+                            .isCurrentStatus ==
+                        true
+                ? 1
+                : orderDetailResponse.data?.order?.orderHistories?.first
+                                .orderStatusId ==
+                            "6" &&
+                        orderDetailResponse.data?.order?.orderHistories?.first
+                                .isCurrentStatus ==
+                            true
+                    ? 2
+                    : orderDetailResponse.data?.order?.orderHistories?.first
+                                    .orderStatusId ==
+                                "5" &&
+                            orderDetailResponse.data?.order?.orderHistories
+                                    ?.first.isCurrentStatus ==
+                                true
+                        ? 3
+                        : 0;
         for (var element in stepInd) {
-          if(element.id! <= activeStep.value){
+          if (element.id! <= activeStep.value) {
             element.isSelected = true;
           }
         }
-
-        } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -688,7 +709,7 @@ class OrdersController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
-    Map<String,dynamic> data = {
+    Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value),
       "order_id": int.parse(orderStatus.value)
     };
@@ -697,8 +718,7 @@ class OrdersController extends GetxController {
     UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().cancelOrder,
+            ServerCommunicator().baseUrl + ServerCommunicator().cancelOrder,
             headers,
             showLoading: false)
         .then((value) async {

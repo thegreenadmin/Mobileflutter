@@ -81,23 +81,24 @@ class _CartScreenState extends State<CartScreen> {
                           StringConstants.itemsText,
                           style: const TextStyle(
                               color: AppColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
                         ),
-                        height10SizedBox,
+                        height8SizedBox,
                         Obx(
                           () => ListView.separated(
                               separatorBuilder:
                                   (BuildContext context, int index) {
                                 return height12SizedBox;
                               },
-                              itemCount: storeHomeMainController.cartItems.length,
+                              itemCount:
+                                  storeHomeMainController.cartItems.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int i) {
                                 return Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
+                                      horizontal: 0, vertical: 8),
                                   decoration: const BoxDecoration(
                                       color: AppColors.greylight,
                                       borderRadius: BorderRadius.all(
@@ -155,7 +156,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 style: const TextStyle(
                                                     fontSize: 16.0,
                                                     color: AppColors.black,
-                                                    fontWeight: FontWeight.w600),
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
                                               height6SizedBox,
                                               Text(
@@ -167,7 +169,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 style: const TextStyle(
                                                     fontSize: 14.0,
                                                     color: AppColors.black,
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                               height6SizedBox,
                                               Row(
@@ -181,8 +184,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                            text: StringConstants
-                                                                .unitPriceText,
+                                                            text:
+                                                                "${StringConstants.unitPriceText}:",
                                                             style: const TextStyle(
                                                                 color: AppColors
                                                                     .black,
@@ -195,7 +198,8 @@ class _CartScreenState extends State<CartScreen> {
                                                               ' \$${storeHomeMainController.cartItems[i].product?.productPrice?.toStringAsFixed(2) ?? "0"}',
                                                           style: const TextStyle(
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               fontSize: 16,
                                                               color: AppColors
                                                                   .black),
@@ -212,7 +216,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   InkWell(
                                                       onTap: () {
                                                         storeHomeMainController
-                                                                    .cartItems[i]
+                                                                    .cartItems[
+                                                                        i]
                                                                     .itemsCount !=
                                                                 0
                                                             ? storeHomeMainController.apiUpdateCart(
@@ -288,14 +293,16 @@ class _CartScreenState extends State<CartScreen> {
                                             onTap: () async {
                                               return await showDialog(
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return AlertDialog(
                                                     title: Text(
                                                       StringConstants.alertText,
                                                       style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          color: AppColors.black,
+                                                          color:
+                                                              AppColors.black,
                                                           fontSize: 20),
                                                     ),
                                                     content: Text(
@@ -312,15 +319,15 @@ class _CartScreenState extends State<CartScreen> {
                                                           style: ElevatedButton
                                                               .styleFrom(
                                                             backgroundColor:
-                                                                AppColors.primary,
+                                                                AppColors
+                                                                    .primary,
                                                           ),
                                                           onPressed: () {
                                                             Get.back();
                                                             storeHomeMainController.apiDeleteCart(
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
-                                                                            .cartItems[
-                                                                                i]
+                                                                            .cartItems[i]
                                                                             .cartItemId ??
                                                                         "0"));
                                                           },
@@ -361,7 +368,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: const TextStyle(
                               color: AppColors.black,
                               fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w600),
                         ),
                         height10SizedBox,
                         SizedBox(
@@ -375,7 +382,8 @@ class _CartScreenState extends State<CartScreen> {
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemCount: storeHomeMainController
-                                      .storeDetailsResponse.value
+                                      .storeDetailsResponse
+                                      .value
                                       .data
                                       ?.store
                                       ?.storeDeliveryServices
@@ -393,7 +401,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     .storeDeliveryServiceId
                                                     .value ==
                                                 storeHomeMainController
-                                                    .storeDetailsResponse.value
+                                                    .storeDetailsResponse
+                                                    .value
                                                     .data
                                                     ?.store
                                                     ?.storeDeliveryServices?[i]
@@ -403,13 +412,17 @@ class _CartScreenState extends State<CartScreen> {
                                                 AppColors.primary,
                                                 AppColors.primary
                                               ]
-                                            : [AppColors.white, AppColors.white],
+                                            : [
+                                                AppColors.white,
+                                                AppColors.white
+                                              ],
                                       ),
                                       onTap: () async {
                                         storeHomeMainController
                                             .storeDeliveryServiceId
                                             .value = storeHomeMainController
-                                                .storeDetailsResponse.value
+                                                .storeDetailsResponse
+                                                .value
                                                 .data
                                                 ?.store
                                                 ?.storeDeliveryServices?[i]
@@ -419,9 +432,10 @@ class _CartScreenState extends State<CartScreen> {
                                         await storeHomeMainController
                                             .apiGetCartListApi();
                                       },
-                                      height: 45,
+                                      height: 40,
                                       text: storeHomeMainController
-                                                  .storeDetailsResponse.value
+                                                  .storeDetailsResponse
+                                                  .value
                                                   .data
                                                   ?.store
                                                   ?.storeDeliveryServices?[i]
@@ -429,18 +443,22 @@ class _CartScreenState extends State<CartScreen> {
                                               "1"
                                           ? StringConstants.inStoreText
                                           : storeHomeMainController
-                                                      .storeDetailsResponse.value
+                                                      .storeDetailsResponse
+                                                      .value
                                                       .data
                                                       ?.store
-                                                      ?.storeDeliveryServices?[i]
+                                                      ?.storeDeliveryServices?[
+                                                          i]
                                                       .deliveryServiceId ==
                                                   "2"
                                               ? StringConstants.deliveryText
                                               : StringConstants.curbSideText,
                                       textColor: storeHomeMainController
-                                                  .storeDeliveryServiceId.value ==
+                                                  .storeDeliveryServiceId
+                                                  .value ==
                                               storeHomeMainController
-                                                  .storeDetailsResponse.value
+                                                  .storeDetailsResponse
+                                                  .value
                                                   .data
                                                   ?.store
                                                   ?.storeDeliveryServices?[i]
@@ -453,7 +471,8 @@ class _CartScreenState extends State<CartScreen> {
                                       iconL: true,
                                       fontSize: 16,
                                       imageL: storeHomeMainController
-                                                  .storeDetailsResponse.value
+                                                  .storeDetailsResponse
+                                                  .value
                                                   .data
                                                   ?.store
                                                   ?.storeDeliveryServices?[i]
@@ -461,12 +480,13 @@ class _CartScreenState extends State<CartScreen> {
                                               "1"
                                           ? Image.asset(
                                               ImageConstants.instore,
-                                              scale: 2.8,
+                                              scale: 2.5,
                                               color: storeHomeMainController
                                                           .storeDeliveryServiceId
                                                           .value ==
                                                       storeHomeMainController
-                                                          .storeDetailsResponse.value
+                                                          .storeDetailsResponse
+                                                          .value
                                                           .data
                                                           ?.store
                                                           ?.storeDeliveryServices?[
@@ -477,20 +497,23 @@ class _CartScreenState extends State<CartScreen> {
                                                   : AppColors.primary,
                                             )
                                           : storeHomeMainController
-                                                      .storeDetailsResponse.value
+                                                      .storeDetailsResponse
+                                                      .value
                                                       .data
                                                       ?.store
-                                                      ?.storeDeliveryServices?[i]
+                                                      ?.storeDeliveryServices?[
+                                                          i]
                                                       .deliveryServiceId ==
                                                   "2"
                                               ? Image.asset(
                                                   ImageConstants.delivery,
-                                                  scale: 2.8,
+                                                  scale: 2.5,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
                                                               .value ==
                                                           storeHomeMainController
-                                                              .storeDetailsResponse.value
+                                                              .storeDetailsResponse
+                                                              .value
                                                               .data
                                                               ?.store
                                                               ?.storeDeliveryServices?[
@@ -502,12 +525,13 @@ class _CartScreenState extends State<CartScreen> {
                                                 )
                                               : Image.asset(
                                                   ImageConstants.curb,
-                                                  scale: 2.8,
+                                                  scale: 2.2,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
                                                               .value ==
                                                           storeHomeMainController
-                                                              .storeDetailsResponse.value
+                                                              .storeDetailsResponse
+                                                              .value
                                                               .data
                                                               ?.store
                                                               ?.storeDeliveryServices?[
@@ -538,7 +562,8 @@ class _CartScreenState extends State<CartScreen> {
                                   Radius.circular(8.0),
                                 )),
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -547,36 +572,40 @@ class _CartScreenState extends State<CartScreen> {
                                         scale: 2.5,
                                       ),
                                       width10SizedBox,
-                                      Obx(()=>SizedBox(
-                                        width: 200,
-                                        child: Text(
-                                          storeHomeMainController
-                                              .selectedUserAddress
-                                              .value
-                                              .addressLine1 ==
-                                              null &&
-                                              storeHomeMainController
-                                                  .selectedUserAddress
-                                                  .value
-                                                  .city ==
-                                                  null
-                                              ? StringConstants.addAddressText
-                                              : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
-                                              "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
-                                          style: const TextStyle(
-                                              overflow: TextOverflow.visible,
-                                              color: AppColors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
+                                      Obx(
+                                        () => SizedBox(
+                                          width: 200,
+                                          child: Text(
+                                            storeHomeMainController
+                                                            .selectedUserAddress
+                                                            .value
+                                                            .addressLine1 ==
+                                                        null &&
+                                                    storeHomeMainController
+                                                            .selectedUserAddress
+                                                            .value
+                                                            .city ==
+                                                        null
+                                                ? StringConstants.addAddressText
+                                                : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
+                                                    "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
+                                            style: const TextStyle(
+                                                overflow: TextOverflow.visible,
+                                                color: AppColors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
-                                      ),),
+                                      ),
                                     ],
                                   ),
                                   width10SizedBox,
                                   InkWell(
                                     onTap: () {
-                                      storeHomeMainController.selectedUserAddress
-                                                      .value.addressLine1 ==
+                                      storeHomeMainController
+                                                      .selectedUserAddress
+                                                      .value
+                                                      .addressLine1 ==
                                                   null &&
                                               storeHomeMainController
                                                       .selectedUserAddress
@@ -584,12 +613,14 @@ class _CartScreenState extends State<CartScreen> {
                                                       .city ==
                                                   null
                                           ? Get.to(const AccountScreen(),
-                                              arguments: ({"isFromCart": true}))?.then((value) =>storeHomeMainController.apiGetUserDetailsApi() )
+                                              arguments:
+                                                  ({"isFromCart": true}))?.then(
+                                              (value) => storeHomeMainController
+                                                  .apiGetUserDetailsApi())
                                           : storeHomeMainController
                                                   .userAddress.isNotEmpty
                                               ? storeHomeMainController
-                                                  .bottomSheetChangePickupLocation(
-                                                      context)
+                                                  .bottomSheetChangePickupLocation(context)
                                               : null;
                                     },
                                     child: Container(
@@ -597,9 +628,10 @@ class _CartScreenState extends State<CartScreen> {
                                       width: 80.0,
                                       decoration: BoxDecoration(
                                         color: AppColors.white,
-                                        border:
-                                            Border.all(color: AppColors.primary),
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                            color: AppColors.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
                                       child: Center(
                                         child: Text(

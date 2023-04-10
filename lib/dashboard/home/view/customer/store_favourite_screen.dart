@@ -43,7 +43,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           height4SizedBox,
                           Center(
                             child: Text(
-                              StringConstants.noFavouriteStoresFoundText,
+                              StringConstants.noFavouriteProductFoundText,
                               style: const TextStyle(
                                   fontStyle: FontStyle.italic, fontSize: 16),
                             ),

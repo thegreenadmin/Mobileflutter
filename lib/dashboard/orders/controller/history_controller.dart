@@ -33,10 +33,10 @@ class HistoryController extends GetxController {
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserOrderHistory();
+      apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOrderHistory();
+      apiGetOwnerOrderTransactionHistory();
     }
   }
 
@@ -54,14 +54,14 @@ class HistoryController extends GetxController {
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-01-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/01/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-01-01",
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/01/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}");
         }
         break;
 
@@ -72,72 +72,72 @@ class HistoryController extends GetxController {
           bool isLeapYear(int year) =>
               (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-02-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/02/01",
                   endDateOfMonth: isLeapYear(year)
-                      ? "${DateTime.now().year}-02-29"
-                      : "${DateTime.now().year}-02-28")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-02-01",
+                      ? "${DateTime.now().year}/02/29"
+                      : "${DateTime.now().year}/02/28")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/02/01",
                   endDateOfMonth: isLeapYear(year)
-                      ? "${DateTime.now().year}-02-29"
-                      : "${DateTime.now().year}-02-28");
+                      ? "${DateTime.now().year}/02/29"
+                      : "${DateTime.now().year}/02/28");
         }
         break;
       case 2: //March
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-03-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/03/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-03-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-03-01",
+                      "${DateTime.now().year}/03/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/03/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-03-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/03/${daysInMonth(DateTime.now())}");
         }
         break;
       case 3: //April
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-04-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/04/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-04-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-04-01",
+                      "${DateTime.now().year}/04/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/04/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-04-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/04/${daysInMonth(DateTime.now())}");
         }
         break;
       case 4: //May
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-05-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/05/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-05-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-05-01",
+                      "${DateTime.now().year}/05/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/05/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-05-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/05/${daysInMonth(DateTime.now())}");
         }
         break;
       case 5: //june
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-06-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/06/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-06-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-06-01",
+                      "${DateTime.now().year}/06/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/06/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-06-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/06/${daysInMonth(DateTime.now())}");
         }
         break;
       case 6: //july
@@ -145,84 +145,84 @@ class HistoryController extends GetxController {
           debugPrint(selectedIndex.value.toString());
 
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-07-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/07/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-07-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-07-01",
+                      "${DateTime.now().year}/07/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/07/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-07-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/07/${daysInMonth(DateTime.now())}");
         }
         break;
       case 7: //aug
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-08-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/08/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-08-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-08-01",
+                      "${DateTime.now().year}/08/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/08/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-08-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/08/${daysInMonth(DateTime.now())}");
         }
         break;
       case 8: //sept
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-09-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/09/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-09-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-09-01",
+                      "${DateTime.now().year}/09/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/09/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-09-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/09/${daysInMonth(DateTime.now())}");
         }
         break;
       case 9: //oct
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-10-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/10/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-10-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-10-01",
+                      "${DateTime.now().year}/10/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/10/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-10-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/10/${daysInMonth(DateTime.now())}");
         }
         break;
       case 10: //Nov
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-11-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/11/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-11-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-11-01",
+                      "${DateTime.now().year}/11/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/11/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-11-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/11/${daysInMonth(DateTime.now())}");
         }
         break;
       case 11: //Dec
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-12-01",
+              ? apiGetUserOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/12/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-12-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
-                  startDateOfMonth: "${DateTime.now().year}-12-01",
+                      "${DateTime.now().year}/12/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
+                  startDateOfMonth: "${DateTime.now().year}/12/01",
                   endDateOfMonth:
-                      "${DateTime.now().year}-12-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/12/${daysInMonth(DateTime.now())}");
         }
         break;
 
@@ -230,16 +230,16 @@ class HistoryController extends GetxController {
         {
           debugPrint(selectedIndex.value.toString());
           role!.value == Role.customerRoleText
-              ? apiGetUserOrderHistory(
+              ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}",
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}",
                   endDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}")
-              : apiGetOwnerOrderHistory(
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}")
+              : apiGetOwnerOrderTransactionHistory(
                   startDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}",
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}",
                   endDateOfMonth:
-                      "${DateTime.now().year}-01-${daysInMonth(DateTime.now())}");
+                      "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}");
         }
         break;
     }
@@ -260,14 +260,14 @@ class HistoryController extends GetxController {
     StringConstants.decText,
   ].obs;
 
-  //Api get current and past history of [USER]
-  Future apiGetUserOrderHistory(
+  //Api get current and past transaction history of [USER]
+  Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
     debugPrint(
         "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      'Content/Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
@@ -312,41 +312,48 @@ class HistoryController extends GetxController {
     });
   }
 
-  //Api get current and past history of [OWNER]
-  Future apiGetOwnerOrderHistory(
+  //Api get current and past transaction history of [OWNER]
+  Future apiGetOwnerOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
+    String currentMonth =
+        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+    debugPrint("OWNER ORDER HISTORY URL **********");
     debugPrint(
-        "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
+      (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
+              (endDateOfMonth == "" || endDateOfMonth.isEmpty)
+          ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}-$currentMonth-01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+          : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
+    );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    String currentMonth =
-        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
 
-    Map body = {
-      "store_id": null,
-      "page": null,
-      "page_size": null,
-      "order_by": "order_id",
-      "order_type": "DESC",
-      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-01"
-          : startDateOfMonth,
-      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
-          : endDateOfMonth,
-      "only_active_orders": true,
-      "order_statuses": []
-    };
-    debugPrint("OWNER ORDER HISTORY BODY********** $body");
+    // Map body = {
+    //   "store_id": null,
+    //   "page": null,
+    //   "page_size": null,
+    //   "order_by": "order_id",
+    //   "order_type": "DESC",
+    //   "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
+    //       ? "${DateTime.now().year}-$currentMonth-01"
+    //       : startDateOfMonth,
+    //   "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
+    //       ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
+    //       : endDateOfMonth,
+    //   "only_active_orders": true,
+    //   "order_statuses": []
+    // };
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOrderList,
+        .getWithHeadersApi(
+            (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
+                    (endDateOfMonth == "" || endDateOfMonth.isEmpty)
+                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+                : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
             showLoading: true)
         .then((value) async {
@@ -354,9 +361,9 @@ class HistoryController extends GetxController {
       debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        getOwnerOrderHistoryModel =
-            GetOwnerOrderHistoryModel.fromJson(value.body);
-        ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
+        // getOwnerOrderHistoryModel =
+        //     GetOwnerOrderHistoryModel.fromJson(value.body);
+        // ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {
         Utility.showToast(value.body['message']);

@@ -56,6 +56,7 @@ class HomeController extends GetxController {
   RxList<DataList> featuredUserProductList = <DataList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+
   @override
   void onInit() {
     super.onInit();
@@ -70,12 +71,12 @@ class HomeController extends GetxController {
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserOffersList();
-      apiGetUserFeaturedProducts();
+      await apiGetUserOffersList();
+      await apiGetUserFeaturedProducts();
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOffersList();
-      apiGetOwnerFeaturedProducts();
+      await apiGetOwnerOffersList();
+      await apiGetOwnerFeaturedProducts();
     }
   }
 
@@ -167,7 +168,7 @@ class HomeController extends GetxController {
             StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
-        getCurrentLocation();
+        await getCurrentLocation();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -178,8 +179,7 @@ class HomeController extends GetxController {
   Future apiGetUserOffersList() async {
     userCrouselImgList.clear();
     debugPrint(
-      "GET USER OFFER STORES URL**********"
-      "${ServerCommunicator().baseUrl + ServerCommunicator().shopStoreHomeOffers + "?longitude=" + lng.toString() + "&latitude=" + lat.toString()}&mileage=&page=1&page_size=20",
+      "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -190,8 +190,7 @@ class HomeController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl + ServerCommunicator().shopStoreHomeOffers + "?longitude=" + lng.toString() + "&latitude=" + lat.toString()}&mileage=&page=1&page_size=20",
-            // "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude= +37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {

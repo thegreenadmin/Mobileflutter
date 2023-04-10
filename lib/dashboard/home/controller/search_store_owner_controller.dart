@@ -138,11 +138,11 @@ class OwnerStoresController extends GetxController {
     getApiData();
   }
 
-  getApiData()async{
-   await apiGetStoreList();
-   await apiGetDeliveryServices();
-   await apiGetOwnerOffersList();
-   await getCurrentLocation();
+  getApiData() async {
+    await apiGetStoreList();
+    await apiGetDeliveryServices();
+    await apiGetOwnerOffersList();
+    await getCurrentLocation();
   }
 
   getCurrentLocation() async {
@@ -292,7 +292,7 @@ class OwnerStoresController extends GetxController {
             body,
             ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
@@ -475,9 +475,9 @@ class OwnerStoresController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
-          deliveryServices.value =
-              deliveryServicesResponse.data?.deliveryServices??[];
-        } else if (value.body["status"] == ApiConstants.statusCode403) {
+        deliveryServices.value =
+            deliveryServicesResponse.data?.deliveryServices ?? [];
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -591,7 +591,8 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
-        debugPrint("deliveryServices isNotEmpty: ===== ${deliveryServices.isNotEmpty}");
+        debugPrint(
+            "deliveryServices isNotEmpty: ===== ${deliveryServices.isNotEmpty}");
 
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {

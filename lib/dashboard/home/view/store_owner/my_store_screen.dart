@@ -26,67 +26,118 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(
-                () => ownerStoresController.getOwnerOfferlist.isEmpty
-                    ? ownerStoresController.isLoading.value == true
-                        ? height0SizedBox
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.asset(
-                                  ImageConstants.nodata,
-                                  scale: 8,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              height4SizedBox,
-                              Center(
-                                child: Text(
-                                  StringConstants.noOffersFoundText,
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ],
-                          )
-                    : SizedBox(
-                        height: 200,
-                        child: ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) {
-                            return width8SizedBox;
-                          },
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              ownerStoresController.getOwnerOfferlist.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: ownerStoresController
-                                    .getOwnerOfferlist[index]
-                                    .image!
-                                    .dynamicUrl!
-                                    .isEmpty
-                                ? Image.asset(
-                                    ImageConstants.nopicfound,
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.network(
-                                    ownerStoresController
-                                        .getOwnerOfferlist[index]
-                                        .image!
-                                        .dynamicUrl!,
-                                    fit: BoxFit.fill,
-                                    width: WidgetConstants.screenWidth * 0.8,
+              SizedBox(
+                  height: 200,
+                  child: Obx(
+                    () => ownerStoresController.getOwnerOfferlist.isEmpty
+                        ? ownerStoresController.isLoading.value == true
+                            ? height0SizedBox
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      ImageConstants.nodata,
+                                      scale: 8,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
-                          ),
-                        ),
-                      ),
-              ),
-              height30SizedBox,
+                                  height4SizedBox,
+                                  Center(
+                                    child: Text(
+                                      StringConstants.noOffersFoundText,
+                                      style: const TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              )
+                        : ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return width8SizedBox;
+                            },
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                ownerStoresController.getOwnerOfferlist.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  ownerStoresController.getOwnerOfferlist[index]
+                                                  .image?.dynamicUrl !=
+                                              null &&
+                                          ownerStoresController
+                                                  .getOwnerOfferlist[index]
+                                                  .image
+                                                  ?.dynamicUrl !=
+                                              ""
+                                      ? SizedBox(
+                                          height: 200,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              60,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                                ownerStoresController
+                                                        .getOwnerOfferlist[
+                                                            index]
+                                                        .image
+                                                        ?.dynamicUrl ??
+                                                    "",
+                                                fit: BoxFit.cover),
+                                          ),
+                                        )
+                                      : Image.asset(
+                                          ImageConstants.nopicfound,
+                                        ),
+                                  SizedBox(
+                                    height: 55,
+                                    child: Card(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      )),
+                                      color: Colors.white,
+                                      elevation: 2.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 12.0,
+                                            right: 12,
+                                            bottom: 10,
+                                            top: 10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              ownerStoresController
+                                                      .getOwnerOfferlist[index]
+                                                      .offerName ??
+                                                  "",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
+                  )),
+              height20SizedBox,
               Obx(
                 () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox

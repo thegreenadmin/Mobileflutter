@@ -43,8 +43,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         !historyController.isCurrentMonthSelected.value;
                   }
                   historyController.role!.value == Role.customerRoleText
-                      ? historyController.apiGetUserOrderHistory()
-                      : historyController.apiGetOwnerOrderHistory();
+                      ? historyController.apiGetUserOrderTransactionHistory()
+                      : historyController.apiGetOwnerOrderTransactionHistory();
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
@@ -80,8 +80,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         !historyController.isCurrentMonthSelected.value;
                   }
                   historyController.role!.value == Role.customerRoleText
-                      ? historyController.apiGetUserOrderHistory()
-                      : historyController.apiGetOwnerOrderHistory();
+                      ? historyController.apiGetUserOrderTransactionHistory()
+                      : historyController.apiGetOwnerOrderTransactionHistory();
 
                   historyController.onIndexChange(0);
                 },
