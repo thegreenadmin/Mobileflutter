@@ -13,6 +13,7 @@ class StringConstants {
   static String asYouShopInVariousStores =
       "As you shop in various stores at The Green Mall, feel free to mark your favorite products for easy reference.";
   static String accountText = "Account";
+  static String acceptText = "Accept";
   static String ageText = "Age";
   static String accountIdText = "Account ID";
   static String appIconAndSkinUpdateText = "App Icon & Skin Update";

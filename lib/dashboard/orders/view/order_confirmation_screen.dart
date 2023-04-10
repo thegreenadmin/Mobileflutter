@@ -392,11 +392,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             height30SizedBox,
             Obx(()=>EasyStepper(
               activeStep: ordersController.activeStep.value,
-              lineLength: 55,
+              lineLength: 25,
               stepShape: StepShape.circle,
               borderThickness: 0,
-              padding: 0,
-              stepRadius: 22,
+              stepRadius: 28,
               lineColor: AppColors.grey,
               lineType: LineType.normal,
               activeStepBorderType: BorderType.normal,
@@ -406,6 +405,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               finishedStepBackgroundColor: AppColors.primary,
               activeStepIconColor: AppColors.primary,
               showLoadingAnimation: false,
+              showStepBorder: false,
               unreachedStepIconColor: AppColors.black,
               unreachedStepTextColor: AppColors.black,
               steps: List<EasyStep>.generate(
@@ -413,9 +413,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     (index) => EasyStep(
                   customStep:
                       ordersController.stepInd[index].isSelected==true
-                      ? Image.asset(ImageConstants.blueTick)
-                      : Image.asset(ImageConstants.blackTick),
-                  title: ordersController.stepInd[index].name ?? "",
+                      ? Image.asset(ImageConstants.blueTick,scale: 3.5,)
+                      : Image.asset(ImageConstants.blackTick,scale: 3.5,),
+                  customTitle: Text(ordersController.stepInd[index].name ?? "",
+                    style: const TextStyle(
+                      overflow: TextOverflow.visible,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: AppColors.black),),
                 ),
               ),
               onStepReached: (index) {},

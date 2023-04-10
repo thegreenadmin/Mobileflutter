@@ -378,96 +378,100 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               ),
             ),
           )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: WidgetConstants.screenHeight * 0.1,
-              color: AppColors.primaryBackgroundLight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          StringConstants.payNowText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.to(const CartScreen());
-                          },
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 22.0,
-                                backgroundColor: Colors.white,
-                                child: Image.asset(ImageConstants.cart,
-                                    height: 16),
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Container(
-                                    padding: const EdgeInsets.all(1.5),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.red,
-                                      borderRadius: BorderRadius.circular(8.5),
-                                    ),
-                                    constraints: const BoxConstraints(
-                                      minWidth: 15,
-                                      minHeight: 15,
-                                    ),
-                                    child: Obx(
-                                      () => Text(
-                                        storeHomeMainController.cartItems.length
-                                            .toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                        ),
-                                        textAlign: TextAlign.center,
+          Obx(()=> Visibility(
+            visible:  storeHomeMainController.productDetailResponse.value.data
+                ?.product?.cartItems?.isNotEmpty ??false,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: WidgetConstants.screenHeight * 0.1,
+                color: AppColors.primaryBackgroundLight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            StringConstants.payNowText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.to(const CartScreen());
+                            },
+                            child: Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 22.0,
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(ImageConstants.cart,
+                                      height: 16),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                      padding: const EdgeInsets.all(1.5),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.red,
+                                        borderRadius: BorderRadius.circular(8.5),
                                       ),
-                                    )),
-                              )
-                            ],
+                                      constraints: const BoxConstraints(
+                                        minWidth: 15,
+                                        minHeight: 15,
+                                      ),
+                                      child: Obx(
+                                            () => Text(
+                                          storeHomeMainController.cartItems.length
+                                              .toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        width8SizedBox,
-                        CustomButton(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.primary, AppColors.primary],
+                          width8SizedBox,
+                          CustomButton(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [AppColors.primary, AppColors.primary],
+                            ),
+                            onTap: () {
+                              Get.to(const CartScreen());
+                            },
+                            height: 45,
+                            width: 120,
+                            text: StringConstants.checkOutText,
+                            borderRadius: 12,
+                            fontWeight: FontWeight.w500,
+                            iconL: false,
+                            fontSize: 14,
                           ),
-                          onTap: () {
-                            Get.to(const CartScreen());
-                          },
-                          height: 45,
-                          width: 120,
-                          text: StringConstants.checkOutText,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconL: false,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          ),),
         ],
       ),
     );
