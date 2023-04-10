@@ -90,7 +90,11 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    isFromHome.value = Get.arguments["isFromHome"] ?? false;
+
+    if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
+      isFromHome.value = Get.arguments["isFromHome"] ?? false;
+    }
+
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -295,6 +299,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
         Get.to(const OrderConfirmationScreen(), arguments: {
+          "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false
         });
