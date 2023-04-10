@@ -80,7 +80,10 @@ class OrdersController extends GetxController {
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetOrderListApi();
-      apiGetOrderDetailsApi();
+      if(orderStatus.value!=""){
+        apiGetOrderDetailsApi();
+      }
+
       page.value = 1;
     } else {
       role!.value = Role.storeOwnerRoleText;
@@ -494,8 +497,8 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders":
-          orderStatusId.value != 5 ? isActiveOrders.value : null,
-      "order_statuses": orderStatusId.value == 5
+      isActiveOrders.value==true ? isActiveOrders.value : null,
+      "order_statuses": isActiveOrders.value == false
           ? [
               {"order_status_id": orderStatusId.value, "as": "orders"}
             ]

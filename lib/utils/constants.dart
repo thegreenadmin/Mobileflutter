@@ -29,6 +29,7 @@ class StringConstants {
   static String activeOffersText = "Active Offers";
   static String addOfferText = "Add Offer";
   static String activeOrderText = "Active Orders";
+  static String activeText = "Active";
   static String addANewStoreText = "Add a new store";
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
@@ -46,7 +47,6 @@ class StringConstants {
   static String addYourText = "Add your";
   static String aprilText = "April";
   static String augText = "August";
-  static String activeText = "Active";
 
   //B
   static String breadthText = "Breadth";
@@ -78,6 +78,7 @@ class StringConstants {
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
   static String cancelText = "Cancel";
+  static String cancelledText = "Cancelled";
   static String createYourText = "Create your";
   static String checkOutText = "Check Out";
   static String clickCollectText = "Click & Collect";
