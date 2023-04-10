@@ -207,10 +207,10 @@ class StoreHomeMainController extends GetxController {
   //Get Cart List Api
   Future apiGetCartListApi() async {
     isLoading.value = true;
-    debugPrint("GET CART LIST storeDeliveryServiceId********** ${storeDeliveryServiceId.value.toString()=="0"}");
+    debugPrint(
+        "GET CART LIST storeDeliveryServiceId********** ${storeDeliveryServiceId.value.toString() == "0"}");
     debugPrint("GET CART LIST URL**********"
-        "${ storeDeliveryServiceId.value.toString()=="0"?"${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}":
-    "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}"}");
+        "${storeDeliveryServiceId.value.toString() == "0" ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}"}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -221,9 +221,10 @@ class StoreHomeMainController extends GetxController {
 
     UserProvider()
         .getWithHeadersApi(
-        storeDeliveryServiceId.value.toString()=="0" && selectedUserAddress.value.userAddressId==null?
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}":
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+            storeDeliveryServiceId.value.toString() == "0" &&
+                    selectedUserAddress.value.userAddressId == null
+                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}"
+                : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
             showLoading: false)
         .then((value) async {
