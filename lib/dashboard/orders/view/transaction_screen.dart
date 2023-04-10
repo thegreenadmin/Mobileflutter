@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/orders/controller/history_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
+
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+class TransactionScreen extends StatefulWidget {
+  const TransactionScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  final HistoryController historyController = Get.put(HistoryController());
+class _TransactionScreenState extends State<TransactionScreen> {
+  final TransactionController transactionController =
+      Get.put(TransactionController());
 
   Container _orderHistoryTab() {
     return Container(
@@ -37,20 +37,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  if (historyController.isCurrentMonthSelected.value == true) {
+                  if (transactionController.isCurrentMonthSelected.value ==
+                      true) {
                   } else {
-                    historyController.isCurrentMonthSelected.value =
-                        !historyController.isCurrentMonthSelected.value;
+                    transactionController.isCurrentMonthSelected.value =
+                        !transactionController.isCurrentMonthSelected.value;
                   }
-                  historyController.role!.value == Role.customerRoleText
-                      ? historyController.apiGetUserOrderTransactionHistory()
-                      : historyController.apiGetOwnerOrderTransactionHistory();
+                  transactionController.role!.value == Role.customerRoleText
+                      ? transactionController
+                          .apiGetUserOrderTransactionHistory()
+                      : transactionController
+                          .apiGetOwnerOrderTransactionHistory();
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: historyController.isCurrentMonthSelected.value
+                  color: transactionController.isCurrentMonthSelected.value
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -63,9 +66,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: historyController.isCurrentMonthSelected.value
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                          color:
+                              transactionController.isCurrentMonthSelected.value
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                     ],
@@ -74,22 +78,25 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
               InkWell(
                 onTap: () {
-                  if (historyController.isCurrentMonthSelected.value == false) {
+                  if (transactionController.isCurrentMonthSelected.value ==
+                      false) {
                   } else {
-                    historyController.isCurrentMonthSelected.value =
-                        !historyController.isCurrentMonthSelected.value;
+                    transactionController.isCurrentMonthSelected.value =
+                        !transactionController.isCurrentMonthSelected.value;
                   }
-                  historyController.role!.value == Role.customerRoleText
-                      ? historyController.apiGetUserOrderTransactionHistory()
-                      : historyController.apiGetOwnerOrderTransactionHistory();
+                  transactionController.role!.value == Role.customerRoleText
+                      ? transactionController
+                          .apiGetUserOrderTransactionHistory()
+                      : transactionController
+                          .apiGetOwnerOrderTransactionHistory();
 
-                  historyController.onIndexChange(0);
+                  transactionController.onIndexChange(0);
                 },
                 child: Container(
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
-                  color: historyController.isCurrentMonthSelected.value
+                  color: transactionController.isCurrentMonthSelected.value
                       ? AppColors.white
                       : AppColors.primarylight,
                   child: Row(
@@ -102,9 +109,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: historyController.isCurrentMonthSelected.value
-                              ? AppColors.blacklight
-                              : AppColors.primary,
+                          color:
+                              transactionController.isCurrentMonthSelected.value
+                                  ? AppColors.blacklight
+                                  : AppColors.primary,
                         ),
                       ),
                     ],
@@ -128,13 +136,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: historyController.horizontalTabList.length,
+            itemCount: transactionController.horizontalTabList.length,
             itemBuilder: (_, i) {
               return Obx(() => InkWell(
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    historyController.onIndexChange(i);
+                    transactionController.onIndexChange(i);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -142,21 +150,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       Column(
                         children: [
                           Text(
-                            historyController.horizontalTabList[i],
+                            transactionController.horizontalTabList[i],
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight:
-                                  historyController.selectedIndex.value == i
+                                  transactionController.selectedIndex.value == i
                                       ? FontWeight.w500
                                       : FontWeight.w400,
-                              color: historyController.selectedIndex.value == i
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
+                              color:
+                                  transactionController.selectedIndex.value == i
+                                      ? AppColors.primary
+                                      : AppColors.blacklight,
                             ),
                           ),
                           height10SizedBox,
-                          historyController.selectedIndex.value == i
+                          transactionController.selectedIndex.value == i
                               ? Container(
                                   width: 65,
                                   height: 1,
@@ -226,14 +235,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
             _orderHistoryTab(),
             height20SizedBox,
             Obx(
-              () => historyController.isCurrentMonthSelected.value
+              () => transactionController.isCurrentMonthSelected.value
                   ? height0SizedBox
                   : horizontalMonthsTab(),
             ),
-            Obx(() => historyController.role!.value == Role.customerRoleText
+            Obx(() => transactionController.role!.value == Role.customerRoleText
                 ? Expanded(
-                    child: historyController.userOrderHistoryList!.isEmpty
-                        ? historyController.isLoading.value == true
+                    child: transactionController
+                            .ownerOrderTransactionList!.isEmpty
+                        ? transactionController.isLoading.value == true
                             ? height0SizedBox
                             : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -262,20 +272,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 (BuildContext context, int index) {
                               return width40SizedBox;
                             },
-                            itemCount:
-                                historyController.userOrderHistoryList!.length,
+                            itemCount: transactionController
+                                .ownerOrderTransactionList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
                                   // Get.to(() => const OrderConfirmationScreen(),
                                   //     arguments: {
                                   //       "isFromTransaction": true,
-                                  //       "storeId": historyController
-                                  //               .userOrderHistoryList![index]
+                                  //       "storeId": transactionController
+                                  //               .ownerOrderTransactionList![index]
                                   //               .store!
                                   //               .storeId ?? "",
-                                  //       "orderStatus": historyController
-                                  //               .userOrderHistoryList![index]
+                                  //       "orderStatus": transactionController
+                                  //               .ownerOrderTransactionList![index]
                                   //               .orderId ?? ""
                                   //     });
                                 },
@@ -302,15 +312,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                     width: 1)),
                                             child: CircleAvatar(
                                               radius: 25.0,
-                                              backgroundImage: historyController
-                                                              .userOrderHistoryList![
+                                              backgroundImage: transactionController
+                                                              .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
                                                               .image!
                                                               .dynamicUrl ==
                                                           null ||
-                                                      historyController
-                                                          .userOrderHistoryList![
+                                                      transactionController
+                                                          .ownerOrderTransactionList![
                                                               index]
                                                           .store!
                                                           .image!
@@ -321,8 +331,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                               .nopicfound)
                                                       as ImageProvider
                                                   : NetworkImage(
-                                                      historyController
-                                                          .userOrderHistoryList![
+                                                      transactionController
+                                                          .ownerOrderTransactionList![
                                                               index]
                                                           .store!
                                                           .image!
@@ -357,7 +367,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                 fontSize: 14)),
                                                         TextSpan(
                                                           text:
-                                                              ': #${historyController.userOrderHistoryList![index].orderId!}',
+                                                              ': #${transactionController.ownerOrderTransactionList![index].orderTransactionId}',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -370,23 +380,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                     ),
                                                   ),
                                                   width15SizedBox,
-                                                  Text(
-                                                      Utility.parseDateTime(
-                                                        DateTime.parse(
-                                                          historyController
-                                                              .userOrderHistoryList![
-                                                                  index]
-                                                              .orderDate!
-                                                              .trim(),
-                                                        ),
-                                                        secFormat: '',
-                                                      ).toString(),
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14)),
+                                                  // Text(
+                                                  //     Utility.parseDateTime(
+                                                  //       DateTime.parse(
+                                                  //         transactionController
+                                                  //             .ownerOrderTransactionList[index].
+
+                                                  //             .trim(),
+                                                  //       ),
+                                                  //       secFormat: '',
+                                                  //     ).toString(),
+                                                  //     style: TextStyle(
+                                                  //         color: AppColors
+                                                  //             .blacklight,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w400,
+                                                  //         fontSize: 14)),
                                                 ],
                                               ),
                                               height8SizedBox,
@@ -396,8 +405,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                      historyController
-                                                              .userOrderHistoryList![
+                                                      transactionController
+                                                              .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
                                                               .storeName ??
@@ -409,7 +418,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                               FontWeight.w500,
                                                           fontSize: 16)),
                                                   Text(
-                                                    "\$${historyController.userOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    "\$" +
+                                                        transactionController
+                                                            .ownerOrderTransactionList![
+                                                                index]
+                                                            .netBalance!
+                                                            .toStringAsFixed(2),
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -461,12 +475,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                      historyController
-                                                          .userOrderHistoryList![
-                                                              index]
-                                                          .orderDeliveryAddresses!
-                                                          .first
-                                                          .city!,
+                                                      "${transactionController.ownerOrderTransactionList![index].store!.storePhoneCode}-${transactionController.ownerOrderTransactionList![index].store!.storePhone!}",
                                                       style: const TextStyle(
                                                           color:
                                                               AppColors.black,
@@ -474,11 +483,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                               FontWeight.w400,
                                                           fontSize: 14)),
                                                   Text(
-                                                    historyController
-                                                            .userOrderHistoryList![
-                                                                index]
-                                                            .customerPhone ??
-                                                        "",
+                                                    "${transactionController.ownerOrderTransactionList![index].store!.storePhoneCode}-${transactionController.ownerOrderTransactionList![index].store!.storePhone!}",
                                                     style: const TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
@@ -497,8 +502,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               );
                             }))
                 : Expanded(
-                    child: historyController.ownerOrderHistoryList!.isEmpty
-                        ? historyController.isLoading.value == true
+                    child: transactionController
+                            .ownerOrderTransactionList!.isEmpty
+                        ? transactionController.isLoading.value == true
                             ? height0SizedBox
                             : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -506,7 +512,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      ImageConstants.nodata,
+                                      "assets/nodata.png",
                                       scale: 8,
                                       color: AppColors.primary,
                                     ),
@@ -527,22 +533,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 (BuildContext context, int index) {
                               return width40SizedBox;
                             },
-                            itemCount:
-                                historyController.ownerOrderHistoryList!.length,
+                            itemCount: transactionController
+                                .ownerOrderTransactionList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  // Get.to(() => const OrdersHomeMainScreen(),
+                                  // Get.to(() => const OrderConfirmationScreen(),
                                   //     arguments: {
-                                  //       "storeId": historyController
-                                  //           .ownerOrderHistoryList![index]
-                                  //           .store!
-                                  //           .storeId
-                                  //           .toString(),
-                                  //       "orderStatus": historyController
-                                  //               .ownerOrderHistoryList![index]
-                                  //               .orderId ??
-                                  //           ""
+                                  //       "isFromTransaction": true,
+                                  //       "storeId": transactionController
+                                  //               .ownerOrderTransactionList![index]
+                                  //               .store!
+                                  //               .storeId ?? "",
+                                  //       "orderStatus": transactionController
+                                  //               .ownerOrderTransactionList![index]
+                                  //               .orderId ?? ""
                                   //     });
                                 },
                                 child: Container(
@@ -568,15 +573,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                     width: 1)),
                                             child: CircleAvatar(
                                               radius: 25.0,
-                                              backgroundImage: historyController
-                                                              .ownerOrderHistoryList![
+                                              backgroundImage: transactionController
+                                                              .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
                                                               .image!
                                                               .dynamicUrl ==
                                                           null ||
-                                                      historyController
-                                                          .ownerOrderHistoryList![
+                                                      transactionController
+                                                          .ownerOrderTransactionList![
                                                               index]
                                                           .store!
                                                           .image!
@@ -586,13 +591,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                           ImageConstants
                                                               .nopicfound)
                                                       as ImageProvider
-                                                  : NetworkImage(historyController
-                                                      .ownerOrderHistoryList![
-                                                          index]
-                                                      .store!
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString()),
+                                                  : NetworkImage(
+                                                      transactionController
+                                                          .ownerOrderTransactionList![
+                                                              index]
+                                                          .store!
+                                                          .image!
+                                                          .dynamicUrl
+                                                          .toString()),
                                               backgroundColor:
                                                   Colors.transparent,
                                             ),
@@ -622,7 +628,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                 fontSize: 14)),
                                                         TextSpan(
                                                           text:
-                                                              ': #${historyController.ownerOrderHistoryList![index].orderId!}',
+                                                              ': #${transactionController.ownerOrderTransactionList![index].orderTransactionId}',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -635,23 +641,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                     ),
                                                   ),
                                                   width15SizedBox,
-                                                  Text(
-                                                      Utility.parseDateTime(
-                                                        DateTime.parse(
-                                                          historyController
-                                                              .ownerOrderHistoryList![
-                                                                  index]
-                                                              .orderDate!
-                                                              .trim(),
-                                                        ),
-                                                        secFormat: '',
-                                                      ).toString(),
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14)),
+                                                  // Text(
+                                                  //     Utility.parseDateTime(
+                                                  //       DateTime.parse(
+                                                  //         transactionController
+                                                  //             .ownerOrderTransactionList[index].
+
+                                                  //             .trim(),
+                                                  //       ),
+                                                  //       secFormat: '',
+                                                  //     ).toString(),
+                                                  //     style: TextStyle(
+                                                  //         color: AppColors
+                                                  //             .blacklight,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w400,
+                                                  //         fontSize: 14)),
                                                 ],
                                               ),
                                               height8SizedBox,
@@ -661,8 +666,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                      historyController
-                                                              .ownerOrderHistoryList![
+                                                      transactionController
+                                                              .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
                                                               .storeName ??
@@ -674,7 +679,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                               FontWeight.w500,
                                                           fontSize: 16)),
                                                   Text(
-                                                    "\$${historyController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    "\$" +
+                                                        transactionController
+                                                            .ownerOrderTransactionList![
+                                                                index]
+                                                            .netBalance!
+                                                            .toStringAsFixed(2),
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -726,24 +736,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                      historyController
-                                                          .ownerOrderHistoryList![
-                                                              index]
-                                                          .orderDeliveryAddresses!
-                                                          .first
-                                                          .city!,
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14)),
+                                                    "${transactionController.ownerOrderTransactionList![index].store!.storePhoneCode}-${transactionController.ownerOrderTransactionList![index].store!.storePhone!}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14),
+                                                  ),
                                                   Text(
-                                                    historyController
-                                                            .ownerOrderHistoryList![
-                                                                index]
-                                                            .customerPhone ??
-                                                        "",
+                                                    "${transactionController.ownerOrderTransactionList![index].store!.storePhoneCode}-${transactionController.ownerOrderTransactionList![index].store!.storePhone!}",
                                                     style: const TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:

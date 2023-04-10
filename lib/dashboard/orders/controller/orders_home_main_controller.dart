@@ -213,14 +213,12 @@ class OrdersHomeMainController extends GetxController {
             orderdetail.GetStoreOrderDetailModel.fromJson(value.body);
         customerName.value =
             getStoreOrderDetailModel.value.data!.order!.customerName.toString();
-        orderDate.value =
-            //  getStoreOrderDetailModel.value.data!.order!.orderDate.toString();
-            Utility.parseDateTime(
+        orderDate.value = Utility.parseDateTime(
           DateTime.parse(
               getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
           secFormat: '',
         ).toString();
-        print(" orderDate.value ------->" + orderDate.value.toString());
+
         orderAmount.value = getStoreOrderDetailModel
             .value.data!.order!.totalAmount
             .toStringAsFixed(2);

@@ -373,45 +373,45 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       Flexible(
                                         flex: 2,
                                         child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
-                                                    width: 1)),
-                                            child:
-                                                // ordersHomeMainController
-                                                //                 .getOrderItems[
-                                                //                     index]
-                                                //                 .product!
-                                                //                 .productImages!
-                                                //                 .first
-                                                //                 .image!
-                                                //                 .dynamicUrl ==
-                                                //             null ||
-                                                //         ordersHomeMainController
-                                                //             .getOrderItems[
-                                                //                 index]
-                                                //             .product!
-                                                //             .productImages!
-                                                //             .first
-                                                //             .image!
-                                                //             .dynamicUrl!
-                                                //             .isEmpty
-                                                //     ?
-                                                Image.asset(
-                                                    ImageConstants.nopicfound)
-
-                                            // : NetworkImage(
-                                            //     ordersHomeMainController
-                                            //         .getOrderItems[
-                                            //             index]
-                                            //         .product!
-                                            //         .productImages!
-                                            //         .first
-                                            //         .image!
-                                            //         .dynamicUrl
-                                            //         .toString()),
-                                            ),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              border: Border.all(
+                                                  color: AppColors.white,
+                                                  width: 1)),
+                                          child: ordersHomeMainController
+                                                          .getOrderItems[index]
+                                                          .product!
+                                                          .productImages!
+                                                          .first
+                                                          .image!
+                                                          .dynamicUrl ==
+                                                      null ||
+                                                  ordersHomeMainController
+                                                      .getOrderItems[index]
+                                                      .product!
+                                                      .productImages!
+                                                      .first
+                                                      .image!
+                                                      .dynamicUrl!
+                                                      .isEmpty
+                                              ? Image.asset(
+                                                  ImageConstants.nopicfound,
+                                                  fit: BoxFit.fill,
+                                                  height: 70,
+                                                )
+                                              : Image.network(
+                                                  ordersHomeMainController
+                                                      .getOrderItems[index]
+                                                      .product!
+                                                      .productImages!
+                                                      .first
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString(),
+                                                  height: 70,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                        ),
                                       ),
                                       width10SizedBox,
                                       Flexible(

@@ -6,7 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/history_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_stores_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -14,6 +14,8 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+
+import 'inbox/inbox_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -176,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                //  Get.to(const HistoryScreen());
+                                //  Get.to(const TransactionScreen());
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),

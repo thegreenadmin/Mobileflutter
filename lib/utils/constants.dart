@@ -256,6 +256,7 @@ class StringConstants {
   static String payNowText = "Pay Now";
   static String priceText = "Price";
   static String pendingText = "Pending";
+  static String pickUpDateText = "Pickup Date";
 
   //Q
   static String quantityUnitText = "Quantity Unit";

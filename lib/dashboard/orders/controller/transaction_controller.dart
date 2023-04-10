@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_owner_transaction_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_user_order_history_model.dart';
 
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -11,14 +12,14 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class HistoryController extends GetxController {
-  GetUserOrderHistoryModel getUserOrderHistoryModel =
-      GetUserOrderHistoryModel();
-  RxList<Order>? userOrderHistoryList = <Order>[].obs;
+class TransactionController extends GetxController {
+  // GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
+  //     GetOwnerOrderHistoryModel();
+  // RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
 
-  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-      GetOwnerOrderHistoryModel();
-  RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
+  GetOwnerTransactionModel getOwnerTransactionModel =
+      GetOwnerTransactionModel();
+  RxList<Transactions>? ownerOrderTransactionList = <Transactions>[].obs;
 
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
@@ -33,7 +34,7 @@ class HistoryController extends GetxController {
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserOrderTransactionHistory();
+      // apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderTransactionHistory();
@@ -302,9 +303,6 @@ class HistoryController extends GetxController {
       debugPrint("USER ORDER HISTORY URL RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        getUserOrderHistoryModel =
-            GetUserOrderHistoryModel.fromJson(value.body);
-        userOrderHistoryList!.value = getUserOrderHistoryModel.data!.orders!;
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -330,23 +328,6 @@ class HistoryController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
-    // Map body = {
-    //   "store_id": null,
-    //   "page": null,
-    //   "page_size": null,
-    //   "order_by": "order_id",
-    //   "order_type": "DESC",
-    //   "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
-    //       ? "${DateTime.now().year}-$currentMonth-01"
-    //       : startDateOfMonth,
-    //   "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
-    //       ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
-    //       : endDateOfMonth,
-    //   "only_active_orders": true,
-    //   "order_statuses": []
-    // };
-
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -361,9 +342,10 @@ class HistoryController extends GetxController {
       debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        // getOwnerOrderHistoryModel =
-        //     GetOwnerOrderHistoryModel.fromJson(value.body);
-        // ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
+        getOwnerTransactionModel =
+            GetOwnerTransactionModel.fromJson(value.body);
+        ownerOrderTransactionList!.value =
+            getOwnerTransactionModel.data!.transactions!;
         update();
       } else {
         Utility.showToast(value.body['message']);

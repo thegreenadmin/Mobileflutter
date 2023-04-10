@@ -38,6 +38,7 @@ class _InboxScreenState extends State<InboxScreen> {
                   } else {
                     inboxController.isInboxSelected.value =
                         !inboxController.isInboxSelected.value;
+                    inboxController.apiGetInboxList();
                   }
                 },
                 child: Container(
@@ -199,10 +200,11 @@ class _InboxScreenState extends State<InboxScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "Oh What a fun it is to buy @ Store 1",
+                                  Text(
+                                    inboxController.inboxList[index].orderId
+                                        .toString(),
                                     textAlign: TextAlign.justify,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16.0,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w500),

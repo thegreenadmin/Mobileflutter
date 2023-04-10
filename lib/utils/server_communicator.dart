@@ -36,6 +36,8 @@ class ServerCommunicator {
 //K
 //L
 //M
+  String messageInboxList = 'message/inbox';
+
 //N
   String nearByStoreList = 'shop/stores/list/nearby';
 //O

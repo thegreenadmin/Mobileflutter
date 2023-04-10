@@ -1,16 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/inbox_model.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class InboxController extends GetxController {
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
-  RxList inboxList = [
-    "Oh What a fun it is to buy @ Store 1",
-    "Oh What a fun it is to buy @ Store 1",
-    "Oh What a fun it is to buy @ Store 1"
-  ].obs;
+  RxBool isLoading = false.obs;
+
+  late InboxModel inboxModel = InboxModel();
+  RxList<MessageHeads> inboxList = <MessageHeads>[].obs;
 
   @override
-  void onInit() {}
+  void onInit() {
+    super.onInit();
+    isInboxSelected.value = true;
+    apiGetInboxList();
+  }
+
+  //Get Store List Api
+  Future apiGetInboxList() async {
+    isLoading.value = true;
+    debugPrint("GET INBOX URL**********" +
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET INBOX RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        inboxModel =
+            InboxModel.fromJson(value.body);
+        inboxList.value =
+            inboxModel.data?.messageHeads ?? [];
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
 }
