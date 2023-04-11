@@ -15,12 +15,12 @@ class OrderDetailResponse {
     this.data,
   });
 
-  dynamic status;
+  int? status;
   String? message;
   Data? data;
 
   OrderDetailResponse copyWith({
-    dynamic status,
+    int? status,
     String? message,
     Data? data,
   }) =>
@@ -48,17 +48,17 @@ class Data {
     this.order,
   });
 
-  OrderDetail? order;
+  Order? order;
 
   Data copyWith({
-    OrderDetail? order,
+    Order? order,
   }) =>
       Data(
         order: order ?? this.order,
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    order: json["order"] == null ? null : OrderDetail.fromJson(json["order"]),
+    order: json["order"] == null ? null : Order.fromJson(json["order"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -66,8 +66,8 @@ class Data {
   };
 }
 
-class OrderDetail {
-  OrderDetail({
+class Order {
+  Order({
     this.userId,
     this.storeId,
     this.deliveryServiceId,
@@ -95,11 +95,11 @@ class OrderDetail {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  dynamic deliveryCharge;
+  double? deliveryCharge;
   String? taxType;
-  dynamic taxValue;
-  dynamic totalTaxCharged;
-  dynamic totalAmount;
+  double? taxValue;
+  double? totalTaxCharged;
+  double? totalAmount;
   String? customerName;
   String? customerEmail;
   String? customerPhone;
@@ -115,15 +115,15 @@ class OrderDetail {
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
   List<OrderItem>? orderItems;
 
-  OrderDetail copyWith({
+  Order copyWith({
     String? userId,
     String? storeId,
     String? deliveryServiceId,
-    dynamic deliveryCharge,
+    double? deliveryCharge,
     String? taxType,
-    dynamic taxValue,
-    dynamic totalTaxCharged,
-    dynamic totalAmount,
+    double? taxValue,
+    double? totalTaxCharged,
+    double? totalAmount,
     String? customerName,
     String? customerEmail,
     String? customerPhone,
@@ -139,7 +139,7 @@ class OrderDetail {
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
     List<OrderItem>? orderItems,
   }) =>
-      OrderDetail(
+      Order(
         userId: userId ?? this.userId,
         storeId: storeId ?? this.storeId,
         deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
@@ -164,11 +164,11 @@ class OrderDetail {
         orderItems: orderItems ?? this.orderItems,
       );
 
-  factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
     userId: json["user_id"],
     storeId: json["store_id"],
     deliveryServiceId: json["delivery_service_id"],
-    deliveryCharge: json["delivery_charge"],
+    deliveryCharge: json["delivery_charge"]?.toDouble(),
     taxType: json["tax_type"],
     taxValue: json["tax_value"]?.toDouble(),
     totalTaxCharged: json["total_tax_charged"]?.toDouble(),
@@ -261,7 +261,7 @@ class OrderDeliveryAddress {
   String? stateId;
   String? addressLine1;
   String? addressLine2;
-  String? landmark;
+  dynamic landmark;
   String? city;
   String? postalCode;
   String? orderDeliveryAddressId;
@@ -272,7 +272,7 @@ class OrderDeliveryAddress {
     String? stateId,
     String? addressLine1,
     String? addressLine2,
-    String? landmark,
+    dynamic landmark,
     String? city,
     String? postalCode,
     String? orderDeliveryAddressId,
@@ -479,42 +479,45 @@ class OrderItem {
     this.updatedAt,
     this.orderItemId,
     this.product,
+    this.returnOrderItems,
   });
 
   String? orderId;
   String? productId;
-  dynamic orderItemCount;
-  dynamic orderItemPrice;
+  int? orderItemCount;
+  int? orderItemPrice;
   String? serviceChargeType;
-  dynamic serviceChargeValue;
-  dynamic totalServiceCharged;
+  double? serviceChargeValue;
+  double? totalServiceCharged;
   String? discountName;
   String? discountType;
-  dynamic discountValue;
-  dynamic totalDiscount;
+  int? discountValue;
+  double? totalDiscount;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? orderItemId;
   Product? product;
+  List<ReturnOrderItem>? returnOrderItems;
 
   OrderItem copyWith({
     String? orderId,
     String? productId,
-    dynamic orderItemCount,
-    dynamic orderItemPrice,
+    int? orderItemCount,
+    int? orderItemPrice,
     String? serviceChargeType,
-    dynamic serviceChargeValue,
-    dynamic totalServiceCharged,
+    double? serviceChargeValue,
+    double? totalServiceCharged,
     String? discountName,
     String? discountType,
-    dynamic discountValue,
-    dynamic totalDiscount,
+    int? discountValue,
+    double? totalDiscount,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? orderItemId,
     Product? product,
+    List<ReturnOrderItem>? returnOrderItems,
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -533,6 +536,7 @@ class OrderItem {
         updatedAt: updatedAt ?? this.updatedAt,
         orderItemId: orderItemId ?? this.orderItemId,
         product: product ?? this.product,
+        returnOrderItems: returnOrderItems ?? this.returnOrderItems,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -552,6 +556,7 @@ class OrderItem {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     orderItemId: json["order_item_id"],
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    returnOrderItems: json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -571,6 +576,7 @@ class OrderItem {
     "updatedAt": updatedAt?.toIso8601String(),
     "order_item_id": orderItemId,
     "product": product?.toJson(),
+    "return_order_items": returnOrderItems == null ? [] : List<dynamic>.from(returnOrderItems!.map((x) => x.toJson())),
   };
 }
 
@@ -596,59 +602,59 @@ class Product {
     this.status,
     this.createdAt,
     this.updatedAt,
-    this.productId,
     this.productReviews,
     this.productImages,
+    this.productId,
   });
 
   String? storeId;
   String? quantityTypeId;
-  dynamic quantity;
+  int? quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  dynamic productPrice;
-  dynamic sellingPrice;
+  int? productPrice;
+  int? sellingPrice;
   String? discountType;
-  dynamic discountValue;
+  int? discountValue;
   bool? isProductReturnable;
-  dynamic returnDaysCount;
-  dynamic length;
-  dynamic width;
-  dynamic height;
-  dynamic weight;
+  int? returnDaysCount;
+  int? length;
+  int? width;
+  int? height;
+  int? weight;
   bool? isEnabled;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<ProductReview>? productReviews;
+  List<ProductImage>? productImages;
   String? productId;
-  List<dynamic>? productReviews;
-  List<dynamic>? productImages;
 
   Product copyWith({
     String? storeId,
     String? quantityTypeId,
-    dynamic quantity,
+    int? quantity,
     bool? isFeaturedProduct,
     String? productName,
     String? description,
-    dynamic productPrice,
-    dynamic sellingPrice,
+    int? productPrice,
+    int? sellingPrice,
     String? discountType,
-    dynamic discountValue,
+    int? discountValue,
     bool? isProductReturnable,
-    dynamic returnDaysCount,
-    dynamic length,
-    dynamic width,
-    dynamic height,
-    dynamic weight,
+    int? returnDaysCount,
+    int? length,
+    int? width,
+    int? height,
+    int? weight,
     bool? isEnabled,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
+    List<ProductReview>? productReviews,
+    List<ProductImage>? productImages,
     String? productId,
-    List<dynamic>? productReviews,
-    List<dynamic>? productImages,
   }) =>
       Product(
         storeId: storeId ?? this.storeId,
@@ -671,9 +677,9 @@ class Product {
         status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        productId: productId ?? this.productId,
         productReviews: productReviews ?? this.productReviews,
         productImages: productImages ?? this.productImages,
+        productId: productId ?? this.productId,
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -697,9 +703,9 @@ class Product {
     status: json["status"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    productReviews: json["product_reviews"] == null ? [] : List<ProductReview>.from(json["product_reviews"]!.map((x) => ProductReview.fromJson(x))),
+    productImages: json["product_images"] == null ? [] : List<ProductImage>.from(json["product_images"]!.map((x) => ProductImage.fromJson(x))),
     productId: json["product_id"],
-    productReviews: json["product_reviews"] == null ? [] : List<dynamic>.from(json["product_reviews"]!.map((x) => x)),
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -723,8 +729,244 @@ class Product {
     "status": status,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+    "product_reviews": productReviews == null ? [] : List<dynamic>.from(productReviews!.map((x) => x.toJson())),
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
     "product_id": productId,
-    "product_reviews": productReviews == null ? [] : List<dynamic>.from(productReviews!.map((x) => x)),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+  };
+}
+
+class ProductImage {
+  ProductImage({
+    this.productId,
+    this.imageUrl,
+    this.order,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.productImageId,
+    this.image,
+  });
+
+  String? productId;
+  String? imageUrl;
+  int? order;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? productImageId;
+  Image? image;
+
+  ProductImage copyWith({
+    String? productId,
+    String? imageUrl,
+    int? order,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? productImageId,
+    Image? image,
+  }) =>
+      ProductImage(
+        productId: productId ?? this.productId,
+        imageUrl: imageUrl ?? this.imageUrl,
+        order: order ?? this.order,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        productImageId: productImageId ?? this.productImageId,
+        image: image ?? this.image,
+      );
+
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
+    productId: json["product_id"],
+    imageUrl: json["image_url"],
+    order: json["order"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    productImageId: json["product_image_id"],
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "product_id": productId,
+    "image_url": imageUrl,
+    "order": order,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "product_image_id": productImageId,
+    "image": image?.toJson(),
+  };
+}
+
+class Image {
+  Image({
+    this.orignalUrl,
+    this.dynamicUrl,
+  });
+
+  String? orignalUrl;
+  String? dynamicUrl;
+
+  Image copyWith({
+    String? orignalUrl,
+    String? dynamicUrl,
+  }) =>
+      Image(
+        orignalUrl: orignalUrl ?? this.orignalUrl,
+        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+      );
+
+  factory Image.fromJson(Map<String, dynamic> json) => Image(
+    orignalUrl: json["orignal_url"],
+    dynamicUrl: json["dynamic_url"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "orignal_url": orignalUrl,
+    "dynamic_url": dynamicUrl,
+  };
+}
+
+class ProductReview {
+  ProductReview({
+    this.productId,
+    this.userId,
+    this.orderId,
+    this.rating,
+    this.review,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.productReviewId,
+  });
+
+  String? productId;
+  String? userId;
+  String? orderId;
+  int? rating;
+  String? review;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? productReviewId;
+
+  ProductReview copyWith({
+    String? productId,
+    String? userId,
+    String? orderId,
+    int? rating,
+    String? review,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? productReviewId,
+  }) =>
+      ProductReview(
+        productId: productId ?? this.productId,
+        userId: userId ?? this.userId,
+        orderId: orderId ?? this.orderId,
+        rating: rating ?? this.rating,
+        review: review ?? this.review,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        productReviewId: productReviewId ?? this.productReviewId,
+      );
+
+  factory ProductReview.fromJson(Map<String, dynamic> json) => ProductReview(
+    productId: json["product_id"],
+    userId: json["user_id"],
+    orderId: json["order_id"],
+    rating: json["rating"],
+    review: json["review"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    productReviewId: json["product_review_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "product_id": productId,
+    "user_id": userId,
+    "order_id": orderId,
+    "rating": rating,
+    "review": review,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "product_review_id": productReviewId,
+  };
+}
+
+class ReturnOrderItem {
+  ReturnOrderItem({
+    this.orderItemId,
+    this.returnItemsCount,
+    this.remarks,
+    this.totalTaxReversed,
+    this.totalAmountReversed,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.returnOrderItemId,
+  });
+
+  String? orderItemId;
+  int? returnItemsCount;
+  String? remarks;
+  double? totalTaxReversed;
+  double? totalAmountReversed;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? returnOrderItemId;
+
+  ReturnOrderItem copyWith({
+    String? orderItemId,
+    int? returnItemsCount,
+    String? remarks,
+    double? totalTaxReversed,
+    double? totalAmountReversed,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? returnOrderItemId,
+  }) =>
+      ReturnOrderItem(
+        orderItemId: orderItemId ?? this.orderItemId,
+        returnItemsCount: returnItemsCount ?? this.returnItemsCount,
+        remarks: remarks ?? this.remarks,
+        totalTaxReversed: totalTaxReversed ?? this.totalTaxReversed,
+        totalAmountReversed: totalAmountReversed ?? this.totalAmountReversed,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        returnOrderItemId: returnOrderItemId ?? this.returnOrderItemId,
+      );
+
+  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) => ReturnOrderItem(
+    orderItemId: json["order_item_id"],
+    returnItemsCount: json["return_items_count"],
+    remarks: json["remarks"],
+    totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
+    totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    returnOrderItemId: json["return_order_item_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "order_item_id": orderItemId,
+    "return_items_count": returnItemsCount,
+    "remarks": remarks,
+    "total_tax_reversed": totalTaxReversed,
+    "total_amount_reversed": totalAmountReversed,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "return_order_item_id": returnOrderItemId,
   };
 }

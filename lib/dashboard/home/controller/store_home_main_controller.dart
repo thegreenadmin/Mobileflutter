@@ -347,7 +347,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
-        addToCartDailogue(context);
+        addToCartDialog(context);
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -438,7 +438,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  void addToCartDailogue(
+  void addToCartDialog(
     BuildContext context,
   ) {
     showDialog(
@@ -466,9 +466,7 @@ class StoreHomeMainController extends GetxController {
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            height15SizedBox,
             Text(
               "Please continue shopping with thegreenmall",
               style: TextStyle(
@@ -480,7 +478,7 @@ class StoreHomeMainController extends GetxController {
             ),
             height25SizedBox,
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () {
@@ -490,7 +488,7 @@ class StoreHomeMainController extends GetxController {
                   },
                   child: Container(
                     height: 50.0,
-                    width: 120.0,
+                    width: WidgetConstants.screenWidth *0.3,
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(10.0),
@@ -506,9 +504,6 @@ class StoreHomeMainController extends GetxController {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
                 InkWell(
                   onTap: () async {
                     Get.back();
@@ -517,7 +512,7 @@ class StoreHomeMainController extends GetxController {
                   },
                   child: Container(
                     height: 50.0,
-                    width: 120.0,
+                    width:  WidgetConstants.screenWidth *0.3,
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       border: Border.all(color: AppColors.primary),

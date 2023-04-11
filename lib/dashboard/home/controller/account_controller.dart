@@ -279,8 +279,6 @@ class AccountController extends GetxController {
         countryTextController.clear();
         if (isFromCart.value) {
           Get.back();
-          Get.back();
-          Get.back();
         } else {
           await Get.offAll(BottomNavigation());
         }

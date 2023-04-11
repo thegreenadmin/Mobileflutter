@@ -216,8 +216,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       height8SizedBox,
                                       SizedBox(
                                         height: 20,
-                                        width:
-                                            WidgetConstants.screenWidth * 0.7,
+                                        // width: WidgetConstants.screenWidth * 0.7,
                                         child: Row(
                                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -265,8 +264,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                 itemCount: storeHomeMainController
                                                         .storeDetailsResponse
                                                         .value
-                                                        .data
-                                                        ?.store
+                                                        .data?.store
                                                         ?.storeDeliveryServices
                                                         ?.length ??
                                                     0,
@@ -491,7 +489,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                   height8SizedBox,
                                   SizedBox(
                                     height: 20,
-                                    width: WidgetConstants.screenWidth * 0.7,
+                                    // width: WidgetConstants.screenWidth * 0.7,
                                     child: Row(
                                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [

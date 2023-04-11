@@ -497,7 +497,32 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                             height6SizedBox,
                                           ],
                                         ),
-                                      )
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Obx(
+                                              () => SizedBox(
+                                              height: 20,
+                                              width: 30,
+                                              child: Checkbox(
+                                                side: MaterialStateBorderSide.resolveWith(
+                                                      (states) => BorderSide(
+                                                      width: 1.0,
+                                                      color:
+                                                      AppColors.primary.withOpacity(0.5)),
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(6.0)),
+                                                activeColor: AppColors.primary,
+                                                value: ordersHomeMainController.getOrderItems[index].isSelected??false,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                  });
+                                                  },
+                                              )),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ]),

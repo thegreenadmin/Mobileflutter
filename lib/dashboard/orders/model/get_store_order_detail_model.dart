@@ -359,6 +359,7 @@ class OrderItems {
   String? updatedAt;
   String? orderItemId;
   Product? product;
+  bool? isSelected;
 
   OrderItems(
       {this.orderId,
@@ -376,7 +377,9 @@ class OrderItems {
       this.createdAt,
       this.updatedAt,
       this.orderItemId,
-      this.product});
+      this.product,
+      this.isSelected,
+      });
 
   OrderItems.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
