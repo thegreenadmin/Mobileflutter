@@ -20,11 +20,13 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class HomeController extends GetxController {
+  
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? email = "".obs;
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
+  RxString? currentUserId = "".obs;
 
   RxBool? isLoading = false.obs;
 
@@ -162,12 +164,16 @@ class HomeController extends GetxController {
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
         email!.value = getUserDetailModel.data!.user!.email ?? "";
+        currentUserId!.value = getUserDetailModel.data!.user!.userId ?? "";
+
         SharedPreferenceStorage.setData(
             StringConstants.firstNameText, firstName!.value);
         SharedPreferenceStorage.setData(
             StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
+        SharedPreferenceStorage.setData(
+            StringConstants.currentUserIdText, currentUserId!.value);
         await getCurrentLocation();
       } else {
         Utility.showToast(value.body['message']);

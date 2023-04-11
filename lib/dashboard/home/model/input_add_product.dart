@@ -22,7 +22,8 @@ class InputAddProduct {
       });
     }
     storeId = json['store_id'];
-    product = json['product'] != null ? Product.fromJson(json['product']) : null;
+    product =
+        json['product'] != null ? Product.fromJson(json['product']) : null;
     if (json['product_categories'] != null) {
       productCategories = <ProductCategory>[];
       json['product_categories'].forEach((v) {
@@ -53,13 +54,15 @@ class InputAddProduct {
       data['product'] = product!.toJson();
     }
     if (productCategories != null) {
-      data['product_categories'] = productCategories!.map((v) => v.toJson()).toList();
+      data['product_categories'] =
+          productCategories!.map((v) => v.toJson()).toList();
     }
     if (productLinks != null) {
       data['product_links'] = productLinks!.map((v) => v.toJson()).toList();
     }
     if (productContents != null) {
-      data['product_contents'] = productContents!.map((v) => v.toJson()).toList();
+      data['product_contents'] =
+          productContents!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -72,7 +75,12 @@ class ProductImagesList {
   String? status;
   int? order;
 
-  ProductImagesList({this.imageUrl, this.productImageId, this.status, this.dynamicImageUrl, this.order});
+  ProductImagesList(
+      {this.imageUrl,
+      this.productImageId,
+      this.status,
+      this.dynamicImageUrl,
+      this.order});
 
   ProductImagesList.fromJson(Map<String, dynamic> json) {
     imageUrl = json['image_url'];
@@ -195,13 +203,15 @@ class ProductCategory {
   String? status;
   Categorys? category;
 
-  ProductCategory({this.categoryId, this.productCategoryId, this.status, this.category});
+  ProductCategory(
+      {this.categoryId, this.productCategoryId, this.status, this.category});
 
   ProductCategory.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];
     productCategoryId = json['product_category_id'];
     status = json['status'];
-    category = json['category'] != null ? Categorys.fromJson(json['category']) : null;
+    category =
+        json['category'] != null ? Categorys.fromJson(json['category']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -223,7 +233,8 @@ class ProductLink {
   String? status;
   int? order;
 
-  ProductLink({this.name, this.link, this.order, this.status, this.productLinkId});
+  ProductLink(
+      {this.name, this.link, this.order, this.status, this.productLinkId});
 
   ProductLink.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -251,7 +262,12 @@ class ProductContent {
   String? status;
   int? order;
 
-  ProductContent({this.heading, this.paragraph, this.order, this.status, this.productContentId});
+  ProductContent(
+      {this.heading,
+      this.paragraph,
+      this.order,
+      this.status,
+      this.productContentId});
 
   ProductContent.fromJson(Map<String, dynamic> json) {
     heading = json['heading'];

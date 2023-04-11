@@ -39,12 +39,12 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    orderId.value = Get.arguments==null?"":Get.arguments["orderId"] ?? "";
+    orderId.value = Get.arguments == null ? "" : Get.arguments["orderId"] ?? "";
     storeId.value = Get.arguments["storeId"] ?? "";
     apiGetStoreDetails();
-      role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOrderHistory();
-      apiGetStoreOrderDetail();
+    role!.value = Role.storeOwnerRoleText;
+    apiGetOwnerOrderHistory();
+    apiGetStoreOrderDetail();
   }
 
   int daysInMonth(DateTime date) {

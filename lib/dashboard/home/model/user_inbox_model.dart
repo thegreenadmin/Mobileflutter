@@ -1,11 +1,11 @@
-class InboxModel {
+class UserInboxModel {
   int? status;
   String? message;
   Data? data;
 
-  InboxModel({this.status, this.message, this.data});
+  UserInboxModel({this.status, this.message, this.data});
 
-  InboxModel.fromJson(Map<String, dynamic> json) {
+  UserInboxModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

@@ -37,6 +37,8 @@ class ServerCommunicator {
 //L
 //M
   String messageInboxList = 'message/inbox';
+  String messageList = 'message/list';
+  String messageSend = 'message/send';
 
 //N
   String nearByStoreList = 'shop/stores/list/nearby';
@@ -95,6 +97,8 @@ class ServerCommunicator {
   String storeOrderShipped = 'store/order/shipped/create';
   String storeOrderDelivered = 'store/order/delivered/create';
   String storeTransaction = 'store/transaction/list';
+  String storeMessageInbox = 'store/message/inbox';
+  String storeMessageList = 'store/message/list';
 
 //T
 //U

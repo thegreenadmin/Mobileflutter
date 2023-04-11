@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/inbox_model.dart';
+import 'package:thegreenmall/dashboard/home/model/user_inbox_model.dart';
+
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -9,26 +10,31 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class InboxController extends GetxController {
+class UserInboxController extends GetxController {
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
   RxBool isLoading = false.obs;
-
-  late InboxModel inboxModel = InboxModel();
+  TextEditingController messageTextController = TextEditingController();
+  late UserInboxModel inboxModel = UserInboxModel();
   RxList<MessageHeads> inboxList = <MessageHeads>[].obs;
+  RxString? role = "".obs;
+  RxBool showPreviousMessages = false.obs;
+  final scrollController = ScrollController();
+  RxInt page = 1.obs;
 
   @override
   void onInit() {
     super.onInit();
     isInboxSelected.value = true;
+    showPreviousMessages.value = false;
     apiGetInboxList();
   }
 
-  //Get Store List Api
+  //Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
-    debugPrint("GET INBOX URL**********" +
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10");
+    debugPrint("GET INBOX URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -37,7 +43,7 @@ class InboxController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -45,10 +51,10 @@ class InboxController extends GetxController {
       debugPrint("GET INBOX RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        inboxModel =
-            InboxModel.fromJson(value.body);
-        inboxList.value =
-            inboxModel.data?.messageHeads ?? [];
+        inboxModel = UserInboxModel.fromJson(value.body);
+        inboxList.value = inboxModel.data?.messageHeads ?? [];
+
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

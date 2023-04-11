@@ -66,9 +66,7 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (Get.arguments == null
-        ?false
-        : Get.arguments['storeId']!="" ) {
+    if (Get.arguments == null ? false : Get.arguments['storeId'] != "") {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
@@ -86,10 +84,9 @@ class OrdersController extends GetxController {
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetOrderListApi();
-      if(orderStatus.value!=""){
+      if (orderStatus.value != "") {
         apiGetOrderDetailsApi();
       }
-
       page.value = 1;
     } else {
       role!.value = Role.storeOwnerRoleText;
@@ -500,7 +497,7 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders":
-      isActiveOrders.value==true ? isActiveOrders.value : null,
+          isActiveOrders.value == true ? isActiveOrders.value : null,
       "order_statuses": isActiveOrders.value == false
           ? [
               {"order_status_id": orderStatusId.value, "as": "orders"}

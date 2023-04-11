@@ -86,6 +86,8 @@ class StringConstants {
   static String completedText = "Completed";
   static String completeText = "Complete";
   static String cancelOrderText = "Cancel Order";
+  static String currentUserIdText = "CurrentUserId";
+  static String copiedToClipBoardText = "Copied to Clipboard";
 
   //D
   static String deliveryText = "Delivery";
@@ -151,6 +153,7 @@ class StringConstants {
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";
   static String inProgress = "In-progress";
+  static String imageText = "Image";
 
   //J
   static String janText = "January";
@@ -205,6 +208,8 @@ class StringConstants {
   static String noOffersFoundText = "No Offers found";
   static String noText = "No";
   static String newText = "New";
+  static String noMessagesFountText = "No Messages found";
+  static String noMessagesYetText = "No Messages Yet!";
 
   //O
   static String orderIDText = "Order ID";
