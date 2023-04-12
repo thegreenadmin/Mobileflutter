@@ -54,8 +54,7 @@ class OrdersController extends GetxController {
       store_order.StoreOrderListResponse();
   late order_list.OrderListResponse orderListResponse =
       order_list.OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse =
-      OrderStatusListResponse();
+  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
   late order_detail.OrderDetailResponse orderDetailResponse = order_detail.OrderDetailResponse();
   Rx<order_detail.OrderItem> orderItemObj = order_detail.OrderItem().obs;
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
@@ -72,21 +71,18 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     if (Get.arguments == null ? false : Get.arguments['storeId'] != "") {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    if (Get.arguments == null
-        ? false
-        : Get.arguments['isFromTransaction'] ?? false) {
+    if (Get.arguments == null ? false : Get.arguments['isFromTransaction'] ?? false) {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-
     orderStatus.value =
-        Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
+    Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
     isActiveOrders.value = true;
+    orderStatusId.value=2;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -102,6 +98,7 @@ class OrdersController extends GetxController {
     }
     apiGetOrderStatusListApi();
     setupScrollController(Get.context);
+    super.onInit();
   }
 
   final scrollController = ScrollController();
@@ -876,40 +873,21 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse =order_detail.OrderDetailResponse.fromJson(value?.body);
-        activeStep.value = orderDetailResponse
-                        .data?.order?.orderHistories?.first.orderStatusId ==
-                    "2" &&
-                orderDetailResponse
-                        .data?.order?.orderHistories?.first.isCurrentStatus ==
-                    true
-            ? 0
-            : orderDetailResponse
-                            .data?.order?.orderHistories?.first.orderStatusId ==
-                        "3" &&
-                    orderDetailResponse.data?.order?.orderHistories?.first
-                            .isCurrentStatus ==
-                        true
-                ? 1
-                : orderDetailResponse.data?.order?.orderHistories?.first
-                                .orderStatusId ==
-                            "6" &&
-                        orderDetailResponse.data?.order?.orderHistories?.first
-                                .isCurrentStatus ==
-                            true
-                    ? 2
-                    : orderDetailResponse.data?.order?.orderHistories?.first
-                                    .orderStatusId ==
-                                "5" &&
-                            orderDetailResponse.data?.order?.orderHistories
-                                    ?.first.isCurrentStatus ==
-                                true
-                        ? 3
-                        : 0;
+        orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
+              if(element.isCurrentStatus ==true){
+                activeStep.value = element.orderStatusId=="2"?0:
+                element.orderStatusId=="3"?1:element.orderStatusId=="6"?2:
+                element.orderStatusId=="5"?3:0;
+              }
+        });
         for (var element in stepInd) {
           if (element.id! <= activeStep.value) {
             element.isSelected = true;
+          }else{
+            element.isSelected = false;
           }
         }
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -933,7 +911,11 @@ class OrdersController extends GetxController {
 
     Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value),
-      "order_id": int.parse(orderStatus.value)
+      "order_id": int.parse(orderStatus.value),
+      "order_items": [
+        { "order_item_id": int.parse(orderItemObj.value.orderItemId??"0"),}
+      ]
+
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -949,7 +931,8 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Get.offAll(BottomNavigation());
+        Get.back();
+        // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

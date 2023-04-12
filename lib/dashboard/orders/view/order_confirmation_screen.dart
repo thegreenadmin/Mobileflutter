@@ -452,34 +452,32 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   ],
                 ),
               ),),
-              Obx(()=> Visibility(
-                visible: ordersController.activeStep.value!=3,
-                child: CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
-                    ordersController.apiCancelOrder();
-                  },
-                  height: 50,
-                  border: Border.all(
-                    color: AppColors.blacklight,
-                    width: 1,
-                  ),
-                  textColor:AppColors.red,
-                  width: WidgetConstants.screenWidth * 0.5,
-                  text: StringConstants.cancelOrderText,
-                  borderRadius: 12,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  fontSize: 16,
-                ),
-              ),),
-              Obx(()=> Visibility(
-                  visible: ordersController.activeStep.value==3,
-                  child: buildOrderItems()),),
+              // Obx(()=> Visibility(
+              //   visible: ordersController.activeStep.value!=3,
+              //   child: CustomButton(
+              //     gradient: const LinearGradient(
+              //       begin: Alignment.topCenter,
+              //       end: Alignment.bottomCenter,
+              //       colors: [AppColors.white, AppColors.white],
+              //     ),
+              //     onTap: () {
+              //       ordersController.apiCancelOrder();
+              //     },
+              //     height: 50,
+              //     border: Border.all(
+              //       color: AppColors.blacklight,
+              //       width: 1,
+              //     ),
+              //     textColor:AppColors.red,
+              //     width: WidgetConstants.screenWidth * 0.5,
+              //     text: StringConstants.cancelOrderText,
+              //     borderRadius: 12,
+              //     fontWeight: FontWeight.w500,
+              //     iconL: false,
+              //     fontSize: 16,
+              //   ),
+              // ),),
+              buildOrderItems(),
             ],
           ),
         ),
@@ -602,12 +600,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 ),
                                 height8SizedBox,
                                 RatingBar.builder(
-                                  initialRating: ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productReviews?.first.rating?.toDouble()??0.0,
+                                  initialRating:ordersController.orderDetailResponse.data?.order?.orderItems?[i].product!=null
+                                      ? ordersController.orderDetailResponse.data!.order!.orderItems![i].product!.productReviews!.isNotEmpty ?
+                                  ordersController.orderDetailResponse.data?.order?.orderItems![i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0,
                                   minRating: 1,
                                   direction:  Axis.horizontal,
                                   allowHalfRating: false,
                                   unratedColor: Colors.amber.withAlpha(50),
                                   itemCount: 5,
+                                  ignoreGestures: true,
                                   itemSize: 25.0,
                                   itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
                                   itemBuilder: (context, _) => const Icon(
@@ -628,46 +629,79 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             alignment:Alignment.centerRight,
                             child: Column(
                               children: [
-                                CustomButton(
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.white, AppColors.white],
+                                Visibility(
+                                  visible:ordersController.activeStep.value==3,
+                                  child: CustomButton(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [AppColors.white, AppColors.white],
+                                    ),
+                                    onTap: () {
+                                      ordersController.ratingValue.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].product!=null
+                                          ? ordersController.orderDetailResponse.data!.order!.orderItems![i].product!.productReviews!.isNotEmpty ?
+                                      ordersController.orderDetailResponse.data?.order?.orderItems![i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0;
+                                      ordersController.productId.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].productId??"";
+                                      ordersController
+                                          .bottomSheetRateNow(
+                                          context);
+                                    },
+                                    height: 35,
+                                    border: Border.all(
+                                      color: AppColors.primary,
+                                      width: 1,
+                                    ),
+                                    textColor:AppColors.primary,
+                                    width: WidgetConstants.screenWidth * 0.3,
+                                    text: StringConstants.rateNowText,
+                                    borderRadius: 12,
+                                    fontWeight: FontWeight.w500,
+                                    iconL: false,
+                                    fontSize: 12,
                                   ),
-                                  onTap: () {
-                                    ordersController.ratingValue.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productReviews?.first.rating?.toDouble()??0.0;
-                                    ordersController.productId.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].productId??"";
-                                    ordersController
-                                        .bottomSheetRateNow(
-                                        context);
-                                  },
-                                  height: 35,
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
+                                ), Visibility(
+                                  visible:ordersController.activeStep.value!=3,
+                                  child: CustomButton(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [AppColors.white, AppColors.white],
+                                    ),
+                                    onTap: () {
+                                      ordersController.orderItemObj.value =  ordersController.orderDetailResponse.data!.order!.orderItems![i]! ;
+                                      ordersController.apiCancelOrder();
+                                    },
+                                    height: 35,
+                                    border: Border.all(
+                                      color: AppColors.blacklight,
+                                      width: 1,
+                                    ),
+                                    textColor:AppColors.red,
+                                    width: WidgetConstants.screenWidth * 0.3,
+                                    text: StringConstants.cancelOrderText,
+                                    borderRadius: 12,
+                                    fontWeight: FontWeight.w500,
+                                    iconL: false,
+                                    fontSize: 12,
                                   ),
-                                  textColor:AppColors.primary,
-                                  width: WidgetConstants.screenWidth * 0.3,
-                                  text: StringConstants.rateNowText,
-                                  borderRadius: 12,
-                                  fontWeight: FontWeight.w500,
-                                  iconL: false,
-                                  fontSize: 12,
                                 ),
                                 height6SizedBox,
-                                InkWell(
-                                  onTap:(){
-                                    ordersController.orderItemObj.value =  ordersController.orderDetailResponse.data!.order!.orderItems![i]! ;
-                                    ordersController
-                                        .bottomSheetReturnOrder(
-                                        context);
-                                  },
-                                  child: Text(
-                                    StringConstants.returnOrderText,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                        color: AppColors.red),
+                                Visibility(
+                                  visible: ordersController.activeStep.value== 3,
+                                  child: InkWell(
+                                    onTap:(){
+                                      ordersController.orderItemObj.value =  ordersController.orderDetailResponse.data!.order!.orderItems![i]! ;
+                                      ordersController
+                                          .bottomSheetReturnOrder(
+                                          context);
+                                    },
+                                    child: Text(
+                                      StringConstants.returnOrderText,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                          color: AppColors.red),
+                                    ),
                                   ),
                                 ),
                               ],

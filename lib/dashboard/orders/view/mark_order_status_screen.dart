@@ -270,7 +270,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                   children: [
                                     Text(
                                         ordersHomeMainController
-                                            .customerName.value,
+                                            .customerName.value.toTitleCase(),
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
@@ -545,29 +545,33 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                 colors: [AppColors.primary, AppColors.primary],
               ),
               onTap: () {
-                ordersHomeMainController.selectedIndex.value == 0
-                    ? ordersHomeMainController.apiMarkOrderReady(
-                        orderId: ordersHomeMainController.orderId.value,
-                        storeId: ordersHomeMainController.storeId.value)
-                    : ordersHomeMainController.selectedIndex.value == 1
-                        ? ordersHomeMainController.apiMarkReadyForPick(
-                            orderId: ordersHomeMainController.orderId.value,
-                            storeId: ordersHomeMainController.storeId.value)
-                        : ordersHomeMainController.selectedIndex.value == 2
-                            ? ordersHomeMainController.apiMarkDelivered(
-                                orderId: ordersHomeMainController.orderId.value,
-                                storeId: ordersHomeMainController.storeId.value)
-                            : ordersHomeMainController.selectedIndex.value == 3
-                                ? ordersHomeMainController.apiMarkOrderReady(
-                                    orderId:
-                                        ordersHomeMainController.orderId.value,
-                                    storeId:
-                                        ordersHomeMainController.storeId.value)
-                                : ordersHomeMainController.apiMarkOrderReady(
-                                    orderId:
-                                        ordersHomeMainController.orderId.value,
-                                    storeId:
-                                        ordersHomeMainController.storeId.value);
+                if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
+                  ordersHomeMainController.selectedIndex.value == 0
+                      ? ordersHomeMainController.apiMarkOrderReady(
+                      orderId: ordersHomeMainController.orderId.value,
+                      storeId: ordersHomeMainController.storeId.value)
+                      : ordersHomeMainController.selectedIndex.value == 1
+                      ? ordersHomeMainController.apiMarkReadyForPick(
+                      orderId: ordersHomeMainController.orderId.value,
+                      storeId: ordersHomeMainController.storeId.value)
+                      : ordersHomeMainController.selectedIndex.value == 2
+                      ? ordersHomeMainController.apiMarkDelivered(
+                      orderId: ordersHomeMainController.orderId.value,
+                      storeId: ordersHomeMainController.storeId.value)
+                      : ordersHomeMainController.selectedIndex.value == 3
+                      ? ordersHomeMainController.apiMarkOrderReady(
+                      orderId:
+                      ordersHomeMainController.orderId.value,
+                      storeId:
+                      ordersHomeMainController.storeId.value)
+                      : ordersHomeMainController.apiMarkOrderReady(
+                      orderId:
+                      ordersHomeMainController.orderId.value,
+                      storeId:
+                      ordersHomeMainController.storeId.value);
+                }else{
+                  Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
+                }
               },
               height: 50,
               text: ordersHomeMainController.selectedIndex.value == 0

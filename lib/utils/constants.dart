@@ -279,6 +279,7 @@ class StringConstants {
   static String returnAvailableText = "Return Available";
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
+  static String reviewsText = "Reviews";
   static String receivedText = "Received";
   static String roleText = "Role";
   static String readyForPickUpText = "Ready for Pick Up";
@@ -502,6 +503,7 @@ class AlertStringConstants {
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
+  static String pleaseSelectProductToProceedText = "Please select product to proceed";
   static String pleaseAddAtleastOneItemText =
       "Please add at least one item in cart";
 

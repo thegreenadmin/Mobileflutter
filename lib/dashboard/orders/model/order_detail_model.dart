@@ -480,6 +480,11 @@ class OrderItem {
     this.orderItemId,
     this.product,
     this.returnOrderItems,
+    this.orderItemStatus,
+    this.cancelledAt,
+    this.shippedAt,
+    this.deliveredAt,
+    this.returedAt,
   });
 
   String? orderId;
@@ -499,6 +504,11 @@ class OrderItem {
   String? orderItemId;
   Product? product;
   List<ReturnOrderItem>? returnOrderItems;
+  String? orderItemStatus;
+  dynamic cancelledAt;
+  dynamic shippedAt;
+  dynamic deliveredAt;
+  dynamic returedAt;
 
   OrderItem copyWith({
     String? orderId,
@@ -518,6 +528,11 @@ class OrderItem {
     String? orderItemId,
     Product? product,
     List<ReturnOrderItem>? returnOrderItems,
+    String? orderItemStatus,
+    dynamic cancelledAt,
+    dynamic shippedAt,
+    dynamic deliveredAt,
+    dynamic returedAt,
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -537,6 +552,11 @@ class OrderItem {
         orderItemId: orderItemId ?? this.orderItemId,
         product: product ?? this.product,
         returnOrderItems: returnOrderItems ?? this.returnOrderItems,
+        orderItemStatus: orderItemStatus ?? this.orderItemStatus,
+        cancelledAt: cancelledAt ?? this.cancelledAt,
+        shippedAt: shippedAt ?? this.shippedAt,
+        deliveredAt: deliveredAt ?? this.deliveredAt,
+        returedAt: returedAt ?? this.returedAt,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -557,6 +577,11 @@ class OrderItem {
     orderItemId: json["order_item_id"],
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
     returnOrderItems: json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x))),
+    orderItemStatus: json["order_item_status"],
+    cancelledAt: json["cancelledAt"],
+    shippedAt: json["shippedAt"],
+    deliveredAt: json["deliveredAt"],
+    returedAt: json["returedAt"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -577,6 +602,11 @@ class OrderItem {
     "order_item_id": orderItemId,
     "product": product?.toJson(),
     "return_order_items": returnOrderItems == null ? [] : List<dynamic>.from(returnOrderItems!.map((x) => x.toJson())),
+    "order_item_status": orderItemStatus,
+    "cancelledAt": cancelledAt,
+    "shippedAt": shippedAt,
+    "deliveredAt": deliveredAt,
+    "returedAt": returedAt,
   };
 }
 

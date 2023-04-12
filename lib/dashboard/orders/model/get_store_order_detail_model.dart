@@ -360,6 +360,12 @@ class OrderItems {
   String? orderItemId;
   Product? product;
   bool? isSelected;
+  List<ReturnOrderItem>? returnOrderItems;
+  String? orderItemStatus;
+  dynamic cancelledAt;
+  dynamic shippedAt;
+  dynamic deliveredAt;
+  dynamic returedAt;
 
   OrderItems(
       {this.orderId,
@@ -379,6 +385,12 @@ class OrderItems {
       this.orderItemId,
       this.product,
       this.isSelected,
+      this.returnOrderItems,
+      this.orderItemStatus,
+      this.cancelledAt,
+      this.shippedAt,
+      this.deliveredAt,
+      this.returedAt,
       });
 
   OrderItems.fromJson(Map<String, dynamic> json) {
@@ -397,8 +409,13 @@ class OrderItems {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderItemId = json['order_item_id'];
-    product =
-        json['product'] != null ? new Product.fromJson(json['product']) : null;
+    product = json['product'] != null ? new Product.fromJson(json['product']) : null;
+    returnOrderItems= json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x)));
+    orderItemStatus= json["order_item_status"];
+    cancelledAt= json["cancelledAt"];
+    shippedAt= json["shippedAt"];
+    deliveredAt= json["deliveredAt"];
+    returedAt= json["returedAt"];
   }
 
   Map<String, dynamic> toJson() {
@@ -421,6 +438,15 @@ class OrderItems {
     if (this.product != null) {
       data['product'] = this.product!.toJson();
     }
+    if (this.returnOrderItems != null) {
+      data['return_order_items'] = List<dynamic>.from(returnOrderItems!.map((x) => x.toJson()));
+    }
+    data['return_order_items'] = this.returnOrderItems;
+    data['order_item_status'] = this.orderItemStatus;
+    data['cancelledAt'] = this.cancelledAt;
+    data['shippedAt'] = this.shippedAt;
+    data['deliveredAt'] = this.deliveredAt;
+    data['returedAt'] = this.returedAt;
     return data;
   }
 }
@@ -544,6 +570,77 @@ class Product {
     }
     return data;
   }
+}
+
+class ReturnOrderItem {
+  ReturnOrderItem({
+    this.orderItemId,
+    this.returnItemsCount,
+    this.remarks,
+    this.totalTaxReversed,
+    this.totalAmountReversed,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.returnOrderItemId,
+  });
+
+  String? orderItemId;
+  int? returnItemsCount;
+  String? remarks;
+  double? totalTaxReversed;
+  double? totalAmountReversed;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? returnOrderItemId;
+
+  ReturnOrderItem copyWith({
+    String? orderItemId,
+    int? returnItemsCount,
+    String? remarks,
+    double? totalTaxReversed,
+    double? totalAmountReversed,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? returnOrderItemId,
+  }) =>
+      ReturnOrderItem(
+        orderItemId: orderItemId ?? this.orderItemId,
+        returnItemsCount: returnItemsCount ?? this.returnItemsCount,
+        remarks: remarks ?? this.remarks,
+        totalTaxReversed: totalTaxReversed ?? this.totalTaxReversed,
+        totalAmountReversed: totalAmountReversed ?? this.totalAmountReversed,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        returnOrderItemId: returnOrderItemId ?? this.returnOrderItemId,
+      );
+
+  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) => ReturnOrderItem(
+    orderItemId: json["order_item_id"],
+    returnItemsCount: json["return_items_count"],
+    remarks: json["remarks"],
+    totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
+    totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    returnOrderItemId: json["return_order_item_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "order_item_id": orderItemId,
+    "return_items_count": returnItemsCount,
+    "remarks": remarks,
+    "total_tax_reversed": totalTaxReversed,
+    "total_amount_reversed": totalAmountReversed,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "return_order_item_id": returnOrderItemId,
+  };
 }
 
 class ProductReviews {
