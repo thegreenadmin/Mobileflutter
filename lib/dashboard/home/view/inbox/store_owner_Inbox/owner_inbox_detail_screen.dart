@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_detail_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -352,7 +353,7 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
   // }
 
   _buildMessage(
-    List<Messages> messageList,
+    List<Message> messageList,
     int index,
   ) {
     if (messageList[index].senderType! ==

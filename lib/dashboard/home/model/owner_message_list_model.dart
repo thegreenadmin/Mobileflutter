@@ -59,7 +59,7 @@ class Message {
   String? createdAt;
   String? updatedAt;
   String? messageId;
-  Image? image;
+  Images? image;
 
   Message(
       {this.messageHeadId,
@@ -85,7 +85,7 @@ class Message {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     messageId = json['message_id'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -107,13 +107,13 @@ class Message {
   }
 }
 
-class Image {
+class Images {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Image({this.orignalUrl, this.dynamicUrl});
+  Images({this.orignalUrl, this.dynamicUrl});
 
-  Image.fromJson(Map<String, dynamic> json) {
+  Images.fromJson(Map<String, dynamic> json) {
     orignalUrl = json['orignal_url'];
     dynamicUrl = json['dynamic_url'];
   }
