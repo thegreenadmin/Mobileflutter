@@ -2,12 +2,12 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import '../account/account_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -372,7 +372,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         height10SizedBox,
                         SizedBox(
-                          height: 50,
+                          height: 40,
                           width: WidgetConstants.screenWidth,
                           child: ListView.separated(
                               separatorBuilder:
@@ -578,8 +578,7 @@ class _CartScreenState extends State<CartScreen> {
                                           child: Text(
                                             storeHomeMainController
                                                             .selectedUserAddress
-                                                            .value
-                                                            .addressLine1 ==
+                                                            .value.addressLine1 ==
                                                         null &&
                                                     storeHomeMainController
                                                             .selectedUserAddress
@@ -600,28 +599,28 @@ class _CartScreenState extends State<CartScreen> {
                                     ],
                                   ),
                                   width10SizedBox,
-                                  InkWell(
+                                  Obx(()=>InkWell(
                                     onTap: () {
                                       storeHomeMainController
-                                                      .selectedUserAddress
-                                                      .value
-                                                      .addressLine1 ==
-                                                  null &&
-                                              storeHomeMainController
-                                                      .selectedUserAddress
-                                                      .value
-                                                      .city ==
-                                                  null
-                                          ? Get.to(const AccountScreen(),
-                                              arguments:
-                                                  ({"isFromCart": true}))?.then(
+                                          .selectedUserAddress
+                                          .value
+                                          .addressLine1 ==
+                                          null &&
+                                          storeHomeMainController
+                                              .selectedUserAddress
+                                              .value
+                                              .city ==
+                                              null
+                                          ? Get.to(const PersonalInfoEditScreen(),
+                                          arguments:
+                                          ({"isFromCart": true}))?.then(
                                               (value) => storeHomeMainController
-                                                  .apiGetUserDetailsApi())
+                                              .apiGetUserDetailsApi())
                                           : storeHomeMainController
-                                                  .userAddress.isNotEmpty
-                                              ? storeHomeMainController
-                                                  .bottomSheetChangePickupLocation(context)
-                                              : null;
+                                          .userAddress.isNotEmpty
+                                          ? storeHomeMainController
+                                          .bottomSheetChangePickupLocation(context)
+                                          : null;
                                     },
                                     child: Container(
                                       height: 40.0,
@@ -631,20 +630,20 @@ class _CartScreenState extends State<CartScreen> {
                                         border: Border.all(
                                             color: AppColors.primary),
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                        BorderRadius.circular(10.0),
                                       ),
                                       child: Center(
                                         child: Text(
                                           storeHomeMainController
-                                                          .selectedUserAddress
-                                                          .value
-                                                          .addressLine1 ==
-                                                      null &&
-                                                  storeHomeMainController
-                                                          .selectedUserAddress
-                                                          .value
-                                                          .city ==
-                                                      null
+                                              .selectedUserAddress
+                                              .value
+                                              .addressLine1 ==
+                                              null &&
+                                              storeHomeMainController
+                                                  .selectedUserAddress
+                                                  .value
+                                                  .city ==
+                                                  null
                                               ? StringConstants.addText
                                               : StringConstants.changeText,
                                           style: const TextStyle(
@@ -654,7 +653,7 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                       ),
                                     ),
-                                  ),
+                                  ),),
                                 ])),
                         height10SizedBox,
                         Text(
@@ -768,7 +767,6 @@ class _CartScreenState extends State<CartScreen> {
                         height20SizedBox,
                       ]),
                 ),
-                height10SizedBox,
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(

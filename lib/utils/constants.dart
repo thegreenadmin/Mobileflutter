@@ -212,6 +212,7 @@ class StringConstants {
   static String noMessagesYetText = "No Messages Yet!";
 
   //O
+  static String okText = "Ok";
   static String orderIDText = "Order ID";
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
@@ -290,6 +291,7 @@ class StringConstants {
 
   //S
   static String signUpText = "Sign up";
+  static String shareYourFeedbackText = "Share your feedback";
   static String skipText = "Skip";
   static String storeText = "Store";
   static String storesText = "Stores";
@@ -344,7 +346,6 @@ class StringConstants {
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
   static String taxText = "Tax";
-  static String okText = "Ok";
   static String theImageMustBeAtleaseText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
   static String twentyFourSevenText = "24x7";

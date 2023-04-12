@@ -6,6 +6,7 @@ class ServerCommunicator {
 //B
 //C
   String createUser = 'user/create';
+  String createItemReview = 'order/item/review/create';
   String createStore = 'store/create';
   String createStoreUser = 'store/user/create';
   String countries = 'utils/countries';
@@ -53,6 +54,7 @@ class ServerCommunicator {
   String placeOrder = 'order/create';
 //Q
 //R
+  String returnOrder = 'order/item/return/create';
   String roleList = 'store/role/list';
   String removeFavouriteStore = 'user/store/favourite/remove';
   String removeFavouriteProduct = 'user/product/favourite/delete';
