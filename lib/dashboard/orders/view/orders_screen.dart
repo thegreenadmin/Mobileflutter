@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart'
 import 'package:thegreenmall/dashboard/orders/view/mark_return_order_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/return_confirm_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -663,25 +664,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                                       .w400,
                                                               fontSize: 14)),
                                                       TextSpan(
-                                                        text: ordersController
-                                                                    .orderList[
-                                                                        i]
-                                                                    .orderHistories
-                                                                    ?.first
-                                                                    .orderStatus
-                                                                    ?.orderStatusName ==
-                                                                "new"
-                                                            ? StringConstants
-                                                                .activeText
-                                                                .toUpperCase()
-                                                            : ordersController
+                                                        text:  ordersController
                                                                     .orderList[
                                                                         i]
                                                                     .orderHistories
                                                                     ?.first
                                                                     .orderStatus
                                                                     ?.orderStatusName
-                                                                    ?.toUpperCase() ??
+                                                                    ?.toTitleCase() ??
                                                                 "",
                                                         style: const TextStyle(
                                                             color: AppColors
@@ -807,38 +797,41 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       return InkWell(
                                         onTap: () {
                                           ordersController
-                                                      .orderStatusId.value ==
-                                                  7
-                                              ? Get.to(
-                                                  () =>
-                                                      const MarkReturnOrderScreen(),
+                                              .storeOrderList[i]
+                                              .orderHistories
+                                              !.first
+                                              .orderStatus
+                                              !.orderStatusId =="11"
+                                              ? Get.to(() => const MarkReturnOrderScreen(),
+                                                  arguments: {
+                                                      "storeId": ordersController
+                                                              .storeOrderList[i].store
+                                                              ?.storeId.toString() ?? "",
+                                                      "orderId":
+                                                          ordersController.storeOrderList[i].orderId.toString(),
+                                                    })?.then((value) {
+                                            ordersController.apiGetStoreOrderListApi();
+                                                } )
+                                              : ordersController
+                                                  .storeOrderList[i]
+                                                  .orderHistories!.first
+                                                  .orderStatus!.orderStatusId =="12"
+                                                  ? Get.to(() => const ReturnConfirmOrderScreen(),
+                                                  arguments: {
+                                                    "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
+                                                    "orderId":
+                                                    ordersController.storeOrderList[i].orderId.toString(),
+                                                  })
+                                              :ordersController.orderStatusId.value==7
+                                              ? null
+                                              : Get.to(() => const OrdersHomeMainScreen(),
                                                   arguments: {
                                                       "storeId": ordersController
                                                               .storeOrderList[i]
-                                                              .store
-                                                              ?.storeId
-                                                              .toString() ??
-                                                          "",
+                                                              .store?.storeId.toString() ?? "",
                                                       "orderId":
                                                           ordersController
-                                                              .storeOrderList[i]
-                                                              .orderId
-                                                              .toString(),
-                                                    })
-                                              : Get.to(
-                                                  () =>
-                                                      const OrdersHomeMainScreen(),
-                                                  arguments: {
-                                                      "storeId": ordersController
-                                                              .storeOrderList[i]
-                                                              .store
-                                                              ?.storeId
-                                                              .toString() ??
-                                                          "",
-                                                      "orderId": ordersController
-                                                              .storeOrderList[i]
-                                                              .orderId ??
-                                                          "",
+                                                                  .storeOrderList[i].orderId ?? "",
                                                     });
                                         },
                                         child: Container(
@@ -1040,25 +1033,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                                       .w400,
                                                               fontSize: 14)),
                                                       TextSpan(
-                                                        text: ordersController
-                                                                    .storeOrderList[
-                                                                        i]
-                                                                    .orderHistories
-                                                                    ?.first
-                                                                    .orderStatus
-                                                                    ?.orderStatusName ==
-                                                                "new"
-                                                            ? StringConstants
-                                                                .activeText
-                                                                .toUpperCase()
-                                                            : ordersController
+                                                        text:  ordersController
                                                                     .storeOrderList[
                                                                         i]
                                                                     .orderHistories
                                                                     ?.first
                                                                     .orderStatus
                                                                     ?.orderStatusName
-                                                                    ?.toUpperCase() ??
+                                                                    ?.toTitleCase() ??
                                                                 "",
                                                         style: const TextStyle(
                                                             color: AppColors

@@ -115,6 +115,9 @@ class ServerCommunicator {
   String storeMessageList = 'store/message/list';
   String storeMessageSend = 'store/message/send';
   String storeMessageDelete = 'store/message/delete';
+  String storeConfirmReturnOrder = 'store/order/return/confirm/create';
+  String storeCompleteReturnOrder = 'store/order/return/complete/create';
+  String storeRejectReturnOrder = 'store/order/return/cancel/create';
 
 //T
 //U

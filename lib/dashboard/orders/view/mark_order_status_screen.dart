@@ -507,18 +507,47 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                               child: Checkbox(
                                                 side: MaterialStateBorderSide.resolveWith(
                                                       (states) => BorderSide(
-                                                      width: 1.0,
-                                                      color:
+                                                      width: 1.0, color:
                                                       AppColors.primary.withOpacity(0.5)),
                                                 ),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(6.0)),
                                                 activeColor: AppColors.primary,
-                                                value: ordersHomeMainController.getOrderItems[index].isSelected??false,
+
+                                                value:
+                                                ordersHomeMainController.selectedIndex.value == 0 &&
+                                                ordersHomeMainController.getOrderItems[index].orderItemStatus!="pending" ||
+                                                ordersHomeMainController.selectedIndex.value == 1 &&
+                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus!="confirmed"||
+                                                ordersHomeMainController.selectedIndex.value == 2 &&
+                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus!="shipped"||
+                                                ordersHomeMainController.selectedIndex.value == 3 &&
+                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus!="delivered"?
+                                                true:
+                                                ordersHomeMainController.getOrderItems[index].isSelected??false ,
                                                 onChanged: (bool? value) {
-                                                  setState(() {
-                                                    ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                  });
+                                                  if(ordersHomeMainController.selectedIndex.value == 0 &&
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="pending"){
+                                                    setState(() {
+                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                    });
+                                                  }else if(ordersHomeMainController.selectedIndex.value == 1 &&
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="confirmed"){
+                                                    setState(() {
+                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                    });
+                                                  }else if(ordersHomeMainController.selectedIndex.value == 2 &&
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="shipped"){
+                                                    setState(() {
+                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                    });
+                                                  }else if(ordersHomeMainController.selectedIndex.value == 3 &&
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="delivered"){
+                                                    setState(() {
+                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                    });
+                                                  }
+
                                                   },
                                               )),
                                         ),
@@ -536,6 +565,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
             left: 50,
             right: 50,
             child: CustomButton(
+              // width: WidgetConstants.screenWidth *0.4,
               border: Border.all(
                 color: AppColors.primary,
               ),
