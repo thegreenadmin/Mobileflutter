@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class MarkReturnOrderScreen extends StatefulWidget {
   const MarkReturnOrderScreen({super.key});
@@ -110,7 +111,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                   children: [
                                     Text(
                                         ordersHomeMainController
-                                            .customerName.value,
+                                            .customerName.value.toTitleCase(),
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,

@@ -96,6 +96,7 @@ class Product {
     this.productContents,
     this.productLinks,
     this.cartItems,
+    this.productReviews,
   });
 
   String? productId;
@@ -126,6 +127,7 @@ class Product {
   List<ProductContent>? productContents;
   List<ProductLink>? productLinks;
   List<CartItem>? cartItems;
+  List<ProductReview>? productReviews;
 
   Product copyWith({
     String? productId,
@@ -156,6 +158,7 @@ class Product {
     List<ProductContent>? productContents,
     List<ProductLink>? productLinks,
     List<CartItem>? cartItems,
+    List<ProductReview>? productReviews,
   }) =>
       Product(
         productId: productId ?? this.productId,
@@ -186,6 +189,7 @@ class Product {
         productContents: productContents ?? this.productContents,
         productLinks: productLinks ?? this.productLinks,
         cartItems: cartItems ?? this.cartItems,
+        productReviews: productReviews ?? this.productReviews,
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -217,6 +221,7 @@ class Product {
     productContents: json["product_contents"] == null ? [] : List<ProductContent>.from(json["product_contents"]!.map((x) => ProductContent.fromJson(x))),
     productLinks: json["product_links"] == null ? [] : List<ProductLink>.from(json["product_links"]!.map((x) => ProductLink.fromJson(x))),
     cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
+    productReviews: json["product_reviews"] == null ? [] : List<ProductReview>.from(json["product_reviews"]!.map((x) => ProductReview.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -248,8 +253,176 @@ class Product {
     "product_contents": productContents == null ? [] : List<dynamic>.from(productContents!.map((x) => x.toJson())),
     "product_links": productLinks == null ? [] : List<dynamic>.from(productLinks!.map((x) => x.toJson())),
     "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
+    "product_reviews": productReviews == null ? [] : List<dynamic>.from(productReviews!.map((x) => x.toJson())),
   };
 }
+
+class ProductReview {
+  ProductReview({
+    this.productId,
+    this.userId,
+    this.orderId,
+    this.rating,
+    this.review,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.productReviewId,
+    this.user,
+  });
+
+  String? productId;
+  String? userId;
+  String? orderId;
+  int? rating;
+  String? review;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? productReviewId;
+  User? user;
+
+  ProductReview copyWith({
+    String? productId,
+    String? userId,
+    String? orderId,
+    int? rating,
+    String? review,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? productReviewId,
+    User? user,
+  }) =>
+      ProductReview(
+        productId: productId ?? this.productId,
+        userId: userId ?? this.userId,
+        orderId: orderId ?? this.orderId,
+        rating: rating ?? this.rating,
+        review: review ?? this.review,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        productReviewId: productReviewId ?? this.productReviewId,
+        user: user ?? this.user,
+      );
+
+  factory ProductReview.fromJson(Map<String, dynamic> json) => ProductReview(
+    productId: json["product_id"],
+    userId: json["user_id"],
+    orderId: json["order_id"],
+    rating: json["rating"],
+    review: json["review"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    productReviewId: json["product_review_id"],
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "product_id": productId,
+    "user_id": userId,
+    "order_id": orderId,
+    "rating": rating,
+    "review": review,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "product_review_id": productReviewId,
+    "user": user?.toJson(),
+  };
+}
+
+class User {
+  User({
+    this.id,
+    this.email,
+    this.phone,
+    this.phoneCode,
+    this.firstName,
+    this.lastName,
+    this.nickName,
+    this.imageUrl,
+    this.dob,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  String? id;
+  String? email;
+  String? phone;
+  String? phoneCode;
+  String? firstName;
+  String? lastName;
+  String? nickName;
+  dynamic imageUrl;
+  DateTime? dob;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  User copyWith({
+    String? id,
+    String? email,
+    String? phone,
+    String? phoneCode,
+    String? firstName,
+    String? lastName,
+    String? nickName,
+    dynamic imageUrl,
+    DateTime? dob,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      User(
+        id: id ?? this.id,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        phoneCode: phoneCode ?? this.phoneCode,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        nickName: nickName ?? this.nickName,
+        imageUrl: imageUrl ?? this.imageUrl,
+        dob: dob ?? this.dob,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json["id"],
+    email: json["email"],
+    phone: json["phone"],
+    phoneCode: json["phone_code"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    nickName: json["nick_name"],
+    imageUrl: json["image_url"],
+    dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "email": email,
+    "phone": phone,
+    "phone_code": phoneCode,
+    "first_name": firstName,
+    "last_name": lastName,
+    "nick_name": nickName,
+    "image_url": imageUrl,
+    "dob": dob?.toIso8601String(),
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
+
 
 class CartItem {
   CartItem({

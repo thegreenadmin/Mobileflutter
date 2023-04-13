@@ -243,7 +243,20 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map body = {"store_id": storeId, "order_id": orderId};
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if(element.isSelected ==true ){
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+      }
+    }
+    Map body = {
+      "store_id": storeId,
+      "order_id": orderId,
+      "order_items": orderItems
+    };
+
     debugPrint("MARK ORDER CONFIRM BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -258,6 +271,10 @@ class OrdersHomeMainController extends GetxController {
       debugPrint("MARK ORDER CONFIRM RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected =false;
+        }
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -275,7 +292,19 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map body = {"store_id": storeId, "order_id": orderId};
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if(element.isSelected ==true ){
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+      }
+    }
+    Map body = {
+      "store_id": storeId,
+      "order_id": orderId,
+      "order_items": orderItems
+    };
     debugPrint("MARK ORDER SHIPPED BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -290,6 +319,10 @@ class OrdersHomeMainController extends GetxController {
       debugPrint("MARK ORDER SHIPPED RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected =false;
+        }
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -307,7 +340,19 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map body = {"store_id": storeId, "order_id": orderId};
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if(element.isSelected ==true ){
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+      }
+    }
+    Map body = {
+      "store_id": storeId,
+      "order_id": orderId,
+      "order_items": orderItems
+    };
     debugPrint("MARK ORDER COMPLETE BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -322,6 +367,10 @@ class OrdersHomeMainController extends GetxController {
       debugPrint("MARK ORDER COMPLETE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected =false;
+        }
         update();
       } else {
         Utility.showToast(value.body['message']);

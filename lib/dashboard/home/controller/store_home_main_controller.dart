@@ -18,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -298,11 +299,12 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
-        Get.to(const OrderConfirmationScreen(), arguments: {
+        Get.to(() => const OrderConfirmationScreen(), arguments: {
           "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false
         });
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
