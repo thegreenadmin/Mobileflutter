@@ -368,6 +368,53 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
+//Cancel order ready
+  apiCancelOrder() async {
+    isLoading.value = true;
+    debugPrint(
+        "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if(element.isSelected ==true ){
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+      }
+    }
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+      "order_items": orderItems
+    };
+
+    debugPrint("MARK ORDER CANCEL BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(body,
+            ServerCommunicator().baseUrl + ServerCommunicator().storeCancelOrder,
+            headers, showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER CANCEL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected =false;
+        }
+        Get.back();
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
 //Mark store order ready
   apiMarkOrderReady({String storeId = "", String orderId = ""}) async {
     isLoading.value = true;
