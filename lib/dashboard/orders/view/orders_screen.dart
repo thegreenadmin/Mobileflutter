@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/mark_return_order_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
@@ -325,18 +326,42 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
+                            Row(
+                              children: [
+                                Obx(
+                                  () => ordersController
+                                              .isFromNotification.value ==
+                                          true
+                                      ? InkWell(
+                                          onTap: () {
+                                            Get.offAll(BottomNavigation());
+                                          },
+                                          child: const Icon(
+                                            Icons.arrow_back,
+                                            color: AppColors.black,
+                                            size: 24.0,
+                                          ),
+                                        )
+                                      : height0SizedBox,
+                                ),
+                                ordersController.isFromNotification.value ==
+                                        true
+                                    ? width10SizedBox
+                                    : height0SizedBox,
+                                Text(
+                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
                             ),
                             height4SizedBox,
                             Text(
@@ -431,6 +456,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   const OrderConfirmationScreen(),
                                               arguments: {
                                                 "isFromTransaction": false,
+                                                "isFromNotification": false,
                                                 "storeId": ordersController
                                                         .orderList[i]
                                                         .store
@@ -809,12 +835,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               ?.storeId
                                                               .toString() ??
                                                           "",
-                                                      "orderId":
-                                                          ordersController
-                                                                  .storeOrderList[
-                                                                      i]
-                                                                  .orderId ??
-                                                              "",
+                                                      "orderId": ordersController
+                                                              .storeOrderList[i]
+                                                              .orderId ??
+                                                          "",
                                                     });
                                         },
                                         child: Container(

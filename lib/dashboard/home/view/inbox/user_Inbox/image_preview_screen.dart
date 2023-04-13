@@ -6,9 +6,9 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ImagePreviewScreen extends StatefulWidget {
-  String image;
+  final String image;
 
-  ImagePreviewScreen({Key? key, this.image = ""}) : super(key: key);
+  const ImagePreviewScreen({Key? key, this.image = ""}) : super(key: key);
 
   @override
   State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();

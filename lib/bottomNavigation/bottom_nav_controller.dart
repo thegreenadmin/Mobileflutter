@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
@@ -10,6 +13,8 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart'
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
+import 'package:thegreenmall/main.dart';
+import 'package:thegreenmall/push_notifications/push_notifications.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
@@ -17,7 +22,17 @@ class BottomNavController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    selectedIndex.value = Get.arguments ?? 0;
+    if (initialRemoteMessage != null) {
+      debugPrint("initMessageReceived");
+      // selectNotification(json.encode(initialRemoteMessage?.data));
+      selectNotification(NotificationResponse(
+        notificationResponseType:
+            NotificationResponseType.selectedNotificationAction,
+        payload: json.encode(initialRemoteMessage!.data),
+      ));
+      initialRemoteMessage = null;
+    }
+    selectedIndex.value = Get.arguments["currentIndex"];
   }
 
   List<Widget> tabs = [

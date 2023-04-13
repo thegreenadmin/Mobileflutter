@@ -1,14 +1,25 @@
 class ServerCommunicator {
-  String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  // ******************** DEVELOPMENT SERVER ***********
 
+  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+
+  // ********************** STAGING SERVER *************
+
+  String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+
+  // ********************** PRODUCTION SERVER *************
+  //Not yet!
+
+//***************************************************** URLS ********************************************************
 //A
 //B
 //C
   String createUser = 'user/create';
   String createItemReview = 'order/item/review/create';
   String createStore = 'store/create';
-  String createStoreUser = 'store/user/create';
+  String createStoreUser = 'store/user/create'; 
   String countries = 'utils/countries';
   String createStoreCategory = 'store/category/create';
   String categoryList = 'store/category/list';

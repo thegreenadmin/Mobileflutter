@@ -302,7 +302,8 @@ class StoreHomeMainController extends GetxController {
         Get.to(() => const OrderConfirmationScreen(), arguments: {
           "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
-          "isFromTransaction": false
+          "isFromTransaction": false,
+          "isFromNotification":false
         });
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {

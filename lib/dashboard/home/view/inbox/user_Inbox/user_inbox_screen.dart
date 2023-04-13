@@ -373,6 +373,11 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                           ),
                                                           onPressed: () {
                                                             Get.back();
+                                                            userInboxController
+                                                                .apiDeleteUserMessages(
+                                                                    messageHeadId:
+                                                                        userInboxController.inboxList[index].messageHeadId ??
+                                                                            "");
                                                           },
                                                           child: Text(
                                                               StringConstants

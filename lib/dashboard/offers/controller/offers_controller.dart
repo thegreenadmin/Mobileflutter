@@ -106,7 +106,7 @@ class OffersController extends GetxController {
   Future apiGetUserOffersList() async {
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=$lng&latitude=$lng +&mileage=100&page=1&page_size=20",
+      "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ class OffersController extends GetxController {
 
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=$lng&latitude=$lng +&mileage=100&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {

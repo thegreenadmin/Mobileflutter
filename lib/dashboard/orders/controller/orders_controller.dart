@@ -15,7 +15,8 @@ import 'package:thegreenmall/dashboard/orders/model/get_store_order_list_model.d
     as store_order;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
-import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart' as order_detail;
+import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart'
+    as order_detail;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -33,6 +34,7 @@ class OrdersController extends GetxController {
   TextEditingController reasonController = TextEditingController();
 
   RxBool isActiveOrders = false.obs;
+  RxBool isFromNotification = false.obs;
   RxBool isLoading = false.obs;
   RxBool isDataLoading = false.obs;
   RxString? firstName = "".obs;
@@ -54,8 +56,10 @@ class OrdersController extends GetxController {
       store_order.StoreOrderListResponse();
   late order_list.OrderListResponse orderListResponse =
       order_list.OrderListResponse();
-  late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
-  late order_detail.OrderDetailResponse orderDetailResponse = order_detail.OrderDetailResponse();
+  late OrderStatusListResponse orderStatusListResponse =
+      OrderStatusListResponse();
+  late order_detail.OrderDetailResponse orderDetailResponse =
+      order_detail.OrderDetailResponse();
   Rx<order_detail.OrderItem> orderItemObj = order_detail.OrderItem().obs;
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<order_list.Order> orderList = <order_list.Order>[].obs;
@@ -71,18 +75,25 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
+    if (Get.arguments == null
+        ? false
+        : Get.arguments['isFromNotification'] != false) {
+      isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
+    }
     if (Get.arguments == null ? false : Get.arguments['storeId'] != "") {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    if (Get.arguments == null ? false : Get.arguments['isFromTransaction'] ?? false) {
+    if (Get.arguments == null
+        ? false
+        : Get.arguments['isFromTransaction'] ?? false) {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
     orderStatus.value =
-    Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
+        Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
     isActiveOrders.value = true;
-    orderStatusId.value=2;
+    orderStatusId.value = 2;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -174,17 +185,17 @@ class OrdersController extends GetxController {
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
-
                       height15SizedBox,
                       RatingBar.builder(
                         initialRating: 1.5,
                         minRating: 1,
-                        direction:  Axis.horizontal,
+                        direction: Axis.horizontal,
                         allowHalfRating: true,
                         unratedColor: Colors.amber.withAlpha(50),
                         itemCount: 5,
                         itemSize: 35.0,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
                           // _selectedIcon ?? Icons.star,
                           Icons.star,
@@ -336,41 +347,44 @@ class OrdersController extends GetxController {
                       ),
                       height15SizedBox,
                       Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.start,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 65,width:65,
+                            height: 65,
+                            width: 65,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                    color:
-                                    AppColors.white,
-                                    width: 1)),
-                            child:
-                            orderItemObj.value.product?.productImages?.first.image?.dynamicUrl == null ||
-                                      orderItemObj.value.product!.productImages!.first.image!.dynamicUrl!.isEmpty
-                                      ? ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.asset(ImageConstants.storeicon,fit: BoxFit.fill,))
-                                :ClipRRect(
-                                 borderRadius: BorderRadius.circular(16),
-                                child:Image.network(orderItemObj.value.product?.productImages?.first.image?.dynamicUrl??"",
-                                 fit: BoxFit.fill,)),
+                                    color: AppColors.white, width: 1)),
+                            child: orderItemObj.value.product?.productImages
+                                            ?.first.image?.dynamicUrl ==
+                                        null ||
+                                    orderItemObj.value.product!.productImages!
+                                        .first.image!.dynamicUrl!.isEmpty
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.asset(
+                                      ImageConstants.storeicon,
+                                      fit: BoxFit.fill,
+                                    ))
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      orderItemObj.value.product?.productImages
+                                              ?.first.image?.dynamicUrl ??
+                                          "",
+                                      fit: BoxFit.fill,
+                                    )),
                           ),
                           width5SizedBox,
                           Expanded(
                             child: Column(
-                              mainAxisSize:
-                              MainAxisSize.max,
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  orderItemObj.value.product?.productName??"",
+                                  orderItemObj.value.product?.productName ?? "",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18,
@@ -379,36 +393,26 @@ class OrdersController extends GetxController {
                                 height6SizedBox,
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .end,
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text.rich(
                                       TextSpan(
                                         children: [
                                           TextSpan(
-                                              text: "${StringConstants.unitPriceText}: ",
+                                              text:
+                                                  "${StringConstants.unitPriceText}: ",
                                               style: TextStyle(
-                                                  color: AppColors
-                                                      .blacklight,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w400,
-                                                  fontSize:
-                                                  16)),
+                                                  color: AppColors.blacklight,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 16)),
                                           TextSpan(
                                             text:
-                                            "\$${orderItemObj.value.product?.productPrice.toString()??""}",
+                                                "\$${orderItemObj.value.product?.productPrice.toString() ?? ""}",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight
-                                                    .w600,
-                                                fontSize:
-                                                16,
-                                                color: AppColors
-                                                    .blacklight),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                                color: AppColors.blacklight),
                                           ),
                                         ],
                                       ),
@@ -416,7 +420,6 @@ class OrdersController extends GetxController {
                                     width20SizedBox,
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
@@ -441,7 +444,7 @@ class OrdersController extends GetxController {
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          controller:reasonController,
+                          controller: reasonController,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -492,7 +495,6 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-
                           apiReturnOrder();
                         },
                         height: 50,
@@ -580,7 +582,8 @@ class OrdersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -592,9 +595,12 @@ class OrdersController extends GetxController {
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(data,
-        ServerCommunicator().baseUrl + ServerCommunicator().createItemReview,
-        headers, showLoading: false)
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().createItemReview,
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("CREATE ITEM REVIEW *******${value?.body}");
@@ -622,7 +628,8 @@ class OrdersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -630,8 +637,8 @@ class OrdersController extends GetxController {
       "order_id": int.parse(orderStatus.value),
       "order_items": [
         {
-          "order_item_id": int.parse(orderItemObj.value.orderItemId??"0"),
-          "return_items_count":orderItemObj.value.orderItemCount??0,
+          "order_item_id": int.parse(orderItemObj.value.orderItemId ?? "0"),
+          "return_items_count": orderItemObj.value.orderItemCount ?? 0,
           "remarks": reasonController.text
         }
       ]
@@ -640,9 +647,11 @@ class OrdersController extends GetxController {
     debugPrint("REQUEST ********** $data");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(data,
-        ServerCommunicator().baseUrl + ServerCommunicator().returnOrder,
-        headers, showLoading: false)
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl + ServerCommunicator().returnOrder,
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("RETURN ORDER *******${value?.body}");
@@ -716,7 +725,9 @@ class OrdersController extends GetxController {
           isActiveOrders.value == true ? isActiveOrders.value : null,
       "order_statuses": isActiveOrders.value == false
           ? [
-              {"order_status_id": orderStatusId.value,}
+              {
+                "order_status_id": orderStatusId.value,
+              }
             ]
           : []
     };
@@ -838,10 +849,12 @@ class OrdersController extends GetxController {
       debugPrint("Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        debugPrint("isFavouriteStore  *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        debugPrint(
+            "isFavouriteStore  *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-        isFavouriteStore.value =storeDetailsResponse.value.data?.store?.isFavouriteStore ??false;
+        isFavouriteStore.value =
+            storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -872,18 +885,25 @@ class OrdersController extends GetxController {
       log("ORDER Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        orderDetailResponse =order_detail.OrderDetailResponse.fromJson(value?.body);
+        orderDetailResponse =
+            order_detail.OrderDetailResponse.fromJson(value?.body);
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
-              if(element.isCurrentStatus ==true){
-                activeStep.value = element.orderStatusId=="2"?0:
-                element.orderStatusId=="3"?1:element.orderStatusId=="6"?2:
-                element.orderStatusId=="5"?3:0;
-              }
+          if (element.isCurrentStatus == true) {
+            activeStep.value = element.orderStatusId == "2"
+                ? 0
+                : element.orderStatusId == "3"
+                    ? 1
+                    : element.orderStatusId == "6"
+                        ? 2
+                        : element.orderStatusId == "5"
+                            ? 3
+                            : 0;
+          }
         });
         for (var element in stepInd) {
           if (element.id! <= activeStep.value) {
             element.isSelected = true;
-          }else{
+          } else {
             element.isSelected = false;
           }
         }
@@ -913,9 +933,10 @@ class OrdersController extends GetxController {
       "store_id": int.parse(storeId.value),
       "order_id": int.parse(orderStatus.value),
       "order_items": [
-        { "order_item_id": int.parse(orderItemObj.value.orderItemId??"0"),}
+        {
+          "order_item_id": int.parse(orderItemObj.value.orderItemId ?? "0"),
+        }
       ]
-
     };
 
     debugPrint("TOKEN ********** $headers");

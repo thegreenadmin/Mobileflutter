@@ -4,6 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
+import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
+import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -63,27 +69,26 @@ getNotification() {
 }
 
 getNotificationOpenedApp() {
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    debugPrint("getNotificationOpenedApp data---" + message.data.toString());
-    getNotification();
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) {
+    debugPrint("getNotificationOpenedApp data---${message!.data}");
+    // getNotification();
     selectNotification(NotificationResponse(
       notificationResponseType:
           NotificationResponseType.selectedNotificationAction,
-      payload: json.encode(message),
+      payload: json.encode(message.data),
     ));
   });
 }
 
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
   debugPrint("firebaseMessagingBackgroundHandler data 12345---" +
-      message.data.toString());
-  getNotification();
+      message!.data.toString());
+  // getNotification();
   //await Firebase.initializeApp();
-
   selectNotification(NotificationResponse(
     notificationResponseType:
         NotificationResponseType.selectedNotificationAction,
-    payload: jsonEncode(message),
+    payload: json.encode(message.data),
   ));
 }
 
@@ -93,10 +98,38 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
   return initialMessage;
 }
 
-void selectNotification(NotificationResponse payload) async {
-  print("payload 1---------->" + payload.notificationResponseType.toString());
-  print("payload 2---------->" + payload.actionId.toString());
-  print("payload 3---------->" + payload.notificationResponseType.toString());
+void selectNotification(NotificationResponse notificationResponse) async {
+  print("payload 2---------->" + notificationResponse.payload.toString());
+
+  RealTimeNotification notificationData = RealTimeNotification.fromJson(
+      json.decode(notificationResponse.payload.toString()));
+  if (notificationData.type == "order") {
+    Future.delayed(const Duration(milliseconds: 1400), () async {
+      Get.to(() => const OrdersScreen(), arguments: {
+        "isFromTransaction": false,
+        "storeId": notificationData.storeId.toString(),
+        "orderId": notificationData.orderId.toString(),
+        "isFromNotification": true
+      });
+    });
+  } else if (notificationData.type == "offer") {
+    Future.delayed(const Duration(milliseconds: 1400), () async {
+      Get.to(() => const OffersScreen(), arguments: {
+        "isFromTransaction": false,
+        "storeId": notificationData.storeId.toString(),
+        "orderId": notificationData.orderId.toString(),
+      });
+    });
+  } else if (notificationData.type == "message") {
+    Future.delayed(const Duration(milliseconds: 1400), () async {
+      Get.to(() => const UserInboxDetailScreen(), arguments: {
+        "isFromTransaction": false,
+        "storeId": notificationData.storeId ?? "",
+        "messageHeadId": notificationData.messageHeadId.toString(),
+      });
+    });
+  }
+
   // debugPrint("selectNotification" + json.decode(payload!).toString());
   // RealTimeNotification notificationData =
   //     RealTimeNotification.fromJson(json.decode(payload));

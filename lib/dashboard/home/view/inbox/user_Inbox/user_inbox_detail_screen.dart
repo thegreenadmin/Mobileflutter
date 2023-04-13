@@ -1,17 +1,15 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dart';
+
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/user_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -309,9 +307,10 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                     .image!
                                                     .dynamicUrl
                                                     .toString(),
-                                                height: 85,
-                                                width: 85,
-                                                fit: BoxFit.cover,
+                                                height: 220,
+                                                // width: 200,
+
+                                                fit: BoxFit.fill,
                                               )),
                                         ),
                                       ),
@@ -401,7 +400,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(10),
                             )),
-                        padding: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(10),
                         child: InkWell(
                           onLongPress: () {
                             Clipboard.setData(ClipboardData(
@@ -439,8 +438,8 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 85,
-                                              width: 85,
+                                              height: 220,
+                                              // width: 200,
                                               fit: BoxFit.fill,
                                             )),
                                       ),
