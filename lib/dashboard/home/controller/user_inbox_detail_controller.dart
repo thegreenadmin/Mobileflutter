@@ -196,12 +196,6 @@ class UserInboxDetailController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         messageListModel = UserMessageListModel.fromJson(value.body);
         messageList.value = messageListModel.data?.messages ?? [];
-        for (int i = 0; i < messageList.length; i++) {
-          if (messageList[i].isUserRead == true) {
-            pastMessagesList.value = messageList;
-          }
-          debugPrint("PAST MESSAGE LIST ********** $headers");
-        }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

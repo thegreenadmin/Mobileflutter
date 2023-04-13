@@ -357,7 +357,7 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
     int index,
   ) {
     if (messageList[index].senderType! ==
-        StringConstants.storeText.toLowerCase()) {
+        StringConstants.userText.toLowerCase()) {
       return Padding(
           padding:
               const EdgeInsets.only(left: 12, right: 24, top: 0, bottom: 0),
@@ -370,35 +370,17 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        messageList[index].image!.dynamicUrl == null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  color: AppColors.grey,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const CircleAvatar(
-                                    radius: 20.0,
-                                    backgroundImage:
-                                        AssetImage(ImageConstants.nopicfound)))
-                            : Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(50.0),
-                                    ),
-                                    child: Image.network(
-                                      messageList[index]
-                                          .image!
-                                          .dynamicUrl
-                                          .toString(),
-                                      height: 45,
-                                      width: 45,
-                                      fit: BoxFit.fill,
-                                    )),
-                              ),
+                        Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              color: AppColors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const CircleAvatar(
+                                radius: 25.0,
+                                backgroundImage: AssetImage(
+                                  ImageConstants.userAccount,
+                                ))),
                         width10SizedBox,
                         Flexible(
                           child: Container(

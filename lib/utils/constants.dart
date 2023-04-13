@@ -375,6 +375,7 @@ class StringConstants {
   static String updateCategoryImageText = "Update Category Image";
   static String updateRoleText = "Update Role";
   static String updateOfferText = "Update Offer";
+  static String userText = "User";
 
   //V
   static String verificationCodeText = "Verification code";

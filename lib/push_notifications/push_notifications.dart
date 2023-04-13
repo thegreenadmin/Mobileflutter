@@ -39,7 +39,7 @@ notificationPermission() async {
 getNotification() {
   FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
     RemoteNotification? notification = message!.notification;
-    debugPrint("notification data---------------" + message.toString());
+    debugPrint("notification data---------------" + message.data.toString());
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
@@ -75,8 +75,8 @@ getNotificationOpenedApp() {
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint(
-      "firebaseMessagingBackgroundHandler data 12345---" + message.toString());
+  debugPrint("firebaseMessagingBackgroundHandler data 12345---" +
+      message.data.toString());
   getNotification();
   //await Firebase.initializeApp();
 
@@ -94,7 +94,9 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 }
 
 void selectNotification(NotificationResponse payload) async {
-  print("payload---------->" + payload.toString());
+  print("payload 1---------->" + payload.notificationResponseType.toString());
+  print("payload 2---------->" + payload.actionId.toString());
+  print("payload 3---------->" + payload.notificationResponseType.toString());
   // debugPrint("selectNotification" + json.decode(payload!).toString());
   // RealTimeNotification notificationData =
   //     RealTimeNotification.fromJson(json.decode(payload));

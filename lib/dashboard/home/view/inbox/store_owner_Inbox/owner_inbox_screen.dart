@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -265,20 +266,12 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                         ownerInboxController
                                                     .inboxList[index].orderId ==
                                                 null
-                                            ?
-                                            // ownerInboxController
-                                            //             .inboxList[index].offer ==
-                                            //         null
-                                            //     ?
-                                            ownerInboxController
+                                            ? ownerInboxController
                                                     .inboxList[index]
                                                     .offer!
                                                     .offerName ??
                                                 ""
-                                            // :
-                                            //  ownerInboxController
-                                            //         .inboxList[index].orderId ??
-                                            //     ""
+                                                    ""
                                             : "Order: "
                                                 "#${ownerInboxController.inboxList[index].orderId}",
                                         textAlign: TextAlign.justify,
@@ -296,7 +289,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                             elevation: 0,
                                             onPressed: () {
                                               Get.to(
-                                                  const UserInboxDetailScreen(),
+                                                  const OwnerInboxDetailScreen(),
                                                   arguments: {
                                                     "storeName":
                                                         ownerInboxController
@@ -376,6 +369,17 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           ),
                                                           onPressed: () {
                                                             Get.back();
+                                                            ownerInboxController.apiDeleteStoreMessages(
+                                                                messageHeadId: ownerInboxController
+                                                                        .inboxList[
+                                                                            index]
+                                                                        .messageHeadId ??
+                                                                    "",
+                                                                storeId: ownerInboxController
+                                                                        .inboxList[
+                                                                            index]
+                                                                        .storeId ??
+                                                                    "");
                                                           },
                                                           child: Text(
                                                               StringConstants

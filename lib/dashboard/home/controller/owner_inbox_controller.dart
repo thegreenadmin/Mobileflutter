@@ -65,4 +65,42 @@ class OwnerInboxController extends GetxController {
       }
     });
   }
+
+  //Delete Store messages
+  Future apiDeleteStoreMessages(
+      {String messageHeadId = "", String storeId = ""}) async {
+    debugPrint(
+        "DELETE STORE MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map body = {"message_head_id": messageHeadId, "store_id": storeId};
+    debugPrint("DELETE STORE MSGS BODY ************* $body");
+    UserProvider()
+        .deleteWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE STORE MSGS RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        await apiGetInboxList();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+        await apiGetInboxList();
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
 }

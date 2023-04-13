@@ -177,7 +177,7 @@ class OwnerInboxDetailController extends GetxController {
   Future apiGetMessagesList() async {
     isloading.value = true;
     debugPrint(
-        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");
+        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -186,7 +186,7 @@ class OwnerInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -206,10 +206,10 @@ class OwnerInboxDetailController extends GetxController {
     });
   }
 
-  //Send message by user api
+  //Send message by owner api
   Future apiSendMessage() async {
     debugPrint(
-        "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
+        "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -221,13 +221,14 @@ class OwnerInboxDetailController extends GetxController {
       "message": messageTextController.text.trim(),
       "image_url": userSelectedImageOrigionalLinkfromServer.value.isEmpty
           ? null
-          : userSelectedImageOrigionalLinkfromServer.value
+          : userSelectedImageOrigionalLinkfromServer.value,
+      "store_id": storeId.value
     };
     debugPrint("MESSAGE SEND BODY ********** $body");
     UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}",
             headers,
             showLoading: true)
         .then((value) async {
