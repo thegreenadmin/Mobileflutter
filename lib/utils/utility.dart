@@ -117,6 +117,58 @@ class Utility {
     }
     return await Geolocator.getCurrentPosition();
   }
+
+  static alertDialog(context,{String title="",String description="",String ok="",
+    String cancel="",Function()? onOk ,void Function()? onCancel})async{
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: const TextStyle(
+                fontWeight:
+                FontWeight.w600,
+                color:
+                AppColors.black,
+                fontSize: 20),
+          ),
+          content: Text(
+              description,
+              style: const TextStyle(
+                  fontWeight:
+                  FontWeight.w400,
+                  color:
+                  AppColors.black,
+                  fontSize: 20)),
+          actions: <Widget>[
+            ElevatedButton(
+                style: ElevatedButton
+                    .styleFrom(
+                  backgroundColor:
+                  AppColors
+                      .primary,
+                ),
+                onPressed: (){
+                  onOk??Get.back();
+                },
+                child: Text(ok)),
+            ElevatedButton(
+              style: ElevatedButton
+                  .styleFrom(
+                backgroundColor:
+                AppColors.primary,
+              ),
+              onPressed: (){
+                onCancel??Get.back();
+              },
+              child: Text(cancel),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 extension StringCasingExtension on String {

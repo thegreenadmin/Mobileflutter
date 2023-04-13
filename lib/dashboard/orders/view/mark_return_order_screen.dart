@@ -343,7 +343,9 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                     end: Alignment.bottomCenter,
                     colors: [AppColors.white, AppColors.white],
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    ordersHomeMainController.apiRejectReturnRequest();
+                  },
                   height: 50,
                   width: WidgetConstants.screenWidth *0.42,
                   text: StringConstants.rejectText,
@@ -363,7 +365,9 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                     end: Alignment.bottomCenter,
                     colors: [AppColors.primary, AppColors.primary],
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    ordersHomeMainController.apiConfirmReturnRequest();
+                  },
                   height: 50,
                   width: WidgetConstants.screenWidth *0.42,
                   text: StringConstants.acceptText,

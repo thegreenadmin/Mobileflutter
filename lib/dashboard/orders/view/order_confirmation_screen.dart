@@ -477,7 +477,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               //     fontSize: 16,
               //   ),
               // ),),
-              buildOrderItems(),
+              buildOrderItems()
+              // Obx(()=> buildOrderItems(),),
             ],
           ),
         ),
@@ -497,221 +498,220 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               color: AppColors.black),
         ),
         height20SizedBox,
-        SizedBox(
+        Obx(()=> SizedBox(
           height: WidgetConstants.screenHeight * 0.2,
           child: Stack(
             children: [
               ListView.separated(
-                separatorBuilder:
-                (BuildContext context, int index) {
-                return height8SizedBox;
-                },
-                  // padding: const EdgeInsets.only(bottom: 60),
-                itemCount: ordersController.orderDetailResponse.data?.order?.orderItems?.length??0,
-                itemBuilder: (BuildContext context, int i) {
-                  return  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: const BoxDecoration(
-                        color: AppColors.primarylight,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        )),
-                    child: Column(children: [
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.start,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color:
-                                    AppColors.white,
-                                    width: 1)),
-                            child: CircleAvatar(
-                              radius: 22.0,
-                              backgroundImage:
-                              ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productImages?.first.image?.dynamicUrl == null ||
-                                  ordersController.orderDetailResponse.data!.order!.orderItems![i].product!.productImages!.first.image!.dynamicUrl!.isEmpty
-                               ? const AssetImage(ImageConstants.storeicon)
+                  separatorBuilder:
+                      (BuildContext context, int index) {
+                    return height8SizedBox;
+                  },
+                  itemCount: ordersController.orderItems.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return  Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      decoration: const BoxDecoration(
+                          color: AppColors.primarylight,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          )),
+                      child: Column(children: [
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.start,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color:
+                                      AppColors.white,
+                                      width: 1)),
+                              child: CircleAvatar(
+                                radius: 22.0,
+                                backgroundImage:
+                                ordersController.orderItems[i].product?.productImages?.first.image?.dynamicUrl == null ||
+                                    ordersController.orderItems[i].product!.productImages!.first.image!.dynamicUrl!.isEmpty
+                                    ? const AssetImage(ImageConstants.storeicon)
                                 as ImageProvider
-                               : NetworkImage( ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productImages?.first.image?.dynamicUrl??""),
-                                 backgroundColor:
-                                 Colors.transparent,
+                                    : NetworkImage( ordersController.orderItems[i].product?.productImages?.first.image?.dynamicUrl??""),
+                                backgroundColor:
+                                Colors.transparent,
+                              ),
                             ),
-                          ),
-                          width5SizedBox,
-                          Expanded(
-                            child: Column(
-                              mainAxisSize:
-                              MainAxisSize.max,
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
-                              children: [
-                                Text(
-                                  ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productName??"",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      color: AppColors.black),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .end,
-                                  children: [
-                                    Text.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                              text: "${StringConstants.unitPriceText}: ",
+                            width5SizedBox,
+                            Expanded(
+                              child: Column(
+                                mainAxisSize:
+                                MainAxisSize.max,
+                                crossAxisAlignment:
+                                CrossAxisAlignment
+                                    .start,
+                                children: [
+                                  Text(
+                                    ordersController.orderItems[i].product?.productName??"",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        color: AppColors.black),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .end,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: "${StringConstants.unitPriceText}: ",
+                                                style: TextStyle(
+                                                    color: AppColors
+                                                        .blacklight,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w400,
+                                                    fontSize:
+                                                    14)),
+                                            TextSpan(
+                                              text:
+                                              "\$${ordersController.orderItems[i].product?.productPrice.toString()??""}",
                                               style: TextStyle(
-                                                  color: AppColors
-                                                      .blacklight,
                                                   fontWeight:
                                                   FontWeight
-                                                      .w400,
+                                                      .w600,
                                                   fontSize:
-                                                  14)),
-                                          TextSpan(
-                                            text:
-                                            "\$${ordersController.orderDetailResponse.data?.order?.orderItems?[i].product?.productPrice.toString()??""}",
-                                              style: TextStyle(
-                                                fontWeight:
-                                                FontWeight
-                                                    .w600,
-                                                fontSize:
-                                                14,
-                                                color: AppColors
-                                                    .blacklight),
-                                          ),
-                                        ],
+                                                  14,
+                                                  color: AppColors
+                                                      .blacklight),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      width20SizedBox,
+                                    ],
+                                  ),
+                                  height8SizedBox,
+                                  RatingBar.builder(
+                                    initialRating:ordersController.orderItems[i].product!=null
+                                        ? ordersController.orderItems[i].product!.productReviews!.isNotEmpty ?
+                                    ordersController.orderItems[i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0,
+                                    minRating: 1,
+                                    direction:  Axis.horizontal,
+                                    allowHalfRating: false,
+                                    unratedColor: Colors.amber.withAlpha(50),
+                                    itemCount: 5,
+                                    ignoreGestures: true,
+                                    itemSize: 25.0,
+                                    itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                    itemBuilder: (context, _) => const Icon(
+                                      // _selectedIcon ?? Icons.star,
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      // ratingValue.value = rating;
+                                    },
+                                    updateOnDrag: false,
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment:Alignment.centerRight,
+                              child: Column(
+                                children: [
+                                  Visibility(
+                                    visible:ordersController.activeStep.value==3,
+                                    child: CustomButton(
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [AppColors.white, AppColors.white],
+                                      ),
+                                      onTap: () {
+                                        ordersController.ratingValue.value=ordersController.orderItems[i].product!=null
+                                            ? ordersController.orderItems[i].product!.productReviews!.isNotEmpty ?
+                                        ordersController.orderItems[i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0;
+                                        ordersController.productId.value=ordersController.orderItems[i].productId??"";
+                                        ordersController
+                                            .bottomSheetRateNow(
+                                            context);
+                                      },
+                                      height: 35,
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                        width: 1,
+                                      ),
+                                      textColor:AppColors.primary,
+                                      width: WidgetConstants.screenWidth * 0.3,
+                                      text: StringConstants.rateNowText,
+                                      borderRadius: 12,
+                                      fontWeight: FontWeight.w500,
+                                      iconL: false,
+                                      fontSize: 12,
+                                    ),
+                                  ), Visibility(
+                                    visible:ordersController.activeStep.value!=3,
+                                    child: CustomButton(
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [AppColors.white, AppColors.white],
+                                      ),
+                                      onTap: () {
+                                        ordersController.orderItemObj.value =  ordersController.orderItems[i] ;
+                                        ordersController.apiCancelOrder();
+                                      },
+                                      height: 35,
+                                      border: Border.all(
+                                        color: AppColors.blacklight,
+                                        width: 1,
+                                      ),
+                                      textColor:AppColors.red,
+                                      width: WidgetConstants.screenWidth * 0.3,
+                                      text: StringConstants.cancelOrderText,
+                                      borderRadius: 12,
+                                      fontWeight: FontWeight.w500,
+                                      iconL: false,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  height6SizedBox,
+                                  Visibility(
+                                    visible: ordersController.activeStep.value== 3,
+                                    child: InkWell(
+                                      onTap:(){
+                                        ordersController.orderItemObj.value =  ordersController.orderItems[i] ;
+                                        ordersController
+                                            .bottomSheetReturnOrder(
+                                            context);
+                                      },
+                                      child: Text(
+                                        StringConstants.returnOrderText,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            color: AppColors.red),
                                       ),
                                     ),
-                                    width20SizedBox,
-                                  ],
-                                ),
-                                height8SizedBox,
-                                RatingBar.builder(
-                                  initialRating:ordersController.orderDetailResponse.data?.order?.orderItems?[i].product!=null
-                                      ? ordersController.orderDetailResponse.data!.order!.orderItems![i].product!.productReviews!.isNotEmpty ?
-                                  ordersController.orderDetailResponse.data?.order?.orderItems![i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0,
-                                  minRating: 1,
-                                  direction:  Axis.horizontal,
-                                  allowHalfRating: false,
-                                  unratedColor: Colors.amber.withAlpha(50),
-                                  itemCount: 5,
-                                  ignoreGestures: true,
-                                  itemSize: 25.0,
-                                  itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    // _selectedIcon ?? Icons.star,
-                                    Icons.star,
-                                    color: Colors.amber,
                                   ),
-                                  onRatingUpdate: (rating) {
-                                    // ratingValue.value = rating;
-                                  },
-                                  updateOnDrag: false,
-                                ),
-
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Align(
-                            alignment:Alignment.centerRight,
-                            child: Column(
-                              children: [
-                                Visibility(
-                                  visible:ordersController.activeStep.value==3,
-                                  child: CustomButton(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [AppColors.white, AppColors.white],
-                                    ),
-                                    onTap: () {
-                                      ordersController.ratingValue.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].product!=null
-                                          ? ordersController.orderDetailResponse.data!.order!.orderItems![i].product!.productReviews!.isNotEmpty ?
-                                      ordersController.orderDetailResponse.data?.order?.orderItems![i].product!.productReviews?.first.rating?.toDouble()??0.0 :0.0:0.0;
-                                      ordersController.productId.value=ordersController.orderDetailResponse.data?.order?.orderItems?[i].productId??"";
-                                      ordersController
-                                          .bottomSheetRateNow(
-                                          context);
-                                    },
-                                    height: 35,
-                                    border: Border.all(
-                                      color: AppColors.primary,
-                                      width: 1,
-                                    ),
-                                    textColor:AppColors.primary,
-                                    width: WidgetConstants.screenWidth * 0.3,
-                                    text: StringConstants.rateNowText,
-                                    borderRadius: 12,
-                                    fontWeight: FontWeight.w500,
-                                    iconL: false,
-                                    fontSize: 12,
-                                  ),
-                                ), Visibility(
-                                  visible:ordersController.activeStep.value!=3,
-                                  child: CustomButton(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [AppColors.white, AppColors.white],
-                                    ),
-                                    onTap: () {
-                                      ordersController.orderItemObj.value =  ordersController.orderDetailResponse.data!.order!.orderItems![i]! ;
-                                      ordersController.apiCancelOrder();
-                                    },
-                                    height: 35,
-                                    border: Border.all(
-                                      color: AppColors.blacklight,
-                                      width: 1,
-                                    ),
-                                    textColor:AppColors.red,
-                                    width: WidgetConstants.screenWidth * 0.3,
-                                    text: StringConstants.cancelOrderText,
-                                    borderRadius: 12,
-                                    fontWeight: FontWeight.w500,
-                                    iconL: false,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                height6SizedBox,
-                                Visibility(
-                                  visible: ordersController.activeStep.value== 3,
-                                  child: InkWell(
-                                    onTap:(){
-                                      ordersController.orderItemObj.value =  ordersController.orderDetailResponse.data!.order!.orderItems![i]! ;
-                                      ordersController
-                                          .bottomSheetReturnOrder(
-                                          context);
-                                    },
-                                    child: Text(
-                                      StringConstants.returnOrderText,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: AppColors.red),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ]),
-                  );
-                }),
+                          ],
+                        ),
+                      ]),
+                    );
+                  }),
 
               /*Align(
                 alignment: Alignment.bottomCenter,
@@ -743,7 +743,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
             ],
           ),
-        )
+        )),
       ],
     );
   }

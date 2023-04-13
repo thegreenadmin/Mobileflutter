@@ -1,4 +1,5 @@
-import 'dart:convert';
+
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
@@ -203,7 +204,7 @@ class OrdersHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE ORDER DETAIL RESPONSE **********${value!.body}");
+      log("STORE ORDER DETAIL RESPONSE **********${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreOrderDetailModel.value =
@@ -227,6 +228,140 @@ class OrdersHomeMainController extends GetxController {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Confirm Return Request
+  apiConfirmReturnRequest() async {
+    isLoading.value = true;
+    debugPrint(
+        "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+    }
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+      "order_items": orderItems
+    };
+
+    debugPrint("RETURN ORDER CONFIRM BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeConfirmReturnOrder,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        Get.back();
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Complete Return Request
+  apiCompleteReturnRequest() async {
+    isLoading.value = true;
+    debugPrint(
+        "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    List <dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if(element.isSelected ==true ){
+        orderItems.add({
+          "order_item_id": int.parse(element.orderItemId??"0")
+        });
+      }
+    }
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+      "order_items": orderItems
+    };
+
+    debugPrint("RETURN ORDER COMPLETE BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeCompleteReturnOrder,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected =false;
+        }
+        Get.back();
+        update();
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+//Reject Return Request
+  apiRejectReturnRequest() async {
+    isLoading.value = true;
+    debugPrint(
+        "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+    };
+
+    debugPrint("RETURN ORDER REJECT BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeRejectReturnOrder,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER REJECT RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        Get.back();
+        update();
       } else {
         Utility.showToast(value.body['message']);
       }

@@ -85,6 +85,7 @@ class StringConstants {
   static String clickCollectText = "Click & Collect";
   static String completedText = "Completed";
   static String completeText = "Complete";
+  static String completeReturnOrderText = "Complete Return Order";
   static String cancelOrderText = "Cancel Order";
   static String currentUserIdText = "CurrentUserId";
   static String copiedToClipBoardText = "Copied to Clipboard";
@@ -288,6 +289,7 @@ class StringConstants {
   static String returnOrderText = "Return Order";
   static String returnRequestSentText = "Return Request Sent";
   static String returnRequestText = "Return Request";
+  static String returnConfirmText = "Return Confirm";
   static String rejectText = "Reject";
 
   //S

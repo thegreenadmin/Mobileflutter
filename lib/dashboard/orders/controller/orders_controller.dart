@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart'
     as order_list;
@@ -57,6 +55,7 @@ class OrdersController extends GetxController {
   late OrderStatusListResponse orderStatusListResponse = OrderStatusListResponse();
   late order_detail.OrderDetailResponse orderDetailResponse = order_detail.OrderDetailResponse();
   Rx<order_detail.OrderItem> orderItemObj = order_detail.OrderItem().obs;
+  RxList<order_detail.OrderItem> orderItems = <order_detail.OrderItem>[].obs;
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
   RxList<order_list.Order> orderList = <order_list.Order>[].obs;
   RxList<store_order.StoreOrder> storeOrderList =
@@ -87,9 +86,7 @@ class OrdersController extends GetxController {
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetOrderListApi();
-      if (orderStatus.value != "") {
-        apiGetOrderDetailsApi();
-      }
+      apiGetOrderDetailsApi();
       page.value = 1;
     } else {
       role!.value = Role.storeOwnerRoleText;
@@ -696,6 +693,7 @@ class OrdersController extends GetxController {
   Future apiGetOrderListApi() async {
     isDataLoading.value = true;
     isLoading.value = orderList.isNotEmpty ? true : false;
+    debugPrint("role List URL**********${role!.value}");
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
@@ -703,7 +701,6 @@ class OrdersController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     Map<String, dynamic> data = {
       "store_id": null,
       "page": page.value,
@@ -777,7 +774,13 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses": [
+      "order_statuses":
+      orderStatusId.value == 2 ?
+      [
+        {"order_status_id": 2},
+        {"order_status_id": 11},
+        {"order_status_id": 12},
+      ]: [
         {"order_status_id": orderStatusId.value}
       ]
     };
@@ -873,6 +876,7 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse =order_detail.OrderDetailResponse.fromJson(value?.body);
+        orderItems.value = orderDetailResponse.data?.order?.orderItems??[];
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
               if(element.isCurrentStatus ==true){
                 activeStep.value = element.orderStatusId=="2"?0:
