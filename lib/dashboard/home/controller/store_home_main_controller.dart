@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
@@ -597,14 +599,15 @@ class StoreHomeMainController extends GetxController {
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}",
         headers, showLoading: false).then((value) async {
       isLoading.value = false;
-      debugPrint("Store Details*******${value?.body}");
+      log("Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
-        storeDetailsResponse.value =
+       storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-        // storeDeliveryServiceId.value = storeDetailsResponse.value.data.store
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        debugPrint("isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        isFavouriteStore.value =  storeDetailsResponse.value.data?.store?.isFavouriteStore??false;
+        } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

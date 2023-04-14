@@ -393,10 +393,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               height30SizedBox,
               Obx(()=>EasyStepper(
                 activeStep: ordersController.activeStep.value,
-                lineLength: WidgetConstants.screenWidth*0.07,
+                lineLength: WidgetConstants.screenWidth*0.063,
                 stepShape: StepShape.circle,
                 borderThickness: 0,
-                stepRadius: 28,
+                stepRadius: WidgetConstants.screenWidth*0.075,
                 lineColor: AppColors.grey,
                 lineType: LineType.normal,
                 activeStepBorderType: BorderType.normal,
@@ -407,6 +407,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 activeStepIconColor: AppColors.white,
                 showLoadingAnimation: false,
                 showStepBorder: false,
+                disableScroll: true,
                 unreachedStepIconColor: AppColors.black,
                 unreachedStepTextColor: AppColors.black,
                 steps: List<EasyStep>.generate(
@@ -452,33 +453,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   ],
                 ),
               ),),
-              // Obx(()=> Visibility(
-              //   visible: ordersController.activeStep.value!=3,
-              //   child: CustomButton(
-              //     gradient: const LinearGradient(
-              //       begin: Alignment.topCenter,
-              //       end: Alignment.bottomCenter,
-              //       colors: [AppColors.white, AppColors.white],
-              //     ),
-              //     onTap: () {
-              //       ordersController.apiCancelOrder();
-              //     },
-              //     height: 50,
-              //     border: Border.all(
-              //       color: AppColors.blacklight,
-              //       width: 1,
-              //     ),
-              //     textColor:AppColors.red,
-              //     width: WidgetConstants.screenWidth * 0.5,
-              //     text: StringConstants.cancelOrderText,
-              //     borderRadius: 12,
-              //     fontWeight: FontWeight.w500,
-              //     iconL: false,
-              //     fontSize: 16,
-              //   ),
-              // ),),
               buildOrderItems()
-              // Obx(()=> buildOrderItems(),),
             ],
           ),
         ),
@@ -606,11 +581,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     minRating: 1,
                                     direction:  Axis.horizontal,
                                     allowHalfRating: false,
-                                    unratedColor: Colors.amber.withAlpha(50),
+                                    unratedColor: AppColors.grey,
                                     itemCount: 5,
                                     ignoreGestures: true,
-                                    itemSize: 25.0,
-                                    itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                    itemSize: 20.0,
+                                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.2),
                                     itemBuilder: (context, _) => const Icon(
                                       // _selectedIcon ?? Icons.star,
                                       Icons.star,

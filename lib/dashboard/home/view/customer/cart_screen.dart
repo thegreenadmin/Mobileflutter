@@ -26,8 +26,7 @@ class _CartScreenState extends State<CartScreen> {
             child: Container(
               color: AppColors.primarylight,
               child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -72,8 +71,7 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -579,19 +577,12 @@ class _CartScreenState extends State<CartScreen> {
                                         () => SizedBox(
                                           width: 200,
                                           child: Text(
-                                            storeHomeMainController
-                                                            .selectedUserAddress
-                                                            .value
-                                                            .addressLine1 ==
-                                                        null &&
+                                            storeHomeMainController.selectedUserAddress.value.addressLine1 == null &&
                                                     storeHomeMainController
-                                                            .selectedUserAddress
-                                                            .value
-                                                            .city ==
-                                                        null
+                                                            .selectedUserAddress.value.city == null
                                                 ? StringConstants.addAddressText
                                                 : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
-                                                    "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
+                                                  "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
                                             style: const TextStyle(
                                                 overflow: TextOverflow.visible,
                                                 color: AppColors.black,
@@ -813,12 +804,7 @@ class _CartScreenState extends State<CartScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            // if(storeHomeMainController.storeDeliveryServiceId.value== "0"){
-                              // Util
-                            // }else{
                               storeHomeMainController.apiPlaceOrder();
-                            // }
-
                           },
                           height: 45,
                           width: 120,
