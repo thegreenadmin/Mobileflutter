@@ -19,7 +19,7 @@ class ServerCommunicator {
   String createUser = 'user/create';
   String createItemReview = 'order/item/review/create';
   String createStore = 'store/create';
-  String createStoreUser = 'store/user/create'; 
+  String createStoreUser = 'store/user/create';
   String countries = 'utils/countries';
   String createStoreCategory = 'store/category/create';
   String categoryList = 'store/category/list';
