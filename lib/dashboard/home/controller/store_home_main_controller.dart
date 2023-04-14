@@ -214,8 +214,13 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
-    debugPrint("GET CART LIST URL**********"
-        "${storeDeliveryServiceId.value.toString() == "0" ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString() /*userAddressId.value.toString()*/}"}");
+    debugPrint("GET CART LIST URL**********${storeDeliveryServiceId.value.toString() == "0" &&
+        selectedUserAddress.value.userAddressId == null
+        ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}"
+        : storeDeliveryServiceId.value.toString() != "0" &&
+        selectedUserAddress.value.userAddressId == null?
+    "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+        : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -229,6 +234,9 @@ class StoreHomeMainController extends GetxController {
             storeDeliveryServiceId.value.toString() == "0" &&
                     selectedUserAddress.value.userAddressId == null
                 ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}"
+                : storeDeliveryServiceId.value.toString() != "0" &&
+                selectedUserAddress.value.userAddressId == null?
+               "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
                 : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
             showLoading: false)
@@ -278,9 +286,8 @@ class StoreHomeMainController extends GetxController {
       "store_id":
           int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id":
-          int.parse(selectedUserAddress.value.userAddressId.toString()),
-      // "user_address_id": int.parse(userAddressId.value.toString()),
+      "user_address_id":selectedUserAddress.value.userAddressId!=null?
+          int.parse(selectedUserAddress.value.userAddressId.toString()):null,
       "cart_items": selectedItems
     };
 

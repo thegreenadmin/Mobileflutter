@@ -89,15 +89,15 @@ class OrdersController extends GetxController {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    orderStatus.value =
-        Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
+    orderStatus.value = Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
     isActiveOrders.value = true;
     orderStatusId.value = 2;
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
+    if (SharedPreferenceStorage.getData(Role.role.value) == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetOrderListApi();
-      apiGetOrderDetailsApi();
+      if(orderStatus.value!=""){
+        apiGetOrderDetailsApi();
+      }
       page.value = 1;
     } else {
       role!.value = Role.storeOwnerRoleText;
