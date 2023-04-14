@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'package:dio/dio.dart' as mdio;
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'package:http_parser/http_parser.dart';
 
 class AccountController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -56,6 +64,11 @@ class AccountController extends GetxController {
   List userAddress = [];
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+
+  Rx<XFile> idProofImage = XFile("").obs;
+  RxString idProofImageOrigionalLinkfromServer = "".obs;
+  RxString idProofImageDynamicLinkfromServer = "".obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -63,6 +76,136 @@ class AccountController extends GetxController {
     isFromCart.value = Get.arguments["isFromCart"] ?? false;
     apiGetUserDetailApi();
     Future.delayed(const Duration(milliseconds: 200), () {});
+  }
+
+  Future<void> showSelectionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text(
+                "From where do you want to take the photo?",
+                style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    InkWell(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.image_sharp,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          const Text("Gallery",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                        Get.back();
+                        XFile? pickedFile = await ImagePickerClass.picker
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.gallery,
+                                maxWidth: 900,
+                                maxHeight: 900);
+                        if (pickedFile != null) {
+                          idProofImage.value = pickedFile;
+                          await apiUploadImage();
+                          update();
+                        } else {
+                          // api();
+                        }
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.all(8.0)),
+                    InkWell(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.camera_alt,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          const Text("Camera",
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                        Get.back();
+                        XFile? pickedFile = await ImagePickerClass.picker
+                            .pickImage(
+                                imageQuality: 50,
+                                source: ImageSource.camera,
+                                maxWidth: 900,
+                                maxHeight: 900);
+                        if (pickedFile != null) {
+                          idProofImage.value = pickedFile;
+                          await apiUploadImage();
+                          update();
+                        } else {
+                          // api();
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ));
+        });
+  }
+
+  //Api upload image to server
+  Future apiUploadImage() async {
+    try {
+      final dio = mdio.Dio();
+      mdio.FormData formData = mdio.FormData.fromMap({});
+      Map<String, String> headers = {
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      };
+      formData.files.add(MapEntry(
+          "file",
+          mdio.MultipartFile.fromBytes(await idProofImage.value.readAsBytes(),
+              contentType: MediaType.parse("image/png"),
+              filename: "file-name.png".toString())));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
+      final responseData = res.data;
+      debugPrint(
+          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        idProofImageOrigionalLinkfromServer.value =
+            responseData['data']['urls']['orignal_url'];
+        idProofImageDynamicLinkfromServer.value =
+            responseData['data']['urls']['dynamic_url'];
+        await apiAddUserIdProof();
+        return responseData;
+      } else if (res.statusCode == ApiConstants.statusCode403) {
+        Utility.showToast(responseData['message'].toString());
+      } else {}
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e is mdio.DioError) {
+        if (e.type == mdio.DioErrorType.badResponse) {
+          debugPrint("${e.response?.data ?? ""}");
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
+          return responseData;
+        }
+      }
+      throw Exception('Failed to load data ! $e');
+    }
   }
 
   bool validateAndSave() {
@@ -282,6 +425,43 @@ class AccountController extends GetxController {
         } else {
           await Get.offAll(BottomNavigation());
         }
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Add user id proof Api
+  Future apiAddUserIdProof() async {
+    debugPrint(
+        "ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "proof_type_id": 1,
+      "proof_value": "123456",
+      "image_url": idProofImageOrigionalLinkfromServer.value,
+      "expiredAt": ""
+    };
+    debugPrint("ID PROOF DETAIL BODY**********$data");
+    UserProvider()
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("ID PROOF DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

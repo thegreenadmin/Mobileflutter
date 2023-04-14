@@ -368,36 +368,37 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 //       fontSize: 20),
                 // ),
                 // height20SizedBox,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     DottedBorder(
-                //       color: AppColors.blacklight,
-                //       strokeWidth: 1,
-                //       dashPattern: const [4, 4],
-                //       child: Container(
-                //         padding: const EdgeInsets.only(
-                //             left: 50, right: 50, top: 18, bottom: 18),
-                //         color: AppColors.primarylight,
-                //         child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.center,
-                //             mainAxisAlignment: MainAxisAlignment.center,
+                // Obx(()=>    accountController
+                //             .idProofImageDynamicLinkfromServer.value.isNotEmpty
+                //         ? Column(
                 //             children: [
-                //               Image.asset(
-                //                 "assets/upload.png",
-                //                 scale: 2.5,
+                //               SizedBox(
+                //                 width: WidgetConstants.screenWidth,
+                //                 height: 180,
+                //                 child: InkWell(
+                //                   onTap: () {
+                //                     accountController.showSelectionDialog(context);
+                //                   },
+                //                   child: DottedBorder(
+                //                     color: AppColors.blacklight,
+                //                     strokeWidth: 1,
+                //                     dashPattern: const [4, 4],
+                //                     child: Image.network(
+                //                       accountController
+                //                           .idProofImageDynamicLinkfromServer.value,
+                //                       fit: BoxFit.fill,
+                //                       width: WidgetConstants.screenWidth,
+                //                     ),
+                //                   ),
+                //                 ),
                 //               ),
-                //               height6SizedBox,
-                //               Text(
-                //                 StringConstants
-                //                     .uploadLicenseStateIdPasswordText,
-                //                 style: TextStyle(color: AppColors.blacklight),
-                //               ),
-                //               height5SizedBox,
+                //               height10SizedBox,
                 //               SizedBox(
                 //                 width: 130,
                 //                 child: ElevatedButton(
-                //                   onPressed: () {},
+                //                   onPressed: () {
+                //                     accountController.showSelectionDialog(context);
+                //                   },
                 //                   style: ButtonStyle(
                 //                       foregroundColor:
                 //                           MaterialStateProperty.all<Color>(
@@ -410,16 +411,72 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 //                               side: const BorderSide(
                 //                                   color: AppColors.primary)))),
                 //                   child: const Text(
-                //                     "Upload",
+                //                     "Remove",
                 //                     style: TextStyle(color: AppColors.white),
                 //                   ),
                 //                 ),
                 //               )
-                //             ]),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                //             ],
+                //           )
+                //         : Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               DottedBorder(
+                //                 color: AppColors.blacklight,
+                //                 strokeWidth: 1,
+                //                 dashPattern: const [4, 4],
+                //                 child: Container(
+                //                   padding: const EdgeInsets.only(
+                //                       left: 50, right: 50, top: 18, bottom: 18),
+                //                   color: AppColors.primarylight,
+                //                   child: Column(
+                //                       crossAxisAlignment: CrossAxisAlignment.center,
+                //                       mainAxisAlignment: MainAxisAlignment.center,
+                //                       children: [
+                //                         Image.asset(
+                //                           "assets/upload.png",
+                //                           scale: 2.5,
+                //                         ),
+                //                         height6SizedBox,
+                //                         Text(
+                //                           StringConstants
+                //                               .uploadLicenseStateIdPasswordText,
+                //                           style: TextStyle(
+                //                               color: AppColors.blacklight),
+                //                         ),
+                //                         height5SizedBox,
+                //                         SizedBox(
+                //                           width: 130,
+                //                           child: ElevatedButton(
+                //                             onPressed: () {
+                //                               accountController
+                //                                   .showSelectionDialog(context);
+                //                             },
+                //                             style: ButtonStyle(
+                //                                 foregroundColor:
+                //                                     MaterialStateProperty.all<
+                //                                         Color>(AppColors.primary),
+                //                                 shape: MaterialStateProperty.all<
+                //                                         RoundedRectangleBorder>(
+                //                                     RoundedRectangleBorder(
+                //                                         borderRadius:
+                //                                             BorderRadius.circular(
+                //                                                 18.0),
+                //                                         side: const BorderSide(
+                //                                             color: AppColors
+                //                                                 .primary)))),
+                //                             child: const Text(
+                //                               "Upload",
+                //                               style:
+                //                                   TextStyle(color: AppColors.white),
+                //                             ),
+                //                           ),
+                //                         )
+                //                       ]),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),),
                 height20SizedBox,
               ],
             )),

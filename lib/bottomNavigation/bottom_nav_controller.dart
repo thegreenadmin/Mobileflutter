@@ -32,7 +32,8 @@ class BottomNavController extends GetxController {
       ));
       initialRemoteMessage = null;
     }
-    selectedIndex.value = Get.arguments["currentIndex"];
+    selectedIndex.value =
+        Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
   List<Widget> tabs = [

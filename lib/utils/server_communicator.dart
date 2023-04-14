@@ -126,6 +126,7 @@ class ServerCommunicator {
   String updateUser = 'user/details/update';
   String userStore = 'store/list';
   String updateCart = 'shop/store/cart/item/update';
+  String userProof = 'user/proof/verification/create';
 
 //V
 //W

@@ -54,9 +54,9 @@ class Orders {
   String? deliveryServiceId;
   dynamic deliveryCharge;
   String? taxType;
-  double? taxValue;
-  double? totalTaxCharged;
-  double? totalAmount;
+  dynamic taxValue;
+  dynamic totalTaxCharged;
+  dynamic totalAmount;
   String? customerName;
   String? customerEmail;
   String? customerPhone;
@@ -296,8 +296,8 @@ class OrderItems {
   dynamic orderItemCount;
   dynamic orderItemPrice;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
   String? discountName;
   String? discountType;
   dynamic discountValue;
