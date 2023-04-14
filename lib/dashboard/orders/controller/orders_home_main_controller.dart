@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -106,7 +105,6 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}",
@@ -244,11 +242,9 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    List <dynamic> orderItems = [];
+    List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-        orderItems.add({
-          "order_item_id": int.parse(element.orderItemId??"0")
-        });
+      orderItems.add({"order_item_id": int.parse(element.orderItemId ?? "0")});
     }
     Map body = {
       "store_id": int.parse(storeId.value),
@@ -289,12 +285,11 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    List <dynamic> orderItems = [];
+    List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if(element.isSelected ==true ){
-        orderItems.add({
-          "order_item_id": int.parse(element.orderItemId??"0")
-        });
+      if (element.isSelected == true) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
     }
     Map body = {
@@ -319,7 +314,7 @@ class OrdersHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
-          element.isSelected =false;
+          element.isSelected = false;
         }
         Get.back();
         update();
@@ -378,12 +373,11 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    List <dynamic> orderItems = [];
+    List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if(element.isSelected ==true ){
-        orderItems.add({
-          "order_item_id": int.parse(element.orderItemId??"0")
-        });
+      if (element.isSelected == true) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
     }
     Map body = {
@@ -408,7 +402,7 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         for (var element in getOrderItems) {
-          element.isSelected =false;
+          element.isSelected = false;
         }
         update();
       } else {
@@ -427,12 +421,11 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    List <dynamic> orderItems = [];
+    List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if(element.isSelected ==true ){
-        orderItems.add({
-          "order_item_id": int.parse(element.orderItemId??"0")
-        });
+      if (element.isSelected == true) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
     }
     Map body = {
@@ -456,7 +449,7 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         for (var element in getOrderItems) {
-          element.isSelected =false;
+          element.isSelected = false;
         }
         update();
       } else {
@@ -475,12 +468,11 @@ class OrdersHomeMainController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    List <dynamic> orderItems = [];
+    List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if(element.isSelected ==true ){
-        orderItems.add({
-          "order_item_id": int.parse(element.orderItemId??"0")
-        });
+      if (element.isSelected == true) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
     }
     Map body = {
@@ -504,7 +496,7 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         for (var element in getOrderItems) {
-          element.isSelected =false;
+          element.isSelected = false;
         }
         update();
       } else {

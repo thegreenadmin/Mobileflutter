@@ -83,6 +83,7 @@ class OrdersController extends GetxController {
       storeId.value = Get.arguments["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
+
     if (Get.arguments == null
         ? false
         : Get.arguments['isFromTransaction'] ?? false) {
@@ -97,7 +98,9 @@ class OrdersController extends GetxController {
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetOrderListApi();
-      apiGetOrderDetailsApi();
+      if (orderStatus.value != "") {
+        apiGetOrderDetailsApi();
+      }
       page.value = 1;
     } else {
       role!.value = Role.storeOwnerRoleText;
@@ -785,15 +788,15 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses":
-      orderStatusId.value == 2 ?
-      [
-        {"order_status_id": 2},
-        {"order_status_id": 11},
-        {"order_status_id": 12},
-      ]: [
-        {"order_status_id": orderStatusId.value}
-      ]
+      "order_statuses": orderStatusId.value == 2
+          ? [
+              {"order_status_id": 2},
+              {"order_status_id": 11},
+              {"order_status_id": 12},
+            ]
+          : [
+              {"order_status_id": orderStatusId.value}
+            ]
     };
 
     debugPrint("PARAMETERS ********** ${jsonEncode(data)}");
@@ -888,8 +891,9 @@ class OrdersController extends GetxController {
       log("ORDER Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        orderDetailResponse =order_detail.OrderDetailResponse.fromJson(value?.body);
-        orderItems.value = orderDetailResponse.data?.order?.orderItems??[];
+        orderDetailResponse =
+            order_detail.OrderDetailResponse.fromJson(value?.body);
+        orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
             activeStep.value = element.orderStatusId == "2"

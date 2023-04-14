@@ -4,7 +4,10 @@ class RealTimeNotification {
   String? orderId;
   String? messageHeadId;
   String? offerId;
-  RealTimeNotification({this.storeId, this.type, this.orderId, this.offerId});
+  String? senderType;
+
+  RealTimeNotification(
+      {this.storeId, this.type, this.orderId, this.offerId, this.senderType});
 
   RealTimeNotification.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -12,6 +15,7 @@ class RealTimeNotification {
     orderId = json['order_id'];
     messageHeadId = json['message_head_id'];
     offerId = json['offer_id'];
+    senderType = json['sender_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +25,7 @@ class RealTimeNotification {
     data['order_id'] = orderId;
     data['messageHeadId'] = messageHeadId;
     data['offerId'] = offerId;
+    data['sender_type'] = senderType;
     return data;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thegreenmall/demopage.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
@@ -77,7 +78,8 @@ class _MyAppState extends State<MyApp> {
       ),
       getPages: Routers.route,
       //initialRoute: '/welcomeView',
-      home: const SplashScreen(),
+      //home: ExampleHomePage(title: "hello"),
+      home: SplashScreen(),
     );
   }
 }

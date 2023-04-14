@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
@@ -120,8 +121,18 @@ void selectNotification(NotificationResponse notificationResponse) async {
         "orderId": notificationData.orderId.toString(),
       });
     });
-  } else if (notificationData.type == "message") {
-    Future.delayed(const Duration(milliseconds: 1400), () async {
+  } else if (notificationData.type == "message" &&
+      notificationData.senderType == "user") {
+    Future.delayed(const Duration(seconds: 2), () async {
+      Get.to(() => const OwnerInboxDetailScreen(), arguments: {
+        "isFromTransaction": false,
+        "storeId": notificationData.storeId ?? "",
+        "messageHeadId": notificationData.messageHeadId.toString(),
+      });
+    });
+  } else if (notificationData.type == "message" &&
+      notificationData.senderType == "store") {
+    Future.delayed(const Duration(seconds: 2), () async {
       Get.to(() => const UserInboxDetailScreen(), arguments: {
         "isFromTransaction": false,
         "storeId": notificationData.storeId ?? "",
