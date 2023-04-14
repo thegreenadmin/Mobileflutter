@@ -562,63 +562,100 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
           ),
           Positioned(
             bottom: 20,
-            left: 50,
-            right: 50,
-            child: CustomButton(
-              // width: WidgetConstants.screenWidth *0.4,
-              border: Border.all(
-                color: AppColors.primary,
-              ),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.primary, AppColors.primary],
-              ),
-              onTap: () {
-                if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
-                  ordersHomeMainController.selectedIndex.value == 0
-                      ? ordersHomeMainController.apiMarkOrderReady(
-                      orderId: ordersHomeMainController.orderId.value,
-                      storeId: ordersHomeMainController.storeId.value)
-                      : ordersHomeMainController.selectedIndex.value == 1
-                      ? ordersHomeMainController.apiMarkReadyForPick(
-                      orderId: ordersHomeMainController.orderId.value,
-                      storeId: ordersHomeMainController.storeId.value)
-                      : ordersHomeMainController.selectedIndex.value == 2
-                      ? ordersHomeMainController.apiMarkDelivered(
-                      orderId: ordersHomeMainController.orderId.value,
-                      storeId: ordersHomeMainController.storeId.value)
-                      : ordersHomeMainController.selectedIndex.value == 3
-                      ? ordersHomeMainController.apiMarkOrderReady(
-                      orderId:
-                      ordersHomeMainController.orderId.value,
-                      storeId:
-                      ordersHomeMainController.storeId.value)
-                      : ordersHomeMainController.apiMarkOrderReady(
-                      orderId:
-                      ordersHomeMainController.orderId.value,
-                      storeId:
-                      ordersHomeMainController.storeId.value);
-                }else{
-                  Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
-                }
-              },
-              height: 50,
-              text: ordersHomeMainController.selectedIndex.value == 0
-                  ? StringConstants.orderReadyText
-                  : ordersHomeMainController.selectedIndex.value == 1
-                      ? StringConstants.readyForPickUpText
-                      : ordersHomeMainController.selectedIndex.value == 2
-                          ? StringConstants.orderReadyText
+            left:  ordersHomeMainController.selectedIndex.value == 0?25:50,
+            right:  ordersHomeMainController.selectedIndex.value == 0?25: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Visibility(
+                  visible:ordersHomeMainController.selectedIndex.value == 0,
+                  replacement: height0SizedBox,
+                  child: CustomButton(
+                    width: WidgetConstants.screenWidth *0.4,
+                    border: Border.all(
+                      color: AppColors.blacklight,
+                    ),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {
+                      if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
+                       ordersHomeMainController.apiCancelOrder();
+
+                      }else{
+                        Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
+                      }
+                    },
+                    height: 50,
+                    text: StringConstants.cancelOrderText,
+                    textColor: AppColors.red,
+                    borderRadius: 14,
+                    fontWeight: FontWeight.w500,
+                    iconL: false,
+                    iconR: false,
+                    fontSize: 16,
+                  ),
+                ),
+                CustomButton(
+                  width: ordersHomeMainController.selectedIndex.value == 0?
+                  WidgetConstants.screenWidth *0.4 :WidgetConstants.screenWidth *0.7,
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.primary, AppColors.primary],
+                  ),
+                  onTap: () {
+                    if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
+                      ordersHomeMainController.selectedIndex.value == 0
+                          ? ordersHomeMainController.apiMarkOrderReady(
+                          orderId: ordersHomeMainController.orderId.value,
+                          storeId: ordersHomeMainController.storeId.value)
+                          : ordersHomeMainController.selectedIndex.value == 1
+                          ? ordersHomeMainController.apiMarkReadyForPick(
+                          orderId: ordersHomeMainController.orderId.value,
+                          storeId: ordersHomeMainController.storeId.value)
+                          : ordersHomeMainController.selectedIndex.value == 2
+                          ? ordersHomeMainController.apiMarkDelivered(
+                          orderId: ordersHomeMainController.orderId.value,
+                          storeId: ordersHomeMainController.storeId.value)
                           : ordersHomeMainController.selectedIndex.value == 3
-                              ? StringConstants.completeText
-                              : "",
-              textColor: AppColors.white,
-              borderRadius: 14,
-              fontWeight: FontWeight.w500,
-              iconL: false,
-              iconR: false,
-              fontSize: 16,
+                          ? ordersHomeMainController.apiMarkOrderReady(
+                          orderId:
+                          ordersHomeMainController.orderId.value,
+                          storeId:
+                          ordersHomeMainController.storeId.value)
+                          : ordersHomeMainController.apiMarkOrderReady(
+                          orderId:
+                          ordersHomeMainController.orderId.value,
+                          storeId:
+                          ordersHomeMainController.storeId.value);
+                    }else{
+                      Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
+                    }
+                  },
+                  height: 50,
+                  text: ordersHomeMainController.selectedIndex.value == 0
+                      ? StringConstants.orderReadyText
+                      : ordersHomeMainController.selectedIndex.value == 1
+                          ? StringConstants.readyForPickUpText
+                          : ordersHomeMainController.selectedIndex.value == 2
+                              ? StringConstants.orderReadyText
+                              : ordersHomeMainController.selectedIndex.value == 3
+                                  ? StringConstants.completeText
+                                  : "",
+                  textColor: AppColors.white,
+                  borderRadius: 14,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  iconR: false,
+                  fontSize: 16,
+                ),
+              ],
             ),
           ),
         ],

@@ -813,7 +813,12 @@ class _CartScreenState extends State<CartScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            storeHomeMainController.apiPlaceOrder();
+                            // if(storeHomeMainController.storeDeliveryServiceId.value== "0"){
+                              // Util
+                            // }else{
+                              storeHomeMainController.apiPlaceOrder();
+                            // }
+
                           },
                           height: 45,
                           width: 120,

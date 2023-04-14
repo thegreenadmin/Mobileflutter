@@ -118,6 +118,7 @@ class ServerCommunicator {
   String storeConfirmReturnOrder = 'store/order/return/confirm/create';
   String storeCompleteReturnOrder = 'store/order/return/complete/create';
   String storeRejectReturnOrder = 'store/order/return/cancel/create';
+  String storeCancelOrder = 'store/order/cancel/create';
 
 //T
 //U
