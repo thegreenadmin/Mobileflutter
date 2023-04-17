@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/delivery_services_model.dart';
@@ -44,6 +45,9 @@ class OwnerStoresController extends GetxController {
   TextEditingController workingDaysTextController = TextEditingController();
   TextEditingController deliveryServicesTextController =
       TextEditingController();
+
+  var kGoogleApiKey = "";
+  late GlobalConfigs secureData;
 
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
@@ -136,20 +140,19 @@ class OwnerStoresController extends GetxController {
     super.onInit();
     selectedIndex.value = 0;
     getApiData();
+    getGkey();
+  }
+
+  getGkey() async {
+    secureData =
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
   }
 
   getApiData() async {
     await apiGetStoreList();
     await apiGetDeliveryServices();
     await apiGetOwnerOffersList();
-    await getCurrentLocation();
-  }
-
-  getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
   }
 
   bool validateAndSave() {
@@ -545,6 +548,8 @@ class OwnerStoresController extends GetxController {
                 storeAddresses[i]["address_line_1"] ?? "";
             townOrCityTextController.text = storeAddresses[i]["city"] ?? "";
             countryTextController.text =
+                storeAddresses[i]["state"]['state_name'] ?? "";
+            stateTextController.text =
                 storeAddresses[i]["state"]['country']['country_name'] ?? "";
             countryId!.value =
                 storeAddresses[i]["state"]['country']['country_id'] ?? "";
@@ -633,8 +638,10 @@ class OwnerStoresController extends GetxController {
         "is_enabled": isEnabled.value
       },
       "store_address": {
-        "store_address_id": int.parse(storeAddressId!.value),
-        "state_id": stateId.value,
+        //"store_address_id": int.parse(storeAddressId!.value),
+        // "state_id": stateId.value,
+        "state": stateTextController.text.trim(),
+        "country": countryTextController.text.trim(),
         "address_name": "home",
         "longitude": lng,
         "latitude": lat,
@@ -652,7 +659,7 @@ class OwnerStoresController extends GetxController {
               : storeTimings,
       "store_delivery_services": deliveryServicesList
     };
-    log("UPDATE STORE DETAIL BODY**********$data");
+    debugPrint("UPDATE STORE DETAIL BODY**********$data");
 
     UserProvider()
         .putWithHeadersApi(
@@ -661,7 +668,7 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
+      debugPrint("UPDATE STORE DETAIL RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);

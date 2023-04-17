@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/delivery_services_model.dart';
@@ -42,6 +43,9 @@ class AddNewStoreController extends GetxController {
   TextEditingController workingDaysTextController = TextEditingController();
   TextEditingController deliveryServicesTextController =
       TextEditingController();
+
+  var kGoogleApiKey = "";
+  late GlobalConfigs secureData;
 
   RxBool autoValidate = false.obs;
   RxBool isStoreLogoSelected = false.obs;
@@ -91,22 +95,24 @@ class AddNewStoreController extends GetxController {
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
   RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
+
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+
   @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 200), () {
-      apiGetCountries();
+      // apiGetCountries();
+      getGkey();
       apiGetDeliveryServices();
-      getCurrentLocation();
     });
   }
 
-  getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+  getGkey() async {
+    secureData =
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
   }
 
   bool validateAndSave() {
@@ -303,7 +309,9 @@ class AddNewStoreController extends GetxController {
         "store_phone_code": countryCode.value
       },
       "store_address": {
-        "state_id": stateId.value.trim(),
+        // "state_id": stateId.value.trim(),
+        "state": stateTextController.text.trim(),
+        "country": countryTextController.text.trim(),
         "address_name": "home",
         "longitude": lng,
         "latitude": lat,
@@ -341,7 +349,6 @@ class AddNewStoreController extends GetxController {
         });
         storeNameTextController.clear();
         einTextController.clear();
-
         storeNickNameTextController.clear();
         storeEmailTextController.clear();
         storePhoneTextController.clear();
@@ -350,6 +357,8 @@ class AddNewStoreController extends GetxController {
         townOrCityTextController.clear();
         zipCodeTextController.clear();
         deliveryServicesTextController.clear();
+        stateTextController.clear();
+        countryTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode403) {

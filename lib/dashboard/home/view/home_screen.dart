@@ -8,9 +8,8 @@ import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.da
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/user_stores_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -181,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                //  Get.to(const TransactionScreen());
+                                Get.to(const TransactionScreen());
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),

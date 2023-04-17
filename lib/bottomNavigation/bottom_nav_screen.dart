@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
-
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class BottomNavigation extends StatelessWidget {
@@ -17,19 +17,19 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        extendBody: true,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: AppColors.primary,
-            child: Image.asset(
-              "assets/orders.png",
-              scale: 4,
-            ),
-            onPressed: () {
-              _bottomNavigationPageController.onItemTapped(2);
-              // OrdersController controller = Get.find<OrdersController>();
-              // controller.onInit();
-            }),
+        // extendBody: true,
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //     backgroundColor: AppColors.primary,
+        //     child: Image.asset(
+        //       "assets/orders.png",
+        //       scale: 4,
+        //     ),
+        //     onPressed: () {
+        //       _bottomNavigationPageController.onItemTapped(2);
+        //       // OrdersController controller = Get.find<OrdersController>();
+        //       // controller.onInit();
+        //     }),
         backgroundColor: AppColors.white,
         bottomNavigationBar: BottomAppBar(
           notchMargin: 5,
@@ -64,8 +64,8 @@ class BottomNavigation extends StatelessWidget {
                             _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     0
-                                ? "assets/homefill.png"
-                                : "assets/home.png",
+                                ? ImageConstants.homefill
+                                : ImageConstants.home,
                             color: _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     0
@@ -94,8 +94,8 @@ class BottomNavigation extends StatelessWidget {
                             _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     1
-                                ? "assets/walletfill.png"
-                                : "assets/wallet.png",
+                                ? ImageConstants.walletfill
+                                : ImageConstants.wallet,
                             color: _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     1
@@ -118,12 +118,34 @@ class BottomNavigation extends StatelessWidget {
                         ]),
                         label: "",
                       ),
-                      const BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                          size: 24.0,
-                        ),
+                      BottomNavigationBarItem(
+                        icon: Column(children: [
+                          Image.asset(
+                            _bottomNavigationPageController
+                                        .selectedIndex.value ==
+                                    2
+                                ? ImageConstants.orderIcon
+                                : ImageConstants.orderfillIcon,
+                            color: _bottomNavigationPageController
+                                        .selectedIndex.value ==
+                                    2
+                                ? AppColors.primary
+                                : AppColors.blacklight,
+                            scale: 3.6,
+                          ),
+                          height4SizedBox,
+                          Text(
+                            BottomNavStringConstants.ordersText,
+                            style: TextStyle(
+                                color: _bottomNavigationPageController
+                                            .selectedIndex.value ==
+                                        2
+                                    ? AppColors.primary
+                                    : AppColors.blacklight,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12),
+                          )
+                        ]),
                         label: "",
                       ),
                       BottomNavigationBarItem(
@@ -132,8 +154,8 @@ class BottomNavigation extends StatelessWidget {
                             _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     3
-                                ? "assets/offersfill.png"
-                                : "assets/offers.png",
+                                ? ImageConstants.offersfill
+                                : ImageConstants.offers,
                             color: _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     3
@@ -162,8 +184,8 @@ class BottomNavigation extends StatelessWidget {
                             _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     4
-                                ? "assets/morefill.png"
-                                : "assets/more.png",
+                                ? ImageConstants.morefill
+                                : ImageConstants.more,
                             color: _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     4

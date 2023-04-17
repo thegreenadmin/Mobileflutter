@@ -60,6 +60,7 @@ class ServerCommunicator {
   String orderStatusList = 'order/status/list';
   String orderList = 'order/list';
   String orderDetail = 'order/details';
+
 //P
 
   String productDetails = 'store/product/details';

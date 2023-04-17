@@ -6,7 +6,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -512,7 +511,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      "assets/nodata.png",
+                                      ImageConstants.nodata,
                                       scale: 8,
                                       color: AppColors.primary,
                                     ),
@@ -618,7 +617,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                            text: "Order ID",
+                                                            text: StringConstants
+                                                                .orderIDText,
                                                             style: TextStyle(
                                                                 color: AppColors
                                                                     .blacklight,
@@ -627,8 +627,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                         .w400,
                                                                 fontSize: 14)),
                                                         TextSpan(
-                                                          text:
-                                                              ': #${transactionController.ownerOrderTransactionList![index].orderTransactionId}',
+                                                          text: transactionController
+                                                                      .ownerOrderTransactionList![
+                                                                          index]
+                                                                      .orderTransaction !=
+                                                                  null
+                                                              ? ': #${transactionController.ownerOrderTransactionList![index].orderTransactionId}'
+                                                              : transactionController
+                                                                          .ownerOrderTransactionList![
+                                                                              index]
+                                                                          .orderItemRefundTransaction !=
+                                                                      null
+                                                                  ? ': #${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction!.returnOrderItemId}'
+                                                                  : "",
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

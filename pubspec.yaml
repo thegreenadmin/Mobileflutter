@@ -43,7 +43,7 @@ dependencies:
   flutter_switch: ^0.3.2
   dotted_border: ^2.0.0+3
   http: ^0.13.5
-  dio: ^5.0.1
+  dio: ^5.1.1
   image_picker: ^0.8.7
   path_provider: ^2.0.13
   flutter_google_places: ^0.3.0
@@ -57,6 +57,7 @@ dependencies:
   firebase_core: ^2.9.0
   flutter_local_notifications: ^13.0.0
   passcode_screen: ^2.0.1
+  
   
 
 

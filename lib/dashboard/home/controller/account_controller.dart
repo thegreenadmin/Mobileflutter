@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
@@ -50,6 +51,7 @@ class AccountController extends GetxController {
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
+  RxString? userId = "".obs;
 
   RxString stateDropdownValue = "".obs;
   RxString stateId = "".obs;
@@ -69,13 +71,23 @@ class AccountController extends GetxController {
   RxString idProofImageOrigionalLinkfromServer = "".obs;
   RxString idProofImageDynamicLinkfromServer = "".obs;
 
+  var kGoogleApiKey = "";
+  late GlobalConfigs secureData;
+
   @override
   void onInit() {
     super.onInit();
     //getDetail();
     isFromCart.value = Get.arguments["isFromCart"] ?? false;
     apiGetUserDetailApi();
+    getGkey();
     Future.delayed(const Duration(milliseconds: 200), () {});
+  }
+
+  getGkey() async {
+    secureData =
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -247,6 +259,7 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+        userId!.value = getUserDetailModel.data!.user!.userId ?? "";
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
@@ -264,8 +277,10 @@ class AccountController extends GetxController {
             countryId!.value = userAddress[i].state!.country!.countryId ?? "";
             countryDropdownValue.value =
                 userAddress[i].state!.country!.countryName ?? "";
+            countryTextController.text = countryDropdownValue.value;
             stateId.value = userAddress[i].state!.stateId ?? "";
             stateDropdownValue.value = userAddress[i].state!.stateName ?? "";
+            stateTextController.text = stateDropdownValue.value;
             addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
             addressLine1.value = addressLine1TextController.text;
             addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
@@ -274,6 +289,10 @@ class AccountController extends GetxController {
             city.value = townOrCityTextController.text;
             postalCodeTextController.text = userAddress[i].postalCode ?? "";
             postalCode.value = postalCodeTextController.text;
+          }
+          if (getUserDetailModel.data!.userProof != null) {
+            idProofImageDynamicLinkfromServer.value =
+                getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
         await apiGetCountries();
@@ -390,7 +409,9 @@ class AccountController extends GetxController {
       },
       "address": {
         "user_address_id": null,
-        "state_id": stateId.value,
+        // "state_id": stateId.value,
+        "state": stateTextController.text.trim(),
+        "country": countryTextController.text.trim(),
         "address_name": "home",
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
@@ -452,7 +473,7 @@ class AccountController extends GetxController {
     };
     debugPrint("ID PROOF DETAIL BODY**********$data");
     UserProvider()
-        .putWithHeadersApi(
+        .postWithHeadersApi(
             data,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}",
             headers,

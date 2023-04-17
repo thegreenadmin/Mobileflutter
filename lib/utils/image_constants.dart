@@ -85,7 +85,11 @@ class ImageConstants {
   static const String onBoardTwo = '$assetsIcon/onBoardTwo.png';
   static const String orders = '$assetsIcon/orders.png';
   static const String otpVerification = '$assetsIcon/otpVerification.png';
+  static const String orderIcon = '$assetsIcon/ordericon.png';
+  static const String orderfillIcon = '$assetsIcon/orderfill.png';
+
   //P
+
   static const String pencil = '$assetsIcon/pencil.png';
   static const String picupload = '$assetsIcon/picupload.png';
   static const String privacy = '$assetsIcon/privacy.png';

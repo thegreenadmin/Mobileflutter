@@ -32,7 +32,8 @@ class BottomNavController extends GetxController {
       ));
       initialRemoteMessage = null;
     }
-    selectedIndex.value = Get.arguments!=null ?Get.arguments["currentIndex"]??0: 0;
+    selectedIndex.value =
+        Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
   List<Widget> tabs = [
@@ -59,7 +60,6 @@ class BottomNavController extends GetxController {
         WalletController controller = Get.find<WalletController>();
         controller.onInit();
       } catch (e) {
-        print("11" + index.toString());
         //Pass
       }
     } else if (selectedIndex.value == 2) {
@@ -79,7 +79,6 @@ class BottomNavController extends GetxController {
         //Pass
       }
     } else if (selectedIndex.value == 4) {
-      print(index);
       try {
         MoreController controller = Get.find<MoreController>();
         controller.onInit();

@@ -1,5 +1,5 @@
 class GetOwnerTransactionModel {
-  dynamic status;
+  int? status;
   String? message;
   Data? data;
 
@@ -51,7 +51,7 @@ class Data {
 class Transactions {
   String? storeId;
   String? orderTransactionId;
-  String? orderItemRefundTransactionId;
+  Null? orderItemRefundTransactionId;
   String? storePayoutId;
   dynamic netBalance;
   String? status;
@@ -60,6 +60,8 @@ class Transactions {
   String? storeWalletTransactionId;
   Store? store;
   OrderTransaction? orderTransaction;
+  OrderItemRefundTransaction? orderItemRefundTransaction;
+  Null? storePayout;
 
   Transactions(
       {this.storeId,
@@ -72,7 +74,9 @@ class Transactions {
       this.updatedAt,
       this.storeWalletTransactionId,
       this.store,
-      this.orderTransaction});
+      this.orderTransaction,
+      this.orderItemRefundTransaction,
+      this.storePayout});
 
   Transactions.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -88,6 +92,11 @@ class Transactions {
     orderTransaction = json['order_transaction'] != null
         ? new OrderTransaction.fromJson(json['order_transaction'])
         : null;
+    orderItemRefundTransaction = json['order_item_refund_transaction'] != null
+        ? new OrderItemRefundTransaction.fromJson(
+            json['order_item_refund_transaction'])
+        : null;
+    storePayout = json['store_payout'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +117,11 @@ class Transactions {
     if (this.orderTransaction != null) {
       data['order_transaction'] = this.orderTransaction!.toJson();
     }
+    if (this.orderItemRefundTransaction != null) {
+      data['order_item_refund_transaction'] =
+          this.orderItemRefundTransaction!.toJson();
+    }
+    data['store_payout'] = this.storePayout;
     return data;
   }
 }
@@ -120,7 +134,7 @@ class Store {
   String? storePhone;
   String? storePhoneCode;
   bool? isVerified;
-  String? verifiedBy;
+  Null? verifiedBy;
   bool? isEnabled;
   String? status;
   String? createdAt;
@@ -212,13 +226,18 @@ class OrderTransaction {
   String? orderTransactionId;
   String? orderId;
   Order? order;
+  Transaction? transaction;
 
-  OrderTransaction({this.orderTransactionId, this.orderId, this.order});
+  OrderTransaction(
+      {this.orderTransactionId, this.orderId, this.order, this.transaction});
 
   OrderTransaction.fromJson(Map<String, dynamic> json) {
     orderTransactionId = json['order_transaction_id'];
     orderId = json['order_id'];
     order = json['order'] != null ? new Order.fromJson(json['order']) : null;
+    transaction = json['transaction'] != null
+        ? new Transaction.fromJson(json['transaction'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -227,6 +246,9 @@ class OrderTransaction {
     data['order_id'] = this.orderId;
     if (this.order != null) {
       data['order'] = this.order!.toJson();
+    }
+    if (this.transaction != null) {
+      data['transaction'] = this.transaction!.toJson();
     }
     return data;
   }
@@ -313,6 +335,142 @@ class Order {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['order_id'] = this.orderId;
+    return data;
+  }
+}
+
+class Transaction {
+  String? paymentServiceId;
+  Null? stripeTransactionId;
+  String? transactionType;
+  dynamic transactionAmount;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? transactionId;
+
+  Transaction(
+      {this.paymentServiceId,
+      this.stripeTransactionId,
+      this.transactionType,
+      this.transactionAmount,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.transactionId});
+
+  Transaction.fromJson(Map<String, dynamic> json) {
+    paymentServiceId = json['payment_service_id'];
+    stripeTransactionId = json['stripe_transaction_id'];
+    transactionType = json['transaction_type'];
+    transactionAmount = json['transaction_amount'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    transactionId = json['transaction_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['payment_service_id'] = this.paymentServiceId;
+    data['stripe_transaction_id'] = this.stripeTransactionId;
+    data['transaction_type'] = this.transactionType;
+    data['transaction_amount'] = this.transactionAmount;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['transaction_id'] = this.transactionId;
+    return data;
+  }
+}
+
+class OrderItemRefundTransaction {
+  String? transactionId;
+  String? returnOrderItemId;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? orderItemRefundTransactionId;
+  ReturnOrderItem? returnOrderItem;
+  Transaction? transaction;
+
+  OrderItemRefundTransaction(
+      {this.transactionId,
+      this.returnOrderItemId,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.orderItemRefundTransactionId,
+      this.returnOrderItem,
+      this.transaction});
+
+  OrderItemRefundTransaction.fromJson(Map<String, dynamic> json) {
+    transactionId = json['transaction_id'];
+    returnOrderItemId = json['return_order_item_id'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    orderItemRefundTransactionId = json['order_item_refund_transaction_id'];
+    returnOrderItem = json['return_order_item'] != null
+        ? new ReturnOrderItem.fromJson(json['return_order_item'])
+        : null;
+    transaction = json['transaction'] != null
+        ? new Transaction.fromJson(json['transaction'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transaction_id'] = this.transactionId;
+    data['return_order_item_id'] = this.returnOrderItemId;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['order_item_refund_transaction_id'] =
+        this.orderItemRefundTransactionId;
+    if (this.returnOrderItem != null) {
+      data['return_order_item'] = this.returnOrderItem!.toJson();
+    }
+    if (this.transaction != null) {
+      data['transaction'] = this.transaction!.toJson();
+    }
+    return data;
+  }
+}
+
+class ReturnOrderItem {
+  String? orderItemId;
+  String? remarks;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? returnItemId;
+
+  ReturnOrderItem(
+      {this.orderItemId,
+      this.remarks,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.returnItemId});
+
+  ReturnOrderItem.fromJson(Map<String, dynamic> json) {
+    orderItemId = json['order_item_id'];
+    remarks = json['remarks'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    returnItemId = json['return_item_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['order_item_id'] = this.orderItemId;
+    data['remarks'] = this.remarks;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['return_item_id'] = this.returnItemId;
     return data;
   }
 }

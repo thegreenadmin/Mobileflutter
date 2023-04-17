@@ -216,13 +216,8 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
-    debugPrint("GET CART LIST URL**********${storeDeliveryServiceId.value.toString() == "0" &&
-        selectedUserAddress.value.userAddressId == null
-        ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}"
-        : storeDeliveryServiceId.value.toString() != "0" &&
-        selectedUserAddress.value.userAddressId == null?
-    "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-        : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
+    debugPrint(
+        "GET CART LIST URL**********${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -237,9 +232,9 @@ class StoreHomeMainController extends GetxController {
                     selectedUserAddress.value.userAddressId == null
                 ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}"
                 : storeDeliveryServiceId.value.toString() != "0" &&
-                selectedUserAddress.value.userAddressId == null?
-               "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+                        selectedUserAddress.value.userAddressId == null
+                    ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+                    : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -288,8 +283,9 @@ class StoreHomeMainController extends GetxController {
       "store_id":
           int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id":selectedUserAddress.value.userAddressId!=null?
-          int.parse(selectedUserAddress.value.userAddressId.toString()):null,
+      "user_address_id": selectedUserAddress.value.userAddressId != null
+          ? int.parse(selectedUserAddress.value.userAddressId.toString())
+          : null,
       "cart_items": selectedItems
     };
 
@@ -312,7 +308,7 @@ class StoreHomeMainController extends GetxController {
           "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false,
-          "isFromNotification":false
+          "isFromNotification": false
         });
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
@@ -500,7 +496,7 @@ class StoreHomeMainController extends GetxController {
                   },
                   child: Container(
                     height: 50.0,
-                    width: WidgetConstants.screenWidth *0.3,
+                    width: WidgetConstants.screenWidth * 0.3,
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(10.0),
@@ -524,7 +520,7 @@ class StoreHomeMainController extends GetxController {
                   },
                   child: Container(
                     height: 50.0,
-                    width:  WidgetConstants.screenWidth *0.3,
+                    width: WidgetConstants.screenWidth * 0.3,
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       border: Border.all(color: AppColors.primary),
@@ -597,17 +593,21 @@ class StoreHomeMainController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}",
-        headers, showLoading: false).then((value) async {
+            headers,
+            showLoading: false)
+        .then((value) async {
       isLoading.value = false;
       log("Store Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
-       storeDetailsResponse.value =
+        storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-        debugPrint("isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        isFavouriteStore.value =  storeDetailsResponse.value.data?.store?.isFavouriteStore??false;
-        } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        debugPrint(
+            "isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        isFavouriteStore.value =
+            storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -623,20 +623,26 @@ class StoreHomeMainController extends GetxController {
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
-    UserProvider().getWithHeadersApi(
+    UserProvider()
+        .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId",
-            headers, showLoading: false).then((value) async {
+            headers,
+            showLoading: false)
+        .then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
-        isFavouriteProduct.value = productDetailResponse.value.data?.product?.isFavouriteProduct??false;
+        isFavouriteProduct.value =
+            productDetailResponse.value.data?.product?.isFavouriteProduct ??
+                false;
         if (productDetailResponse.value.data!.product!.cartItems!.isNotEmpty) {
           itemsCount.value = productDetailResponse
               .value.data!.product!.cartItems!.first.itemsCount!;

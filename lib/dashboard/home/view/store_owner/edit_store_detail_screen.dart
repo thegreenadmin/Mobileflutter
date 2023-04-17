@@ -1,7 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -14,6 +16,9 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:global_configs/global_configs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 
 class EditStoreDetailScreen extends StatefulWidget {
   const EditStoreDetailScreen({super.key});
@@ -630,59 +635,134 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: searchStoreOwnerController
-                            .addressLine1TextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAddressText;
+                    InkWell(
+                      onTap: () async {
+                        Prediction? p = await PlacesAutocomplete.show(
+                            offset: 0,
+                            radius: 1000,
+                            types: [],
+                            strictbounds: false,
+                            context: context,
+                            apiKey: searchStoreOwnerController.kGoogleApiKey,
+                            mode: Mode.overlay,
+                            language: "en",
+                            components: []);
+                        searchStoreOwnerController.addressLine1TextController
+                            .text = p!.description!.toString();
+                        GeoData addresses = await Geocoder2.getDataFromAddress(
+                            address: p.description.toString(),
+                            googleMapApiKey:
+                                searchStoreOwnerController.kGoogleApiKey);
+                        if (addresses.address != null) {
+                          if (addresses.address.isNotEmpty) {
+                            searchStoreOwnerController
+                                .addressLine1TextController
+                                .text = addresses.address.toString();
                           }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.addressLine1Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                          if (addresses.address.isNotEmpty) {
+                            searchStoreOwnerController
+                                .addressLine2TextController
+                                .text = addresses.streetNumber.toString();
+                          }
+                          if (addresses.city.isNotEmpty) {
+                            searchStoreOwnerController
+                                .townOrCityTextController.text = addresses.city;
+                          }
+                          if (addresses.country.isNotEmpty) {
+                            searchStoreOwnerController
+                                .countryTextController.text = addresses.country;
+                          }
+                          if (addresses.address.isNotEmpty) {
+                            searchStoreOwnerController
+                                .addressLine1TextController
+                                .text = addresses.address;
+                          }
+                          if (addresses.postalCode.isNotEmpty) {
+                            searchStoreOwnerController.postalCodeTextController
+                                .text = addresses.postalCode;
+                          }
+                          if (addresses.state.isNotEmpty) {
+                            searchStoreOwnerController
+                                .stateTextController.text = addresses.state;
+                          }
+                          if (addresses.latitude != null ||
+                              addresses.longitude != null) {
+                            searchStoreOwnerController.lng =
+                                addresses.longitude.toString();
+                            searchStoreOwnerController.lat =
+                                addresses.latitude.toString();
+                          }
+                        }
+                        debugPrint("ADDRESSES---->" + addresses.address);
+                        debugPrint("CITY---->" + addresses.city);
+                        debugPrint("COUNTRY---->" + addresses.country);
+                        debugPrint("COUNTRY CODE---->" + addresses.countryCode);
+                        debugPrint("POSTALCODE---->" + addresses.postalCode);
+                        debugPrint("STATE---->" + addresses.state);
+                        debugPrint(
+                            "STREETNUMBER---->" + addresses.streetNumber);
+                        debugPrint("LAT---->" + addresses.latitude.toString());
+                        debugPrint(
+                            "LONG---->" + addresses.longitude.toString());
+                      },
+                      child: TextFormField(
+                          enabled: false,
+                          minLines: 1,
+                          maxLines: 5,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller: searchStoreOwnerController
+                              .addressLine1TextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterAddressText;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: StringConstants.addressLine1Text,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                        )),
+                          )),
+                    ),
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
@@ -875,63 +955,117 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => DropdownButtonFormField<CountriesList>(
-                          isExpanded: true,
-                          value:
-                              searchStoreOwnerController.countriesList.isEmpty
-                                  ? CountriesList()
-                                  : searchStoreOwnerController.countriesList[
-                                      searchStoreOwnerController
-                                          .countryIndex.value],
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
+                    // Obx(() => DropdownButtonFormField<CountriesList>(
+                    //       isExpanded: true,
+                    //       value:
+                    //           searchStoreOwnerController.countriesList.isEmpty
+                    //               ? CountriesList()
+                    //               : searchStoreOwnerController.countriesList[
+                    //                   searchStoreOwnerController
+                    //                       .countryIndex.value],
+                    //       decoration: InputDecoration(
+                    //         enabledBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.grey,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         border: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         focusedBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         errorBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         hintText: StringConstants.countryText,
+                    //         errorStyle: const TextStyle(color: Colors.yellow),
+                    //       ),
+                    //       items: searchStoreOwnerController.countriesList
+                    //           .map<DropdownMenuItem<CountriesList>>(
+                    //               (CountriesList value) {
+                    //         return DropdownMenuItem<CountriesList>(
+                    //           value: value,
+                    //           child: Text(value.countryName.toString()),
+                    //         );
+                    //       }).toList(),
+                    //       onChanged: (CountriesList? newValue) {
+                    //         searchStoreOwnerController.countryDropdownValue
+                    //             .value = newValue!.countryName.toString();
+                    //         searchStoreOwnerController.countryId!.value =
+                    //             newValue.countryId.toString();
+                    //         searchStoreOwnerController.stateId.value = "";
+                    //         searchStoreOwnerController.apiGetState();
+                    //         print(searchStoreOwnerController.countryId!.value);
+                    //       },
+                    //     )),
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            searchStoreOwnerController.countryTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterTownOrCityText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.townOrCityText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: StringConstants.countryText,
-                            errorStyle: const TextStyle(color: Colors.yellow),
                           ),
-                          items: searchStoreOwnerController.countriesList
-                              .map<DropdownMenuItem<CountriesList>>(
-                                  (CountriesList value) {
-                            return DropdownMenuItem<CountriesList>(
-                              value: value,
-                              child: Text(value.countryName.toString()),
-                            );
-                          }).toList(),
-                          onChanged: (CountriesList? newValue) {
-                            searchStoreOwnerController.countryDropdownValue
-                                .value = newValue!.countryName.toString();
-                            searchStoreOwnerController.countryId!.value =
-                                newValue.countryId.toString();
-                            searchStoreOwnerController.stateId.value = "";
-                            searchStoreOwnerController.apiGetState();
-                            print(searchStoreOwnerController.countryId!.value);
-                          },
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
                         )),
                     height20SizedBox,
                     Text(
@@ -942,58 +1076,112 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => DropdownButtonFormField<StatesList>(
-                          isExpanded: true,
-                          value: searchStoreOwnerController.statesList.isEmpty
-                              ? StatesList()
-                              : searchStoreOwnerController.statesList[
-                                  searchStoreOwnerController.stateIndex.value],
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
+                    // Obx(() => DropdownButtonFormField<StatesList>(
+                    //       isExpanded: true,
+                    //       value: searchStoreOwnerController.statesList.isEmpty
+                    //           ? StatesList()
+                    //           : searchStoreOwnerController.statesList[
+                    //               searchStoreOwnerController.stateIndex.value],
+                    //       decoration: InputDecoration(
+                    //         enabledBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.grey,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         border: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         focusedBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         errorBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         hintText: StringConstants.stateText,
+                    //         errorStyle: const TextStyle(color: Colors.yellow),
+                    //       ),
+                    //       items: searchStoreOwnerController.statesList
+                    //           .map<DropdownMenuItem<StatesList>>(
+                    //               (StatesList value) {
+                    //         return DropdownMenuItem<StatesList>(
+                    //           value: value,
+                    //           child: Text(value.stateName.toString()),
+                    //         );
+                    //       }).toList(),
+                    //       onChanged: (StatesList? newValue) {
+                    //         searchStoreOwnerController.stateDropdownValue
+                    //             .value = newValue!.stateName.toString();
+                    //         searchStoreOwnerController.stateId.value =
+                    //             newValue.stateId.toString();
+                    //       },
+                    //     )),
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            searchStoreOwnerController.stateTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterTownOrCityText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.stateText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: StringConstants.stateText,
-                            errorStyle: const TextStyle(color: Colors.yellow),
                           ),
-                          items: searchStoreOwnerController.statesList
-                              .map<DropdownMenuItem<StatesList>>(
-                                  (StatesList value) {
-                            return DropdownMenuItem<StatesList>(
-                              value: value,
-                              child: Text(value.stateName.toString()),
-                            );
-                          }).toList(),
-                          onChanged: (StatesList? newValue) {
-                            searchStoreOwnerController.stateDropdownValue
-                                .value = newValue!.stateName.toString();
-                            searchStoreOwnerController.stateId.value =
-                                newValue.stateId.toString();
-                          },
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
                         )),
                     height25SizedBox,
                     Text(
@@ -1490,25 +1678,44 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
-                          searchStoreOwnerController.deliveryServicesList.clear();
+                          searchStoreOwnerController.deliveryServicesList
+                              .clear();
                           if (searchStoreOwnerController
                               .storeDeliveryServices.isNotEmpty) {
-                            for (int i = 0; i < searchStoreOwnerController.deliveryServices.length; i++) {
-
-                              for (var element in searchStoreOwnerController.storeDeliveryServices) {
-                                if (element["delivery_service_id"] == searchStoreOwnerController.deliveryServices[i].id) {
-                                  searchStoreOwnerController.deliveryServicesList.add({
-                                    "store_delivery_service_id": element["store_delivery_service_id"],
-                                    "delivery_service_id": searchStoreOwnerController.deliveryServices[i].id,
-                                    "is_enabled": searchStoreOwnerController.deliveryServices[i].isSelected,
+                            for (int i = 0;
+                                i <
+                                    searchStoreOwnerController
+                                        .deliveryServices.length;
+                                i++) {
+                              for (var element in searchStoreOwnerController
+                                  .storeDeliveryServices) {
+                                if (element["delivery_service_id"] ==
+                                    searchStoreOwnerController
+                                        .deliveryServices[i].id) {
+                                  searchStoreOwnerController
+                                      .deliveryServicesList
+                                      .add({
+                                    "store_delivery_service_id":
+                                        element["store_delivery_service_id"],
+                                    "delivery_service_id":
+                                        searchStoreOwnerController
+                                            .deliveryServices[i].id,
+                                    "is_enabled": searchStoreOwnerController
+                                        .deliveryServices[i].isSelected,
                                     "status": "active"
                                   });
                                 }
                               }
 
-                              if (searchStoreOwnerController.deliveryServices[i].isSelected == true &&
+                              if (searchStoreOwnerController
+                                          .deliveryServices[i].isSelected ==
+                                      true &&
                                   !searchStoreOwnerController
-                                      .storeDeliveryServices.any((element) => element["delivery_service_id"]== searchStoreOwnerController.deliveryServices[i].id)) {
+                                      .storeDeliveryServices
+                                      .any((element) =>
+                                          element["delivery_service_id"] ==
+                                          searchStoreOwnerController
+                                              .deliveryServices[i].id)) {
                                 searchStoreOwnerController.deliveryServicesList
                                     .add({
                                   "delivery_service_id":

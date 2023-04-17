@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
@@ -9,6 +11,9 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:global_configs/global_configs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
   const PersonalInfoEditScreen({super.key});
@@ -288,59 +293,121 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            accountController.addressLine1TextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAddressText;
+                    InkWell(
+                      onTap: () async {
+                        Prediction? p = await PlacesAutocomplete.show(
+                            offset: 0,
+                            radius: 1000,
+                            types: [],
+                            strictbounds: false,
+                            context: context,
+                            apiKey: accountController.kGoogleApiKey,
+                            mode: Mode.overlay,
+                            language: "en",
+                            components: []);
+                        accountController.addressLine1TextController.text =
+                            p!.description!.toString();
+                        GeoData addresses = await Geocoder2.getDataFromAddress(
+                            address: p.description.toString(),
+                            googleMapApiKey: accountController.kGoogleApiKey);
+                        if (addresses.address != null) {
+                          if (addresses.address.isNotEmpty) {
+                            accountController.addressLine1TextController.text =
+                                addresses.address.toString();
                           }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.addressLine1Text,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                          if (addresses.address.isNotEmpty) {
+                            accountController.addressLine2TextController.text =
+                                addresses.streetNumber.toString();
+                          }
+                          if (addresses.city.isNotEmpty) {
+                            accountController.townOrCityTextController.text =
+                                addresses.city;
+                          }
+                          if (addresses.country.isNotEmpty) {
+                            accountController.countryTextController.text =
+                                addresses.country;
+                          }
+                          if (addresses.address.isNotEmpty) {
+                            accountController.addressLine1TextController.text =
+                                addresses.address;
+                          }
+                          if (addresses.postalCode.isNotEmpty) {
+                            accountController.postalCodeTextController.text =
+                                addresses.postalCode;
+                          }
+                          if (addresses.state.isNotEmpty) {
+                            accountController.stateTextController.text =
+                                addresses.state;
+                          }
+                        }
+                        debugPrint("ADDRESSES---->" + addresses.address);
+                        debugPrint("CITY---->" + addresses.city);
+                        debugPrint("COUNTRY---->" + addresses.country);
+                        debugPrint("COUNTRY CODE---->" + addresses.countryCode);
+                        debugPrint("POSTALCODE---->" + addresses.postalCode);
+                        debugPrint("STATE---->" + addresses.state);
+                        debugPrint(
+                            "STREETNUMBER---->" + addresses.streetNumber);
+                        debugPrint("LAT---->" + addresses.latitude.toString());
+                        debugPrint(
+                            "LONG---->" + addresses.longitude.toString());
+                      },
+                      child: TextFormField(
+                          enabled: false,
+                          minLines: 1,
+                          maxLines: 5,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller:
+                              accountController.addressLine1TextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterAddressText;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: StringConstants.addressLine1Text,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                        )),
+                          )),
+                    ),
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
@@ -530,64 +597,117 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => DropdownButtonFormField<CountriesList>(
-                          isExpanded: true,
-                          value: accountController.countriesList.isEmpty
-                              ? CountriesList()
-                              : accountController.countriesList[
-                                  accountController.countryIndex.value],
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: accountController.countryTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterTownOrCityText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.countryText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: StringConstants.countryText,
-                            errorStyle: const TextStyle(color: Colors.yellow),
                           ),
-                          items: accountController.countriesList
-                              .map<DropdownMenuItem<CountriesList>>(
-                                  (CountriesList value) {
-                            return DropdownMenuItem<CountriesList>(
-                              value: value,
-                              child: Text(value.countryName.toString()),
-                            );
-                          }).toList(),
-                          onChanged: (CountriesList? newValue) {
-                            accountController.countryDropdownValue.value =
-                                newValue!.countryName.toString();
-                            accountController.countryId!.value =
-                                newValue.countryId.toString();
-
-                            accountController.stateId.value = "";
-
-                            accountController.apiGetStates();
-                            print(accountController.countryId!.value);
-                          },
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
                         )),
+                    // Obx(() => DropdownButtonFormField<CountriesList>(
+                    //       isExpanded: true,
+                    //       value: accountController.countriesList.isEmpty
+                    //           ? CountriesList()
+                    //           : accountController.countriesList[
+                    //               accountController.countryIndex.value],
+                    //       decoration: InputDecoration(
+                    //         enabledBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.grey,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         border: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         focusedBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         errorBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         hintText: StringConstants.countryText,
+                    //         errorStyle: const TextStyle(color: Colors.yellow),
+                    //       ),
+                    //       items: accountController.countriesList
+                    //           .map<DropdownMenuItem<CountriesList>>(
+                    //               (CountriesList value) {
+                    //         return DropdownMenuItem<CountriesList>(
+                    //           value: value,
+                    //           child: Text(value.countryName.toString()),
+                    //         );
+                    //       }).toList(),
+                    //       onChanged: (CountriesList? newValue) {
+                    //         accountController.countryDropdownValue.value =
+                    //             newValue!.countryName.toString();
+                    //         accountController.countryId!.value =
+                    //             newValue.countryId.toString();
+
+                    //         accountController.stateId.value = "";
+
+                    //         accountController.apiGetStates();
+                    //         print(accountController.countryId!.value);
+                    //       },
+                    //     )),
                     height20SizedBox,
                     Text(
                       StringConstants.stateText,
@@ -597,59 +717,111 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    Obx(() => DropdownButtonFormField<StatesList>(
-                          isExpanded: true,
-                          value: accountController.statesList.isEmpty
-                              ? StatesList()
-                              : accountController.statesList[
-                                  accountController.stateIndex.value],
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
+                    // Obx(() => DropdownButtonFormField<StatesList>(
+                    //       isExpanded: true,
+                    //       value: accountController.statesList.isEmpty
+                    //           ? StatesList()
+                    //           : accountController.statesList[
+                    //               accountController.stateIndex.value],
+                    //       decoration: InputDecoration(
+                    //         enabledBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.grey,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         border: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         focusedBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         errorBorder: UnderlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(5.0),
+                    //           borderSide: const BorderSide(
+                    //             color: AppColors.primary,
+                    //             width: 1.0,
+                    //           ),
+                    //         ),
+                    //         hintText: StringConstants.stateText,
+                    //         errorStyle: const TextStyle(color: Colors.red),
+                    //       ),
+                    //       items: accountController.statesList
+                    //           .map<DropdownMenuItem<StatesList>>(
+                    //               (StatesList value) {
+                    //         return DropdownMenuItem<StatesList>(
+                    //           value: value,
+                    //           child: Text(value.stateName.toString()),
+                    //         );
+                    //       }).toList(),
+                    //       onChanged: (StatesList? newValue) {
+                    //         accountController.stateDropdownValue.value =
+                    //             newValue!.stateName.toString();
+                    //         accountController.stateId.value =
+                    //             newValue.stateId.toString();
+                    //         print(accountController.stateId.value);
+                    //       },
+                    //     )),
+                    TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: accountController.stateTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterStateText;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: StringConstants.stateText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: StringConstants.stateText,
-                            errorStyle: const TextStyle(color: Colors.red),
                           ),
-                          items: accountController.statesList
-                              .map<DropdownMenuItem<StatesList>>(
-                                  (StatesList value) {
-                            return DropdownMenuItem<StatesList>(
-                              value: value,
-                              child: Text(value.stateName.toString()),
-                            );
-                          }).toList(),
-                          onChanged: (StatesList? newValue) {
-                            accountController.stateDropdownValue.value =
-                                newValue!.stateName.toString();
-                            accountController.stateId.value =
-                                newValue.stateId.toString();
-                            print(accountController.stateId.value);
-                          },
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
                         )),
                     height40SizedBox,
                     CustomButton(
