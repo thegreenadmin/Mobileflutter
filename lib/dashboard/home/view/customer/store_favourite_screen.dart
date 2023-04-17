@@ -64,11 +64,10 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                     itemBuilder: (BuildContext context, int i) {
                       return InkWell(
                         onTap: () async {
+
+                          storeHomeMainController.productId.value = storeHomeMainController.featureProductList[i].productId.toString()??"";
                           await storeHomeMainController
-                              .apiGetShopProductDetailApi(
-                                  productId: storeHomeMainController
-                                      .featureProductList[i].productId
-                                      .toString());
+                              .apiGetShopProductDetailApi();
                           Get.to(const AddToOrderScreen());
                           await storeHomeMainController.apiGetCartListApi();
                         },

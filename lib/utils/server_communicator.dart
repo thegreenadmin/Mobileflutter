@@ -109,6 +109,7 @@ class ServerCommunicator {
   String storeOrderDetail = 'store/order/details';
   String storeOrderConfirm = 'store/order/confirm/create';
   String storeOrderShipped = 'store/order/shipped/create';
+  String storeOrderPickUp = 'store/order/ready/pickup/create';
   String storeOrderDelivered = 'store/order/delivered/create';
   String storeTransaction = 'store/transaction/list';
   String storeMessageInbox = 'store/message/inbox';

@@ -197,6 +197,7 @@ class StringConstants {
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
   static String noOrdersFoundText = "No orders found";
+  static String noOrdersItemsFoundText = "No orders items found";
   static String noFavouriteStoresFoundText = "No favourite stores found";
   static String noFavouriteProductFoundText = "No favourite product found";
   static String noPreviousStoresFoundText = "No previous stores found";
@@ -512,6 +513,7 @@ class AlertStringConstants {
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";
+  static String somethingWentWrongText = "Something went wrong";
   //T
   static String above18Text =
       "The greenmall application is recommended for 18 above age group only!";

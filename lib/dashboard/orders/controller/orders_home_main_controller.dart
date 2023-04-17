@@ -20,6 +20,7 @@ class OrdersHomeMainController extends GetxController {
   RxString? role = "".obs;
   RxInt selectedIndex = 0.obs;
   RxString storeId = "".obs;
+  RxString orderStatusId = "".obs;
   RxString orderId = "".obs;
   RxString customerName = "".obs;
   RxString orderDate = "".obs;
@@ -72,7 +73,7 @@ class OrdersHomeMainController extends GetxController {
       case 2: //Pickup Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "6"});
+          apiGetOwnerOrderHistory();
         }
         break;
       case 3: //Completed Orders
@@ -160,7 +161,12 @@ class OrdersHomeMainController extends GetxController {
                   {"order_status_id": "9"}, //"pickup request"
                   {"order_status_id": "8"} //"cancel request"
                 ]
-              : [orderStatus]
+              : selectedIndex.value == 2?
+                [
+                  {"order_status_id": "6"}, //"shipped"
+                  {"order_status_id": "16"} //ready pickup
+                ]
+          :[orderStatus]
     };
     debugPrint("OWNER ORDER HISTORY BODY********** $body");
     debugPrint("TOKEN ********** $headers");
@@ -215,11 +221,10 @@ class OrdersHomeMainController extends GetxController {
           secFormat: '',
         ).toString();
 
-        orderAmount.value = getStoreOrderDetailModel
-            .value.data!.order!.totalAmount
-            .toStringAsFixed(2);
+        orderAmount.value = getStoreOrderDetailModel.value.data!.order!.totalAmount.toStringAsFixed(2);
         orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
         storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
+        orderStatusId.value = getStoreOrderDetailModel.value.data?.order?.orderHistories?.last?.orderStatusId??"0";
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
       } else if (value.body["status"] == ApiConstants.statusCode403) {
@@ -411,7 +416,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Mark store order ready
-  apiMarkOrderReady({String storeId = "", String orderId = ""}) async {
+  apiMarkOrderReady() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
@@ -428,8 +433,8 @@ class OrdersHomeMainController extends GetxController {
       }
     }
     Map body = {
-      "store_id": storeId,
-      "order_id": orderId,
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
 
@@ -458,8 +463,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order ready for Pick
-  apiMarkReadyForPick({String storeId = "", String orderId = ""}) async {
+  //Mark store order ready for Shipped
+  apiMarkReadyForShipping() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
@@ -476,8 +481,8 @@ class OrdersHomeMainController extends GetxController {
       }
     }
     Map body = {
-      "store_id": storeId,
-      "order_id": orderId,
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
     debugPrint("MARK ORDER SHIPPED BODY********** $body");
@@ -505,8 +510,55 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
+  //Mark store order ready for Pick
+  apiMarkReadyForPickUp() async {
+    isLoading.value = true;
+    debugPrint(
+        "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    List<dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if (element.isSelected == true) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
+      }
+    }
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+      "order_items": orderItems
+    };
+    debugPrint("MARK ORDER PICKUP BODY********** $body");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeOrderPickUp,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("MARK ORDER PICKUP RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        for (var element in getOrderItems) {
+          element.isSelected = false;
+        }
+        update();
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
   //Mark store order delivered
-  apiMarkDelivered({String storeId = "", String orderId = ""}) async {
+  apiMarkDelivered() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");
@@ -523,8 +575,8 @@ class OrdersHomeMainController extends GetxController {
       }
     }
     Map body = {
-      "store_id": storeId,
-      "order_id": orderId,
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
     debugPrint("MARK ORDER COMPLETE BODY********** $body");

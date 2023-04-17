@@ -139,6 +139,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
+      debugPrint(e.toString());
       Utility.showMessage("Alert!", e.toString());
       return null;
     }

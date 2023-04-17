@@ -138,8 +138,6 @@ class AddNewWorkerController extends GetxController {
         add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
         employeeTiming.dayOfWeek = element.id;
         employeeTiming.is24HrsActive = is247Time.value;
-        print(startTimeTextController.text);
-        print(endTimeTextController.text);
         employeeTiming.startTime = Utility.formatDateTime(
                 startTimeTextController.text,
                 firstFormat: "hh:mm",
@@ -154,6 +152,8 @@ class AddNewWorkerController extends GetxController {
       }
     }
     addWorkerRequest.employeeTimings = employeeTimings;
+    debugPrint("ADD WORKER URL ***********${ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser}");
+    debugPrint("ADD WORKER URL ***********$headers");
     debugPrint("ADD WORKER BODY ***********${addWorkerRequest.toJson()}");
 
     UserProvider()

@@ -39,7 +39,7 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Get.back(result: true );
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

@@ -349,9 +349,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     height20SizedBox,
                     Row(
                       children: [
-                        const Text(
-                          "4.4",
-                          style: TextStyle(
+                        Text(
+                          double.parse(storeHomeMainController.productDetailResponse.value.data?.product?.averageRating?.toString()??"0.0").toString(),
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.black),
@@ -362,7 +362,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RatingBar.builder(
-                              initialRating: 0.0,
+                              initialRating: storeHomeMainController.productDetailResponse.value.data?.product?.averageRating?.toDouble()??0.0,
                               minRating: 1,
                               direction:  Axis.horizontal,
                               allowHalfRating: false,
@@ -395,12 +395,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     ),
                     height20SizedBox,
                     ListView.separated(
-                        separatorBuilder:
-                            (BuildContext context, int index) {
+                        separatorBuilder: (BuildContext context, int index) {
                           return height12SizedBox;
                         },
-                        itemCount:
-                        storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length??0,
+                        itemCount: storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length??0,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int i) {
@@ -463,7 +461,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             ),
                                             width8SizedBox,
                                             Text(
-                                              Utility.formatDateTime('${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0,10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11,23)}'??"",
+                                              Utility.formatDateTime('${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0,10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11,23)}',
                                               firstFormat: "yyyy-dd-MM HH:mm:ss",secFormat: "dd/MM/yyyy"),
                                               style: const TextStyle(
                                                   fontSize: 14.0,
@@ -513,7 +511,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       iconL: false,
                       fontSize: 16,
                     ),
-                    height80SizedBox,
+                    storeHomeMainController.productDetailResponse.value.data?.product !=null
+                        && storeHomeMainController.productDetailResponse.value.data
+                        !.product!.cartItems!.isNotEmpty
+                        ? height80SizedBox :height15SizedBox,
                   ],
                 ),
               ),
@@ -521,7 +522,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           ),
           Obx(()=> Visibility(
             visible:  storeHomeMainController.productDetailResponse.value.data
-                ?.product?.cartItems?.isNotEmpty ??false,
+                ?.product?.cartItems?.isNotEmpty ?? false,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -549,7 +550,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.to(const CartScreen());
+                              Get.to(()=>const CartScreen());
                             },
                             child: Stack(
                               children: [
@@ -592,10 +593,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [AppColors.primary, AppColors.primary],
+                              colors: [ AppColors.primary, AppColors.primary ],
                             ),
-                            onTap: () {
-                              Get.to(const CartScreen());
+                            onTap: () async{
+                            bool result = await  Get.to(()=>const CartScreen());
+                              if(result){
+                                storeHomeMainController.apiGetShopProductDetailApi();
+                              }
                             },
                             height: 45,
                             width: 120,

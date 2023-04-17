@@ -907,6 +907,11 @@ class OrdersController extends GetxController {
                             : 0;
           }
         });
+
+        if(orderDetailResponse.data?.order?.deliveryServiceId!="2"){
+          stepInd.firstWhere((element) => element.id ==2).name ="Picked";
+        }
+
         for (var element in stepInd) {
           if (element.id! <= activeStep.value) {
             element.isSelected = true;
