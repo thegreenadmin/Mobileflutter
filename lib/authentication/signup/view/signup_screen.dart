@@ -104,12 +104,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height25SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.firstName.value = value;
                         },
                         textInputAction: TextInputAction.next,
                         autofocus: false,
+                         textCapitalization: TextCapitalization.words,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(40),
                         ],
@@ -171,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.lastName.value = value;
                         },
@@ -191,7 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             return AlertStringConstants.pleaseEnterLastNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
                             ImageConstants.profile,
@@ -236,7 +237,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.email.value = value;
                         },
@@ -407,7 +408,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           signupController.dateTextController.clear();
                         }
                       },
-                      child: TextFormField(
+                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.done,
                         enabled: false,
                         style: const TextStyle(

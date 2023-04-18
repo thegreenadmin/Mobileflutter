@@ -175,7 +175,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         readOnly: true,
@@ -195,7 +195,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 .pleaseEnterStoreNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -239,7 +239,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         readOnly: true,
@@ -340,7 +340,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -359,7 +359,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.addDescriptionText,
                           hintStyle: const TextStyle(
@@ -435,7 +435,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -536,7 +536,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -699,6 +699,13 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         ? height0SizedBox
                         : Obx(
                             () => DropdownButtonFormField<String>(
+                              validator: (value) {
+                                if (addNewWorkerController.storeRoleList.isNotEmpty && value == null) {
+                                  return AlertStringConstants
+                                      .pleaseSelectRoleText;
+                                }
+                                return null;
+                              },
                               value: addNewWorkerController.roleId.value != ""
                                   ? addNewWorkerController.storeRoleList
                                       .firstWhere((element) =>
@@ -708,6 +715,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   : null,
                               isExpanded: true,
                               decoration: InputDecoration(
+                                errorMaxLines: 3,
                                 enabledBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: const BorderSide(

@@ -52,7 +52,7 @@ class TextFieldWidgetState extends State<TextFieldWidget> {
       return Container(
         alignment: Alignment.center,
         padding: EdgeInsets.zero,
-        child: TextFormField(
+        child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: widget.controller,
             autofocus: false,
           obscureText: widget.isObscureText,
@@ -160,7 +160,7 @@ class TextAreaWidgetState extends State<TextAreaWidget> {
       return Container(
         alignment: Alignment.topLeft,
         padding: EdgeInsets.zero,
-        child: TextFormField(
+        child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
           // focusNode:  widget.focusNode,
           controller: widget.controller,
           obscureText: widget.isObscureText,

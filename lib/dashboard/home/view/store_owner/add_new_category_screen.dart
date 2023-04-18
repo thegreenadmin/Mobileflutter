@@ -157,7 +157,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -176,7 +176,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                 .pleaseEnterCategoryNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(

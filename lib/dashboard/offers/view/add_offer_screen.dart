@@ -156,7 +156,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -174,7 +174,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 .pleaseEnterOfferNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -541,7 +541,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child: TextFormField(
+                          child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               inputFormatters: <TextInputFormatter>[

@@ -47,6 +47,7 @@ class ServerCommunicator {
 //J
 //K
 //L
+  String loggedInUserDetail = 'store/user';
 //M
   String messageInboxList = 'message/inbox';
   String messageList = 'message/list';

@@ -97,7 +97,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               fontSize: 18),
                         ),
                         height20SizedBox,
-                        TextFormField(
+                         TextFormField(
+                             textCapitalization: TextCapitalization.words,
+                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -155,7 +157,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        TextFormField(
+                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -217,7 +219,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        TextFormField(
+                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -277,7 +279,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        TextFormField(
+                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                             maxLines: 4,
                             textInputAction: TextInputAction.done,
                             autofocus: false,
@@ -297,7 +299,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     .pleaseEnterMessageText;
                               }
                               return null;
-                            },
+                            },textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               hintText: StringConstants.messageText,

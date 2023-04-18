@@ -180,7 +180,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
-                  child: TextFormField(
+                  child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                       enabled: false,
                       controller: searchStoreUserController.searchController,
                       style: const TextStyle(

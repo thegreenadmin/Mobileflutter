@@ -41,7 +41,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
         }
         widget.controller!.text = concatenate.toString();
       }
-      return TextFormField(
+      return  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: widget.controller,
         validator: (val) {
           return widget.validator!(val);

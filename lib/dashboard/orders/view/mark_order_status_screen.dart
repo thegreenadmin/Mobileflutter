@@ -506,47 +506,47 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   ordersHomeMainController.getOrderItems[index].orderItemStatus=="delivered" ?
                                                   height0SizedBox :
                                                   SizedBox(
-                                              height: 20,
-                                              width: 30,
-                                              child: Checkbox(
-                                                side: MaterialStateBorderSide.resolveWith(
-                                                      (states) => BorderSide(
-                                                      width: 1.0, color:
-                                                      AppColors.primary.withOpacity(0.5)),
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(6.0)),
-                                                activeColor: AppColors.primary,
+                                                    height: 20,
+                                                    width: 30,
+                                                    child: Checkbox(
+                                                      side: MaterialStateBorderSide.resolveWith(
+                                                            (states) => BorderSide(
+                                                            width: 1.0, color:
+                                                            AppColors.primary.withOpacity(0.5)),
+                                                      ),
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(6.0)),
+                                                      activeColor: AppColors.primary,
 
-                                                value: ordersHomeMainController.selectedIndex.value == 0 &&
-                                                ordersHomeMainController.getOrderItems[index].orderItemStatus!="pending" ||
-                                                ordersHomeMainController.selectedIndex.value == 1 &&
-                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus!="confirmed"||
-                                                ordersHomeMainController.selectedIndex.value == 2 &&
-                                                   (ordersHomeMainController.getOrderItems[index].orderItemStatus!="shipped"
-                                                       && ordersHomeMainController.getOrderItems[index].orderItemStatus!="ready pickup" )||
-                                                ordersHomeMainController.selectedIndex.value == 3 &&
-                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus!="delivered"?
-                                                true:
-                                                ordersHomeMainController.getOrderItems[index].isSelected??false ,
-                                                onChanged: (bool? value) {
-                                                  if(ordersHomeMainController.selectedIndex.value == 0 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="pending"){
-                                                    setState(() {
-                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                    });
-                                                  }else if(ordersHomeMainController.selectedIndex.value == 1 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus=="confirmed"){
-                                                    setState(() {
-                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                    });
-                                                  }else if(ordersHomeMainController.selectedIndex.value == 2 &&
-                                                    (  ordersHomeMainController.getOrderItems[index].orderItemStatus=="shipped" ||
-                                                        ordersHomeMainController.getOrderItems[index].orderItemStatus=="ready pickup")){
-                                                    setState(() {
-                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                    });
-                                                  }
+                                                      value: ordersHomeMainController.selectedIndex.value == 0 &&
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus!="pending" ||
+                                                      ordersHomeMainController.selectedIndex.value == 1 &&
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!="confirmed"||
+                                                      ordersHomeMainController.selectedIndex.value == 2 &&
+                                                         (ordersHomeMainController.getOrderItems[index].orderItemStatus!="shipped"
+                                                             && ordersHomeMainController.getOrderItems[index].orderItemStatus!="ready pickup" )||
+                                                      ordersHomeMainController.selectedIndex.value == 3 &&
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!="delivered"?
+                                                      true:
+                                                      ordersHomeMainController.getOrderItems[index].isSelected??false ,
+                                                      onChanged: (bool? value) {
+                                                        if(ordersHomeMainController.selectedIndex.value == 0 &&
+                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus=="pending"){
+                                                          setState(() {
+                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                          });
+                                                        }else if(ordersHomeMainController.selectedIndex.value == 1 &&
+                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus=="confirmed"){
+                                                          setState(() {
+                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                          });
+                                                        }else if(ordersHomeMainController.selectedIndex.value == 2 &&
+                                                          (  ordersHomeMainController.getOrderItems[index].orderItemStatus=="shipped" ||
+                                                              ordersHomeMainController.getOrderItems[index].orderItemStatus=="ready pickup")){
+                                                          setState(() {
+                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                          });
+                                                        }
 
                                                   },
                                               )),
