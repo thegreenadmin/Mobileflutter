@@ -34,6 +34,8 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Permission needed for profile pic selection</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Permission needed for app authentication</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>The app needs location access to get your current location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

@@ -48,6 +48,8 @@ class StringConstants {
   static String addYourText = "Add your";
   static String aprilText = "April";
   static String augText = "August";
+  static String authenticationText = "Authentication";
+  static String authenticatedText = "authenticated";
 
   //B
   static String breadthText = "Breadth";
@@ -507,7 +509,8 @@ class AlertStringConstants {
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
-  static String pleaseSelectProductToProceedText = "Please select product to proceed";
+  static String pleaseSelectProductToProceedText =
+      "Please select product to proceed";
   static String pleaseAddAtleastOneItemText =
       "Please add at least one item in cart";
 
@@ -524,4 +527,8 @@ class Role {
   static RxString role = "".obs;
   static String storeOwnerRoleText = "StoreOwnerRole";
   static String customerRoleText = "CustomerRole";
+}
+
+class BioMetricAuthentication {
+  static RxBool isBioMetricAuthenticated = false.obs;
 }

@@ -547,9 +547,9 @@ class OwnerStoresController extends GetxController {
             addressLine1TextController.text =
                 storeAddresses[i]["address_line_1"] ?? "";
             townOrCityTextController.text = storeAddresses[i]["city"] ?? "";
-            countryTextController.text =
-                storeAddresses[i]["state"]['state_name'] ?? "";
             stateTextController.text =
+                storeAddresses[i]["state"]['state_name'] ?? "";
+            countryTextController.text =
                 storeAddresses[i]["state"]['country']['country_name'] ?? "";
             countryId!.value =
                 storeAddresses[i]["state"]['country']['country_id'] ?? "";
@@ -638,7 +638,7 @@ class OwnerStoresController extends GetxController {
         "is_enabled": isEnabled.value
       },
       "store_address": {
-        //"store_address_id": int.parse(storeAddressId!.value),
+        "store_address_id": int.parse(storeAddressId!.value),
         // "state_id": stateId.value,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),

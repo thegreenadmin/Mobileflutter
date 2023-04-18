@@ -177,7 +177,6 @@
 //   }
 // }
 
-
 class GetStoreListModel {
   int? status;
   String? message;
@@ -296,8 +295,8 @@ class Image {
 class StoreAddresses {
   String? storeAddressId;
   String? addressName;
-  double? longitude;
-  double? latitude;
+  dynamic longitude;
+  dynamic latitude;
   String? addressLine1;
   String? addressLine2;
   String? landmark;
@@ -362,4 +361,3 @@ class State {
     return data;
   }
 }
-

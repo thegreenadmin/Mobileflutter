@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -77,7 +78,6 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //getDetail();
     isFromCart.value = Get.arguments["isFromCart"] ?? false;
     apiGetUserDetailApi();
     getGkey();
@@ -88,6 +88,14 @@ class AccountController extends GetxController {
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+
+    // BioMetricAuthentication.isBioMetricAuthenticated.value =
+    //     SharedPreferenceStorage.getData(
+    //         StringConstants.authenticatedText.toLowerCase());
+
+    // BioMetricAuthentication.isBioMetricAuthenticated.value
+    //     ? isScreenLockNotify.value = true
+    //     : isScreenLockNotify.value = false;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -487,6 +495,7 @@ class AccountController extends GetxController {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         Utility.showToast(value.body['message']);
       }

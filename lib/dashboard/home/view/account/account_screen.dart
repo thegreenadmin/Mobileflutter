@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
@@ -12,6 +13,14 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
+}
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -22,6 +31,60 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   final AccountController accountController = Get.put(AccountController());
+
+  final LocalAuthentication auth = LocalAuthentication();
+  _SupportState supportState = _SupportState.unknown;
+  bool? canCheckBiometrics;
+  List<BiometricType>? availableBiometrics;
+  String authorized = 'Not Authorized';
+  bool isAuthenticating = false;
+
+  Future<void> _authenticateWithBiometrics() async {
+    bool authenticated = false;
+    try {
+      setState(() {
+        isAuthenticating = true;
+        authorized = 'Authenticating';
+      });
+      authenticated = await auth.authenticate(
+        localizedReason: 'Scan your fingerprint to authenticate',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      setState(() {
+        isAuthenticating = false;
+        authorized = 'Authenticating';
+      });
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        isAuthenticating = false;
+        authorized = 'Error - ${e.message}';
+      });
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    setState(() {
+      authorized = message;
+    });
+    if (authenticated) {
+      SharedPreferenceStorage.setData(
+          StringConstants.authenticatedText.toLowerCase(), true);
+      BioMetricAuthentication.isBioMetricAuthenticated.value = true;
+      accountController.isScreenLockNotify.value = true;
+    } else {
+      SharedPreferenceStorage.setData(
+          StringConstants.authenticatedText.toLowerCase(), false);
+      BioMetricAuthentication.isBioMetricAuthenticated.value = false;
+      accountController.isScreenLockNotify.value = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -346,6 +409,17 @@ class _AccountScreenState extends State<AccountScreen> {
                               onToggle: (val) {
                                 accountController.isScreenLockNotify.value =
                                     val;
+                                // if (accountController
+                                //     .isScreenLockNotify.value) {
+                                //   _authenticateWithBiometrics();
+                                // } else {
+                                //   SharedPreferenceStorage.setData(
+                                //       StringConstants.authenticatedText
+                                //           .toLowerCase(),
+                                //       false);
+                                //   BioMetricAuthentication
+                                //       .isBioMetricAuthenticated.value = false;
+                                // }
                               },
                             )),
                       ],
