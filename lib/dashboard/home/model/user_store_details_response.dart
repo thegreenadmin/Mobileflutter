@@ -123,6 +123,7 @@ class Store {
   }) =>
       Store(
         image: image ?? this.image,
+        isFavouriteStore: isFavouriteStore ?? this.isFavouriteStore,
         logo: logo ?? this.logo,
         storeId: storeId ?? this.storeId,
         storeName: storeName ?? this.storeName,
@@ -143,6 +144,7 @@ class Store {
         image: json["image"] == null ? null : Image.fromJson(json["image"]),
         logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
         storeId: json["store_id"],
+        isFavouriteStore: json["is_favourite_store"],
         storeName: json["store_name"],
         storeEin: json["store_ein"],
         storeNickName: json["store_nick_name"],
@@ -168,6 +170,7 @@ class Store {
   Map<String, dynamic> toJson() => {
         "image": image?.toJson(),
         "logo": logo?.toJson(),
+        "is_favourite_store": isFavouriteStore,
         "store_id": storeId,
         "store_name": storeName,
         "store_ein": storeEin,

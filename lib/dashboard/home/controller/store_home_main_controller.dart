@@ -1,10 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
-
-import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
@@ -20,7 +17,6 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
-import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -112,7 +108,7 @@ class StoreHomeMainController extends GetxController {
         apiGetStoreDetailsApi();
         apiGetCartListApi();
         setupScrollController(Get.context);
-        apiGetShopProductDetailApi(productId: productId.value);
+        apiGetShopProductDetailApi();
         onIndexChange(0);
       });
     } else {
@@ -315,7 +311,9 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else if(value?.body==null){
+        Utility.showToast(AlertStringConstants.somethingWentWrongText);
+      }else {
         Utility.showToast(value?.body['message']);
       }
     });
@@ -597,16 +595,16 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("Store Details*******${value?.body}");
+      log("STORE DETAILS *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-        debugPrint(
-            "isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        isFavouriteStore.value =
-            storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
+        debugPrint("isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        isFavouriteStore.value =  storeDetailsResponse.value.data?.store?.isFavouriteStore??false;
+        debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
+
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -618,22 +616,19 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Get Shop  Product Detail Api
-  Future apiGetShopProductDetailApi({String productId = ""}) async {
+  Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
     debugPrint("Product Shop Detail  URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=$productId",
-            headers,
-            showLoading: false)
-        .then((value) async {
+    UserProvider().getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}",
+            headers, showLoading: false).then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||

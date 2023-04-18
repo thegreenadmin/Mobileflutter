@@ -477,7 +477,31 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
           height: WidgetConstants.screenHeight * 0.2,
           child: Stack(
             children: [
-              ListView.separated(
+              ordersController.orderItems.isEmpty
+                  ? ordersController.isLoading.value == true
+                  ? height0SizedBox
+                  : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          ImageConstants.nodata,
+                          scale: 8,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      height4SizedBox,
+                      Center(
+                        child: Text(
+                          StringConstants.noOrdersItemsFoundText,
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  )
+                  : ListView.separated(
                   separatorBuilder:
                       (BuildContext context, int index) {
                     return height8SizedBox;
@@ -687,35 +711,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ]),
                     );
                   }),
-
-              /*Align(
-                alignment: Alignment.bottomCenter,
-                child: CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
-                    ordersController
-                        .bottomSheetReturnOrder(
-                        context);
-                  },
-                  height: 50,
-                  border: Border.all(
-                    color: AppColors.blacklight,
-                    width: 1,
-                  ),
-                  textColor:AppColors.red,
-                  width: WidgetConstants.screenWidth * 0.5,
-                  text: StringConstants.returnOrderText,
-                  borderRadius: 12,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  fontSize: 16,
-                ),
-              )*/
-
             ],
           ),
         )),

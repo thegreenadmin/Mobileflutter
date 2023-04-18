@@ -68,6 +68,7 @@ class Data {
 
 class Product {
   Product({
+    this.averageRating,
     this.productId,
     this.isFavouriteProduct,
     this.storeId,
@@ -98,7 +99,7 @@ class Product {
     this.cartItems,
     this.productReviews,
   });
-
+  dynamic averageRating;
   String? productId;
   bool? isFavouriteProduct;
   String? storeId;
@@ -130,6 +131,7 @@ class Product {
   List<ProductReview>? productReviews;
 
   Product copyWith({
+    dynamic averageRating,
     String? productId,
     bool? isFavouriteProduct,
     String? storeId,
@@ -161,6 +163,7 @@ class Product {
     List<ProductReview>? productReviews,
   }) =>
       Product(
+        averageRating: averageRating ?? this.averageRating,
         productId: productId ?? this.productId,
         isFavouriteProduct: isFavouriteProduct ?? this.isFavouriteProduct,
         storeId: storeId ?? this.storeId,
@@ -193,6 +196,7 @@ class Product {
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
+    averageRating: json["average_rating"],
     productId: json["product_id"],
     isFavouriteProduct: json["is_favourite_product"],
     storeId: json["store_id"],
@@ -225,6 +229,7 @@ class Product {
   );
 
   Map<String, dynamic> toJson() => {
+    "average_rating": averageRating,
     "product_id": productId,
     "is_favourite_product": isFavouriteProduct,
     "store_id": storeId,

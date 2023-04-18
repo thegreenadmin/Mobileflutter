@@ -234,15 +234,17 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               children: <Widget>[
                                 InkWell(
                                   onTap: () async {
+                                    storeHomeMainController.productId.value=
+                                        storeHomeMainController
+                                            .featureProductList[index]
+                                            .productId
+                                            .toString();
                                     await storeHomeMainController
-                                        .apiGetShopProductDetailApi(
-                                            productId: storeHomeMainController
-                                                .featureProductList[index]
-                                                .productId
-                                                .toString());
-                                    Get.to(const AddToOrderScreen());
+                                        .apiGetShopProductDetailApi();
                                     await storeHomeMainController
                                         .apiGetCartListApi();
+                                    Get.to(const AddToOrderScreen());
+
                                   },
                                   child: Container(
                                     height: 150,
