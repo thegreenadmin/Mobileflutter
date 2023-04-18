@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/transaction_detail_screen.dart';
 
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -537,17 +538,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  // Get.to(() => const OrderConfirmationScreen(),
-                                  //     arguments: {
-                                  //       "isFromTransaction": true,
-                                  //       "storeId": transactionController
-                                  //               .ownerOrderTransactionList![index]
-                                  //               .store!
-                                  //               .storeId ?? "",
-                                  //       "orderStatus": transactionController
-                                  //               .ownerOrderTransactionList![index]
-                                  //               .orderId ?? ""
-                                  //     });
+                                  //  Get.to(TransactionDetailScreen());
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

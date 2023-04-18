@@ -124,8 +124,8 @@ class BottomNavigation extends StatelessWidget {
                             _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     2
-                                ? ImageConstants.orderIcon
-                                : ImageConstants.orderfillIcon,
+                                ? ImageConstants.orderfillIcon
+                                : ImageConstants.orderIcon,
                             color: _bottomNavigationPageController
                                         .selectedIndex.value ==
                                     2
