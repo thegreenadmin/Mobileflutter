@@ -518,14 +518,13 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     borderRadius: BorderRadius.circular(6.0)),
                                                 activeColor: AppColors.primary,
 
-                                                value:
-                                                ordersHomeMainController.selectedIndex.value == 0 &&
+                                                value: ordersHomeMainController.selectedIndex.value == 0 &&
                                                 ordersHomeMainController.getOrderItems[index].orderItemStatus!="pending" ||
                                                 ordersHomeMainController.selectedIndex.value == 1 &&
                                                     ordersHomeMainController.getOrderItems[index].orderItemStatus!="confirmed"||
                                                 ordersHomeMainController.selectedIndex.value == 2 &&
                                                    (ordersHomeMainController.getOrderItems[index].orderItemStatus!="shipped"
-                                                       || ordersHomeMainController.getOrderItems[index].orderItemStatus!="ready pickup" )||
+                                                       && ordersHomeMainController.getOrderItems[index].orderItemStatus!="ready pickup" )||
                                                 ordersHomeMainController.selectedIndex.value == 3 &&
                                                     ordersHomeMainController.getOrderItems[index].orderItemStatus!="delivered"?
                                                 true:
