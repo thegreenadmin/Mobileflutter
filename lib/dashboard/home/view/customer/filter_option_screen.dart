@@ -82,7 +82,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 scale: 4,
               )),
               height30SizedBox,
-              TextFormField(
+               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.next,
                   autofocus: false,
                   inputFormatters: <TextInputFormatter>[
@@ -134,7 +134,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     ),
                   )),
               height15SizedBox,
-              TextFormField(
+               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.next,
                   autofocus: false,
                   inputFormatters: <TextInputFormatter>[
@@ -253,7 +253,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
+                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -346,7 +346,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
+                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[

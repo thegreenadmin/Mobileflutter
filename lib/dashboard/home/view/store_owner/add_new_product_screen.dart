@@ -211,7 +211,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -230,7 +230,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 .pleaseEnterProductNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterProductNameText,
                           hintStyle: const TextStyle(
@@ -450,7 +450,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child: TextFormField(
+                          child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               inputFormatters: <TextInputFormatter>[
@@ -519,7 +519,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -583,7 +583,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -602,7 +602,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.shortDescriptionText,
                           hintStyle: const TextStyle(
@@ -646,7 +646,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -665,7 +665,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 .pleaseEnterContentAndStrainText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
                           hintStyle: const TextStyle(
@@ -709,7 +709,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: [
@@ -842,7 +842,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child: TextFormField(
+                          child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               inputFormatters: <TextInputFormatter>[
@@ -982,7 +982,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
                               ),
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -1055,7 +1055,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
                               ),
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -1132,7 +1132,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
                               ),
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -1205,7 +1205,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
                               ),
-                              TextFormField(
+                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -1361,7 +1361,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
                                     ),
-                                    TextFormField(
+                                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                         textInputAction: TextInputAction.next,
                                         autofocus: false,
                                         inputFormatters: <TextInputFormatter>[

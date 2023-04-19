@@ -219,7 +219,7 @@ class OrdersController extends GetxController {
                         ),
                       ),
                       height4SizedBox,
-                      TextFormField(
+                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -237,7 +237,7 @@ class OrdersController extends GetxController {
                                   .pleaseEnterProductNameText;
                             }
                             return null;
-                          },
+                          },textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.yourThoughtText,
                             hintStyle: const TextStyle(
@@ -434,7 +434,7 @@ class OrdersController extends GetxController {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                      TextFormField(
+                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -452,7 +452,7 @@ class OrdersController extends GetxController {
                                   .pleaseEnterProductNameText;
                             }
                             return null;
-                          },
+                          },textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.yourThoughtText,
                             hintStyle: const TextStyle(

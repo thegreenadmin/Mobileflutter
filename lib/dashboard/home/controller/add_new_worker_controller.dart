@@ -605,11 +605,9 @@ class AddNewWorkerController extends GetxController {
             workerDetailResponse!.data!.storeUser!.user!.phoneCode!.trim();
 
         userImageDynamicLinkFromServer.value =
-            workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
-                "";
+            workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ?? "";
         userImageOriginalLinkFromServer.value =
-            workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ??
-                "";
+            workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ?? "";
 
         roleId.value =
             workerDetailResponse?.data?.storeUser?.role?.roleId ?? "";

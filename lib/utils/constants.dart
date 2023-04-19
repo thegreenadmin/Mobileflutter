@@ -470,6 +470,7 @@ class AlertStringConstants {
       "Please select delivery services";
   static String pleaseSelectOpeningTimeText = "Please select opening time";
   static String pleaseSelectClosingTimeText = "Please select closing time";
+  static String pleaseSelectRoleText = "Please select a role";
   static String pleaseEnterStateText = "Please enter state";
   static String pleaseEnterZoneText = "Please enter zone";
   static String pleaseEnterCountryText = "Please enter country";
@@ -504,7 +505,7 @@ class AlertStringConstants {
   static String pleaseSelectLogoText = "Please select logo";
   static String pleaseSelectBannerText = "Please select banner";
   static String pleaseSelectAtleastOnePermissionText =
-      "Please select atleast one permission";
+      "Please select at least one permission";
   static String pleaseEnterOfferNameText = "Please enter offer name";
   static String pleaseUploadImageText = "Please upload Image";
   static String pleaseSelectDiscountType = "Please select discount type";

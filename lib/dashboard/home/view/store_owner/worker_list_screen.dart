@@ -316,112 +316,50 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              width: 190,
-                                              child: Text(
-                                                addNewWorkerController
-                                                        .workerList[index]
-                                                        .user
-                                                        ?.firstName
-                                                        .toString() ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: AppColors.black,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
+                                            Text(
+                                              addNewWorkerController
+                                                      .workerList[index]
+                                                      .user
+                                                      ?.firstName
+                                                      .toString() ??
+                                                  "",
+                                              style: const TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: AppColors.black,
+                                                  fontWeight:
+                                                      FontWeight.w500),
                                             ),
                                             height8SizedBox,
-                                            SizedBox(
-                                              width: 200,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${StringConstants.storesText}: ",
-                                                    style: TextStyle(
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${StringConstants.storesText}: ",
+                                                  style: TextStyle(
+                                                      fontSize: 12.0,
+                                                      color: AppColors
+                                                          .blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                                SizedBox(
+                                                  width: 120,
+                                                  child: Text(
+                                                    addNewWorkerController
+                                                        .storeName.value,
+                                                    style: const TextStyle(
                                                         fontSize: 12.0,
-                                                        color: AppColors
-                                                            .blacklight,
+                                                        color:
+                                                            AppColors.black,
                                                         fontWeight:
-                                                            FontWeight.w400),
+                                                            FontWeight.w500),
                                                   ),
-                                                  SizedBox(
-                                                    width: 120,
-                                                    child: Text(
-                                                      addNewWorkerController
-                                                          .storeName.value,
-                                                      style: const TextStyle(
-                                                          fontSize: 12.0,
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                            // addNewWorkerController
-                                            //                 .workerList[index]
-                                            //                 .user!
-                                            //                 .userAddresses !=
-                                            //             null &&
-                                            //         addNewWorkerController
-                                            //             .workerList[index]
-                                            //             .user!
-                                            //             .userAddresses!
-                                            //             .isNotEmpty
-                                            //     ? height8SizedBox
-                                            //     : height0SizedBox,
-                                            // Visibility(
-                                            //   visible: addNewWorkerController
-                                            //               .workerList[index]
-                                            //               .user!
-                                            //               .userAddresses !=
-                                            //           null &&
-                                            //       addNewWorkerController
-                                            //           .workerList[index]
-                                            //           .user!
-                                            //           .userAddresses!
-                                            //           .isNotEmpty,
-                                            //   replacement: height0SizedBox,
-                                            //   child: Row(
-                                            //     mainAxisAlignment:
-                                            //         MainAxisAlignment.start,
-                                            //     crossAxisAlignment:
-                                            //         CrossAxisAlignment.start,
-                                            //     children: [
-                                            //       Image.asset(
-                                            //         ImageConstants.loc,
-                                            //         scale: 2.5,
-                                            //       ),
-                                            //       width5SizedBox,
-                                            //       SizedBox(
-                                            //         width: 120,
-                                            //         child: Text(
-                                            //           addNewWorkerController
-                                            //                   .workerList[index]
-                                            //                   .user!
-                                            //                   .userAddresses!
-                                            //                   .first
-                                            //                   .addressLine1 ??
-                                            //               "",
-                                            //           style: TextStyle(
-                                            //               fontWeight:
-                                            //                   FontWeight.w400,
-                                            //               fontSize: 12.0,
-                                            //               color: AppColors
-                                            //                   .blacklight),
-                                            //         ),
-                                            //       ),
-                                            //     ],
-                                            //   ),
-                                            // ),
                                             height8SizedBox,
                                             Visibility(
                                               visible: addNewWorkerController
@@ -447,24 +385,21 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                         scale: 2.5,
                                                       ),
                                                       width5SizedBox,
-                                                      SizedBox(
-                                                        width: 120,
-                                                        child: Column(
-                                                          children: [
-                                                            Text(
-                                                              "${concatenate.toString()} \n "
-                                                              "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
-                                                                  "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  color: AppColors
-                                                                      .blacklight),
-                                                            ),
-                                                          ],
+                                                      Expanded(
+                                                        child: Text(
+                                                          "${concatenate.toString()} \n"
+                                                          "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
+                                                              "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
+                                                          overflow: TextOverflow.visible,
+                                                          maxLines: 3,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize:
+                                                                  12.0,
+                                                              color: AppColors
+                                                                  .blacklight),
                                                         ),
                                                       )
                                                     ],
@@ -485,8 +420,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   color: AppColors.blacklight,
                                                 ),
                                                 width5SizedBox,
-                                                SizedBox(
-                                                  width: 120,
+                                                Expanded(
                                                   child: Text(
                                                     addNewWorkerController
                                                             .workerList[index]
@@ -494,6 +428,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                             ?.email
                                                             .toString() ??
                                                         "",
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.visible,
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
@@ -517,22 +453,20 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   scale: 4,
                                                 ),
                                                 width5SizedBox,
-                                                SizedBox(
-                                                  width: 120,
-                                                  child: Text(
-                                                    addNewWorkerController
-                                                            .workerList[index]
-                                                            .user
-                                                            ?.phone
-                                                            .toString() ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 12.0,
-                                                        color: AppColors
-                                                            .blacklight),
-                                                  ),
+                                                Text(
+                                                  addNewWorkerController
+                                                          .workerList[index]
+                                                          .user
+                                                          ?.phone
+                                                          .toString() ??
+                                                      "",maxLines: 2,
+                                                  overflow: TextOverflow.visible,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 12.0,
+                                                      color: AppColors
+                                                          .blacklight),
                                                 )
                                               ],
                                             ),

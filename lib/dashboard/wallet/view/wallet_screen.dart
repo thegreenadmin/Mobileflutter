@@ -75,7 +75,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height12SizedBox,
-                      TextFormField(
+                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
                             //  signupController.firstName.value = value;
@@ -97,6 +97,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             }
                             return null;
                           },
+                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             isDense: true,
                             hintText: StringConstants.amountText,

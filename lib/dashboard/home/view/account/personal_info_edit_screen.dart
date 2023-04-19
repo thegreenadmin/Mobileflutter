@@ -4,15 +4,11 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
-import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:global_configs/global_configs.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
@@ -101,7 +97,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -120,6 +116,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           }
                           return null;
                         },
+                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.firstNameText,
                           hintStyle: const TextStyle(
@@ -163,7 +160,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -180,7 +177,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             return AlertStringConstants.pleaseEnterLastNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.lastNameText,
                           hintStyle: const TextStyle(
@@ -224,7 +221,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -242,6 +239,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           }
                           return null;
                         },
+                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
                           hintStyle: const TextStyle(
@@ -352,7 +350,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         debugPrint(
                             "LONG---->" + addresses.longitude.toString());
                       },
-                      child: TextFormField(
+                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: false,
                           minLines: 1,
                           maxLines: 5,
@@ -372,7 +370,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                   .pleaseEnterAddressText;
                             }
                             return null;
-                          },
+                          },textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.addressLine1Text,
                             hintStyle: const TextStyle(
@@ -417,7 +415,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -473,7 +471,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -491,7 +489,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -535,7 +533,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -597,7 +595,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -615,7 +613,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.countryText,
                           hintStyle: const TextStyle(
@@ -771,7 +769,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     //         print(accountController.stateId.value);
                     //       },
                     //     )),
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[

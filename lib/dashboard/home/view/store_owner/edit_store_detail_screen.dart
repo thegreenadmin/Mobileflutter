@@ -7,8 +7,6 @@ import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -16,8 +14,6 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:global_configs/global_configs.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 
 class EditStoreDetailScreen extends StatefulWidget {
@@ -300,7 +296,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -319,7 +315,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterStoreNameText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.storeNameText,
                           hintStyle: const TextStyle(
@@ -363,7 +359,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -425,7 +421,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -444,6 +440,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           return null;
                         },
+                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
                           hintStyle: const TextStyle(
@@ -487,7 +484,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -705,7 +702,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         debugPrint(
                             "LONG---->" + addresses.longitude.toString());
                       },
-                      child: TextFormField(
+                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: false,
                           minLines: 1,
                           maxLines: 5,
@@ -727,7 +724,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   .pleaseEnterAddressText;
                             }
                             return null;
-                          },
+                          },textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.addressLine1Text,
                             hintStyle: const TextStyle(
@@ -772,7 +769,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -828,7 +825,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -847,7 +844,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -891,7 +888,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1013,7 +1010,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     //         print(searchStoreOwnerController.countryId!.value);
                     //       },
                     //     )),
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1032,7 +1029,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -1129,7 +1126,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     //             newValue.stateId.toString();
                     //       },
                     //     )),
-                    TextFormField(
+                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1148,7 +1145,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.stateText,
                           hintStyle: const TextStyle(
@@ -1299,7 +1296,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                      TextFormField(
+                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
@@ -1419,7 +1416,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                      TextFormField(
+                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
