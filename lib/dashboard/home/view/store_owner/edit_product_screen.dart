@@ -213,7 +213,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         height10SizedBox,
                                         Text(
                                             StringConstants
-                                                .theImageMustBeAtleaseText,
+                                                .theImageMustBeAtLeastText,
                                             style: const TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 12,
@@ -635,7 +635,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   .pleaseEnterShortDescriptionText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.shortDescriptionText,
                             hintStyle: const TextStyle(
@@ -698,7 +698,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   .pleaseEnterContentAndStrainText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.contentsAndStrainsText,
                             hintStyle: const TextStyle(

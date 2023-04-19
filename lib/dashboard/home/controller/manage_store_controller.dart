@@ -137,7 +137,7 @@ class ManageStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (imageFileList!.length < 1) {
-          Utility.showToast("Please upload atleast one image");
+          Utility.showToast("Please upload at least one image");
         } else if (selectedCategories.isEmpty) {
           Utility.showToast("Please select categories");
         } else {
@@ -380,7 +380,7 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Future.delayed(const Duration(milliseconds: 200), () {
+        Future.delayed(const Duration(milliseconds: 10), () {
           Get.back();
           Get.back();
         });
@@ -491,7 +491,6 @@ class ManageStoreController extends GetxController {
         } else {
           discountValueType.value = "Percentage";
         }
-        //imageFileList
         imageUrlList.clear();
         for (int i = 0;
             i < value.body["data"]['product']['product_images'].length;
