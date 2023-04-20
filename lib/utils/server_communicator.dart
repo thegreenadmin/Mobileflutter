@@ -133,6 +133,9 @@ class ServerCommunicator {
   String updateCart = 'shop/store/cart/item/update';
   String userProof = 'user/proof/verification/create';
   String userStripeCardList = 'user/stripe/card/list';
+  String userWalletRechargeStripe = 'user/wallet/recharge/stripe';
+  String userWalletBalance = 'user/wallet/balance';
+  String userStripeCardDelete = 'user/stripe/card/delete';
 
 //V
 //W

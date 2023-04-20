@@ -276,6 +276,7 @@ class StringConstants {
   static String pickUpDateText = "Pickup Date";
   static String paymentMethodText = "Payment Method";
   static String paymentText = "Payment";
+  static String pleaseAddCardFirstText = "Please add card first";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -524,6 +525,8 @@ class AlertStringConstants {
       "Please select product to proceed";
   static String pleaseAddAtleastOneItemText =
       "Please add at least one item in cart";
+  static String pleaseSelectPaymentTypeText = "Please select payment type";
+  static String pleaseSelectCardText = "Please select card";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

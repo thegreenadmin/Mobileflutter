@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class AddMoneyToWallet extends StatefulWidget {
   const AddMoneyToWallet({
@@ -19,22 +20,7 @@ class AddMoneyToWallet extends StatefulWidget {
 }
 
 class AddMoneyToWalletState extends State<AddMoneyToWallet> {
-  final AddCardController addCardController = Get.put(AddCardController());
-  OutlineInputBorder? border;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  String selectPaymentType = "Google pay";
-
-  @override
-  void initState() {
-    border = const OutlineInputBorder(
-      borderSide: BorderSide(
-        color: AppColors.primary,
-        width: 1.0,
-      ),
-    );
-    super.initState();
-  }
+  final WalletController walletController = Get.put(WalletController());
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +68,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: addCardController.formKey,
+          key: walletController.formKey,
           child: Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Column(
@@ -113,7 +99,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         color: AppColors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.w400),
-                    controller: addCardController.amountTextController,
+                    controller: walletController.amountTextController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return AlertStringConstants.pleaseEnterAmountText;
@@ -218,9 +204,170 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       ),
                     );
                   }).toList(),
-                  onChanged: (v) {},
+                  onChanged: (v) {
+                    walletController.selectPaymentType.value = v.toString();
+                    print(walletController.selectPaymentType.value);
+                  },
                 ),
-                height30SizedBox,
+                height10SizedBox,
+                Obx(
+                  () => walletController.selectPaymentType.value == "Google Pay"
+                      ? height20SizedBox
+                      : walletController.selectPaymentType.value == "Cards"
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 30),
+                              child: walletController.cardList.isEmpty
+                                  ? walletController.isLoading.value == true
+                                      ? height0SizedBox
+                                      : Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Image.asset(
+                                                ImageConstants.nodata,
+                                                scale: 8,
+                                                color: AppColors.primary,
+                                              ),
+                                            ),
+                                            height4SizedBox,
+                                            Center(
+                                              child: Text(
+                                                "${StringConstants.noCardsFoundText}\n${StringConstants.pleaseAddCardFirstText}!",
+                                                style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                    fontSize: 16),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                  : ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return height15SizedBox;
+                                      },
+                                      itemCount:
+                                          walletController.cardList.length,
+                                      shrinkWrap: true,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (walletController
+                                            .userStripeCardId!.value.isEmpty) {
+                                          walletController
+                                                  .userStripeCardId!.value =
+                                              walletController
+                                                  .cardList[0].userStripeCardId
+                                                  .toString();
+                                          debugPrint(walletController
+                                              .userStripeCardId!.value);
+                                        }
+                                        return Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 20,
+                                              right: 10,
+                                              top: 15,
+                                              bottom: 15),
+                                          color: walletController
+                                                      .selectedIndex!.value ==
+                                                  index
+                                              ? AppColors.primary
+                                              : AppColors.primarylight,
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                walletController.selectedIndex!
+                                                    .value = index;
+
+                                                walletController
+                                                        .userStripeCardId!
+                                                        .value =
+                                                    walletController
+                                                        .cardList[index]
+                                                        .userStripeCardId
+                                                        .toString();
+                                                debugPrint(walletController
+                                                    .userStripeCardId!.value);
+                                              });
+                                            },
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 8.0),
+                                                        child: Image.asset(
+                                                            ImageConstants
+                                                                .mastercard,
+                                                            fit: BoxFit.cover,
+                                                            scale: 5),
+                                                      ),
+                                                      width15SizedBox,
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            walletController
+                                                                .cardList[index]
+                                                                .card!
+                                                                .funding
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: walletController
+                                                                            .selectedIndex!
+                                                                            .value ==
+                                                                        index
+                                                                    ? AppColors
+                                                                        .white
+                                                                    : AppColors
+                                                                        .blacklight,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          height10SizedBox,
+                                                          Text(
+                                                            "**** **** **** **** ${walletController.cardList[index].card!.last4}",
+                                                            style: TextStyle(
+                                                                color: walletController
+                                                                            .selectedIndex!
+                                                                            .value ==
+                                                                        index
+                                                                    ? AppColors
+                                                                        .white
+                                                                    : AppColors
+                                                                        .blacklight,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ]),
+                                          ),
+                                        );
+                                      }),
+                            )
+                          : height20SizedBox,
+                ),
                 CustomButton(
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
@@ -228,7 +375,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     colors: [AppColors.primary, AppColors.primary],
                   ),
                   onTap: () {
-                    addCardController.validateAndSubmit();
+                    walletController.validateAndSubmit();
                   },
                   height: 50,
                   text: StringConstants.okText,

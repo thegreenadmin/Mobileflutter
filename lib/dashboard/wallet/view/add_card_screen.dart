@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -69,6 +70,7 @@ class AddCardScreenState extends State<AddCardScreen> {
         children: <Widget>[
           Obx(
             () => Container(
+              height: WidgetConstants.screenHeight,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
               child: addCardController.cardList.isEmpty
                   ? addCardController.isLoading.value == true
@@ -174,6 +176,13 @@ class AddCardScreenState extends State<AddCardScreen> {
                                                   ),
                                                   onPressed: () {
                                                     Get.back();
+                                                    addCardController.apiDeleteCard(
+                                                        userStripeCardId:
+                                                            addCardController
+                                                                    .cardList[
+                                                                        index]
+                                                                    .userStripeCardId ??
+                                                                "");
                                                   },
                                                   child: Text(StringConstants
                                                       .deleteText)),
@@ -216,7 +225,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(AddCardDetailScreen());
+                Get.to(AddCardDetailScreen())!
+                    .then((value) => addCardController.apiGetCardList());
               },
               height: 50,
               text: StringConstants.addNewCardText,
