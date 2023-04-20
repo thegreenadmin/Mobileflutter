@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
+import 'package:thegreenmall/dashboard/wallet/view/user_wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -75,7 +77,8 @@ class _WalletScreenState extends State<WalletScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height12SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
                             //  signupController.firstName.value = value;
@@ -97,7 +100,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             }
                             return null;
                           },
-                           textCapitalization: TextCapitalization.words,
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             isDense: true,
                             hintText: StringConstants.amountText,
@@ -240,7 +243,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       height12SizedBox,
                       InkWell(
                         onTap: () {
-                          //  bottomSheetToAddMoney(context);
+                          Get.to(AddMoneyToWallet());
                         },
                         child: Image.asset(
                           ImageConstants.addMoney,
@@ -259,23 +262,28 @@ class _WalletScreenState extends State<WalletScreen> {
             children: [
               Expanded(
                 flex: 3,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      ImageConstants.setting,
-                      scale: 3.5,
-                    ),
-                    Text(
-                      StringConstants.manageText,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w500),
-                    )
-                  ],
+                child: InkWell(
+                  onTap: () {
+                    Get.to(const UserWalletScreen());
+                  },
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        ImageConstants.setting,
+                        scale: 3.5,
+                      ),
+                      Text(
+                        StringConstants.manageText,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              // Divider(color: AppColors.red),
+
               Container(
                 color: AppColors.grey,
                 width: 1,

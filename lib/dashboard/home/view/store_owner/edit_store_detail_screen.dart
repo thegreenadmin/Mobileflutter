@@ -296,7 +296,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -315,7 +316,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterStoreNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.storeNameText,
                           hintStyle: const TextStyle(
@@ -359,7 +361,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -421,7 +424,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -440,7 +444,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           return null;
                         },
-                         textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
                           hintStyle: const TextStyle(
@@ -484,7 +488,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -644,18 +649,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             mode: Mode.overlay,
                             language: "en",
                             components: []);
+
+                        int idx = p!.description!.indexOf(",");
+                        List parts = [
+                          p.description!.substring(0, idx).trim(),
+                          p.description!.substring(idx + 1).trim()
+                        ];
                         searchStoreOwnerController.addressLine1TextController
-                            .text = p!.description!.toString();
+                            .text = parts[0].toString();
                         GeoData addresses = await Geocoder2.getDataFromAddress(
                             address: p.description.toString(),
                             googleMapApiKey:
                                 searchStoreOwnerController.kGoogleApiKey);
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            searchStoreOwnerController
-                                .addressLine1TextController
-                                .text = addresses.address.toString();
-                          }
                           if (addresses.address.isNotEmpty) {
                             searchStoreOwnerController
                                 .addressLine2TextController
@@ -669,11 +675,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             searchStoreOwnerController
                                 .countryTextController.text = addresses.country;
                           }
-                          if (addresses.address.isNotEmpty) {
-                            searchStoreOwnerController
-                                .addressLine1TextController
-                                .text = addresses.address;
-                          }
+
                           if (addresses.postalCode.isNotEmpty) {
                             searchStoreOwnerController.postalCodeTextController
                                 .text = addresses.postalCode;
@@ -690,19 +692,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 addresses.latitude.toString();
                           }
                         }
-                        debugPrint("ADDRESSES---->" + addresses.address);
-                        debugPrint("CITY---->" + addresses.city);
-                        debugPrint("COUNTRY---->" + addresses.country);
-                        debugPrint("COUNTRY CODE---->" + addresses.countryCode);
-                        debugPrint("POSTALCODE---->" + addresses.postalCode);
-                        debugPrint("STATE---->" + addresses.state);
+                        debugPrint("ADDRESSES---->${addresses.address}");
+                        debugPrint("CITY---->${addresses.city}");
+                        debugPrint("COUNTRY---->${addresses.country}");
+                        debugPrint("COUNTRY CODE---->${addresses.countryCode}");
+                        debugPrint("POSTALCODE---->${addresses.postalCode}");
+                        debugPrint("STATE---->${addresses.state}");
                         debugPrint(
-                            "STREETNUMBER---->" + addresses.streetNumber);
-                        debugPrint("LAT---->" + addresses.latitude.toString());
-                        debugPrint(
-                            "LONG---->" + addresses.longitude.toString());
+                            "STREETNUMBER---->${addresses.streetNumber}");
+                        debugPrint("LAT---->${addresses.latitude}");
+                        debugPrint("LONG---->${addresses.longitude}");
                       },
-                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: false,
                           minLines: 1,
                           maxLines: 5,
@@ -724,7 +726,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   .pleaseEnterAddressText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.addressLine1Text,
                             hintStyle: const TextStyle(
@@ -769,7 +772,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -825,7 +829,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -844,7 +849,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -888,7 +894,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1010,7 +1017,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     //         print(searchStoreOwnerController.countryId!.value);
                     //       },
                     //     )),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1029,7 +1037,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -1126,7 +1135,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     //             newValue.stateId.toString();
                     //       },
                     //     )),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1145,7 +1155,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.stateText,
                           hintStyle: const TextStyle(
@@ -1296,7 +1307,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
@@ -1416,7 +1429,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[

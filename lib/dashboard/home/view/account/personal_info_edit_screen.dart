@@ -97,7 +97,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -116,7 +117,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           }
                           return null;
                         },
-                         textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.firstNameText,
                           hintStyle: const TextStyle(
@@ -160,7 +161,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -177,7 +179,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             return AlertStringConstants.pleaseEnterLastNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.lastNameText,
                           hintStyle: const TextStyle(
@@ -221,7 +224,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -239,7 +243,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           }
                           return null;
                         },
-                         textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
                           hintStyle: const TextStyle(
@@ -303,16 +307,18 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             mode: Mode.overlay,
                             language: "en",
                             components: []);
+                        int idx = p!.description!.indexOf(",");
+                        List parts = [
+                          p.description!.substring(0, idx).trim(),
+                          p.description!.substring(idx + 1).trim()
+                        ];
                         accountController.addressLine1TextController.text =
-                            p!.description!.toString();
+                            parts[0].toString();
                         GeoData addresses = await Geocoder2.getDataFromAddress(
                             address: p.description.toString(),
                             googleMapApiKey: accountController.kGoogleApiKey);
+
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            accountController.addressLine1TextController.text =
-                                addresses.address.toString();
-                          }
                           if (addresses.address.isNotEmpty) {
                             accountController.addressLine2TextController.text =
                                 addresses.streetNumber.toString();
@@ -325,10 +331,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             accountController.countryTextController.text =
                                 addresses.country;
                           }
-                          if (addresses.address.isNotEmpty) {
-                            accountController.addressLine1TextController.text =
-                                addresses.address;
-                          }
+
                           if (addresses.postalCode.isNotEmpty) {
                             accountController.postalCodeTextController.text =
                                 addresses.postalCode;
@@ -350,7 +353,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         debugPrint(
                             "LONG---->" + addresses.longitude.toString());
                       },
-                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: false,
                           minLines: 1,
                           maxLines: 5,
@@ -370,7 +374,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                   .pleaseEnterAddressText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.addressLine1Text,
                             hintStyle: const TextStyle(
@@ -415,7 +420,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -471,7 +477,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -489,7 +496,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -533,7 +541,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -595,7 +604,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -613,7 +623,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.countryText,
                           hintStyle: const TextStyle(
@@ -769,7 +780,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                     //         print(accountController.stateId.value);
                     //       },
                     //     )),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[

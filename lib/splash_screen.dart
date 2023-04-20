@@ -16,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
   final LocalAuthentication auth = LocalAuthentication();
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;

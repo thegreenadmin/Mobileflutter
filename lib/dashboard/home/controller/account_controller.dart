@@ -49,6 +49,8 @@ class AccountController extends GetxController {
   RxString addressLine2 = "".obs;
   RxString city = "".obs;
   RxString postalCode = "".obs;
+  RxString country = "".obs;
+  RxString state = "".obs;
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
@@ -289,6 +291,8 @@ class AccountController extends GetxController {
             stateId.value = userAddress[i].state!.stateId ?? "";
             stateDropdownValue.value = userAddress[i].state!.stateName ?? "";
             stateTextController.text = stateDropdownValue.value;
+            country.value = countryDropdownValue.value;
+            state.value = stateDropdownValue.value;
             addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
             addressLine1.value = addressLine1TextController.text;
             addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
@@ -452,7 +456,9 @@ class AccountController extends GetxController {
         if (isFromCart.value) {
           Get.back();
         } else {
-          await Get.offAll(BottomNavigation());
+          Get.back();
+          await apiGetUserDetailApi();
+          // await Get.offAll(BottomNavigation());
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);

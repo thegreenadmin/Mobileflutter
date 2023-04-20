@@ -50,6 +50,10 @@ class StringConstants {
   static String augText = "August";
   static String authenticationText = "Authentication";
   static String authenticatedText = "authenticated";
+  static String addCardText = "Add Card";
+  static String addNewCardText = "Add New Card";
+  static String autoReloadIntoWalletText = "Auto Reload into Wallet";
+  static String addCardPaymentMethodsText = "Add Cards / Payment Methods";
 
   //B
   static String breadthText = "Breadth";
@@ -91,6 +95,7 @@ class StringConstants {
   static String cancelOrderText = "Cancel Order";
   static String currentUserIdText = "CurrentUserId";
   static String copiedToClipBoardText = "Copied to Clipboard";
+  static String cardAndPaymentText = "Card & Payment";
 
   //D
   static String deliveryText = "Delivery";
@@ -214,6 +219,7 @@ class StringConstants {
   static String newText = "New";
   static String noMessagesFountText = "No Messages found";
   static String noMessagesYetText = "No Messages Yet!";
+  static String noCardsFoundText = "No Cards Found";
 
   //O
   static String okText = "Ok";
@@ -268,6 +274,8 @@ class StringConstants {
   static String priceText = "Price";
   static String pendingText = "Pending";
   static String pickUpDateText = "Pickup Date";
+  static String paymentMethodText = "Payment Method";
+  static String paymentText = "Payment";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -356,6 +364,8 @@ class StringConstants {
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
   static String twentyFourSevenText = "24x7";
   static String theGreenMallText = "the green mall";
+  static String totalBalanceText = "Total Balance";
+
   //U
   static String usingOurSearchText =
       "Using our search feature, browse through\nnearby store to found the specific product\nfor you.";

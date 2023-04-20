@@ -294,7 +294,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -313,7 +314,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 .pleaseEnterStoreNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           errorMaxLines: 3,
                           hintText: StringConstants.storeNameText,
@@ -358,7 +360,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -419,7 +422,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -438,7 +442,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           return null;
                         },
-                         textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,
                           hintStyle: const TextStyle(
@@ -482,7 +486,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -638,17 +643,21 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             mode: Mode.overlay,
                             language: "en",
                             components: []);
+
+                        int idx = p!.description!.indexOf(",");
+                        List parts = [
+                          p.description!.substring(0, idx).trim(),
+                          p.description!.substring(idx + 1).trim()
+                        ];
                         addNewStoreController.addressLine1TextController.text =
-                            p!.description!.toString();
+                            parts[0].toString();
+
                         GeoData addresses = await Geocoder2.getDataFromAddress(
                             address: p.description.toString(),
                             googleMapApiKey:
                                 addNewStoreController.kGoogleApiKey);
+
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            addNewStoreController.addressLine1TextController
-                                .text = addresses.address.toString();
-                          }
                           if (addresses.address.isNotEmpty) {
                             addNewStoreController.addressLine2TextController
                                 .text = addresses.streetNumber.toString();
@@ -661,10 +670,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             addNewStoreController.countryTextController.text =
                                 addresses.country;
                           }
-                          if (addresses.address.isNotEmpty) {
-                            addNewStoreController.addressLine1TextController
-                                .text = addresses.address;
-                          }
+
                           if (addresses.postalCode.isNotEmpty) {
                             addNewStoreController.zipCodeTextController.text =
                                 addresses.postalCode;
@@ -681,19 +687,19 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 addresses.latitude.toString();
                           }
                         }
-                        debugPrint("ADDRESSES---->" + addresses.address);
-                        debugPrint("CITY---->" + addresses.city);
-                        debugPrint("COUNTRY---->" + addresses.country);
-                        debugPrint("COUNTRY CODE---->" + addresses.countryCode);
-                        debugPrint("POSTALCODE---->" + addresses.postalCode);
-                        debugPrint("STATE---->" + addresses.state);
+                        debugPrint("ADDRESSES---->${addresses.address}");
+                        debugPrint("CITY---->${addresses.city}");
+                        debugPrint("COUNTRY---->${addresses.country}");
+                        debugPrint("COUNTRY CODE---->${addresses.countryCode}");
+                        debugPrint("POSTALCODE---->${addresses.postalCode}");
+                        debugPrint("STATE---->${addresses.state}");
                         debugPrint(
-                            "STREETNUMBER---->" + addresses.streetNumber);
-                        debugPrint("LAT---->" + addresses.latitude.toString());
-                        debugPrint(
-                            "LONG---->" + addresses.longitude.toString());
+                            "STREETNUMBER---->${addresses.streetNumber}");
+                        debugPrint("LAT---->${addresses.latitude}");
+                        debugPrint("LONG---->${addresses.longitude}");
                       },
-                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           minLines: 1,
                           maxLines: 5,
                           enabled: false,
@@ -715,7 +721,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   .pleaseEnterAddressText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.addressLine1Text,
                             hintStyle: const TextStyle(
@@ -760,7 +767,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -816,7 +824,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -835,7 +844,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -879,7 +889,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -942,7 +953,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -960,7 +972,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.townOrCityText,
                           hintStyle: const TextStyle(
@@ -1110,7 +1123,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     //           debugPrint(addNewStoreController.stateId.value);
                     //         },
                     //       )),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -1128,7 +1142,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 .pleaseEnterTownOrCityText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.zoneText,
                           hintStyle: const TextStyle(
@@ -1280,7 +1295,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[
@@ -1415,7 +1432,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             fontWeight: FontWeight.w400),
                                       ),
                                       height4SizedBox,
-                                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.next,
                                           autofocus: false,
                                           inputFormatters: <TextInputFormatter>[

@@ -256,7 +256,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
                           accountController.addressLine1.value,
@@ -265,7 +265,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -285,7 +285,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
                           accountController.addressLine2.value,
@@ -294,7 +294,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -314,7 +314,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
                           accountController.city.value,
@@ -323,7 +323,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
                   ],
                 ),
                 const Divider(
@@ -343,7 +343,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         )),
-                    Expanded(
+                    Obx(() => Expanded(
                         flex: 6,
                         child: Text(
                           accountController.postalCode.value,
@@ -352,12 +352,71 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               color: AppColors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                        ))
+                        )))
+                  ],
+                ),
+                const Divider(
+                  thickness: 1,
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: Text(
+                          StringConstants.countryText,
+                          style: TextStyle(
+                              color: AppColors.blacklight,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                        )),
+                    Obx(() => Expanded(
+                        flex: 6,
+                        child: Text(
+                          accountController.country.value,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                        )))
+                  ],
+                ),
+                const Divider(
+                  thickness: 1,
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: Text(
+                          StringConstants.stateText,
+                          style: TextStyle(
+                              color: AppColors.blacklight,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                        )),
+                    Obx(() => Expanded(
+                        flex: 6,
+                        child: Text(
+                          accountController.state.value,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                        )))
                   ],
                 ),
                 height4SizedBox,
                 const Divider(
                   thickness: 1,
+                  height: 50,
                 ),
                 height15SizedBox,
                 // Text(

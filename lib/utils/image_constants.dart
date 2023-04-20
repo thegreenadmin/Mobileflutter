@@ -9,6 +9,8 @@ class ImageConstants {
   static const String addMoney = '$assetsIcon/addMoney.png';
   static const String arrowForward = '$assetsIcon/arrowForward.png';
   static const String arrowright = '$assetsIcon/arrowright.png';
+  static const String autoreload = '$assetsIcon/autoreload.png';
+  static const String addcard = '$assetsIcon/addcard.png';
   //B
   static const String bag = '$assetsIcon/bag.png';
   static const String blackcircle = '$assetsIcon/blackcircle.png';
@@ -71,6 +73,8 @@ class ImageConstants {
   static const String message = '$assetsIcon/message.png';
   static const String more = '$assetsIcon/more.png';
   static const String morefill = '$assetsIcon/morefill.png';
+  static const String mastercard = '$assetsIcon/mastercard.png';
+
   //N
   static const String nodata = '$assetsIcon/nodata.png';
   static const String nopicfound = '$assetsIcon/nopicfound.png';

@@ -1,0 +1,247 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
+
+class AddMoneyToWallet extends StatefulWidget {
+  const AddMoneyToWallet({
+    Key? key,
+  }) : super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return AddMoneyToWalletState();
+  }
+}
+
+class AddMoneyToWalletState extends State<AddMoneyToWallet> {
+  final AddCardController addCardController = Get.put(AddCardController());
+  OutlineInputBorder? border;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  String selectPaymentType = "Google pay";
+
+  @override
+  void initState() {
+    border = const OutlineInputBorder(
+      borderSide: BorderSide(
+        color: AppColors.primary,
+        width: 1.0,
+      ),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Container(
+          color: AppColors.primarylight,
+          child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.black,
+                            size: 24.0,
+                          ),
+                        ),
+                        width10SizedBox,
+                        Text(
+                          StringConstants.addMoneyToMyWalletText,
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    Image.asset(
+                      ImageConstants.homeMall,
+                      scale: 4,
+                    )
+                  ])),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: addCardController.formKey,
+          child: Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                height15SizedBox,
+                Text(
+                  StringConstants.amountText,
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+                height12SizedBox,
+                TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.phone,
+                    onChanged: (value) {
+                      //  signupController.firstName.value = value;
+                    },
+                    textInputAction: TextInputAction.next,
+                    autofocus: false,
+                    inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(40),
+                    ],
+                    style: const TextStyle(
+                        color: AppColors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                    controller: addCardController.amountTextController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return AlertStringConstants.pleaseEnterAmountText;
+                      }
+                      return null;
+                    },
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: StringConstants.amountText,
+                      hintStyle: const TextStyle(color: AppColors.grey),
+                      labelText: StringConstants.amountText,
+                      labelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.blacklight,
+                          decoration: TextDecoration.none),
+                      fillColor: Colors.white,
+                      border: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 1.0,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                    )),
+                height20SizedBox,
+                Text(
+                  StringConstants.paymentText,
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+                height15SizedBox,
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  isExpanded: true,
+                  hint: Text(
+                    StringConstants.selectTypeText,
+                    style: const TextStyle(color: AppColors.grey, fontSize: 14),
+                  ),
+                  items: <String>["Google Pay", "Cards"].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (v) {},
+                ),
+                height30SizedBox,
+                CustomButton(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.primary, AppColors.primary],
+                  ),
+                  onTap: () {
+                    addCardController.validateAndSubmit();
+                  },
+                  height: 50,
+                  text: StringConstants.okText,
+                  borderRadius: 12,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  fontSize: 16,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

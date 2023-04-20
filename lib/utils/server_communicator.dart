@@ -1,13 +1,13 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
 
   // ********************** STAGING SERVER *************
 
-  String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -29,6 +29,8 @@ class ServerCommunicator {
   String createFavouriteStore = 'user/store/favourite/create';
   String createFavouriteProduct = 'user/product/favourite/create';
   String cancelOrder = 'order/cancel/create';
+  String createStripeToken = 'https://api.stripe.com/v1/tokens';
+  String createCard = 'user/stripe/card/create';
 
 //D
   String deleteWorker = 'store/user/delete';
@@ -130,6 +132,7 @@ class ServerCommunicator {
   String userStore = 'store/list';
   String updateCart = 'shop/store/cart/item/update';
   String userProof = 'user/proof/verification/create';
+  String userStripeCardList = 'user/stripe/card/list';
 
 //V
 //W

@@ -58,6 +58,7 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   local_auth: 
   passcode_screen: ^2.0.1
+  flutter_credit_card: ^3.0.6
   
   
 
