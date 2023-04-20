@@ -9,16 +9,17 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class UserManageWalletScreen extends StatefulWidget {
-  const UserManageWalletScreen({super.key});
+class ManageWalletScreen extends StatefulWidget {
+  const ManageWalletScreen({super.key});
 
   @override
-  State<UserManageWalletScreen> createState() => _UserManageWalletScreenState();
+  State<ManageWalletScreen> createState() => _ManageWalletScreenState();
 }
 
-class _UserManageWalletScreenState extends State<UserManageWalletScreen> {
+class _ManageWalletScreenState extends State<ManageWalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
   bottomSheetToAddMoney(context) {
@@ -301,13 +302,22 @@ class _UserManageWalletScreenState extends State<UserManageWalletScreen> {
                 children: [
                   Image.asset(ImageConstants.addcard, scale: 3.2),
                   width15SizedBox,
-                  Text(
-                    StringConstants.addCardPaymentMethodsText,
-                    style: const TextStyle(
-                        color: AppColors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  ),
+                  SharedPreferenceStorage.getData(Role.role.value) ==
+                          Role.customerRoleText
+                      ? Text(
+                          StringConstants.addCardPaymentMethodsText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        )
+                      : Text(
+                          StringConstants.addBankAccountDebitMethodsText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
                 ],
               ),
             ),

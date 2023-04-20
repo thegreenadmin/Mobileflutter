@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -52,13 +53,21 @@ class WalletController extends GetxController {
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
   RxString? userWalletBalance = "".obs;
+  RxString? storeNameValue = "".obs;
+
+  late GetStoreListModel getStoreListModel = GetStoreListModel();
+  RxList<Stores> storeList = <Stores>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-
-    apiGetCardList();
-    apiGetUserWalletBalance();
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      apiGetCardList();
+      apiGetUserWalletBalance();
+    } else {
+      apiGetStoreList();
+    }
   }
 
   bool validateAndSave() {
@@ -95,6 +104,40 @@ class WalletController extends GetxController {
     cardHolderName.value = creditCardModel.cardHolderName;
     cvvCode.value = creditCardModel.cvvCode;
     isCvvFocused.value = creditCardModel.isCvvFocused;
+  }
+
+  //Get Store List Api
+  Future apiGetStoreList() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value.body);
+        storeList.clear();
+        storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
   Future<void> apiCreateStripeToken() async {
