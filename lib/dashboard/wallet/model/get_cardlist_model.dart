@@ -102,20 +102,21 @@ class Card {
   String? fingerprint;
   String? funding;
   String? last4;
+  bool? isSelected = false;
 
-  Card({
-    this.id,
-    this.object,
-    this.brand,
-    this.country,
-    this.customer,
-    this.cvcCheck,
-    this.expMonth,
-    this.expYear,
-    this.fingerprint,
-    this.funding,
-    this.last4,
-  });
+  Card(
+      {this.id,
+      this.object,
+      this.brand,
+      this.country,
+      this.customer,
+      this.cvcCheck,
+      this.expMonth,
+      this.expYear,
+      this.fingerprint,
+      this.funding,
+      this.last4,
+      this.isSelected});
 
   Card.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -131,6 +132,7 @@ class Card {
     fingerprint = json['fingerprint'];
     funding = json['funding'];
     last4 = json['last4'];
+    isSelected = json['isSelected'];
   }
 
   Map<String, dynamic> toJson() {

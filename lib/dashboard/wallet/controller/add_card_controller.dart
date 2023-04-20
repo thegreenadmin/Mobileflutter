@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -13,6 +14,11 @@ import 'package:http/http.dart' as http;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddCardController extends GetxController {
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+  RxString? nickName = "".obs;
+  RxString email = "".obs;
+  RxString phone = "".obs;
   RxInt amount = 0.obs;
   RxString userName = "".obs;
   RxString phoneNumber = "".obs;
@@ -34,17 +40,24 @@ class AddCardController extends GetxController {
   RxBool isPaymentDone = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
-
+  RxInt? selectedIndex = 0.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
 
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
 
+  RxList<dynamic> selectedCards = <dynamic>[].obs;
+
+  RxString selectPaymentType = "".obs;
+  RxString? userStripeCardId = "".obs;
+  RxString? userWalletBalance = "".obs;
+
   @override
   void onInit() {
     super.onInit();
     apiGetCardList();
+    apiGetUserWalletBalance();
   }
 
   bool validateAndSave() {
@@ -60,7 +73,16 @@ class AddCardController extends GetxController {
 // Fields Validation Method
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {} catch (_) {}
+      try {
+        if (selectPaymentType.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectPaymentTypeText);
+        } else if (selectPaymentType.value == "Cards" &&
+            userStripeCardId!.value.isEmpty) {
+          Utility.showToast(AlertStringConstants.pleaseSelectCardText);
+        } else {
+          await apiAddMoneyToWallet();
+        }
+      } catch (_) {}
     } else {
       autoValidate.value = true;
     }
@@ -124,14 +146,16 @@ class AddCardController extends GetxController {
         .postWithHeadersApi(
             body,
             ServerCommunicator().baseUrl + ServerCommunicator().createCard,
-            headers)
+            headers,
+            showLoading: true)
         .then((value) async {
-      Get.back();
       if (value != null) {
         debugPrint("CREATE CARD  RESPONSE *******${value.body}");
         if (value.body['success'] == true ||
             value.body['code'] == ApiConstants.statusCode201 ||
             value.body['code'] == ApiConstants.statusCode200) {
+          Get.back();
+          await apiGetCardList();
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
           Future.delayed(const Duration(milliseconds: 800), () {});
@@ -167,6 +191,124 @@ class AddCardController extends GetxController {
         cardList.value = cardListModel.data!.cards ?? [];
 
         update();
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+// Add Money to stripe wallet
+  apiAddMoneyToWallet() {
+    debugPrint(
+        "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
+    Map body = {
+      "user_stripe_card_id": userStripeCardId!.value,
+      "amount": amountTextController.text.trim()
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("ADD MONEY TO WALLET BODY *******$body");
+    debugPrint("ADD MONEY TO WALLET HEADERS *******$headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().userWalletRechargeStripe,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      if (value != null) {
+        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
+        if (value.body['success'] == true ||
+            value.body['code'] == ApiConstants.statusCode201 ||
+            value.body['code'] == ApiConstants.statusCode200) {
+          userStripeCardId!.value = "";
+          amountTextController.clear();
+          selectPaymentType.value = "";
+          selectPaymentType.value.isEmpty;
+          userStripeCardId!.value.isEmpty;
+          Future.delayed(const Duration(milliseconds: 200), () {
+            Get.back();
+          });
+          Utility.showToast(value.body['message']);
+        } else if (value.statusCode == ApiConstants.statusCode403) {
+          Utility.showToast(value.body['message']);
+          Future.delayed(const Duration(milliseconds: 800), () {});
+        } else {
+          Utility.showToast(value.body['message']);
+        }
+      }
+    });
+  }
+
+  //Get Card List Api
+  Future apiGetUserWalletBalance() async {
+    isLoading.value = true;
+    debugPrint("GET USER WALLET BALANCE URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET USER WALLET BALANCE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        userWalletBalance!.value = value.body['data']['balance'].toString();
+        print("balance----------->" + userWalletBalance!.value);
+        update();
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Delete Card api
+  Future apiDeleteCard({String userStripeCardId = ""}) async {
+    debugPrint(
+        "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"user_stripe_card_id": userStripeCardId};
+
+    debugPrint("DELETE CARD BODY ************* $body");
+    UserProvider()
+        .deleteWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE CARD RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        await apiGetCardList();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+        await apiGetCardList();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

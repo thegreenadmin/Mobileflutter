@@ -11,6 +11,8 @@ class ImageConstants {
   static const String arrowright = '$assetsIcon/arrowright.png';
   static const String autoreload = '$assetsIcon/autoreload.png';
   static const String addcard = '$assetsIcon/addcard.png';
+  static const String asofnow = '$assetsIcon/asofnow.png';
+
   //B
   static const String bag = '$assetsIcon/bag.png';
   static const String blackcircle = '$assetsIcon/blackcircle.png';

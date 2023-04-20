@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
-import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
+
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -12,16 +11,16 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class UserWalletScreen extends StatefulWidget {
-  const UserWalletScreen({super.key});
+class UserManageWalletScreen extends StatefulWidget {
+  const UserManageWalletScreen({super.key});
 
   @override
-  State<UserWalletScreen> createState() => _UserWalletScreenState();
+  State<UserManageWalletScreen> createState() => _UserManageWalletScreenState();
 }
 
-class _UserWalletScreenState extends State<UserWalletScreen> {
+class _UserManageWalletScreenState extends State<UserManageWalletScreen> {
   final WalletController walletController = Get.put(WalletController());
-  final AddCardController addCardController = Get.put(AddCardController());
+
   bottomSheetToAddMoney(context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -233,13 +232,13 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
                     width15SizedBox,
                     Column(
                       children: [
-                        const Text(
-                          "\$30,420",
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        Obx(() => Text(
+                              "\$${walletController.userWalletBalance!.value}",
+                              style: const TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500),
+                            )),
                         height8SizedBox,
                         Text(
                           StringConstants.totalBalanceText,
@@ -248,11 +247,9 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
                         ),
                         height12SizedBox,
                         InkWell(
-                          onTap: () {
-                            //  bottomSheetToAddMoney(context);
-                          },
+                          onTap: () {},
                           child: Image.asset(
-                            ImageConstants.addMoney,
+                            ImageConstants.asofnow,
                             scale: 3.5,
                           ),
                         ),
@@ -297,8 +294,8 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
               height: 35,
             ),
             InkWell(
-              onTap: () {
-                Get.to(AddCardScreen());
+              onTap: () async {
+                Get.to(const AddCardScreen());
               },
               child: Row(
                 children: [
@@ -318,48 +315,30 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
               color: AppColors.grey,
               height: 35,
             ),
-            Text(
-              StringConstants.paymentMethodText,
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
+            Obx(
+              () => walletController.cardList.isEmpty
+                  ? height0SizedBox
+                  : Text(
+                      StringConstants.paymentMethodText,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
             ),
-            height25SizedBox,
             Obx(
               () => Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                child: addCardController.cardList.isEmpty
-                    ? addCardController.isLoading.value == true
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: walletController.cardList.isEmpty
+                    ? walletController.isLoading.value == true
                         ? height0SizedBox
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.asset(
-                                  ImageConstants.nodata,
-                                  scale: 8,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              height4SizedBox,
-                              Center(
-                                child: Text(
-                                  StringConstants.noCardsFoundText,
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ],
-                          )
+                        : height0SizedBox
                     : ListView.separated(
                         separatorBuilder: (BuildContext context, int index) {
                           return height15SizedBox;
                         },
-                        itemCount: addCardController.cardList.length,
+                        itemCount: walletController.cardList.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
@@ -390,7 +369,7 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            addCardController
+                                            walletController
                                                 .cardList[index].card!.funding
                                                 .toString(),
                                             style: const TextStyle(
@@ -400,7 +379,7 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
                                           ),
                                           height10SizedBox,
                                           Text(
-                                            "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
+                                            "**** **** **** **** ${walletController.cardList[index].card!.last4}",
                                             style: TextStyle(
                                                 color: AppColors.blacklight,
                                                 fontSize: 15,
@@ -440,6 +419,13 @@ class _UserWalletScreenState extends State<UserWalletScreen> {
                                                     ),
                                                     onPressed: () {
                                                       Get.back();
+                                                      walletController.apiDeleteCard(
+                                                          userStripeCardId:
+                                                              walletController
+                                                                      .cardList[
+                                                                          index]
+                                                                      .userStripeCardId ??
+                                                                  "");
                                                     },
                                                     child: Text(StringConstants
                                                         .deleteText)),
