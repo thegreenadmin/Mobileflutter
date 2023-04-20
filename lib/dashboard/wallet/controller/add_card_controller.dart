@@ -122,6 +122,10 @@ class AddCardController extends GetxController {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
         await apiCreateCard();
+        str = "";
+        parts = [];
+        month = "";
+        year = "";
       } else {
         debugPrint(response.reasonPhrase);
       }
@@ -156,6 +160,23 @@ class AddCardController extends GetxController {
             value.body['code'] == ApiConstants.statusCode200) {
           Get.back();
           await apiGetCardList();
+          cardNumber.value = "";
+          expiryDate.value = "";
+          cardHolderName.value = "";
+          cvvCode.value = "";
+          isCvvFocused.value = false;
+          amount = 0.obs;
+          userName = "".obs;
+          phoneNumber = "".obs;
+          withoutCodeNumber = "".obs;
+          customerId = "".obs;
+          cardNumber = ''.obs;
+          expiryDate = ''.obs;
+          cardHolderName = ''.obs;
+          cvvCode = ''.obs;
+          cardId = ''.obs;
+          stripeToken.value = "";
+          isCvvFocused = false.obs;
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
           Future.delayed(const Duration(milliseconds: 800), () {});
@@ -270,7 +291,6 @@ class AddCardController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         userWalletBalance!.value = value.body['data']['balance'].toString();
-        print("balance----------->" + userWalletBalance!.value);
         update();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);

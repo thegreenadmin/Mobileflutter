@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -21,7 +22,7 @@ class AddCardDetailScreen extends StatefulWidget {
 }
 
 class AddCardDetailScreenState extends State<AddCardDetailScreen> {
-  final WalletController walletController = Get.put(WalletController());
+  final AddCardController addCardController = Get.put(AddCardController());
   OutlineInputBorder? border;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -84,11 +85,11 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
         children: <Widget>[
           Obx(
             () => CreditCardWidget(
-              cardNumber: walletController.cardNumber.value,
-              expiryDate: walletController.expiryDate.value,
-              cardHolderName: walletController.cardHolderName.value,
-              cvvCode: walletController.cvvCode.value,
-              showBackView: walletController.isCvvFocused.value,
+              cardNumber: addCardController.cardNumber.value,
+              expiryDate: addCardController.expiryDate.value,
+              cardHolderName: addCardController.cardHolderName.value,
+              cvvCode: addCardController.cvvCode.value,
+              showBackView: addCardController.isCvvFocused.value,
               obscureCardNumber: true,
               obscureCardCvv: true,
               isHolderNameVisible: true,
@@ -117,13 +118,13 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     formKey: formKey,
                     obscureCvv: true,
                     obscureNumber: true,
-                    cardNumber: walletController.cardNumber.value,
-                    cvvCode: walletController.cvvCode.value,
+                    cardNumber: addCardController.cardNumber.value,
+                    cvvCode: addCardController.cvvCode.value,
                     isHolderNameVisible: true,
                     isCardNumberVisible: true,
                     isExpiryDateVisible: true,
-                    cardHolderName: walletController.cardHolderName.value,
-                    expiryDate: walletController.expiryDate.value,
+                    cardHolderName: addCardController.cardHolderName.value,
+                    expiryDate: addCardController.expiryDate.value,
                     themeColor: Colors.blue,
                     textColor: Colors.black,
                     cardNumberDecoration: InputDecoration(
@@ -158,7 +159,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       labelText: 'Card Holder',
                     ),
                     onCreditCardModelChange:
-                        walletController.onCreditCardModelChange,
+                        addCardController.onCreditCardModelChange,
                   ),
                   height30SizedBox,
                   CustomButton(
@@ -169,10 +170,10 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () async {
-                      if (walletController.cardHolderName.isEmpty) {
+                      if (addCardController.cardHolderName.isEmpty) {
                         Utility.showToast("Please fill all the details");
                       } else if (formKey.currentState!.validate()) {
-                        walletController.apiCreateStripeToken();
+                        addCardController.apiCreateStripeToken();
                       }
                     },
                     height: 50,

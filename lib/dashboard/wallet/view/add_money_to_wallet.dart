@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -20,7 +21,7 @@ class AddMoneyToWallet extends StatefulWidget {
 }
 
 class AddMoneyToWalletState extends State<AddMoneyToWallet> {
-  final WalletController walletController = Get.put(WalletController());
+  final AddCardController addCardController = Get.put(AddCardController());
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: walletController.formKey,
+          key: addCardController.formKey,
           child: Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Column(
@@ -99,7 +100,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         color: AppColors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.w400),
-                    controller: walletController.amountTextController,
+                    controller: addCardController.amountTextController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return AlertStringConstants.pleaseEnterAmountText;
@@ -205,20 +206,21 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     );
                   }).toList(),
                   onChanged: (v) {
-                    walletController.selectPaymentType.value = v.toString();
-                    print(walletController.selectPaymentType.value);
+                    addCardController.selectPaymentType.value = v.toString();
+                    print(addCardController.selectPaymentType.value);
                   },
                 ),
                 height10SizedBox,
                 Obx(
-                  () => walletController.selectPaymentType.value == "Google Pay"
+                  () => addCardController.selectPaymentType.value ==
+                          "Google Pay"
                       ? height20SizedBox
-                      : walletController.selectPaymentType.value == "Cards"
+                      : addCardController.selectPaymentType.value == "Cards"
                           ? Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 30),
-                              child: walletController.cardList.isEmpty
-                                  ? walletController.isLoading.value == true
+                              child: addCardController.cardList.isEmpty
+                                  ? addCardController.isLoading.value == true
                                       ? height0SizedBox
                                       : Column(
                                           mainAxisAlignment:
@@ -250,18 +252,18 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                         return height15SizedBox;
                                       },
                                       itemCount:
-                                          walletController.cardList.length,
+                                          addCardController.cardList.length,
                                       shrinkWrap: true,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        if (walletController
+                                        if (addCardController
                                             .userStripeCardId!.value.isEmpty) {
-                                          walletController
+                                          addCardController
                                                   .userStripeCardId!.value =
-                                              walletController
+                                              addCardController
                                                   .cardList[0].userStripeCardId
                                                   .toString();
-                                          debugPrint(walletController
+                                          debugPrint(addCardController
                                               .userStripeCardId!.value);
                                         }
                                         return Container(
@@ -270,7 +272,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                               right: 10,
                                               top: 15,
                                               bottom: 15),
-                                          color: walletController
+                                          color: addCardController
                                                       .selectedIndex!.value ==
                                                   index
                                               ? AppColors.primary
@@ -278,17 +280,17 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                           child: InkWell(
                                             onTap: () {
                                               setState(() {
-                                                walletController.selectedIndex!
+                                                addCardController.selectedIndex!
                                                     .value = index;
 
-                                                walletController
+                                                addCardController
                                                         .userStripeCardId!
                                                         .value =
-                                                    walletController
+                                                    addCardController
                                                         .cardList[index]
                                                         .userStripeCardId
                                                         .toString();
-                                                debugPrint(walletController
+                                                debugPrint(addCardController
                                                     .userStripeCardId!.value);
                                               });
                                             },
@@ -321,13 +323,13 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            walletController
+                                                            addCardController
                                                                 .cardList[index]
                                                                 .card!
                                                                 .funding
                                                                 .toString(),
                                                             style: TextStyle(
-                                                                color: walletController
+                                                                color: addCardController
                                                                             .selectedIndex!
                                                                             .value ==
                                                                         index
@@ -342,9 +344,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                           ),
                                                           height10SizedBox,
                                                           Text(
-                                                            "**** **** **** **** ${walletController.cardList[index].card!.last4}",
+                                                            "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
                                                             style: TextStyle(
-                                                                color: walletController
+                                                                color: addCardController
                                                                             .selectedIndex!
                                                                             .value ==
                                                                         index
@@ -375,7 +377,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     colors: [AppColors.primary, AppColors.primary],
                   ),
                   onTap: () {
-                    walletController.validateAndSubmit();
+                    addCardController.validateAndSubmit();
                   },
                   height: 50,
                   text: StringConstants.okText,

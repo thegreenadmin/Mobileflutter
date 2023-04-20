@@ -54,6 +54,8 @@ class StringConstants {
   static String addNewCardText = "Add New Card";
   static String autoReloadIntoWalletText = "Auto Reload into Wallet";
   static String addCardPaymentMethodsText = "Add Cards / Payment Methods";
+  static String addBankAccountDebitMethodsText =
+      "Add Bank Account / Debit Methods";
 
   //B
   static String breadthText = "Breadth";
