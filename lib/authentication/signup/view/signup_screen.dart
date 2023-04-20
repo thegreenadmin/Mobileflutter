@@ -46,6 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void initState() {
     super.initState();
     getCurrentLocale();
+
   }
 
   @override
