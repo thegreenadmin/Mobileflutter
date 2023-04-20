@@ -552,7 +552,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(
+                    IntlPhoneField(initialCountryCode: 'US',
                       controller:
                           addNewStoreController.storePhoneTextController,
                       inputFormatters: [

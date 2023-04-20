@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/countries_list.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -19,11 +19,19 @@ class LoginController extends GetxController {
   RxString selectedRegion = "".obs;
 
   RxBool autoValidate = false.obs;
+  RxList<String> countryCodes = <String>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+    getCountryCodes();
     Future.delayed(const Duration(milliseconds: 200), () {});
+  }
+
+  getCountryCodes(){
+    for (var element in countriesList) {
+      countryCodes.add(element.code);
+    }
   }
 
   bool validateAndSave() {

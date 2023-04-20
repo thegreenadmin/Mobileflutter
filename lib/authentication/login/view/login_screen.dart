@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     cL.value = (await Devicelocale.currentAsLocale)!;
     loginController.selectedRegion.value = cL.value.countryCode!;
     debugPrint(
-        "selectedRegion----" + loginController.selectedRegion.value.toString());
+        "selectedRegion----${loginController.selectedRegion.value}");
     String languageCode = Platform.localeName.split('_')[0];
     //String countryCode = Platform.localeName.split('_')[1];
     await CountryCodes
@@ -36,14 +36,16 @@ class _LoginScreenState extends State<LoginScreen> {
     final Locale? deviceLocale = CountryCodes.getDeviceLocale();
     final CountryDetails details = CountryCodes.detailsForLocale();
     loginController.selectedCountryCode.value = details.dialCode!;
-    debugPrint("selectedCountryCode----" +
-        loginController.selectedCountryCode.value.toString());
+    debugPrint("selectedCountryCode----${loginController.selectedCountryCode.value}");
   }
+
+
 
   @override
   void initState() {
     super.initState();
     getCurrentLocale();
+
   }
 
   @override
@@ -105,6 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 30,
                         ),
                         IntlPhoneField(
+                          initialCountryCode: 'US',
+                          // countries:loginController.countryCodes,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: loginController.phoneTextController,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -162,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             loginController.countryCode.value =
                                 phone.countryCode.toString();
                           },
+
                         ),
                         height40SizedBox,
                         CustomButton(

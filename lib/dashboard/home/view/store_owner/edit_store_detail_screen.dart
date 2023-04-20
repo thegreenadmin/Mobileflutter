@@ -554,7 +554,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(
+                    IntlPhoneField(initialCountryCode: 'US',
                       controller:
                           searchStoreOwnerController.phoneTextController,
                       inputFormatters: [
