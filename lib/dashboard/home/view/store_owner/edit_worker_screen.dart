@@ -359,7 +359,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.addDescriptionText,
                           hintStyle: const TextStyle(

@@ -188,8 +188,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             fontWeight: FontWeight.w400,
                                             fontSize: 16)),
                                     TextSpan(
-                                      text:
-                                          ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? ""}%',
+                                      text: storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue!=null?
+                                      storeHomeMainController.productDetailResponse.value.data!.product!.offer!.offerType!.contains("percentage")?
+                                      ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%':''
+                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}':
+                                      storeHomeMainController.productDetailResponse.value.data!=null ?
+                                      storeHomeMainController.productDetailResponse.value.data!.product!.discountType!.contains("percentage")?
+                                          ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%':
+                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}':' 0%',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16,

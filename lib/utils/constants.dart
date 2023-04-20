@@ -360,7 +360,7 @@ class StringConstants {
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
   static String taxText = "Tax";
-  static String theImageMustBeAtleaseText =
+  static String theImageMustBeAtLeastText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
   static String twentyFourSevenText = "24x7";
   static String theGreenMallText = "the green mall";

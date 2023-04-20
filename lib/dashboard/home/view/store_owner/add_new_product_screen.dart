@@ -189,7 +189,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       height10SizedBox,
                                       Text(
                                           StringConstants
-                                              .theImageMustBeAtleaseText,
+                                              .theImageMustBeAtLeastText,
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 12,
@@ -602,7 +602,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.shortDescriptionText,
                           hintStyle: const TextStyle(
@@ -665,7 +666,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 .pleaseEnterContentAndStrainText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
                           hintStyle: const TextStyle(

@@ -96,7 +96,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                             return AlertStringConstants.pleaseEnterRoleText;
                           }
                           return null;
-                        },
+                        },textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           errorMaxLines: 3,
                           hintText: StringConstants.enterRoleText,

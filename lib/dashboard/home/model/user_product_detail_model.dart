@@ -98,6 +98,8 @@ class Product {
     this.productLinks,
     this.cartItems,
     this.productReviews,
+    this.offerPrice,
+    this.offer,
   });
   dynamic averageRating;
   String? productId;
@@ -129,6 +131,8 @@ class Product {
   List<ProductLink>? productLinks;
   List<CartItem>? cartItems;
   List<ProductReview>? productReviews;
+  dynamic offerPrice;
+  Offer? offer;
 
   Product copyWith({
     dynamic averageRating,
@@ -161,6 +165,8 @@ class Product {
     List<ProductLink>? productLinks,
     List<CartItem>? cartItems,
     List<ProductReview>? productReviews,
+    dynamic offerPrice,
+    Offer? offer,
   }) =>
       Product(
         averageRating: averageRating ?? this.averageRating,
@@ -193,6 +199,8 @@ class Product {
         productLinks: productLinks ?? this.productLinks,
         cartItems: cartItems ?? this.cartItems,
         productReviews: productReviews ?? this.productReviews,
+        offerPrice: offerPrice ?? this.offerPrice,
+        offer: offer ?? this.offer,
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -226,6 +234,8 @@ class Product {
     productLinks: json["product_links"] == null ? [] : List<ProductLink>.from(json["product_links"]!.map((x) => ProductLink.fromJson(x))),
     cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
     productReviews: json["product_reviews"] == null ? [] : List<ProductReview>.from(json["product_reviews"]!.map((x) => ProductReview.fromJson(x))),
+    offerPrice: json["offer_price"]?.toDouble(),
+    offer: json["offer"] == null ? null : Offer.fromJson(json["offer"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -259,6 +269,96 @@ class Product {
     "product_links": productLinks == null ? [] : List<dynamic>.from(productLinks!.map((x) => x.toJson())),
     "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
     "product_reviews": productReviews == null ? [] : List<dynamic>.from(productReviews!.map((x) => x.toJson())),
+    "offer_price": offerPrice,
+    "offer": offer?.toJson(),
+  };
+}
+class Offer {
+  Offer({
+    this.storeId,
+    this.isOfferForStore,
+    this.offerName,
+    this.offerType,
+    this.offerValue,
+    this.isExpired,
+    this.expiredAt,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.offerId,
+    this.image,
+  });
+
+  String? storeId;
+  bool? isOfferForStore;
+  String? offerName;
+  String? offerType;
+  int? offerValue;
+  bool? isExpired;
+  dynamic expiredAt;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? offerId;
+  Image? image;
+
+  Offer copyWith({
+    String? storeId,
+    bool? isOfferForStore,
+    String? offerName,
+    String? offerType,
+    int? offerValue,
+    bool? isExpired,
+    dynamic expiredAt,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? offerId,
+    Image? image,
+  }) =>
+      Offer(
+        storeId: storeId ?? this.storeId,
+        isOfferForStore: isOfferForStore ?? this.isOfferForStore,
+        offerName: offerName ?? this.offerName,
+        offerType: offerType ?? this.offerType,
+        offerValue: offerValue ?? this.offerValue,
+        isExpired: isExpired ?? this.isExpired,
+        expiredAt: expiredAt ?? this.expiredAt,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        offerId: offerId ?? this.offerId,
+        image: image ?? this.image,
+      );
+
+  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
+    storeId: json["store_id"],
+    isOfferForStore: json["is_offer_for_store"],
+    offerName: json["offer_name"],
+    offerType: json["offer_type"],
+    offerValue: json["offer_value"],
+    isExpired: json["is_expired"],
+    expiredAt: json["expiredAt"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    offerId: json["offer_id"],
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_id": storeId,
+    "is_offer_for_store": isOfferForStore,
+    "offer_name": offerName,
+    "offer_type": offerType,
+    "offer_value": offerValue,
+    "is_expired": isExpired,
+    "expiredAt": expiredAt,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "offer_id": offerId,
+    "image": image?.toJson(),
   };
 }
 
