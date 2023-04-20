@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -769,54 +770,90 @@ class _CartScreenState extends State<CartScreen> {
                 left: 0,
                 right: 0,
                 // alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: AppColors.primaryBackgroundLight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  children: [
+                    Visibility(
+                      visible:storeHomeMainController.walletBalance.value < storeHomeMainController.cartData.value.cartTotalPrice! ,
+                      child: Container(
+                        color:AppColors.redlight,
+                        padding:  const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              StringConstants.payNowText,
+                              StringConstants.inSufficientFundText,
                               style: const TextStyle(
-                                  color: AppColors.black,
+                                  color: AppColors.red,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500),
                             ),
-                            Obx(
-                              () => Text(
-                                "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
+                            InkWell(
+                              onTap: (){
+                                Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
+                              },
+                              child: Text(
+                                StringConstants.addFundText,
                                 style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 18,
+                                  decoration: TextDecoration.underline,
+                                    color: AppColors.red,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600),
                               ),
-                            )
+                            ),
                           ],
                         ),
-                        CustomButton(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.primary, AppColors.primary],
-                          ),
-                          onTap: () {
-                              storeHomeMainController.apiPlaceOrder();
-                          },
-                          height: 45,
-                          width: 120,
-                          text: StringConstants.payNowText,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconL: false,
-                          fontSize: 14,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      color: AppColors.primaryBackgroundLight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  StringConstants.payNowText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                )
+                              ],
+                            ),
+                            CustomButton(
+                              gradient: const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [AppColors.primary, AppColors.primary],
+                              ),
+                              onTap: () {
+                                  storeHomeMainController.apiPlaceOrder();
+                              },
+                              height: 45,
+                              width: 120,
+                              text: StringConstants.payNowText,
+                              borderRadius: 12,
+                              fontWeight: FontWeight.w500,
+                              iconL: false,
+                              fontSize: 14,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

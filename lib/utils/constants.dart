@@ -54,8 +54,8 @@ class StringConstants {
   static String addNewCardText = "Add New Card";
   static String autoReloadIntoWalletText = "Auto Reload into Wallet";
   static String addCardPaymentMethodsText = "Add Cards / Payment Methods";
-  static String addBankAccountDebitMethodsText =
-      "Add Bank Account / Debit Methods";
+  static String addBankAccountDebitMethodsText = "Add Bank Account / Debit Methods";
+  static String addFundText = "Add Fund";
 
   //B
   static String breadthText = "Breadth";
@@ -164,6 +164,7 @@ class StringConstants {
   static String itemsText = "Items";
   static String inProgress = "In-progress";
   static String imageText = "Image";
+  static String inSufficientFundText = "In-sufficient fund in your wallet ";
 
   //J
   static String janText = "January";
