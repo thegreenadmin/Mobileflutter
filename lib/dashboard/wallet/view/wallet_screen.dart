@@ -66,72 +66,78 @@ class _WalletScreenState extends State<WalletScreen> {
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Text(
-                  "Select Store",
-                  style: TextStyle(color: AppColors.blacklight, fontSize: 18),
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  hint: Text(
-                    StringConstants.selectStoreText,
-                    style: const TextStyle(color: AppColors.grey, fontSize: 14),
-                  ),
-                  items: walletController.storeList.map((dynamic value) {
-                    return DropdownMenuItem<String>(
-                      value: value.storeId,
+          SharedPreferenceStorage.getData(Role.role.value) ==
+                  Role.customerRoleText
+              ? height0SizedBox
+              : Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
                       child: Text(
-                        value.storeName,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                        "Select Store",
+                        style: TextStyle(
+                            color: AppColors.blacklight, fontSize: 18),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    walletController.storeNameValue!.value = value.toString();
-                  },
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        hint: Text(
+                          StringConstants.selectStoreText,
+                          style: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                        ),
+                        items: walletController.storeList.map((dynamic value) {
+                          return DropdownMenuItem<String>(
+                            value: value.storeId,
+                            child: Text(
+                              value.storeName,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          walletController.storeNameValue!.value =
+                              value.toString();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
           height20SizedBox,
           Stack(
             alignment: Alignment.center,

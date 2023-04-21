@@ -112,12 +112,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       isDense: true,
                       hintText: StringConstants.amountText,
                       hintStyle: const TextStyle(color: AppColors.grey),
-                      labelText: StringConstants.amountText,
-                      labelStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blacklight,
-                          decoration: TextDecoration.none),
                       fillColor: Colors.white,
                       border: UnderlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -191,7 +185,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   isExpanded: true,
                   hint: Text(
                     StringConstants.selectTypeText,
-                    style: const TextStyle(color: AppColors.grey, fontSize: 14),
+                    style: const TextStyle(
+                      color: AppColors.grey,
+                    ),
                   ),
                   items: <String>["Google Pay", "Cards"].map((String value) {
                     return DropdownMenuItem<String>(

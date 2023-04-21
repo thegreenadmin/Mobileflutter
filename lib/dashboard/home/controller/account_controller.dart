@@ -91,13 +91,13 @@ class AccountController extends GetxController {
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
 
-    // BioMetricAuthentication.isBioMetricAuthenticated.value =
-    //     SharedPreferenceStorage.getData(
-    //         StringConstants.authenticatedText.toLowerCase());
+    BioMetricAuthentication.isBioMetricAuthenticated.value =
+        SharedPreferenceStorage.getData(
+            StringConstants.authenticatedText.toLowerCase());
 
-    // BioMetricAuthentication.isBioMetricAuthenticated.value
-    //     ? isScreenLockNotify.value = true
-    //     : isScreenLockNotify.value = false;
+    BioMetricAuthentication.isBioMetricAuthenticated.value
+        ? isScreenLockNotify.value = true
+        : isScreenLockNotify.value = false;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
