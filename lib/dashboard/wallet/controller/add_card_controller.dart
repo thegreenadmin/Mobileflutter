@@ -290,7 +290,8 @@ class AddCardController extends GetxController {
       debugPrint("GET USER WALLET BALANCE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        userWalletBalance!.value = value.body['data']['balance'].toString();
+        userWalletBalance!.value =
+            value.body['data']['balance'].toStringAsFixed(2);
         update();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);

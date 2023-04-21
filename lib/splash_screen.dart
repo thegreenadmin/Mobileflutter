@@ -20,24 +20,24 @@ class _SplashScreenState extends State<SplashScreen> {
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
 
-  startTime() {
-    var duration = const Duration(seconds: 2);
-    return Timer(duration, navigationPage);
-  }
-  // startTime() async {
-  //   BioMetricAuthentication.isBioMetricAuthenticated.value =
-  //       SharedPreferenceStorage.getData(
-  //               StringConstants.authenticatedText.toLowerCase()) ??
-  //           false;
-  //   debugPrint(
-  //       "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
+  // startTime() {
   //   var duration = const Duration(seconds: 2);
-  //   return Timer(
-  //       duration,
-  //       BioMetricAuthentication.isBioMetricAuthenticated.value == false
-  //           ? navigationPage
-  //           : _authenticateWithBiometrics);
+  //   return Timer(duration, navigationPage);
   // }
+  startTime() async {
+    BioMetricAuthentication.isBioMetricAuthenticated.value =
+        SharedPreferenceStorage.getData(
+                StringConstants.authenticatedText.toLowerCase()) ??
+            false;
+    debugPrint(
+        "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
+    var duration = const Duration(seconds: 2);
+    return Timer(
+        duration,
+        BioMetricAuthentication.isBioMetricAuthenticated.value == false
+            ? navigationPage
+            : _authenticateWithBiometrics);
+  }
 
   Future<void> navigationPage() async {
     if (SharedPreferenceStorage.getData('token') != null) {

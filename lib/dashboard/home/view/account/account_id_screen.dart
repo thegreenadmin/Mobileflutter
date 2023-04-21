@@ -88,14 +88,14 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                 "${accountController.firstName!.value} ${accountController.lastName!.value}",
                                 style: const TextStyle(
                                     color: AppColors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
                               )),
                           Obx(() => Text(
                                 "${StringConstants.accountIdText}: #${accountController.userId!.value}",
                                 style: TextStyle(
                                     color: AppColors.blacklight,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400),
                               ))
                         ],

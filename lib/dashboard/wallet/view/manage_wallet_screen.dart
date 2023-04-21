@@ -261,64 +261,70 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               ],
             ),
             height40SizedBox,
-            Row(
-              children: [
-                Image.asset(
-                  ImageConstants.autoreload,
-                  scale: 3.2,
-                ),
-                width15SizedBox,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.autoReloadIntoWalletText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      StringConstants.editText,
-                      style: const TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: AppColors.primary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
-                    )
-                  ],
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Image.asset(
+                    ImageConstants.autoreload,
+                    scale: 3.2,
+                  ),
+                  width15SizedBox,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.autoReloadIntoWalletText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        StringConstants.editText,
+                        style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: AppColors.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
             const Divider(
               color: AppColors.grey,
               height: 35,
             ),
-            InkWell(
-              onTap: () async {
-                Get.to(const AddCardScreen());
-              },
-              child: Row(
-                children: [
-                  Image.asset(ImageConstants.addcard, scale: 3.2),
-                  width15SizedBox,
-                  SharedPreferenceStorage.getData(Role.role.value) ==
-                          Role.customerRoleText
-                      ? Text(
-                          StringConstants.addCardPaymentMethodsText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        )
-                      : Text(
-                          StringConstants.addBankAccountDebitMethodsText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () async {
+                  Get.to(const AddCardScreen());
+                },
+                child: Row(
+                  children: [
+                    Image.asset(ImageConstants.addcard, scale: 3.2),
+                    width15SizedBox,
+                    SharedPreferenceStorage.getData(Role.role.value) ==
+                            Role.customerRoleText
+                        ? Text(
+                            StringConstants.addCardPaymentMethodsText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          )
+                        : Text(
+                            StringConstants.addBankAccountDebitMethodsText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                  ],
+                ),
               ),
             ),
             const Divider(
@@ -465,27 +471,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                         }),
               ),
             ),
-
-            //FOR STORE OWNER
-
-            // Expanded(
-            //   flex: 4,
-            //   child: Column(
-            //     children: [
-            //       Image.asset(
-            //         "assets/addFunds.png",
-            //         scale: 3.5,
-            //       ),
-            //       Text(
-            //         StringConstants.addFundsText,
-            //         style: const TextStyle(
-            //             fontSize: 16,
-            //             color: AppColors.black,
-            //             fontWeight: FontWeight.w500),
-            //       )
-            //     ],
-            //   ),
-            // ),
           ]),
         ),
       ),
