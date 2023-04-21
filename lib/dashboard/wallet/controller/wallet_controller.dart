@@ -310,18 +310,18 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET USER WALLET BALANCE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
+      debugPrint("GET USER WALLET BALANCE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         userWalletBalance!.value =
-            value.body['data']['balance'].toStringAsFixed(2);
+            value?.body['data']['balance'].toStringAsFixed(2);
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
-        Utility.showToast(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
       }
     });
   }

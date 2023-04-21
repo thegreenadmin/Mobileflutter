@@ -380,6 +380,7 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
+        apiGetCategoriesList();
         Future.delayed(const Duration(milliseconds: 10), () {
           Get.back();
           Get.back();

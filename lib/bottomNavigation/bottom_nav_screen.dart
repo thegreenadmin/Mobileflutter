@@ -47,6 +47,7 @@ class BottomNavigation extends StatelessWidget {
                 Obx(
                   () => BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
+
                     selectedLabelStyle:
                         const TextStyle(color: AppColors.primary),
                     selectedFontSize: 0.0,

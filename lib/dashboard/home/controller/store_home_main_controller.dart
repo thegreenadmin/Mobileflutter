@@ -93,13 +93,15 @@ class StoreHomeMainController extends GetxController {
 
     if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
       isFromHome.value = Get.arguments["isFromHome"] ?? false;
+      storeId.value = Get.arguments == null?"" :Get.arguments["storeId"] ?? "";
+      productId.value = Get.arguments == null?"" :Get.arguments["productId"] ?? "";
     }
-    apiGetUserWalletBalance();
+
     apiGetUserDetailsApi();
     if (isFromHome.value) {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        storeId.value = Get.arguments["storeId"] ?? "";
-        productId.value = Get.arguments["productId"] ?? "";
+      Future.delayed(const Duration(milliseconds: 200), () {
+        // storeId.value = Get.arguments == null?"" :Get.arguments["storeId"] ?? "";
+        // productId.value = Get.arguments == null?"" :Get.arguments["productId"] ?? "";
         nearby.Store store = nearby.Store();
         store.storeId = storeId.value;
         storeAddress.value.store = store;
@@ -122,6 +124,7 @@ class StoreHomeMainController extends GetxController {
       apiGetStoreDetailsApi();
       onIndexChange(0);
     }
+    apiGetUserWalletBalance();
   }
 
   void onIndexChange(int i) async {

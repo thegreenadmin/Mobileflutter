@@ -234,7 +234,7 @@ class Country {
   String? countryId;
   String? countryName;
 
-  Country({this.countryId, this.countryName});
+ Country({this.countryId, this.countryName});
 
   Country.fromJson(Map<String, dynamic> json) {
     countryId = json['country_id'];

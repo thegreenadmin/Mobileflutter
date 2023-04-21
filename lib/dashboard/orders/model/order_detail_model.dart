@@ -351,7 +351,7 @@ class State {
 }
 
 class Country {
-  Country({
+ Country({
     this.countryId,
     this.countryName,
   });
@@ -363,12 +363,12 @@ class Country {
     String? countryId,
     String? countryName,
   }) =>
-      Country(
+     Country(
         countryId: countryId ?? this.countryId,
         countryName: countryName ?? this.countryName,
       );
 
-  factory Country.fromJson(Map<String, dynamic> json) => Country(
+  factory Country.fromJson(Map<String, dynamic> json) =>Country(
     countryId: json["country_id"],
     countryName: json["country_name"],
   );

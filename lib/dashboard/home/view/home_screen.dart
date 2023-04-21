@@ -230,7 +230,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                         homeController.isLoading!.value == true
-                            ? height0SizedBox
+                            ? SizedBox(
+                                height: WidgetConstants.screenHeight * 0.20,
+                                child: const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                              ) //
                             : homeController.userCrouselImgList.isEmpty
                                 ? SizedBox(
                                     height: WidgetConstants.screenHeight * 0.50,
@@ -264,9 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(6.0),
                                               child: Image.network(item,
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.fill,
+                                                  height: WidgetConstants.screenHeight*0.3,
                                                   width: WidgetConstants
-                                                      .screenWidth),
+                                                      .screenWidth*0.85),
                                             )))
                                         .toList(),
                                     carouselController: _controller,
@@ -277,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         viewportFraction: 1.2,
                                         enlargeCenterPage: false,
                                         autoPlay: true,
-                                        aspectRatio: 2.0,
+                                        aspectRatio: 1.5,
                                         onPageChanged: (index, reason) {
                                           setState(() {
                                             _current = index;
@@ -322,7 +326,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       homeController.ownerCrouselImgList.isEmpty
                           ? homeController.isLoading!.value == true
-                              ? height0SizedBox
+                              ? SizedBox(
+                                  height: WidgetConstants.screenHeight * 0.20,
+                                  child: const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                                ) //height0SizedBox
                               : SizedBox(
                                   height: WidgetConstants.screenHeight * 0.50,
                                   child: Center(
@@ -355,8 +362,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         borderRadius:
                                             BorderRadius.circular(6.0),
                                         child: Image.network(item,
-                                            fit: BoxFit.cover,
-                                            width: WidgetConstants.screenWidth),
+                                            fit: BoxFit.fill,
+                                            height: WidgetConstants.screenHeight*0.3,
+                                            width: WidgetConstants
+                                                .screenWidth*0.85),
                                       )))
                                   .toList(),
                               carouselController: _controller,
@@ -437,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return width8SizedBox;
+                              return width12SizedBox;
                             },
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
@@ -448,12 +457,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                Get.to(const AddToOrderScreen(), arguments: {
+                                print("featuredUserProductList--------id--  ${homeController
+                                    .featuredUserProductList[index]
+                                    .storeId }");
+                                print("featuredUserProductList--------productId--  ${homeController
+                                    .featuredUserProductList[index]
+                                    .productId }");
+                                Get.to(()=>const AddToOrderScreen(), arguments: {
                                   "isFromHome": true,
                                   "productId": homeController
                                           .featuredUserProductList[index]
-                                          .productId ??
-                                      "",
+                                          .productId ??"",
                                   "storeId": homeController
                                           .featuredUserProductList[index]
                                           .storeId ??
@@ -461,41 +475,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(
-                                    height: 150,
+                                    height: WidgetConstants.screenHeight*0.22,
+                                    width: WidgetConstants.screenWidth*0.44,
                                     child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                         child: homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages ==
-                                                    null ||
+                                                        .featuredUserProductList[index]
+                                                        .productImages == null ||
                                                 homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages!
-                                                    .isEmpty ||
+                                                    .featuredUserProductList[index]
+                                                    .productImages!.isEmpty ||
                                                 homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages![0]
-                                                        .image!
-                                                        .dynamicUrl ==
-                                                    null ||
-                                                homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages!
-                                                    .isEmpty
+                                                        .featuredUserProductList[index]
+                                                        .productImages![0].image!.dynamicUrl == null ||
+                                                homeController.featuredUserProductList[index]
+                                                    .productImages!.isEmpty
                                             ? Image.asset(
                                                 ImageConstants.nopicfound,
                                                 fit: BoxFit.fill,
-                                                width: WidgetConstants
-                                                        .screenWidth *
+                                                width: WidgetConstants.screenWidth *
                                                     0.4,
                                               )
                                             : Image.network(
@@ -536,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return width8SizedBox;
+                              return width12SizedBox;
                             },
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
@@ -550,7 +553,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(
-                                    height: 150,
+                                    height: WidgetConstants.screenHeight*0.22,
+                                    width: WidgetConstants.screenWidth*0.44,
                                     child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
