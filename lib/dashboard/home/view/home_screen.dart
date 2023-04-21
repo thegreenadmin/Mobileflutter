@@ -376,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   viewportFraction: 1.2,
                                   enlargeCenterPage: false,
                                   autoPlay: true,
-                                  aspectRatio: 2.0,
+                                  aspectRatio: 1.5,
                                   onPageChanged: (index, reason) {
                                     setState(() {
                                       _current = index;
