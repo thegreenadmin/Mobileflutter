@@ -397,7 +397,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                           index]
                                                                       .orderTransaction !=
                                                                   null
-                                                              ? ': #${transactionController.userTransactionList![index].transactionId}'
+                                                              ? ': #${transactionController.userTransactionList![index].orderTransaction!.orderTransactionId}'
                                                               : transactionController
                                                                           .userTransactionList![
                                                                               index]

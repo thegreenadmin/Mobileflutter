@@ -1,13 +1,13 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
 
   // ********************** STAGING SERVER *************
 
-  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -140,8 +140,8 @@ class ServerCommunicator {
   String userWalletBalance = 'user/wallet/balance';
   String userStripeCardDelete = 'user/stripe/card/delete';
   String userWalletTransactionList = 'user/wallet/transactions/list';
-   String notificationSettingSave = 'notification/setting/save';
-  
+  String notificationSettingSave = 'notification/setting/save';
+
 //V
 //W
   String workerList = 'store/user/list';
