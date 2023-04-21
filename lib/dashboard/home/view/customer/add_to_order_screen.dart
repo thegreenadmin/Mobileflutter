@@ -330,7 +330,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     _buildRowOtherDetail(
                         title: StringConstants.weightText,
                         textData:
-                            "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} kg"),
+                            "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
                     height20SizedBox,
                     _buildRowOtherDetail(
                         title: StringConstants.returnAvailableText,

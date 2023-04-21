@@ -196,7 +196,7 @@ class HomeController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=&page=1&page_size=20",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       debugPrint("GET USER OFFER STORES RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
@@ -303,7 +303,7 @@ class HomeController extends GetxController {
             body,
             ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");

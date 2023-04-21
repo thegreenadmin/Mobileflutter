@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
       getPages: Routers.route,
       //initialRoute: '/welcomeView',
       //home: HomePage(),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
