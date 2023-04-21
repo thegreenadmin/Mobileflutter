@@ -141,8 +141,8 @@ class ServerCommunicator {
   String userWalletBalance = 'user/wallet/balance';
   String userStripeCardDelete = 'user/stripe/card/delete';
   String userWalletTransactionList = 'user/wallet/transactions/list';
-   String notificationSettingSave = 'notification/setting/save';
-  
+  String notificationSettingSave = 'notification/setting/save';
+
 //V
 //W
   String workerList = 'store/user/list';
