@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/controller/transaction_detail_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -12,12 +13,13 @@ class TransactionDetailScreen extends StatefulWidget {
   const TransactionDetailScreen({super.key});
 
   @override
-  State<TransactionDetailScreen> createState() => _TransactionDetailScreenState();
+  State<TransactionDetailScreen> createState() =>
+      _TransactionDetailScreenState();
 }
 
 class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
-  final OrdersHomeMainController ordersHomeMainController =
-      Get.put(OrdersHomeMainController());
+  final TransactionDetailController transactionDetailController =
+      Get.put(TransactionDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.returnRequestText,
+                                StringConstants.detailText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -73,16 +75,16 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                 horizontal: 25, vertical: 25),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Obx(() => SizedBox(
+              Obx(() => SizedBox(
                     height: 150,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${StringConstants.fullFillOrdersText} - #${ordersHomeMainController.orderId.value}",
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
+                          Obx(() => Text(
+                                "${StringConstants.fullFilledOrdersText} - #${transactionDetailController.orderId!.value}",
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              )),
                           height20SizedBox,
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,13 +111,13 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        ordersHomeMainController
-                                            .customerName.value.toTitleCase(),
+                                    Obx(() => Text(
+                                        transactionDetailController
+                                            .customerName!.value,
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 16)),
+                                            fontSize: 16))),
                                     height4SizedBox,
                                     Row(children: [
                                       Text(
@@ -125,8 +127,8 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
                                       Text(
-                                          ordersHomeMainController
-                                              .orderDate.value,
+                                          transactionDetailController.orderDate
+                                              .toString(),
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500,
@@ -142,12 +144,12 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
-                                          "\$${ordersHomeMainController.orderAmount.value}",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14),
-                                        )),
+                                              "\$${transactionDetailController.orderAmount!.value}",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14),
+                                            )),
                                       ],
                                     ),
                                     height6SizedBox,
@@ -162,224 +164,191 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                           ),
                         ]),
                   )),
-              Obx(() => Expanded(
-                  child: ordersHomeMainController.getOrderItems.isEmpty
-                      ? ordersHomeMainController.isLoading.value == true
-                          ? height0SizedBox
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    ImageConstants.nodata,
-                                    scale: 8,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                                height4SizedBox,
-                                Center(
-                                  child: Text(
-                                    AlertStringConstants
-                                        .noProductFoundForThisStore,
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            )
-                      : ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) {
-                            return width40SizedBox;
-                          },
-                          itemCount:
-                              ordersHomeMainController.getOrderItems.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    )),
-                                child: Column(children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Flexible(
-                                        flex: 2,
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(color: AppColors.white,
-                                                    width: 1)),
-                                            child: ordersHomeMainController
-                                                .getOrderItems[index].product!
-                                                .productImages!.first.image!.dynamicUrl == null ||
-                                                ordersHomeMainController.getOrderItems[index].product!.productImages!.first
-                                                    .image!.dynamicUrl!.isEmpty
-                                                ? Image.asset(ImageConstants.nopicfound,)
-                                                :  Image.network(
-                                                ordersHomeMainController
-                                                    .getOrderItems[index]
-                                                    .product!.productImages!
-                                                    .first.image!.dynamicUrl.toString()),),),
-                                      width10SizedBox,
-                                      Flexible(
-                                        flex: 8,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .productName ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16)),
-                                            height5SizedBox,
-                                            Text(
-                                                ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .description ??
-                                                    "",
-                                                style: TextStyle(
-                                                    color: AppColors.blacklight,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 14)),
-                                            height12SizedBox,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        "${StringConstants.qtyText.toUpperCase()}: ",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                    Text(
-                                                        ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .quantity
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        "${StringConstants.unitPriceText}: ",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                    Text(
-                                                        ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .productPrice
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            height6SizedBox,
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ]),
-                              ),
-                            );
-                          })))
+              // Obx(() => Expanded(
+              //     child: transactionDetailController.getOrderItems.isEmpty
+              //         ? transactionDetailController.isLoading.value == true
+              //             ? height0SizedBox
+              //             : Column(
+              //                 mainAxisAlignment: MainAxisAlignment.center,
+              //                 crossAxisAlignment: CrossAxisAlignment.center,
+              //                 children: [
+              //                   Center(
+              //                     child: Image.asset(
+              //                       ImageConstants.nodata,
+              //                       scale: 8,
+              //                       color: AppColors.primary,
+              //                     ),
+              //                   ),
+              //                   height4SizedBox,
+              //                   Center(
+              //                     child: Text(
+              //                       AlertStringConstants
+              //                           .noProductFoundForThisStore,
+              //                       style: const TextStyle(
+              //                           fontStyle: FontStyle.italic,
+              //                           fontSize: 16),
+              //                     ),
+              //                   ),
+              //                 ],
+              //               )
+              //         : ListView.separated(
+              //             separatorBuilder: (BuildContext context, int index) {
+              //               return width40SizedBox;
+              //             },
+              //             itemCount:
+              //                 transactionDetailController.getOrderItems.length,
+              //             itemBuilder: (BuildContext context, int index) {
+              //               return InkWell(
+              //                 onTap: () {},
+              //                 child: Container(
+              //                   padding: const EdgeInsets.symmetric(
+              //                       horizontal: 10, vertical: 5),
+              //                   decoration: const BoxDecoration(
+              //                       color: AppColors.greylight,
+              //                       borderRadius: BorderRadius.all(
+              //                         Radius.circular(10.0),
+              //                       )),
+              //                   child: Column(children: [
+              //                     Row(
+              //                       crossAxisAlignment:
+              //                           CrossAxisAlignment.start,
+              //                       children: [
+              //                         Flexible(
+              //                           flex: 2,
+              //                           child: Container(
+              //                             decoration: BoxDecoration(
+              //                                 shape: BoxShape.rectangle,
+              //                                 border: Border.all(
+              //                                     color: AppColors.white,
+              //                                     width: 1)),
+              //                             child: transactionDetailController
+              //                                             .getOrderItems[index]
+              //                                             .product!
+              //                                             .productImages!
+              //                                             .first
+              //                                             .image!
+              //                                             .dynamicUrl ==
+              //                                         null ||
+              //                                     transactionDetailController
+              //                                         .getOrderItems[index]
+              //                                         .product!
+              //                                         .productImages!
+              //                                         .first
+              //                                         .image!
+              //                                         .dynamicUrl!
+              //                                         .isEmpty
+              //                                 ? Image.asset(
+              //                                     ImageConstants.nopicfound,
+              //                                   )
+              //                                 : Image.network(
+              //                                     transactionDetailController
+              //                                         .getOrderItems[index]
+              //                                         .product!
+              //                                         .productImages!
+              //                                         .first
+              //                                         .image!
+              //                                         .dynamicUrl
+              //                                         .toString()),
+              //                           ),
+              //                         ),
+              //                         width10SizedBox,
+              //                         Flexible(
+              //                           flex: 8,
+              //                           child: Column(
+              //                             crossAxisAlignment:
+              //                                 CrossAxisAlignment.start,
+              //                             children: [
+              //                               Text(
+              //                                   transactionDetailController
+              //                                           .getOrderItems[index]
+              //                                           .product!
+              //                                           .productName ??
+              //                                       "",
+              //                                   style: const TextStyle(
+              //                                       color: AppColors.black,
+              //                                       fontWeight: FontWeight.w600,
+              //                                       fontSize: 16)),
+              //                               height5SizedBox,
+              //                               Text(
+              //                                   transactionDetailController
+              //                                           .getOrderItems[index]
+              //                                           .product!
+              //                                           .description ??
+              //                                       "",
+              //                                   style: TextStyle(
+              //                                       color: AppColors.blacklight,
+              //                                       fontWeight: FontWeight.w400,
+              //                                       fontSize: 14)),
+              //                               height12SizedBox,
+              //                               Row(
+              //                                 mainAxisAlignment:
+              //                                     MainAxisAlignment
+              //                                         .spaceBetween,
+              //                                 children: [
+              //                                   Row(
+              //                                     children: [
+              //                                       Text(
+              //                                           "${StringConstants.qtyText.toUpperCase()}: ",
+              //                                           style: TextStyle(
+              //                                               color: AppColors
+              //                                                   .blacklight,
+              //                                               fontWeight:
+              //                                                   FontWeight.w500,
+              //                                               fontSize: 14)),
+              //                                       Text(
+              //                                           transactionDetailController
+              //                                               .getOrderItems[
+              //                                                   index]
+              //                                               .product!
+              //                                               .quantity
+              //                                               .toString(),
+              //                                           style: TextStyle(
+              //                                               color: AppColors
+              //                                                   .blacklight,
+              //                                               fontWeight:
+              //                                                   FontWeight.w500,
+              //                                               fontSize: 14)),
+              //                                     ],
+              //                                   ),
+              //                                   Row(
+              //                                     children: [
+              //                                       Text(
+              //                                           "${StringConstants.unitPriceText}: ",
+              //                                           style: TextStyle(
+              //                                               color: AppColors
+              //                                                   .blacklight,
+              //                                               fontWeight:
+              //                                                   FontWeight.w500,
+              //                                               fontSize: 14)),
+              //                                       Text(
+              //                                           transactionDetailController
+              //                                               .getOrderItems[
+              //                                                   index]
+              //                                               .product!
+              //                                               .productPrice
+              //                                               .toString(),
+              //                                           style: TextStyle(
+              //                                               color: AppColors
+              //                                                   .blacklight,
+              //                                               fontWeight:
+              //                                                   FontWeight.w500,
+              //                                               fontSize: 14)),
+              //                                     ],
+              //                                   )
+              //                                 ],
+              //                               ),
+              //                               height6SizedBox,
+              //                             ],
+              //                           ),
+              //                         )
+              //                       ],
+              //                     ),
+              //                   ]),
+              //                 ),
+              //               );
+              //             }))
+              // )
             ]),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                  border: Border.all(
-                    color: AppColors.blacklight,
-                  ),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
-                    ordersHomeMainController.apiRejectReturnRequest();
-                  },
-                  height: 50,
-                  width: WidgetConstants.screenWidth *0.42,
-                  text: StringConstants.rejectText,
-                  textColor: AppColors.red,
-                  borderRadius: 14,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  iconR: false,
-                  fontSize: 16,
-                ),
-                CustomButton(
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.primary, AppColors.primary],
-                  ),
-                  onTap: () {
-                    ordersHomeMainController.apiConfirmReturnRequest();
-                  },
-                  height: 50,
-                  width: WidgetConstants.screenWidth *0.42,
-                  text: StringConstants.acceptText,
-                  textColor: AppColors.white,
-                  borderRadius: 14,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  iconR: false,
-                  fontSize: 16,
-                ),
-              ],
-            ),
           ),
         ],
       ),

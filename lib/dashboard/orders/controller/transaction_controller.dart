@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_owner_transaction_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_user_order_history_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_user_transaction_model.dart';
 
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -13,9 +13,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class TransactionController extends GetxController {
-  // GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-  //     GetOwnerOrderHistoryModel();
-  // RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
+  GetUserTransactionModel getUserTransactionModel = GetUserTransactionModel();
+  RxList<Transactionss>? userTransactionList = <Transactionss>[].obs;
 
   GetOwnerTransactionModel getOwnerTransactionModel =
       GetOwnerTransactionModel();
@@ -34,7 +33,7 @@ class TransactionController extends GetxController {
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      // apiGetUserOrderTransactionHistory();
+      apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderTransactionHistory();
@@ -264,45 +263,39 @@ class TransactionController extends GetxController {
   //Api get current and past transaction history of [USER]
   Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
+    ownerOrderTransactionList!.clear();
     isLoading.value = true;
+    String currentMonth =
+        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
+    debugPrint("USER ORDER HISTORY URL **********");
     debugPrint(
-        "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+      (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
+              (endDateOfMonth == "" || endDateOfMonth.isEmpty)
+          ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}-$currentMonth-01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+          : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
+    );
     Map<String, String> headers = {
-      'Content/Type': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    String currentMonth =
-        "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
-
-    Map body = {
-      "store_id": null,
-      "page": null,
-      "page_size": null,
-      "order_by": "order_id",
-      "order_type": "DESC",
-      "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-01"
-          : startDateOfMonth,
-      "to_date": endDateOfMonth == "" || endDateOfMonth.isEmpty
-          ? "${DateTime.now().year}-$currentMonth-${daysInMonth(DateTime.now())}"
-          : endDateOfMonth,
-      "only_active_orders": true,
-      "order_statuses": []
-    };
-    debugPrint("USER ORDER HISTORY API BODY********** $body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            body,
-            ServerCommunicator().baseUrl + ServerCommunicator().orderList,
+        .getWithHeadersApi(
+            (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
+                    (endDateOfMonth == "" || endDateOfMonth.isEmpty)
+                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+                : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER ORDER HISTORY URL RESPONSE *******${value!.body}");
+      debugPrint("USER ORDER HISTORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        getUserTransactionModel = GetUserTransactionModel.fromJson(value.body);
+        userTransactionList!.value =
+            getUserTransactionModel.data!.transactions!.cast<Transactionss>();
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -313,6 +306,7 @@ class TransactionController extends GetxController {
   //Api get current and past transaction history of [OWNER]
   Future apiGetOwnerOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
+    ownerOrderTransactionList!.clear();
     isLoading.value = true;
     String currentMonth =
         "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";

@@ -118,8 +118,13 @@ class Utility {
     return await Geolocator.getCurrentPosition();
   }
 
-  static alertDialog(context,{String title="",String description="",String ok="",
-    String cancel="",Function()? onOk ,void Function()? onCancel})async{
+  static alertDialog(context,
+      {String title = "",
+      String description = "",
+      String ok = "",
+      String cancel = "",
+      Function()? onOk,
+      void Function()? onCancel}) async {
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -127,40 +132,30 @@ class Utility {
           title: Text(
             title,
             style: const TextStyle(
-                fontWeight:
-                FontWeight.w600,
-                color:
-                AppColors.black,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
                 fontSize: 20),
           ),
-          content: Text(
-              description,
+          content: Text(description,
               style: const TextStyle(
-                  fontWeight:
-                  FontWeight.w400,
-                  color:
-                  AppColors.black,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.black,
                   fontSize: 20)),
           actions: <Widget>[
             ElevatedButton(
-                style: ElevatedButton
-                    .styleFrom(
-                  backgroundColor:
-                  AppColors
-                      .primary,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
                 ),
-                onPressed: (){
-                  onOk??Get.back();
+                onPressed: () {
+                  onOk ?? Get.back();
                 },
                 child: Text(ok)),
             ElevatedButton(
-              style: ElevatedButton
-                  .styleFrom(
-                backgroundColor:
-                AppColors.primary,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
               ),
-              onPressed: (){
-                onCancel??Get.back();
+              onPressed: () {
+                onCancel ?? Get.back();
               },
               child: Text(cancel),
             ),
@@ -172,6 +167,10 @@ class Utility {
 }
 
 extension StringCasingExtension on String {
-  String toCapitalized() => length > 0 ?'${this[0].toUpperCase()}${substring(1).toLowerCase()}':'';
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
 }
