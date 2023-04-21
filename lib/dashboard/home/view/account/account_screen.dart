@@ -454,26 +454,78 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ],
                         ),
-                        Obx(() => FlutterSwitch(
-                              height: 28,
-                              width: 50,
-                              value:
-                                  accountController.isInboxMessagesNotify.value,
-                              activeToggleColor: AppColors.primary,
-                              inactiveToggleColor: AppColors.grey,
-                              activeSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              inactiveSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              activeColor: AppColors.greymediumlight,
-                              inactiveColor: AppColors.greymediumlight,
-                              onToggle: (val) {
-                                accountController.isInboxMessagesNotify.value =
-                                    val;
-                              },
-                            )),
+                        SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText
+                            ? Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value: accountController
+                                      .isUserInboxMessagesNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController
+                                        .isUserInboxMessagesNotify.value = val;
+                                    if (accountController
+                                        .isUserInboxMessagesNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: false,
+                                              notificationType: "message");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: false,
+                                              notificationType: "message");
+                                    }
+                                  },
+                                ))
+                            : Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value: accountController
+                                      .isOwnerInboxMessagesNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController
+                                        .isOwnerInboxMessagesNotify.value = val;
+
+                                    if (accountController
+                                        .isOwnerInboxMessagesNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: true,
+                                              notificationType: "message");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: true,
+                                              notificationType: "message");
+                                    }
+                                  },
+                                )),
                       ],
                     ),
                     height15SizedBox,
@@ -492,24 +544,169 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ],
                         ),
-                        Obx(() => FlutterSwitch(
-                              height: 28,
-                              width: 50,
-                              value: accountController.isTippingNotify.value,
-                              activeToggleColor: AppColors.primary,
-                              inactiveToggleColor: AppColors.grey,
-                              activeSwitchBorder: Border.all(
-                                color: AppColors.greylight,
+                        SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText
+                            ? Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value: accountController
+                                      .isUserTippingNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController
+                                        .isUserTippingNotify.value = val;
+                                    if (accountController
+                                        .isUserTippingNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: false,
+                                              notificationType: "order");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: false,
+                                              notificationType: "order");
+                                    }
+                                  },
+                                ))
+                            : Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value: accountController
+                                      .isOwnerTippingNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController
+                                        .isOwnerTippingNotify.value = val;
+
+                                    if (accountController
+                                        .isOwnerTippingNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: true,
+                                              notificationType: "order");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: true,
+                                              notificationType: "order");
+                                    }
+                                  },
+                                )),
+                      ],
+                    ),
+                    height15SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              StringConstants.storeOfferAndDiscountText,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black,
                               ),
-                              inactiveSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              activeColor: AppColors.greymediumlight,
-                              inactiveColor: AppColors.greymediumlight,
-                              onToggle: (val) {
-                                accountController.isTippingNotify.value = val;
-                              },
-                            )),
+                            ),
+                          ],
+                        ),
+                        SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText
+                            ? Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value:
+                                      accountController.isUserOfferNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController.isUserOfferNotify.value =
+                                        val;
+
+                                    if (accountController
+                                        .isUserOfferNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: false,
+                                              notificationType: "offer");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: false,
+                                              notificationType: "offer");
+                                    }
+                                  },
+                                ))
+                            : Obx(() => FlutterSwitch(
+                                  height: 28,
+                                  width: 50,
+                                  value: accountController
+                                      .isOnwerOfferNotify.value,
+                                  activeToggleColor: AppColors.primary,
+                                  inactiveToggleColor: AppColors.grey,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.greylight,
+                                  ),
+                                  activeColor: AppColors.greymediumlight,
+                                  inactiveColor: AppColors.greymediumlight,
+                                  onToggle: (val) {
+                                    accountController.isOnwerOfferNotify.value =
+                                        val;
+
+                                    if (accountController
+                                        .isOnwerOfferNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: true,
+                                              isOwner: true,
+                                              notificationType: "offer");
+                                    } else {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: false,
+                                              isOwner: true,
+                                              notificationType: "offer");
+                                    }
+                                  },
+                                )),
                       ],
                     ),
                     height25SizedBox,

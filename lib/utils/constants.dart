@@ -54,7 +54,8 @@ class StringConstants {
   static String addNewCardText = "Add New Card";
   static String autoReloadIntoWalletText = "Auto Reload into Wallet";
   static String addCardPaymentMethodsText = "Add Cards / Payment Methods";
-  static String addBankAccountDebitMethodsText = "Add Bank Account / Debit Methods";
+  static String addBankAccountDebitMethodsText =
+      "Add Bank Account / Debit Methods";
   static String addFundText = "Add Fund";
 
   //B
@@ -110,6 +111,7 @@ class StringConstants {
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
+  static String detailText = "Detail";
 
   //E
 
@@ -146,7 +148,7 @@ class StringConstants {
   static String findStoreText = "Find Store";
   static String febText = "February";
   static String fullFillOrdersText = "Fulfill Orders";
-
+  static String fullFilledOrdersText = "Fulfilled Orders";
   //G
   static String getInTouchText = "Get In touch";
   static String genderText = "Gender";
@@ -369,6 +371,7 @@ class StringConstants {
   static String twentyFourSevenText = "24x7";
   static String theGreenMallText = "the green mall";
   static String totalBalanceText = "Total Balance";
+  static String storeOfferAndDiscountText = "Store Offers & Discounts";
 
   //U
   static String usingOurSearchText =

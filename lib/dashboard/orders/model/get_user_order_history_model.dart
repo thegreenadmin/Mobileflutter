@@ -23,15 +23,15 @@ class GetUserOrderHistoryModel {
 }
 
 class Data {
-  List<Order>? orders;
+  List<Orderss>? orders;
 
   Data({this.orders});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['orders'] != null) {
-      orders = <Order>[];
+      orders = <Orderss>[];
       json['orders'].forEach((v) {
-        orders!.add(new Order.fromJson(v));
+        orders!.add(new Orderss.fromJson(v));
       });
     }
   }
@@ -45,7 +45,7 @@ class Data {
   }
 }
 
-class Order {
+class Orderss {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
@@ -69,7 +69,7 @@ class Order {
   List<OrderItems>? orderItems;
   List<OrderDeliveryAddresses>? orderDeliveryAddresses;
 
-  Order(
+  Orderss(
       {this.userId,
       this.storeId,
       this.deliveryServiceId,
@@ -93,7 +93,7 @@ class Order {
       this.orderItems,
       this.orderDeliveryAddresses});
 
-  Order.fromJson(Map<String, dynamic> json) {
+  Orderss.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     storeId = json['store_id'];
     deliveryServiceId = json['delivery_service_id'];
