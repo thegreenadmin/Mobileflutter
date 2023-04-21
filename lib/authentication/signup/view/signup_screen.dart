@@ -32,22 +32,21 @@ class _SignupScreenState extends State<SignupScreen> {
   void getCurrentLocale() async {
     cL.value = (await Devicelocale.currentAsLocale)!;
     signupController.selectedRegion.value = cL.value.countryCode!;
-    debugPrint("selectedRegion----" +
-        signupController.selectedRegion.value.toString());
+    debugPrint("selectedRegion----${signupController.selectedRegion.value}");
     String languageCode = Platform.localeName.split('_')[0];
     await CountryCodes
         .init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
     final Locale? deviceLocale = CountryCodes.getDeviceLocale();
     final CountryDetails details = CountryCodes.detailsForLocale();
     signupController.selectedCountryCode.value = details.dialCode!;
-    debugPrint("selectedCountryCode----" +
-        signupController.selectedCountryCode.value.toString());
+    debugPrint("selectedCountryCode----${signupController.selectedCountryCode.value}");
   }
 
   @override
   void initState() {
     super.initState();
     getCurrentLocale();
+
   }
 
   @override
@@ -305,7 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                    IntlPhoneField(
+                    IntlPhoneField(initialCountryCode: 'US',
                       controller: signupController.phoneNumberTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,

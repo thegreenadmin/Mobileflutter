@@ -63,6 +63,7 @@ class StoreHomeMainController extends GetxController {
   RxInt selectedIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt itemsCount = 1.obs;
+  RxDouble walletBalance = 0.0.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
@@ -93,7 +94,7 @@ class StoreHomeMainController extends GetxController {
     if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
       isFromHome.value = Get.arguments["isFromHome"] ?? false;
     }
-
+    apiGetUserWalletBalance();
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -568,6 +569,38 @@ class StoreHomeMainController extends GetxController {
         offersListResponse =
             offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Get User Wallet Balance Api
+  Future apiGetUserWalletBalance() async {
+    isLoading.value = true;
+    debugPrint("User Wallet Balance URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("User Wallet Balance *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        walletBalance.value = value?.body["data"]["balance"];
       } else if (value?.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

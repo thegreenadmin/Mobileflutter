@@ -622,6 +622,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                     ),
                     height4SizedBox,
                     IntlPhoneField(
+                      initialCountryCode: 'US',
                       controller: addNewWorkerController.mobileNoTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,

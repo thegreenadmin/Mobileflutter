@@ -632,7 +632,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(
+                    IntlPhoneField(initialCountryCode: 'US',
                       controller: addNewWorkerController.mobileNoTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
