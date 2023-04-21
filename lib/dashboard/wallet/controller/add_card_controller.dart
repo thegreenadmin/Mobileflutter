@@ -56,8 +56,10 @@ class AddCardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    apiGetCardList();
     apiGetUserWalletBalance();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      apiGetCardList();
+    });
   }
 
   bool validateAndSave() {

@@ -458,6 +458,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     .toString() ==
                                 Role.customerRoleText
                             ? Obx(() => FlutterSwitch(
+
                                   height: 28,
                                   width: 50,
                                   value: accountController
@@ -626,6 +627,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           children: [
                             Text(
                               StringConstants.storeOfferAndDiscountText,
+
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

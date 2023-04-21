@@ -1,13 +1,13 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
 
   // ********************** STAGING SERVER *************
 
-  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -36,6 +36,7 @@ class ServerCommunicator {
   String deleteWorker = 'store/user/delete';
   String deliveryServiceList = 'store/delivery/service/list';
   String deleteItemFromCart = 'shop/store/cart/item/delete';
+
 //E
   String editWorker = 'store/user/edit';
 //F
