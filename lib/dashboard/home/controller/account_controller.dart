@@ -547,35 +547,37 @@ class AccountController extends GetxController {
 
         notificationStatusList.value =
             notificationStatusModel.data!.notificationSettings!;
+
         for (int i = 0; i < notificationStatusList.length; i++) {
           if (notificationStatusList[i].notificationType == "order") {
+            
             if (notificationStatusList[i].isForStore == true ||
                 notificationStatusList[i].isEnabled == true) {
               isOwnerTippingNotify.value = true;
-              // isUserTippingNotify.value = false;
+               isUserTippingNotify.value = false;
             } else {
               isOwnerTippingNotify.value = false;
-              //isUserTippingNotify.value = true;
+             isUserTippingNotify.value = true;
             }
           }
           if (notificationStatusList[i].notificationType == "offer") {
             if (notificationStatusList[i].isForStore == true ||
                 notificationStatusList[i].isEnabled == true) {
               isOnwerOfferNotify = true.obs;
-              //isUserOfferNotify = false.obs;
+             isUserOfferNotify = false.obs;
             } else {
               isOnwerOfferNotify = false.obs;
-              //isUserOfferNotify = true.obs;
+             isUserOfferNotify = true.obs;
             }
           }
           if (notificationStatusList[i].notificationType == "message") {
             if (notificationStatusList[i].isForStore == true ||
                 notificationStatusList[i].isEnabled == true) {
               isOwnerInboxMessagesNotify.value = true;
-              //isUserInboxMessagesNotify.value = false;
+             isUserInboxMessagesNotify.value = false;
             } else {
               isOwnerInboxMessagesNotify.value = false;
-              //isUserInboxMessagesNotify.value = true;
+            isUserInboxMessagesNotify.value = true;
             }
           }
         }
