@@ -395,7 +395,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           flex: 5,
                           child: DropdownButtonFormField<String>(
                             isExpanded: true,
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            validator: (v) {
+                              if (v==null || v?.trim()=='') {
+                                return AlertStringConstants.pleaseSelectQuantityUnitText;
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
+                              errorMaxLines: 3,
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 borderSide: const BorderSide(
@@ -794,7 +803,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Flexible(
                           flex: 5,
                           child: DropdownButtonFormField<String>(
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            // validator: (v) {
+                            //   if (v==null || v?.trim()=='') {
+                            //     return AlertStringConstants.pleaseSelectDiscountTypeText;
+                            //   }
+                            //   return null;
+                            // },
                             decoration: InputDecoration(
+                              errorMaxLines: 3,
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 borderSide: const BorderSide(
@@ -866,15 +884,15 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller: manageStoreController
                                   .discountOrOfferTextController,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterAmountText;
-                                } else if (int.parse(value) == 0) {
-                                  return AlertStringConstants.invalidAmountText;
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value!.trim().isEmpty) {
+                              //     return AlertStringConstants
+                              //         .pleaseEnterAmountText;
+                              //   } else if (int.parse(value) == 0) {
+                              //     return AlertStringConstants.invalidAmountText;
+                              //   }
+                              //   return null;
+                              // },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: StringConstants.discountsOrOffersText,
@@ -923,7 +941,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height4SizedBox,
                     DropdownButtonFormField<String>(
+                      autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
+                      validator: (v) {
+                          if (v==null || v?.trim()=='') {
+                          return AlertStringConstants.pleaseSelectAnyOneText;
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
+                        errorMaxLines: 3,
                         enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
@@ -988,7 +1015,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                StringConstants.lengthText,
+                                "${StringConstants.lengthText}(in)",
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 16,
@@ -1063,7 +1090,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                StringConstants.breadthText,
+                                "${StringConstants.breadthText}(in)",
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 16,
@@ -1142,7 +1169,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                StringConstants.heightText,
+                                "${StringConstants.heightText}(in)",
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 16,
@@ -1217,7 +1244,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                StringConstants.weightText,
+                                "${StringConstants.weightText}(gm)",
                                 style: TextStyle(
                                     color: AppColors.blacklight,
                                     fontSize: 16,
@@ -1303,7 +1330,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               DropdownButtonFormField<String>(
+                                autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                                validator: (v) {
+                                    if (v==null || v?.trim()=='') {
+                                    return AlertStringConstants.pleaseSelectAnyOneText;
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
+                                  errorMaxLines: 3,
                                   enabledBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(

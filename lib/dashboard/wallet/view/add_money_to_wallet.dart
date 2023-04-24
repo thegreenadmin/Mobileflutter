@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -238,6 +239,27 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                 style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                     fontSize: 16),
+                                              ),
+                                            ),
+                                            height20SizedBox,
+                                            Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: CustomButton(
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [AppColors.primary, AppColors.primary],
+                                                ),
+                                                onTap: () {
+                                                 Get.to(()=> AddCardDetailScreen());
+                                                },
+                                                height: 50,
+                                                width: WidgetConstants.screenWidth*0.3,
+                                                text: StringConstants.addCardText,
+                                                borderRadius: 12,
+                                                fontWeight: FontWeight.w500,
+                                                iconL: false,
+                                                fontSize: 16,
                                               ),
                                             ),
                                           ],

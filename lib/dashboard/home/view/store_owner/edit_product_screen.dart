@@ -420,6 +420,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Flexible(
                             flex: 5,
                             child: DropdownButtonFormField<String>(
+                              validator: (v) {
+                                if (v==null || v?.trim()=='') {
+                                  return AlertStringConstants.pleaseSelectQuantityUnitText;
+                                }
+                                return null;
+                              },
                               value: manageStoreController
                                           .quantityValue.value !=
                                       ""
@@ -432,6 +438,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   : null,
                               isExpanded: true,
                               decoration: InputDecoration(
+                                errorMaxLines: 3,
                                 enabledBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: const BorderSide(
@@ -900,13 +907,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 controller: manageStoreController
                                     .discountOrOfferTextController,
                                 keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterDiscountOrOfferText;
-                                  }
-                                  return null;
-                                },
+                                // validator: (value) {
+                                //   if (value!.trim().isEmpty) {
+                                //     return AlertStringConstants
+                                //         .pleaseEnterDiscountOrOfferText;
+                                //   }
+                                //   return null;
+                                // },
                                 decoration: InputDecoration(
                                   hintText:
                                       StringConstants.discountsOrOffersText,
@@ -958,9 +965,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               .selectedFeaturedType.value.isEmpty
                           ? height0SizedBox
                           : DropdownButtonFormField<String>(
+
                               value: manageStoreController
                                   .selectedFeaturedType.value,
+                              validator: (v) {
+                                if (v==null || v?.trim()=='') {
+                                  return AlertStringConstants.pleaseSelectAnyOneText;
+                                }
+                                return null;
+                              },
                               decoration: InputDecoration(
+                                errorMaxLines: 3,
                                 enabledBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: const BorderSide(
@@ -1029,8 +1044,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  StringConstants.lengthText,
+                                Text("${StringConstants.lengthText}(in)",
                                   style: TextStyle(
                                       color: AppColors.blacklight,
                                       fontSize: 16,
@@ -1104,7 +1118,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  StringConstants.breadthText,
+                                  "${StringConstants.breadthText}(in)",
                                   style: TextStyle(
                                       color: AppColors.blacklight,
                                       fontSize: 16,
@@ -1182,7 +1196,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  StringConstants.heightText,
+                                  "${StringConstants.heightText}(in)",
                                   style: TextStyle(
                                       color: AppColors.blacklight,
                                       fontSize: 16,
@@ -1256,7 +1270,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  StringConstants.weightText,
+                                  "${StringConstants.weightText}(gm)",
                                   style: TextStyle(
                                       color: AppColors.blacklight,
                                       fontSize: 16,
@@ -1350,7 +1364,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                           value: manageStoreController
                                               .selectedProductReturnableType
                                               .value,
+                                          validator: (v) {
+                                            if (v==null || v?.trim()=='') {
+                                              return AlertStringConstants.pleaseSelectAnyOneText;
+                                            }
+                                            return null;
+                                          },
                                           decoration: InputDecoration(
+                                            errorMaxLines: 3,
                                             enabledBorder: UnderlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5.0),

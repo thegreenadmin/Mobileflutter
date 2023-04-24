@@ -12,6 +12,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import 'component/edit_auto_reload.dart';
+
 class ManageWalletScreen extends StatefulWidget {
   const ManageWalletScreen({super.key});
 
@@ -25,6 +27,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
   bottomSheetToAddMoney(context) {
     return showModalBottomSheet(
         isScrollControlled: true,
+        isDismissible: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
@@ -32,135 +35,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            return ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(bottom: 30),
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      height15SizedBox,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              StringConstants.addMoneyToMyWalletText,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: Image.asset(
-                                ImageConstants.cross,
-                                scale: 3,
-                              ))
-                        ],
-                      ),
-                      height15SizedBox,
-                      Text(
-                        StringConstants.amountText,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      height12SizedBox,
-                      TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.phone,
-                          onChanged: (value) {
-                            //  signupController.firstName.value = value;
-                          },
-                          textInputAction: TextInputAction.next,
-                          autofocus: false,
-                          inputFormatters: <TextInputFormatter>[
-                            LengthLimitingTextInputFormatter(40),
-                          ],
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                          // controller: signupController.firstNameTextController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return AlertStringConstants
-                                  .pleaseEnterFirstNameText;
-                            }
-                            return null;
-                          },
-                          textCapitalization: TextCapitalization.words,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: StringConstants.amountText,
-                            hintStyle: const TextStyle(color: AppColors.grey),
-                            labelText: StringConstants.amountText,
-                            labelStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.blacklight,
-                                decoration: TextDecoration.none),
-                            fillColor: Colors.white,
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                          )),
-                      CustomButton(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [AppColors.primary, AppColors.primary],
-                        ),
-                        onTap: () {},
-                        height: 50,
-                        text: StringConstants.okText,
-                        borderRadius: 12,
-                        fontWeight: FontWeight.w500,
-                        iconL: false,
-                        fontSize: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
+            return const EditAutoReload();
           });
         }).then((value) => {});
   }
@@ -261,36 +136,41 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               ],
             ),
             height40SizedBox,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Image.asset(
-                    ImageConstants.autoreload,
-                    scale: 3.2,
-                  ),
-                  width15SizedBox,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        StringConstants.autoReloadIntoWalletText,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        StringConstants.editText,
-                        style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: AppColors.primary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  )
-                ],
+            InkWell(
+              onTap: (){
+                bottomSheetToAddMoney(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      ImageConstants.autoreload,
+                      scale: 3.2,
+                    ),
+                    width15SizedBox,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          StringConstants.autoReloadIntoWalletText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          StringConstants.editText,
+                          style: const TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: AppColors.primary,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             const Divider(

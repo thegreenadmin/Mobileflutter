@@ -318,7 +318,7 @@ class ManageStoreController extends GetxController {
   Future apiCreateProduct() async {
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
-    product.quantityTypeId = int.parse(quantityValue.value);
+    product.quantityTypeId = int.parse(quantityValue.value??"0")??0;
     product.quantity = int.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();
