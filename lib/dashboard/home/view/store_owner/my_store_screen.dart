@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
+import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -51,6 +53,26 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           fontStyle: FontStyle.italic,
                                           fontSize: 16),
                                     ),
+                                  ),
+                                  height30SizedBox,
+                                  CustomButton(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [AppColors.primary, AppColors.primary],
+                                    ),
+                                    onTap: () {
+                                      Get.to(const AddOfferScreen(), arguments: {
+                                        "isFrom": StringConstants.addOfferText,
+                                      });
+                                    },
+                                    height: 50,
+                                    width: WidgetConstants.screenWidth*0.3,
+                                    text: StringConstants.addOfferText,
+                                    borderRadius: 12,
+                                    fontWeight: FontWeight.w500,
+                                    iconL: false,
+                                    fontSize: 16,
                                   ),
                                 ],
                               )

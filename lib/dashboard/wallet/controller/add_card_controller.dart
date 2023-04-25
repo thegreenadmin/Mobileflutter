@@ -56,8 +56,10 @@ class AddCardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    apiGetCardList();
     apiGetUserWalletBalance();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      apiGetCardList();
+    });
   }
 
   bool validateAndSave() {
@@ -118,6 +120,9 @@ class AddCardController extends GetxController {
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       var streamResponse = await http.Response.fromStream(response);
+      debugPrint("Create Stripe Token Response:--------");
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.reasonPhrase);
       if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
@@ -126,7 +131,10 @@ class AddCardController extends GetxController {
         parts = [];
         month = "";
         year = "";
-      } else {
+
+      } else if(response.statusCode == 402){
+        Utility.showToast('Please enter valid card number');
+      }else {
         debugPrint(response.reasonPhrase);
       }
     } catch (error) {
@@ -155,10 +163,12 @@ class AddCardController extends GetxController {
         .then((value) async {
       if (value != null) {
         debugPrint("CREATE CARD  RESPONSE *******${value.body}");
-        if (value.body['success'] == true ||
-            value.body['code'] == ApiConstants.statusCode201 ||
-            value.body['code'] == ApiConstants.statusCode200) {
-          Get.back();
+        // if (value.body['success'] == true ||
+        //  value.body['code'] == ApiConstants.statusCode201 ||
+        //             value.body['code'] == ApiConstants.statusCode200) {
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
+
           await apiGetCardList();
           cardNumber.value = "";
           expiryDate.value = "";
@@ -177,6 +187,8 @@ class AddCardController extends GetxController {
           cardId = ''.obs;
           stripeToken.value = "";
           isCvvFocused = false.obs;
+
+          Get.back();
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
           Future.delayed(const Duration(milliseconds: 800), () {});
@@ -208,6 +220,7 @@ class AddCardController extends GetxController {
       debugPrint("GET CARD LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
+
         cardListModel = CardListModel.fromJson(value.body);
         cardList.value = cardListModel.data!.cards ?? [];
 
@@ -217,7 +230,9 @@ class AddCardController extends GetxController {
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        if(!value.body['message'].toString().toLowerCase().contains("stripe")){
+          Utility.showToast(value.body['message']);
+        }
       }
     });
   }

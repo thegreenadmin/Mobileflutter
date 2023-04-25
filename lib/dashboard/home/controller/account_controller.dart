@@ -122,6 +122,18 @@ class AccountController extends GetxController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+              icon:  Align(
+                alignment: Alignment.topRight,
+                child:
+                InkWell(
+                  onTap: (){
+                    Get.back();
+                  },
+                  child: const Icon(Icons.clear,color: AppColors.primary,
+                    size: 24.0,),
+                ),
+              ),
+
               title: const Text(
                 "From where do you want to take the photo?",
                 style: TextStyle(

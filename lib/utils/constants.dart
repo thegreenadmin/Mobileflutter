@@ -8,6 +8,7 @@ class WidgetConstants {
 
 //String Constants used
 class StringConstants {
+
   //A
   static String appNameText = "thegreenmall";
   static String asYouShopInVariousStores =
@@ -136,6 +137,7 @@ class StringConstants {
   static String enabledText = "Enabled ";
   static String employeeTimingText = "Employee Timing";
   static String editOfferText = "Edit Offer";
+  static String editAutoReloadText = "Edit Auto reload";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -257,6 +259,7 @@ class StringConstants {
   static String profileText = "Profile";
   static String passcodeLockText = "Passcode Lock";
   static String previousText = "Previous";
+  static String periodicallyText = "Periodically";
   static String phoneNumberText = "Phone Number";
   static String personalInformationText = "Personal Information";
   static String personalDetailText = "Personal Detail";
@@ -371,11 +374,12 @@ class StringConstants {
   static String twentyFourSevenText = "24x7";
   static String theGreenMallText = "the green mall";
   static String totalBalanceText = "Total Balance";
+  static String thresholdText = "Threshold";
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
 
   //U
   static String usingOurSearchText =
-      "Using our search feature, browse through\nnearby store to found the specific product\nfor you.";
+      "Using our search feature, browse through\nnearby stores to find the specific product\nfor you.";
   static String usingOurDigitalPlatformText =
       "Use our digital platform to manage and sell your products.";
   static String usingOurToolsToCreateText =
@@ -413,6 +417,7 @@ class StringConstants {
   static String welcomeToText = "Welcome to";
   static String weightText = "Weight";
   static String workingDaysText = "Working Days";
+  static String whenBalanceBelowText = "When Balance is below";
   static String welcomeToGreenMallText = "Welcome to thegreenmall";
 
   //X
@@ -467,6 +472,8 @@ class AlertStringConstants {
   //P
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseSelectOneFilterText = "Please select one filter";
+  static String pleaseSelectQuantityUnitText = "Please select quantity unit";
+  static String pleaseSelectDiscountTypeText = "Please select discount type";
   static String pleaseEnterFirstNameText = "Please enter first name";
   static String pleaseEnterMobileNoText = "Please enter mobile number";
   static String pleaseEnterNickNameText = "Please enter nick name";
@@ -533,6 +540,7 @@ class AlertStringConstants {
       "Please add at least one item in cart";
   static String pleaseSelectPaymentTypeText = "Please select payment type";
   static String pleaseSelectCardText = "Please select card";
+  static String pleaseSelectAnyOneText = "Please select any one";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

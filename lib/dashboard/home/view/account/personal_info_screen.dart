@@ -448,7 +448,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         accountController
                                             .idProofImageDynamicLinkfromServer
                                             .value,
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                         width: WidgetConstants.screenWidth,
                                       ),
                                     ),
@@ -490,7 +490,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               dashPattern: const [4, 4],
                               child: Container(
                                 padding: const EdgeInsets.only(
-                                    left: 50, right: 50, top: 18, bottom: 18),
+                                    left: 50, right: 50, top: 20, bottom: 20),
                                 color: AppColors.primarylight,
                                 child: Column(
                                     crossAxisAlignment:
@@ -501,14 +501,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         "assets/upload.png",
                                         scale: 2.5,
                                       ),
-                                      height6SizedBox,
+                                      height8SizedBox,
                                       Text(
                                         StringConstants
                                             .uploadLicenseStateIdPasswordText,
                                         style: TextStyle(
                                             color: AppColors.blacklight),
                                       ),
-                                      height5SizedBox,
+                                      height8SizedBox,
                                       SizedBox(
                                         width: 130,
                                         child: ElevatedButton(

@@ -40,9 +40,12 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               children: [
                 Image.asset(ImageConstants.greenmall420),
                 height10SizedBox,
-                Image.asset(
-                  ImageConstants.fourtwenty,
-                  scale: 3,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Image.asset(
+                    ImageConstants.fourtwenty,
+                    scale: 3.5,
+                  ),
                 ),
               ],
             ),

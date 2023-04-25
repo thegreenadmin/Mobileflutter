@@ -36,6 +36,7 @@ class ServerCommunicator {
   String deleteWorker = 'store/user/delete';
   String deliveryServiceList = 'store/delivery/service/list';
   String deleteItemFromCart = 'shop/store/cart/item/delete';
+
 //E
   String editWorker = 'store/user/edit';
 //F
