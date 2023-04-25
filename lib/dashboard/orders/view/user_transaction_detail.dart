@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/orders/controller/transaction_detail_controller.dart';
+import 'package:thegreenmall/dashboard/orders/controller/user_transaction_detail_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
-class TransactionDetailScreen extends StatefulWidget {
-  const TransactionDetailScreen({super.key});
+class UserTransactionDetailScreen extends StatefulWidget {
+  const UserTransactionDetailScreen({super.key});
 
   @override
-  State<TransactionDetailScreen> createState() =>
-      _TransactionDetailScreenState();
+  State<UserTransactionDetailScreen> createState() =>
+      _UserTransactionDetailScreenState();
 }
 
-class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
-  final TransactionDetailController transactionDetailController =
-      Get.put(TransactionDetailController());
+class _UserTransactionDetailScreenState
+    extends State<UserTransactionDetailScreen> {
+  final UserTransactionDetailController userTransactionDetailController =
+      Get.put(UserTransactionDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                                "${StringConstants.fullFilledOrdersText} - #${transactionDetailController.orderId!.value}",
+                                "${StringConstants.fullFilledOrdersText} - #${userTransactionDetailController.orderId!.value}",
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w600),
                               )),
@@ -91,19 +89,37 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                             children: [
                               Flexible(
                                 flex: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1)),
-                                  child: const CircleAvatar(
-                                    radius: 30.0,
-                                    backgroundImage: AssetImage(
-                                      ImageConstants.userAccount,
-                                    ),
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                ),
+                                child: userTransactionDetailController
+                                        .storeImage!.value.isNotEmpty
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: AppColors.white,
+                                                width: 1)),
+                                        child: CircleAvatar(
+                                          radius: 30.0,
+                                          backgroundImage: NetworkImage(
+                                              userTransactionDetailController
+                                                  .storeImage
+                                                  .toString()),
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      )
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: AppColors.white,
+                                                width: 1)),
+                                        child: const CircleAvatar(
+                                          radius: 30.0,
+                                          backgroundImage: AssetImage(
+                                            ImageConstants.nopicfound,
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      ),
                               ),
                               width10SizedBox,
                               Flexible(
@@ -112,8 +128,11 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Obx(() => Text(
-                                        transactionDetailController
-                                            .customerName!.value,
+                                        userTransactionDetailController
+                                                .storeName!.isEmpty
+                                            ? "Wallet Transaction"
+                                            : userTransactionDetailController
+                                                .storeName!.value,
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
@@ -127,7 +146,8 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
                                       Text(
-                                          transactionDetailController.orderDate
+                                          userTransactionDetailController
+                                              .orderDate
                                               .toString(),
                                           style: const TextStyle(
                                               color: AppColors.black,
@@ -144,7 +164,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
-                                              "\$${transactionDetailController.orderAmount!.value}",
+                                              "\$${userTransactionDetailController.orderAmount!.value}",
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500,

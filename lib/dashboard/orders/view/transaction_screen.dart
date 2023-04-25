@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/transaction_detail_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/owner_transaction_detail_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/user_transaction_detail.dart';
 
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -272,24 +273,23 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         : ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return width40SizedBox;
+                              return height12SizedBox;
                             },
                             itemCount: transactionController
                                 .userTransactionList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  // Get.to(() => const OrderConfirmationScreen(),
-                                  //     arguments: {
-                                  //       "isFromTransaction": true,
-                                  //       "storeId": transactionController
-                                  //               .ownerOrderTransactionList![index]
-                                  //               .store!
-                                  //               .storeId ?? "",
-                                  //       "orderStatus": transactionController
-                                  //               .ownerOrderTransactionList![index]
-                                  //               .orderId ?? ""
-                                  //     });
+                                  Get.to(
+                                      () => const UserTransactionDetailScreen(),
+                                      arguments: {
+                                        "isFromTransaction": true,
+                                        "user_stripe_card_id":
+                                            transactionController
+                                                    .userTransactionList![index]
+                                                    .userWalletTransactionId ??
+                                                "",
+                                      });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -342,14 +342,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       .userTransactionList![
                                                                           index]
                                                                       .store!
-                                                                      .image!
+                                                                      .logo!
                                                                       .dynamicUrl ==
                                                                   null ||
                                                               transactionController
                                                                   .userTransactionList![
                                                                       index]
                                                                   .store!
-                                                                  .image!
+                                                                  .logo!
                                                                   .dynamicUrl!
                                                                   .isEmpty
                                                           ? const AssetImage(
@@ -361,7 +361,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                   .userTransactionList![
                                                                       index]
                                                                   .store!
-                                                                  .image!
+                                                                  .logo!
                                                                   .dynamicUrl
                                                                   .toString()),
                                                       backgroundColor:
@@ -558,7 +558,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         : ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return width40SizedBox;
+                              return height12SizedBox;
                             },
                             itemCount: transactionController
                                 .ownerOrderTransactionList!.length,
@@ -569,7 +569,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                               .ownerOrderTransactionList![index]
                                               .orderTransaction !=
                                           null
-                                      ? Get.to(const TransactionDetailScreen(),
+                                      ? Get.to(
+                                          const OwnerTransactionDetailScreen(),
                                           arguments: {
                                               "store_wallet_transaction_id":
                                                   transactionController
@@ -587,7 +588,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                   .orderItemRefundTransaction !=
                                               null
                                           ? Get.to(
-                                              const TransactionDetailScreen(),
+                                              const OwnerTransactionDetailScreen(),
                                               arguments: {
                                                   "store_wallet_transaction_id":
                                                       transactionController
@@ -628,14 +629,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                               .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
-                                                              .image!
+                                                              .logo!
                                                               .dynamicUrl ==
                                                           null ||
                                                       transactionController
                                                           .ownerOrderTransactionList![
                                                               index]
                                                           .store!
-                                                          .image!
+                                                          .logo!
                                                           .dynamicUrl!
                                                           .isEmpty
                                                   ? const AssetImage(
@@ -647,7 +648,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                           .ownerOrderTransactionList![
                                                               index]
                                                           .store!
-                                                          .image!
+                                                          .logo!
                                                           .dynamicUrl
                                                           .toString()),
                                               backgroundColor:

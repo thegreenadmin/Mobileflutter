@@ -8,7 +8,6 @@ class WidgetConstants {
 
 //String Constants used
 class StringConstants {
-
   //A
   static String appNameText = "thegreenmall";
   static String asYouShopInVariousStores =
@@ -227,6 +226,7 @@ class StringConstants {
   static String noMessagesFountText = "No Messages found";
   static String noMessagesYetText = "No Messages Yet!";
   static String noCardsFoundText = "No Cards Found";
+  static String notificationsText = "Notifications";
 
   //O
   static String okText = "Ok";

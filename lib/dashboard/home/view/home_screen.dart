@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.da
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -64,9 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ],
                         ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Get.to(NotificationListScreen());
+                              },
+                              child: const Icon(
+                                Icons.notifications_active,
+                                color: AppColors.primary,
+                                size: 24.0,
+                              ),
+                            ),
+                            width10SizedBox,
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 4,
+                            ),
+                          ],
                         )
                       ]),
                   height20SizedBox,
