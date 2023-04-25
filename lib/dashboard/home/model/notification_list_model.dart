@@ -52,11 +52,12 @@ class Data {
 class Notifications {
   String? userId;
   String? storeId;
-  Null? messageHeadId;
+  String? messageHeadId;
   String? orderId;
-  Null? offerId;
+  String? offerId;
   bool? isNotificationForStore;
   bool? isSent;
+  bool? isRead;
   String? title;
   String? message;
   String? status;
@@ -73,6 +74,7 @@ class Notifications {
       this.offerId,
       this.isNotificationForStore,
       this.isSent,
+      this.isRead,
       this.title,
       this.message,
       this.status,
@@ -89,6 +91,7 @@ class Notifications {
     offerId = json['offer_id'];
     isNotificationForStore = json['is_notification_for_store'];
     isSent = json['is_sent'];
+    isRead = json['is_read'];
     title = json['title'];
     message = json['message'];
     status = json['status'];
@@ -107,6 +110,7 @@ class Notifications {
     data['offer_id'] = this.offerId;
     data['is_notification_for_store'] = this.isNotificationForStore;
     data['is_sent'] = this.isSent;
+    data['is_read'] = this.isRead;
     data['title'] = this.title;
     data['message'] = this.message;
     data['status'] = this.status;

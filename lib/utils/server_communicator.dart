@@ -59,7 +59,8 @@ class ServerCommunicator {
 
 //N
   String nearByStoreList = 'shop/stores/list/nearby';
-  String botificationList = 'notification/setting/list';
+  String notificationList = 'notification/setting/list';
+  String notificationListUrl = 'notification/list';
 
 //O
   String otpVerify = 'user/otp/verify';

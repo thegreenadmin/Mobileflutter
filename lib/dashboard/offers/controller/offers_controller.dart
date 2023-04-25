@@ -38,17 +38,23 @@ class OffersController extends GetxController {
       DeleteOfferRequestModel();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+  RxBool isFromNotification = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments == null
+        ? false
+        : Get.arguments['isFromNotification'] != false) {
+      isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
+    }
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetUserOffersList();
     } else {
-      apiGetOwnerOffersList();
       role!.value = Role.storeOwnerRoleText;
+      apiGetOwnerOffersList();
     }
   }
 

@@ -122,18 +122,19 @@ class AccountController extends GetxController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              icon:  Align(
+              icon: Align(
                 alignment: Alignment.topRight,
-                child:
-                InkWell(
-                  onTap: (){
+                child: InkWell(
+                  onTap: () {
                     Get.back();
                   },
-                  child: const Icon(Icons.clear,color: AppColors.primary,
-                    size: 24.0,),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AppColors.primary,
+                    size: 24.0,
+                  ),
                 ),
               ),
-
               title: const Text(
                 "From where do you want to take the photo?",
                 style: TextStyle(
@@ -540,7 +541,7 @@ class AccountController extends GetxController {
   //Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
     debugPrint(
-        "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().botificationList}?is_for_store=$isOwner");
+        "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -548,7 +549,7 @@ class AccountController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().botificationList}?is_for_store=$isOwner",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner",
             headers,
             showLoading: false)
         .then((value) async {

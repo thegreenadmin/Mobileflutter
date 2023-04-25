@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
@@ -33,18 +34,42 @@ class _OffersScreenState extends State<OffersScreen> {
                 children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
+                            Row(
+                              children: [
+                                Obx(
+                                  () => offersController
+                                              .isFromNotification.value ==
+                                          true
+                                      ? InkWell(
+                                          onTap: () {
+                                            Get.offAll(BottomNavigation());
+                                          },
+                                          child: const Icon(
+                                            Icons.arrow_back,
+                                            color: AppColors.black,
+                                            size: 24.0,
+                                          ),
+                                        )
+                                      : height0SizedBox,
+                                ),
+                                offersController.isFromNotification.value ==
+                                        true
+                                    ? width10SizedBox
+                                    : height0SizedBox,
+                                Text(
+                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
                             ),
                             height4SizedBox,
                             Text(

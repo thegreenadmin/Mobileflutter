@@ -287,7 +287,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                         "user_stripe_card_id":
                                             transactionController
                                                     .userTransactionList![index]
-                                                    .userStripeCardId ??
+                                                    .userWalletTransactionId ??
                                                 "",
                                       });
                                   print(transactionController

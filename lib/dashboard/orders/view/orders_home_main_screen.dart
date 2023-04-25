@@ -387,7 +387,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                             children: [
                                               Text(
                                                   ordersHomeMainController
-                                                          .ownerOrderHistoryList![index].customerName?.toTitleCase() ?? "",
+                                                          .ownerOrderHistoryList![
+                                                              index]
+                                                          .customerName
+                                                          ?.toTitleCase() ??
+                                                      "",
                                                   style: const TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight:
@@ -403,8 +407,10 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                               Text(
                                                   "${StringConstants.orderedDateText}: ",
                                                   style: TextStyle(
-                                                      color: AppColors.blacklight,
-                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 14)),
                                               Row(
                                                 children: [
