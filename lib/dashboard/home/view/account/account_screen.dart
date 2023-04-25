@@ -150,24 +150,28 @@ class _AccountScreenState extends State<AccountScreen> {
                       scale: 3,
                     ),
                     width10SizedBox,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Obx(() => Text(
-                              "${accountController.firstName!.value} ${accountController.lastName!.value}",
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                        Obx(() => Text(
-                              accountController.email.value,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            )),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Obx(() => Text(
+                                "${accountController.firstName!.value} ${accountController.lastName!.value}",
+                                overflow: TextOverflow.visible,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                          Obx(() => Text(
+                                accountController.email.value,
+                                style: const TextStyle(
+                                  overflow: TextOverflow.visible,
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              )),
+                        ],
+                      ),
                     )
                   ],
                 ),
