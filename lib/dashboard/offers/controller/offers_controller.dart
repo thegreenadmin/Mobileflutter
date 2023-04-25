@@ -48,6 +48,7 @@ class OffersController extends GetxController {
         : Get.arguments['isFromNotification'] != false) {
       isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
     }
+
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;

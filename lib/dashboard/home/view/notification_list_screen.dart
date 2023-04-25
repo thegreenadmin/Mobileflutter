@@ -113,6 +113,9 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                     null
                                 ? Get.to(const OrdersScreen(), arguments: {
                                     "isFromNotification": true,
+                                    "storeId": notificationListController
+                                            .notificationList[index].storeId ??
+                                        ""
                                   })
                                 : notificationListController
                                             .notificationList[index].offerId !=

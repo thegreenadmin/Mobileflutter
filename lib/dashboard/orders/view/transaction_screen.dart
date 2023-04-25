@@ -290,9 +290,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     .userWalletTransactionId ??
                                                 "",
                                       });
-                                  print(transactionController
-                                      .userTransactionList![index]
-                                      .userStripeCardId);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -345,14 +342,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       .userTransactionList![
                                                                           index]
                                                                       .store!
-                                                                      .image!
+                                                                      .logo!
                                                                       .dynamicUrl ==
                                                                   null ||
                                                               transactionController
                                                                   .userTransactionList![
                                                                       index]
                                                                   .store!
-                                                                  .image!
+                                                                  .logo!
                                                                   .dynamicUrl!
                                                                   .isEmpty
                                                           ? const AssetImage(
@@ -364,7 +361,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                   .userTransactionList![
                                                                       index]
                                                                   .store!
-                                                                  .image!
+                                                                  .logo!
                                                                   .dynamicUrl
                                                                   .toString()),
                                                       backgroundColor:
@@ -632,14 +629,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                               .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
-                                                              .image!
+                                                              .logo!
                                                               .dynamicUrl ==
                                                           null ||
                                                       transactionController
                                                           .ownerOrderTransactionList![
                                                               index]
                                                           .store!
-                                                          .image!
+                                                          .logo!
                                                           .dynamicUrl!
                                                           .isEmpty
                                                   ? const AssetImage(
@@ -651,7 +648,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                           .ownerOrderTransactionList![
                                                               index]
                                                           .store!
-                                                          .image!
+                                                          .logo!
                                                           .dynamicUrl
                                                           .toString()),
                                               backgroundColor:

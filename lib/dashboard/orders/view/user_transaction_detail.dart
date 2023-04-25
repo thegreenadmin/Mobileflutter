@@ -89,19 +89,37 @@ class _UserTransactionDetailScreenState
                             children: [
                               Flexible(
                                 flex: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1)),
-                                  child: const CircleAvatar(
-                                    radius: 30.0,
-                                    backgroundImage: AssetImage(
-                                      ImageConstants.userAccount,
-                                    ),
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                ),
+                                child: userTransactionDetailController
+                                        .storeImage!.value.isNotEmpty
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: AppColors.white,
+                                                width: 1)),
+                                        child: CircleAvatar(
+                                          radius: 30.0,
+                                          backgroundImage: NetworkImage(
+                                              userTransactionDetailController
+                                                  .storeImage
+                                                  .toString()),
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      )
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: AppColors.white,
+                                                width: 1)),
+                                        child: const CircleAvatar(
+                                          radius: 30.0,
+                                          backgroundImage: AssetImage(
+                                            ImageConstants.nopicfound,
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      ),
                               ),
                               width10SizedBox,
                               Flexible(
@@ -111,7 +129,10 @@ class _UserTransactionDetailScreenState
                                   children: [
                                     Obx(() => Text(
                                         userTransactionDetailController
-                                            .customerName!.value,
+                                                .storeName!.isEmpty
+                                            ? "Wallet Transaction"
+                                            : userTransactionDetailController
+                                                .storeName!.value,
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
