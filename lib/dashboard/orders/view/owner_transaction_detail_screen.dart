@@ -9,15 +9,16 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-class TransactionDetailScreen extends StatefulWidget {
-  const TransactionDetailScreen({super.key});
+class OwnerTransactionDetailScreen extends StatefulWidget {
+  const OwnerTransactionDetailScreen({super.key});
 
   @override
-  State<TransactionDetailScreen> createState() =>
-      _TransactionDetailScreenState();
+  State<OwnerTransactionDetailScreen> createState() =>
+      _OwnerTransactionDetailScreenState();
 }
 
-class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
+class _OwnerTransactionDetailScreenState
+    extends State<OwnerTransactionDetailScreen> {
   final TransactionDetailController transactionDetailController =
       Get.put(TransactionDetailController());
 

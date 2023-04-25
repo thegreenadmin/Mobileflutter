@@ -42,6 +42,7 @@ class WalletController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
+  RxString ownerSelectedStore = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
 
@@ -53,6 +54,7 @@ class WalletController extends GetxController {
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
   RxString? userWalletBalance = "".obs;
+  RxString? ownerWalletBalance = "".obs;
   RxString? storeNameValue = "".obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
@@ -66,7 +68,7 @@ class WalletController extends GetxController {
       apiGetCardList();
       apiGetUserWalletBalance();
     } else {
-      apiGetStoreList();
+      apiGetOwnerWalletBalance();
     }
   }
 
@@ -130,6 +132,9 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        if (storeList.isNotEmpty) {
+          ownerSelectedStore.value = storeList[0].storeId.toString();
+        }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -359,6 +364,40 @@ class WalletController extends GetxController {
         await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get Owner Balance Api
+  Future apiGetOwnerWalletBalance() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET OWNER WALLET BALANCE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${ownerSelectedStore.value}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${ownerSelectedStore.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET OWNER WALLET BALANCE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        ownerWalletBalance!.value =
+            value?.body['data']['balance'].toStringAsFixed(2);
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
       }
     });
   }
