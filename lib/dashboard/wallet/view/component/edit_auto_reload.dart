@@ -6,7 +6,6 @@ import 'package:thegreenmall/dashboard/wallet/view/component/peroidically.dart';
 import 'package:thegreenmall/dashboard/wallet/view/component/threshold.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -23,7 +22,7 @@ class _EditAutoReloadState extends State<EditAutoReload>  with SingleTickerProvi
   @override
   void initState() {
     _tabController = TabController(
-        // initialIndex: 0,
+        initialIndex: 0,
         length: 2,
         vsync: this);
     super.initState();
@@ -31,8 +30,10 @@ class _EditAutoReloadState extends State<EditAutoReload>  with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: WidgetConstants.screenHeight*0.7,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           height15SizedBox,
@@ -62,36 +63,78 @@ class _EditAutoReloadState extends State<EditAutoReload>  with SingleTickerProvi
             ],
           ),
           height15SizedBox,
-          SizedBox(
-            width: WidgetConstants.screenWidth * 0.5,
+          Obx(()=>  SizedBox(
+            width: WidgetConstants.screenWidth ,
             child: TabBar(
               unselectedLabelColor: AppColors.blacklight,
               labelColor: AppColors.primary,
               onTap: (i) {
-                // searchStoreUserController.storeAddresses.clear();
-                // searchStoreUserController.page.value = 1;
-                // searchStoreUserController.type.value = i;
-                // searchStoreUserController.apiGetNearByStores();
+                walletController.type?.value = i;
               },
               tabs: [
                 Tab(
-                  child: Text(
-                    StringConstants.thresholdText,
-                    style: const TextStyle(fontSize: 16),
+                  child: Container(
+                    decoration:  BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.white,
+                        border: Border.all(color:  walletController.type?.value == 0? AppColors.primary:AppColors.blacklight,)
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        walletController.type?.value== 0?
+                        Stack(children: [
+                          Image.asset(ImageConstants.circleunfill,scale: 2.1,),
+                          Image.asset(ImageConstants.circle,scale: 2.5,),
+                        ],) :
+                        Image.asset(ImageConstants.circleBlackUnFill,scale: 2.1,),
+                        width8SizedBox,
+                        Text(
+                          StringConstants.thresholdText,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Tab(
-                  child: Text(
-                    StringConstants.periodicallyText,
-                    style: const TextStyle(fontSize: 16),
+                  child: Container(
+                    decoration:  BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.white,
+                        border: Border.all(color:  walletController.type?.value == 1? AppColors.primary:AppColors.blacklight,)
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        walletController.type?.value== 1?
+                        Stack(children: [
+                          Image.asset(ImageConstants.circleunfill,scale: 2.1,),
+                          Image.asset(ImageConstants.circle,scale: 2.5,),
+                        ],)
+                            :
+                        Image.asset(ImageConstants.circleBlackUnFill,scale: 2.1,),
+                        width8SizedBox,
+                        Text(
+                          StringConstants.periodicallyText,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
               ],
               controller: _tabController,
+              indicatorColor: Colors.transparent,
               indicatorSize: TabBarIndicatorSize.tab,
             ),
-          ),
+          ),),
+
           Expanded(
             child: TabBarView(
               controller: _tabController,

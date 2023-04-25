@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
+import 'package:thegreenmall/utils/utility.dart';
 import '../../../../utils/sizedbox_constants.dart';
 
 class AddNewWorkerScreen extends StatefulWidget {
@@ -467,6 +468,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     addNewWorkerController
                                         .startTimeTextController
                                         .text = date.format(context).toString();
+
                                   },
                                   decoration: InputDecoration(
                                     errorMaxLines: 3,
@@ -569,6 +571,18 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                         );
                                       },
                                     ))!;
+
+
+                                   /* final startDT = DateTime(9, 9, 9, date.hour, date.minute);
+                                    final endDT = DateTime(9, 9, 9, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).hour, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).minute);
+                                    print(startDT);
+                                    print(endDT);
+                                    if (startDT.isBefore(endDT)) {
+                                      Utility.showToast("Please select time before ${addNewWorkerController.storeClosingTime.toString()}");
+                                    } else {
+                                      addNewWorkerController.endTimeTextController
+                                          .text = date.format(context).toString();
+                                    }*/
                                     addNewWorkerController.endTimeTextController
                                         .text = date.format(context).toString();
                                   },

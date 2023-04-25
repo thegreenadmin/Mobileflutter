@@ -42,6 +42,7 @@ class WalletController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
+  RxInt? type = 0.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
 

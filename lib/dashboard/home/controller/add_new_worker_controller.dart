@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,6 +64,8 @@ class AddNewWorkerController extends GetxController {
   RxString storeUserRoleId = "".obs;
   RxString countryCode = "".obs;
   RxString phoneNumber = "".obs;
+  RxString storeOpeningTime = "".obs;
+  RxString storeClosingTime = "".obs;
 
   Rx<XFile> categoryImage = XFile("").obs;
   late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
@@ -74,6 +77,8 @@ class AddNewWorkerController extends GetxController {
   RxList<StoreUser> workerList = <StoreUser>[].obs;
   RxList<StoreRole> storeRoleList = <StoreRole>[].obs;
   RxInt radioGroupValue = 0.obs;
+  RxList<dynamic> storeTimings = <dynamic>[].obs;
+  RxList<dynamic> storeDeliveryServices = <dynamic>[].obs;
 
   @override
   void onInit() {
@@ -83,6 +88,7 @@ class AddNewWorkerController extends GetxController {
     apiGetUserStoreList();
     apiGetWorkerList();
     apiGetRoleList();
+    apiGetParticularStore();
   }
 
   bool validateAndSave() {
@@ -152,7 +158,8 @@ class AddNewWorkerController extends GetxController {
       }
     }
     addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("ADD WORKER URL ***********${ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser}");
+    debugPrint(
+        "ADD WORKER URL ***********${ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser}");
     debugPrint("ADD WORKER URL ***********$headers");
     debugPrint("ADD WORKER BODY ***********${addWorkerRequest.toJson()}");
 
@@ -350,15 +357,17 @@ class AddNewWorkerController extends GetxController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              icon:  Align(
+              icon: Align(
                 alignment: Alignment.topRight,
-                child:
-                InkWell(
-                  onTap: (){
+                child: InkWell(
+                  onTap: () {
                     Get.back();
                   },
-                  child: const Icon(Icons.clear,color: AppColors.primary,
-                    size: 24.0,),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AppColors.primary,
+                    size: 24.0,
+                  ),
                 ),
               ),
               title: const Text(
@@ -486,6 +495,77 @@ class AddNewWorkerController extends GetxController {
       }
       throw Exception('Failed to load data ! $e');
     }
+  }
+
+  //Get particular store api
+  Future apiGetParticularStore() async {
+    debugPrint(
+        "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        storeTimings.value =
+            value?.body["data"]['store']['store_timings'] ?? [];
+        storeDeliveryServices.value =
+            value?.body["data"]['store']['store_delivery_services'] ?? [];
+
+        if (storeTimings.isNotEmpty) {
+          for (int i = 0; i < storeTimings.length; i++) {
+            is247Time.value = storeTimings[i]["is_24_hours_active"] ?? false;
+            if (is247Time.value == true) {
+              radioGroupValue.value = 1;
+            } else {
+              radioGroupValue.value = 0;
+              storeOpeningTime.value = Utility.formatDateTime(
+                      storeTimings[i]["opening_time"] ?? '',
+                      firstFormat: "hh:mm:ss",
+                      secFormat: "hh:mm a")
+                  .toString();
+
+              Utility.formatDateTime(storeTimings[i]["opening_time"] ?? '',
+                      firstFormat: "hh:mm:ss", secFormat: "hh:mm a")
+                  .toString();
+
+              storeClosingTime.value = Utility.formatDateTime(
+                      storeTimings[i]["closing_time"] ?? '',
+                      firstFormat: "hh:mm:ss",
+                      secFormat: "hh:mm a")
+                  .toString();
+
+              Utility.formatDateTime(storeTimings[i]["closing_time"] ?? '',
+                      firstFormat: "hh:mm:ss", secFormat: "hh:mm a")
+                  .toString();
+            }
+          }
+        } else {
+          is247Time.value = true;
+        }
+        if (is247Time.value == false) {
+          List<Categories> data = [];
+          for (int i  = 0; i < storeTimings.length; i++) {
+            for (var element in weekDaysList) {
+              if(element.id == storeTimings[i]['day_of_week']){
+                data.add(element);
+              }
+            }
+          }
+          weekDaysList.value = data;
+        }
+        update();
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 
   //Get User Store List Api
@@ -616,9 +696,11 @@ class AddNewWorkerController extends GetxController {
             workerDetailResponse!.data!.storeUser!.user!.phoneCode!.trim();
 
         userImageDynamicLinkFromServer.value =
-            workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ?? "";
+            workerDetailResponse?.data?.storeUser?.user?.image?.dynamicUrl ??
+                "";
         userImageOriginalLinkFromServer.value =
-            workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ?? "";
+            workerDetailResponse?.data?.storeUser?.user?.image?.orignalUrl ??
+                "";
 
         roleId.value =
             workerDetailResponse?.data?.storeUser?.role?.roleId ?? "";

@@ -28,6 +28,7 @@ class ImageConstants {
   static const String circleedit = '$assetsIcon/circleedit.png';
   static const String circleunfill = '$assetsIcon/circleunfill.png';
   static const String contactUs = '$assetsIcon/contactUs.png';
+  static const String circleBlackUnFill = '$assetsIcon/circleBlackUnFill.png';
   static const String cross = '$assetsIcon/cross.png';
   static const String curb = '$assetsIcon/curb.png';
   static const String cart = '$assetsIcon/cart.png';
