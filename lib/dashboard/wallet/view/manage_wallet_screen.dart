@@ -33,10 +33,12 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return const EditAutoReload();
-          });
+          // return StatefulBuilder(
+          //     builder: (BuildContext context, StateSetter setState) {
+                return Wrap(
+                    children: const <Widget>[
+                   EditAutoReload()
+                ]);
         }).then((value) => {});
   }
 

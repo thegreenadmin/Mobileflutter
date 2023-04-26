@@ -42,6 +42,7 @@ class WalletController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
+  RxInt? type = 0.obs;
   RxString ownerSelectedStore = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
@@ -234,15 +235,16 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         cardListModel = CardListModel.fromJson(value.body);
-        cardList.value = cardListModel.data!.cards ?? [];
-
+        cardList.value = cardListModel.data?.cards ?? [];
         update();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        if(!value.body['message'].toString().toLowerCase().contains("stripe")){
+          Utility.showToast(value.body['message']);
+        }
       }
     });
   }

@@ -22,243 +22,239 @@ class _ThresholdViewState extends State<ThresholdView>  with SingleTickerProvide
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          height15SizedBox,
-          Text(
-            StringConstants.amountText,
-            style: const TextStyle(
-                color: AppColors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w400),
-          ),
-          height12SizedBox,
-          TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.phone,
-              onChanged: (value) {
-                //  signupController.firstName.value = value;
-              },
-              textInputAction: TextInputAction.next,
-              autofocus: false,
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(40),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Text(
+              StringConstants.amountText,
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400),
-              // controller: signupController.firstNameTextController,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return AlertStringConstants
-                      .pleaseEnterFirstNameText;
-                }
-                return null;
-              },
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: StringConstants.amountText,
-                hintStyle: const TextStyle(color: AppColors.grey),
-                labelText: StringConstants.amountText,
-                labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.blacklight,
-                    decoration: TextDecoration.none),
-                fillColor: Colors.white,
-                border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.grey,
-                    width: 1.0,
-                  ),
-                ),
-              )),
-          height15SizedBox,
-          Text(
-            StringConstants.whenBalanceBelowText,
-            style: const TextStyle(
-                color: AppColors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w400),
-          ),
-          height12SizedBox,
-          TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.phone,
-              onChanged: (value) {
-                //  signupController.firstName.value = value;
-              },
-              textInputAction: TextInputAction.next,
-              autofocus: false,
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(40),
-              ],
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-              // controller: signupController.firstNameTextController,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return AlertStringConstants
-                      .pleaseEnterFirstNameText;
-                }
-                return null;
-              },
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: StringConstants.amountText,
-                hintStyle: const TextStyle(color: AppColors.grey),
-                labelText: StringConstants.amountText,
-                labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.blacklight,
-                    decoration: TextDecoration.none),
-                fillColor: Colors.white,
-                border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.grey,
-                    width: 1.0,
-                  ),
-                ),
-              )), height15SizedBox,
-          Text(
-            StringConstants.paymentText,
-            style: const TextStyle(
-                color: AppColors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w400),
-          ),
-          height12SizedBox,
-          TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.phone,
-              onChanged: (value) {
-                //  signupController.firstName.value = value;
-              },
-              textInputAction: TextInputAction.next,
-              autofocus: false,
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(40),
-              ],
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-              // controller: signupController.firstNameTextController,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return AlertStringConstants
-                      .pleaseEnterFirstNameText;
-                }
-                return null;
-              },
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: StringConstants.amountText,
-                hintStyle: const TextStyle(color: AppColors.grey),
-                labelText: StringConstants.amountText,
-                labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.blacklight,
-                    decoration: TextDecoration.none),
-                fillColor: Colors.white,
-                border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: const BorderSide(
-                    color: AppColors.grey,
-                    width: 1.0,
-                  ),
-                ),
-              )),
-          CustomButton(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.primary, AppColors.primary],
             ),
-            onTap: () {},
-            height: 50,
-            text: StringConstants.okText,
-            borderRadius: 12,
-            fontWeight: FontWeight.w500,
-            iconL: false,
-            fontSize: 16,
-          ),
-        ],
+            height4SizedBox,
+            TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: TextInputType.phone,
+                onChanged: (value) {
+                  //  signupController.firstName.value = value;
+                },
+                textInputAction: TextInputAction.next,
+                autofocus: false,
+                inputFormatters: <TextInputFormatter>[
+                  LengthLimitingTextInputFormatter(40),
+                ],
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+                // controller: signupController.firstNameTextController,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return AlertStringConstants
+                        .pleaseEnterFirstNameText;
+                  }
+                  return null;
+                },
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: StringConstants.amountText,
+                  hintStyle: const TextStyle(color: AppColors.grey),
+                  labelText: StringConstants.amountText,
+                  labelStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blacklight,
+                      decoration: TextDecoration.none),
+                  fillColor: Colors.white,
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                )),
+            height20SizedBox,
+            Text(
+              StringConstants.whenBalanceBelowText,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+            height4SizedBox,
+            TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: TextInputType.phone,
+                onChanged: (value) {
+                  //  signupController.firstName.value = value;
+                },
+                textInputAction: TextInputAction.next,
+                autofocus: false,
+                inputFormatters: <TextInputFormatter>[
+                  LengthLimitingTextInputFormatter(40),
+                ],
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+                // controller: signupController.firstNameTextController,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return AlertStringConstants
+                        .pleaseEnterFirstNameText;
+                  }
+                  return null;
+                },
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: StringConstants.amountText,
+                  hintStyle: const TextStyle(color: AppColors.grey),
+                  labelText: StringConstants.amountText,
+                  labelStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blacklight,
+                      decoration: TextDecoration.none),
+                  fillColor: Colors.white,
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                )),
+            height20SizedBox,
+            Text(
+              StringConstants.paymentText,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+            height6SizedBox,
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: const BorderSide(
+                    color: AppColors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                border: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1.0,
+                  ),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              isExpanded: true,
+              hint: Text(
+                StringConstants.selectTypeText,
+                style: const TextStyle(
+                  color: AppColors.grey,
+                ),
+              ),
+              items: <String>["Google Pay", "Cards"].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: const TextStyle(
+                        color: AppColors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+                );
+              }).toList(),
+              onChanged: (v) {
+                // addCardController.selectPaymentType.value = v.toString();
+                // print(addCardController.selectPaymentType.value);
+              },
+            ),
+            height20SizedBox,
+            CustomButton(
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.primary, AppColors.primary],
+              ),
+              onTap: () {},
+              height: 50,
+              text: StringConstants.okText,
+              borderRadius: 12,
+              fontWeight: FontWeight.w500,
+              iconL: false,
+              fontSize: 16,
+            ),
+            height20SizedBox
+          ],
+        ),
       ),
     );
   }

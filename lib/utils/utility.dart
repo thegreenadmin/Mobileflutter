@@ -97,6 +97,11 @@ class Utility {
     return outputDate;
   }
 
+  static TimeOfDay stringToTimeOfDay(String tod) {
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
+
   static Future<Position> fetchCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
