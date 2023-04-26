@@ -54,7 +54,7 @@ class WalletController extends GetxController {
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
   RxString? userWalletBalance = "".obs;
-  RxString? ownerWalletBalance = "".obs;
+  RxString? ownerWalletBalance = "0.00".obs;
   RxString? storeNameValue = "".obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
@@ -68,7 +68,7 @@ class WalletController extends GetxController {
       apiGetCardList();
       apiGetUserWalletBalance();
     } else {
-      apiGetOwnerWalletBalance();
+      apiGetStoreList();
     }
   }
 
@@ -132,9 +132,6 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
-        if (storeList.isNotEmpty) {
-          ownerSelectedStore.value = storeList[0].storeId.toString();
-        }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
