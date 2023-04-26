@@ -60,9 +60,7 @@ dependencies:
   passcode_screen: ^2.0.1
   flutter_credit_card: ^3.0.6
   in_app_purchase: ^3.1.5
-  
-  
-
+  persistent_bottom_nav_bar: ^5.0.2
 
 
 

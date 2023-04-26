@@ -88,12 +88,13 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    isFromCart.value = Get.arguments["isFromCart"] ?? false;
-    apiGetUserDetailApi();
-    getGkey();
+    // isFromCart.value = Get.arguments["isFromCart"] ?? false;
+    isFromCart.value = Get.parameters["isFromCart"]=="true"?true:false;
+    debugPrint(isFromCart.value.toString());
+
   }
 
-  getGkey() async {
+  getGkey(context) async {
     secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
 
@@ -101,9 +102,9 @@ class AccountController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) ?? false;
 
     if (SharedPreferenceStorage.getData(Role.role.value).toString() == Role.customerRoleText) {
-      await apiGetNotificationStatus(false);
+      await apiGetNotificationStatus(false,context);
     } else {
-      await apiGetNotificationStatus(true);
+      await apiGetNotificationStatus(true,context);
     }
 
     isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
@@ -120,7 +121,8 @@ class AccountController extends GetxController {
                 alignment: Alignment.topRight,
                 child: InkWell(
                   onTap: () {
-                    Get.back();
+                    // Get.back();
+                    Navigator.of(context).pop();
                   },
                   child: const Icon(
                     Icons.clear,
@@ -149,12 +151,13 @@ class AccountController extends GetxController {
                         ],
                       ),
                       onTap: () async {
-                        Get.back();
+                        // Get.back();
+                        Navigator.of(context).pop();
                         XFile? pickedFile = await ImagePickerClass.picker
                             .pickImage(imageQuality: 50, source: ImageSource.gallery, maxWidth: 900, maxHeight: 900);
                         if (pickedFile != null) {
                           idProofImage.value = pickedFile;
-                          await apiUploadImage();
+                          await apiUploadImage(context);
                           update();
                         } else {
                           // api();
@@ -175,12 +178,13 @@ class AccountController extends GetxController {
                         ],
                       ),
                       onTap: () async {
-                        Get.back();
+                        // Get.back();
+                        Navigator.of(context).pop();
                         XFile? pickedFile = await ImagePickerClass.picker
                             .pickImage(imageQuality: 50, source: ImageSource.camera, maxWidth: 900, maxHeight: 900);
                         if (pickedFile != null) {
                           idProofImage.value = pickedFile;
-                          await apiUploadImage();
+                          await apiUploadImage(context,);
                           update();
                         } else {
                           // api();
@@ -194,7 +198,7 @@ class AccountController extends GetxController {
   }
 
   //Api upload image to server
-  Future apiUploadImage() async {
+  Future apiUploadImage(context) async {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
@@ -213,7 +217,7 @@ class AccountController extends GetxController {
       if (res.statusCode == 200 || res.statusCode == 201) {
         idProofImageOrigionalLinkfromServer.value = responseData['data']['urls']['orignal_url'];
         idProofImageDynamicLinkfromServer.value = responseData['data']['urls']['dynamic_url'];
-        await apiAddUserIdProof();
+        await apiAddUserIdProof(context);
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode403) {
         Utility.showToast(responseData['message'].toString());
@@ -241,10 +245,10 @@ class AccountController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(context) async {
     if (validateAndSave()) {
       try {
-        apiUpdateUserDetail();
+        apiUpdateUserDetail(context);
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -252,7 +256,7 @@ class AccountController extends GetxController {
   }
 
   //Get User Detail Info Api
-  Future apiGetUserDetailApi() async {
+  Future apiGetUserDetailApi(context) async {
     debugPrint("GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
     Map<String, String> headers = {
       'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -300,11 +304,16 @@ class AccountController extends GetxController {
             idProofImageDynamicLinkfromServer.value = getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
-        await apiGetCountries();
+        await apiGetCountries(context);
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        if(Get.context!=null){
+          Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        }
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message'].toString());
       }
@@ -312,7 +321,7 @@ class AccountController extends GetxController {
   }
 
   //Get Countries Api
-  Future apiGetCountries() async {
+  Future apiGetCountries(context) async {
     debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
       'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -336,11 +345,15 @@ class AccountController extends GetxController {
             }
           }
         }
-        apiGetStates();
+        apiGetStates(context);
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -348,7 +361,7 @@ class AccountController extends GetxController {
   }
 
   //Get States Api
-  Future apiGetStates() async {
+  Future apiGetStates(context) async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
     Map<String, String> headers = {
@@ -380,7 +393,11 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -388,7 +405,7 @@ class AccountController extends GetxController {
   }
 
   //Update User Detail Api
-  Future apiUpdateUserDetail() async {
+  Future apiUpdateUserDetail(context) async {
     debugPrint("UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -431,16 +448,29 @@ class AccountController extends GetxController {
         stateTextController.clear();
         countryTextController.clear();
         if (isFromCart.value) {
-          Get.back();
+
+          // if(Get.context!=null){
+            Navigator.of(context).pop();
+        // }
+          // Get.back();
+
         } else {
-          Get.back();
-          await apiGetUserDetailApi();
-          // await Get.offAll(BottomNavigation());
+          // Get.back();
+          // if(Get.context!=null){
+            Navigator.of(context).pop();
+          // }
+          await apiGetUserDetailApi(context);
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        // if(Get.context!=null){
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // }
+
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -448,7 +478,7 @@ class AccountController extends GetxController {
   }
 
   //Add user id proof Api
-  Future apiAddUserIdProof() async {
+  Future apiAddUserIdProof(context) async {
     debugPrint("ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -471,7 +501,10 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         Utility.showToast(value.body['message']);
@@ -480,7 +513,7 @@ class AccountController extends GetxController {
   }
 
   //Get Notification Status Api
-  Future apiGetNotificationStatus(bool isOwner) async {
+  Future apiGetNotificationStatus(bool isOwner,BuildContext context) async {
     debugPrint(
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
     Map<String, String> headers = {
@@ -545,7 +578,10 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -553,7 +589,7 @@ class AccountController extends GetxController {
   }
 
   //Update Notification Status
-  Future apiUpdateNotificationStatus({
+  Future apiUpdateNotificationStatus(context,{
     String notificationType = "",
     bool isOwner = false,
     bool isEnabled = false,
@@ -575,14 +611,18 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         if (SharedPreferenceStorage.getData(Role.role.value).toString() == Role.customerRoleText) {
-          await apiGetNotificationStatus(false);
+          await apiGetNotificationStatus(false,context,);
         } else {
-          await apiGetNotificationStatus(true);
+          await apiGetNotificationStatus(true,context,);
         }
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

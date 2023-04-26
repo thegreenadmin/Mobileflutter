@@ -91,10 +91,15 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
-      isFromHome.value = Get.arguments["isFromHome"] ?? false;
-      storeId.value = Get.arguments == null?"" :Get.arguments["storeId"] ?? "";
-      productId.value = Get.arguments == null?"" :Get.arguments["productId"] ?? "";
+    if (Get.parameters == null ? false : Get.parameters['isFromHome'] != false) {
+      isFromHome.value = Get.parameters["isFromHome"] =="true"?true:false;
+      print(isFromHome.value);
+      print(isFromHome.value);
+      print(isFromHome.value);
+      print(isFromHome.value);
+      print(isFromHome.value);
+      storeId.value = Get.parameters == null?"" :Get.parameters["storeId"] ?? "";
+      productId.value = Get.parameters == null?"" :Get.parameters["productId"] ?? "";
     }
 
     apiGetUserDetailsApi();

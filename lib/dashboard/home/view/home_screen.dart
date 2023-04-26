@@ -69,6 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: () {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const NotificationListScreen(),
+                                // ));
                                 Get.to(NotificationListScreen());
                               },
                               child: const Icon(
@@ -94,10 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              homeController.role!.value ==
-                                      Role.customerRoleText
-                                  ? Get.to(const UserInboxScreen())
-                                  : Get.to(const OwnerInboxScreen());
+                              homeController.role!.value == Role.customerRoleText ?
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const UserInboxScreen(),
+                              // ))
+                              Get.to(const UserInboxScreen())
+                                  :
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const OwnerInboxScreen(),
+                              // ));
+                              Get.to(const OwnerInboxScreen());
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -138,6 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (SharedPreferenceStorage.getData(
                                       Role.role.value) ==
                                   Role.customerRoleText) {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const SearchStoreUserScreen(),
+                                // ));
+                                // Get.parameters["firstName"]=homeController.firstName?.value.toString()??"";
+                                // Get.parameters["lastName"]=homeController.lastName?.value.toString()??"";
                                 Get.to(
                                   const SearchStoreUserScreen(),
                                   arguments: {
@@ -147,6 +161,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 );
                               } else {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const OwnerStoresListScreen(),
+                                // ));
+                                // Get.parameters["firstName"]=homeController.firstName?.value.toString()??"";
+                                // Get.parameters["lastName"]=homeController.lastName?.value.toString()??"";
                                 Get.to(
                                   () => const OwnerStoresListScreen(),
                                   arguments: {
@@ -197,6 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               elevation: 0,
                               onPressed: () {
                                 Get.to(const TransactionScreen());
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const TransactionScreen(),
+                                // ));
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -213,8 +235,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                Get.to(const AccountScreen(),
-                                    arguments: {"isFromCart": false});
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const AccountScreen(),
+                                ));
+                                Get.parameters["isFromCart"]="false";
+                                Get.arguments["isFromCart"]=false;
+                                // Get.to(const AccountScreen(),
+                                //     arguments: {"isFromCart": false});
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -479,26 +506,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                 homeController.featuredUserProductList.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                print(
-                                    "featuredUserProductList--------id--  ${homeController.featuredUserProductList[index].storeId}");
-                                print(
-                                    "featuredUserProductList--------productId--  ${homeController.featuredUserProductList[index].productId}");
-                                Get.to(() => const AddToOrderScreen(),
-                                    arguments: {
-                                      "isFromHome": true,
-                                      "productId": homeController
-                                              .featuredUserProductList[index]
-                                              .productId ??
-                                          "",
-                                      "storeId": homeController
-                                              .featuredUserProductList[index]
-                                              .storeId ??
-                                          "",
-                                    });
-                              },
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) => const AddToOrderScreen(),
+                                  // ));
+                                  // Get.parameters["isFromHome"]="true";
+                                  // Get.parameters["productId"]=homeController
+                                  //     .featuredUserProductList[index]
+                                  //     .productId ??
+                                  //     "";
+                                  // Get.parameters["storeId"]=homeController
+                                  //     .featuredUserProductList[index]
+                                  //     .storeId ??
+                                  //     "";
+                                 Get.to(() => const AddToOrderScreen(),
+                                      arguments: {
+                                        "isFromHome": true,
+                                        "productId": homeController
+                                                .featuredUserProductList[index]
+                                                .productId ??
+                                            "",
+                                        "storeId": homeController
+                                                .featuredUserProductList[index]
+                                                .storeId ??
+                                            "",
+                                      });
+                                },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,

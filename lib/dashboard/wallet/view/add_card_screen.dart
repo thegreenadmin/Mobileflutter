@@ -41,7 +41,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

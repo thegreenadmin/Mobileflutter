@@ -19,6 +19,8 @@ import 'package:thegreenmall/push_notifications/push_notifications.dart';
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
 
+
+
   @override
   void onReady() {
     super.onReady();
@@ -35,6 +37,7 @@ class BottomNavController extends GetxController {
     selectedIndex.value =
         Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
+
 
   List<Widget> tabs = [
     const HomeScreen(),
