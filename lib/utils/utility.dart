@@ -4,7 +4,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class Utility {
   static void showMessage(String title, String message) {
@@ -168,6 +170,75 @@ class Utility {
         );
       },
     );
+  }
+
+  static Future<void> showSelectionMediaDialog(BuildContext context, void Function()?  onGalleryClick(), void Function()?  onCameraClick()) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              icon:  Align(
+                alignment: Alignment.topRight,
+                child:
+                InkWell(
+                  onTap: (){
+                    Get.back();
+                  },
+                  child: const Icon(Icons.clear,color: AppColors.primary,
+                    size: 24.0,),
+                ),
+              ),
+              title: Text(
+                StringConstants.fromWherePhotoText,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    InkWell(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.image_sharp,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          Text(StringConstants.galleryText,
+                              style: const TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                        onGalleryClick();
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.all(8.0)),
+                    InkWell(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.camera_alt,
+                            color: AppColors.primary,
+                            size: 24.0,
+                          ),
+                          width10SizedBox,
+                          Text(StringConstants.cameraText,
+                              style: const TextStyle(
+                                  color: AppColors.primary, fontSize: 16)),
+                        ],
+                      ),
+                      onTap: () async {
+                       onCameraClick();
+                      },
+                    )
+                  ],
+                ),
+              ));
+        });
   }
 }
 

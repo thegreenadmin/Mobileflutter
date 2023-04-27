@@ -380,7 +380,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
                         date = (await showDatePicker(
-                          helpText: "Select a Date",
+                          helpText: StringConstants.selectDateText,
                           builder: (BuildContext context, Widget? child) {
                             return Theme(
                               data: ThemeData.light().copyWith(

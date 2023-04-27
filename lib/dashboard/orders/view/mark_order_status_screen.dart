@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -503,7 +504,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         child: Obx(
                                               () =>
                                               ordersHomeMainController.selectedIndex.value == 3 &&
-                                                  ordersHomeMainController.getOrderItems[index].orderItemStatus=="delivered" ?
+                                                  ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.delivered.statusName ?
                                                   height0SizedBox :
                                                   SizedBox(
                                                     height: 20,
@@ -519,30 +520,30 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       activeColor: AppColors.primary,
 
                                                       value: ordersHomeMainController.selectedIndex.value == 0 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus!="pending" ||
+                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.pending.statusName ||
                                                       ordersHomeMainController.selectedIndex.value == 1 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!="confirmed"||
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.confirmed.statusName||
                                                       ordersHomeMainController.selectedIndex.value == 2 &&
-                                                         (ordersHomeMainController.getOrderItems[index].orderItemStatus!="shipped"
-                                                             && ordersHomeMainController.getOrderItems[index].orderItemStatus!="ready pickup" )||
+                                                         (ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.shipped.statusName
+                                                             && ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.readyPickup.statusName)||
                                                       ordersHomeMainController.selectedIndex.value == 3 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!="delivered"?
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.delivered.statusName?
                                                       true:
                                                       ordersHomeMainController.getOrderItems[index].isSelected??false ,
                                                       onChanged: (bool? value) {
                                                         if(ordersHomeMainController.selectedIndex.value == 0 &&
-                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus=="pending"){
+                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.pending.statusName){
                                                           setState(() {
                                                             ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
                                                           });
                                                         }else if(ordersHomeMainController.selectedIndex.value == 1 &&
-                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus=="confirmed"){
+                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.confirmed.statusName){
                                                           setState(() {
                                                             ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
                                                           });
                                                         }else if(ordersHomeMainController.selectedIndex.value == 2 &&
-                                                          (  ordersHomeMainController.getOrderItems[index].orderItemStatus=="shipped" ||
-                                                              ordersHomeMainController.getOrderItems[index].orderItemStatus=="ready pickup")){
+                                                          (  ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.shipped.statusName||
+                                                              ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.readyPickup.statusName)){
                                                           setState(() {
                                                             ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
                                                           });

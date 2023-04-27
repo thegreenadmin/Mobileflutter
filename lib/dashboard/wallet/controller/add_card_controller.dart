@@ -57,9 +57,8 @@ class AddCardController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetUserWalletBalance();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      apiGetCardList();
-    });
+    apiGetCardList();
+
   }
 
   bool validateAndSave() {
@@ -191,7 +190,6 @@ class AddCardController extends GetxController {
           Get.back();
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -270,13 +268,11 @@ class AddCardController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Future.delayed(const Duration(milliseconds: 200), () {
-            Get.back();
-          });
+           Get.back();
+
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
