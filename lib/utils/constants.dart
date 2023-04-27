@@ -112,6 +112,7 @@ class StringConstants {
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
   static String detailText = "Detail";
+  static String debitMoneyFromWalletText = "Debit money from my wallet";
 
   //E
 
@@ -220,14 +221,14 @@ class StringConstants {
   static String noCategoriesFoundText = "No Categories found";
   static String noPermissionsFoundText = "No permissions found";
   static String noRolesFoundText = "No Roles found";
-  static String noOffersFoundText = "No Offers found";
+  static String noOffersFoundText = "No Offers yet";
   static String noText = "No";
   static String newText = "New";
   static String noMessagesFountText = "No Messages found";
   static String noMessagesYetText = "No Messages Yet!";
   static String noCardsFoundText = "No Cards Found";
   static String notificationsText = "Notifications";
-  static String noNotificationFoundYetText = "No Notifications Found Yet";
+  static String noNotificationFoundYetText = "No Notifications Yet";
 
   //O
   static String okText = "Ok";
@@ -379,9 +380,10 @@ class StringConstants {
   static String totalBalanceText = "Total Balance";
   static String thresholdText = "Threshold";
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
+
   static String transactionIdText = "Transaction ID";
-  static String toKnowBalanceYouDontHaveText = "To know balance you don't have any store added. Please add store first!";
-  
+  static String toKnowBalanceYouDontHaveText =
+      "To know balance you don't have any store added. Please add store first!";
 
   //U
   static String usingOurSearchText =

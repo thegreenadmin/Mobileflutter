@@ -5,6 +5,7 @@ import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
+import 'package:thegreenmall/dashboard/wallet/view/webview_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -70,7 +71,6 @@ class WalletController extends GetxController {
       apiGetUserWalletBalance();
     } else {
       apiGetStoreList();
-      apiCreateStoreStripeAccount();
     }
   }
 
@@ -430,11 +430,16 @@ class WalletController extends GetxController {
       debugPrint("CREATE STRIPE ACCOUNT RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
+        String url = value.body["data"]['link'] ?? "";
+        await Get.to(WebViewExample(
+          url: url,
+        ));
         ownerSelectedStore.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         Utility.showToast(value.body['message']);
       }

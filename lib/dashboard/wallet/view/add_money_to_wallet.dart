@@ -89,9 +89,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                 TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.phone,
-                    onChanged: (value) {
-                      //  signupController.firstName.value = value;
-                    },
+                    onChanged: (value) {},
                     textInputAction: TextInputAction.next,
                     autofocus: false,
                     inputFormatters: <TextInputFormatter>[
@@ -248,14 +246,21 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                 gradient: const LinearGradient(
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomCenter,
-                                                  colors: [AppColors.primary, AppColors.primary],
+                                                  colors: [
+                                                    AppColors.primary,
+                                                    AppColors.primary
+                                                  ],
                                                 ),
                                                 onTap: () {
-                                                 Get.to(()=> AddCardDetailScreen());
+                                                  Get.to(() =>
+                                                      AddCardDetailScreen());
                                                 },
                                                 height: 50,
-                                                width: WidgetConstants.screenWidth*0.3,
-                                                text: StringConstants.addCardText,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.3,
+                                                text:
+                                                    StringConstants.addCardText,
                                                 borderRadius: 12,
                                                 fontWeight: FontWeight.w500,
                                                 iconL: false,
@@ -272,6 +277,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                       itemCount:
                                           addCardController.cardList.length,
                                       shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         if (addCardController
@@ -404,6 +411,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   iconL: false,
                   fontSize: 16,
                 ),
+                height20SizedBox,
               ],
             ),
           ),

@@ -80,7 +80,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         Expanded(
                           flex: 4,
                           child: Text(
-                            "Select Store",
+                            StringConstants.selectStoreText,
                             style: TextStyle(
                                 color: AppColors.blacklight, fontSize: 18),
                           ),
@@ -244,11 +244,14 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                 ),
               ),
-              Container(
-                color: AppColors.grey,
-                width: 1,
-                height: 40,
-              ),
+              SharedPreferenceStorage.getData(Role.role.value) ==
+                      Role.customerRoleText
+                  ? Container(
+                      color: AppColors.grey,
+                      width: 1,
+                      height: 40,
+                    )
+                  : height0SizedBox,
               SharedPreferenceStorage.getData(Role.role.value) ==
                       Role.customerRoleText
                   ? Expanded(

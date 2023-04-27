@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
+import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -71,7 +73,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "aboutus",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageAbout)
+                      .toString()));
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
@@ -108,7 +116,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "faq",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageFaq)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -178,7 +192,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () async {
+              Get.to(WebviewPageScreen(
+                  isFrom: "terms",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageTerms)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -212,7 +232,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "privacy",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pagePolicy)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

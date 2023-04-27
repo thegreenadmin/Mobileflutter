@@ -6,7 +6,6 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 
@@ -321,6 +320,43 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       ),
               ),
             ),
+            SharedPreferenceStorage.getData(Role.role.value) ==
+                    Role.customerRoleText
+                ? height0SizedBox
+                : const Divider(
+                    color: AppColors.grey,
+                    height: 25,
+                  ),
+            SharedPreferenceStorage.getData(Role.role.value) ==
+                    Role.customerRoleText
+                ? height0SizedBox
+                : InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageConstants.debitcard,
+                            scale: 18.2,
+                          ),
+                          width15SizedBox,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                StringConstants.debitMoneyFromWalletText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
             const Divider(
               color: AppColors.grey,
               height: 25,
