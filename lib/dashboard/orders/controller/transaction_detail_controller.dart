@@ -13,10 +13,6 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class TransactionDetailController extends GetxController {
-  // GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-  //     GetOwnerOrderHistoryModel();
-  // RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
-
   GetOwnerTransactionModel getOwnerTransactionModel =
       GetOwnerTransactionModel();
   RxList<Transactions>? ownerOrderTransactionList = <Transactions>[].obs;
@@ -124,14 +120,9 @@ class TransactionDetailController extends GetxController {
   Future apiGetOwnerTransactionDetail(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
-
     debugPrint("OWNER TRANSACTION DETAIL URL **********");
-    debugPrint(ServerCommunicator().baseUrl +
-        ServerCommunicator().storeTransactionDetail +
-        "?store_wallet_transaction_id=" +
-        storeWalletTransactionId!.value +
-        "&store_id=" +
-        storeId!.value);
+    debugPrint(
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -140,12 +131,7 @@ class TransactionDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeTransactionDetail +
-                "?store_wallet_transaction_id=" +
-                storeWalletTransactionId!.value +
-                "&store_id=" +
-                storeId!.value,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -156,20 +142,28 @@ class TransactionDetailController extends GetxController {
         if (value.body["data"]["transaction"]['order_transaction'] != null) {
           customerName!.value = value.body["data"]["transaction"]
               ['order_transaction']['order']["customer_name"];
-          orderId!.value =
-              value.body["data"]["transaction"]['order_transaction_id'];
-
-          orderAmount!.value = value.body["data"]["transaction"]['net_balance']
+          orderId!.value = value.body["data"]["transaction"]
+              ['order_transaction']['order_id'];
+          orderAmount!.value = value.body["data"]["transaction"]
+                  ['order_transaction']['transaction']['transaction_amount']
               .toStringAsFixed(2);
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
                 value.body["data"]["transaction"]['createdAt'].toString()),
             secFormat: '',
           ).toString();
-          // orderDate!.value =
-          //     value.body["data"]["transaction"]['createdAt'].toString();
+        } else if (value.body["data"]["transaction"]['transaction'] != null) {
+          orderId!.value = value.body["data"]["transaction"]
+              ['order_transaction']['order_id'];
+          orderAmount!.value = value.body["data"]["transaction"]
+                  ['order_transaction']['transaction']['transaction_amount']
+              .toStringAsFixed(2);
+          orderDate!.value = Utility.parseDateTime(
+            DateTime.parse(
+                value.body["data"]["transaction"]['createdAt'].toString()),
+            secFormat: '',
+          ).toString();
         }
-
         update();
       } else {
         Utility.showToast(value.body['message']);

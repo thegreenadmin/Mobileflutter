@@ -227,6 +227,7 @@ class StringConstants {
   static String noMessagesYetText = "No Messages Yet!";
   static String noCardsFoundText = "No Cards Found";
   static String notificationsText = "Notifications";
+  static String noNotificationFoundYetText = "No Notifications Found Yet";
 
   //O
   static String okText = "Ok";
@@ -253,6 +254,7 @@ class StringConstants {
   static String orderReadyText = "Order Ready";
   static String orderedDateText = "Ordered Date";
   static String orderAmountText = "Order Amount";
+  static String orderTransactionText = "Order Transaction";
 
   //P
   static String pendingOrderText = "Pending Order";
@@ -311,7 +313,8 @@ class StringConstants {
   static String returnRequestText = "Return Request";
   static String returnConfirmText = "Return Confirm";
   static String rejectText = "Reject";
-
+  static String refundIdText = "Refund ID";
+  static String refundTransactionText = "Refund Transaction";
   //S
   static String signUpText = "Sign up";
   static String shareYourFeedbackText = "Share your feedback";
@@ -376,6 +379,9 @@ class StringConstants {
   static String totalBalanceText = "Total Balance";
   static String thresholdText = "Threshold";
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
+  static String transactionIdText = "Transaction ID";
+  static String toKnowBalanceYouDontHaveText = "To know balance you don't have any store added. Please add store first!";
+  
 
   //U
   static String usingOurSearchText =
@@ -419,6 +425,7 @@ class StringConstants {
   static String workingDaysText = "Working Days";
   static String whenBalanceBelowText = "When Balance is below";
   static String welcomeToGreenMallText = "Welcome to thegreenmall";
+  static String walletTransactionText = "Wallet Transaction";
 
   //X
 

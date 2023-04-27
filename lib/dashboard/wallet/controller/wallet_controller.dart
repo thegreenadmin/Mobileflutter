@@ -70,6 +70,7 @@ class WalletController extends GetxController {
       apiGetUserWalletBalance();
     } else {
       apiGetStoreList();
+      apiCreateStoreStripeAccount();
     }
   }
 
@@ -242,7 +243,10 @@ class WalletController extends GetxController {
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if(!value.body['message'].toString().toLowerCase().contains("stripe")){
+        if (!value.body['message']
+            .toString()
+            .toLowerCase()
+            .contains("stripe")) {
           Utility.showToast(value.body['message']);
         }
       }
@@ -397,6 +401,42 @@ class WalletController extends GetxController {
         await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  apiCreateStoreStripeAccount() {
+    isLoading.value = true;
+    debugPrint(
+        "CREATE STRIPE ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeStripeAccountCreate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map<String, String> body = {"store_id": ownerSelectedStore.value};
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeStripeAccountCreate,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $body");
+      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $value");
+      debugPrint("CREATE STRIPE ACCOUNT RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        ownerSelectedStore.value = "";
+      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
       }
     });
   }
