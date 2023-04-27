@@ -62,6 +62,7 @@ class StringConstants {
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
+  static String byCheckTermsConditionText = "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.";
 
   //C
   static String createYourAccountText = "Create your Account";
@@ -99,6 +100,7 @@ class StringConstants {
   static String currentUserIdText = "CurrentUserId";
   static String copiedToClipBoardText = "Copied to Clipboard";
   static String cardAndPaymentText = "Card & Payment";
+  static String cameraText = "Camera";
 
   //D
   static String deliveryText = "Delivery";
@@ -141,6 +143,7 @@ class StringConstants {
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
   static String favoriteText = "Favorite";
+  static String fromWherePhotoText = "From where do you want to take the photo?";
   static String faqText = "FAQ";
   static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
@@ -153,6 +156,7 @@ class StringConstants {
   //G
   static String getInTouchText = "Get In touch";
   static String genderText = "Gender";
+  static String galleryText = "Gallery";
   //H
   static String helpAndPolicyText = "Help & Policies";
   static String helpText = "Help";
@@ -357,6 +361,7 @@ class StringConstants {
   static String selectDeliveryServicesText = "Select Delivery Services";
   static String startTimeText = "Start Time";
   static String selectTimeText = "Select Time";
+  static String selectDateText = "Select a Date";
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";
   static String selectStoreText = "Select Store";
@@ -548,6 +553,7 @@ class AlertStringConstants {
   static String pleaseSelectPaymentTypeText = "Please select payment type";
   static String pleaseSelectCardText = "Please select card";
   static String pleaseSelectAnyOneText = "Please select any one";
+  static String pleaseUploadCategoryImage = "Please upload category Image";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

@@ -129,9 +129,9 @@ class AccountController extends GetxController {
                   ),
                 ),
               ),
-              title: const Text(
-                "From where do you want to take the photo?",
-                style: TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
+              title: Text(
+                StringConstants.fromWherePhotoText,
+                style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
@@ -145,7 +145,7 @@ class AccountController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Gallery", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          Text(StringConstants.galleryText, style: TextStyle(color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {
@@ -171,7 +171,7 @@ class AccountController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Camera", style: TextStyle(color: AppColors.primary, fontSize: 16)),
+                          Text(StringConstants.cameraText, style: TextStyle(color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
                       onTap: () async {

@@ -46,6 +46,8 @@ class WalletController extends GetxController {
   RxString ownerSelectedStore = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
+  TextEditingController startTimeTextController = TextEditingController();
+  TextEditingController endTimeTextController = TextEditingController();
 
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
@@ -206,7 +208,6 @@ class WalletController extends GetxController {
           await apiGetCardList();
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -286,13 +287,10 @@ class WalletController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Future.delayed(const Duration(milliseconds: 200), () {
             Get.back();
-          });
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode403) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }

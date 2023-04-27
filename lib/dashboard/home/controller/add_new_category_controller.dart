@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -58,7 +59,7 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast("Please upload catagory Image");
+          Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiAddCategory();
         }
@@ -82,7 +83,7 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast("Please upload catagory Image");
+          Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiUpdateCategory();
         }
@@ -91,6 +92,7 @@ class AddNewCategoryController extends GetxController {
       updateAutoValidate.value = true;
     }
   }
+
 
   Future<void> showSelectionDialog(BuildContext context) {
     return showDialog(
@@ -108,9 +110,9 @@ class AddNewCategoryController extends GetxController {
                     size: 24.0,),
                 ),
               ),
-              title: const Text(
-                "From where do you want to take the photo?",
-                style: TextStyle(
+              title: Text(
+                StringConstants.fromWherePhotoText,
+                style: const TextStyle(
                     color: AppColors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w500),
@@ -127,8 +129,8 @@ class AddNewCategoryController extends GetxController {
                             size: 24.0,
                           ),
                           width10SizedBox,
-                          const Text("Gallery",
-                              style: TextStyle(
+                          Text(StringConstants.galleryText,
+                              style: const TextStyle(
                                   color: AppColors.primary, fontSize: 16)),
                         ],
                       ),

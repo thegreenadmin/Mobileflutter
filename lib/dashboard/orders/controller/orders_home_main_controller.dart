@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart' as owner_order_history;
+import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_store_order_detail_model.dart'
     as orderdetail;
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -28,9 +29,9 @@ class OrdersHomeMainController extends GetxController {
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
-  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-      GetOwnerOrderHistoryModel();
-  RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
+  owner_order_history.GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
+  owner_order_history.GetOwnerOrderHistoryModel();
+  RxList<owner_order_history.Orders>? ownerOrderHistoryList = <owner_order_history.Orders>[].obs;
 
   Rx<orderdetail.GetStoreOrderDetailModel> getStoreOrderDetailModel =
       orderdetail.GetStoreOrderDetailModel().obs;
@@ -79,7 +80,7 @@ class OrdersHomeMainController extends GetxController {
       case 3: //Completed Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {"order_status_id": "5"});
+          apiGetOwnerOrderHistory(orderStatus: {"order_status_name": OrderStatus.delivered.statusName});
         }
         break;
       default:
@@ -156,15 +157,15 @@ class OrdersHomeMainController extends GetxController {
           ? []
           : selectedIndex.value == 1
               ? [
-                  {"order_status_id": "4"}, //"confirmed"
-                  {"order_status_id": "6"}, //"shipped"
-                  {"order_status_id": "9"}, //"pickup request"
-                  {"order_status_id": "8"} //"cancel request"
+                  {"order_status_name": OrderStatus.confirmed.statusName}, //"confirmed"
+                  {"order_status_name": OrderStatus.shipped.statusName}, //"shipped"
+                  {"order_status_name": OrderStatus.pickupRequest.statusName}, //"pickup request"
+                  {"order_status_name": OrderStatus.cancelRequest.statusName} //"cancel request"
                 ]
               : selectedIndex.value == 2?
                 [
-                  {"order_status_id": "6"}, //"shipped"
-                  {"order_status_id": "16"} //ready pickup
+                  {"order_status_name": OrderStatus.shipped.statusName}, //"shipped"
+                  {"order_status_name": OrderStatus.readyPickup.statusName} //ready pickup
                 ]
           :[orderStatus]
     };
@@ -182,7 +183,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
-            GetOwnerOrderHistoryModel.fromJson(value.body);
+            owner_order_history.GetOwnerOrderHistoryModel.fromJson(value.body);
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {

@@ -102,11 +102,9 @@ class AddNewStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(milliseconds: 200), () {
       // apiGetCountries();
       getGkey();
       apiGetDeliveryServices();
-    });
   }
 
   getGkey() async {
@@ -355,9 +353,7 @@ class AddNewStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Future.delayed(const Duration(milliseconds: 10), () {
-          Get.back();
-        });
+        Get.back();
         storeNameTextController.clear();
         einTextController.clear();
         storeNickNameTextController.clear();

@@ -162,9 +162,7 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Future.delayed(const Duration(milliseconds: 200), () {
-          Get.back();
-        });
+         Get.back();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -338,9 +336,7 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Future.delayed(const Duration(milliseconds: 200), () {
           Get.back();
-        });
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

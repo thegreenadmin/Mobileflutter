@@ -99,27 +99,18 @@ class StoreHomeMainController extends GetxController {
 
     apiGetUserDetailsApi();
     if (isFromHome.value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        // storeId.value = Get.arguments == null?"" :Get.arguments["storeId"] ?? "";
-        // productId.value = Get.arguments == null?"" :Get.arguments["productId"] ?? "";
-        nearby.Store store = nearby.Store();
+     nearby.Store store = nearby.Store();
         store.storeId = storeId.value;
         storeAddress.value.store = store;
-        Future.delayed(const Duration(milliseconds: 100), () {
-          isFavouriteStore.value = store.isFavouriteStore ?? false;
-        });
+        isFavouriteStore.value = store.isFavouriteStore ?? false;
         apiGetStoreDetailsApi();
         apiGetCartListApi();
         setupScrollController(Get.context);
         apiGetShopProductDetailApi();
-        onIndexChange(0);
-      });
     } else {
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      Future.delayed(const Duration(milliseconds: 100), () {
-        isFavouriteStore.value =
-            storeAddress.value.store?.isFavouriteStore ?? false;
-      });
+      isFavouriteStore.value =
+          storeAddress.value.store?.isFavouriteStore ?? false;
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
       onIndexChange(0);
@@ -597,7 +588,7 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("User Wallet Balance *******${value?.body}");

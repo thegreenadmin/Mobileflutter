@@ -25,7 +25,6 @@ class LoginController extends GetxController {
   void onInit() {
     super.onInit();
     getCountryCodes();
-    Future.delayed(const Duration(milliseconds: 200), () {});
   }
 
   getCountryCodes(){

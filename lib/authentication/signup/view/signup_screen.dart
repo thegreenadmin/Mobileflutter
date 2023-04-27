@@ -372,7 +372,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
                         date = (await showDatePicker(
-                          helpText: "Select a Date",
+                          helpText: StringConstants.selectDateText,
                           builder: (BuildContext context, Widget? child) {
                             return Theme(
                               data: ThemeData.light().copyWith(
@@ -492,11 +492,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         width8SizedBox,
-                        const Flexible(
+                         Flexible(
                           flex: 9,
                           child: Text(
-                            "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.",
-                            style: TextStyle(
+                          StringConstants.byCheckTermsConditionText,
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 height: 0),

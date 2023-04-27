@@ -74,7 +74,7 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                   color: AppColors.grey,
                 ),
               ),
-              items: <String>["Google Pay", "Cards"].map((String value) {
+              items: <String>["Monthly", "Weekly"].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
@@ -115,7 +115,7 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                     color: AppColors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w400),
-                // controller: signupController.firstNameTextController,
+                controller: walletController.amountTextController,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return AlertStringConstants
@@ -192,21 +192,21 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          // controller: addNewWorkerController
-                          //     .startTimeTextController,
+                          controller: walletController
+                              .startTimeTextController,
                           keyboardType: TextInputType.phone,
-                          // validator: (value) {
-                          //   if (value!.trim().isEmpty) {
-                          //     return AlertStringConstants
-                          //         .pleaseSelectOpeningTimeText;
-                          //   } else if (value.trim() ==
-                          //       addNewWorkerController
-                          //           .endTimeTextController.text) {
-                          //     return AlertStringConstants
-                          //         .startTimeAlertText;
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseSelectOpeningTimeText;
+                            } else if (value.trim() ==
+                                walletController
+                                    .endTimeTextController.text) {
+                              return AlertStringConstants
+                                  .startTimeAlertText;
+                            }
+                            return null;
+                          },
                           onTap: () async {
                             TimeOfDay date = TimeOfDay.now();
                             FocusScope.of(context)
@@ -230,9 +230,9 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               },
                             ))!;
 
-                            // addNewWorkerController
-                            //     .startTimeTextController
-                            //     .text = date.format(context).toString();
+                            walletController
+                                .startTimeTextController
+                                .text = date.format(context).toString();
                           },
                           decoration: InputDecoration(
                             errorMaxLines: 3,
@@ -298,21 +298,18 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          // controller: addNewWorkerController
-                          //     .endTimeTextController,
+                          controller: walletController
+                              .endTimeTextController,
                           keyboardType: TextInputType.phone,
-                          // validator: (value) {
-                          //   if (value!.trim().isEmpty) {
-                          //     return AlertStringConstants
-                          //         .pleaseSelectClosingTimeText;
-                          //   } else if (value.trim() ==
-                          //       addNewWorkerController
-                          //           .startTimeTextController.text) {
-                          //     return AlertStringConstants
-                          //         .endTimeAlertText;
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseSelectClosingTimeText;
+                            } else if (value.trim() ==
+                                walletController.startTimeTextController.text) {
+                              return AlertStringConstants.endTimeAlertText;
+                            }
+                            return null;
+                          },
                           onTap: () async {
                             TimeOfDay date = TimeOfDay.now();
                             FocusScope.of(context)
@@ -335,8 +332,8 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                                 );
                               },
                             ))!;
-                            // addNewWorkerController.endTimeTextController
-                            //     .text = date.format(context).toString();
+                            walletController.endTimeTextController
+                                .text = date.format(context).toString();
                           },
                           decoration: InputDecoration(
                             errorMaxLines: 3,
