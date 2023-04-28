@@ -16,6 +16,8 @@ import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 
+import 'bottom_nav_screen.dart';
+
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
 
@@ -38,6 +40,8 @@ class BottomNavController extends GetxController {
         Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
+  final _tabNavigator = GlobalKey<TabNavigatorState>();
+  late int getCurrentNavKey ;
 
   List<Widget> tabs = [
     const HomeScreen(),
@@ -46,6 +50,7 @@ class BottomNavController extends GetxController {
     const OffersScreen(),
     const MoreScreen(),
   ];
+
 
   onItemTapped(int index) {
     // print(index);

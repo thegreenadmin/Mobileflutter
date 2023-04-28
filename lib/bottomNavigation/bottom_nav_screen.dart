@@ -16,6 +16,7 @@ class BottomNavigation extends StatelessWidget {
       Get.put(BottomNavController());
 
   BottomNavigation({Key? key}) : super(key: key);
+
   Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
     0: GlobalKey<NavigatorState>(),
     1: GlobalKey<NavigatorState>(),
@@ -36,7 +37,8 @@ class BottomNavigation extends StatelessWidget {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
-          // Navigator.pop(context);
+          int id = _bottomNavigationPageController.selectedIndex.toInt();
+          Get.back(id:id );
           return false;
         },
         child: Scaffold(
@@ -247,17 +249,18 @@ class BottomNavigation extends StatelessWidget {
               TabItem(_tab3, const OrdersScreen()),
               TabItem(_tab4, const OffersScreen()),
               TabItem(_tab5, const MoreScreen()),
-
-              // TabItem(_tab1, PageWithButton(title: 'Audio')),
-              // TabItem(_tab2, PageWithButton(title: 'Video')),
-              // TabItem(_tab3, PageWithButton(title: 'More')),
-              // TabItem(_tab4,  PageWithButton(title: 'More')),
-              // TabItem(_tab5,  PageWithButton(title: 'More')),
             ],
             selectedIndex: _bottomNavigationPageController.selectedIndex.value,
             popStack:  false,
           ),
+
           // body: buildNavigator(),
+          // body: Obx(
+          //       () => IndexedStack(
+          //     children:_bottomNavigationPageController.tabs,
+          //     index: _bottomNavigationPageController.selectedIndex.toInt()??0,
+          //   ),
+          // ),
           // body: _bottomNavigationPageController.selectedTab,
         ),
       ),
@@ -273,7 +276,6 @@ class BottomNavigation extends StatelessWidget {
     );
   }
 }
-
 
 class PageWithButton extends StatelessWidget {
   final String title;
@@ -318,7 +320,7 @@ class TabNavigator extends StatefulWidget {
   final int selectedIndex;
   final bool popStack;
 
-  TabNavigator({
+  const TabNavigator({
     Key? key,
     required this.tabs,
     required this.selectedIndex,
@@ -346,8 +348,6 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
-
     _popStackIfRequired(context);
 
     return Stack(
@@ -361,7 +361,7 @@ class TabNavigatorState extends State<TabNavigator> {
       child: Opacity(
         opacity: widget.selectedIndex == index ? 1.0 : 0.0,
         child: Navigator(
-          key: widget.tabs[index].key,
+          key: Get.nestedKey(index),//widget.tabs[index].key,
           onGenerateRoute: (settings) => MaterialPageRoute(
             settings: settings,
             builder: (_) => widget.tabs[index].tab,
