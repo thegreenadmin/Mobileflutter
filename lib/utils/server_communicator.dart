@@ -153,6 +153,8 @@ class ServerCommunicator {
   String userWalletTransactionList = 'user/wallet/transactions/list';
   String notificationSettingSave = 'notification/setting/save';
   String userWalletTransactionDetail = 'user/wallet/transaction/details';
+  String utilsQueryCreate = '/utils/query/create';
+  
 
 //V
 //W

@@ -93,21 +93,22 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-
   Future<void> showSelectionDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              icon:  Align(
+              icon: Align(
                 alignment: Alignment.topRight,
-                child:
-                InkWell(
-                  onTap: (){
+                child: InkWell(
+                  onTap: () {
                     Get.back();
                   },
-                  child: const Icon(Icons.clear,color: AppColors.primary,
-                    size: 24.0,),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AppColors.primary,
+                    size: 24.0,
+                  ),
                 ),
               ),
               title: Text(
@@ -218,7 +219,7 @@ class AddNewCategoryController extends GetxController {
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
-      } else if (res.statusCode == ApiConstants.statusCode403) {
+      } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -262,7 +263,8 @@ class AddNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back();
       } else {
@@ -286,7 +288,8 @@ class AddNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       debugPrint("GET CATEGORY DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
             value.body["data"]['category']['category_name'] ?? "";
         categoryImageDynamicLinkfromServer.value =
@@ -295,7 +298,7 @@ class AddNewCategoryController extends GetxController {
             value.body["data"]['category']['image']['orignal_url'] ?? "";
         isFeaturedCategory.value =
             value.body["data"]['category']['is_featured_category'] ?? false;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -338,7 +341,7 @@ class AddNewCategoryController extends GetxController {
         Get.back();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

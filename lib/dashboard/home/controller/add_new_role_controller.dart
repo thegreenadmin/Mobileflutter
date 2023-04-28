@@ -121,7 +121,7 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getRoleListModel = GetRoleListModel.fromJson(value.body);
         storeRoleList.value = getRoleListModel.data!.storeRoles!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -162,8 +162,8 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-         Get.back();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -200,7 +200,7 @@ class AddNewRoleController extends GetxController {
           controllerList
               .addAll(moduleList[i].controllers as Iterable<Controllers>);
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -239,7 +239,7 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetStoreRole();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -291,7 +291,7 @@ class AddNewRoleController extends GetxController {
             permissionListMerged.add(permissionList[indexIs]);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -336,8 +336,8 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-          Get.back();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

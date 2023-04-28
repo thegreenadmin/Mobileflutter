@@ -149,42 +149,48 @@ class _MoreScreenState extends State<MoreScreen> {
               ],
             ),
           ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              Get.to(const ContactUsScreen());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.contactUs,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.contactUsText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
+          SharedPreferenceStorage.getData(Role.role.value) ==
+                  Role.customerRoleText
+              ? const Divider(
+                  thickness: 1,
+                  height: 40,
                 )
-              ],
-            ),
-          ),
+              : height0SizedBox,
+          SharedPreferenceStorage.getData(Role.role.value) ==
+                  Role.customerRoleText
+              ? InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    Get.to(const ContactUsScreen());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            ImageConstants.contactUs,
+                            color: AppColors.primary,
+                            scale: 2.5,
+                          ),
+                          width18SizedBox,
+                          Text(StringConstants.contactUsText,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                      Image.asset(
+                        ImageConstants.arrowForward,
+                        scale: 3.4,
+                        color: AppColors.blacklight,
+                      )
+                    ],
+                  ),
+                )
+              : height0SizedBox,
           const Divider(
             thickness: 1,
             height: 40,

@@ -102,9 +102,9 @@ class AddNewStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-      // apiGetCountries();
-      getGkey();
-      apiGetDeliveryServices();
+    // apiGetCountries();
+    getGkey();
+    apiGetDeliveryServices();
   }
 
   getGkey() async {
@@ -144,15 +144,17 @@ class AddNewStoreController extends GetxController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              icon:  Align(
+              icon: Align(
                 alignment: Alignment.topRight,
-                child:
-                InkWell(
-                  onTap: (){
+                child: InkWell(
+                  onTap: () {
                     Get.back();
                   },
-                  child: const Icon(Icons.clear,color: AppColors.primary,
-                    size: 24.0,),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AppColors.primary,
+                    size: 24.0,
+                  ),
                 ),
               ),
               title: const Text(
@@ -287,7 +289,7 @@ class AddNewStoreController extends GetxController {
         }
 
         return responseData;
-      } else if (res.statusCode == ApiConstants.statusCode403) {
+      } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -368,7 +370,7 @@ class AddNewStoreController extends GetxController {
         countryTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -402,7 +404,7 @@ class AddNewStoreController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data!.deliveryServices!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -437,7 +439,7 @@ class AddNewStoreController extends GetxController {
           countryId!.value = countriesList[0].countryId!;
         }
         apiGetStates();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -477,7 +479,7 @@ class AddNewStoreController extends GetxController {
         } else {
           stateId.value = statesList[0].stateId.toString();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

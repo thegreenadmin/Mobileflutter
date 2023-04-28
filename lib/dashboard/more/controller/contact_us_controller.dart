@@ -1,6 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class ContactUsController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -28,9 +32,52 @@ class ContactUsController extends GetxController {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {} catch (_) {}
+      try {
+        apiContactUs();
+      } catch (_) {}
     } else {
       autoValidate.value = true;
     }
+  }
+
+  //Contact us Api
+  Future apiContactUs() async {
+    Map data = {
+      "name": nameTextController.text.trim(),
+      "email": emailTextController.text.trim(),
+      "subject": subjectTextController.text.trim(),
+      "message": messageTextController.text.trim(),
+    };
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Content-Type": "application/json"
+    };
+    debugPrint("CREATE USER BODY********** $data");
+    debugPrint(
+        "CREATE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().utilsQueryCreate}");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().utilsQueryCreate,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("CREATE USER RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        nameTextController.clear;
+        emailTextController.clear;
+        subjectTextController.clear;
+        messageTextController.clear;
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 }
