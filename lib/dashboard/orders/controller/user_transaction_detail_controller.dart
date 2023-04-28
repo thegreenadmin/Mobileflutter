@@ -9,8 +9,6 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserTransactionDetailController extends GetxController {
-
-
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
   RxString? storeId = "".obs;
@@ -29,8 +27,6 @@ class UserTransactionDetailController extends GetxController {
     userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
     apiGetUserOrderTransactionHistory();
   }
-
- 
 
   RxList horizontalTabList = [
     StringConstants.janText,
@@ -86,15 +82,16 @@ class UserTransactionDetailController extends GetxController {
         } else if (value.body["data"]["transaction"]['order_transaction'] !=
             null) {
           orderId!.value = value.body["data"]["transaction"]
-                  ["order_transaction"]['order_transaction_id']
+                  ["order_transaction"]['order_id']
               .toString();
           orderAmount!.value = value.body["data"]["transaction"]
                   ["order_transaction"]['transaction']['transaction_amount']
               .toStringAsFixed(2);
           storeName!.value =
-              value.body["data"]["transaction"]["store"]['store_name']??"";
-          storeImage!.value =
-              value.body["data"]["transaction"]["store"]['logo']['dynamic_url']??"";
+              value.body["data"]["transaction"]["store"]['store_name'] ?? "";
+          storeImage!.value = value.body["data"]["transaction"]["store"]['logo']
+                  ['dynamic_url'] ??
+              "";
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
                 value.body["data"]["transaction"]['createdAt'].toString()),

@@ -11,7 +11,6 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/input_add_product.dart';
 import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
     as quantity_model;
-import 'package:thegreenmall/dashboard/home/view/store_owner/manage_product_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -137,9 +136,9 @@ class ManageStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (imageFileList!.length < 1) {
-          Utility.showToast("Please upload at least one image");
+          Utility.showToast(AlertStringConstants.pleaseUploadAtLeastOneImageText);
         } else if (selectedCategories.isEmpty) {
-          Utility.showToast("Please select categories");
+          Utility.showToast(AlertStringConstants.pleaseSelectCategoriesText);
         } else {
           apiCreateProduct();
           await apiGetProductList();
@@ -239,7 +238,7 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -272,7 +271,7 @@ class ManageStoreController extends GetxController {
         quantityListResponse =
             quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -304,7 +303,7 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -318,7 +317,7 @@ class ManageStoreController extends GetxController {
   Future apiCreateProduct() async {
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
-    product.quantityTypeId = int.parse(quantityValue.value??"0")??0;
+    product.quantityTypeId = int.parse(quantityValue.value ) ;
     product.quantity = int.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();
@@ -381,10 +380,8 @@ class ManageStoreController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         apiGetCategoriesList();
-        Future.delayed(const Duration(milliseconds: 10), () {
-          Get.back();
-          Get.back();
-        });
+        Get.back();
+        Get.back();
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -401,7 +398,7 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -452,7 +449,7 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -567,7 +564,7 @@ class ManageStoreController extends GetxController {
           }
         }
         isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -672,9 +669,7 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Future.delayed(const Duration(milliseconds: 200), () {
-          Get.back();
-        });
+        Get.back();
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -691,7 +686,7 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -727,7 +722,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetProductList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -763,7 +758,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetCategoriesList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

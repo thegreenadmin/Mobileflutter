@@ -130,7 +130,8 @@ class _UserTransactionDetailScreenState
                                     Obx(() => Text(
                                         userTransactionDetailController
                                                 .storeName!.isEmpty
-                                            ? "Wallet Transaction"
+                                            ? StringConstants
+                                            .walletTransactionText
                                             : userTransactionDetailController
                                                 .storeName!.value,
                                         style: const TextStyle(

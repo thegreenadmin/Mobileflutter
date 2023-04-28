@@ -3,7 +3,6 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
-import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -128,8 +127,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     themeColor: Colors.blue,
                     textColor: Colors.black,
                     cardNumberDecoration: InputDecoration(
-                      labelText: 'Number',
-                      hintText: 'XXXX XXXX XXXX XXXX',
+                      labelText: StringConstants.numberText,// 'Number',
+                      hintText: StringConstants.x4Text,//'XXXX XXXX XXXX XXXX',
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
@@ -140,23 +139,23 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: 'Expired Date',
-                      hintText: 'XX/XX',
+                      labelText: StringConstants.expiredDateText,//'Expired Date',
+                      hintText: StringConstants.x2Text,//'XX/XX',
                     ),
                     cvvCodeDecoration: InputDecoration(
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: 'CVV',
-                      hintText: 'XXX',
+                      labelText: StringConstants.cvvText,//'CVV',
+                      hintText: StringConstants.x1Text,//'XXX',
                     ),
                     cardHolderDecoration: InputDecoration(
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: 'Card Holder',
+                      labelText: StringConstants.cardHolderText,//'Card Holder',
                     ),
                     onCreditCardModelChange:
                         addCardController.onCreditCardModelChange,
@@ -171,7 +170,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     ),
                     onTap: () async {
                       if (addCardController.cardHolderName.isEmpty) {
-                        Utility.showToast("Please fill all the details");
+                        Utility.showToast(AlertStringConstants.pleaseFillAllDetailsText);
                       } else if (formKey.currentState!.validate()) {
                         addCardController.apiCreateStripeToken();
                       }

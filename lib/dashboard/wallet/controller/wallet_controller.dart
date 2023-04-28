@@ -5,6 +5,7 @@ import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
+import 'package:thegreenmall/dashboard/wallet/view/webview_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -46,6 +47,8 @@ class WalletController extends GetxController {
   RxString ownerSelectedStore = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
+  TextEditingController startTimeTextController = TextEditingController();
+  TextEditingController endTimeTextController = TextEditingController();
 
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
@@ -55,7 +58,7 @@ class WalletController extends GetxController {
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
   RxString? userWalletBalance = "".obs;
-  RxString? ownerWalletBalance = "".obs;
+  RxString? ownerWalletBalance = "0.00".obs;
   RxString? storeNameValue = "".obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
@@ -69,7 +72,7 @@ class WalletController extends GetxController {
       apiGetCardList();
       apiGetUserWalletBalance();
     } else {
-      apiGetOwnerWalletBalance();
+      apiGetStoreList();
     }
   }
 
@@ -133,10 +136,7 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
-        if (storeList.isNotEmpty) {
-          ownerSelectedStore.value = storeList[0].storeId.toString();
-        }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -206,9 +206,8 @@ class WalletController extends GetxController {
             value.body['code'] == ApiConstants.statusCode200) {
           Get.back();
           await apiGetCardList();
-        } else if (value.statusCode == ApiConstants.statusCode403) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -240,12 +239,15 @@ class WalletController extends GetxController {
         cardListModel = CardListModel.fromJson(value.body);
         cardList.value = cardListModel.data?.cards ?? [];
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if(!value.body['message'].toString().toLowerCase().contains("stripe")){
+        if (!value.body['message']
+            .toString()
+            .toLowerCase()
+            .contains("stripe")) {
           Utility.showToast(value.body['message']);
         }
       }
@@ -285,13 +287,10 @@ class WalletController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Future.delayed(const Duration(milliseconds: 200), () {
-            Get.back();
-          });
+          Get.back();
           Utility.showToast(value.body['message']);
-        } else if (value.statusCode == ApiConstants.statusCode403) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -323,7 +322,7 @@ class WalletController extends GetxController {
         userWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -360,7 +359,7 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetCardList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -394,12 +393,53 @@ class WalletController extends GetxController {
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  apiCreateStoreStripeAccount() {
+    isLoading.value = true;
+    debugPrint(
+        "CREATE STRIPE ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeStripeAccountCreate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map<String, String> body = {"store_id": ownerSelectedStore.value};
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeStripeAccountCreate,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $body");
+      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $value");
+      debugPrint("CREATE STRIPE ACCOUNT RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        String url = value.body["data"]['link'] ?? "";
+        await Get.to(WebViewExample(
+          url: url,
+        ));
+        ownerSelectedStore.value = "";
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        Utility.showToast(value.body['message']);
       }
     });
   }

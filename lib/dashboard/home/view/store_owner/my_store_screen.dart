@@ -64,6 +64,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     onTap: () {
                                       Get.to(const AddOfferScreen(), arguments: {
                                         "isFrom": StringConstants.addOfferText,
+                                      })?.then((v){
+                                        ownerStoresController.getApiData();
                                       });
                                     },
                                     height: 50,

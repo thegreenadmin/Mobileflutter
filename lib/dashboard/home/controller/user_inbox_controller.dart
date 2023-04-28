@@ -54,7 +54,7 @@ class UserInboxController extends GetxController {
         inboxList.value = inboxModel.data?.messageHeads ?? [];
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -65,8 +65,7 @@ class UserInboxController extends GetxController {
   }
 
   //Delete USER messages
-  Future apiDeleteUserMessages(
-      {String messageHeadId = ""}) async {
+  Future apiDeleteUserMessages({String messageHeadId = ""}) async {
     debugPrint(
         "DELETE USER MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().messageDelete}");
     Map<String, String> headers = {
@@ -93,7 +92,7 @@ class UserInboxController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetInboxList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

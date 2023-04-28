@@ -58,7 +58,7 @@ class NotificationListController extends GetxController {
             notificationListModel.data?.notifications ?? [];
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

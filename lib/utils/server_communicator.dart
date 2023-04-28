@@ -1,13 +1,15 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  String baseUrlWithoutApi = "http://54.190.192.105:3520/";
 
   // ********************** STAGING SERVER *************
 
-  String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  //String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -72,6 +74,11 @@ class ServerCommunicator {
 
   String productDetails = 'store/product/details';
   String placeOrder = 'order/create';
+  String pageTerms = 'page/terms';
+  String pagePolicy = 'page/privacy';
+  String pageFaq = 'page/faq';
+  String pageAbout = 'page/about';
+
 //Q
 //R
   String returnOrder = 'order/item/return/create';
@@ -130,6 +137,7 @@ class ServerCommunicator {
   String storeCancelOrder = 'store/order/cancel/create';
   String storeTransactionDetail = 'store/transaction/details';
   String storeWalletBalance = 'store/wallet/balance';
+  String storeStripeAccountCreate = 'store/stripe/account/create';
 
 //T
 //U
@@ -145,6 +153,8 @@ class ServerCommunicator {
   String userWalletTransactionList = 'user/wallet/transactions/list';
   String notificationSettingSave = 'notification/setting/save';
   String userWalletTransactionDetail = 'user/wallet/transaction/details';
+  String utilsQueryCreate = '/utils/query/create';
+  
 
 //V
 //W

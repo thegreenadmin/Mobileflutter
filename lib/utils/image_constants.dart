@@ -38,6 +38,7 @@ class ImageConstants {
   static const String dollar = '$assetsIcon/dollar.png';
   static const String door = '$assetsIcon/door.png';
   static const String dumy = '$assetsIcon/dumy.png';
+  static const String debitcard = '$assetsIcon/debitcard.png';
   //E
   static const String edit = '$assetsIcon/edit.png';
   static const String editstore = '$assetsIcon/editstore.png';
@@ -48,9 +49,10 @@ class ImageConstants {
   static const String fav = '$assetsIcon/fav.png';
   static const String favoutline = '$assetsIcon/favoutline.png';
   static const String filterbutton = '$assetsIcon/filterbutton.png';
-  static const String gender = '$assetsIcon/gender.png';
+
   //G
   static const String greenmall420 = '$assetsIcon/greenmall420.png';
+  static const String gender = '$assetsIcon/gender.png';
   //H
   static const String healthy = '$assetsIcon/healthy.png';
   static const String historymenu = '$assetsIcon/historymenu.png';

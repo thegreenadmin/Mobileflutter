@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
+import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -71,7 +73,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "aboutus",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageAbout)
+                      .toString()));
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
@@ -108,7 +116,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "faq",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageFaq)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -135,42 +149,48 @@ class _MoreScreenState extends State<MoreScreen> {
               ],
             ),
           ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              Get.to(const ContactUsScreen());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.contactUs,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.contactUsText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
+          SharedPreferenceStorage.getData(Role.role.value) ==
+                  Role.customerRoleText
+              ? const Divider(
+                  thickness: 1,
+                  height: 40,
                 )
-              ],
-            ),
-          ),
+              : height0SizedBox,
+          SharedPreferenceStorage.getData(Role.role.value) ==
+                  Role.customerRoleText
+              ? InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    Get.to(const ContactUsScreen());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            ImageConstants.contactUs,
+                            color: AppColors.primary,
+                            scale: 2.5,
+                          ),
+                          width18SizedBox,
+                          Text(StringConstants.contactUsText,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                      Image.asset(
+                        ImageConstants.arrowForward,
+                        scale: 3.4,
+                        color: AppColors.blacklight,
+                      )
+                    ],
+                  ),
+                )
+              : height0SizedBox,
           const Divider(
             thickness: 1,
             height: 40,
@@ -178,7 +198,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () async {
+              Get.to(WebviewPageScreen(
+                  isFrom: "terms",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pageTerms)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -212,7 +238,13 @@ class _MoreScreenState extends State<MoreScreen> {
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Get.to(WebviewPageScreen(
+                  isFrom: "privacy",
+                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                          ServerCommunicator().pagePolicy)
+                      .toString()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

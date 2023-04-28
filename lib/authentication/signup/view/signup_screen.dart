@@ -2,17 +2,20 @@ import 'dart:io';
 
 import 'package:country_codes/country_codes.dart';
 import 'package:devicelocale/devicelocale.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
+import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -39,14 +42,14 @@ class _SignupScreenState extends State<SignupScreen> {
     final Locale? deviceLocale = CountryCodes.getDeviceLocale();
     final CountryDetails details = CountryCodes.detailsForLocale();
     signupController.selectedCountryCode.value = details.dialCode!;
-    debugPrint("selectedCountryCode----${signupController.selectedCountryCode.value}");
+    debugPrint(
+        "selectedCountryCode----${signupController.selectedCountryCode.value}");
   }
 
   @override
   void initState() {
     super.initState();
     getCurrentLocale();
-
   }
 
   @override
@@ -103,13 +106,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height25SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.firstName.value = value;
                         },
                         textInputAction: TextInputAction.next,
                         autofocus: false,
-                         textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.words,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(40),
                         ],
@@ -171,7 +175,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.lastName.value = value;
                         },
@@ -191,7 +196,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             return AlertStringConstants.pleaseEnterLastNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           prefixIcon: Image.asset(
                             ImageConstants.profile,
@@ -236,7 +242,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
                           signupController.email.value = value;
                         },
@@ -304,7 +311,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )),
                     height15SizedBox,
-                    IntlPhoneField(initialCountryCode: 'US',
+                    IntlPhoneField(
+                      initialCountryCode: 'US',
                       controller: signupController.phoneNumberTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -372,7 +380,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
                         date = (await showDatePicker(
-                          helpText: "Select a Date",
+                          helpText: StringConstants.selectDateText,
                           builder: (BuildContext context, Widget? child) {
                             return Theme(
                               data: ThemeData.light().copyWith(
@@ -407,7 +415,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           signupController.dateTextController.clear();
                         }
                       },
-                      child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.done,
                         enabled: false,
                         style: const TextStyle(
@@ -492,14 +501,53 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         width8SizedBox,
-                        const Flexible(
+                        Flexible(
                           flex: 9,
-                          child: Text(
-                            "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                height: 0),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text:
+                                        'By checking this box, you agree to the green mall Inc’s '),
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.to(WebviewPageScreen(
+                                          isFrom: "terms",
+                                          url: Uri.parse(ServerCommunicator()
+                                                      .baseUrlWithoutApi +
+                                                  ServerCommunicator()
+                                                      .pagePolicy)
+                                              .toString()));
+                                    },
+                                  text: 'Terms & Conditions',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const TextSpan(
+                                    text:
+                                        ' and acknowledge the receipts of the green mall Inc’s '),
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.to(WebviewPageScreen(
+                                          isFrom: "privacy",
+                                          url: Uri.parse(ServerCommunicator()
+                                                      .baseUrlWithoutApi +
+                                                  ServerCommunicator()
+                                                      .pagePolicy)
+                                              .toString()));
+                                    },
+                                  text: 'Privacy policy',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

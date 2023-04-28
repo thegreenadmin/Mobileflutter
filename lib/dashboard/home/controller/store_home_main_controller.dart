@@ -91,40 +91,28 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.parameters == null ? false : Get.parameters['isFromHome'] != false) {
-      isFromHome.value = Get.parameters["isFromHome"] =="true"?true:false;
-      print(isFromHome.value);
-      print(isFromHome.value);
-      print(isFromHome.value);
-      print(isFromHome.value);
-      print(isFromHome.value);
-      storeId.value = Get.parameters == null?"" :Get.parameters["storeId"] ?? "";
-      productId.value = Get.parameters == null?"" :Get.parameters["productId"] ?? "";
+    if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
+      isFromHome.value = Get.arguments["isFromHome"] ?? false;
+      storeId.value =
+          Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
+      productId.value =
+          Get.arguments == null ? "" : Get.arguments["productId"] ?? "";
     }
 
     apiGetUserDetailsApi();
     if (isFromHome.value) {
-      Future.delayed(const Duration(milliseconds: 200), () {
-        // storeId.value = Get.arguments == null?"" :Get.arguments["storeId"] ?? "";
-        // productId.value = Get.arguments == null?"" :Get.arguments["productId"] ?? "";
-        nearby.Store store = nearby.Store();
-        store.storeId = storeId.value;
-        storeAddress.value.store = store;
-        Future.delayed(const Duration(milliseconds: 100), () {
-          isFavouriteStore.value = store.isFavouriteStore ?? false;
-        });
-        apiGetStoreDetailsApi();
-        apiGetCartListApi();
-        setupScrollController(Get.context);
-        apiGetShopProductDetailApi();
-        onIndexChange(0);
-      });
+      nearby.Store store = nearby.Store();
+      store.storeId = storeId.value;
+      storeAddress.value.store = store;
+      isFavouriteStore.value = store.isFavouriteStore ?? false;
+      apiGetStoreDetailsApi();
+      apiGetCartListApi();
+      setupScrollController(Get.context);
+      apiGetShopProductDetailApi();
     } else {
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      Future.delayed(const Duration(milliseconds: 100), () {
-        isFavouriteStore.value =
-            storeAddress.value.store?.isFavouriteStore ?? false;
-      });
+      isFavouriteStore.value =
+          storeAddress.value.store?.isFavouriteStore ?? false;
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
       onIndexChange(0);
@@ -170,7 +158,7 @@ class StoreHomeMainController extends GetxController {
         categoriesListResponse =
             categories.StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -206,7 +194,7 @@ class StoreHomeMainController extends GetxController {
         if (userAddress.isNotEmpty) {
           selectedUserAddress.value = userAddress.first;
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -255,7 +243,7 @@ class StoreHomeMainController extends GetxController {
           isDeleteCartItem.value = false;
           Get.offAll(BottomNavigation());
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -316,13 +304,13 @@ class StoreHomeMainController extends GetxController {
           "isFromNotification": false
         });
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
-      } else if(value?.body==null){
+      } else if (value?.body == null) {
         Utility.showToast(AlertStringConstants.somethingWentWrongText);
-      }else {
+      } else {
         Utility.showToast(value?.body['message']);
       }
     });
@@ -363,7 +351,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
         addToCartDialog(context);
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -403,7 +391,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
         apiGetCartListApi();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -443,7 +431,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
         apiGetCartListApi();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -577,7 +565,7 @@ class StoreHomeMainController extends GetxController {
         offersListResponse =
             offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -602,14 +590,14 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("User Wallet Balance *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         walletBalance.value = value?.body["data"]["balance"];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -642,11 +630,12 @@ class StoreHomeMainController extends GetxController {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-        debugPrint("isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        isFavouriteStore.value =  storeDetailsResponse.value.data?.store?.isFavouriteStore??false;
+        debugPrint(
+            "isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        isFavouriteStore.value =
+            storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
         debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
-
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -662,13 +651,17 @@ class StoreHomeMainController extends GetxController {
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
-    UserProvider().getWithHeadersApi(
+    UserProvider()
+        .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}",
-            headers, showLoading: true).then((value) async {
+            headers,
+            showLoading: true)
+        .then((value) async {
       isLoading.value = false;
       debugPrint("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -683,7 +676,7 @@ class StoreHomeMainController extends GetxController {
               .value.data!.product!.cartItems!.first.itemsCount!;
         }
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -749,7 +742,7 @@ class StoreHomeMainController extends GetxController {
             feature_product.FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =
             featureProductListResponse.data?.products ?? [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -921,7 +914,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
         storeAddress.value.store?.isFavouriteStore = true;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -961,7 +954,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
         storeAddress.value.store?.isFavouriteStore = false;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -1001,7 +994,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         apiFeatureProductListApi();
         isFavouriteProduct.value = true;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -1042,7 +1035,7 @@ class StoreHomeMainController extends GetxController {
 
         apiFeatureProductListApi();
         isFavouriteProduct.value = false;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

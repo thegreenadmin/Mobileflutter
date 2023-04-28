@@ -105,7 +105,7 @@ void selectNotification(NotificationResponse notificationResponse) async {
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
   if (notificationData.type == "order") {
-    Future.delayed(const Duration(milliseconds: 1400), () async {
+    Future.delayed(const Duration(milliseconds: 600), () async {
       Get.to(() => const OrdersScreen(), arguments: {
         "isFromTransaction": false,
         "storeId": notificationData.storeId.toString(),
@@ -114,7 +114,7 @@ void selectNotification(NotificationResponse notificationResponse) async {
       });
     });
   } else if (notificationData.type == "offer") {
-    Future.delayed(const Duration(milliseconds: 1400), () async {
+    Future.delayed(const Duration(milliseconds: 600), () async {
       Get.to(() => const OffersScreen(), arguments: {
         "isFromTransaction": false,
         "storeId": notificationData.storeId.toString(),

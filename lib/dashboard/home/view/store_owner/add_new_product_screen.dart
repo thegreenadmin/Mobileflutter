@@ -398,7 +398,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             autovalidateMode:
                             AutovalidateMode.onUserInteraction,
                             validator: (v) {
-                              if (v==null || v?.trim()=='') {
+                              if (v==null || v.trim()=='') {
                                 return AlertStringConstants.pleaseSelectQuantityUnitText;
                               }
                               return null;
@@ -676,13 +676,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller: manageStoreController
                             .contentsAndStrainsTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterContentAndStrainText;
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return AlertStringConstants
+                        //         .pleaseEnterContentAndStrainText;
+                        //   }
+                        //   return null;
+                        // },
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
@@ -743,17 +743,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller:
                             manageStoreController.additionalLinkTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLinkText;
-                          } else if (!GetUtils.isURL(manageStoreController
-                              .additionalLinkTextController.text
-                              .trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidLinkText;
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return AlertStringConstants.pleaseEnterLinkText;
+                        //   } else if (!GetUtils.isURL(manageStoreController
+                        //       .additionalLinkTextController.text
+                        //       .trim())) {
+                        //     return AlertStringConstants
+                        //         .pleaseEnterValidLinkText;
+                        //   }
+                        //   return null;
+                        // },
                         decoration: InputDecoration(
                           hintText:
                               StringConstants.additionalLinksToResearchText,
@@ -944,7 +944,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       autovalidateMode:
                       AutovalidateMode.onUserInteraction,
                       validator: (v) {
-                          if (v==null || v?.trim()=='') {
+                          if (v==null || v.trim()=='') {
                           return AlertStringConstants.pleaseSelectAnyOneText;
                         }
                         return null;
@@ -1333,7 +1333,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                                 validator: (v) {
-                                    if (v==null || v?.trim()=='') {
+                                    if (v==null || v.trim()=='') {
                                     return AlertStringConstants.pleaseSelectAnyOneText;
                                   }
                                   return null;

@@ -106,18 +106,17 @@ class _EditAutoReloadState extends State<EditAutoReload>  with SingleTickerProvi
                         color: AppColors.white,
                         border: Border.all(color:  walletController.type?.value == 1? AppColors.primary:AppColors.blacklight,)
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         walletController.type?.value== 1?
                         Stack(children: [
-                          Image.asset(ImageConstants.circleunfill,scale: 2.1,),
+                          Image.asset(ImageConstants.circleunfill,scale: 2.5,),
                           Image.asset(ImageConstants.circle,scale: 2.5,),
-                        ],)
-                            :
-                        Image.asset(ImageConstants.circleBlackUnFill,scale: 2.1,),
+                        ],) :
+                        Image.asset(ImageConstants.circleBlackUnFill,scale: 2.5,),
                         width8SizedBox,
                         Text(
                           StringConstants.periodicallyText,

@@ -57,9 +57,7 @@ class AddCardController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetUserWalletBalance();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      apiGetCardList();
-    });
+    apiGetCardList();
   }
 
   bool validateAndSave() {
@@ -131,10 +129,9 @@ class AddCardController extends GetxController {
         parts = [];
         month = "";
         year = "";
-
-      } else if(response.statusCode == 402){
-        Utility.showToast('Please enter valid card number');
-      }else {
+      } else if (response.statusCode == 402) {
+        Utility.showToast(AlertStringConstants.pleaseEnterValidCardText);
+      } else {
         debugPrint(response.reasonPhrase);
       }
     } catch (error) {
@@ -168,7 +165,6 @@ class AddCardController extends GetxController {
         //             value.body['code'] == ApiConstants.statusCode200) {
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
-
           await apiGetCardList();
           cardNumber.value = "";
           expiryDate.value = "";
@@ -189,9 +185,8 @@ class AddCardController extends GetxController {
           isCvvFocused = false.obs;
 
           Get.back();
-        } else if (value.statusCode == ApiConstants.statusCode403) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -220,17 +215,19 @@ class AddCardController extends GetxController {
       debugPrint("GET CARD LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-
         cardListModel = CardListModel.fromJson(value.body);
         cardList.value = cardListModel.data!.cards ?? [];
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if(!value.body['message'].toString().toLowerCase().contains("stripe")){
+        if (!value.body['message']
+            .toString()
+            .toLowerCase()
+            .contains("stripe")) {
           Utility.showToast(value.body['message']);
         }
       }
@@ -270,13 +267,11 @@ class AddCardController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Future.delayed(const Duration(milliseconds: 200), () {
-            Get.back();
-          });
+          Get.back();
+
           Utility.showToast(value.body['message']);
-        } else if (value.statusCode == ApiConstants.statusCode403) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
-          Future.delayed(const Duration(milliseconds: 800), () {});
         } else {
           Utility.showToast(value.body['message']);
         }
@@ -308,7 +303,7 @@ class AddCardController extends GetxController {
         userWalletBalance!.value =
             value.body['data']['balance'].toStringAsFixed(2);
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -345,7 +340,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetCardList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

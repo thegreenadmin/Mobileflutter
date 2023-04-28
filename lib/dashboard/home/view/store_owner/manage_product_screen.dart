@@ -66,8 +66,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           fontWeight: FontWeight.w400,
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  ? AppColors.blacklight
+                                  : AppColors.primary,
                         ),
                       ),
                     ],
@@ -104,8 +104,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           fontWeight: FontWeight.w400,
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
-                                  ? AppColors.blacklight
-                                  : AppColors.primary,
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                     ],
