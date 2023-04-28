@@ -552,7 +552,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(initialCountryCode: 'US',
+                    IntlPhoneField(
+                      initialCountryCode: 'US',
                       controller:
                           addNewStoreController.storePhoneTextController,
                       inputFormatters: [
@@ -658,10 +659,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 addNewStoreController.kGoogleApiKey);
 
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            addNewStoreController.addressLine2TextController
-                                .text = addresses.streetNumber.toString();
-                          }
                           if (addresses.city.isNotEmpty) {
                             addNewStoreController
                                 .townOrCityTextController.text = addresses.city;

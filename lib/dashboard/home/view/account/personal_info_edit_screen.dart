@@ -319,10 +319,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             googleMapApiKey: accountController.kGoogleApiKey);
 
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            accountController.addressLine2TextController.text =
-                                addresses.streetNumber.toString();
-                          }
                           if (addresses.city.isNotEmpty) {
                             accountController.townOrCityTextController.text =
                                 addresses.city;

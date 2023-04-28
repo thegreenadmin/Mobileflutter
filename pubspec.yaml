@@ -62,6 +62,8 @@ dependencies:
   in_app_purchase: ^3.1.5
   webview_flutter: 
   url_launcher: ^6.1.10
+  pay: ^1.1.1
+  flutter_localization: ^0.1.10
   
   
   

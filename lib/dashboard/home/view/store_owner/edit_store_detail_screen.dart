@@ -554,7 +554,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(initialCountryCode: 'US',
+                    IntlPhoneField(
+                      initialCountryCode: 'US',
                       controller:
                           searchStoreOwnerController.phoneTextController,
                       inputFormatters: [
@@ -662,11 +663,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             googleMapApiKey:
                                 searchStoreOwnerController.kGoogleApiKey);
                         if (addresses.address != null) {
-                          if (addresses.address.isNotEmpty) {
-                            searchStoreOwnerController
-                                .addressLine2TextController
-                                .text = addresses.streetNumber.toString();
-                          }
                           if (addresses.city.isNotEmpty) {
                             searchStoreOwnerController
                                 .townOrCityTextController.text = addresses.city;
