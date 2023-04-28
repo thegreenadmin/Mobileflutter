@@ -20,6 +20,21 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
       Get.put(AddOffersController());
 
   @override
+  void initState() {
+    addOffersController.apiGetStoreList(context);
+    addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
+    if (addOffersController.isFrom.value == StringConstants.addOfferText) {
+    } else {
+      addOffersController.storeId.value = Get.parameters["storeId"] ?? "";
+      addOffersController.offerId.value = Get.parameters["offerId"] ?? "";
+      if (addOffersController.storeId.value.isNotEmpty && addOffersController.offerId.value.isNotEmpty) {
+        addOffersController.apiGetOffersDetail(context);
+      }
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -38,7 +53,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              // Get.back();
+                              Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -593,7 +609,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(false);
+                        addOffersController.validateAndSubmit(false,context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

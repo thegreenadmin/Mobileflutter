@@ -200,11 +200,17 @@ class _AccountScreenState extends State<AccountScreen> {
                           Role.customerRoleText) {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.storeOwnerRoleText);
-                        await Get.offAll(BottomNavigation());
+                        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+                          builder: (_) => BottomNavigation(),
+                        ));
+                        // await Get.offAll(BottomNavigation());
                       } else {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.customerRoleText);
-                        await Get.offAll(BottomNavigation());
+                        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+                          builder: (_) => BottomNavigation(),
+                        ));
+                        // await Get.offAll(BottomNavigation());
                       }
                     },
                     child: Padding(
@@ -752,7 +758,10 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         onTap: () async {
                           SharedPreferenceStorage.clearData();
-                          await Get.offAll(const StartJourneyScreen());
+                          await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+                            builder: (_) => const StartJourneyScreen(),
+                          ));
+                          // await Get.offAll(const StartJourneyScreen());
                         },
                         height: 50,
                         textColor: AppColors.red,

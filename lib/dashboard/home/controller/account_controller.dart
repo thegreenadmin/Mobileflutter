@@ -125,7 +125,7 @@ class AccountController extends GetxController {
               maxHeight: 900);
           if (pickedFile != null) {
             idProofImage.value = pickedFile;
-            await apiUploadImage();
+            await apiUploadImage(context);
             update();
           } else {
             // api();
@@ -140,7 +140,7 @@ class AccountController extends GetxController {
           maxHeight: 900);
       if (pickedFile != null) {
         idProofImage.value = pickedFile;
-        await apiUploadImage();
+        await apiUploadImage(context);
         update();
       } else {
         // api();

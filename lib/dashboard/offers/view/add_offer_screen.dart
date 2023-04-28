@@ -19,6 +19,22 @@ class AddOfferScreen extends StatefulWidget {
 class _AddOfferScreenState extends State<AddOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
+
+  @override
+  void initState() {
+    addOffersController.apiGetStoreList(context);
+    addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
+    if (addOffersController.isFrom.value == StringConstants.addOfferText) {
+    } else {
+      addOffersController.storeId.value = Get.parameters["storeId"] ?? "";
+      addOffersController.offerId.value = Get.parameters["offerId"] ?? "";
+      if (addOffersController.storeId.value.isNotEmpty && addOffersController.offerId.value.isNotEmpty) {
+        addOffersController.apiGetOffersDetail(context);
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +54,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              // Get.back();
+                              Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -609,7 +626,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(true);
+                        addOffersController.validateAndSubmit(true,context);
                       },
                       height: 50,
                       text: StringConstants.saveText,
