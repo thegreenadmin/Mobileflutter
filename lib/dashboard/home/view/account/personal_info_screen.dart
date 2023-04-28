@@ -473,8 +473,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                               BorderRadius.circular(18.0),
                                           side: const BorderSide(
                                               color: AppColors.primary)))),
-                              child: const Text(
-                                "Remove",
+                              child: Text(
+                                StringConstants.removeText,
                                 style: TextStyle(color: AppColors.white),
                               ),
                             ),
@@ -530,9 +530,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                               side: const BorderSide(
                                                   color: AppColors
                                                       .primary)))),
-                                  child: const Text(
-                                    "Upload",
-                                    style: TextStyle(
+                                  child: Text(
+                                    StringConstants.uploadText,
+                                    style: const TextStyle(
                                         color: AppColors.white),
                                   ),
                                 ),

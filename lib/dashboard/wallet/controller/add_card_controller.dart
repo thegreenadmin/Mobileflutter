@@ -130,7 +130,7 @@ class AddCardController extends GetxController {
         month = "";
         year = "";
       } else if (response.statusCode == 402) {
-        Utility.showToast('Please enter valid card number');
+        Utility.showToast(AlertStringConstants.pleaseEnterValidCardText);
       } else {
         debugPrint(response.reasonPhrase);
       }

@@ -66,6 +66,7 @@ class StringConstants {
 
   //C
   static String createYourAccountText = "Create your Account";
+  static String createStripeAccountText = "Create Stripe Account";
   static String createAccountText = "Create account";
   static String continueShoppingText = "Continue Shopping";
   static String createAnAccountText = "Create an account";
@@ -79,6 +80,8 @@ class StringConstants {
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";
+  static String cvvText = "CVV";
+  static String cardHolderText = "Card Holder";
   static String changeText = "Change";
   static String categoriesNameText = "Categories Name";
   static String categoryNameText = "Category Name";
@@ -139,6 +142,7 @@ class StringConstants {
   static String enabledText = "Enabled ";
   static String employeeTimingText = "Employee Timing";
   static String editOfferText = "Edit Offer";
+  static String expiredDateText = "Expired Date";
   static String editAutoReloadText = "Edit Auto reload";
   //F
   static String firstNameText = "First Name";
@@ -211,6 +215,7 @@ class StringConstants {
   static String nearYouText = " near you";
   static String notificationPreferencesText = "Notification Preferences";
   static String nameText = "Name";
+  static String numberText = "Number";
   static String inboxMessages = "Inbox Messages";
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
@@ -377,6 +382,7 @@ class StringConstants {
   static String townOrCityText = "Town or City";
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
+  static String transactionTypeText = "Transaction Type";
   static String taxText = "Tax";
   static String theImageMustBeAtLeastText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
@@ -435,6 +441,9 @@ class StringConstants {
   static String walletTransactionText = "Wallet Transaction";
 
   //X
+  static String x1Text = "XXX";
+  static String x2Text = "XX/XX";
+  static String x4Text = "XXXX XXXX XXXX XXXX";
 
   //Y
   static String your420MarketPlace = "Your 420 Market Place";
@@ -484,6 +493,7 @@ class AlertStringConstants {
       "Only 5 maximum images can select at a time";
 
   //P
+  static String pleaseFillAllDetailsText = "Please fill all the details";
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseSelectOneFilterText = "Please select one filter";
   static String pleaseSelectQuantityUnitText = "Please select quantity unit";
@@ -541,11 +551,13 @@ class AlertStringConstants {
   static String pleaseEnterValidLinkText = "Please enter valid link";
   static String pleaseEnterValidDaysText = "Please enter days here";
   static String pleaseSelectLogoText = "Please select logo";
+  static String pleaseSelectCategoriesText = "Please select categories";
   static String pleaseSelectBannerText = "Please select banner";
   static String pleaseSelectAtleastOnePermissionText =
       "Please select at least one permission";
   static String pleaseEnterOfferNameText = "Please enter offer name";
   static String pleaseUploadImageText = "Please upload Image";
+  static String pleaseUploadAtLeastOneImageText = "Please upload at least one image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
   static String pleaseSelectProductToProceedText =
@@ -554,6 +566,7 @@ class AlertStringConstants {
       "Please add at least one item in cart";
   static String pleaseSelectPaymentTypeText = "Please select payment type";
   static String pleaseSelectCardText = "Please select card";
+  static String pleaseEnterValidCardText = "Please enter valid card number";
   static String pleaseSelectAnyOneText = "Please select any one";
   static String pleaseUploadCategoryImage = "Please upload category Image";
 

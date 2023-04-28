@@ -470,7 +470,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       index]
                                                                   .store ==
                                                               null
-                                                          ? "Wallet Transaction"
+                                                          ? StringConstants.walletTransactionText
                                                           : transactionController
                                                                   .userTransactionList![
                                                                       index]
@@ -489,22 +489,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     index]
                                                                 .orderTransaction !=
                                                             null
-                                                        ? "\$" +
-                                                            transactionController
-                                                                .userTransactionList![
-                                                                    index]
-                                                                .orderTransaction!
-                                                                .transaction!
-                                                                .transactionAmount!
-                                                                .toStringAsFixed(
-                                                                    2)
-                                                        : "\$" +
-                                                            transactionController
-                                                                .userTransactionList![
-                                                                    index]
-                                                                .netBalance
-                                                                .toStringAsFixed(
-                                                                    2),
+                                                        ? "\$${transactionController.userTransactionList![index]
+                                                        .orderTransaction!
+                                                        .transaction!
+                                                        .transactionAmount!
+                                                        .toStringAsFixed(
+                                                        2)}"
+                                                        : "\$${transactionController
+                                                        .userTransactionList![index]
+                                                        .netBalance
+                                                        .toStringAsFixed(
+                                                        2)}",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -519,9 +514,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  const Text(
-                                                      "Transaction Type:",
-                                                      style: TextStyle(
+                                                  Text("${StringConstants.transactionTypeText}: ",
+                                                      style: const TextStyle(
                                                           color:
                                                               AppColors.black,
                                                           fontWeight:
@@ -812,14 +806,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                               FontWeight.w500,
                                                           fontSize: 16)),
                                                   Text(
-                                                    "\$" +
-                                                        transactionController
-                                                            .ownerOrderTransactionList![
-                                                                index]
-                                                            .orderTransaction!
-                                                            .transaction!
-                                                            .transactionAmount!
-                                                            .toStringAsFixed(2),
+                                                    "\$${ transactionController
+                                                        .ownerOrderTransactionList![
+                                                    index]
+                                                        .orderTransaction!
+                                                        .transaction!
+                                                        .transactionAmount!
+                                                        .toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -835,9 +828,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  const Text(
-                                                      "Transaction Type:",
-                                                      style: TextStyle(
+                                                  Text(
+                                                      "${StringConstants.transactionTypeText}: ",
+                                                      style:const TextStyle(
                                                           color:
                                                               AppColors.black,
                                                           fontWeight:

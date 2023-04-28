@@ -360,9 +360,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    const Text(
-                                                      "Unit Price: ",
-                                                      style: TextStyle(
+                                                    Text("${StringConstants.unitPriceText}: ",
+                                                      style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:
                                                               AppColors.black,

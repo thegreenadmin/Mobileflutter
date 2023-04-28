@@ -176,9 +176,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       fontWeight: FontWeight.w500),
                                 )),
                             height8SizedBox,
-                            const Text(
-                              "Total Balance",
-                              style: TextStyle(
+                             Text(StringConstants.totalBalanceText,
+                              style:const TextStyle(
                                   color: AppColors.white, fontSize: 18),
                             ),
                             height12SizedBox,
@@ -205,9 +204,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       fontWeight: FontWeight.w500),
                                 )),
                             height8SizedBox,
-                            const Text(
-                              "Total Balance",
-                              style: TextStyle(
+                             Text(StringConstants.totalBalanceText,
+                              style: const TextStyle(
                                   color: AppColors.black, fontSize: 18),
                             ),
                             height12SizedBox,
