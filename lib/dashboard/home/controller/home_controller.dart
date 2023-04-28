@@ -212,7 +212,7 @@ class HomeController extends GetxController {
               .add(userOfferList[i].image!.dynamicUrl!.toString());
         }
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -268,7 +268,7 @@ class HomeController extends GetxController {
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
             userFeaturedProductModel.data!.products!;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -320,7 +320,7 @@ class HomeController extends GetxController {
             ownerCrouselImgList.add(getOwnerOfferlist[i].image!.dynamicUrl!);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -358,7 +358,7 @@ class HomeController extends GetxController {
             OwnerFeaturedProductModel.fromJson(value?.body);
         ownerFeatureProductList.value =
             ownerFeaturedProductModel.data?.products ?? [];
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

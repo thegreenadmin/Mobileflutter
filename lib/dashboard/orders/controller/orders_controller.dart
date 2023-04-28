@@ -222,7 +222,8 @@ class OrdersController extends GetxController {
                         ),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -240,7 +241,8 @@ class OrdersController extends GetxController {
                                   .pleaseEnterProductNameText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.yourThoughtText,
                             hintStyle: const TextStyle(
@@ -437,7 +439,8 @@ class OrdersController extends GetxController {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -455,7 +458,8 @@ class OrdersController extends GetxController {
                                   .pleaseEnterProductNameText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.yourThoughtText,
                             hintStyle: const TextStyle(
@@ -614,7 +618,7 @@ class OrdersController extends GetxController {
         ratingValue.value = 0.0;
         Get.back();
         // Get.offAll(BottomNavigation());
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -663,7 +667,7 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
         Get.back();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -694,7 +698,7 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatusListResponse = OrderStatusListResponse.fromJson(value?.body);
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -760,7 +764,7 @@ class OrdersController extends GetxController {
         orderList.toSet().toList();
         page.value++;
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -828,7 +832,7 @@ class OrdersController extends GetxController {
         storeOrderList.toSet().toList();
         page.value++;
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -864,7 +868,7 @@ class OrdersController extends GetxController {
             store.StoreDetailsResponse.fromJson(value?.body);
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -899,20 +903,24 @@ class OrdersController extends GetxController {
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
-            activeStep.value = element.orderStatus?.orderStatusName == OrderStatus.newOrder.statusName
+            activeStep.value = element.orderStatus?.orderStatusName ==
+                    OrderStatus.newOrder.statusName
                 ? 0
-                : element.orderStatus?.orderStatusName == OrderStatus.pending.statusName
+                : element.orderStatus?.orderStatusName ==
+                        OrderStatus.pending.statusName
                     ? 1
-                    : element.orderStatus?.orderStatusName == OrderStatus.shipped.statusName
+                    : element.orderStatus?.orderStatusName ==
+                            OrderStatus.shipped.statusName
                         ? 2
-                        : element.orderStatus?.orderStatusName == OrderStatus.delivered.statusName
+                        : element.orderStatus?.orderStatusName ==
+                                OrderStatus.delivered.statusName
                             ? 3
                             : 0;
           }
         });
 
-        if(orderDetailResponse.data?.order?.deliveryServiceId!="2"){
-          stepInd.firstWhere((element) => element.id ==2).name ="Picked";
+        if (orderDetailResponse.data?.order?.deliveryServiceId != "2") {
+          stepInd.firstWhere((element) => element.id == 2).name = "Picked";
         }
 
         for (var element in stepInd) {
@@ -923,7 +931,7 @@ class OrdersController extends GetxController {
           }
         }
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -969,7 +977,7 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         Get.back();
         // Get.offAll(BottomNavigation());
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -1007,7 +1015,7 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -1046,7 +1054,7 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

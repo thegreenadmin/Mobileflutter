@@ -56,7 +56,7 @@ class OwnerInboxController extends GetxController {
         inboxList.value = inboxModel.data?.messageHeads ?? [];
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -94,7 +94,7 @@ class OwnerInboxController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetInboxList();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

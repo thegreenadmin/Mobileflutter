@@ -137,7 +137,7 @@ class SearchStoreUserController extends GetxController {
           favStoreAddresses.clear();
           Get.back();
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -174,11 +174,11 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        if(type.value == 2){
+        if (type.value == 2) {
           storeAddresses.clear();
           page.value = 1;
           apiGetNearByStores();
-        }else{
+        } else {
           for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
               element.store?.isFavouriteStore = true;
@@ -186,7 +186,7 @@ class SearchStoreUserController extends GetxController {
             }
           }
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -214,7 +214,8 @@ class SearchStoreUserController extends GetxController {
     UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
@@ -223,19 +224,19 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        if(type.value == 2){
+        if (type.value == 2) {
           storeAddresses.clear();
           page.value = 1;
           apiGetNearByStores();
-        }else{
-            for (var element in storeAddresses) {
+        } else {
+          for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
               element.store?.isFavouriteStore = false;
               favStoreAddresses.remove(element);
             }
           }
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());

@@ -56,15 +56,17 @@ class AddOffersController extends GetxController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              icon:  Align(
+              icon: Align(
                 alignment: Alignment.topRight,
-                child:
-                InkWell(
-                  onTap: (){
+                child: InkWell(
+                  onTap: () {
                     Get.back();
                   },
-                  child: const Icon(Icons.clear,color: AppColors.primary,
-                    size: 24.0,),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AppColors.primary,
+                    size: 24.0,
+                  ),
                 ),
               ),
               title: const Text(
@@ -273,7 +275,7 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         Get.back();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -311,7 +313,7 @@ class AddOffersController extends GetxController {
           storeIdValue.value = storeList[0].storeId.toString();
           apiGetStoreProducts();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -392,7 +394,7 @@ class AddOffersController extends GetxController {
             Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -441,7 +443,7 @@ class AddOffersController extends GetxController {
         await apiGetStoreProducts();
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -494,7 +496,7 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         Get.back();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
