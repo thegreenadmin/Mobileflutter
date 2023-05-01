@@ -21,6 +21,18 @@ class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
   @override
+  void initState() {
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      walletController.apiGetCardList(context);
+      walletController.apiGetUserWalletBalance();
+    } else {
+      walletController.apiGetStoreList();
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
@@ -183,7 +195,11 @@ class _WalletScreenState extends State<WalletScreen> {
                             height12SizedBox,
                             InkWell(
                               onTap: () {
-                                Get.to(const AddMoneyToWallet())!.then(
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>const  AddMoneyToWallet(),
+                                ))
+                                // Get.to(const AddMoneyToWallet())!
+                                    .then(
                                     (value) => walletController
                                         .apiGetUserWalletBalance());
                               },
@@ -223,7 +239,10 @@ class _WalletScreenState extends State<WalletScreen> {
                 flex: 3,
                 child: InkWell(
                   onTap: () {
-                    Get.to(const ManageWalletScreen());
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) =>const  ManageWalletScreen(),
+                    ));
+                    // Get.to(const ManageWalletScreen());
                   },
                   child: Column(
                     children: [

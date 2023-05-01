@@ -91,14 +91,14 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
-      isFromHome.value = Get.arguments["isFromHome"] ?? false;
-      storeId.value =
-          Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
-      productId.value =
-          Get.arguments == null ? "" : Get.arguments["productId"] ?? "";
-    }
+    if (Get.parameters == null ? false : Get.parameters['isFromHome'] != "false") {
+      isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
 
+      productId.value =
+          Get.parameters == null ? "" : Get.parameters["productId"] ?? "";
+    }
+    storeId.value =
+    Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       nearby.Store store = nearby.Store();
@@ -110,9 +110,13 @@ class StoreHomeMainController extends GetxController {
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
     } else {
-      storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      isFavouriteStore.value =
-          storeAddress.value.store?.isFavouriteStore ?? false;
+      nearby.Store store = nearby.Store();
+      store.storeId = storeId.value;
+      storeAddress.value.store = store;
+      isFavouriteStore.value = store.isFavouriteStore ?? false;
+      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+      // isFavouriteStore.value =
+      //     storeAddress.value.store?.isFavouriteStore ?? false;
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
       onIndexChange(0);

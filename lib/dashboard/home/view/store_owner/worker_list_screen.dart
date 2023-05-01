@@ -42,7 +42,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                Navigator.of(context).pop();
+                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -97,7 +98,10 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(const AddNewWorkerScreen());
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const AddNewWorkerScreen(),
+                      ));
+                      // Get.to(const AddNewWorkerScreen());
                     },
                     child: Row(
                       children: [
@@ -209,7 +213,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                             backgroundColor: AppColors.primary,
                                           ),
                                           onPressed: () {
-                                            Get.back();
+                                            Navigator.of(context).pop();
+                                            // Get.back();
                                           },
                                           child:
                                               Text(StringConstants.deleteText)),
@@ -218,7 +223,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                           backgroundColor: AppColors.primary,
                                         ),
                                         onPressed: () {
-                                          Get.back();
+                                          Navigator.of(context).pop();
+                                          // Get.back();
                                         },
                                         child: Text(StringConstants.cancelText),
                                       ),
@@ -233,7 +239,10 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                Get.to(() => const EditWorkerScreen());
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const EditWorkerScreen(),
+                                ));
+                                // Get.to(() => const EditWorkerScreen());
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

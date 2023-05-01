@@ -88,7 +88,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Get.back();
+                                        Navigator.of(context).pop();
+                                        // Get.back();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -372,7 +373,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Navigator.of(context).pop();
+                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

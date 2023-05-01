@@ -23,6 +23,12 @@ class AddCardScreenState extends State<AddCardScreen> {
   final AddCardController addCardController = Get.put(AddCardController());
 
   @override
+  void initState() {
+    addCardController.apiGetUserWalletBalance();
+    addCardController.apiGetCardList(context);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -176,7 +182,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                                         AppColors.primary,
                                                   ),
                                                   onPressed: () {
-                                                    Get.back();
+                                                    // Get.back();
+                                                    Navigator.of(context).pop();
                                                     addCardController.apiDeleteCard(
                                                         userStripeCardId:
                                                             addCardController
@@ -193,7 +200,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                                       AppColors.primary,
                                                 ),
                                                 onPressed: () {
-                                                  Get.back();
+                                                  // Get.back();
+                                                  Navigator.of(context).pop();
                                                 },
                                                 child: Text(
                                                     StringConstants.cancelText),
@@ -226,8 +234,11 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(AddCardDetailScreen())!
-                    .then((value) => addCardController.apiGetCardList());
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>  AddCardDetailScreen(),
+                ))
+                // Get.to(AddCardDetailScreen())!
+                    .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,
               text: StringConstants.addNewCardText,

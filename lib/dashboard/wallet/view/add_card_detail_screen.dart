@@ -33,6 +33,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
         width: 1.0,
       ),
     );
+    addCardController.apiGetUserWalletBalance();
+    addCardController.apiGetCardList(context);
     super.initState();
   }
 
@@ -55,7 +57,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -172,7 +175,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       if (addCardController.cardHolderName.isEmpty) {
                         Utility.showToast(AlertStringConstants.pleaseFillAllDetailsText);
                       } else if (formKey.currentState!.validate()) {
-                        addCardController.apiCreateStripeToken();
+                        addCardController.apiCreateStripeToken(context);
                       }
                     },
                     height: 50,

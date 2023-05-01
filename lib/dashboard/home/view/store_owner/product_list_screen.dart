@@ -40,7 +40,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                Navigator.of(context).pop();
+                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -98,7 +99,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(const AddNewProductScreen());
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const AddNewProductScreen(),
+                      ));
+                      // Get.to(const AddNewProductScreen());
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -218,7 +222,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                             backgroundColor: AppColors.primary,
                                           ),
                                           onPressed: () {
-                                            Get.back();
+                                            Navigator.of(context).pop();
+                                            // Get.back();
                                             manageStoreController
                                                     .productId.value =
                                                 manageStoreController
@@ -235,7 +240,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           backgroundColor: AppColors.primary,
                                         ),
                                         onPressed: () {
-                                          Get.back();
+                                          Navigator.of(context).pop();
+                                          // Get.back();
                                         },
                                         child: Text(StringConstants.cancelText),
                                       ),
@@ -261,8 +267,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           "";
                                   await manageStoreController
                                       .apiGetProductDetails();
-
-                                  Get.to(() => const EditProductScreen())!
+                                  await Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const EditProductScreen(),
+                                  ))
+                                  // Get.to(() => const EditProductScreen())!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();

@@ -22,25 +22,6 @@ class _OffersScreenState extends State<OffersScreen> {
   final OffersController offersController = Get.put(OffersController());
 
   @override
-  void initState() {
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromNotification'] != "false") {
-      offersController.isFromNotification.value = Get.parameters["isFromNotification"]=="true"?true:false;
-    }
-
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
-      offersController.role!.value = Role.customerRoleText;
-      offersController.apiGetUserOffersList(context);
-    } else {
-      offersController.role!.value = Role.storeOwnerRoleText;
-      offersController.apiGetOwnerOffersList(context);
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(

@@ -43,7 +43,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -252,8 +253,11 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                   ],
                                                 ),
                                                 onTap: () {
-                                                  Get.to(() =>
-                                                      AddCardDetailScreen());
+                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (_) =>  AddCardDetailScreen(),
+                                                  ));
+                                                  // Get.to(() =>
+                                                  //     AddCardDetailScreen());
                                                 },
                                                 height: 50,
                                                 width: WidgetConstants
@@ -402,7 +406,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     colors: [AppColors.primary, AppColors.primary],
                   ),
                   onTap: () {
-                    addCardController.validateAndSubmit();
+                    addCardController.validateAndSubmit(context);
                   },
                   height: 50,
                   text: StringConstants.okText,

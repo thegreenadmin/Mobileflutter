@@ -62,9 +62,14 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                       colors: [AppColors.primary, AppColors.primary],
                                     ),
                                     onTap: () {
-                                      Get.to(const AddOfferScreen(), arguments: {
-                                        "isFrom": StringConstants.addOfferText,
-                                      })?.then((v){
+                                      Get.parameters["isFrom"]=StringConstants.addOfferText;
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (_) => const AddOfferScreen(),
+                                      ))
+                                      // Get.to(const AddOfferScreen(), arguments: {
+                                      //   "isFrom": StringConstants.addOfferText,
+                                      // })?
+                                      .then((v){
                                         ownerStoresController.getApiData();
                                       });
                                     },

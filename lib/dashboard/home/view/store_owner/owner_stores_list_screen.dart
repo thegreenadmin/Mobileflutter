@@ -43,7 +43,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                Navigator.of(context).pop();
+                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -173,7 +174,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                     AppColors.primary,
                                               ),
                                               onPressed: () {
-                                                Get.back();
+                                                Navigator.of(context).pop();
+                                                // Get.back();
                                                 ownerStoresController
                                                     .apiDeleteStore(
                                                         storeId:
@@ -191,7 +193,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                   AppColors.primary,
                                             ),
                                             onPressed: () {
-                                              Get.back();
+                                              Navigator.of(context).pop();
+                                              // Get.back();
                                             },
                                             child: Text(
                                                 StringConstants.cancelText),
@@ -245,9 +248,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
                                     ownerStoresController.onInit();
-
-                                    await Get.to(
-                                        () => const ManageStoreMainScreen());
+                                    await Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => const ManageStoreMainScreen(),
+                                    ));
+                                    // await Get.to(
+                                    //     () => const ManageStoreMainScreen());
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -492,7 +497,10 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(const AddNewStoreScreen())!
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const AddNewStoreScreen(),
+                ))
+                // Get.to(const AddNewStoreScreen())!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

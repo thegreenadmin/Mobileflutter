@@ -58,7 +58,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -208,8 +209,16 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                 onTap: () async {
                   SharedPreferenceStorage.getData(Role.role.value) ==
                           Role.customerRoleText
-                      ? Get.to(const AddCardScreen())
-                      : Get.to(const AddCardScreen());
+                      ?
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) =>const  AddCardScreen(),
+                  ))
+                  // Get.to(const AddCardScreen())
+                      :
+                  Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>const  AddCardScreen(),
+                  ));
+                  // Get.to(const AddCardScreen());
                 },
                 child: SharedPreferenceStorage.getData(Role.role.value) ==
                         Role.customerRoleText
@@ -464,8 +473,9 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                           AppColors.primary,
                                                     ),
                                                     onPressed: () {
-                                                      Get.back();
-                                                      walletController.apiDeleteCard(
+                                                      // Get.back();
+                                                      Navigator.of(context).pop();
+                                                      walletController.apiDeleteCard(context,
                                                           userStripeCardId:
                                                               walletController
                                                                       .cardList[
@@ -482,7 +492,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                         AppColors.primary,
                                                   ),
                                                   onPressed: () {
-                                                    Get.back();
+                                                    // Get.back();
+                                                    Navigator.of(context).pop();
                                                   },
                                                   child: Text(StringConstants
                                                       .cancelText),

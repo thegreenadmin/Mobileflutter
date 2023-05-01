@@ -11,11 +11,17 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-class BottomNavigation extends StatelessWidget {
-  final BottomNavController _bottomNavigationPageController =
-      Get.put(BottomNavController());
+class BottomNavigation extends StatefulWidget {
 
   BottomNavigation({Key? key}) : super(key: key);
+
+  @override
+  State<BottomNavigation> createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  final BottomNavController _bottomNavigationPageController =
+      Get.put(BottomNavController());
 
   Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
     0: GlobalKey<NavigatorState>(),

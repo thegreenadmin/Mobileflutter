@@ -109,7 +109,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // Get.back();
                     storeHomeMainController.onIndexChange(0);
                   },
                   child: Row(
@@ -137,7 +138,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Navigator.of(context).pop();
+                // Get.back();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +162,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Navigator.of(context).pop();
+                // Get.back();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +186,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Navigator.of(context).pop();
+                // Get.back();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

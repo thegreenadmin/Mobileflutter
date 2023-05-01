@@ -34,7 +34,10 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const EditStoreDetailScreen());
+               Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const EditStoreDetailScreen(),
+                ));
+                // Get.to(const EditStoreDetailScreen());
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -97,11 +100,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const MangeProductScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                  "storeLocation": ownerStoresController.storeLocation.value,
-                });
+                Get.parameters["storeId"]=ownerStoresController.storeId.value;
+                Get.parameters["storeName"]= ownerStoresController.storeName.value;
+                Get.parameters["storeLocation"]= ownerStoresController.storeLocation.value;
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const MangeProductScreen(),
+                ));
+                // Get.to(const MangeProductScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                //   "storeLocation": ownerStoresController.storeLocation.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -164,10 +173,15 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const WorkerListScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                });
+                Get.parameters["storeId"]=ownerStoresController.storeId.value;
+                Get.parameters["storeName"]= ownerStoresController.storeName.value;
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const WorkerListScreen(),
+                ));
+                // Get.to(const WorkerListScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -230,10 +244,15 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const RoleAndPermissionScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                });
+                Get.parameters["storeId"]=ownerStoresController.storeId.value;
+                Get.parameters["storeName"]= ownerStoresController.storeName.value;
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const RoleAndPermissionScreen(),
+                ));
+                // Get.to(const RoleAndPermissionScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),

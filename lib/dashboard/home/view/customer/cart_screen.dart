@@ -40,7 +40,9 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(result: true );
+                                    Navigator.of(context).pop(true);
+                                    // Get.back();
+                                    // Get.back(result: true );
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -322,7 +324,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Get.back();
+                                                            Navigator.of(context).pop();
+                                                            // Get.back();
                                                             storeHomeMainController.apiDeleteCart(
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
@@ -340,7 +343,8 @@ class _CartScreenState extends State<CartScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Get.back();
+                                                          Navigator.of(context).pop();
+                                                          // Get.back();
                                                         },
                                                         child: Text(
                                                             StringConstants
@@ -598,6 +602,7 @@ class _CartScreenState extends State<CartScreen> {
                                   Obx(
                                     () => InkWell(
                                       onTap: () {
+                                        Get.parameters["isFromCart"]="true";
                                         storeHomeMainController
                                                         .selectedUserAddress
                                                         .value
@@ -608,9 +613,14 @@ class _CartScreenState extends State<CartScreen> {
                                                         .value
                                                         .city ==
                                                     null
-                                            ? Get.to(const PersonalInfoEditScreen(),
-                                                arguments:
-                                                    ({"isFromCart": true}))?.then(
+                                            ?
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (_) => const PersonalInfoEditScreen(),
+                                        ))
+                                        // Get.to(const PersonalInfoEditScreen(),
+                                        //         arguments:
+                                        //             ({"isFromCart": true}))
+                                            ?.then(
                                                 (value) => storeHomeMainController
                                                     .apiGetUserDetailsApi())
                                             : storeHomeMainController
@@ -789,6 +799,9 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             InkWell(
                               onTap: (){
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const PersonalInfoEditScreen(),
+                                // ))
                                 Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
                               },
                               child: Text(

@@ -71,7 +71,10 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Get.to(const UserProductListScreen());
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const UserProductListScreen(),
+                          ));
+                          // Get.to(const UserProductListScreen());
                           storeHomeMainController.apiFeatureProductListApi(
                               categoryId: storeHomeMainController
                                       .categoriesList[index].categoryId ??

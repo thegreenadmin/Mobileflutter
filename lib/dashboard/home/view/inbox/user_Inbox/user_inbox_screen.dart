@@ -133,7 +133,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Navigator.of(context).pop();
+                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -292,30 +293,42 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () {
-                                              Get.to(
-                                                  const UserInboxDetailScreen(),
-                                                  arguments: {
-                                                    "storeName":
-                                                        userInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .store!
-                                                                .storeName ??
-                                                            "",
-                                                    "storeId":
-                                                        userInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .store!
-                                                                .storeId ??
-                                                            "",
-                                                    "messageHeadId":
-                                                        userInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .messageHeadId ??
-                                                            ""
-                                                  });
+                                              Get.parameters["storeName"]= userInboxController
+                                                  .inboxList[index]
+                                                  .store!.storeName ?? "";
+                                               Get.parameters["storeId"]= userInboxController
+                                                  .inboxList[index]
+                                                  .store!.storeId ?? "";
+                                               Get.parameters["messageHeadId"]=  userInboxController
+                                                   .inboxList[index]
+                                                   .messageHeadId ?? "";
+                                              Navigator.of(context).push(MaterialPageRoute(
+                                                builder: (_) => const UserInboxDetailScreen(),
+                                              ));
+                                              // Get.to(
+                                              //     const UserInboxDetailScreen(),
+                                              //     arguments: {
+                                              //       "storeName":
+                                              //           userInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .store!
+                                              //                   .storeName ??
+                                              //               "",
+                                              //       "storeId":
+                                              //           userInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .store!
+                                              //                   .storeId ??
+                                              //               "",
+                                              //       "messageHeadId":
+                                              //           userInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .messageHeadId ??
+                                              //               ""
+                                              //     });
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(
@@ -372,7 +385,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Get.back();
+                                                            Navigator.of(context).pop();
+                                                            // Get.back();
                                                             userInboxController
                                                                 .apiDeleteUserMessages(
                                                                     messageHeadId:
@@ -389,7 +403,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Get.back();
+                                                          Navigator.of(context).pop();
+                                                          // Get.back();
                                                         },
                                                         child: Text(
                                                             StringConstants

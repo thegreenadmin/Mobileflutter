@@ -89,13 +89,6 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   @override
-  void initState() {
-    accountController.apiGetUserDetailApi(context);
-    accountController.getGkey(context);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -108,7 +101,8 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Container(
               color: AppColors.primarylight,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -178,7 +172,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             Obx(() => Text(
                                   accountController.email.value,
                                   style: const TextStyle(
-                                    overflow: TextOverflow.visible,
+                                      overflow: TextOverflow.visible,
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
@@ -200,16 +194,20 @@ class _AccountScreenState extends State<AccountScreen> {
                           Role.customerRoleText) {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.storeOwnerRoleText);
-                        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-                          builder: (_) => BottomNavigation(),
-                        ));
+                        // await Navigator.of(context)
+                        //     .pushReplacement(MaterialPageRoute(
+                        //   builder: (_) => BottomNavigation(),
+                        // ));
+                        Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       } else {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.customerRoleText);
-                        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-                          builder: (_) => BottomNavigation(),
-                        ));
+                        // Navigator.of(context)
+                        //     .pushReplacement(MaterialPageRoute(
+                        //   builder: (_) => BottomNavigation(),
+                        // ));
+                        Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       }
                     },
@@ -436,7 +434,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           Obx(() => FlutterSwitch(
                                 height: 28,
                                 width: 50,
-                                value: accountController.isScreenLockNotify.value,
+                                value:
+                                    accountController.isScreenLockNotify.value,
                                 activeToggleColor: AppColors.primary,
                                 inactiveToggleColor: AppColors.grey,
                                 activeSwitchBorder: Border.all(
@@ -496,7 +495,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                       .toString() ==
                                   Role.customerRoleText
                               ? Obx(() => FlutterSwitch(
-
                                     height: 28,
                                     width: 50,
                                     value: accountController
@@ -513,17 +511,20 @@ class _AccountScreenState extends State<AccountScreen> {
                                     inactiveColor: AppColors.greymediumlight,
                                     onToggle: (val) {
                                       accountController
-                                          .isUserInboxMessagesNotify.value = val;
+                                          .isUserInboxMessagesNotify
+                                          .value = val;
                                       if (accountController
                                           .isUserInboxMessagesNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "message");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "message");
@@ -547,18 +548,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                     inactiveColor: AppColors.greymediumlight,
                                     onToggle: (val) {
                                       accountController
-                                          .isOwnerInboxMessagesNotify.value = val;
+                                          .isOwnerInboxMessagesNotify
+                                          .value = val;
 
                                       if (accountController
                                           .isOwnerInboxMessagesNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "message");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "message");
@@ -607,13 +611,15 @@ class _AccountScreenState extends State<AccountScreen> {
                                       if (accountController
                                           .isUserTippingNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "order");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "order");
@@ -642,13 +648,15 @@ class _AccountScreenState extends State<AccountScreen> {
                                       if (accountController
                                           .isOwnerTippingNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "order");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "order");
@@ -665,7 +673,6 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               Text(
                                 StringConstants.storeOfferAndDiscountText,
-
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -680,8 +687,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               ? Obx(() => FlutterSwitch(
                                     height: 28,
                                     width: 50,
-                                    value:
-                                        accountController.isUserOfferNotify.value,
+                                    value: accountController
+                                        .isUserOfferNotify.value,
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
@@ -693,19 +700,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                     activeColor: AppColors.greymediumlight,
                                     inactiveColor: AppColors.greymediumlight,
                                     onToggle: (val) {
-                                      accountController.isUserOfferNotify.value =
-                                          val;
+                                      accountController
+                                          .isUserOfferNotify.value = val;
 
                                       if (accountController
                                           .isUserOfferNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "offer");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "offer");
@@ -728,19 +737,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                     activeColor: AppColors.greymediumlight,
                                     inactiveColor: AppColors.greymediumlight,
                                     onToggle: (val) {
-                                      accountController.isOnwerOfferNotify.value =
-                                          val;
+                                      accountController
+                                          .isOnwerOfferNotify.value = val;
 
                                       if (accountController
                                           .isOnwerOfferNotify.value) {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "offer");
                                       } else {
                                         accountController
-                                            .apiUpdateNotificationStatus(context,
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "offer");
@@ -758,7 +769,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         onTap: () async {
                           SharedPreferenceStorage.clearData();
-                          await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+                          await Navigator.of(Get.context!)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (_) => const StartJourneyScreen(),
                           ));
                           // await Get.offAll(const StartJourneyScreen());

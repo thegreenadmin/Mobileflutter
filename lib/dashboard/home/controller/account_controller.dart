@@ -90,7 +90,8 @@ class AccountController extends GetxController {
     // isFromCart.value = Get.arguments["isFromCart"] ?? false;
     isFromCart.value = Get.parameters["isFromCart"]=="true"?true:false;
     debugPrint(isFromCart.value.toString());
-
+    apiGetUserDetailApi(Get.context!);
+    getGkey(Get.context!);
   }
 
   getGkey(context) async {
@@ -210,6 +211,7 @@ class AccountController extends GetxController {
   Future apiGetUserDetailApi(context) async {
     debugPrint("GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
     Map<String, String> headers = {
+
       'Authorization': "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
@@ -258,7 +260,7 @@ class AccountController extends GetxController {
           }
         }
         await apiGetCountries(context);
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
+      } else if (value.body["status"] == 401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         if(Get.context!=null){
@@ -307,7 +309,6 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (_) => const StartJourneyScreen(),
           ));

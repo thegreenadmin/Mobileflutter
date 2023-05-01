@@ -68,7 +68,10 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           storeHomeMainController.productId.value = storeHomeMainController.featureProductList[i].productId.toString()??"";
                           await storeHomeMainController
                               .apiGetShopProductDetailApi();
-                          Get.to(const AddToOrderScreen());
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AddToOrderScreen(),
+                          ));
+                          // Get.to(const AddToOrderScreen());
                           await storeHomeMainController.apiGetCartListApi();
                         },
                         child: Column(

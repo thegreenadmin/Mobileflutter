@@ -141,7 +141,7 @@ Navigator.of(context).pop();
       storeId.value = Get.parameters["storeId"] ?? "";
       offerId.value = Get.parameters["offerId"] ?? "";
       if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
-        // apiGetOffersDetail();
+        apiGetOffersDetail(Get.context);
       }
     }
   }

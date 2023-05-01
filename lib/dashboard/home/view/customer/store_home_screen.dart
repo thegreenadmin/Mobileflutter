@@ -243,7 +243,10 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                         .apiGetShopProductDetailApi();
                                     await storeHomeMainController
                                         .apiGetCartListApi();
-                                    Get.to(const AddToOrderScreen());
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => const AddToOrderScreen(),
+                                    ));
+                                    // Get.to(const AddToOrderScreen());
 
                                   },
                                   child: Container(

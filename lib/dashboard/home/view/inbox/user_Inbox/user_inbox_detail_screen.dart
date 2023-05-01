@@ -286,12 +286,18 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () {
-                                          Get.to(ImagePreviewScreen(
-                                            image: messageList[index]
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (_) =>  ImagePreviewScreen(image: messageList[index]
                                                 .image!
                                                 .dynamicUrl
-                                                .toString(),
+                                                .toString(),),
                                           ));
+                                          // Get.to(ImagePreviewScreen(
+                                          //   image: messageList[index]
+                                          //       .image!
+                                          //       .dynamicUrl
+                                          //       .toString(),
+                                          // ));
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -417,12 +423,18 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () {
-                                        Get.to(ImagePreviewScreen(
-                                          image: messageList[index]
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (_) =>  ImagePreviewScreen(image: messageList[index]
                                               .image!
                                               .dynamicUrl
-                                              .toString(),
+                                              .toString(),),
                                         ));
+                                        // Get.to(ImagePreviewScreen(
+                                        //   image: messageList[index]
+                                        //       .image!
+                                        //       .dynamicUrl
+                                        //       .toString(),
+                                        // ));
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -594,7 +606,8 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

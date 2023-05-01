@@ -104,7 +104,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   .toString();
                               await storeHomeMainController
                                   .apiGetShopProductDetailApi();
-                              Get.to(const AddToOrderScreen());
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const AddToOrderScreen(),
+                              ));
+                              // Get.to(const AddToOrderScreen());
                               await storeHomeMainController.apiGetCartListApi();
                             },
                             child: Column(
@@ -257,7 +260,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 "0",
                         orderBy: "2",
                         orderType: "2");
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // Get.back();
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,7 +292,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     storeHomeMainController.category.value.categoryId ?? "0",
                 orderBy: "2",
               );
-              Get.back();
+              Navigator.of(context).pop();
+              // Get.back();
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

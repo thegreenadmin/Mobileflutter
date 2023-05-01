@@ -67,7 +67,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                      Get.back();
+                                      Navigator.of(context).pop();
+                                      // Get.back();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -439,6 +440,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
+
                         Get.offAll(BottomNavigation());
                       },
                       height: 50,

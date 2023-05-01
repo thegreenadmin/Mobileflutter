@@ -556,7 +556,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.to(()=>const CartScreen());
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const CartScreen(),
+                              ));
+                              // Get.to(()=>const CartScreen());
                             },
                             child: Stack(
                               children: [
@@ -602,10 +605,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               colors: [ AppColors.primary, AppColors.primary ],
                             ),
                             onTap: () async{
-                            bool result = await  Get.to(()=>const CartScreen());
-                              if(result){
-                                storeHomeMainController.apiGetShopProductDetailApi();
-                              }
+                            // bool result =
+                            // await Get.to(()=>const CartScreen());
+                            await  Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const CartScreen(),
+                            )).then((value) {
+                              storeHomeMainController.apiGetShopProductDetailApi();
+
+                            });
+                              // if(result){
+                              //   storeHomeMainController.apiGetShopProductDetailApi();
+                              // }
                             },
                             height: 45,
                             width: 120,

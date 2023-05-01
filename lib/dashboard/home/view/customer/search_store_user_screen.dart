@@ -150,7 +150,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         right: 10,
                         child: InkWell(
                           onTap: () {
-                            Get.to(const FilterOptionScreen());
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const FilterOptionScreen(),
+                            ));
+                            // Get.to(const FilterOptionScreen());
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,

@@ -208,7 +208,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -282,16 +283,24 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.to(
-                                      () => const UserTransactionDetailScreen(),
-                                      arguments: {
-                                        "isFromTransaction": true,
-                                        "user_stripe_card_id":
-                                            transactionController
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const UserTransactionDetailScreen(),
+                                  ));
+                                  Get.parameters["isFromTransaction"]="true";
+                                  Get.parameters["user_stripe_card_id"]=transactionController
                                                     .userTransactionList![index]
                                                     .userWalletTransactionId ??
-                                                "",
-                                      });
+                                                "";
+                                  // Get.to(
+                                  //     () => const UserTransactionDetailScreen(),
+                                  //     arguments: {
+                                  //       "isFromTransaction": true,
+                                  //       "user_stripe_card_id":
+                                  //           transactionController
+                                  //                   .userTransactionList![index]
+                                  //                   .userWalletTransactionId ??
+                                  //               "",
+                                  //     });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -588,42 +597,58 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
+                                  Get.parameters["store_wallet_transaction_id"]=transactionController
+                                      .ownerOrderTransactionList![
+                                  index]
+                                      .storeWalletTransactionId;
+                                  Get.parameters["store_id"]=transactionController
+                                      .ownerOrderTransactionList![index].storeId;
                                   transactionController
                                               .ownerOrderTransactionList![index]
                                               .orderTransaction !=
-                                          null
-                                      ? Get.to(
-                                          const OwnerTransactionDetailScreen(),
-                                          arguments: {
-                                              "store_wallet_transaction_id":
-                                                  transactionController
-                                                      .ownerOrderTransactionList![
-                                                          index]
-                                                      .storeWalletTransactionId,
-                                              "store_id": transactionController
-                                                  .ownerOrderTransactionList![
-                                                      index]
-                                                  .storeId
-                                            })
+                                          null ?
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const OwnerTransactionDetailScreen(),
+                                  ))
+
+                                  // Get.to(
+                                  //         const OwnerTransactionDetailScreen(),
+                                  //         arguments: {
+                                  //             "store_wallet_transaction_id":
+                                  //                 transactionController
+                                  //                     .ownerOrderTransactionList![
+                                  //                         index]
+                                  //                     .storeWalletTransactionId,
+                                  //             "store_id": transactionController
+                                  //                 .ownerOrderTransactionList![
+                                  //                     index]
+                                  //                 .storeId
+                                  //           })
                                       : transactionController
                                                   .ownerOrderTransactionList![
                                                       index]
                                                   .orderItemRefundTransaction !=
                                               null
-                                          ? Get.to(
-                                              const OwnerTransactionDetailScreen(),
-                                              arguments: {
-                                                  "store_wallet_transaction_id":
-                                                      transactionController
-                                                          .ownerOrderTransactionList![
-                                                              index]
-                                                          .storeWalletTransactionId,
-                                                  "store_id": transactionController
-                                                      .ownerOrderTransactionList![
-                                                          index]
-                                                      .storeId
-                                                })
+                                          ?
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const OwnerTransactionDetailScreen(),
+                                  ))
+
+                                  // Get.to(
+                                  //             const OwnerTransactionDetailScreen(),
+                                  //             arguments: {
+                                  //                 "store_wallet_transaction_id":
+                                  //                     transactionController
+                                  //                         .ownerOrderTransactionList![
+                                  //                             index]
+                                  //                         .storeWalletTransactionId,
+                                  //                 "store_id": transactionController
+                                  //                     .ownerOrderTransactionList![
+                                  //                         index]
+                                  //                     .storeId
+                                  //               })
                                           : null;
+
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

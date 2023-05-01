@@ -21,8 +21,6 @@ import 'bottom_nav_screen.dart';
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
 
-
-
   @override
   void onReady() {
     super.onReady();
@@ -37,10 +35,10 @@ class BottomNavController extends GetxController {
       initialRemoteMessage = null;
     }
     selectedIndex.value =
-        Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
+        Get.parameters != null && Get.parameters["currentIndex"] !=null? int.parse(Get.parameters["currentIndex"].toString()) ?? 0 : 0;
+        // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
-  final _tabNavigator = GlobalKey<TabNavigatorState>();
   late int getCurrentNavKey ;
 
   List<Widget> tabs = [

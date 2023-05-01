@@ -72,10 +72,15 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.to(const StoreHomeMainScreen(), arguments: {
-                                "storeAddress": searchStoreUserController
-                                    .storeAddresses[index]
-                              });
+                              Get.parameters["storeId"] = searchStoreUserController
+                                  .storeAddresses[index].store?.storeId??"";
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const StoreHomeMainScreen(),
+                              ));
+                              // Get.to(const StoreHomeMainScreen(), arguments: {
+                              //   "storeAddress": searchStoreUserController
+                              //       .storeAddresses[index]
+                              // });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -352,12 +357,17 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                       RawMaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          Get.to(const StoreHomeMainScreen(),
-                                              arguments: {
-                                                "storeAddress":
-                                                    searchStoreUserController
-                                                        .storeAddresses[index]
-                                              });
+                                          Get.parameters["storeId"] = searchStoreUserController
+                                              .storeAddresses[index].store?.storeId??"";
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (_) => const StoreHomeMainScreen(),
+                                          ));
+                                          // Get.to(const StoreHomeMainScreen(),
+                                          //     arguments: {
+                                          //       "storeAddress":
+                                          //           searchStoreUserController
+                                          //               .storeAddresses[index]
+                                          //     });
                                         },
                                         constraints: const BoxConstraints(),
                                         padding: const EdgeInsets.fromLTRB(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/component/peroidically.dart';
@@ -54,7 +53,8 @@ class _EditAutoReloadState extends State<EditAutoReload>  with SingleTickerProvi
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    Get.back();
+                    // Get.back();
+                    Navigator.of(context).pop();
                   },
                   child: Image.asset(
                     ImageConstants.cross,

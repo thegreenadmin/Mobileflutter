@@ -144,7 +144,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                      Get.back();
+                                      Navigator.of(context).pop();
+                                      // Get.back();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -343,9 +344,13 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       "";
 
                               ordersHomeMainController.apiGetStoreOrderDetail();
-                              Get.to(
-                                () => const MarkOrderStatusScreen(),
-                              );
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const MarkOrderStatusScreen(),
+                              ));
+                              // Get.to(
+                              //   () => const MarkOrderStatusScreen(),
+                              // );
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

@@ -43,20 +43,21 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // if (Get.arguments == null
-    //     ? false
-    //     : Get.arguments['isFromNotification'] != false) {
-    //   isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
-    // }
+    if (Get.parameters == null
+        ? false
+        : Get.parameters['isFromNotification'] != "false") {
+      isFromNotification.value =
+      Get.parameters["isFromNotification"]=="true"?true:false;
+    }
 
-    // if (SharedPreferenceStorage.getData(Role.role.value) ==
-    //     Role.customerRoleText) {
-    //   role!.value = Role.customerRoleText;
-    //   // apiGetUserOffersList();
-    // } else {
-    //   role!.value = Role.storeOwnerRoleText;
-    //   // apiGetOwnerOffersList();
-    // }
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      role!.value = Role.customerRoleText;
+      apiGetUserOffersList(Get.context!);
+    } else {
+      role!.value = Role.storeOwnerRoleText;
+      apiGetOwnerOffersList(Get.context!);
+    }
   }
 
   getCurrentLocation() async {

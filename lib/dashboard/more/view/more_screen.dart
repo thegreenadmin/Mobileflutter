@@ -74,11 +74,16 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "aboutus",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageAbout)
-                      .toString()));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) =>  WebviewPageScreen( isFrom: "aboutus",
+                    url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                        ServerCommunicator().pageAbout)
+                        .toString())));
+              // Get.to(WebviewPageScreen(
+                  // isFrom: "aboutus",
+                  // url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                  //         ServerCommunicator().pageAbout)
+                  //     .toString()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -117,11 +122,17 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "faq",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "faq",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageFaq)
-                      .toString()));
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "faq",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pageFaq)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,7 +173,9 @@ class _MoreScreenState extends State<MoreScreen> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    Get.to(const ContactUsScreen());
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) =>const ContactUsScreen()));
+                    // Get.to(const ContactUsScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -199,11 +212,17 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () async {
-              Get.to(WebviewPageScreen(
-                  isFrom: "terms",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "terms",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageTerms)
-                      .toString()));
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "terms",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pageTerms)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,11 +258,17 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "privacy",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "privacy",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pagePolicy)
-                      .toString()));
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "privacy",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pagePolicy)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
