@@ -57,13 +57,18 @@ class StringConstants {
   static String addBankAccountDebitMethodsText =
       "Add Bank Account / Debit Methods";
   static String addFundText = "Add Fund";
+  static String addBankDetailsText = "Add Bank Details";
+  static String accountHolderNameText = "Account Holder Name";
+  static String accountHolderTypeText = "Account Holder Type";
+  static String accountNumberText = "Account Number";
 
   //B
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
-  static String byCheckTermsConditionText = "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.";
-
+  static String byCheckTermsConditionText =
+      "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.";
+  static String bankAccountsText = "Bank Accounts";
   //C
   static String createYourAccountText = "Create your Account";
   static String createAccountText = "Create account";
@@ -101,6 +106,8 @@ class StringConstants {
   static String copiedToClipBoardText = "Copied to Clipboard";
   static String cardAndPaymentText = "Card & Payment";
   static String cameraText = "Camera";
+  static String currencyText = "Currency";
+  static String companyText = "Company";
 
   //D
   static String deliveryText = "Delivery";
@@ -144,7 +151,8 @@ class StringConstants {
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
   static String favoriteText = "Favorite";
-  static String fromWherePhotoText = "From where do you want to take the photo?";
+  static String fromWherePhotoText =
+      "From where do you want to take the photo?";
   static String faqText = "FAQ";
   static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
@@ -172,6 +180,7 @@ class StringConstants {
   static String itemsText = "Items";
   static String inProgress = "In-progress";
   static String imageText = "Image";
+  static String individualText = "Individual";
   static String inSufficientFundText = "In-sufficient fund in your wallet ";
 
   //J
@@ -233,9 +242,10 @@ class StringConstants {
   static String noCardsFoundText = "No Cards Found";
   static String notificationsText = "Notifications";
   static String noNotificationFoundYetText = "No Notifications Yet";
-
+  static String noBankDetailsFoundText = "No Bank details found";
   //O
   static String okText = "Ok";
+  static String oKText = "OK";
   static String orderIDText = "Order ID";
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
@@ -292,6 +302,8 @@ class StringConstants {
   static String paymentMethodText = "Payment Method";
   static String paymentText = "Payment";
   static String pleaseAddCardFirstText = "Please add card first";
+  static String pleaseAddBankDetailFirstText = "Please add bank detail first";
+  static String payoutText = "Payout";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -320,6 +332,7 @@ class StringConstants {
   static String rejectText = "Reject";
   static String refundIdText = "Refund ID";
   static String refundTransactionText = "Refund Transaction";
+  static String routingNumberText = "Routing Number";
   //S
   static String signUpText = "Sign up";
   static String shareYourFeedbackText = "Share your feedback";
@@ -368,6 +381,7 @@ class StringConstants {
   static String selectStoreText = "Select Store";
   static String shopYourFavouriteText = "Shop your favorite";
   static String sepText = "September";
+  static String selectCountryText = "Select Country";
 
   //T
   static String thankOrderText = "Thank you for your Order !!";
@@ -556,6 +570,12 @@ class AlertStringConstants {
   static String pleaseSelectCardText = "Please select card";
   static String pleaseSelectAnyOneText = "Please select any one";
   static String pleaseUploadCategoryImage = "Please upload category Image";
+  static String pleaseEnterAccountNumberText = "Please enter account number";
+  static String pleaseEnterRoutingNumberText = "Please enter routing number";
+  static String pleaseEnterCurrencyText = "Please enter currency";
+  static String pleaseEnterAccountTypeText = "Please enter account type";
+  static String pleaseEnterCountry = "Please enter country";
+  static String pleaseSelectStore = "Please select store";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
+import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
-import 'package:thegreenmall/dashboard/wallet/view/webview_screen.dart';
+
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -37,6 +39,8 @@ class WalletController extends GetxController {
   RxString eventId = "".obs;
   RxString requestId = "".obs;
   RxString postalCode = "".obs;
+  RxString selectedCountry = "".obs;
+  RxString accountHolderTypeText = "".obs;
   RxBool isCashWithdrawal = false.obs;
   RxBool isAcceptReqCase = false.obs;
   RxBool isPaymentDone = false.obs;
@@ -45,16 +49,28 @@ class WalletController extends GetxController {
   RxInt? selectedIndex = 0.obs;
   RxInt? type = 0.obs;
   RxString ownerSelectedStore = "".obs;
+  RxString bankToken = "".obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
   TextEditingController startTimeTextController = TextEditingController();
   TextEditingController endTimeTextController = TextEditingController();
+  TextEditingController accountHolderNameTextController =
+      TextEditingController();
 
+  TextEditingController rountingTextController = TextEditingController();
+  TextEditingController accountNumberTextController = TextEditingController();
+  TextEditingController currencyTextController = TextEditingController();
+  TextEditingController countryTextController = TextEditingController();
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
 
-  RxList<dynamic> selectedCards = <dynamic>[].obs;
+  late BankAccountListModel bankAccountListModel = BankAccountListModel();
+  RxList<Banks> bankAccountList = <Banks>[].obs;
 
+  RxList<dynamic> selectedCards = <dynamic>[].obs;
+  late GetCountriesModel getCountriesModel = GetCountriesModel();
+  RxList<CountriesList> countriesList = <CountriesList>[].obs;
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
   RxString? userWalletBalance = "".obs;
@@ -73,6 +89,8 @@ class WalletController extends GetxController {
       apiGetUserWalletBalance();
     } else {
       apiGetStoreList();
+      //apiGetBankAccountList();
+      apiGetCountries();
     }
   }
 
@@ -87,16 +105,24 @@ class WalletController extends GetxController {
   }
 
 // Fields Validation Method
-  void validateAndSubmit() async {
+  void validateAndSubmit({bool isFromCreateOwnerBankBalance = false}) async {
     if (validateAndSave()) {
       try {
-        if (selectPaymentType.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectPaymentTypeText);
-        } else if (selectPaymentType.value == "Cards" &&
-            userStripeCardId!.value.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectCardText);
+        if (isFromCreateOwnerBankBalance == false) {
+          if (selectPaymentType.isEmpty) {
+            Utility.showToast(AlertStringConstants.pleaseSelectPaymentTypeText);
+          } else if (selectPaymentType.value == "Cards" &&
+              userStripeCardId!.value.isEmpty) {
+            Utility.showToast(AlertStringConstants.pleaseSelectCardText);
+          } else {
+            await apiAddMoneyToWallet();
+          }
         } else {
-          await apiAddMoneyToWallet();
+          if (accountHolderTypeText.isEmpty) {
+            Utility.showToast("Please select account holder type");
+          } else {
+            apiCreateBankToken();
+          }
         }
       } catch (_) {}
     } else {
@@ -110,6 +136,37 @@ class WalletController extends GetxController {
     cardHolderName.value = creditCardModel.cardHolderName;
     cvvCode.value = creditCardModel.cvvCode;
     isCvvFocused.value = creditCardModel.isCvvFocused;
+  }
+
+  //Get Countries Api
+  Future apiGetCountries() async {
+    countriesList.clear();
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getCountriesModel = GetCountriesModel.fromJson(value.body);
+        countriesList.value = getCountriesModel.data!.countries!;
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
   }
 
   //Get Store List Api
@@ -392,6 +449,7 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
+        ownerSelectedStore.value = "";
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
@@ -403,41 +461,162 @@ class WalletController extends GetxController {
     });
   }
 
+  Future<void> apiCreateBankToken() async {
+    try {
+      var headers = {
+        'Authorization':
+            'Basic c2tfdGVzdF81MU1uYUpkRlZuTW1IaGtHWTFQU3dCRkZGakdGT29EWUt0Z2Z0aVNtUkdKdDJzY0lTSlBaT1o2YXkyeWlMSmlMMW5Kb2cyaEFpZDRDNU5SNGFTMVZVZmZvNDAwN3hBVG03eU46',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      };
+      var request =
+          http.Request('POST', Uri.parse(ServerCommunicator().createBankToken));
+      request.bodyFields = {
+        'bank_account[country]': countryTextController.text.trim(),
+        'bank_account[currency]': currencyTextController.text.trim(),
+        'bank_account[account_holder_name]':
+            accountHolderNameTextController.text.trim(),
+        'bank_account[account_holder_type]': accountHolderTypeText.value,
+        'bank_account[routing_number]': rountingTextController.text.trim(),
+        'bank_account[account_number]': accountNumberTextController.text.trim()
+      };
+      debugPrint("BANK ACCOUNT TOKEN BODY **********${request.bodyFields}");
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+      var streamResponse = await http.Response.fromStream(response);
+      debugPrint("BANK ACCOUNT RESPONSE ************${streamResponse.body}");
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.reasonPhrase);
+
+      if (response.statusCode == 200) {
+        var parsed = jsonDecode(streamResponse.body);
+
+        bankToken.value = parsed['id'].toString();
+
+        apiCreateStoreStripeAccount();
+      } else if (response.statusCode == 400) {
+        var parsed = jsonDecode(streamResponse.body);
+        Utility.showToast(parsed['error']['message'].toString());
+      } else {
+        var parsed = jsonDecode(streamResponse.body);
+        Utility.showToast(parsed['error']['message'].toString());
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
   apiCreateStoreStripeAccount() {
     isLoading.value = true;
     debugPrint(
-        "CREATE STRIPE ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeStripeAccountCreate}");
+        "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    Map<String, String> body = {"store_id": ownerSelectedStore.value};
+    Map<String, String> body = {
+      "token_id": bankToken.value,
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
             body,
             ServerCommunicator().baseUrl +
-                ServerCommunicator().storeStripeAccountCreate,
+                ServerCommunicator().userStripeBankCreate,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $body");
-      debugPrint("CREATE STRIPE ACCOUNT BODY ******* $value");
-      debugPrint("CREATE STRIPE ACCOUNT RESPONSE *******${value!.body}");
+      debugPrint("CREATE OWNER STRIPE BANK ACCOUNT BODY ******* $body");
+      debugPrint(
+          "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        String url = value.body["data"]['link'] ?? "";
-        await Get.to(WebViewExample(
-          url: url,
-        ));
-        ownerSelectedStore.value = "";
+        Utility.showToast(value.body['message']);
+        countryTextController.clear();
+        currencyTextController.clear();
+        accountHolderNameTextController.clear();
+        accountHolderTypeText.value = "";
+        rountingTextController.clear();
+        accountNumberTextController.clear();
+        Get.back();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get BANK ACCOUNT List Api
+  Future apiGetBankAccountList() async {
+    isLoading.value = true;
+    debugPrint("GET BANK ACCOUNT LIST URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        bankAccountListModel = BankAccountListModel.fromJson(value.body);
+        bankAccountList.value = bankAccountListModel.data?.banks ?? [];
+        update();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Delete Card api
+  Future apiDeleteBankAccounts({String userStripeBankId = ""}) async {
+    debugPrint(
+        "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {"user_stripe_bank_id": userStripeBankId};
+
+    debugPrint("DELETE BANK ACCOUNT BODY ************* $body");
+    UserProvider()
+        .deleteWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DELETE BANK ACCOUNT RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        await apiGetBankAccountList();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+        await apiGetBankAccountList();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

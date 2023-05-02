@@ -9,7 +9,7 @@ class ServerCommunicator {
 
   // String baseUrl = "http://18.224.191.88:3520/api/v1/";
   // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
-  //String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+  // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -33,6 +33,7 @@ class ServerCommunicator {
   String cancelOrder = 'order/cancel/create';
   String createStripeToken = 'https://api.stripe.com/v1/tokens';
   String createCard = 'user/stripe/card/create';
+  String createBankToken = 'https://api.stripe.com/v1/tokens';
 
 //D
   String deleteWorker = 'store/user/delete';
@@ -137,7 +138,8 @@ class ServerCommunicator {
   String storeCancelOrder = 'store/order/cancel/create';
   String storeTransactionDetail = 'store/transaction/details';
   String storeWalletBalance = 'store/wallet/balance';
-  String storeStripeAccountCreate = 'store/stripe/account/create';
+  String storeStripeBankAccountCreate = 'store/stripe/bank/account/create';
+  String storeStripePayoutCreate = 'store/stripe/payout/create';
 
 //T
 //U
@@ -149,12 +151,13 @@ class ServerCommunicator {
   String userStripeCardList = 'user/stripe/card/list';
   String userWalletRechargeStripe = 'user/wallet/recharge/stripe';
   String userWalletBalance = 'user/wallet/balance';
-  String userStripeCardDelete = 'user/stripe/card/delete';
+  String userStripeCardDelete = 'user/stripe/bank/delete';
   String userWalletTransactionList = 'user/wallet/transactions/list';
   String notificationSettingSave = 'notification/setting/save';
   String userWalletTransactionDetail = 'user/wallet/transaction/details';
   String utilsQueryCreate = '/utils/query/create';
-  
+  String userStripeBankCreate = 'user/stripe/bank/create';
+  String userStripeBankList = 'user/stripe/bank/list';
 
 //V
 //W

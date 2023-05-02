@@ -173,6 +173,10 @@ class HomeController extends GetxController {
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
         await getCurrentLocation();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
