@@ -764,9 +764,9 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               color: AppColors.primary,
                                               scale: 8,
                                             ),
-                                            const Text(
-                                              "No Messages Yet!",
-                                              style: TextStyle(
+                                            Text(
+                                              StringConstants.noMessagesYetText,
+                                              style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColors.primary,

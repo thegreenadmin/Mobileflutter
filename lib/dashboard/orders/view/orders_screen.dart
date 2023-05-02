@@ -263,8 +263,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.20,
                   color: ordersController.orderStatusName.value == OrderStatus.delivered.statusName
-                  ? AppColors.primarylight
-                      : AppColors.white,
+                  ? AppColors.primarylight : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

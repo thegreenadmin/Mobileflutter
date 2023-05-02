@@ -53,9 +53,9 @@ class Utility {
     String buttonText,
   ) async {
     return await Get.dialog(AlertDialog(
-      title: const Text(
-        "Alert!",
-        style: TextStyle(color: AppColors.primary, fontSize: 20),
+      title:  Text(
+        StringConstants.alertText,
+        style: const TextStyle(color: AppColors.primary, fontSize: 20),
       ),
       content: Text(
         message,
@@ -172,7 +172,9 @@ class Utility {
     );
   }
 
-  static Future<void> showSelectionMediaDialog(BuildContext context, void Function()?  onGalleryClick(), void Function()?  onCameraClick()) {
+  static Future<void> showSelectionMediaDialog(BuildContext context,
+      {void Function()? onGalleryClick,
+      void Function()? onCameraClick}) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -213,7 +215,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                        onGalleryClick();
+                        onGalleryClick!();
                       },
                     ),
                     const Padding(padding: EdgeInsets.all(8.0)),
@@ -232,7 +234,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                       onCameraClick();
+                       onCameraClick!();
                       },
                     )
                   ],

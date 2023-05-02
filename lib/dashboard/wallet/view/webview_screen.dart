@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewExample extends StatefulWidget {
@@ -44,7 +45,7 @@ class _WebViewExampleState extends State<WebViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Stripe Account')),
+      appBar: AppBar(title: Text(StringConstants.createStripeAccountText)),
       body: WebViewWidget(controller: controller),
     );
   }

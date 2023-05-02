@@ -11,7 +11,6 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/input_add_product.dart';
 import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
     as quantity_model;
-import 'package:thegreenmall/dashboard/home/view/store_owner/manage_product_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -137,9 +136,9 @@ class ManageStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (imageFileList!.length < 1) {
-          Utility.showToast("Please upload at least one image");
+          Utility.showToast(AlertStringConstants.pleaseUploadAtLeastOneImageText);
         } else if (selectedCategories.isEmpty) {
-          Utility.showToast("Please select categories");
+          Utility.showToast(AlertStringConstants.pleaseSelectCategoriesText);
         } else {
           apiCreateProduct();
           await apiGetProductList();
@@ -318,7 +317,7 @@ class ManageStoreController extends GetxController {
   Future apiCreateProduct() async {
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
-    product.quantityTypeId = int.parse(quantityValue.value ?? "0") ?? 0;
+    product.quantityTypeId = int.parse(quantityValue.value ) ;
     product.quantity = int.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();

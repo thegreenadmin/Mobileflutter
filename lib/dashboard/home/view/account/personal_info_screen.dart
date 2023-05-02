@@ -184,18 +184,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: Text(StringConstants.emailIdText,
                           style: TextStyle(
                               color: AppColors.blacklight,
                               fontWeight: FontWeight.w400,
                               fontSize: 16))),
                   Obx(() => Expanded(
-                      flex: 6,
-                      child: Text(
-                        accountController.email.value,
+                      flex: 8,
+                      child: Text( accountController.email.value,
                         textAlign: TextAlign.end,
                         style: const TextStyle(
+                          // overflow: TextOverflow.ellipsis,
                             color: AppColors.black,
                             fontWeight: FontWeight.w500,
                             fontSize: 16),
@@ -473,8 +473,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                               BorderRadius.circular(18.0),
                                           side: const BorderSide(
                                               color: AppColors.primary)))),
-                              child: const Text(
-                                "Remove",
+                              child: Text(
+                                StringConstants.removeText,
                                 style: TextStyle(color: AppColors.white),
                               ),
                             ),
@@ -497,8 +497,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                "assets/upload.png",
+                              Image.asset(ImageConstants.upload,
                                 scale: 2.5,
                               ),
                               height8SizedBox,
@@ -530,9 +529,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                               side: const BorderSide(
                                                   color: AppColors
                                                       .primary)))),
-                                  child: const Text(
-                                    "Upload",
-                                    style: TextStyle(
+                                  child: Text(
+                                    StringConstants.uploadText,
+                                    style: const TextStyle(
                                         color: AppColors.white),
                                   ),
                                 ),

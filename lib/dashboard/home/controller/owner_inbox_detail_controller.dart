@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
-import 'package:thegreenmall/dashboard/home/model/user_message_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:dio/dio.dart' as mdio;
@@ -43,100 +40,38 @@ class OwnerInboxDetailController extends GetxController {
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              icon: Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: const Icon(
-                    Icons.clear,
-                    color: AppColors.primary,
-                    size: 24.0,
-                  ),
-                ),
-              ),
-              title: const Text(
-                "From where do you want to take the photo?",
-                style: TextStyle(
-                    color: AppColors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    InkWell(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.image_sharp,
-                            color: AppColors.primary,
-                            size: 24.0,
-                          ),
-                          width10SizedBox,
-                          const Text("Gallery",
-                              style: TextStyle(
-                                  color: AppColors.primary, fontSize: 16)),
-                        ],
-                      ),
-                      onTap: () async {
-                        Get.back();
-                        XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(
-                                imageQuality: 50,
-                                source: ImageSource.gallery,
-                                maxWidth: 900,
-                                maxHeight: 900);
-                        if (pickedFile != null) {
-                          userSelectedImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
-                        } else {
-                          // api();
-                        }
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.all(8.0)),
-                    InkWell(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.camera_alt,
-                            color: AppColors.primary,
-                            size: 24.0,
-                          ),
-                          width10SizedBox,
-                          const Text("Camera",
-                              style: TextStyle(
-                                  color: AppColors.primary, fontSize: 16)),
-                        ],
-                      ),
-                      onTap: () async {
-                        Get.back();
-                        XFile? pickedFile = await ImagePickerClass.picker
-                            .pickImage(
-                                imageQuality: 50,
-                                source: ImageSource.camera,
-                                maxWidth: 900,
-                                maxHeight: 900);
-                        if (pickedFile != null) {
-                          userSelectedImage.value = pickedFile;
-                          await apiUploadImage();
-                          update();
-                        } else {
-                          // api();
-                        }
-                      },
-                    )
-                  ],
-                ),
-              ));
-        });
+    return Utility.showSelectionMediaDialog(context, onGalleryClick:
+        ()async{
+          Get.back();
+          XFile? pickedFile = await ImagePickerClass.picker
+              .pickImage(
+              imageQuality: 50,
+              source: ImageSource.gallery,
+              maxWidth: 900,
+              maxHeight: 900);
+          if (pickedFile != null) {
+            userSelectedImage.value = pickedFile;
+            await apiUploadImage();
+            update();
+          } else {
+            // api();
+          }
+    }, onCameraClick: ()async{
+      Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker
+          .pickImage(
+          imageQuality: 50,
+          source: ImageSource.camera,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        userSelectedImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    });
   }
 
   //Api upload image to server
