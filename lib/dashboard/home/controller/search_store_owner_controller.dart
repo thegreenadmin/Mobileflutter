@@ -138,6 +138,10 @@ class OwnerStoresController extends GetxController {
     selectedIndex.value = 0;
     getApiData();
     getGkey();
+    if (Get.arguments['isFromHome'] == true) {
+      storeId.value = Get.arguments['storeId'] ?? "";
+      apiGetParticularStore();
+    }
   }
 
   getGkey() async {
@@ -173,32 +177,29 @@ class OwnerStoresController extends GetxController {
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            if (isStoreLogoSelected.value) {
-              editStoreLogo.value = pickedFile;
-              await apiUploadImage();
-              update();
-            } else {
-              editStoreImage.value = pickedFile;
-              await apiUploadImage();
-              update();
-            }
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       Get.back();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        if (isStoreLogoSelected.value) {
+          editStoreLogo.value = pickedFile;
+          await apiUploadImage();
+          update();
+        } else {
+          editStoreImage.value = pickedFile;
+          await apiUploadImage();
+          update();
+        }
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,

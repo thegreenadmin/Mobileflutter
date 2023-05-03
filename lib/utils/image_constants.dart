@@ -32,6 +32,7 @@ class ImageConstants {
   static const String cross = '$assetsIcon/cross.png';
   static const String curb = '$assetsIcon/curb.png';
   static const String cart = '$assetsIcon/cart.png';
+  static const String circlefull = '$assetsIcon/circlefull.png';
   //D
   static const String deleteicon = '$assetsIcon/deleteicon.png';
   static const String delivery = '$assetsIcon/delivery.png';

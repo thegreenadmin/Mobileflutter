@@ -435,7 +435,12 @@ class AddCardController extends GetxController {
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        if (!value.body['message']
+            .toString()
+            .toLowerCase()
+            .contains("stripe")) {
+          Utility.showToast(value.body['message']);
+        }
       }
     });
   }

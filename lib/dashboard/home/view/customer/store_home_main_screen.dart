@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
@@ -29,6 +30,106 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.favoriteText,
     StringConstants.optionsText,
   ].obs;
+
+  void contactAlertDailogue(
+    context,
+  ) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Text(
+              storeHomeMainController
+                      .storeDetailsResponse.value.data!.store!.storeName ??
+                  "",
+              style: const TextStyle(
+                  color: AppColors.primarydark,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Text(
+              "${StringConstants.contactUsText}: ",
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            Text(
+              storeHomeMainController
+                      .storeDetailsResponse.value.data!.store!.storePhone ??
+                  "",
+              style: TextStyle(
+                  color: AppColors.blacklight,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Text(
+              "${StringConstants.emailText}: ",
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            Text(
+              storeHomeMainController
+                      .storeDetailsResponse.value.data!.store!.storeEmail ??
+                  "",
+              style: TextStyle(
+                  color: AppColors.blacklight,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.okayText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
 
   Padding horizontalTabs() {
     return Padding(
@@ -110,7 +211,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     Get.back();
-                    storeHomeMainController.onIndexChange(0);
+                    await storeHomeMainController.apiGetPreviousOrders();
+                    Get.to(const PreviousOrdersScreen());
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,6 +240,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             child: GestureDetector(
               onTap: () {
                 Get.back();
+                contactAlertDailogue(context);
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

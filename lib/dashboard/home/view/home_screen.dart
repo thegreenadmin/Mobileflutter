@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_scre
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -69,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(NotificationListScreen());
+                                Get.to(const NotificationListScreen());
                               },
                               child: const Icon(
                                 Icons.notifications_active,
@@ -584,7 +585,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 homeController.ownerFeatureProductList.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(const EditStoreDetailScreen(),
+                                    arguments: {
+                                      "isFromHome": true,
+                                      'storeId': homeController
+                                          .ownerFeatureProductList[index]
+                                          .storeId
+                                    });
+                              },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,

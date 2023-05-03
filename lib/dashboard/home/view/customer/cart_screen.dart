@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
+import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -27,7 +28,8 @@ class _CartScreenState extends State<CartScreen> {
             child: Container(
               color: AppColors.primarylight,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -40,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(result: true );
+                                    Get.back(result: true);
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -72,7 +74,8 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -428,6 +431,16 @@ class _CartScreenState extends State<CartScreen> {
                                                 .storeDeliveryServiceId
                                                 .toString() ??
                                             "0";
+                                        storeHomeMainController
+                                                .selectedDeliveryService.value =
+                                            storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data!
+                                                .store!
+                                                .storeDeliveryServices![i]
+                                                .deliveryServiceId!
+                                                .toString();
                                         await storeHomeMainController
                                             .apiGetCartListApi();
                                       },
@@ -524,7 +537,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 )
                                               : Image.asset(
                                                   ImageConstants.curb,
-                                                  scale: 2.2,
+                                                  scale: 2,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
                                                               .value ==
@@ -544,114 +557,159 @@ class _CartScreenState extends State<CartScreen> {
                               }),
                         ),
                         height20SizedBox,
-                        Text(
-                          StringConstants.pickUpLocationText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                        Obx(
+                          () => Text(
+                            storeHomeMainController
+                                            .selectedDeliveryService.value ==
+                                        "1" ||
+                                    storeHomeMainController
+                                            .selectedDeliveryService.value ==
+                                        "3"
+                                ? StringConstants.pickUpLocationText
+                                : StringConstants.shippingAddressText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                         height15SizedBox,
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            decoration: const BoxDecoration(
-                                color: AppColors.primarylight,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                )),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.loc,
-                                        scale: 2.5,
-                                      ),
-                                      width10SizedBox,
-                                      Obx(
-                                        () => SizedBox(
-                                          width: 200,
-                                          child: Text(
-                                            storeHomeMainController.selectedUserAddress.value.addressLine1 == null &&
+                        Obx(
+                          () => storeHomeMainController
+                                          .selectedDeliveryService.value ==
+                                      "1" ||
+                                  storeHomeMainController
+                                          .selectedDeliveryService.value ==
+                                      "3"
+                              ? Text(
+                                  "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.addressLine1 ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.city ?? ""}, "
+                                  "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.state!.stateName ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.postalCode}",
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 8),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.primarylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      )),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          flex: 4,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.asset(
+                                                ImageConstants.loc,
+                                                scale: 2.5,
+                                              ),
+                                              width10SizedBox,
+                                              Obx(
+                                                () => SizedBox(
+                                                  width: 100,
+                                                  child: Text(
                                                     storeHomeMainController
-                                                            .selectedUserAddress.value.city == null
-                                                ? StringConstants.addAddressText
-                                                : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
-                                                  "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
-                                            style: const TextStyle(
-                                                overflow: TextOverflow.visible,
-                                                color: AppColors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500),
+                                                                    .selectedUserAddress
+                                                                    .value
+                                                                    .addressLine1 ==
+                                                                null &&
+                                                            storeHomeMainController
+                                                                    .selectedUserAddress
+                                                                    .value
+                                                                    .city ==
+                                                                null
+                                                        ? StringConstants
+                                                            .addAddressText
+                                                        : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
+                                                            "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  width10SizedBox,
-                                  Obx(
-                                    () => InkWell(
-                                      onTap: () {
-                                        storeHomeMainController
-                                                        .selectedUserAddress
-                                                        .value
-                                                        .addressLine1 ==
-                                                    null &&
+                                        width10SizedBox,
+                                        Expanded(
+                                          flex: 2,
+                                          child: Obx(
+                                            () => InkWell(
+                                              onTap: () {
                                                 storeHomeMainController
-                                                        .selectedUserAddress
-                                                        .value
-                                                        .city ==
-                                                    null
-                                            ? Get.to(const PersonalInfoEditScreen(),
-                                                arguments:
-                                                    ({"isFromCart": true}))?.then(
-                                                (value) => storeHomeMainController
-                                                    .apiGetUserDetailsApi())
-                                            : storeHomeMainController
-                                                    .userAddress.isNotEmpty
-                                                ? storeHomeMainController.bottomSheetChangePickupLocation(context)
-                                                : null;
-                                      },
-                                      child: Container(
-                                        height: 40.0,
-                                        width: 80.0,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          border: Border.all(
-                                              color: AppColors.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            storeHomeMainController
-                                                            .selectedUserAddress
-                                                            .value
-                                                            .addressLine1 ==
-                                                        null &&
+                                                                .selectedUserAddress
+                                                                .value
+                                                                .addressLine1 ==
+                                                            null &&
+                                                        storeHomeMainController
+                                                                .selectedUserAddress
+                                                                .value
+                                                                .city ==
+                                                            null
+                                                    ? Get.to(const PersonalInfoEditScreen(),
+                                                            arguments: ({
+                                                              "isFromCart": true
+                                                            }))
+                                                        ?.then((value) => storeHomeMainController
+                                                            .apiGetUserDetailsApi())
+                                                    : storeHomeMainController
+                                                            .userAddress
+                                                            .isNotEmpty
+                                                        ? storeHomeMainController.bottomSheetChangePickupLocation(context)
+                                                        : null;
+                                              },
+                                              child: Container(
+                                                height: 40.0,
+                                                width: 60.0,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  border: Border.all(
+                                                      color: AppColors.primary),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
                                                     storeHomeMainController
-                                                            .selectedUserAddress
-                                                            .value
-                                                            .city ==
-                                                        null
-                                                ? StringConstants.addText
-                                                : StringConstants.changeText,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                                color: AppColors.primary),
+                                                                    .selectedUserAddress
+                                                                    .value
+                                                                    .addressLine1 ==
+                                                                null &&
+                                                            storeHomeMainController
+                                                                    .selectedUserAddress
+                                                                    .value
+                                                                    .city ==
+                                                                null
+                                                        ? StringConstants
+                                                            .addText
+                                                        : StringConstants
+                                                            .changeText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 14.0,
+                                                        color:
+                                                            AppColors.primary),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ])),
+                                      ])),
+                        ),
                         height10SizedBox,
                         Text(
                           StringConstants.orderSummaryText,
@@ -770,91 +828,103 @@ class _CartScreenState extends State<CartScreen> {
                 left: 0,
                 right: 0,
                 // alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    Visibility(
-                      visible:storeHomeMainController.walletBalance.value < storeHomeMainController.cartData.value.cartTotalPrice! ,
-                      child: Container(
-                        color:AppColors.redlight,
-                        padding:  const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              StringConstants.inSufficientFundText,
-                              style: const TextStyle(
-                                  color: AppColors.red,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
-                              },
-                              child: Text(
-                                StringConstants.addFundText,
-                                style: const TextStyle(
-                                  decoration: TextDecoration.underline,
-                                    color: AppColors.red,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: AppColors.primaryBackgroundLight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: Obx(() => Column(
+                      children: [
+                        Visibility(
+                          visible: storeHomeMainController
+                              .isInsufficientBalance.value,
+                          child: Container(
+                            color: AppColors.redlight,
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  StringConstants.payNowText,
+                                  StringConstants.inSufficientFundText,
                                   style: const TextStyle(
-                                      color: AppColors.black,
+                                      color: AppColors.red,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                Obx(
-                                  () => Text(
-                                    "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(const WalletScreen(),
+                                        arguments: {"isFromCartScreen": true});
+                                  },
+                                  child: Text(
+                                    StringConstants.addFundText,
                                     style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 18,
+                                        decoration: TextDecoration.underline,
+                                        color: AppColors.red,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                            CustomButton(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [AppColors.primary, AppColors.primary],
-                              ),
-                              onTap: () {
-                                  storeHomeMainController.apiPlaceOrder();
-                              },
-                              height: 45,
-                              width: 120,
-                              text: StringConstants.payNowText,
-                              borderRadius: 12,
-                              fontWeight: FontWeight.w500,
-                              iconL: false,
-                              fontSize: 14,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
+                        Container(
+                          color: AppColors.primaryBackgroundLight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      StringConstants.payNowText,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Obx(
+                                      () => Text(
+                                        "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                CustomButton(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.primary,
+                                      AppColors.primary
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    storeHomeMainController
+                                        .moneydeductFromCartDailogue(context,
+                                            amount: storeHomeMainController
+                                                    .cartData
+                                                    .value
+                                                    .cartTotalPrice
+                                                    ?.toStringAsFixed(2) ??
+                                                "0");
+                                  },
+                                  height: 45,
+                                  width: 120,
+                                  text: StringConstants.payNowText,
+                                  borderRadius: 12,
+                                  fontWeight: FontWeight.w500,
+                                  iconL: false,
+                                  fontSize: 14,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
               ),
             ],
           ),

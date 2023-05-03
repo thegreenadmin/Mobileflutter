@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-
+import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-
 import '../../../../../utils/image_constants.dart';
 
 class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
@@ -17,7 +17,7 @@ class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      Size.fromHeight(WidgetConstants.screenHeight * 0.18);
+      Size.fromHeight(WidgetConstants.screenHeight * 0.25);
 }
 
 class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
@@ -27,7 +27,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.18),
+      preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -74,7 +74,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                       ),
                       child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 20.0, right: 20, bottom: 10),
+                              left: 20.0, right: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -96,32 +96,143 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         size: 24.0,
                                       ),
                                     ),
-                                    storeHomeMainController.isFavouriteStore.value ==
-                                            true
-                                        ? InkWell(
-                                      onTap: () {
+                                    Row(
+                                      children: [
+                                        Obx(
+                                          () => Visibility(
+                                            visible: storeHomeMainController
+                                                    .productDetailResponse
+                                                    .value
+                                                    .data
+                                                    ?.product
+                                                    ?.cartItems
+                                                    ?.isNotEmpty ??
+                                                false,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          Get.to(() =>
+                                                              const CartScreen());
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            CircleAvatar(
+                                                              radius: 22.0,
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              child: Image.asset(
+                                                                  ImageConstants
+                                                                      .cart,
+                                                                  height: 16),
+                                                            ),
+                                                            Positioned(
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          1.5),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        AppColors
+                                                                            .red,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            8.5),
+                                                                  ),
+                                                                  constraints:
+                                                                      const BoxConstraints(
+                                                                    minWidth:
+                                                                        15,
+                                                                    minHeight:
+                                                                        15,
+                                                                  ),
+                                                                  child: Obx(
+                                                                    () => Text(
+                                                                      storeHomeMainController
+                                                                          .cartItems
+                                                                          .length
+                                                                          .toString(),
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            10,
+                                                                      ),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                    ),
+                                                                  )),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                         storeHomeMainController
-                                            .apiRemoveFavouriteStore(
-                                            storeHomeMainController.storeDetailsResponse
-                                                .value.data?.store?.storeId);
-                                      },
-                                      child: Image.asset(
-                                        ImageConstants.liked,
-                                        scale: 2.8,
-                                      ),
+                                                    .isFavouriteStore.value ==
+                                                true
+                                            ? InkWell(
+                                                onTap: () {
+                                                  storeHomeMainController
+                                                      .apiRemoveFavouriteStore(
+                                                          storeHomeMainController
+                                                              .storeDetailsResponse
+                                                              .value
+                                                              .data
+                                                              ?.store
+                                                              ?.storeId);
+                                                },
+                                                child: Image.asset(
+                                                  ImageConstants.liked,
+                                                  scale: 3.5,
+                                                ),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  storeHomeMainController
+                                                      .apiCreateFavouriteStore(
+                                                          storeHomeMainController
+                                                              .storeDetailsResponse
+                                                              .value
+                                                              .data
+                                                              ?.store
+                                                              ?.storeId);
+                                                },
+                                                child: Image.asset(
+                                                  ImageConstants.favoutline,
+                                                  scale: 3.5,
+                                                ),
+                                              ),
+                                      ],
                                     )
-                                        : InkWell(
-                                      onTap: () {
-                                        storeHomeMainController
-                                            .apiCreateFavouriteStore(
-                                            storeHomeMainController.storeDetailsResponse
-                                                .value.data?.store?.storeId);
-                                      },
-                                      child: Image.asset(
-                                        ImageConstants.favoutline,
-                                        scale: 2.8,
-                                      ),
-                                    ),
                                   ]),
                               height10SizedBox,
                               Row(
@@ -181,7 +292,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                      height8SizedBox,
+                                      height4SizedBox,
                                       Row(
                                         children: [
                                           Image.asset(
@@ -213,12 +324,10 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                           ),
                                         ],
                                       ),
-                                      height8SizedBox,
+                                      height6SizedBox,
                                       SizedBox(
-                                        height: 20,
-                                        // width: WidgetConstants.screenWidth * 0.7,
+                                        height: 15,
                                         child: Row(
-                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                                 storeHomeMainController
@@ -250,24 +359,32 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                     fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.w400)),
-                                            width8SizedBox,
-                                            ListView.separated(
+                                          ],
+                                        ),
+                                      ),
+                                      height4SizedBox,
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 100,
+                                            height: 15,
+                                            child: ListView.separated(
                                                 separatorBuilder:
                                                     (BuildContext context,
                                                         int index) {
-                                                  return width8SizedBox;
+                                                  return width6SizedBox;
                                                 },
                                                 shrinkWrap: true,
-                                                // physics: const NeverScrollableScrollPhysics(),
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: storeHomeMainController
+                                                itemCount:
+                                                    storeHomeMainController
                                                         .storeDetailsResponse
                                                         .value
-                                                        .data?.store
-                                                        ?.storeDeliveryServices
-                                                        ?.length ??
-                                                    0,
+                                                        .data!
+                                                        .store!
+                                                        .storeDeliveryServices!
+                                                        .length,
                                                 itemBuilder: (_, i) {
                                                   return CircleAvatar(
                                                     radius: 12.0,
@@ -276,8 +393,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                     child: storeHomeMainController
                                                                 .storeDetailsResponse
                                                                 .value
-                                                                .data
-                                                                ?.store
+                                                                .data!
+                                                                .store
                                                                 ?.storeDeliveryServices?[
                                                                     i]
                                                                 .deliveryServiceId ==
@@ -291,8 +408,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                         : storeHomeMainController
                                                                     .storeDetailsResponse
                                                                     .value
-                                                                    .data
-                                                                    ?.store
+                                                                    .data!
+                                                                    .store
                                                                     ?.storeDeliveryServices?[
                                                                         i]
                                                                     .deliveryServiceId ==
@@ -313,20 +430,19 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                               ),
                                                   );
                                                 }),
-                                            width8SizedBox,
-                                            InkWell(
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              splashColor: Colors.transparent,
-                                              onTap: () {},
-                                              child: Image.asset(
-                                                ImageConstants.call,
-                                                scale: 2.5,
-                                              ),
+                                          ),
+                                          width2SizedBox,
+                                          InkWell(
+                                            highlightColor: Colors.transparent,
+                                            splashColor: Colors.transparent,
+                                            onTap: () {},
+                                            child: Image.asset(
+                                              ImageConstants.call,
+                                              scale: 2.5,
                                             ),
-                                          ],
-                                        ),
-                                      ),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   )
                                 ],
@@ -358,14 +474,13 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                   ),
                   child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20, bottom: 10),
+                          left: 20.0, right: 10, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 IconButton(
@@ -380,36 +495,147 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     size: 24.0,
                                   ),
                                 ),
-                                storeHomeMainController.isFavouriteStore.value == true
-                                ? InkWell(
-                                  onTap: () {
-                                    print("apiRemoveFavouriteStore:=====");
-                                    print(storeHomeMainController.isFavouriteStore.value);
-                                    storeHomeMainController
-                                        .apiRemoveFavouriteStore(
-                                        storeHomeMainController
-                                            .storeAddress
-                                            .value
-                                            .store
-                                            ?.storeId);
-                                  },
-                                  child: Image.asset(
-                                          ImageConstants.liked,
-                                          scale: 2.8,
+                                Row(
+                                  children: [
+                                    Obx(
+                                      () => Visibility(
+                                        visible: storeHomeMainController
+                                                .productDetailResponse
+                                                .value
+                                                .data
+                                                ?.product
+                                                ?.cartItems
+                                                ?.isNotEmpty ??
+                                            false,
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        Get.to(() =>
+                                                            const CartScreen());
+                                                      },
+                                                      child: Stack(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 22.0,
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            child: Image.asset(
+                                                                ImageConstants
+                                                                    .cart,
+                                                                height: 16),
+                                                          ),
+                                                          Positioned(
+                                                            right: 0,
+                                                            top: 0,
+                                                            child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        1.5),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      AppColors
+                                                                          .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.5),
+                                                                ),
+                                                                constraints:
+                                                                    const BoxConstraints(
+                                                                  minWidth: 15,
+                                                                  minHeight: 15,
+                                                                ),
+                                                                child: Obx(
+                                                                  () => Text(
+                                                                    storeHomeMainController
+                                                                        .cartItems
+                                                                        .length
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          10,
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                )),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    width6SizedBox,
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ) : InkWell(
-                                    onTap: () {
-                                      storeHomeMainController
-                                          .apiCreateFavouriteStore(
-                                          storeHomeMainController.storeAddress.value.store?.storeId);
-                                    },
-                                    child: Image.asset(
-                                      ImageConstants.favoutline,
-                                      scale: 2.8,
+                                      ),
                                     ),
-                                ),
+                                    storeHomeMainController
+                                                .isFavouriteStore.value ==
+                                            true
+                                        ? InkWell(
+                                            onTap: () {
+                                              print(
+                                                  "apiRemoveFavouriteStore:=====");
+                                              print(storeHomeMainController
+                                                  .isFavouriteStore.value);
+                                              storeHomeMainController
+                                                  .apiRemoveFavouriteStore(
+                                                      storeHomeMainController
+                                                          .storeAddress
+                                                          .value
+                                                          .store
+                                                          ?.storeId);
+                                            },
+                                            child: Image.asset(
+                                              ImageConstants.liked,
+                                              scale: 3,
+                                            ),
+                                          )
+                                        : InkWell(
+                                            onTap: () {
+                                              storeHomeMainController
+                                                  .apiCreateFavouriteStore(
+                                                      storeHomeMainController
+                                                          .storeAddress
+                                                          .value
+                                                          .store
+                                                          ?.storeId);
+                                            },
+                                            child: Image.asset(
+                                              ImageConstants.favoutline,
+                                              scale: 3,
+                                            ),
+                                          ),
+                                  ],
+                                )
                               ]),
-                          height10SizedBox,
+                          height4SizedBox,
                           Row(
                             children: [
                               Container(
@@ -460,7 +686,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  height8SizedBox,
+                                  height6SizedBox,
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -488,46 +714,54 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                   ),
                                   height8SizedBox,
                                   SizedBox(
-                                    height: 20,
-                                    // width: WidgetConstants.screenWidth * 0.7,
+                                    height: 15,
                                     child: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                            storeHomeMainController
-                                                    .storeAddress
-                                                    .value
-                                                    .store!
-                                                    .storeTimings!
-                                                    .isNotEmpty
-                                                ? storeHomeMainController
-                                                            .storeAddress
-                                                            .value
-                                                            .store
-                                                            ?.storeTimings
-                                                            ?.first
-                                                            .is24HoursActive ==
-                                                        false
-                                                    ? "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                        "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                    : StringConstants
-                                                        .storeHoursText
-                                                : StringConstants
-                                                    .storeHoursText,
-                                            style: const TextStyle(
-                                                overflow: TextOverflow.visible,
-                                                color: AppColors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400)),
-                                        width8SizedBox,
-                                        ListView.separated(
+                                        SizedBox(
+                                          child: Text(
+                                              storeHomeMainController
+                                                      .storeAddress
+                                                      .value
+                                                      .store!
+                                                      .storeTimings!
+                                                      .isNotEmpty
+                                                  ? storeHomeMainController
+                                                              .storeAddress
+                                                              .value
+                                                              .store
+                                                              ?.storeTimings
+                                                              ?.first
+                                                              .is24HoursActive ==
+                                                          false
+                                                      ? "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                          "${Utility.formatDateTime(storeHomeMainController.storeAddress.value.store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                      : StringConstants
+                                                          .storeHoursText
+                                                  : StringConstants
+                                                      .storeHoursText,
+                                              style: const TextStyle(
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                  color: AppColors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  height4SizedBox,
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        height: 15,
+                                        child: ListView.separated(
                                             separatorBuilder:
                                                 (BuildContext context,
                                                     int index) {
-                                              return width8SizedBox;
+                                              return width6SizedBox;
                                             },
                                             shrinkWrap: true,
-                                            // physics: const NeverScrollableScrollPhysics(),
                                             scrollDirection: Axis.horizontal,
                                             itemCount: storeHomeMainController
                                                     .storeAddress
@@ -575,18 +809,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                           ),
                                               );
                                             }),
-                                        width8SizedBox,
-                                        InkWell(
-                                          highlightColor: Colors.transparent,
-                                          splashColor: Colors.transparent,
-                                          onTap: () {},
-                                          child: Image.asset(
-                                            ImageConstants.call,
-                                            scale: 2.5,
-                                          ),
+                                      ),
+                                      width2SizedBox,
+                                      InkWell(
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        onTap: () {},
+                                        child: Image.asset(
+                                          ImageConstants.call,
+                                          scale: 2.5,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   )
                                 ],
                               )

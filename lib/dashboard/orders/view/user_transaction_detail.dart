@@ -131,7 +131,7 @@ class _UserTransactionDetailScreenState
                                         userTransactionDetailController
                                                 .storeName!.isEmpty
                                             ? StringConstants
-                                            .walletTransactionText
+                                                .walletTransactionText
                                             : userTransactionDetailController
                                                 .storeName!.value,
                                         style: const TextStyle(

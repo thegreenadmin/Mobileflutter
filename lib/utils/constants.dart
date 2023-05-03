@@ -61,6 +61,8 @@ class StringConstants {
   static String accountHolderNameText = "Account Holder Name";
   static String accountHolderTypeText = "Account Holder Type";
   static String accountNumberText = "Account Number";
+  static String amountWillBeDeductedText =
+      "amount will be deducted from your wallet. Do you want to proceed?";
 
   //B
   static String breadthText = "Breadth";
@@ -269,8 +271,12 @@ class StringConstants {
   static String offerFor = "Offer For";
   static String okayText = "Okay";
   static String orderConfirmationText = "Order Confirmation";
+  static String orderConfirmedText = "Order Confirmed";
   static String octText = "October";
   static String novText = "November";
+  static String orderDetailText = "Order detail";
+  static String orderIdText = "order Id";
+  static String orderidText = "order-Id";
   static String orderReadyText = "Order Ready";
   static String orderedDateText = "Ordered Date";
   static String orderAmountText = "Order Amount";
@@ -309,6 +315,9 @@ class StringConstants {
   static String pleaseAddCardFirstText = "Please add card first";
   static String pleaseAddBankDetailFirstText = "Please add bank detail first";
   static String payoutText = "Payout";
+  static String proceedText = "Proceed";
+  static String paymentConfirmatinText = "Payment Confirmation";
+  static String previousOrdersText = "Previous Orders";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -387,6 +396,7 @@ class StringConstants {
   static String shopYourFavouriteText = "Shop your favorite";
   static String sepText = "September";
   static String selectCountryText = "Select Country";
+  static String shippingAddressText = "Shipping Address";
 
   //T
   static String thankOrderText = "Thank you for your Order !!";
@@ -571,7 +581,8 @@ class AlertStringConstants {
       "Please select at least one permission";
   static String pleaseEnterOfferNameText = "Please enter offer name";
   static String pleaseUploadImageText = "Please upload Image";
-  static String pleaseUploadAtLeastOneImageText = "Please upload at least one image";
+  static String pleaseUploadAtLeastOneImageText =
+      "Please upload at least one image";
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterAmountText = "Please enter amount";
   static String pleaseSelectProductToProceedText =

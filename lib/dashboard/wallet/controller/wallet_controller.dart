@@ -50,6 +50,7 @@ class WalletController extends GetxController {
   RxInt? type = 0.obs;
   RxString ownerSelectedStore = "".obs;
   RxString bankToken = "".obs;
+  RxBool isFromCartScreen = false.obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
@@ -85,11 +86,17 @@ class WalletController extends GetxController {
     super.onInit();
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
+      if (Get.arguments == null
+          ? false
+          : Get.arguments['isFromCartScreen'] != false) {
+        isFromCartScreen.value = Get.arguments["isFromCartScreen"] ?? false;
+        print("isFromCartScreen.value----->" +
+            Get.arguments["isFromCartScreen"].toString());
+      }
       apiGetCardList();
       apiGetUserWalletBalance();
     } else {
       apiGetStoreList();
-      //apiGetBankAccountList();
       apiGetCountries();
     }
   }
@@ -581,7 +588,12 @@ class WalletController extends GetxController {
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        if (!value.body['message']
+            .toString()
+            .toLowerCase()
+            .contains("stripe")) {
+          Utility.showToast(value.body['message']);
+        }
       }
     });
   }

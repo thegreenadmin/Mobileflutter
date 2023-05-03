@@ -25,43 +25,108 @@ class _WalletScreenState extends State<WalletScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(90.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                          style: const TextStyle(
-                              fontSize: 20,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Obx(
+                                  () =>
+                                      walletController.isFromCartScreen.value ==
+                                              true
+                                          ? InkWell(
+                                              onTap: () {
+                                                Get.back();
+                                              },
+                                              child: const Icon(
+                                                Icons.arrow_back,
+                                                color: AppColors.black,
+                                                size: 24.0,
+                                              ),
+                                            )
+                                          : height0SizedBox,
+                                ),
+                                walletController.isFromCartScreen.value == true
+                                    ? width10SizedBox
+                                    : height0SizedBox,
+                                Text(
+                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                            height4SizedBox,
+                            Text(
+                              StringConstants.walletText,
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
                         ),
-                        height4SizedBox,
-                        Text(
-                          StringConstants.walletText,
-                          style: const TextStyle(
-                              fontSize: 22,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600),
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
                         )
-                      ],
-                    ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
-                  ])),
+                      ]),
+                ],
+              )),
         ),
       ),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(100.0),
+      //   child: Container(
+      //     color: AppColors.primarylight,
+      //     child: Padding(
+      //         padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+      //         child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //             crossAxisAlignment: CrossAxisAlignment.center,
+      //             children: [
+      //               Column(
+      //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //                 mainAxisAlignment: MainAxisAlignment.center,
+      //                 children: [
+      //                   Text(
+      //                     'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+      //                     style: const TextStyle(
+      //                         fontSize: 20,
+      //                         color: AppColors.black,
+      //                         fontWeight: FontWeight.w400),
+      //                   ),
+      //                   height4SizedBox,
+      //                   Text(
+      //                     StringConstants.walletText,
+      //                     style: const TextStyle(
+      //                         fontSize: 22,
+      //                         color: AppColors.black,
+      //                         fontWeight: FontWeight.w600),
+      //                   )
+      //                 ],
+      //               ),
+      //               Image.asset(
+      //                 ImageConstants.homeMall,
+      //                 scale: 4,
+      //               )
+      //             ])),
+      //   ),
+      // ),
       body: Container(
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -176,8 +241,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                       fontWeight: FontWeight.w500),
                                 )),
                             height8SizedBox,
-                             Text(StringConstants.totalBalanceText,
-                              style:const TextStyle(
+                            Text(
+                              StringConstants.totalBalanceText,
+                              style: const TextStyle(
                                   color: AppColors.white, fontSize: 18),
                             ),
                             height12SizedBox,
@@ -204,7 +270,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       fontWeight: FontWeight.w500),
                                 )),
                             height8SizedBox,
-                             Text(StringConstants.totalBalanceText,
+                            Text(
+                              StringConstants.totalBalanceText,
                               style: const TextStyle(
                                   color: AppColors.black, fontSize: 18),
                             ),

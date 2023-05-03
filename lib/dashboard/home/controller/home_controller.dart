@@ -318,6 +318,7 @@ class HomeController extends GetxController {
         getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
         if (getOwnerOfferlist.isNotEmpty) {
           for (int i = 0; i < getOwnerOfferlist.length; i++) {
+            
             if (i >= 5) {
               break;
             }
@@ -344,9 +345,7 @@ class HomeController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-
     debugPrint("TOKEN ********** $headers");
-
     UserProvider()
         .getWithHeadersApi(
             ServerCommunicator().baseUrl +

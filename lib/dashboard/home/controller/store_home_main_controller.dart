@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/feature_product_response_model
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
     as nearby;
+import 'package:thegreenmall/dashboard/home/model/previous_orders_model.dart';
 import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart'
     as categories;
 import 'package:thegreenmall/dashboard/home/model/store_offers_list_model.dart'
@@ -17,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -60,6 +62,9 @@ class StoreHomeMainController extends GetxController {
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
+  late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
+  RxList<Products> previousOrderList = <Products>[].obs;
+
   RxInt selectedIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt itemsCount = 1.obs;
@@ -72,9 +77,11 @@ class StoreHomeMainController extends GetxController {
   RxBool isDeleteCartItem = false.obs;
   RxBool isFavouriteProduct = false.obs;
   RxString orderStatus = "".obs;
+  RxBool isInsufficientBalance = false.obs;
 
   RxBool isLoading = false.obs;
   RxString storeId = "".obs;
+  RxString selectedDeliveryService = "".obs;
   final scrollController = ScrollController();
 
   void setupScrollController(context) {
@@ -97,6 +104,9 @@ class StoreHomeMainController extends GetxController {
           Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
       productId.value =
           Get.arguments == null ? "" : Get.arguments["productId"] ?? "";
+
+      print("store Id-----" + storeId.value);
+      print("product Id-----" + productId.value);
     }
 
     apiGetUserDetailsApi();
@@ -130,6 +140,102 @@ class StoreHomeMainController extends GetxController {
     } else if (i == 2) {
       await apiFeatureProductListApi(isFavouriteProducts: true);
     } else if (i == 3) {}
+  }
+
+  void moneydeductFromCartDailogue(BuildContext context, {String amount = ""}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Center(
+              child: Image.asset(
+                ImageConstants.info,
+                color: AppColors.green,
+                scale: 1.5,
+              ),
+            ),
+            height12SizedBox,
+            Text(
+              StringConstants.paymentConfirmatinText,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Text(
+              "\$$amount ${StringConstants.amountWillBeDeductedText}",
+              style: TextStyle(
+                  color: AppColors.blacklight,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    Get.back();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: WidgetConstants.screenWidth * 0.3,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(color: AppColors.primary),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.cancelText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                            color: AppColors.primary),
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () async {
+                    Get.back();
+                    await apiPlaceOrder(context);
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: WidgetConstants.screenWidth * 0.3,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.proceedText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
   }
 
   //Get Categories Api
@@ -254,7 +360,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Place Order Api
-  Future apiPlaceOrder() async {
+  Future apiPlaceOrder(context) async {
     isLoading.value = true;
     debugPrint("API PLACE ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
@@ -281,7 +387,6 @@ class StoreHomeMainController extends GetxController {
           : null,
       "cart_items": selectedItems
     };
-
     debugPrint("TOKEN ********** $headers");
     debugPrint("API PLACE ORDER BODY ********** $data");
     UserProvider()
@@ -304,10 +409,18 @@ class StoreHomeMainController extends GetxController {
           "isFromNotification": false
         });
         update();
+        isInsufficientBalance.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        if (value?.body["message"] == "Insufficient balance") {
+          isInsufficientBalance.value = true;
+        } else {
+          isInsufficientBalance.value = false;
+          Utility.showToast(value?.body['message']);
+        }
       } else if (value?.body == null) {
         Utility.showToast(AlertStringConstants.somethingWentWrongText);
       } else {
@@ -488,6 +601,7 @@ class StoreHomeMainController extends GetxController {
                     Get.back();
                     Get.back();
                     Get.back();
+                    Get.back();
                   },
                   child: Container(
                     height: 50.0,
@@ -624,14 +738,14 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("STORE DETAILS *******${value?.body}");
+      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
         debugPrint(
-            "isFavouriteStore before 222*******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+            "isFavouriteStore before *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
         debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
@@ -810,6 +924,7 @@ class StoreHomeMainController extends GetxController {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
+                                Get.back();
                                 selectedUserAddress.value = userAddress[index];
                               },
                               child: Container(
@@ -847,9 +962,19 @@ class StoreHomeMainController extends GetxController {
                                       userAddress[index].userAddressId ==
                                               selectedUserAddress
                                                   .value.userAddressId
-                                          ? Image.asset(
-                                              ImageConstants.whitetick,
-                                              scale: 3.5,
+                                          ? Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  ImageConstants.circlefull,
+                                                  scale: 4,
+                                                ),
+                                                Image.asset(
+                                                  ImageConstants.whitetick,
+                                                  color: AppColors.white,
+                                                  scale: 3.5,
+                                                ),
+                                              ],
                                             )
                                           : Image.asset(
                                               ImageConstants.circleunfill,
@@ -862,20 +987,6 @@ class StoreHomeMainController extends GetxController {
                             );
                           }),
                       height10SizedBox,
-                      CustomButton(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [AppColors.primary, AppColors.primary],
-                        ),
-                        onTap: () {},
-                        height: 50,
-                        text: StringConstants.changeText,
-                        borderRadius: 12,
-                        fontWeight: FontWeight.w500,
-                        iconL: false,
-                        fontSize: 16,
-                      ),
                     ],
                   ),
                 ),
@@ -1035,6 +1146,61 @@ class StoreHomeMainController extends GetxController {
 
         apiFeatureProductListApi();
         isFavouriteProduct.value = false;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Previous orders ProductList Api
+  Future apiGetPreviousOrders() async {
+    isLoading.value = true;
+    debugPrint("PREVIOUS ORDERS URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreProductList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map data = {
+      "q": "",
+      "store_id": storeAddress.value.store?.storeId,
+      "page": 1,
+      "page_size": 100,
+      "order_by": "product_id",
+      "order_type": "DESC",
+      "category_id": null,
+      "is_favourite_products": false,
+      "is_previous_products": true,
+      "filters": [
+        // {
+        //     "filter_by": "is_featured_product",
+        //     "filter_value": true,
+        //     "operation": "eq"
+        // }
+      ]
+    };
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("PREVIOUS ORDERS BODY ********** ${data.toString()}");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().shopStoreProductList,
+            headers,
+            showLoading: true) //orderBy == "2" ? true : false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("PREVIOUS ORDERS BODY *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        previousOrdersModel = PreviousOrdersModel.fromJson(value?.body);
+        previousOrderList.value = previousOrdersModel.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

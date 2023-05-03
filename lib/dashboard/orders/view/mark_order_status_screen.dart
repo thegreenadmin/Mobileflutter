@@ -271,7 +271,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                   children: [
                                     Text(
                                         ordersHomeMainController
-                                            .customerName.value.toTitleCase(),
+                                            .customerName.value
+                                            .toTitleCase(),
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
@@ -502,55 +503,115 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       Flexible(
                                         flex: 1,
                                         child: Obx(
-                                              () =>
-                                              ordersHomeMainController.selectedIndex.value == 3 &&
-                                                  ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.delivered.statusName ?
-                                                  height0SizedBox :
-                                                  SizedBox(
-                                                    height: 20,
-                                                    width: 30,
-                                                    child: Checkbox(
-                                                      side: MaterialStateBorderSide.resolveWith(
-                                                            (states) => BorderSide(
-                                                            width: 1.0, color:
-                                                            AppColors.primary.withOpacity(0.5)),
-                                                      ),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(6.0)),
-                                                      activeColor: AppColors.primary,
-
-                                                      value: ordersHomeMainController.selectedIndex.value == 0 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.pending.statusName ||
-                                                      ordersHomeMainController.selectedIndex.value == 1 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.confirmed.statusName||
-                                                      ordersHomeMainController.selectedIndex.value == 2 &&
-                                                         (ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.shipped.statusName
-                                                             && ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.readyPickup.statusName)||
-                                                      ordersHomeMainController.selectedIndex.value == 3 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus!=OrderStatus.delivered.statusName?
-                                                      true:
-                                                      ordersHomeMainController.getOrderItems[index].isSelected??false ,
-                                                      onChanged: (bool? value) {
-                                                        if(ordersHomeMainController.selectedIndex.value == 0 &&
-                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.pending.statusName){
-                                                          setState(() {
-                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                          });
-                                                        }else if(ordersHomeMainController.selectedIndex.value == 1 &&
-                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.confirmed.statusName){
-                                                          setState(() {
-                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                          });
-                                                        }else if(ordersHomeMainController.selectedIndex.value == 2 &&
-                                                          (  ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.shipped.statusName||
-                                                              ordersHomeMainController.getOrderItems[index].orderItemStatus==OrderStatus.readyPickup.statusName)){
-                                                          setState(() {
-                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
-                                                          });
-                                                        }
-
-                                                  },
-                                              )),
+                                          () => ordersHomeMainController
+                                                          .selectedIndex
+                                                          .value ==
+                                                      3 &&
+                                                  ordersHomeMainController
+                                                          .getOrderItems[index]
+                                                          .orderItemStatus ==
+                                                      OrderStatus
+                                                          .delivered.statusName
+                                              ? height0SizedBox
+                                              : SizedBox(
+                                                  height: 20,
+                                                  width: 30,
+                                                  child: Checkbox(
+                                                    side:
+                                                        MaterialStateBorderSide
+                                                            .resolveWith(
+                                                      (states) => BorderSide(
+                                                          width: 1.0,
+                                                          color: AppColors
+                                                              .primary
+                                                              .withOpacity(
+                                                                  0.5)),
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6.0)),
+                                                    activeColor:
+                                                        AppColors.primary,
+                                                    value: ordersHomeMainController.selectedIndex.value == 0 && ordersHomeMainController.getOrderItems[index].orderItemStatus != OrderStatus.pending.statusName ||
+                                                            ordersHomeMainController.selectedIndex.value ==
+                                                                    1 &&
+                                                                ordersHomeMainController.getOrderItems[index].orderItemStatus !=
+                                                                    OrderStatus
+                                                                        .confirmed
+                                                                        .statusName ||
+                                                            ordersHomeMainController
+                                                                        .selectedIndex
+                                                                        .value ==
+                                                                    2 &&
+                                                                (ordersHomeMainController.getOrderItems[index].orderItemStatus != OrderStatus.shipped.statusName &&
+                                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus !=
+                                                                        OrderStatus
+                                                                            .readyPickup
+                                                                            .statusName) ||
+                                                            ordersHomeMainController
+                                                                        .selectedIndex
+                                                                        .value ==
+                                                                    3 &&
+                                                                ordersHomeMainController.getOrderItems[index].orderItemStatus !=
+                                                                    OrderStatus
+                                                                        .delivered
+                                                                        .statusName
+                                                        ? true
+                                                        : ordersHomeMainController
+                                                                .getOrderItems[index]
+                                                                .isSelected ??
+                                                            false,
+                                                    onChanged: (bool? value) {
+                                                      if (ordersHomeMainController
+                                                                  .selectedIndex
+                                                                  .value ==
+                                                              0 &&
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
+                                                              OrderStatus
+                                                                  .pending
+                                                                  .statusName) {
+                                                        setState(() {
+                                                          ordersHomeMainController
+                                                              .getOrderItems
+                                                              .elementAt(index)
+                                                              .isSelected = value;
+                                                        });
+                                                      } else if (ordersHomeMainController
+                                                                  .selectedIndex
+                                                                  .value ==
+                                                              1 &&
+                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
+                                                              OrderStatus
+                                                                  .confirmed
+                                                                  .statusName) {
+                                                        setState(() {
+                                                          ordersHomeMainController
+                                                              .getOrderItems
+                                                              .elementAt(index)
+                                                              .isSelected = value;
+                                                        });
+                                                      } else if (ordersHomeMainController
+                                                                  .selectedIndex
+                                                                  .value ==
+                                                              2 &&
+                                                          (ordersHomeMainController.getOrderItems[index].orderItemStatus ==
+                                                                  OrderStatus
+                                                                      .shipped
+                                                                      .statusName ||
+                                                              ordersHomeMainController.getOrderItems[index].orderItemStatus ==
+                                                                  OrderStatus.readyPickup.statusName)) {
+                                                        setState(() {
+                                                          ordersHomeMainController
+                                                              .getOrderItems
+                                                              .elementAt(index)
+                                                              .isSelected = value;
+                                                        });
+                                                      }
+                                                    },
+                                                  )),
                                         ),
                                       ),
                                     ],
@@ -563,16 +624,16 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
           ),
           Positioned(
             bottom: 20,
-            left:  ordersHomeMainController.selectedIndex.value == 0?25:50,
-            right:  ordersHomeMainController.selectedIndex.value == 0?25: 50,
+            left: ordersHomeMainController.selectedIndex.value == 0 ? 25 : 50,
+            right: ordersHomeMainController.selectedIndex.value == 0 ? 25 : 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Visibility(
-                  visible:ordersHomeMainController.selectedIndex.value == 0,
+                  visible: ordersHomeMainController.selectedIndex.value == 0,
                   replacement: height0SizedBox,
                   child: CustomButton(
-                    width: WidgetConstants.screenWidth *0.4,
+                    width: WidgetConstants.screenWidth * 0.4,
                     border: Border.all(
                       color: AppColors.blacklight,
                     ),
@@ -582,11 +643,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                       colors: [AppColors.white, AppColors.white],
                     ),
                     onTap: () {
-                      if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
-                       ordersHomeMainController.apiCancelOrder();
-
-                      }else{
-                        Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
+                      if (ordersHomeMainController.getOrderItems
+                          .any((element) => element.isSelected == true)) {
+                        ordersHomeMainController.apiCancelOrder();
+                      } else {
+                        Utility.showToast(AlertStringConstants
+                            .pleaseSelectProductToProceedText);
                       }
                     },
                     height: 50,
@@ -600,10 +662,11 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                   ),
                 ),
                 Visibility(
-                  visible: ordersHomeMainController.selectedIndex.value != 3 ,
+                  visible: ordersHomeMainController.selectedIndex.value != 3,
                   child: CustomButton(
-                    width: ordersHomeMainController.selectedIndex.value == 0?
-                    WidgetConstants.screenWidth *0.4 :WidgetConstants.screenWidth *0.7,
+                    width: ordersHomeMainController.selectedIndex.value == 0
+                        ? WidgetConstants.screenWidth * 0.4
+                        : WidgetConstants.screenWidth * 0.7,
                     border: Border.all(
                       color: AppColors.primary,
                     ),
@@ -613,20 +676,38 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () {
-                      if(ordersHomeMainController.getOrderItems.any((element) => element.isSelected ==true)){
+                      if (ordersHomeMainController.getOrderItems
+                          .any((element) => element.isSelected == true)) {
                         ordersHomeMainController.selectedIndex.value == 0
                             ? ordersHomeMainController.apiMarkOrderReady()
                             : ordersHomeMainController.selectedIndex.value == 1
-                            ? ordersHomeMainController.getStoreOrderDetailModel.value.data?.order?.deliveryService?.deliveryServiceId !="2"?
-                            ordersHomeMainController.apiMarkReadyForPickUp():
-                            ordersHomeMainController.apiMarkReadyForShipping()
-                            : ordersHomeMainController.selectedIndex.value == 2
-                            ? ordersHomeMainController.apiMarkDelivered()
-                            : ordersHomeMainController.selectedIndex.value == 3
-                            ? ordersHomeMainController.apiMarkOrderReady()
-                            : ordersHomeMainController.apiMarkOrderReady();
-                      }else{
-                        Utility.showToast(AlertStringConstants.pleaseSelectProductToProceedText);
+                                ? ordersHomeMainController
+                                            .getStoreOrderDetailModel
+                                            .value
+                                            .data
+                                            ?.order
+                                            ?.deliveryService
+                                            ?.deliveryServiceId !=
+                                        "2"
+                                    ? ordersHomeMainController
+                                        .apiMarkReadyForPickUp()
+                                    : ordersHomeMainController
+                                        .apiMarkReadyForShipping()
+                                : ordersHomeMainController
+                                            .selectedIndex.value ==
+                                        2
+                                    ? ordersHomeMainController
+                                        .apiMarkDelivered()
+                                    : ordersHomeMainController
+                                                .selectedIndex.value ==
+                                            3
+                                        ? ordersHomeMainController
+                                            .apiMarkOrderReady()
+                                        : ordersHomeMainController
+                                            .apiMarkOrderReady();
+                      } else {
+                        Utility.showToast(AlertStringConstants
+                            .pleaseSelectProductToProceedText);
                       }
                     },
                     height: 50,
@@ -636,7 +717,9 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             ? StringConstants.readyForPickUpText
                             : ordersHomeMainController.selectedIndex.value == 2
                                 ? StringConstants.orderReadyText
-                                : ordersHomeMainController.selectedIndex.value == 3
+                                : ordersHomeMainController
+                                            .selectedIndex.value ==
+                                        3
                                     ? StringConstants.completeText
                                     : "",
                     textColor: AppColors.white,

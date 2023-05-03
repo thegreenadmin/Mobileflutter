@@ -79,7 +79,7 @@ class _OwnerTransactionDetailScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                                "${StringConstants.fullFilledOrdersText} - #${transactionDetailController.orderId!.value}",
+                                "${StringConstants.orderidText} - #${transactionDetailController.orderId!.value}",
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w600),
                               )),

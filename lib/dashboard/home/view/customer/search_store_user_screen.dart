@@ -180,7 +180,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
-                  child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       enabled: false,
                       controller: searchStoreUserController.searchController,
                       style: const TextStyle(
@@ -273,7 +274,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
+    searchStoreUserController.storeAddresses.value = [];
+    searchStoreUserController.favStoreAddresses.value = [];
+    searchStoreUserController.page.value = 1;
     await searchStoreUserController.apiGetNearByStores();
+
     updateMarker(lat, lng);
   }
 

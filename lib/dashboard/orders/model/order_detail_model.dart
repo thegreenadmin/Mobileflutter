@@ -490,7 +490,7 @@ class OrderItem {
   String? orderId;
   String? productId;
   int? orderItemCount;
-  int? orderItemPrice;
+  dynamic orderItemPrice;
   String? serviceChargeType;
   double? serviceChargeValue;
   double? totalServiceCharged;
