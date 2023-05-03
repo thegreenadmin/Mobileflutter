@@ -802,7 +802,9 @@ class _CartScreenState extends State<CartScreen> {
                                 // Navigator.of(context).push(MaterialPageRoute(
                                 //   builder: (_) => const PersonalInfoEditScreen(),
                                 // ))
-                                Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Get.parameters["currentIndex"] = "1";
+                                // Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
                               },
                               child: Text(
                                 StringConstants.addFundText,

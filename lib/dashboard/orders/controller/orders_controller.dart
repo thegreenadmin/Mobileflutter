@@ -78,10 +78,10 @@ class OrdersController extends GetxController {
   void onInit() {
     if (Get.parameters == null
         ? false
-        : Get.parameters['isFromNotification'] != false) {
+        : Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value = Get.parameters["isFromNotification"] =="true"?true:false;
     }
-    if (Get.parameters == null ? false : Get.parameters['storeId'] != "") {
+    if (Get.parameters == null ? false : Get.parameters['storeId'] != "" && Get.parameters['storeId'] !=null) {
       storeId.value = Get.parameters["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
@@ -97,6 +97,8 @@ class OrdersController extends GetxController {
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.newOrder.statusName;
+    print("SharedPreferenceStorage:-----");
+    print(SharedPreferenceStorage.getData(Role.role.value));
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;

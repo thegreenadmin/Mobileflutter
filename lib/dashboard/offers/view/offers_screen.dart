@@ -48,9 +48,10 @@ class _OffersScreenState extends State<OffersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () async {
-                                            await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-                                              builder: (_) =>  BottomNavigation(),
-                                            ));
+                                            // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+                                            //   builder: (_) =>  BottomNavigation(),
+                                            // ));
+                                            Navigator.of(Get.context!).popUntil((route) => route.isFirst);
                                             // Get.offAll(BottomNavigation());
                                           },
                                           child: const Icon(
@@ -97,6 +98,13 @@ class _OffersScreenState extends State<OffersScreen> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           child: Column(
             children: [
+              Text(
+                SharedPreferenceStorage.getData(Role.role.value).toString(),
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20),
+              ),
               SharedPreferenceStorage.getData(Role.role.value).toString() ==
                       Role.customerRoleText
                   ? height0SizedBox

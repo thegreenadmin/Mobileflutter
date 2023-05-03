@@ -367,7 +367,7 @@ class TabNavigatorState extends State<TabNavigator> {
       child: Opacity(
         opacity: widget.selectedIndex == index ? 1.0 : 0.0,
         child: Navigator(
-          key: Get.nestedKey(index),//widget.tabs[index].key,
+          key: Get.nestedKey(index),
           onGenerateRoute: (settings) => MaterialPageRoute(
             settings: settings,
             builder: (_) => widget.tabs[index].tab,

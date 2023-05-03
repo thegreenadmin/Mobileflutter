@@ -189,16 +189,16 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
                 InkWell(
                     onTap: () async {
+                      print("SharedPreferenceStorage:----------");
+                      print(SharedPreferenceStorage.getData(Role.role.value).toString());
                       if (SharedPreferenceStorage.getData(Role.role.value)
                               .toString() ==
                           Role.customerRoleText) {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.storeOwnerRoleText);
-                        // await Navigator.of(context)
-                        //     .pushReplacement(MaterialPageRoute(
-                        //   builder: (_) => BottomNavigation(),
-                        // ));
-                        Navigator.of(context).pop();
+                        setState(() {});
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        // Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       } else {
                         SharedPreferenceStorage.setData(
@@ -207,9 +207,15 @@ class _AccountScreenState extends State<AccountScreen> {
                         //     .pushReplacement(MaterialPageRoute(
                         //   builder: (_) => BottomNavigation(),
                         // ));
-                        Navigator.of(context).pop();
+                        setState(() {});
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+
+                        // Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       }
+                      print("SharedPreferenceStorage:--------after--");
+                      print(SharedPreferenceStorage.getData(Role.role.value).toString());
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 14.0, right: 14.0),

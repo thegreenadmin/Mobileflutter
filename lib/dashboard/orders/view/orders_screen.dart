@@ -350,7 +350,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () {
-                                            Get.offAll(BottomNavigation());
+                                            Navigator.of(Get.context!).popUntil((route) => route.isFirst);
+                                            // Get.offAll(BottomNavigation());
                                           },
                                           child: const Icon(
                                             Icons.arrow_back,
@@ -396,6 +397,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
+              Obx(()=>Text(
+                ordersController.role!.value,
+                style: const TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: 16),
+              ),),
+
               ordersController.role!.value == Role.customerRoleText
                   ? Center(
                       child: userOrdersTab(),

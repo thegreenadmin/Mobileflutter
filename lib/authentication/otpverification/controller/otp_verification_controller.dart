@@ -84,11 +84,11 @@ class OtpVerificationController extends GetxController {
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         SharedPreferenceStorage.setData(Role.role.value, Role.customerRoleText);
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => BottomNavigation(),
-        ));
+        // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+        //   builder: (_) => BottomNavigation(),
+        // ));
         // Get.offAll(() => BottomNavigation());
-
+        Navigator.of(Get.context!).popUntil((route) => route.isFirst);
         // Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists

@@ -51,10 +51,9 @@ class BottomNavController extends GetxController {
 
 
   onItemTapped(int index) {
-    // print(index);
     selectedIndex.value = index;
     if (selectedIndex.value == 0) {
-      // print(index);
+      print(index);
       try {
         HomeController controller = Get.find<HomeController>();
         controller.onInit();
@@ -63,30 +62,35 @@ class BottomNavController extends GetxController {
       }
     } else if (selectedIndex.value == 1) {
       try {
-        WalletController controller = Get.find<WalletController>();
+        // WalletController controller = Get.find<WalletController>();
+        WalletController controller = Get.put(WalletController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 2) {
-      // print(index);
+      print(index);
       try {
-        OrdersController controller = Get.find<OrdersController>();
+        // OrdersController controller = Get.find<OrdersController>();
+        OrdersController controller = Get.put(OrdersController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 3) {
-      //  print(index);
+
       try {
-        OffersController controller = Get.find<OffersController>();
+        print(index);
+        // OffersController controller = Get.find<OffersController>();
+        OffersController controller = Get.put(OffersController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 4) {
       try {
-        MoreController controller = Get.find<MoreController>();
+        // MoreController controller = Get.find<MoreController>();
+        MoreController controller =Get.put(MoreController());
         controller.onInit();
       } catch (e) {
         //Pass

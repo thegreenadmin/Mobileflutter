@@ -42,6 +42,7 @@ class OffersController extends GetxController {
 
   @override
   void onInit() {
+
     super.onInit();
     if (Get.parameters == null
         ? false
@@ -50,6 +51,8 @@ class OffersController extends GetxController {
       Get.parameters["isFromNotification"]=="true"?true:false;
     }
 
+    print("SharedPreferenceStorage:-----");
+    print(SharedPreferenceStorage.getData(Role.role.value));
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;

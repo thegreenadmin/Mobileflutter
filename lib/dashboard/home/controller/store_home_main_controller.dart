@@ -245,7 +245,8 @@ class StoreHomeMainController extends GetxController {
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty) {
           isDeleteCartItem.value = false;
-          Get.offAll(BottomNavigation());
+          // Get.offAll(BottomNavigation());
+          Navigator.of(Get.context!).popUntil((route) => route.isFirst);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
