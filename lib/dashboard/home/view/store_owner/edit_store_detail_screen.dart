@@ -372,8 +372,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            ownerStoreController.einTextController,
+                        controller: ownerStoreController.einTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -435,8 +434,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            ownerStoreController.nickNameTextController,
+                        controller: ownerStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -499,8 +497,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            ownerStoreController.emailTextController,
+                        controller: ownerStoreController.emailTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -556,8 +553,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
-                      controller:
-                          ownerStoreController.phoneTextController,
+                      controller: ownerStoreController.phoneTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
@@ -606,8 +602,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         ),
                       ),
-                      initialValue:
-                          ownerStoreController.countryCode.value,
+                      initialValue: ownerStoreController.countryCode.value,
                       // initialCountryCode:
                       //     ownerStoreController.countryCode.value,
                       onCountryChanged: (value) {
@@ -656,29 +651,29 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           p.description!.substring(0, idx).trim(),
                           p.description!.substring(idx + 1).trim()
                         ];
-                        ownerStoreController.addressLine1TextController
-                            .text = parts[0].toString();
+                        ownerStoreController.addressLine1TextController.text =
+                            parts[0].toString();
                         GeoData addresses = await Geocoder2.getDataFromAddress(
                             address: p.description.toString(),
                             googleMapApiKey:
                                 ownerStoreController.kGoogleApiKey);
                         if (addresses.address != null) {
                           if (addresses.city.isNotEmpty) {
-                            ownerStoreController
-                                .townOrCityTextController.text = addresses.city;
+                            ownerStoreController.townOrCityTextController.text =
+                                addresses.city;
                           }
                           if (addresses.country.isNotEmpty) {
-                            ownerStoreController
-                                .countryTextController.text = addresses.country;
+                            ownerStoreController.countryTextController.text =
+                                addresses.country;
                           }
 
                           if (addresses.postalCode.isNotEmpty) {
-                            ownerStoreController.postalCodeTextController
-                                .text = addresses.postalCode;
+                            ownerStoreController.postalCodeTextController.text =
+                                addresses.postalCode;
                           }
                           if (addresses.state.isNotEmpty) {
-                            ownerStoreController
-                                .stateTextController.text = addresses.state;
+                            ownerStoreController.stateTextController.text =
+                                addresses.state;
                           }
                           if (addresses.latitude != null ||
                               addresses.longitude != null) {
@@ -713,8 +708,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          controller: ownerStoreController
-                              .addressLine1TextController,
+                          controller:
+                              ownerStoreController.addressLine1TextController,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -779,8 +774,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller: ownerStoreController
-                            .addressLine2TextController,
+                        controller:
+                            ownerStoreController.addressLine2TextController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine2Text,
@@ -1024,8 +1019,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            ownerStoreController.countryTextController,
+                        controller: ownerStoreController.countryTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -1142,8 +1136,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        controller:
-                            ownerStoreController.stateTextController,
+                        controller: ownerStoreController.stateTextController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
@@ -1212,8 +1205,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       .radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    ownerStoreController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
+                                    ownerStoreController.radioGroupValue.value =
+                                        value?.toInt() ?? 0;
                                     ownerStoreController.is247Time.value =
                                         false;
                                   },
@@ -1244,14 +1237,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       .radioGroupValue.value,
                                   activeColor: AppColors.primary,
                                   onChanged: (value) {
-                                    ownerStoreController.radioGroupValue
-                                        .value = value?.toInt() ?? 0;
-                                    ownerStoreController.is247Time.value =
-                                        true;
+                                    ownerStoreController.radioGroupValue.value =
+                                        value?.toInt() ?? 0;
+                                    ownerStoreController.is247Time.value = true;
                                     ownerStoreController.storeTimmingList
                                         .clear();
-                                    ownerStoreController.storeTimings
-                                        .clear();
+                                    ownerStoreController.storeTimings.clear();
                                     ownerStoreController
                                         .openingTimeTextController
                                         .clear();
@@ -1262,8 +1253,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                         .workingDaysTextController
                                         .clear();
                                     for (var element
-                                        in ownerStoreController
-                                            .weekDaysList) {
+                                        in ownerStoreController.weekDaysList) {
                                       element.isSelected = false;
                                     }
                                   },
@@ -1549,8 +1539,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                       () => ownerStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                ownerStoreController.storeTimmingList
-                                    .clear();
+                                ownerStoreController.storeTimmingList.clear();
                                 if (ownerStoreController
                                     .storeTimings.isNotEmpty) {
                                   for (int i = 0;
@@ -1559,13 +1548,11 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                               .weekDaysList.length;
                                       i++) {
                                     for (var element
-                                        in ownerStoreController
-                                            .storeTimings) {
+                                        in ownerStoreController.storeTimings) {
                                       if (element["day_of_week"] ==
                                           ownerStoreController
                                               .weekDaysList[i].id) {
-                                        ownerStoreController
-                                            .storeTimmingList
+                                        ownerStoreController.storeTimmingList
                                             .add({
                                           "store_timing_id":
                                               element["store_timing_id"],
@@ -1576,9 +1563,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                   true
                                               ? "active"
                                               : "deleted",
-                                          "day_of_week":
-                                              ownerStoreController
-                                                  .weekDaysList[i].id,
+                                          "day_of_week": ownerStoreController
+                                              .weekDaysList[i].id,
                                           "opening_time": Utility.formatDateTime(
                                                   ownerStoreController
                                                       .openingTimeTextController
@@ -1601,31 +1587,24 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     if (ownerStoreController
                                             .weekDaysList[i].isSelected ==
                                         true) {
-                                      if (!ownerStoreController
-                                          .storeTimmingList
+                                      if (!ownerStoreController.storeTimmingList
                                           .any((element) =>
                                               element["day_of_week"] ==
                                               ownerStoreController
                                                   .weekDaysList[i].id)) {
-                                        ownerStoreController
-                                            .storeTimmingList
+                                        ownerStoreController.storeTimmingList
                                             .add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
                                           "status": "active",
-                                          "day_of_week":
-                                              ownerStoreController
-                                                  .weekDaysList[i].id,
-                                          "opening_time":
-                                              ownerStoreController
-                                                  .openingTimeTextController
-                                                  .text
-                                                  .trim(),
-                                          "closing_time":
-                                              ownerStoreController
-                                                  .closingTimeTextController
-                                                  .text
-                                                  .trim()
+                                          "day_of_week": ownerStoreController
+                                              .weekDaysList[i].id,
+                                          "opening_time": ownerStoreController
+                                              .openingTimeTextController.text
+                                              .trim(),
+                                          "closing_time": ownerStoreController
+                                              .closingTimeTextController.text
+                                              .trim()
                                         });
                                       }
                                     }
@@ -1639,23 +1618,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     if (ownerStoreController
                                             .weekDaysList[i].isSelected ==
                                         true) {
-                                      ownerStoreController
-                                          .storeTimmingList
+                                      ownerStoreController.storeTimmingList
                                           .add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
                                         "status": "active",
-                                        "day_of_week":
-                                            ownerStoreController
-                                                .weekDaysList[i].id,
-                                        "opening_time":
-                                            ownerStoreController
-                                                .openingTimeTextController.text
-                                                .trim(),
-                                        "closing_time":
-                                            ownerStoreController
-                                                .closingTimeTextController.text
-                                                .trim()
+                                        "day_of_week": ownerStoreController
+                                            .weekDaysList[i].id,
+                                        "opening_time": ownerStoreController
+                                            .openingTimeTextController.text
+                                            .trim(),
+                                        "closing_time": ownerStoreController
+                                            .closingTimeTextController.text
+                                            .trim()
                                       });
                                     }
                                   }
@@ -1686,8 +1661,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
-                          ownerStoreController.deliveryServicesList
-                              .clear();
+                          ownerStoreController.deliveryServicesList.clear();
                           if (ownerStoreController
                               .storeDeliveryServices.isNotEmpty) {
                             for (int i = 0;
@@ -1700,14 +1674,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 if (element["delivery_service_id"] ==
                                     ownerStoreController
                                         .deliveryServices[i].id) {
-                                  ownerStoreController
-                                      .deliveryServicesList
+                                  ownerStoreController.deliveryServicesList
                                       .add({
                                     "store_delivery_service_id":
                                         element["store_delivery_service_id"],
-                                    "delivery_service_id":
-                                        ownerStoreController
-                                            .deliveryServices[i].id,
+                                    "delivery_service_id": ownerStoreController
+                                        .deliveryServices[i].id,
                                     "is_enabled": ownerStoreController
                                         .deliveryServices[i].isSelected,
                                     "status": "active"
@@ -1718,17 +1690,14 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               if (ownerStoreController
                                           .deliveryServices[i].isSelected ==
                                       true &&
-                                  !ownerStoreController
-                                      .storeDeliveryServices
+                                  !ownerStoreController.storeDeliveryServices
                                       .any((element) =>
                                           element["delivery_service_id"] ==
                                           ownerStoreController
                                               .deliveryServices[i].id)) {
-                                ownerStoreController.deliveryServicesList
-                                    .add({
-                                  "delivery_service_id":
-                                      ownerStoreController
-                                          .deliveryServices[i].id,
+                                ownerStoreController.deliveryServicesList.add({
+                                  "delivery_service_id": ownerStoreController
+                                      .deliveryServices[i].id,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"
@@ -1744,12 +1713,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               if (ownerStoreController
                                       .deliveryServices[i].isSelected ==
                                   true) {
-                                ownerStoreController.deliveryServicesList
-                                    .add({
+                                ownerStoreController.deliveryServicesList.add({
                                   "store_delivery_service_id": null,
-                                  "delivery_service_id":
-                                      ownerStoreController
-                                          .deliveryServices[i].id,
+                                  "delivery_service_id": ownerStoreController
+                                      .deliveryServices[i].id,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"
@@ -1765,8 +1732,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           return null;
                         },
-                        controller: ownerStoreController
-                            .deliveryServicesTextController,
+                        controller:
+                            ownerStoreController.deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: ownerStoreController.deliveryServices),
@@ -1801,12 +1768,141 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               activeColor: AppColors.greymediumlight,
                               inactiveColor: AppColors.greymediumlight,
                               onToggle: (val) {
-                                ownerStoreController.isEnabled.value =
-                                    val;
+                                ownerStoreController.isEnabled.value = val;
                               },
                             )),
                       ],
                     ),
+                    height15SizedBox,
+                    Text(
+                      StringConstants.storeTermsText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        maxLines: null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            ownerStoreController.storeTermsTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterStoreTermsText;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: StringConstants.storeTermsText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox, height15SizedBox,
+                    Text(
+                      StringConstants.storePrivacyText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        maxLines: null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            ownerStoreController.storePrivacyTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterStorePrivacyText;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: StringConstants.storePrivacyText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    height20SizedBox,
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

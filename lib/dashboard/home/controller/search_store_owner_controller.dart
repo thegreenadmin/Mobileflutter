@@ -42,6 +42,8 @@ class OwnerStoresController extends GetxController {
   TextEditingController workingDaysTextController = TextEditingController();
   TextEditingController deliveryServicesTextController =
       TextEditingController();
+  TextEditingController storePrivacyTextController = TextEditingController();
+  TextEditingController storeTermsTextController = TextEditingController();
 
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
@@ -557,7 +559,20 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
-        await apiGetCountries();
+        List storePages = value?.body["data"]['store_pages'] ?? [];
+        if (storePages.isNotEmpty) {
+          for (int i = 0; i < storePages.length; i++) {
+            if (storePages[i]['store_page_type'] == "terms") {
+              storeTermsTextController.text =
+                  storePages[i]['store_page_content'];
+            } else {
+              storePrivacyTextController.text =
+                  storePages[i]['store_page_content'];
+            }
+          }
+        }
+
+        //  await apiGetCountries();
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -606,7 +621,17 @@ class OwnerStoresController extends GetxController {
           : storeTimmingList.isNotEmpty
               ? storeTimmingList
               : storeTimings,
-      "store_delivery_services": deliveryServicesList
+      "store_delivery_services": deliveryServicesList,
+      "store_pages": [
+        {
+          "store_page_type": "terms",
+          "store_page_content": storeTermsTextController.text
+        },
+        {
+          "store_page_type": "privacy",
+          "store_page_content": storePrivacyTextController.text
+        }
+      ]
     };
     debugPrint("UPDATE STORE DETAIL BODY**********$data");
 

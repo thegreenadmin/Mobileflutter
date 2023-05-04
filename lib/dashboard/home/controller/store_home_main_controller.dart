@@ -82,6 +82,7 @@ class StoreHomeMainController extends GetxController {
   RxBool isLoading = false.obs;
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
+  RxString storeAddressId = "".obs;
   final scrollController = ScrollController();
 
   void setupScrollController(context) {
@@ -382,9 +383,12 @@ class StoreHomeMainController extends GetxController {
       "store_id":
           int.parse(storeAddress.value.store?.storeId.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": selectedUserAddress.value.userAddressId != null
-          ? int.parse(selectedUserAddress.value.userAddressId.toString())
-          : null,
+      "user_address_id": selectedDeliveryService.value == "1" ||
+              selectedDeliveryService.value == "3"
+          ? int.parse(storeAddressId.value)
+          : selectedUserAddress.value.userAddressId != null
+              ? int.parse(selectedUserAddress.value.userAddressId.toString())
+              : null,
       "cart_items": selectedItems
     };
     debugPrint("TOKEN ********** $headers");

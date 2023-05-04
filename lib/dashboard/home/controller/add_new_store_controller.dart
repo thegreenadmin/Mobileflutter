@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as mdio;
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
@@ -20,9 +21,13 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import '../model/categories_model.dart';
 
+// Copyright 2021 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   TextEditingController storeNameTextController = TextEditingController();
   TextEditingController einTextController = TextEditingController();
   TextEditingController storeNickNameTextController = TextEditingController();
@@ -39,6 +44,8 @@ class AddNewStoreController extends GetxController {
   TextEditingController workingDaysTextController = TextEditingController();
   TextEditingController deliveryServicesTextController =
       TextEditingController();
+  TextEditingController termsTextController = TextEditingController();
+  TextEditingController privacyTextController = TextEditingController();
 
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
@@ -60,7 +67,7 @@ class AddNewStoreController extends GetxController {
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
-
+  RxString storeIdValue = "".obs;
   RxString stateDropdownValue = "".obs;
   RxString stateId = "".obs;
   RxInt radioGroupValue = 0.obs;
@@ -94,13 +101,30 @@ class AddNewStoreController extends GetxController {
 
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+  String dynamicLink = "";
 
   @override
   void onInit() {
     super.onInit();
-    // apiGetCountries();
     getGkey();
     apiGetDeliveryServices();
+    createDynamicLink();
+  }
+
+  Future<void> createDynamicLink() async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://thegreenmall.page.link',
+      link: Uri.parse(dynamicLink),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.app.thegreenmall',
+      ),
+      iosParameters: const IOSParameters(
+        bundleId: 'com.thegreenmall',
+      ),
+    );
+    final ShortDynamicLink shortLink =
+        await dynamicLinks.buildShortLink(parameters);
+    debugPrint("PARAMETERS **************${shortLink.shortUrl}");
   }
 
   getGkey() async {
@@ -136,32 +160,29 @@ class AddNewStoreController extends GetxController {
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            if (isStoreLogoSelected.value) {
-              storeLogo.value = pickedFile;
-              await apiUploadImage();
-              update();
-            } else {
-              storeImage.value = pickedFile;
-              await apiUploadImage();
-              update();
-            }
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       Get.back();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        if (isStoreLogoSelected.value) {
+          storeLogo.value = pickedFile;
+          await apiUploadImage();
+          update();
+        } else {
+          storeImage.value = pickedFile;
+          await apiUploadImage();
+          update();
+        }
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,
@@ -268,7 +289,17 @@ class AddNewStoreController extends GetxController {
       },
       "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true ? [] : storeTimmingList,
-      "store_delivery_services": deliveryServicesList
+      "store_delivery_services": deliveryServicesList,
+      "store_pages": [
+        {
+          "store_page_type": "terms",
+          "store_page_content": termsTextController.text.trim()
+        },
+        {
+          "store_page_type": "privacy",
+          "store_page_content": privacyTextController.text.trim()
+        }
+      ]
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -304,6 +335,10 @@ class AddNewStoreController extends GetxController {
         countryTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+        //storeIdValue.value = value.body["status"]
+        storeIdValue.value = value.body["data"]['store_id'].toString();
+
+        await apiDynamicLink();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -311,6 +346,40 @@ class AddNewStoreController extends GetxController {
       } else {
         Utility.showToast(value.body['message']);
       }
+    });
+  }
+
+  //Dynamic link
+  Future apiDynamicLink() async {
+    debugPrint(
+        "DYNAMIC URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    dynamicLink = ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
+    Map data = {
+      "store_id": int.parse(storeIdValue.value),
+      "dynamic_link": dynamicLink,
+    };
+    debugPrint("DYNAMIC LINK BODY**********$data");
+
+    UserProvider()
+        .putWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("DYNAMIC LINK RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {}
     });
   }
 

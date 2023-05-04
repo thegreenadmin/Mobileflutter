@@ -7,7 +7,8 @@ import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
-
+import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
+    as store;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -51,6 +52,9 @@ class WalletController extends GetxController {
   RxString ownerSelectedStore = "".obs;
   RxString bankToken = "".obs;
   RxBool isFromCartScreen = false.obs;
+  RxString dynamicLink = "".obs;
+  Rx<store.StoreDetailsResponse> storeDetailsResponse =
+      store.StoreDetailsResponse().obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
@@ -143,6 +147,41 @@ class WalletController extends GetxController {
     cardHolderName.value = creditCardModel.cardHolderName;
     cvvCode.value = creditCardModel.cvvCode;
     isCvvFocused.value = creditCardModel.isCvvFocused;
+  }
+
+  //Get Store Details Api
+  Future apiGetStoreDetailsApi() async {
+    isLoading.value = true;
+    debugPrint("STORE DETAIL URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        storeDetailsResponse.value =
+            store.StoreDetailsResponse.fromJson(value?.body);
+        dynamicLink.value =
+            storeDetailsResponse.value.data!.store!.dynamicLink.toString();
+        debugPrint("DEEP LINK ***********" + dynamicLink.value);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 
   //Get Countries Api

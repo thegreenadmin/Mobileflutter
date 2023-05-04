@@ -352,12 +352,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                       RawMaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          Get.to(const StoreHomeMainScreen(),
-                                              arguments: {
-                                                "storeAddress":
-                                                    searchStoreUserController
-                                                        .storeAddresses[index]
-                                              });
+                                          searchStoreUserController
+                                              .enterEinNumberAlert(context, searchStoreUserController
+                                                            .storeAddresses[
+                                                                index]
+                                                            .store!.storeId.toString());
                                         },
                                         constraints: const BoxConstraints(),
                                         padding: const EdgeInsets.fromLTRB(
@@ -371,7 +370,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         ),
                                         fillColor: AppColors.primary,
                                         child: Text(
-                                          StringConstants.orderHereText,
+                                          StringConstants.claimStoreText,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14.0,

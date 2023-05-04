@@ -109,6 +109,8 @@ class ImageConstants {
   static const String productFilter = '$assetsIcon/productFilter.png';
   //R
   static const String role = '$assetsIcon/role.png';
+  static const String rounddownload = '$assetsIcon/rounddownload.png';
+  static const String roundshare = '$assetsIcon/roundshare.png';
   //S
   static const String search = '$assetsIcon/search.png';
   static const String setting = '$assetsIcon/setting.png';

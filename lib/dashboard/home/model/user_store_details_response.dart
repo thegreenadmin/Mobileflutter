@@ -82,6 +82,7 @@ class Store {
     this.storePhone,
     this.isVerified,
     this.isEnabled,
+    this.dynamicLink,
     this.isFavouriteStore,
     this.storeAddresses,
     this.storeTimings,
@@ -99,6 +100,7 @@ class Store {
   String? storePhone;
   bool? isVerified;
   bool? isEnabled;
+  String? dynamicLink;
   bool? isFavouriteStore;
   List<StoreAddress>? storeAddresses;
   List<StoreTiming>? storeTimings;
@@ -116,6 +118,7 @@ class Store {
     String? storePhone,
     bool? isVerified,
     bool? isEnabled,
+    String? dynamicLink,
     bool? isFavouriteStore,
     List<StoreAddress>? storeAddresses,
     List<StoreTiming>? storeTimings,
@@ -134,6 +137,7 @@ class Store {
         storePhone: storePhone ?? this.storePhone,
         isVerified: isVerified ?? this.isVerified,
         isEnabled: isEnabled ?? this.isEnabled,
+        dynamicLink: dynamicLink ?? this.dynamicLink,
         storeAddresses: storeAddresses ?? this.storeAddresses,
         storeTimings: storeTimings ?? this.storeTimings,
         storeDeliveryServices:
@@ -153,6 +157,7 @@ class Store {
         storePhone: json["store_phone"],
         isVerified: json["is_verified"],
         isEnabled: json["is_enabled"],
+        dynamicLink: json['dynamic_link'],
         storeAddresses: json["store_addresses"] == null
             ? []
             : List<StoreAddress>.from(
@@ -180,6 +185,7 @@ class Store {
         "store_phone": storePhone,
         "is_verified": isVerified,
         "is_enabled": isEnabled,
+        "dynamic_link": dynamicLink,
         "store_addresses": storeAddresses == null
             ? []
             : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
@@ -335,7 +341,7 @@ class State {
 }
 
 class Country {
- Country({
+  Country({
     this.countryId,
     this.countryName,
   });
@@ -347,12 +353,12 @@ class Country {
     String? countryId,
     String? countryName,
   }) =>
-     Country(
+      Country(
         countryId: countryId ?? this.countryId,
         countryName: countryName ?? this.countryName,
       );
 
-  factory Country.fromJson(Map<String, dynamic> json) =>Country(
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
         countryId: json["country_id"],
         countryName: json["country_name"],
       );

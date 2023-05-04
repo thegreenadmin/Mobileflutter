@@ -1,15 +1,15 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
-  // String baseUrlWithoutApi = "http://54.190.192.105:3520/";
+  String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  String baseUrlWithoutApi = "http://54.190.192.105:3520/";
 
   // ********************** STAGING SERVER *************
 
-  String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
-  String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -34,6 +34,7 @@ class ServerCommunicator {
   String createStripeToken = 'https://api.stripe.com/v1/tokens';
   String createCard = 'user/stripe/card/create';
   String createBankToken = 'https://api.stripe.com/v1/tokens';
+  String claimStoreRequest = "shop/store/claim/create";
 
 //D
   String deleteWorker = 'store/user/delete';
@@ -141,6 +142,8 @@ class ServerCommunicator {
   String storeStripeBankAccountCreate = 'store/stripe/bank/account/create';
   String storeStripePayoutCreate = 'store/stripe/payout/create';
   String shopStoreProductList = 'shop/store/product/list';
+
+  String storeDynamicLinkUpdate = 'store/dynamic/link/update';
 
 //T
 //U

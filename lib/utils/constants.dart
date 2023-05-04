@@ -113,6 +113,7 @@ class StringConstants {
   static String cameraText = "Camera";
   static String currencyText = "Currency";
   static String companyText = "Company";
+  static String claimStoreText = "Claim Store";
 
   //D
   static String deliveryText = "Delivery";
@@ -153,6 +154,8 @@ class StringConstants {
   static String editOfferText = "Edit Offer";
   static String expiredDateText = "Expired Date";
   static String editAutoReloadText = "Edit Auto reload";
+  static String enterEinNumberText = "Enter EIN Number";
+
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -397,7 +400,8 @@ class StringConstants {
   static String sepText = "September";
   static String selectCountryText = "Select Country";
   static String shippingAddressText = "Shipping Address";
-
+  static String storeTermsText = "Store Terms";
+  static String storePrivacyText = "Store Privacy";
   //T
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
@@ -600,10 +604,13 @@ class AlertStringConstants {
   static String pleaseEnterAccountTypeText = "Please enter account type";
   static String pleaseEnterCountry = "Please enter country";
   static String pleaseSelectStore = "Please select store";
+  static String pleaseEnterStoreTermsText = "Please enter store terms";
+  static String pleaseEnterStorePrivacyText = "Please enter store privacy";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
+
   //T
   static String above18Text =
       "The greenmall application is recommended for 18 above age group only!";

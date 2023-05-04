@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -15,7 +19,7 @@ class SearchStoreUserController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController searchController = TextEditingController();
-
+  TextEditingController einNumberTextController = TextEditingController();
   late NearbyStoreListResponse nearbyStoreListResponse =
       NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
@@ -53,6 +57,117 @@ class SearchStoreUserController extends GetxController {
   void onInit() {
     super.onInit();
     setupScrollController(Get.context);
+  }
+
+//Alert
+
+  void enterEinNumberAlert(context, String storeId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Text(
+              StringConstants.enterEinNumberText,
+              style: const TextStyle(
+                  color: AppColors.primarydark,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                textInputAction: TextInputAction.next,
+                autofocus: false,
+                textCapitalization: TextCapitalization.words,
+                inputFormatters: <TextInputFormatter>[
+                  LengthLimitingTextInputFormatter(40),
+                ],
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+                controller: einNumberTextController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: StringConstants.enterEinNumberText,
+                  hintStyle: const TextStyle(color: AppColors.grey),
+                  fillColor: Colors.white,
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: AppColors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                )),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    if (einNumberTextController.text.isEmpty) {
+                      Utility.showToast(
+                          AlertStringConstants.pleaseEnterEinText);
+                    } else {
+                      Get.back();
+                      apiClaimStore(storeId: storeId);
+                    }
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.okayText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
   }
 
   //Get Nearby Stores Api
@@ -236,6 +351,46 @@ class SearchStoreUserController extends GetxController {
             }
           }
         }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  apiClaimStore({
+    String storeId = "",
+  }) {
+    debugPrint("CLAIM STORE API URL **********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().claimStoreRequest}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "store_id": int.parse(storeId),
+      "store_ein": einNumberTextController.text.trim()
+    };
+    debugPrint("CLAIM STORE BODY **********"
+        "$data");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().claimStoreRequest,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CLAIM STORE API BODY *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

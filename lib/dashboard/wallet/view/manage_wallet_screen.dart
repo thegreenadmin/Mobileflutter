@@ -212,9 +212,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           Role.customerRoleText
                       ? Get.to(const AddCardScreen())!
                           .then((value) => walletController.apiGetCardList())
-                      : null;
-                  Get.to(const CreateOwnerBankAccount())!.then(
-                      (value) => walletController.apiGetBankAccountList());
+                      : Get.to(const CreateOwnerBankAccount())!.then(
+                          (value) => walletController.apiGetBankAccountList());
                 },
                 child: SharedPreferenceStorage.getData(Role.role.value) ==
                         Role.customerRoleText

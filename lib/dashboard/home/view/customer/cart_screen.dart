@@ -441,6 +441,19 @@ class _CartScreenState extends State<CartScreen> {
                                                 .storeDeliveryServices![i]
                                                 .deliveryServiceId!
                                                 .toString();
+
+                                        storeHomeMainController
+                                                .storeAddressId.value =
+                                            storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data!
+                                                .store!
+                                                .storeAddresses!
+                                                .first
+                                                .storeAddressId
+                                                .toString();
+
                                         await storeHomeMainController
                                             .apiGetCartListApi();
                                       },
