@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -13,6 +13,7 @@ class AddCardScreen extends StatefulWidget {
   const AddCardScreen({
     Key? key,
   }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return AddCardScreenState();
@@ -28,6 +29,7 @@ class AddCardScreenState extends State<AddCardScreen> {
     addCardController.apiGetCardList(context);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,10 +236,12 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>  AddCardDetailScreen(),
-                ))
-                // Get.to(AddCardDetailScreen())!
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => AddCardDetailScreen(),
+                    ))
+                    // Get.to(AddCardDetailScreen())!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

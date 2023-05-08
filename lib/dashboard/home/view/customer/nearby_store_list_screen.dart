@@ -9,11 +9,13 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
+
   @override
   State<NearbyStoreListScreen> createState() => _NearbyStoreListScreenState();
 }
@@ -72,8 +74,14 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.parameters["storeId"] = searchStoreUserController
-                                  .storeAddresses[index].store?.storeId??"";
+                              Get.parameters["storeId"] =
+                                  searchStoreUserController
+                                          .storeAddresses[index]
+                                          .store
+                                          ?.storeId ??
+                                      "";
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));
@@ -357,10 +365,18 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                       RawMaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          Get.parameters["storeId"] = searchStoreUserController
-                                              .storeAddresses[index].store?.storeId??"";
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (_) => const StoreHomeMainScreen(),
+                                          Get.parameters["storeId"] =
+                                              searchStoreUserController
+                                                      .storeAddresses[index]
+                                                      .store
+                                                      ?.storeId ??
+                                                  "";
+                                          SharedPreferenceStorage.setData(
+                                              "context", context);
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (_) =>
+                                                const StoreHomeMainScreen(),
                                           ));
                                           // Get.to(const StoreHomeMainScreen(),
                                           //     arguments: {

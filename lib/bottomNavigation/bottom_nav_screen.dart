@@ -87,9 +87,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       backgroundColor: AppColors.white,
                       currentIndex:
                           _bottomNavigationPageController.selectedIndex.value,
-                      onTap: (i){
-                        print("ndfsjkhvjkhsvflhklvhls");
-                        _bottomNavigationPageController.onItemTapped(i);
+                      onTap: (i) async {
+
+                      await  _bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
                         BottomNavigationBarItem(
@@ -246,7 +246,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               ),
             ),
           ),
-          body:TabNavigator(
+          body: TabNavigator(
             key: _tabNavigator,
             tabs: <TabItem>[
               TabItem(_tab1, const HomeScreen()),

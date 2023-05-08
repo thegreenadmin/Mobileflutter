@@ -195,7 +195,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         SharedPreferenceStorage.setData(
                             Role.role.value, Role.storeOwnerRoleText);
                         setState(() {});
-                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
                         // Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       } else {
@@ -206,7 +207,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         //   builder: (_) => BottomNavigation(),
                         // ));
                         setState(() {});
-                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
 
                         // Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
@@ -257,6 +259,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
+
+                          SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const PersonalInfoScreen(),
                           ));
@@ -296,6 +301,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const AddCardScreen(),
                           ));
@@ -335,6 +341,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const TransactionScreen(),
                           ));
@@ -374,6 +381,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const AccountIdScreen(),
                           ));

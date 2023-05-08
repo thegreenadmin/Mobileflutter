@@ -8,10 +8,12 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
+
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -19,6 +21,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +30,8 @@ class _CartScreenState extends State<CartScreen> {
             child: Container(
               color: AppColors.primarylight,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -74,7 +78,8 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -324,7 +329,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                             // Get.back();
                                                             storeHomeMainController.apiDeleteCart(
                                                                 cartItemId: int.parse(
@@ -343,7 +350,8 @@ class _CartScreenState extends State<CartScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Navigator.of(context).pop();
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           // Get.back();
                                                         },
                                                         child: Text(
@@ -582,12 +590,19 @@ class _CartScreenState extends State<CartScreen> {
                                         () => SizedBox(
                                           width: 200,
                                           child: Text(
-                                            storeHomeMainController.selectedUserAddress.value.addressLine1 == null &&
+                                            storeHomeMainController
+                                                            .selectedUserAddress
+                                                            .value
+                                                            .addressLine1 ==
+                                                        null &&
                                                     storeHomeMainController
-                                                            .selectedUserAddress.value.city == null
+                                                            .selectedUserAddress
+                                                            .value
+                                                            .city ==
+                                                        null
                                                 ? StringConstants.addAddressText
                                                 : "${storeHomeMainController.selectedUserAddress.value.addressLine1 ?? ""},${storeHomeMainController.selectedUserAddress.value.city ?? ""},"
-                                                  "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
+                                                    "${storeHomeMainController.selectedUserAddress.value.state?.stateName ?? ""},${storeHomeMainController.selectedUserAddress.value.state?.country?.countryName ?? ""},",
                                             style: const TextStyle(
                                                 overflow: TextOverflow.visible,
                                                 color: AppColors.black,
@@ -602,7 +617,9 @@ class _CartScreenState extends State<CartScreen> {
                                   Obx(
                                     () => InkWell(
                                       onTap: () {
-                                        Get.parameters["isFromCart"]="true";
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        Get.parameters["isFromCart"] = "true";
                                         storeHomeMainController
                                                         .selectedUserAddress
                                                         .value
@@ -613,19 +630,22 @@ class _CartScreenState extends State<CartScreen> {
                                                         .value
                                                         .city ==
                                                     null
-                                            ?
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (_) => const PersonalInfoEditScreen(),
-                                        ))
-                                        // Get.to(const PersonalInfoEditScreen(),
-                                        //         arguments:
-                                        //             ({"isFromCart": true}))
-                                            ?.then(
-                                                (value) => storeHomeMainController
-                                                    .apiGetUserDetailsApi())
+                                            ? Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const PersonalInfoEditScreen(),
+                                                ))
+                                                // Get.to(const PersonalInfoEditScreen(),
+                                                //         arguments:
+                                                //             ({"isFromCart": true}))
+                                                ?.then((value) =>
+                                                    storeHomeMainController
+                                                        .apiGetUserDetailsApi())
                                             : storeHomeMainController
                                                     .userAddress.isNotEmpty
-                                                ? storeHomeMainController.bottomSheetChangePickupLocation(context)
+                                                ? storeHomeMainController
+                                                    .bottomSheetChangePickupLocation(
+                                                        context)
                                                 : null;
                                       },
                                       child: Container(
@@ -783,10 +803,12 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   children: [
                     Visibility(
-                      visible:storeHomeMainController.walletBalance.value < storeHomeMainController.cartData.value.cartTotalPrice! ,
+                      visible: storeHomeMainController.walletBalance.value <
+                          storeHomeMainController
+                              .cartData.value.cartTotalPrice!,
                       child: Container(
-                        color:AppColors.redlight,
-                        padding:  const EdgeInsets.all(10.0),
+                        color: AppColors.redlight,
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -798,18 +820,20 @@ class _CartScreenState extends State<CartScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
+                                // SharedPreferenceStorage.setData("context", context);
                                 // Navigator.of(context).push(MaterialPageRoute(
                                 //   builder: (_) => const PersonalInfoEditScreen(),
                                 // ))
-                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
                                 Get.parameters["currentIndex"] = "1";
                                 // Get.to(() => BottomNavigation(),arguments: {"currentIndex":1});
                               },
                               child: Text(
                                 StringConstants.addFundText,
                                 style: const TextStyle(
-                                  decoration: TextDecoration.underline,
+                                    decoration: TextDecoration.underline,
                                     color: AppColors.red,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600),
@@ -854,7 +878,7 @@ class _CartScreenState extends State<CartScreen> {
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
-                                  storeHomeMainController.apiPlaceOrder();
+                                storeHomeMainController.apiPlaceOrder();
                               },
                               height: 45,
                               width: 120,

@@ -51,7 +51,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                             // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
                                             //   builder: (_) =>  BottomNavigation(),
                                             // ));
-                                            Navigator.of(Get.context!).popUntil((route) => route.isFirst);
+                                            Navigator.of(Get.context!).popUntil(
+                                                (route) => route.isFirst);
                                             // Get.offAll(BottomNavigation());
                                           },
                                           child: const Icon(
@@ -62,17 +63,19 @@ class _OffersScreenState extends State<OffersScreen> {
                                         )
                                       : height0SizedBox,
                                 ),
-                                offersController.isFromNotification.value == true
+                                offersController.isFromNotification.value ==
+                                        true
                                     ? width10SizedBox
                                     : height0SizedBox,
-                                Obx(()=> Text(
-                                  'Hi, ${offersController.firstName?.value} ${offersController.lastName?.value}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                ),),
-
+                                Obx(
+                                  () => Text(
+                                    'Hi, ${offersController.firstName?.value} ${offersController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                               ],
                             ),
                             height4SizedBox,
@@ -98,52 +101,58 @@ class _OffersScreenState extends State<OffersScreen> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           child: Column(
             children: [
-              Obx(()=> offersController.role?.value.toString() ==
-                  Role.customerRoleText
-                  ? height0SizedBox
-                  : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(
-                        () => offersController.getOwnerOfferlist.isEmpty
-                        ? height0SizedBox
-                        : Text(
-                      StringConstants.activeOffersText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-                  ),
-                  InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      Get.parameters["isFrom"]=StringConstants.addOfferText;
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const AddOfferScreen(),
-                      ))
-                      // Get.to(const AddOfferScreen(), arguments: {
-                      //   "isFrom": StringConstants.addOfferText,
-                      // })!
-                          .then((value) {
-                        offersController.role!.value ==
-                            Role.customerRoleText
-                            ? offersController.apiGetUserOffersList(context)
-                            : offersController.apiGetOwnerOffersList(context);
-                      });
-                    },
-                    child: Text(StringConstants.addOfferText,
-                        style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: AppColors.primary)),
-                  ),
-                ],
-              ),),
-
-
+              Obx(
+                () => offersController.role?.value.toString() ==
+                        Role.customerRoleText
+                    ? height0SizedBox
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(
+                            () => offersController.getOwnerOfferlist.isEmpty
+                                ? height0SizedBox
+                                : Text(
+                                    StringConstants.activeOffersText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),
+                                  ),
+                          ),
+                          InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              Get.parameters["isFrom"] =
+                                  StringConstants.addOfferText;
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (_) => const AddOfferScreen(),
+                              ))
+                                  // Get.to(const AddOfferScreen(), arguments: {
+                                  //   "isFrom": StringConstants.addOfferText,
+                                  // })!
+                                  .then((value) {
+                                offersController.role!.value ==
+                                        Role.customerRoleText
+                                    ? offersController
+                                        .apiGetUserOffersList(context)
+                                    : offersController
+                                        .apiGetOwnerOffersList(context);
+                              });
+                            },
+                            child: Text(StringConstants.addOfferText,
+                                style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: AppColors.primary)),
+                          ),
+                        ],
+                      ),
+              ),
               height20SizedBox,
               Expanded(
                 child: Obx(() => offersController.role!.value ==
@@ -638,13 +647,31 @@ class _OffersScreenState extends State<OffersScreen> {
                                             Flexible(
                                               child: InkWell(
                                                 onTap: () {
-                                                  Get.parameters["isFrom"]=StringConstants.editOfferText;
-                                                  Get.parameters["storeId"]=offersController.getOwnerOfferlist[index].store!.storeId ?? "";
-                                                  Get.parameters["offerId"]=offersController.getOwnerOfferlist[index].offerId ?? "";
-                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (_) => const AddOfferScreen(),
+                                                  Get.parameters["isFrom"] =
+                                                      StringConstants
+                                                          .editOfferText;
+                                                  Get.parameters["storeId"] =
+                                                      offersController
+                                                              .getOwnerOfferlist[
+                                                                  index]
+                                                              .store!
+                                                              .storeId ??
+                                                          "";
+                                                  Get.parameters["offerId"] =
+                                                      offersController
+                                                              .getOwnerOfferlist[
+                                                                  index]
+                                                              .offerId ??
+                                                          "";
+                                                  SharedPreferenceStorage
+                                                      .setData(
+                                                          "context", context);
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const AddOfferScreen(),
                                                   ))
-                                                  /*Get.to(const EditOfferScreen(),
+                                                      /*Get.to(const EditOfferScreen(),
                                                           arguments: {
                                                         "isFrom":StringConstants.editOfferText,
                                                         "storeId": offersController.getOwnerOfferlist[
@@ -653,9 +680,15 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       })!*/
                                                       .then((value) {
                                                     offersController
-                                                                .role!.value == Role.customerRoleText
-                                                        ? offersController.apiGetUserOffersList(context)
-                                                        : offersController.apiGetOwnerOffersList(context);
+                                                                .role!.value ==
+                                                            Role
+                                                                .customerRoleText
+                                                        ? offersController
+                                                            .apiGetUserOffersList(
+                                                                context)
+                                                        : offersController
+                                                            .apiGetOwnerOffersList(
+                                                                context);
                                                   });
                                                 },
                                                 child: Image.asset(

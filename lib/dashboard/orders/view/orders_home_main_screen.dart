@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
   const OrdersHomeMainScreen({super.key});
@@ -345,6 +346,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
 
                               ordersHomeMainController.apiGetStoreOrderDetail();
 
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const MarkOrderStatusScreen(),
                               ));

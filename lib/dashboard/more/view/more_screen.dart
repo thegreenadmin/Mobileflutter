@@ -20,6 +20,7 @@ class MoreScreen extends StatefulWidget {
 
 class _MoreScreenState extends State<MoreScreen> {
   final MoreController moreController = Get.put(MoreController());
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -40,13 +41,15 @@ class _MoreScreenState extends State<MoreScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Obx(()=> Text(
-                              'Hi, ${moreController.firstName?.value} ${moreController.lastName?.value}',
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
-                            ),),
+                            Obx(
+                              () => Text(
+                                'Hi, ${moreController.firstName?.value} ${moreController.lastName?.value}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
                             height4SizedBox,
                             Text(
                               StringConstants.moreText,
@@ -74,16 +77,18 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
+              SharedPreferenceStorage.setData("context", context);
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) =>  WebviewPageScreen( isFrom: "aboutus",
-                    url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                        ServerCommunicator().pageAbout)
-                        .toString())));
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "aboutus",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                              ServerCommunicator().pageAbout)
+                          .toString())));
               // Get.to(WebviewPageScreen(
-                  // isFrom: "aboutus",
-                  // url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                  //         ServerCommunicator().pageAbout)
-                  //     .toString()));
+              // isFrom: "aboutus",
+              // url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //         ServerCommunicator().pageAbout)
+              //     .toString()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -122,11 +127,12 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
+              SharedPreferenceStorage.setData("context", context);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => WebviewPageScreen(
                       isFrom: "faq",
                       url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageFaq)
+                              ServerCommunicator().pageFaq)
                           .toString())));
               // Get.to(WebviewPageScreen(
               //     isFrom: "faq",
@@ -160,51 +166,49 @@ class _MoreScreenState extends State<MoreScreen> {
               ],
             ),
           ),
-          Obx(()=>moreController.role?.value ==
-              Role.customerRoleText
+          Obx(() => moreController.role?.value == Role.customerRoleText
               ? const Divider(
-            thickness: 1,
-            height: 40,
-          )
-              : height0SizedBox),
-          Obx(()=> moreController.role?.value ==
-              Role.customerRoleText
-              ? InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>const ContactUsScreen()));
-              // Get.to(const ContactUsScreen());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.contactUs,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.contactUsText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
+                  thickness: 1,
+                  height: 40,
                 )
-              ],
-            ),
-          )
               : height0SizedBox),
-
+          Obx(() => moreController.role?.value == Role.customerRoleText
+              ? InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const ContactUsScreen()));
+                    // Get.to(const ContactUsScreen());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            ImageConstants.contactUs,
+                            color: AppColors.primary,
+                            scale: 2.5,
+                          ),
+                          width18SizedBox,
+                          Text(StringConstants.contactUsText,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                      Image.asset(
+                        ImageConstants.arrowForward,
+                        scale: 3.4,
+                        color: AppColors.blacklight,
+                      )
+                    ],
+                  ),
+                )
+              : height0SizedBox),
           const Divider(
             thickness: 1,
             height: 40,
@@ -213,11 +217,12 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () async {
+              SharedPreferenceStorage.setData("context", context);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => WebviewPageScreen(
                       isFrom: "terms",
                       url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageTerms)
+                              ServerCommunicator().pageTerms)
                           .toString())));
               // Get.to(WebviewPageScreen(
               //     isFrom: "terms",
@@ -259,11 +264,12 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
+              SharedPreferenceStorage.setData("context", context);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => WebviewPageScreen(
                       isFrom: "privacy",
                       url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pagePolicy)
+                              ServerCommunicator().pagePolicy)
                           .toString())));
               // Get.to(WebviewPageScreen(
               //     isFrom: "privacy",

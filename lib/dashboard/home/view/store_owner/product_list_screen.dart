@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -99,6 +100,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
+                      SharedPreferenceStorage.setData("context", context);
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const AddNewProductScreen(),
                       ));
@@ -267,10 +269,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           "";
                                   await manageStoreController
                                       .apiGetProductDetails();
-                                  await Navigator.of(context).push(MaterialPageRoute(
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  await Navigator.of(context)
+                                      .push(MaterialPageRoute(
                                     builder: (_) => const EditProductScreen(),
                                   ))
-                                  // Get.to(() => const EditProductScreen())!
+                                      // Get.to(() => const EditProductScreen())!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();
@@ -368,7 +373,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    Text("${StringConstants.unitPriceText}: ",
+                                                    Text(
+                                                      "${StringConstants.unitPriceText}: ",
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:

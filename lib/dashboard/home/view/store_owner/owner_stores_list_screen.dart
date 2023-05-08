@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   const OwnerStoresListScreen({super.key});
@@ -57,13 +58,15 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(()=> Text(
-                                  'Hi, ${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                ),),
+                                Obx(
+                                  () => Text(
+                                    'Hi, ${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
@@ -248,8 +251,12 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
                                     ownerStoresController.onInit();
-                                    await Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => const ManageStoreMainScreen(),
+                                    SharedPreferenceStorage.setData(
+                                        "context", context);
+                                    await Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (_) =>
+                                          const ManageStoreMainScreen(),
                                     ));
                                     // await Get.to(
                                     //     () => const ManageStoreMainScreen());
@@ -497,10 +504,12 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const AddNewStoreScreen(),
-                ))
-                // Get.to(const AddNewStoreScreen())!
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => const AddNewStoreScreen(),
+                    ))
+                    // Get.to(const AddNewStoreScreen())!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

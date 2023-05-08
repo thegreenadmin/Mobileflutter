@@ -9,12 +9,13 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class AddMoneyToWallet extends StatefulWidget {
   const AddMoneyToWallet({
     Key? key,
   }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return AddMoneyToWalletState();
@@ -253,8 +254,13 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                   ],
                                                 ),
                                                 onTap: () {
-                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (_) =>  AddCardDetailScreen(),
+                                                  SharedPreferenceStorage
+                                                      .setData(
+                                                          "context", context);
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        AddCardDetailScreen(),
                                                   ));
                                                   // Get.to(() =>
                                                   //     AddCardDetailScreen());

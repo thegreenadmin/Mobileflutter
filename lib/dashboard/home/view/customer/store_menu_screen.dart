@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_scre
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreMenuScreen extends StatefulWidget {
@@ -71,7 +72,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                           SharedPreferenceStorage.setData("context", context);
+                            Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const UserProductListScreen(),
                           ));
                           // Get.to(const UserProductListScreen());

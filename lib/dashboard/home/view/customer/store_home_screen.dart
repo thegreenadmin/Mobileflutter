@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.da
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreHomeScreen extends StatefulWidget {
@@ -234,20 +235,21 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               children: <Widget>[
                                 InkWell(
                                   onTap: () async {
-                                    storeHomeMainController.productId.value=
+                                    storeHomeMainController.productId.value =
                                         storeHomeMainController
-                                            .featureProductList[index]
-                                            .productId
+                                            .featureProductList[index].productId
                                             .toString();
                                     await storeHomeMainController
                                         .apiGetShopProductDetailApi();
                                     await storeHomeMainController
                                         .apiGetCartListApi();
-                                    Navigator.of(context).push(MaterialPageRoute(
+                                    SharedPreferenceStorage.setData(
+                                        "context", context);
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                       builder: (_) => const AddToOrderScreen(),
                                     ));
                                     // Get.to(const AddToOrderScreen());
-
                                   },
                                   child: Container(
                                     height: 150,

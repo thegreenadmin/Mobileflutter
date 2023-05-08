@@ -150,7 +150,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         right: 10,
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                             SharedPreferenceStorage.setData("context", context);
+Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const FilterOptionScreen(),
                             ));
                             // Get.to(const FilterOptionScreen());

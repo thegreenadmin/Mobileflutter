@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -407,11 +407,16 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () {
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (_) =>  ImagePreviewScreen(image: messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),),
+                                          SharedPreferenceStorage.setData(
+                                              "context", context);
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (_) => ImagePreviewScreen(
+                                              image: messageList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                            ),
                                           ));
                                           // Get.to(ImagePreviewScreen(
                                           //   image: messageList[index]
@@ -543,11 +548,16 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (_) =>  ImagePreviewScreen(image: messageList[index]
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(),),
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (_) => ImagePreviewScreen(
+                                            image: messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                          ),
                                         ));
                                         // Get.to(ImagePreviewScreen(
                                         //   image: messageList[index]

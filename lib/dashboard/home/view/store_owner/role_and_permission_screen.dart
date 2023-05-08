@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class RoleAndPermissionScreen extends StatefulWidget {
   const RoleAndPermissionScreen({super.key});
@@ -95,12 +96,14 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                 .isSelected = false;
                           }
                         }
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const AddNewRoleScreen(),
-                        ))
-                        // Get.to(const AddNewRoleScreen())!
-                            .then(
-                            (value) => addNewRoleController.apiGetStoreRole());
+                        SharedPreferenceStorage.setData("context", context);
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                              builder: (_) => const AddNewRoleScreen(),
+                            ))
+                            // Get.to(const AddNewRoleScreen())!
+                            .then((value) =>
+                                addNewRoleController.apiGetStoreRole());
                       },
                       child: Row(
                         children: [
@@ -203,7 +206,8 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                           AppColors.primary,
                                                     ),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       // Get.back();
                                                       addNewRoleController
                                                               .roleId.value =
@@ -258,13 +262,17 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                 .toString();
                                         await addNewRoleController
                                             .apiGetStoreRoleDetail();
-                                        await Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (_) => const EditRoleScreen(),
-                                        ))
-                                        // Get.to(const EditRoleScreen())!
-                                            .then(
-                                            (value) => addNewRoleController
-                                                .apiGetStoreRole());
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        await Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const EditRoleScreen(),
+                                            ))
+                                            // Get.to(const EditRoleScreen())!
+                                            .then((value) =>
+                                                addNewRoleController
+                                                    .apiGetStoreRole());
                                       },
                                       child: Padding(
                                         padding:

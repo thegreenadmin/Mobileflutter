@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.dart';
 
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -289,17 +289,29 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () {
-                                              Get.parameters["storeName"]= ownerInboxController
-                                                  .inboxList[index].store!
-                                                  .storeName ?? "";
-                                              Get.parameters["storeId"]= ownerInboxController
-                                                  .inboxList[index].store!
-                                                  .storeId ?? "";
-                                              Get.parameters["messageHeadId"]= ownerInboxController
-                                                  .inboxList[index]
-                                                  .messageHeadId ?? "";
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (_) =>const  OwnerInboxDetailScreen()));
+                                              Get.parameters["storeName"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .store!
+                                                          .storeName ??
+                                                      "";
+                                              Get.parameters["storeId"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .store!
+                                                          .storeId ??
+                                                      "";
+                                              Get.parameters["messageHeadId"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .messageHeadId ??
+                                                      "";
+                                              SharedPreferenceStorage.setData(
+                                                  "context", context);
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          const OwnerInboxDetailScreen()));
                                               // Get.to(
                                               //     const OwnerInboxDetailScreen(),
                                               //     arguments: {
@@ -380,7 +392,9 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                             // Get.back();
                                                             ownerInboxController.apiDeleteStoreMessages(
                                                                 messageHeadId: ownerInboxController
@@ -404,7 +418,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Navigator.of(context).pop();
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           // Get.back();
                                                         },
                                                         child: Text(
