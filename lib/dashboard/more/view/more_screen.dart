@@ -40,13 +40,13 @@ class _MoreScreenState extends State<MoreScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                            Obx(()=> Text(
+                              'Hi, ${moreController.firstName?.value} ${moreController.lastName?.value}',
                               style: const TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w400),
-                            ),
+                            ),),
                             height4SizedBox,
                             Text(
                               StringConstants.moreText,
@@ -160,50 +160,51 @@ class _MoreScreenState extends State<MoreScreen> {
               ],
             ),
           ),
-          SharedPreferenceStorage.getData(Role.role.value) ==
-                  Role.customerRoleText
+          Obx(()=>moreController.role?.value ==
+              Role.customerRoleText
               ? const Divider(
-                  thickness: 1,
-                  height: 40,
-                )
-              : height0SizedBox,
-          SharedPreferenceStorage.getData(Role.role.value) ==
-                  Role.customerRoleText
+            thickness: 1,
+            height: 40,
+          )
+              : height0SizedBox),
+          Obx(()=> moreController.role?.value ==
+              Role.customerRoleText
               ? InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) =>const ContactUsScreen()));
-                    // Get.to(const ContactUsScreen());
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            ImageConstants.contactUs,
-                            color: AppColors.primary,
-                            scale: 2.5,
-                          ),
-                          width18SizedBox,
-                          Text(StringConstants.contactUsText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                      Image.asset(
-                        ImageConstants.arrowForward,
-                        scale: 3.4,
-                        color: AppColors.blacklight,
-                      )
-                    ],
-                  ),
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>const ContactUsScreen()));
+              // Get.to(const ContactUsScreen());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      ImageConstants.contactUs,
+                      color: AppColors.primary,
+                      scale: 2.5,
+                    ),
+                    width18SizedBox,
+                    Text(StringConstants.contactUsText,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                Image.asset(
+                  ImageConstants.arrowForward,
+                  scale: 3.4,
+                  color: AppColors.blacklight,
                 )
-              : height0SizedBox,
+              ],
+            ),
+          )
+              : height0SizedBox),
+
           const Divider(
             thickness: 1,
             height: 40,

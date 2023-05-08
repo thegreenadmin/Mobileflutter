@@ -19,6 +19,7 @@ class WalletController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
+  RxString? role = "".obs;
   RxString email = "".obs;
   RxString phone = "".obs;
   RxInt amount = 0.obs;
@@ -67,13 +68,16 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    /*if (SharedPreferenceStorage.getData(Role.role.value) ==
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
+     role?.value =  SharedPreferenceStorage.getData(Role.role.value);
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
-      apiGetCardList();
+      apiGetCardList(Get.context!);
       apiGetUserWalletBalance();
     } else {
       apiGetStoreList();
-    }*/
+    }
   }
 
   bool validateAndSave() {

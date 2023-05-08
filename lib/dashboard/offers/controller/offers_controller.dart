@@ -50,9 +50,8 @@ class OffersController extends GetxController {
       isFromNotification.value =
       Get.parameters["isFromNotification"]=="true"?true:false;
     }
-
-    print("SharedPreferenceStorage:-----");
-    print(SharedPreferenceStorage.getData(Role.role.value));
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;

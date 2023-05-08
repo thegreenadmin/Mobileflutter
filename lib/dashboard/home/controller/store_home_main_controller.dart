@@ -90,7 +90,9 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    print("isFromHome================");
+    print(Get.parameters["isFromHome"]);
+    print(Get.parameters["storeId"]);
     if (Get.parameters == null ? false : Get.parameters['isFromHome'] != "false") {
       isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
 

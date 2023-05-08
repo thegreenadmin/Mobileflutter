@@ -105,58 +105,58 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    SharedPreferenceStorage.getData(Role.role.value) ==
-                            Role.customerRoleText
-                        ? Column(
-                            children: [
-                              Obx(() => Text(
+                    Obx(() =>
+                        walletController.role?.value == Role.customerRoleText
+                            ? Column(
+                                children: [
+                                  Text(
                                     "\$${walletController.userWalletBalance!.value}",
                                     style: const TextStyle(
                                         color: AppColors.white,
                                         fontSize: 26,
                                         fontWeight: FontWeight.w500),
-                                  )),
-                              height8SizedBox,
-                              Text(
-                                StringConstants.totalBalanceText,
-                                style: const TextStyle(
-                                    color: AppColors.black, fontSize: 18),
-                              ),
-                              height12SizedBox,
-                              InkWell(
-                                onTap: () {},
-                                child: Image.asset(
-                                  ImageConstants.asofnow,
-                                  scale: 3.5,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Obx(() => Text(
+                                  ),
+                                  height8SizedBox,
+                                  Text(
+                                    StringConstants.totalBalanceText,
+                                    style: const TextStyle(
+                                        color: AppColors.black, fontSize: 18),
+                                  ),
+                                  height12SizedBox,
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Image.asset(
+                                      ImageConstants.asofnow,
+                                      scale: 3.5,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Text(
                                     "\$${walletController.ownerWalletBalance!.value}",
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 26,
                                         fontWeight: FontWeight.w500),
-                                  )),
-                              height8SizedBox,
-                              Text(
-                                StringConstants.totalBalanceText,
-                                style: const TextStyle(
-                                    color: AppColors.black, fontSize: 18),
-                              ),
-                              height12SizedBox,
-                              InkWell(
-                                onTap: () {},
-                                child: Image.asset(
-                                  ImageConstants.asofnow,
-                                  scale: 3.5,
-                                ),
-                              ),
-                            ],
-                          )
+                                  ),
+                                  height8SizedBox,
+                                  Text(
+                                    StringConstants.totalBalanceText,
+                                    style: const TextStyle(
+                                        color: AppColors.black, fontSize: 18),
+                                  ),
+                                  height12SizedBox,
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Image.asset(
+                                      ImageConstants.asofnow,
+                                      scale: 3.5,
+                                    ),
+                                  ),
+                                ],
+                              ))
                   ],
                 )
               ],
@@ -205,167 +205,168 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () async {
-                  SharedPreferenceStorage.getData(Role.role.value) ==
-                          Role.customerRoleText
-                      ?
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) =>const  AddCardScreen(),
-                  ))
-                  // Get.to(const AddCardScreen())
-                      :
-                  Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>const  AddCardScreen(),
-                  ));
-                  // Get.to(const AddCardScreen());
-                },
-                child: SharedPreferenceStorage.getData(Role.role.value) ==
-                        Role.customerRoleText
-                    ? Row(children: [
-                        Image.asset(ImageConstants.addcard, scale: 3.2),
-                        width15SizedBox,
-                        Text(
-                          StringConstants.addCardPaymentMethodsText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ])
-                    : Column(
-                        children: [
+              child: Obx(
+                () => InkWell(
+                  onTap: () async {
+                    walletController.role?.value == Role.customerRoleText
+                        ? Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AddCardScreen(),
+                          ))
+                        // Get.to(const AddCardScreen())
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AddCardScreen(),
+                          ));
+                    // Get.to(const AddCardScreen());
+                  },
+                  child: walletController.role?.value == Role.customerRoleText
+                      ? Row(children: [
+                          Image.asset(ImageConstants.addcard, scale: 3.2),
+                          width15SizedBox,
                           Text(
-                            "Select store to ${StringConstants.addBankAccountDebitMethodsText}",
+                            StringConstants.addCardPaymentMethodsText,
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
-                          ),
-                          Obx(() => walletController.storeList.isEmpty
-                              ? Text(
-                                  StringConstants.toKnowBalanceYouDontHaveText)
-                              : Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 4,
-                                      child: Text(
-                                        "Select Store",
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 6,
-                                      child: DropdownButtonFormField<String>(
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.grey,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          border: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          errorBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                        ),
-                                        hint: Text(
-                                          StringConstants.selectStoreText,
-                                          style: const TextStyle(
-                                              color: AppColors.grey,
+                          )
+                        ])
+                      : Column(
+                          children: [
+                            Text(
+                              "Select store to ${StringConstants.addBankAccountDebitMethodsText}",
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            walletController.storeList.isEmpty
+                                ? Text(StringConstants
+                                    .toKnowBalanceYouDontHaveText)
+                                : Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 4,
+                                        child: Text(
+                                          "Select Store",
+                                          style: TextStyle(
+                                              color: AppColors.blacklight,
                                               fontSize: 14),
                                         ),
-                                        items: walletController.storeList
-                                            .map((dynamic value) {
-                                          walletController.ownerSelectedStore
-                                              .value = value.storeId.toString();
-                                          return DropdownMenuItem<String>(
-                                            value: value.storeId,
-                                            child: Text(
-                                              value.storeName,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          walletController.ownerSelectedStore
-                                              .value = value.toString();
-                                          walletController
-                                              .apiCreateStoreStripeAccount();
-                                        },
                                       ),
-                                    ),
-                                  ],
-                                )),
-                        ],
-                      ),
+                                      Expanded(
+                                        flex: 6,
+                                        child: DropdownButtonFormField<String>(
+                                          isExpanded: true,
+                                          decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            border: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                          ),
+                                          hint: Text(
+                                            StringConstants.selectStoreText,
+                                            style: const TextStyle(
+                                                color: AppColors.grey,
+                                                fontSize: 14),
+                                          ),
+                                          items: walletController.storeList
+                                              .map((dynamic value) {
+                                            walletController
+                                                    .ownerSelectedStore.value =
+                                                value.storeId.toString();
+                                            return DropdownMenuItem<String>(
+                                              value: value.storeId,
+                                              child: Text(
+                                                value.storeName,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            walletController.ownerSelectedStore
+                                                .value = value.toString();
+                                            walletController
+                                                .apiCreateStoreStripeAccount();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                ),
               ),
             ),
-            SharedPreferenceStorage.getData(Role.role.value) ==
-                    Role.customerRoleText
+            Obx(()=>  walletController.role?.value == Role.customerRoleText
                 ? height0SizedBox
                 : const Divider(
-                    color: AppColors.grey,
-                    height: 25,
-                  ),
-            SharedPreferenceStorage.getData(Role.role.value) ==
-                    Role.customerRoleText
-                ? height0SizedBox
-                : InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            ImageConstants.debitcard,
-                            scale: 18.2,
-                          ),
-                          width15SizedBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                StringConstants.debitMoneyFromWalletText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          )
-                        ],
+              color: AppColors.grey,
+              height: 25,
+            ),),
+
+            Obx(
+              () => walletController.role?.value == Role.customerRoleText
+                  ? height0SizedBox
+                  : InkWell(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              ImageConstants.debitcard,
+                              scale: 18.2,
+                            ),
+                            width15SizedBox,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  StringConstants.debitMoneyFromWalletText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+            ),
             const Divider(
               color: AppColors.grey,
               height: 25,
@@ -474,8 +475,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                     ),
                                                     onPressed: () {
                                                       // Get.back();
-                                                      Navigator.of(context).pop();
-                                                      walletController.apiDeleteCard(context,
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      walletController.apiDeleteCard(
+                                                          context,
                                                           userStripeCardId:
                                                               walletController
                                                                       .cardList[

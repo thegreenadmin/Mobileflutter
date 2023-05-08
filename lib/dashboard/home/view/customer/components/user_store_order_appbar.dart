@@ -31,13 +31,13 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Obx(() => storeHomeMainController.isFromHome.value == true
-              ? storeHomeMainController.storeDetailsResponse.value.data !=
+          Obx(() => /*storeHomeMainController.isFromHome.value == true ?*/
+          storeHomeMainController.storeDetailsResponse.value.data !=
                           null &&
                       storeHomeMainController
                               .storeDetailsResponse.value.data!.store !=
-                          null &&
-                      storeHomeMainController.isFromHome.value == true
+                          null /*&&
+                      storeHomeMainController.isFromHome.value == true*/
                   ? Container(
                       decoration: BoxDecoration(
                         color: const Color(0xff7c94b6),
@@ -336,7 +336,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                           )),
                     )
                   : height0SizedBox
-              : Container(
+             /* : Container(
                   decoration: BoxDecoration(
                     color: const Color(0xff7c94b6),
                     image: DecorationImage(
@@ -444,8 +444,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                               .store
                                               ?.logo
                                               ?.dynamicUrl
-                                              .toString() ??
-                                          ""),
+                                              .toString() ?? ""),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),
@@ -455,8 +454,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                 children: [
                                   Text(
                                     storeHomeMainController.storeAddress.value
-                                            .store?.storeName ??
-                                        "",
+                                            .store?.storeName ?? "",
                                     style: const TextStyle(
                                         color: AppColors.white,
                                         fontSize: 20,
@@ -478,8 +476,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                             WidgetConstants.screenWidth * 0.6,
                                         child: Text(
                                             storeHomeMainController.storeAddress
-                                                    .value.addressLine1 ??
-                                                "",
+                                                    .value.addressLine1 ?? "",
                                             style: const TextStyle(
                                                 overflow: TextOverflow.visible,
                                                 color: AppColors.white,
@@ -497,6 +494,10 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       children: [
                                         Text(
                                             storeHomeMainController
+                                                    .storeAddress
+                                                    .value
+                                                    .store?.storeTimings!=null
+                                                && storeHomeMainController
                                                     .storeAddress
                                                     .value
                                                     .store!
@@ -536,8 +537,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                     .value
                                                     .store
                                                     ?.storeDeliveryServices
-                                                    ?.length ??
-                                                0,
+                                                    ?.length ?? 0,
                                             itemBuilder: (_, i) {
                                               return CircleAvatar(
                                                 radius: 12.0,
@@ -547,10 +547,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                             .storeAddress
                                                             .value
                                                             .store
-                                                            ?.storeDeliveryServices?[
-                                                                i]
-                                                            .deliveryServiceId ==
-                                                        "1"
+                                                            ?.storeDeliveryServices?[i]
+                                                            .deliveryServiceId == "1"
                                                     ? Image.asset(
                                                         ImageConstants.instore,
                                                         scale: 4.5,
@@ -562,8 +560,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                                 .store
                                                                 ?.storeDeliveryServices?[
                                                                     i]
-                                                                .deliveryServiceId ==
-                                                            "2"
+                                                                .deliveryServiceId == "2"
                                                         ? Image.asset(
                                                             ImageConstants
                                                                 .delivery,
@@ -596,7 +593,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                           )
                         ],
                       )),
-                ))
+                )*/)
         ],
       ),
     );

@@ -76,6 +76,8 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     if (Get.parameters == null
         ? false
         : Get.parameters['isFromNotification'] != "false") {
@@ -97,7 +99,7 @@ class OrdersController extends GetxController {
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.newOrder.statusName;
-    print("SharedPreferenceStorage:-----");
+    print("SharedPreferenceStorage:--Order Screen---------------");
     print(SharedPreferenceStorage.getData(Role.role.value));
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {

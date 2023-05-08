@@ -90,13 +90,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                Obx(()=> Text(
+                                  'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                      fontWeight: FontWeight.w400),
+                                ),),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(

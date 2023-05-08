@@ -189,8 +189,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
                 InkWell(
                     onTap: () async {
-                      print("SharedPreferenceStorage:----------");
-                      print(SharedPreferenceStorage.getData(Role.role.value).toString());
                       if (SharedPreferenceStorage.getData(Role.role.value)
                               .toString() ==
                           Role.customerRoleText) {
@@ -213,9 +211,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         // Navigator.of(context).pop();
                         // await Get.offAll(BottomNavigation());
                       }
-                      print("SharedPreferenceStorage:--------after--");
-                      print(SharedPreferenceStorage.getData(Role.role.value).toString());
-
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 14.0, right: 14.0),

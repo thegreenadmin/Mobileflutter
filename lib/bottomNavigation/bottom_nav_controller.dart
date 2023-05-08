@@ -35,7 +35,7 @@ class BottomNavController extends GetxController {
       initialRemoteMessage = null;
     }
     selectedIndex.value =
-        Get.parameters != null && Get.parameters["currentIndex"] !=null? int.parse(Get.parameters["currentIndex"].toString()) ?? 0 : 0;
+        Get.parameters["currentIndex"] !=null? int.parse(Get.parameters["currentIndex"].toString()) ?? 0 : 0;
         // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
@@ -50,26 +50,31 @@ class BottomNavController extends GetxController {
   ];
 
 
-  onItemTapped(int index) {
+  onItemTapped(int index) async {
     selectedIndex.value = index;
     if (selectedIndex.value == 0) {
-      print(index);
+      // print(index);
       try {
-        HomeController controller = Get.find<HomeController>();
+
+        print("JVDJKSGJGLDNFLKNGKLGHLJGKLJGKLD");
+        // HomeController controller = Get.find<HomeController>();
+        HomeController controller = Get.put(HomeController());
         controller.onInit();
       } catch (e) {
+        print("errorr:------------");
+        print(e.toString());
         //Pass
       }
     } else if (selectedIndex.value == 1) {
       try {
-        // WalletController controller = Get.find<WalletController>();
+       // WalsletController controller = Get.find<WalletController>();
         WalletController controller = Get.put(WalletController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 2) {
-      print(index);
+      // print(index);
       try {
         // OrdersController controller = Get.find<OrdersController>();
         OrdersController controller = Get.put(OrdersController());
@@ -80,7 +85,6 @@ class BottomNavController extends GetxController {
     } else if (selectedIndex.value == 3) {
 
       try {
-        print(index);
         // OffersController controller = Get.find<OffersController>();
         OffersController controller = Get.put(OffersController());
         controller.onInit();
@@ -89,6 +93,7 @@ class BottomNavController extends GetxController {
       }
     } else if (selectedIndex.value == 4) {
       try {
+        Navigator.of(Get.context!).popUntil((route) => route.isFirst);
         // MoreController controller = Get.find<MoreController>();
         MoreController controller =Get.put(MoreController());
         controller.onInit();

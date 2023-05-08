@@ -105,9 +105,9 @@ class ManageStoreController extends GetxController {
   void onInit() {
     super.onInit();
     isFeaturedTypeSelected.value = false;
-    storeId.value = Get.arguments["storeId"] ?? "";
-    storeName.value = Get.arguments["storeName"] ?? "";
-    storeLocation.value = Get.arguments["storeLocation"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
+    storeLocation.value = Get.parameters["storeLocation"] ?? "";
     apiGetCategoriesList();
     apiGetQuantityList();
   }

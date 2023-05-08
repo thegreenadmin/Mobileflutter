@@ -43,6 +43,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
+
           int id = _bottomNavigationPageController.selectedIndex.toInt();
           Get.back(id:id );
           return false;
@@ -78,9 +79,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   Obx(
                     () => BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
-
-                      selectedLabelStyle:
-                          const TextStyle(color: AppColors.primary),
+                      selectedLabelStyle: const TextStyle(color: AppColors.primary),
                       selectedFontSize: 0.0,
                       elevation: 0,
                       showSelectedLabels: true,
@@ -88,19 +87,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       backgroundColor: AppColors.white,
                       currentIndex:
                           _bottomNavigationPageController.selectedIndex.value,
-                      onTap: _bottomNavigationPageController.onItemTapped,
+                      onTap: (i){
+                        print("ndfsjkhvjkhsvflhklvhls");
+                        _bottomNavigationPageController.onItemTapped(i);
+                      },
                       items: [
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
                               _bottomNavigationPageController
-                                          .selectedIndex.value ==
-                                      0
+                                          .selectedIndex.value == 0
                                   ? ImageConstants.homefill
                                   : ImageConstants.home,
                               color: _bottomNavigationPageController
-                                          .selectedIndex.value ==
-                                      0
+                                          .selectedIndex.value == 0
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.8,
@@ -110,8 +110,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
                                   color: _bottomNavigationPageController
-                                              .selectedIndex.value ==
-                                          0
+                                              .selectedIndex.value == 0
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -257,7 +256,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               TabItem(_tab5, const MoreScreen()),
             ],
             selectedIndex: _bottomNavigationPageController.selectedIndex.value,
-            popStack:  false,
+            popStack:  true,
           ),
 
           // body: buildNavigator(),
@@ -279,37 +278,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
       onGenerateRoute: (RouteSettings settings){
         return MaterialPageRoute(builder: (_) => _bottomNavigationPageController.tabs.elementAt(_bottomNavigationPageController.selectedIndex.value));
       },
-    );
-  }
-}
-
-class PageWithButton extends StatelessWidget {
-  final String title;
-  final int count;
-
-  const PageWithButton({
-    Key? key,
-    required this.title,
-    this.count = 0,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: RawMaterialButton(
-          child: Text("$title $count"),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PageWithButton(title: title, count: count + 1),
-            ));
-          },
-        ),
-      ),
     );
   }
 }
@@ -355,7 +323,6 @@ class TabNavigatorState extends State<TabNavigator> {
   @override
   Widget build(BuildContext context) {
     _popStackIfRequired(context);
-
     return Stack(
       children: List.generate(widget.tabs.length, _buildTab),
     );
