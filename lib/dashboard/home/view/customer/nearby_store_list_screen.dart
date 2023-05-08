@@ -81,9 +81,15 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                               margin: const EdgeInsets.symmetric(vertical: 6),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
-                              decoration: const BoxDecoration(
-                                  color: AppColors.primarylight,
-                                  borderRadius: BorderRadius.all(
+                              decoration: BoxDecoration(
+                                  color: searchStoreUserController
+                                              .storeAddresses[index]
+                                              .store!
+                                              .isVerified ==
+                                          true
+                                      ? AppColors.primarylight
+                                      : AppColors.grey,
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
                                   )),
                               child: Column(children: [
@@ -349,34 +355,46 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                             }),
                                       ),
                                       width10SizedBox,
-                                      RawMaterialButton(
-                                        elevation: 0,
-                                        onPressed: () {
-                                          searchStoreUserController
-                                              .enterEinNumberAlert(context, searchStoreUserController
+                                      searchStoreUserController
+                                                  .storeAddresses[index]
+                                                  .store!
+                                                  .isVerified ==
+                                              false
+                                          ? RawMaterialButton(
+                                              elevation: 0,
+                                              onPressed: () {
+                                                searchStoreUserController
+                                                    .enterEinNumberAlert(
+                                                        context,
+                                                        searchStoreUserController
                                                             .storeAddresses[
                                                                 index]
-                                                            .store!.storeId.toString());
-                                        },
-                                        constraints: const BoxConstraints(),
-                                        padding: const EdgeInsets.fromLTRB(
-                                            8.0, 8.0, 8.0, 8.0),
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                              width: 1.0,
-                                              color: AppColors.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(28.0),
-                                        ),
-                                        fillColor: AppColors.primary,
-                                        child: Text(
-                                          StringConstants.claimStoreText,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14.0,
-                                              color: AppColors.white),
-                                        ),
-                                      ),
+                                                            .store!
+                                                            .storeId
+                                                            .toString());
+                                              },
+                                              constraints:
+                                                  const BoxConstraints(),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8.0, 8.0, 8.0, 8.0),
+                                              shape: RoundedRectangleBorder(
+                                                side: const BorderSide(
+                                                    width: 1.0,
+                                                    color: AppColors.primary),
+                                                borderRadius:
+                                                    BorderRadius.circular(28.0),
+                                              ),
+                                              fillColor: AppColors.primary,
+                                              child: Text(
+                                                StringConstants.claimStoreText,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.0,
+                                                    color: AppColors.white),
+                                              ),
+                                            )
+                                          : height0SizedBox
                                     ],
                                   ),
                                 ),

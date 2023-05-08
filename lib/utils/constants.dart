@@ -63,6 +63,7 @@ class StringConstants {
   static String accountNumberText = "Account Number";
   static String amountWillBeDeductedText =
       "amount will be deducted from your wallet. Do you want to proceed?";
+  static String autoReloadText = "Auto Reload";
 
   //B
   static String breadthText = "Breadth";
@@ -171,6 +172,8 @@ class StringConstants {
   static String febText = "February";
   static String fullFillOrdersText = "Fulfill Orders";
   static String fullFilledOrdersText = "Fulfilled Orders";
+  static String frequencyText = "Frequency";
+
   //G
   static String getInTouchText = "Get In touch";
   static String genderText = "Gender";
@@ -402,6 +405,10 @@ class StringConstants {
   static String shippingAddressText = "Shipping Address";
   static String storeTermsText = "Store Terms";
   static String storePrivacyText = "Store Privacy";
+  static String startDateText = "Start Date";
+  static String endDateText = "End Date";
+  static String selectCardText = "Select Card";
+
   //T
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
@@ -606,6 +613,7 @@ class AlertStringConstants {
   static String pleaseSelectStore = "Please select store";
   static String pleaseEnterStoreTermsText = "Please enter store terms";
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
+  static String pleaseEnterFrequencyText = "Please enter frequency";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

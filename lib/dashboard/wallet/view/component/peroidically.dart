@@ -15,7 +15,8 @@ class PeriodicallyView extends StatefulWidget {
   State<PeriodicallyView> createState() => _PeriodicallyViewState();
 }
 
-class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerProviderStateMixin{
+class _PeriodicallyViewState extends State<PeriodicallyView>
+    with SingleTickerProviderStateMixin {
   final WalletController walletController = Get.put(WalletController());
 
   @override
@@ -118,8 +119,7 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                 controller: walletController.amountTextController,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return AlertStringConstants
-                        .pleaseEnterFirstNameText;
+                    return AlertStringConstants.pleaseEnterFirstNameText;
                   }
                   return null;
                 },
@@ -181,7 +181,8 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                      TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -192,25 +193,21 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          controller: walletController
-                              .startTimeTextController,
+                          controller: walletController.startTimeTextController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
                               return AlertStringConstants
                                   .pleaseSelectOpeningTimeText;
                             } else if (value.trim() ==
-                                walletController
-                                    .endTimeTextController.text) {
-                              return AlertStringConstants
-                                  .startTimeAlertText;
+                                walletController.endTimeTextController.text) {
+                              return AlertStringConstants.startTimeAlertText;
                             }
                             return null;
                           },
                           onTap: () async {
                             TimeOfDay date = TimeOfDay.now();
-                            FocusScope.of(context)
-                                .requestFocus(FocusNode());
+                            FocusScope.of(context).requestFocus(FocusNode());
                             date = (await showTimePicker(
                               helpText: StringConstants.selectTimeText,
                               initialTime: TimeOfDay.now(),
@@ -218,21 +215,18 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               builder: (context, child) {
                                 return Theme(
                                   data: ThemeData.light().copyWith(
-                                    colorScheme:
-                                    const ColorScheme.light(
+                                    colorScheme: const ColorScheme.light(
                                         primary: AppColors.primary),
                                     buttonTheme: const ButtonThemeData(
-                                        textTheme:
-                                        ButtonTextTheme.primary),
+                                        textTheme: ButtonTextTheme.primary),
                                   ),
                                   child: child!,
                                 );
                               },
                             ))!;
 
-                            walletController
-                                .startTimeTextController
-                                .text = date.format(context).toString();
+                            walletController.startTimeTextController.text =
+                                date.format(context).toString();
                           },
                           decoration: InputDecoration(
                             errorMaxLines: 3,
@@ -287,7 +281,8 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                      TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -298,12 +293,12 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
-                          controller: walletController
-                              .endTimeTextController,
+                          controller: walletController.endTimeTextController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
-                              return AlertStringConstants.pleaseSelectClosingTimeText;
+                              return AlertStringConstants
+                                  .pleaseSelectClosingTimeText;
                             } else if (value.trim() ==
                                 walletController.startTimeTextController.text) {
                               return AlertStringConstants.endTimeAlertText;
@@ -312,8 +307,7 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                           },
                           onTap: () async {
                             TimeOfDay date = TimeOfDay.now();
-                            FocusScope.of(context)
-                                .requestFocus(FocusNode());
+                            FocusScope.of(context).requestFocus(FocusNode());
                             date = (await showTimePicker(
                               helpText: StringConstants.selectTimeText,
                               initialTime: TimeOfDay.now(),
@@ -321,19 +315,17 @@ class _PeriodicallyViewState extends State<PeriodicallyView>  with SingleTickerP
                               builder: (context, child) {
                                 return Theme(
                                   data: ThemeData.light().copyWith(
-                                    colorScheme:
-                                    const ColorScheme.light(
+                                    colorScheme: const ColorScheme.light(
                                         primary: AppColors.primary),
                                     buttonTheme: const ButtonThemeData(
-                                        textTheme:
-                                        ButtonTextTheme.primary),
+                                        textTheme: ButtonTextTheme.primary),
                                   ),
                                   child: child!,
                                 );
                               },
                             ))!;
-                            walletController.endTimeTextController
-                                .text = date.format(context).toString();
+                            walletController.endTimeTextController.text =
+                                date.format(context).toString();
                           },
                           decoration: InputDecoration(
                             errorMaxLines: 3,

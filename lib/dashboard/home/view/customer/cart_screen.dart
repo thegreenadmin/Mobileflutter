@@ -844,8 +844,10 @@ class _CartScreenState extends State<CartScreen> {
                 child: Obx(() => Column(
                       children: [
                         Visibility(
-                          visible: storeHomeMainController
-                              .isInsufficientBalance.value,
+                          visible: storeHomeMainController.walletBalance.value <
+                                  storeHomeMainController
+                                      .cartData.value.cartTotalPrice! ||
+                              storeHomeMainController.isInsufficientBalance.value ,
                           child: Container(
                             color: AppColors.redlight,
                             padding: const EdgeInsets.all(10.0),

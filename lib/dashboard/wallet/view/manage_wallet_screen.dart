@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
@@ -13,7 +15,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-import 'component/edit_auto_reload.dart';
+import 'component/auto_reload_screen.dart';
 
 class ManageWalletScreen extends StatefulWidget {
   const ManageWalletScreen({super.key});
@@ -25,7 +27,14 @@ class ManageWalletScreen extends StatefulWidget {
 class _ManageWalletScreenState extends State<ManageWalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
-  bottomSheetToAddMoney(context) {
+  bottomSheetToAddMoney(context, {isFromEdit = false}) {
+    walletController.isautoRechargeEnable.value = false;
+    walletController.chargeAmountTextController.clear();
+    walletController.thresholdAmountTextController.clear();
+    walletController.thresholdAmountTextController.clear();
+    walletController.autoChargeType.value = "";
+    walletController.selectedFrequency.value = "";
+
     return showModalBottomSheet(
         isScrollControlled: true,
         isDismissible: true,
@@ -36,8 +45,15 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
         builder: (BuildContext context) {
           // return StatefulBuilder(
           //     builder: (BuildContext context, StateSetter setState) {
-          return Wrap(children: const <Widget>[EditAutoReload()]);
-        }).then((value) => {});
+
+          return Wrap(children: <Widget>[AutoReload(isFromEdit: isFromEdit)]);
+        }).then((value) => {
+          // walletController.isautoRechargeEnable.value = false,
+          // walletController.chargeAmountTextController.clear(),
+          // walletController.thresholdAmountTextController.clear(),
+          // walletController.thresholdAmountTextController.clear(),
+          // walletController.autoChargeType.value = "",
+        });
   }
 
   @override
@@ -125,7 +141,15 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               ),
                               height12SizedBox,
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  SharedPreferenceStorage.getData(
+                                              Role.role.value) ==
+                                          Role.customerRoleText
+                                      ? walletController
+                                          .apiGetUserWalletBalance()
+                                      : walletController
+                                          .apiGetOwnerWalletBalance();
+                                },
                                 child: Image.asset(
                                   ImageConstants.asofnow,
                                   scale: 3.5,
@@ -163,41 +187,90 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               ],
             ),
             height40SizedBox,
-            InkWell(
-              onTap: () {
-                bottomSheetToAddMoney(context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.autoreload,
-                      scale: 3.2,
-                    ),
-                    width15SizedBox,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          StringConstants.autoReloadIntoWalletText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageConstants.autoreload,
+                        scale: 3.2,
+                      ),
+                      width15SizedBox,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => !walletController.isautoRechargeEnable.value
+                                ? InkWell(
+                                    onTap: () {
+                                      walletController.cardList.clear();
+                                      bottomSheetToAddMoney(context,isFromEdit: false);
+                                    },
+                                    child: Text(
+                                      StringConstants.autoReloadIntoWalletText,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )
+                                : height0SizedBox,
+                          ),
+                          height12SizedBox,
+                          Obx(() => walletController.isautoRechargeEnable.value
+                              ? InkWell(
+                                  onTap: () async {
+                                    await walletController
+                                        .apiGetAutoRechargeDetail();
+                                    bottomSheetToAddMoney(context,isFromEdit: true);
+                                  },
+                                  child: Text(
+                                    StringConstants.editText,
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: AppColors.primary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                )
+                              : height0SizedBox)
+                        ],
+                      ),
+                    ],
+                  ),
+                  Obx(() => FlutterSwitch(
+                        height: 28,
+                        width: 50,
+                        value: walletController.isautoRechargeEnable.value,
+                        activeToggleColor: AppColors.primary,
+                        inactiveToggleColor: AppColors.grey,
+                        activeSwitchBorder: Border.all(
+                          color: AppColors.greylight,
                         ),
-                        Text(
-                          StringConstants.editText,
-                          style: const TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: AppColors.primary,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                        inactiveSwitchBorder: Border.all(
+                          color: AppColors.greylight,
+                        ),
+                        activeColor: AppColors.greymediumlight,
+                        inactiveColor: AppColors.greymediumlight,
+                        onToggle: (val) {
+                          walletController.isautoRechargeEnable.value = val;
+                          if (walletController.isautoRechargeEnable.value) {
+                            walletController.isautoRechargeEnable.value = true;
+                            bottomSheetToAddMoney(context);
+                          } else {
+                            walletController.isautoRechargeEnable.value = false;
+                            if (walletController.getAutoRechargeModel.data!
+                                    .userWalletAutoCharge !=
+                                null) {
+                              walletController.apiDisableAutoRecharge();
+                            }
+                          }
+                        },
+                      )),
+                ],
               ),
             ),
             const Divider(

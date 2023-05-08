@@ -401,7 +401,6 @@ class StoreHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-
       debugPrint("API PLACE ORDER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -711,10 +710,16 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("User Wallet Balance *******${value?.body}");
+      debugPrint("USER WALLET BALANCE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        walletBalance.value = value?.body["data"]["balance"];
+        if (value!.body["data"]["balance"] is int) {
+          walletBalance.value = double.parse(value.body["data"]["balance"]);
+          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+        } else if (value.body["data"]["balance"] is double) {
+          walletBalance.value = value.body["data"]["balance"];
+          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+        }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

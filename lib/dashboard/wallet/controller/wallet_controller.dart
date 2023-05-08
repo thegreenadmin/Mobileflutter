@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
+import 'package:thegreenmall/dashboard/wallet/model/get_auto_recharge_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
@@ -19,40 +21,38 @@ import 'package:http/http.dart' as http;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class WalletController extends GetxController {
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
-  RxString? nickName = "".obs;
-  RxString email = "".obs;
-  RxString phone = "".obs;
-  RxInt amount = 0.obs;
-  RxString userName = "".obs;
-  RxString phoneNumber = "".obs;
-  RxString withoutCodeNumber = "".obs;
-  RxString customerId = "".obs;
   RxString cardNumber = ''.obs;
   RxString expiryDate = ''.obs;
   RxString cardHolderName = ''.obs;
   RxString cvvCode = ''.obs;
-  RxString cardId = ''.obs;
+  RxString selectPaymentType = "".obs;
+  RxString? userStripeCardId = "".obs;
+  RxString? userWalletBalance = "".obs;
+  RxString? ownerWalletBalance = "0.00".obs;
+  RxString? storeNameValue = "".obs;
+  RxString autoChargeType = "threshold".obs;
+  RxString? startformattedDate = "".obs;
+  RxString? endformattedDate = "".obs;
+  late RxString dateOfEvent = "".obs;
+  late RxString timeOfEvent = "".obs;
+
   RxString stripeToken = "".obs;
   RxBool isCvvFocused = false.obs;
-  RxString request = "".obs;
-  RxString eventId = "".obs;
-  RxString requestId = "".obs;
-  RxString postalCode = "".obs;
+
   RxString selectedCountry = "".obs;
   RxString accountHolderTypeText = "".obs;
-  RxBool isCashWithdrawal = false.obs;
-  RxBool isAcceptReqCase = false.obs;
-  RxBool isPaymentDone = false.obs;
+
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isautoRechargeEnable = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? type = 0.obs;
   RxString ownerSelectedStore = "".obs;
   RxString bankToken = "".obs;
   RxBool isFromCartScreen = false.obs;
   RxString dynamicLink = "".obs;
+  RxString userWalletAutoChargeId = "".obs;
+  RxString selectedFrequency = "".obs;
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
 
@@ -67,6 +67,13 @@ class WalletController extends GetxController {
   TextEditingController accountNumberTextController = TextEditingController();
   TextEditingController currencyTextController = TextEditingController();
   TextEditingController countryTextController = TextEditingController();
+
+  TextEditingController thresholdAmountTextController = TextEditingController();
+  TextEditingController chargeAmountTextController = TextEditingController();
+  TextEditingController startDateTextController = TextEditingController();
+  TextEditingController endDateTextController = TextEditingController();
+  TextEditingController frequencyTextController = TextEditingController();
+
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
 
@@ -76,13 +83,10 @@ class WalletController extends GetxController {
   RxList<dynamic> selectedCards = <dynamic>[].obs;
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
-  RxString selectPaymentType = "".obs;
-  RxString? userStripeCardId = "".obs;
-  RxString? userWalletBalance = "".obs;
-  RxString? ownerWalletBalance = "0.00".obs;
-  RxString? storeNameValue = "".obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
+  late GetAutoRechargeModel getAutoRechargeModel = GetAutoRechargeModel();
+
   RxList<Stores> storeList = <Stores>[].obs;
 
   @override
@@ -94,14 +98,12 @@ class WalletController extends GetxController {
           ? false
           : Get.arguments['isFromCartScreen'] != false) {
         isFromCartScreen.value = Get.arguments["isFromCartScreen"] ?? false;
-        print("isFromCartScreen.value----->" +
-            Get.arguments["isFromCartScreen"].toString());
       }
       apiGetCardList();
       apiGetUserWalletBalance();
+      apiGetAutoRechargeDetail();
     } else {
       apiGetStoreList();
-      apiGetCountries();
     }
   }
 
@@ -116,10 +118,14 @@ class WalletController extends GetxController {
   }
 
 // Fields Validation Method
-  void validateAndSubmit({bool isFromCreateOwnerBankBalance = false}) async {
+  void validateAndSubmit(
+      {bool isFromCreateOwnerBankBalance = false,
+      isFromautorecharge = false}) async {
     if (validateAndSave()) {
       try {
-        if (isFromCreateOwnerBankBalance == false) {
+        if (isFromautorecharge == true) {
+          apiCreateAutoRecharge();
+        } else if (isFromCreateOwnerBankBalance == false) {
           if (selectPaymentType.isEmpty) {
             Utility.showToast(AlertStringConstants.pleaseSelectPaymentTypeText);
           } else if (selectPaymentType.value == "Cards" &&
@@ -173,7 +179,7 @@ class WalletController extends GetxController {
             store.StoreDetailsResponse.fromJson(value?.body);
         dynamicLink.value =
             storeDetailsResponse.value.data!.store!.dynamicLink.toString();
-        debugPrint("DEEP LINK ***********" + dynamicLink.value);
+        debugPrint("DEEP LINK ***********${dynamicLink.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -664,6 +670,230 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
         await apiGetBankAccountList();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  apiCreateAutoRecharge() {
+    var date = DateTime.now();
+    isLoading.value = true;
+    debugPrint(
+        "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutocharge}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map<String, String> body = {
+      "auto_charge_type": autoChargeType.value,
+      "user_stripe_card_id": userStripeCardId!.value,
+      "threshold_amount": thresholdAmountTextController.text.trim(),
+      "charge_amount": chargeAmountTextController.text.trim(),
+      "start_date": autoChargeType.value == "threshold"
+          ? DateTime.now().toString()
+          : startDateTextController.text.trim(),
+      "end_date": autoChargeType.value == "threshold"
+          ? DateTime(date.year + 1, date.month, date.day).toString()
+          : endDateTextController.text.trim(),
+      "frequency": autoChargeType.value == "threshold"
+          ? frequencyTextController.text
+          : selectedFrequency.value
+    };
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("CREATE AUTO RECHARGE BODY ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().userWalletAutocharge,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CREATE AUTO RECHARGE BODY ******* $body");
+      debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value.body['message']);
+        thresholdAmountTextController.clear();
+        chargeAmountTextController.clear();
+        accountHolderNameTextController.clear();
+        autoChargeType.value = "";
+        rountingTextController.clear();
+        accountNumberTextController.clear();
+        apiGetAutoRechargeDetail();
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get Auto recharge
+  Future apiGetAutoRechargeDetail() async {
+    isLoading.value = true;
+    debugPrint("GET AUTO RECHARGE DETAIL URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeGet}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeGet}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET AUTO RECHARGE DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getAutoRechargeModel = GetAutoRechargeModel.fromJson(value.body);
+        if (getAutoRechargeModel.data!.userWalletAutoCharge != null) {
+          if (getAutoRechargeModel.data!.userWalletAutoCharge!.status ==
+              "active") {
+            isautoRechargeEnable.value = true;
+            autoChargeType.value = getAutoRechargeModel
+                .data!.userWalletAutoCharge!.autoChargeType!;
+
+            thresholdAmountTextController.text = getAutoRechargeModel
+                .data!.userWalletAutoCharge!.thresholdAmount
+                .toString();
+            chargeAmountTextController.text = getAutoRechargeModel
+                .data!.userWalletAutoCharge!.chargeAmount
+                .toString();
+
+            frequencyTextController.text = getAutoRechargeModel
+                .data!.userWalletAutoCharge!.frequency
+                .toString();
+
+            userWalletAutoChargeId.value = getAutoRechargeModel
+                .data!.userWalletAutoCharge!.userWalletAutoChargeId
+                .toString();
+
+            accountNumberTextController.clear();
+          }
+        } else {
+          isautoRechargeEnable.value = false;
+        }
+        update();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  apiUpdateAutoRecharge() {
+    var date = DateTime.now();
+    isLoading.value = true;
+    debugPrint(
+        "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeUpdate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map<String, String> body = {
+      "user_wallet_auto_charge_id": userWalletAutoChargeId.value,
+      "auto_charge_type": autoChargeType.value,
+      "user_stripe_card_id": userStripeCardId!.value,
+      "threshold_amount": thresholdAmountTextController.text.trim(),
+      "charge_amount": chargeAmountTextController.text.trim(),
+      "start_date": autoChargeType.value == "threshold"
+          ? DateTime.now().toString()
+          : startDateTextController.text.trim(),
+      "end_date": autoChargeType.value == "threshold"
+          ? DateTime(date.year + 1, date.month, date.day).toString()
+          : endDateTextController.text.trim(),
+      "frequency": autoChargeType.value == "threshold"
+          ? frequencyTextController.text
+          : selectedFrequency.value
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("UPDATE AUTO RECHARGE BODY ********** $headers");
+    UserProvider()
+        .putWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().userWalletAutochargeUpdate,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
+      debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value.body['message']);
+        thresholdAmountTextController.clear();
+        chargeAmountTextController.clear();
+        accountHolderNameTextController.clear();
+        autoChargeType.value = "";
+        rountingTextController.clear();
+        accountNumberTextController.clear();
+        apiGetAutoRechargeDetail();
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+//Delete autocahrge api
+  Future apiDisableAutoRecharge() async {
+    debugPrint(
+        "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map body = {
+      "user_wallet_auto_charge_id": getAutoRechargeModel
+          .data!.userWalletAutoCharge!.userWalletAutoChargeId
+          .toString()
+    };
+    debugPrint("DISABLE AUTO CHARGE BODY ************* $body");
+    UserProvider()
+        .deleteWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeDelete}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("DISABLE AUTO CHARGE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        await apiGetAutoRechargeDetail();
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+        await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

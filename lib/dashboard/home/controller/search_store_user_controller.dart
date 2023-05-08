@@ -64,7 +64,7 @@ class SearchStoreUserController extends GetxController {
   void enterEinNumberAlert(context, String storeId) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(

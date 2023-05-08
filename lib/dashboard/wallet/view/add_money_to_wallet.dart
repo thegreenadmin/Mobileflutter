@@ -83,6 +83,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
     debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
   }
 
+  void onGooglePayResult(paymentResult) {
+    debugPrint("GOOGLE PAYMENT RESULT *************$paymentResult");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -269,17 +273,14 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                 Obx(
                   () => addCardController.selectPaymentType.value ==
                           "Google Pay"
-                      ? ApplePayButton(
-                          width: WidgetConstants.screenWidth,
-                          height: 45,
+                      ? GooglePayButton(
                           paymentConfiguration:
                               PaymentConfiguration.fromJsonString(
-                                  payment_configurations.defaultApplePay),
+                                  payment_configurations.defaultGooglePay),
                           paymentItems: _paymentItems,
-                          style: ApplePayButtonStyle.black,
-                          type: ApplePayButtonType.buy,
-                          margin: const EdgeInsets.only(top: 0.0),
-                          onPaymentResult: onApplePayResult,
+                          type: GooglePayButtonType.pay,
+                          margin: const EdgeInsets.only(top: 15.0),
+                          onPaymentResult: onGooglePayResult,
                           loadingIndicator: const Center(
                             child: CircularProgressIndicator(),
                           ),

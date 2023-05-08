@@ -162,6 +162,11 @@ class ServerCommunicator {
   String utilsQueryCreate = '/utils/query/create';
   String userStripeBankCreate = 'user/stripe/bank/create';
   String userStripeBankList = 'user/stripe/bank/list';
+  String userWalletAutocharge = 'user/wallet/autocharge/create';
+  String userWalletAutochargeGet = 'user/wallet/autocharge/details';
+  String userWalletAutochargeDelete = 'user/wallet/autocharge/delete';
+  String userWalletAutochargeUpdate = 'user/wallet/autocharge/update';
+  
 
 //V
 //W

@@ -64,6 +64,7 @@ class AddCardController extends GetxController {
   RxString? storeId = "".obs;
   late BankAccountListModel bankAccountListModel = BankAccountListModel();
   RxList<Banks> bankAccountList = <Banks>[].obs;
+  RxString selectedPaymentForFrequency = "".obs;
 
   @override
   void onInit() {

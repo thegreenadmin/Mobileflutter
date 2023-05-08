@@ -21,10 +21,6 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import '../model/categories_model.dart';
 
-// Copyright 2021 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 class AddNewStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
@@ -101,20 +97,19 @@ class AddNewStoreController extends GetxController {
 
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-  String dynamicLink = "";
-
+  ShortDynamicLink? shortLink;
+  String? dynamicLink;
   @override
   void onInit() {
     super.onInit();
     getGkey();
     apiGetDeliveryServices();
-    createDynamicLink();
   }
 
   Future<void> createDynamicLink() async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://thegreenmall.page.link',
-      link: Uri.parse(dynamicLink),
+      link: Uri.parse(dynamicLink!),
       androidParameters: const AndroidParameters(
         packageName: 'com.app.thegreenmall',
       ),
@@ -122,9 +117,8 @@ class AddNewStoreController extends GetxController {
         bundleId: 'com.thegreenmall',
       ),
     );
-    final ShortDynamicLink shortLink =
-        await dynamicLinks.buildShortLink(parameters);
-    debugPrint("PARAMETERS **************${shortLink.shortUrl}");
+    shortLink = await dynamicLinks.buildShortLink(parameters);
+    debugPrint("PARAMETERS **************${shortLink!.shortUrl}");
   }
 
   getGkey() async {
@@ -337,7 +331,9 @@ class AddNewStoreController extends GetxController {
         countryTextController.clear();
         //storeIdValue.value = value.body["status"]
         storeIdValue.value = value.body["data"]['store_id'].toString();
-
+        dynamicLink =
+            ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
+        await createDynamicLink();
         await apiDynamicLink();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
@@ -358,10 +354,10 @@ class AddNewStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    dynamicLink = ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
+
     Map data = {
       "store_id": int.parse(storeIdValue.value),
-      "dynamic_link": dynamicLink,
+      "dynamic_link": shortLink!.shortUrl.toString(),
     };
     debugPrint("DYNAMIC LINK BODY**********$data");
 

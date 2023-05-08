@@ -71,7 +71,7 @@ const String defaultGooglePay = '''{
           "type": "PAYMENT_GATEWAY",
           "parameters": {
             "gateway": "example",
-            "gatewayMerchantId": "BCR2DN4TZLO6RPDD"
+            "gatewayMerchantId": "gatewayMerchantId"
           }
         },
         "parameters": {
@@ -86,8 +86,8 @@ const String defaultGooglePay = '''{
       }
     ],
     "merchantInfo": {
-      "merchantId": "BCR2DN4TZLO6RPDD",
-      "merchantName": "HI Business"
+      "merchantId": "01234567890123456789",
+      "merchantName": "Example Merchant Name"
     },
     "transactionInfo": {
       "countryCode": "US",
