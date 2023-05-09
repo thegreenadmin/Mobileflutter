@@ -8,10 +8,8 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -45,23 +43,32 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           children: [
             height10SizedBox,
             Text(
+              StringConstants.welcomeText,
+              style: const TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height10SizedBox,
+            Text(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storeName ??
                   "",
               style: const TextStyle(
-                  color: AppColors.primarydark,
-                  fontSize: 22,
+                  color: AppColors.black,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
             Text(
-              "${StringConstants.contactUsText}: ",
+              "${StringConstants.contactUsText} " "at:",
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
-                  fontWeight: FontWeight.w400),
+                  fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
             Text(
@@ -77,12 +84,12 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
             height15SizedBox,
             Text(
-              "${StringConstants.emailText}: ",
+              "${StringConstants.emailText} " "at:",
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
-                  fontWeight: FontWeight.w400),
+                  fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
             Text(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,10 +11,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:pay/pay.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
 class AddMoneyToWallet extends StatefulWidget {
@@ -212,68 +210,185 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
-                height15SizedBox,
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
+                height25SizedBox,
+                Obx(
+                  () => Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: InkWell(
+                          onTap: () {
+                            addCardController.paymentType!.value = "card";
+                            addCardController.selectPaymentType.value = "card";
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.white,
+                                border: Border.all(
+                                  color: addCardController.paymentType!.value ==
+                                          "card"
+                                      ? AppColors.primary
+                                      : AppColors.blacklight,
+                                )),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                addCardController.paymentType!.value == "card"
+                                    ? Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Image.asset(
+                                            ImageConstants.circleunfill,
+                                            scale: 4,
+                                          ),
+                                          Image.asset(
+                                            ImageConstants.circle,
+                                            scale: 7,
+                                          ),
+                                        ],
+                                      )
+                                    : Image.asset(
+                                        ImageConstants.circleBlackUnFill,
+                                        scale: 2.8,
+                                      ),
+                                width8SizedBox,
+                                Text(
+                                  StringConstants.cardText,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
+                      width20SizedBox,
+                      Platform.isAndroid
+                          ? Flexible(
+                              flex: 2,
+                              child: InkWell(
+                                onTap: () {
+                                  addCardController.paymentType!.value =
+                                      "G-Pay";
+                                  addCardController.selectPaymentType.value =
+                                      "G-Pay";
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                        color: addCardController
+                                                    .paymentType!.value ==
+                                                "G-Pay"
+                                            ? AppColors.primary
+                                            : AppColors.blacklight,
+                                      )),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      addCardController.paymentType!.value ==
+                                              "G-Pay"
+                                          ? Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  ImageConstants.circleunfill,
+                                                  scale: 4,
+                                                ),
+                                                Image.asset(
+                                                  ImageConstants.circle,
+                                                  scale: 7,
+                                                ),
+                                              ],
+                                            )
+                                          : Image.asset(
+                                              ImageConstants.circleBlackUnFill,
+                                              scale: 2.8,
+                                            ),
+                                      width8SizedBox,
+                                      Text(
+                                        StringConstants.gPayText,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Flexible(
+                              flex: 2,
+                              child: InkWell(
+                                onTap: () {
+                                  addCardController.paymentType!.value =
+                                      "applePay";
+                                  addCardController.selectPaymentType.value =
+                                      "applePay";
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                        color: addCardController
+                                                    .paymentType!.value ==
+                                                "applePay"
+                                            ? AppColors.primary
+                                            : AppColors.blacklight,
+                                      )),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      addCardController.paymentType!.value ==
+                                              "applePay"
+                                          ? Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  ImageConstants.circleunfill,
+                                                  scale: 4,
+                                                ),
+                                                Image.asset(
+                                                  ImageConstants.circle,
+                                                  scale: 7,
+                                                ),
+                                              ],
+                                            )
+                                          : Image.asset(
+                                              ImageConstants.circleBlackUnFill,
+                                              scale: 2.8,
+                                            ),
+                                      width8SizedBox,
+                                      Text(
+                                        StringConstants.applePayText,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
                   ),
-                  isExpanded: true,
-                  hint: Text(
-                    StringConstants.selectTypeText,
-                    style: const TextStyle(
-                      color: AppColors.grey,
-                    ),
-                  ),
-                  items: <String>["Google Pay", "Apple Pay", "Cards"]
-                      .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (v) {
-                    addCardController.selectPaymentType.value = v.toString();
-                    print(addCardController.selectPaymentType.value);
-                  },
                 ),
                 height30SizedBox,
                 Obx(
-                  () => addCardController.selectPaymentType.value ==
-                          "Google Pay"
+                  () => addCardController.selectPaymentType.value == "G-Pay"
                       ? GooglePayButton(
+                          onError: (Object? error) {
+                            debugPrint('error');
+                          },
                           paymentConfiguration:
                               PaymentConfiguration.fromJsonString(
                                   payment_configurations.defaultGooglePay),
@@ -285,7 +400,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             child: CircularProgressIndicator(),
                           ),
                         )
-                      : addCardController.selectPaymentType.value == "Apple Pay"
+                      : addCardController.selectPaymentType.value == "applePay"
                           ? ApplePayButton(
                               width: WidgetConstants.screenWidth,
                               height: 45,
@@ -301,7 +416,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 child: CircularProgressIndicator(),
                               ),
                             )
-                          : addCardController.selectPaymentType.value == "Cards"
+                          : addCardController.selectPaymentType.value == "card"
                               ? Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 30),

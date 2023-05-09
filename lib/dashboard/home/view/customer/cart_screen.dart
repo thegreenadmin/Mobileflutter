@@ -1,7 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
@@ -20,6 +19,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -594,9 +594,33 @@ class _CartScreenState extends State<CartScreen> {
                                   storeHomeMainController
                                           .selectedDeliveryService.value ==
                                       "3"
-                              ? Text(
-                                  "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.addressLine1 ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.city ?? ""}, "
-                                  "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.state!.stateName ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.postalCode}",
+                              ? Container(
+                                  width: WidgetConstants.screenWidth,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 12),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.primarylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      )),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.loc,
+                                        scale: 2.5,
+                                      ),
+                                      width10SizedBox,
+                                      Expanded(
+                                        child: Text(
+                                          "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.addressLine1 ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.city ?? ""}, "
+                                          "${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.state!.stateName ?? ""}, ${storeHomeMainController.storeDetailsResponse.value.data?.store!.storeAddresses!.first.postalCode}",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               : Container(
                                   padding: const EdgeInsets.symmetric(
@@ -847,7 +871,8 @@ class _CartScreenState extends State<CartScreen> {
                           visible: storeHomeMainController.walletBalance.value <
                                   storeHomeMainController
                                       .cartData.value.cartTotalPrice! ||
-                              storeHomeMainController.isInsufficientBalance.value ,
+                              storeHomeMainController
+                                  .isInsufficientBalance.value,
                           child: Container(
                             color: AppColors.redlight,
                             padding: const EdgeInsets.all(10.0),

@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:uni_links/uni_links.dart';
 
 RemoteMessage? initialRemoteMessage;
 
@@ -51,6 +52,8 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   initialRemoteMessage = (await checkForInitialFirebaseMessage());
+  final PendingDynamicLinkData? initialLink =
+      await FirebaseDynamicLinks.instance.getInitialLink();
 
   runApp(const MyApp());
 
@@ -73,18 +76,41 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initDynamicLinks();
+    handleDeepLink();
   }
 
-  Future<void> initDynamicLinks() async {
-    dynamicLinks.onLink.listen((dynamicLinkData) {
-      print("HELLOOOOO ******** " + dynamicLinks.onLink.toString());
-      // Navigator.pushNamed(context, dynamicLinkData.link.path);
-    }).onError((error) {
-      print('onLink error');
-      print(error.message);
-    });
+  Future<void> handleDeepLink() async {
+    try {
+      FirebaseDynamicLinks.instance.onLink.listen(
+        (pendingDynamicLinkData) {
+          print("MOHITYTYYY");
+          // Set up the `onLink` event listener next as it may be received here
+          if (pendingDynamicLinkData != null) {
+            final Uri deepLink = pendingDynamicLinkData.link;
+            // Example of using the dynamic link to push the user to a different screen
+            Navigator.pushNamed(context, deepLink.path);
+            print("MOHITYTYYYGFHFRT");
+          }
+        },
+      );
+    } on PlatformException {
+//Pass
+    } on FormatException {
+//Pass
+    } catch (e) {
+//Pass
+    }
   }
+
+  // Future<void> initDynamicLinks() async {
+  //   dynamicLinks.onLink.listen((dynamicLinkData) {
+  //     print("HELLOOOOO ******** " + dynamicLinks.onLink.toString());
+  //     // Navigator.pushNamed(context, dynamicLinkData.link.path);
+  //   }).onError((error) {
+  //     print('onLink error');
+  //     print(error.message);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

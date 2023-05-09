@@ -64,6 +64,7 @@ class StringConstants {
   static String amountWillBeDeductedText =
       "amount will be deducted from your wallet. Do you want to proceed?";
   static String autoReloadText = "Auto Reload";
+  static String applePayText = "Apple Pay";
 
   //B
   static String breadthText = "Breadth";
@@ -115,6 +116,7 @@ class StringConstants {
   static String currencyText = "Currency";
   static String companyText = "Company";
   static String claimStoreText = "Claim Store";
+  static String cardText = "Card";
 
   //D
   static String deliveryText = "Delivery";
@@ -156,6 +158,7 @@ class StringConstants {
   static String expiredDateText = "Expired Date";
   static String editAutoReloadText = "Edit Auto reload";
   static String enterEinNumberText = "Enter EIN Number";
+  static String editAutoReloadIntoWalletText = "Edit Auto Reload Into Wallet";
 
   //F
   static String firstNameText = "First Name";
@@ -178,6 +181,8 @@ class StringConstants {
   static String getInTouchText = "Get In touch";
   static String genderText = "Gender";
   static String galleryText = "Gallery";
+  static String gPayText = "G-Pay";
+
   //H
   static String helpAndPolicyText = "Help & Policies";
   static String helpText = "Help";
@@ -468,6 +473,7 @@ class StringConstants {
   static String websiteText = "Website";
   static String writeReasonText = "Write Reason";
   static String walletText = "Wallet";
+  static String welcomeText = "Welcome";
   static String welcomeToText = "Welcome to";
   static String weightText = "Weight";
   static String workingDaysText = "Working Days";

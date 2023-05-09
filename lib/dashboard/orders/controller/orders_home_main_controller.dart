@@ -244,7 +244,7 @@ class OrdersHomeMainController extends GetxController {
         orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
         storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
         orderStatusId.value = getStoreOrderDetailModel
-                .value.data?.order?.orderHistories?.last?.orderStatusId ??
+                .value.data?.order?.orderHistories?.last.orderStatusId ??
             "0";
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;

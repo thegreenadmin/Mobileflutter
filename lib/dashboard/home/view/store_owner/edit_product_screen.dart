@@ -243,7 +243,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -262,7 +263,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   .pleaseEnterProductNameText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.words,
+                          },
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: StringConstants.enterProductNameText,
                             hintStyle: const TextStyle(
@@ -421,8 +423,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             flex: 5,
                             child: DropdownButtonFormField<String>(
                               validator: (v) {
-                                if (v==null || v?.trim()=='') {
-                                  return AlertStringConstants.pleaseSelectQuantityUnitText;
+                                if (v == null || v.trim() == '') {
+                                  return AlertStringConstants
+                                      .pleaseSelectQuantityUnitText;
                                 }
                                 return null;
                               },
@@ -495,7 +498,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           width15SizedBox,
                           Flexible(
                             flex: 5,
-                            child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                            child: TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -561,7 +566,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -623,7 +629,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -642,7 +649,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   .pleaseEnterShortDescriptionText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.sentences,
+                          },
+                          textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.shortDescriptionText,
                             hintStyle: const TextStyle(
@@ -686,7 +694,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: <TextInputFormatter>[
@@ -705,7 +714,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   .pleaseEnterContentAndStrainText;
                             }
                             return null;
-                          },textCapitalization: TextCapitalization.sentences,
+                          },
+                          textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.contentsAndStrainsText,
                             hintStyle: const TextStyle(
@@ -749,7 +759,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             fontWeight: FontWeight.w400),
                       ),
                       height4SizedBox,
-                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
                           inputFormatters: [
@@ -894,7 +905,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           width15SizedBox,
                           Flexible(
                             flex: 5,
-                            child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                            child: TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -965,12 +978,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               .selectedFeaturedType.value.isEmpty
                           ? height0SizedBox
                           : DropdownButtonFormField<String>(
-
                               value: manageStoreController
                                   .selectedFeaturedType.value,
                               validator: (v) {
-                                if (v==null || v?.trim()=='') {
-                                  return AlertStringConstants.pleaseSelectAnyOneText;
+                                if (v == null || v.trim() == '') {
+                                  return AlertStringConstants
+                                      .pleaseSelectAnyOneText;
                                 }
                                 return null;
                               },
@@ -1044,13 +1057,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("${StringConstants.lengthText}(in)",
+                                Text(
+                                  "${StringConstants.lengthText}(in)",
                                   style: TextStyle(
                                       color: AppColors.blacklight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                                 ),
-                                 TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                TextFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
                                     inputFormatters: <TextInputFormatter>[
@@ -1124,7 +1140,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                                 ),
-                                 TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                TextFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
                                     inputFormatters: <TextInputFormatter>[
@@ -1202,7 +1220,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                                 ),
-                                 TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                TextFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
                                     inputFormatters: <TextInputFormatter>[
@@ -1276,7 +1296,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                                 ),
-                                 TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                TextFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
                                     inputFormatters: <TextInputFormatter>[
@@ -1365,8 +1387,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               .selectedProductReturnableType
                                               .value,
                                           validator: (v) {
-                                            if (v==null || v?.trim()=='') {
-                                              return AlertStringConstants.pleaseSelectAnyOneText;
+                                            if (v == null || v.trim() == '') {
+                                              return AlertStringConstants
+                                                  .pleaseSelectAnyOneText;
                                             }
                                             return null;
                                           },
@@ -1465,7 +1488,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        TextFormField(
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
                                             textInputAction:
                                                 TextInputAction.next,
                                             autofocus: false,
