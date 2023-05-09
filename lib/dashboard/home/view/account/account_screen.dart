@@ -259,7 +259,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
 
                           SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(

@@ -295,16 +295,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                               .userTransactionList![index]
                                               .userWalletTransactionId ??
                                           "";
-                                  // Get.to(
-                                  //     () => const UserTransactionDetailScreen(),
-                                  //     arguments: {
-                                  //       "isFromTransaction": true,
-                                  //       "user_stripe_card_id":
-                                  //           transactionController
-                                  //                   .userTransactionList![index]
-                                  //                   .userWalletTransactionId ??
-                                  //               "",
-                                  //     });
+                                 /* Get.to(
+                                      () => const UserTransactionDetailScreen(),
+                                      arguments: {
+                                        "isFromTransaction": true,
+                                        "user_stripe_card_id":
+                                            transactionController
+                                                    .userTransactionList![index]
+                                                    .userWalletTransactionId ??
+                                                "",
+                                      });*/
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -615,19 +615,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                               const OwnerTransactionDetailScreen(),
                                         ))
 
-                                      // Get.to(
-                                      //         const OwnerTransactionDetailScreen(),
-                                      //         arguments: {
-                                      //             "store_wallet_transaction_id":
-                                      //                 transactionController
-                                      //                     .ownerOrderTransactionList![
-                                      //                         index]
-                                      //                     .storeWalletTransactionId,
-                                      //             "store_id": transactionController
-                                      //                 .ownerOrderTransactionList![
-                                      //                     index]
-                                      //                 .storeId
-                                      //           })
+                                     /* Get.to(
+                                              const OwnerTransactionDetailScreen(),
+                                              arguments: {
+                                                  "store_wallet_transaction_id":
+                                                      transactionController
+                                                          .ownerOrderTransactionList![
+                                                              index]
+                                                          .storeWalletTransactionId,
+                                                  "store_id": transactionController
+                                                      .ownerOrderTransactionList![
+                                                          index]
+                                                      .storeId
+                                                })*/
                                       : transactionController
                                                   .ownerOrderTransactionList![
                                                       index]
@@ -639,19 +639,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                   const OwnerTransactionDetailScreen(),
                                             ))
 
-                                          // Get.to(
-                                          //             const OwnerTransactionDetailScreen(),
-                                          //             arguments: {
-                                          //                 "store_wallet_transaction_id":
-                                          //                     transactionController
-                                          //                         .ownerOrderTransactionList![
-                                          //                             index]
-                                          //                         .storeWalletTransactionId,
-                                          //                 "store_id": transactionController
-                                          //                     .ownerOrderTransactionList![
-                                          //                         index]
-                                          //                     .storeId
-                                          //               })
+                                          /*Get.to(
+                                                      const OwnerTransactionDetailScreen(),
+                                                      arguments: {
+                                                          "store_wallet_transaction_id":
+                                                              transactionController
+                                                                  .ownerOrderTransactionList![
+                                                                      index]
+                                                                  .storeWalletTransactionId,
+                                                          "store_id": transactionController
+                                                              .ownerOrderTransactionList![
+                                                                  index]
+                                                              .storeId
+                                                        })*/
                                           : null;
                                 },
                                 child: Container(

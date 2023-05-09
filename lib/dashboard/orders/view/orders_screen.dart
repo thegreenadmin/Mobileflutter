@@ -463,7 +463,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 .apiGetStoreDetailsApi();
                             ordersController
                                 .apiGetOrderDetailsApi();
-                            Get.to(
+                            SharedPreferenceStorage.setData("context", context);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const OrderConfirmationScreen(),
+                            ));
+                            Get.parameters["isFromTransaction"] = "false";
+                            Get.parameters["isFromNotification"] = "false";
+                            Get.parameters["storeId"] = ordersController
+                                .orderList[i]
+                                .store
+                                ?.storeId
+                                .toString() ??
+                                "";
+
+                           /* Get.to(
                                     () =>
                                 const OrderConfirmationScreen(),
                                 arguments: {
@@ -475,7 +488,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       ?.storeId
                                       .toString() ??
                                       "",
-                                });
+                                });*/
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -804,6 +817,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               .storeOrderList.length) {
                         return InkWell(
                           onTap: () {
+                            SharedPreferenceStorage.setData("context", context);
+
+                            Get.parameters["storeId"] = ordersController
+                                .storeOrderList[i]
+                                .store
+                                ?.storeId
+                                .toString() ??
+                                "";
+                            Get.parameters["orderId"] = ordersController
+                                .storeOrderList[i]
+                                .orderId
+                                .toString()??"";
+
                             ordersController
                                 .storeOrderList[i]
                                 .orderHistories!
@@ -811,7 +837,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 .orderStatus!
                                 .orderStatusName == //"11"
                                 OrderStatus.returnRequest.statusName
-                                ? Get.to(
+                                ?
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const MarkReturnOrderScreen(),
+                            ))
+                            /*Get.to(
                                     () =>
                                 const MarkReturnOrderScreen(),
                                 arguments: {
@@ -826,7 +856,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       .storeOrderList[i]
                                       .orderId
                                       .toString(),
-                                })?.then((value) {
+                                })*/?.then((value) {
                               ordersController
                                   .apiGetStoreOrderListApi();
                             })
@@ -837,7 +867,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 .orderStatus!
                                 .orderStatusName == //"12"
                                 OrderStatus.returnConfirmed.statusName
-                                ? Get.to(
+                                ?
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const ReturnConfirmOrderScreen(),
+                            ))
+                            /*Get.to(
                                     () =>
                                 const ReturnConfirmOrderScreen(),
                                 arguments: {
@@ -854,13 +888,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   i]
                                       .orderId
                                       .toString(),
-                                })
+                                })*/
                                 : ordersController
                                 .orderStatusName
                                 .value == //7
                                 OrderStatus.cancelled.statusName
                                 ? null
-                                : Get.to(
+                                :
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const OrdersHomeMainScreen(),
+                            ));
+                            /*Get.to(
                                     () =>
                                 const OrdersHomeMainScreen(),
                                 arguments: {
@@ -876,7 +914,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   i]
                                       .orderId ??
                                       "",
-                                });
+                                });*/
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

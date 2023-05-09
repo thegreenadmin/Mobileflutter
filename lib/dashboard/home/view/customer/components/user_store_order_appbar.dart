@@ -34,8 +34,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
           Obx(() => /*storeHomeMainController.isFromHome.value == true ?*/
           storeHomeMainController.storeDetailsResponse.value.data !=
                           null &&
-                      storeHomeMainController
-                              .storeDetailsResponse.value.data!.store !=
+                      storeHomeMainController.storeDetailsResponse.value.data!.store !=
                           null /*&&
                       storeHomeMainController.isFromHome.value == true*/
                   ? Container(
