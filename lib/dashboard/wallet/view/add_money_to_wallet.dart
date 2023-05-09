@@ -204,7 +204,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   }).toList(),
                   onChanged: (v) {
                     addCardController.selectPaymentType.value = v.toString();
-                    print(addCardController.selectPaymentType.value);
                   },
                 ),
                 height10SizedBox,
