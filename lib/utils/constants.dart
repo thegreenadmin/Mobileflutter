@@ -9,7 +9,7 @@ class WidgetConstants {
 //String Constants used
 class StringConstants {
   //A
-  static String appNameText = "thegreenmall";
+  static String appNameText = "the green mall";
   static String asYouShopInVariousStores =
       "As you shop in various stores at The Green Mall, feel free to mark your favorite products for easy reference.";
   static String accountText = "Account";

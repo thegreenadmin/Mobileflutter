@@ -437,12 +437,12 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         controller:
                             addNewStoreController.storeNickNameTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
+                       /* validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterNickNameText;
                           }
                           return null;
-                        },
+                        },*/
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,

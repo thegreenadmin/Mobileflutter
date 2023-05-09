@@ -149,6 +149,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         right: 10,
                         child: InkWell(
                           onTap: () {
+                            searchStoreUserController.searchController.clear();
                             Get.to(const FilterOptionScreen());
                           },
                           child: Image.asset(

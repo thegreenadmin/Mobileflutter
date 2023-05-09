@@ -431,7 +431,7 @@ class _PeriodicallyViewState extends State<PeriodicallyView>
                 // print(addCardController.selectPaymentType.value);
               },
             ),
-            height15SizedBox,
+            // height15SizedBox,
             CustomButton(
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,

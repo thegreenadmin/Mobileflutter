@@ -237,12 +237,12 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             fontWeight: FontWeight.w500),
                         controller: accountController.nickNameTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
+                      /*  validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterNickNameText;
                           }
                           return null;
-                        },
+                        },*/
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,

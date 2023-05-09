@@ -129,6 +129,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                     children: [
                                                       InkWell(
                                                         onTap: () async {
+                                                          await storeHomeMainController.apiGetUserWalletBalance();
                                                           Get.to(() =>
                                                               const CartScreen());
                                                         },
@@ -527,6 +528,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                   children: [
                                                     InkWell(
                                                       onTap: () async {
+                                                        await storeHomeMainController.apiGetUserWalletBalance();
                                                         Get.to(() =>
                                                             const CartScreen());
                                                       },

@@ -348,7 +348,9 @@ class StoreHomeMainController extends GetxController {
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty) {
           isDeleteCartItem.value = false;
-          Get.offAll(BottomNavigation());
+          // Get.offAll(BottomNavigation());
+          Get.back();
+          Get.back();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
@@ -507,6 +509,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
         apiGetCartListApi();
+        await apiGetUserWalletBalance();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -547,6 +550,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
         apiGetCartListApi();
+        await apiGetUserWalletBalance();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -628,6 +632,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     await apiGetCartListApi();
+                    await apiGetUserWalletBalance();
                     Get.to(const CartScreen());
                   },
                   child: Container(

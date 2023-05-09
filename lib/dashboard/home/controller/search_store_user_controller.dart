@@ -174,6 +174,9 @@ class SearchStoreUserController extends GetxController {
   Future apiGetNearByStores({
     bool isFilter = false,
   }) async {
+    if(isFilter){
+      page.value=1;
+    }
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
