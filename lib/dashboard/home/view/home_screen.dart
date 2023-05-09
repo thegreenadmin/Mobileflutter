@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
@@ -253,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: CircularProgressIndicator(
                                         color: AppColors.primary)),
                               ) //
-                            : homeController.userCrouselImgList.isEmpty
+                            : homeController.userOfferList.isEmpty
                                 ? SizedBox(
                                     height: WidgetConstants.screenHeight * 0.50,
                                     child: Center(
@@ -280,6 +281,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )
                                 : CarouselSlider(
+                                    items: homeController.userOfferList
+                                        .map((item) => InkWell(
+                                          onTap: (){
+                                           Get.to(() => const StoreHomeMainScreen(),
+                                                arguments: {
+                                                  "isFromHome": true,
+                                                  "storeId": item.storeId??"",
+                                                });
+                                          },
+                                          child: Center(
+                                                  child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                child: Image.network(item.image?.dynamicUrl??"",
+                                                    fit: BoxFit.fill,
+                                                    height: WidgetConstants
+                                                            .screenHeight *
+                                                        0.3,
+                                                    width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.85),
+                                              )),
+                                        ))
+                                        .toList(),
+                                    carouselController: _controller,
+                                    options: CarouselOptions(
+                                        enlargeStrategy:
+                                            CenterPageEnlargeStrategy.scale,
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        viewportFraction: 1.2,
+                                        enlargeCenterPage: false,
+                                        autoPlay: true,
+                                        aspectRatio: 1.5,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _current = index;
+                                          });
+                                        }),
+                                  ),
+                      /*CarouselSlider(
                                     items: homeController.userCrouselImgList
                                         .map((item) => Center(
                                                 child: ClipRRect(
@@ -309,9 +350,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             _current = index;
                                           });
                                         }),
-                                  ),
+                                  ),*/
                         height5SizedBox,
-                        Obx(() => homeController.userCrouselImgList.isEmpty
+                        Obx(() => homeController.userOfferList.isEmpty
                             ? height0SizedBox
                             : InkWell(
                                 highlightColor: Colors.transparent,
@@ -319,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {},
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: homeController.userCrouselImgList
+                                  children: homeController.userOfferList
                                       .asMap()
                                       .entries
                                       .map((entry) {
@@ -346,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ])
                 : Column(
                     children: [
-                      homeController.ownerCrouselImgList.isEmpty
+                      homeController.getOwnerOfferlist.isEmpty
                           ? homeController.isLoading!.value == true
                               ? SizedBox(
                                   height: WidgetConstants.screenHeight * 0.20,
@@ -380,19 +421,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 )
                           : CarouselSlider(
-                              items: homeController.ownerCrouselImgList
-                                  .map((item) => Center(
-                                          child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        child: Image.network(item,
-                                            fit: BoxFit.fill,
-                                            height:
-                                                WidgetConstants.screenHeight *
-                                                    0.3,
-                                            width: WidgetConstants.screenWidth *
-                                                0.85),
-                                      )))
+                              items: homeController.getOwnerOfferlist
+                                  .map((item) => InkWell(onTap: (){},
+                                    child: Center(
+                                            child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                          child: Image.network(item.image?.dynamicUrl??"",
+                                              fit: BoxFit.fill,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.3,
+                                              width: WidgetConstants.screenWidth *
+                                                  0.85),
+                                        )),
+                                  ))
                                   .toList(),
                               carouselController: _controller,
                               options: CarouselOptions(
@@ -410,11 +453,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }),
                             ),
                       height5SizedBox,
-                      homeController.ownerCrouselImgList.isEmpty
+                      homeController.getOwnerOfferlist.isEmpty
                           ? height0SizedBox
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: homeController.ownerCrouselImgList
+                              children: homeController.getOwnerOfferlist
                                   .asMap()
                                   .entries
                                   .map((entry) {

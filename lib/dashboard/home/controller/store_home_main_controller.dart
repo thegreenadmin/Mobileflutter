@@ -98,7 +98,8 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    storeId.value =
+    Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
     if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
       isFromHome.value = Get.arguments["isFromHome"] ?? false;
       storeId.value =
@@ -121,6 +122,9 @@ class StoreHomeMainController extends GetxController {
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
     } else {
+      nearby.Store store = nearby.Store();
+      store.storeId = storeId.value;
+      storeAddress.value.store = store;
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
       isFavouriteStore.value =
           storeAddress.value.store?.isFavouriteStore ?? false;
