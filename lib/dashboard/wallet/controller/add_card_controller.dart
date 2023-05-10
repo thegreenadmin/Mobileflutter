@@ -16,12 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddCardController extends GetxController {
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
-  RxString? nickName = "".obs;
-  RxString email = "".obs;
-  RxString phone = "".obs;
-  RxInt amount = 0.obs;
+  RxString? paymentType = "".obs;
   RxString userName = "".obs;
   RxString phoneNumber = "".obs;
   RxString withoutCodeNumber = "".obs;
@@ -32,19 +27,23 @@ class AddCardController extends GetxController {
   RxString cvvCode = ''.obs;
   RxString cardId = ''.obs;
   RxString stripeToken = "".obs;
+  RxString selectPaymentType = "".obs;
+  RxString? userStripeCardId = "".obs;
+  RxString? userWalletBalance = "".obs;
+  RxString? userStripeBankId = "".obs;
+  RxString? selectedStoreName = "".obs;
+  RxString? storeId = "".obs;
+  RxString selectedPaymentForFrequency = "".obs;
+
   RxBool isCvvFocused = false.obs;
-  RxString request = "".obs;
-  RxString eventId = "".obs;
-  RxString requestId = "".obs;
-  RxString postalCode = "".obs;
-  RxBool isCashWithdrawal = false.obs;
-  RxBool isAcceptReqCase = false.obs;
-  RxBool isPaymentDone = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? selectedBankAccountIndex = 0.obs;
+  RxInt amount = 0.obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   TextEditingController amountTextController = TextEditingController();
   TextEditingController payoutAmountTextController = TextEditingController();
 
@@ -56,23 +55,20 @@ class AddCardController extends GetxController {
 
   RxList<dynamic> selectedCards = <dynamic>[].obs;
 
-  RxString selectPaymentType = "".obs;
-  RxString? userStripeCardId = "".obs;
-  RxString? userWalletBalance = "".obs;
-  RxString? userStripeBankId = "".obs;
-  RxString? selectedStoreName = "".obs;
-  RxString? storeId = "".obs;
   late BankAccountListModel bankAccountListModel = BankAccountListModel();
   RxList<Banks> bankAccountList = <Banks>[].obs;
-  RxString selectedPaymentForFrequency = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    apiGetUserWalletBalance();
-    apiGetCardList();
-    apiGetBankAccountList();
-    apiGetStoreList();
+    getApiData();
+  }
+
+  getApiData() async {
+    await apiGetUserWalletBalance();
+    await apiGetCardList();
+    await apiGetBankAccountList();
+    await apiGetStoreList();
   }
 
   bool validateAndSave() {
@@ -134,7 +130,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
@@ -266,7 +262,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET CARD LIST RESPONSE *******${value!.body}");

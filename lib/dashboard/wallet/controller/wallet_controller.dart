@@ -33,26 +33,26 @@ class WalletController extends GetxController {
   RxString autoChargeType = "threshold".obs;
   RxString? startformattedDate = "".obs;
   RxString? endformattedDate = "".obs;
+  RxString stripeToken = "".obs;
+  RxString selectedCountry = "".obs;
+  RxString accountHolderTypeText = "".obs;
+  RxString dynamicLink = "".obs;
+  RxString userWalletAutoChargeId = "".obs;
+  RxString selectedFrequency = "".obs;
+  RxString ownerSelectedStore = "".obs;
+  RxString bankToken = "".obs;
   late RxString dateOfEvent = "".obs;
   late RxString timeOfEvent = "".obs;
 
-  RxString stripeToken = "".obs;
   RxBool isCvvFocused = false.obs;
-
-  RxString selectedCountry = "".obs;
-  RxString accountHolderTypeText = "".obs;
-
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isautoRechargeEnable = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? type = 0.obs;
-  RxString ownerSelectedStore = "".obs;
-  RxString bankToken = "".obs;
+
   RxBool isFromCartScreen = false.obs;
-  RxString dynamicLink = "".obs;
-  RxString userWalletAutoChargeId = "".obs;
-  RxString selectedFrequency = "".obs;
+
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
 
@@ -100,12 +100,16 @@ class WalletController extends GetxController {
           : Get.arguments['isFromCartScreen'] != false) {
         isFromCartScreen.value = Get.arguments["isFromCartScreen"] ?? false;
       }
-      apiGetCardList();
-      apiGetUserWalletBalance();
-      apiGetAutoRechargeDetail();
+      getApiData();
     } else {
       apiGetStoreList();
     }
+  }
+
+  getApiData() async {
+    await apiGetCardList();
+    await apiGetUserWalletBalance();
+    await apiGetAutoRechargeDetail();
   }
 
   bool validateAndSave() {
@@ -340,7 +344,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET CARD LIST RESPONSE *******${value!.body}");
@@ -525,7 +529,7 @@ class WalletController extends GetxController {
           http.Request('POST', Uri.parse(ServerCommunicator().createBankToken));
       request.bodyFields = {
         'bank_account[country]': countryTextController.text.trim(),
-        'bank_account[currency]': currencyTextController.text.trim(),
+        'bank_account[currency]': "USD",
         'bank_account[account_holder_name]':
             accountHolderNameTextController.text.trim(),
         'bank_account[account_holder_type]': accountHolderTypeText.value,

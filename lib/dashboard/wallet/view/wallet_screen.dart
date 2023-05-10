@@ -251,7 +251,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 )
               ],
             ),
-            height20SizedBox,
+            height25SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -278,35 +278,35 @@ class _WalletScreenState extends State<WalletScreen> {
                     ),
                   ),
                 ),
-                SharedPreferenceStorage.getData(Role.role.value) ==
-                        Role.customerRoleText
-                    ? Container(
-                        color: AppColors.grey,
-                        width: 1,
-                        height: 40,
-                      )
-                    : height0SizedBox,
-                SharedPreferenceStorage.getData(Role.role.value) ==
-                        Role.customerRoleText
-                    ? Expanded(
-                        flex: 4,
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              ImageConstants.pickUp,
-                              scale: 3.5,
-                            ),
-                            Text(
-                              StringConstants.pickupPackageText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      )
-                    : height0SizedBox,
+                // SharedPreferenceStorage.getData(Role.role.value) ==
+                //         Role.customerRoleText
+                //     ? Container(
+                //         color: AppColors.grey,
+                //         width: 1,
+                //         height: 40,
+                //       )
+                //     : height0SizedBox,
+                // SharedPreferenceStorage.getData(Role.role.value) ==
+                //         Role.customerRoleText
+                //     ? Expanded(
+                //         flex: 4,
+                //         child: Column(
+                //           children: [
+                //             Image.asset(
+                //               ImageConstants.pickUp,
+                //               scale: 3.5,
+                //             ),
+                //             Text(
+                //               StringConstants.pickupPackageText,
+                //               style: const TextStyle(
+                //                   fontSize: 16,
+                //                   color: AppColors.black,
+                //                   fontWeight: FontWeight.w500),
+                //             )
+                //           ],
+                //         ),
+                //       )
+                //     : height0SizedBox,
               ],
             ),
             height30SizedBox,
@@ -317,21 +317,21 @@ class _WalletScreenState extends State<WalletScreen> {
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            children: [
-                              Image.asset(
-                                ImageConstants.rounddownload,
-                                scale: 3,
-                              ),
-                              const Text(
-                                "Download",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
+                          // Column(
+                          //   children: [
+                          //     Image.asset(
+                          //       ImageConstants.rounddownload,
+                          //       scale: 3,
+                          //     ),
+                          //     const Text(
+                          //       "Download",
+                          //       style: TextStyle(
+                          //           fontSize: 14, fontWeight: FontWeight.w600),
+                          //     ),
+                          //   ],
+                          // ),
                           Obx(() => QrImage(
                                 data: walletController.dynamicLink.value
                                     .toString(),
@@ -343,44 +343,51 @@ class _WalletScreenState extends State<WalletScreen> {
                                   ),
                                 ),
                               )),
-                          InkWell(
-                            onTap: () async {
-                              if (Platform.isIOS) {
-                                await Share.share(
-                                    "Let's connect on The Green Mall!! Get it at https://apps.apple.com/in/app/whatsapp-messenger/id310633997");
-                              } else {
-                                await Share.share(
-                                    "Let's connect on  The Green Mall !! Get it at https://play.google.com/store/apps/details?id=com.app.thegreenmall&hl=en_IN&gl=US");
-                              }
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  ImageConstants.roundshare,
-                                  scale: 3,
-                                ),
-                                const Text(
-                                  "Share",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () async {
+                          //     if (Platform.isIOS) {
+                          //       await Share.share(
+                          //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
+                          //       );
+                          //     } else {
+                          //       await Share.share(
+                          //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
+                          //       );
+                          //     }
+                          //   },
+                          //   child: Column(
+                          //     children: [
+                          //       Image.asset(
+                          //         ImageConstants.roundshare,
+                          //         scale: 3,
+                          //       ),
+                          //       const Text(
+                          //         "Share",
+                          //         style: TextStyle(
+                          //             fontSize: 14,
+                          //             fontWeight: FontWeight.w600),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                       height10SizedBox,
-                      const Text(
-                        "Scan QR Code",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                      const Center(
+                        child: Text(
+                          "Scan QR Code",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
                       ),
                       height8SizedBox,
-                      const Text(
-                          "It is a long established fact that a reader will be distracted by the readable content",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500)),
+                      const Center(
+                        child: Text(
+                            "It is a long established fact that a reader will be distracted by the readable content",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500)),
+                      ),
                     ],
                   )
           ]),

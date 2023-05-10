@@ -68,7 +68,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
             key: walletController.formKey,
             child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,7 +105,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                         decoration: InputDecoration(
                           isDense: true,
                           hintText: StringConstants.nameText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -144,7 +145,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    height20SizedBox,
+                    height12SizedBox,
                     Row(
                       children: [
                         Obx(() => CustomButton(
@@ -176,7 +177,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                                   : AppColors.blacklight,
                               text: StringConstants.individualText,
                               borderRadius: 12,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             )),
                         width20SizedBox,
                         Obx(
@@ -206,68 +207,11 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                                 : AppColors.blacklight,
                             text: StringConstants.companyText,
                             borderRadius: 12,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                           ),
                         )
                       ],
                     ),
-
-                    // TextFormField(
-                    //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     textCapitalization: TextCapitalization.words,
-                    //     inputFormatters: <TextInputFormatter>[
-                    //       LengthLimitingTextInputFormatter(40),
-                    //     ],
-                    //     style: const TextStyle(
-                    //         color: AppColors.black,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w400),
-                    //     controller:
-                    //         walletController.accountHolderTypeTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value == null || value.trim().isEmpty) {
-                    //         return AlertStringConstants
-                    //             .pleaseEnterAccountTypeText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //       isDense: true,
-                    //       hintText: StringConstants.accountHolderTypeText,
-                    //       hintStyle: const TextStyle(color: AppColors.grey),
-                    //       fillColor: Colors.white,
-                    //       border: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height20SizedBox,
                     Text(
                       StringConstants.accountNumberText,
@@ -302,7 +246,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                         decoration: InputDecoration(
                           isDense: true,
                           hintText: StringConstants.accountNumberText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -366,7 +311,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                         decoration: InputDecoration(
                           isDense: true,
                           hintText: StringConstants.routingNumberText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
@@ -429,124 +375,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                         decoration: InputDecoration(
                           isDense: true,
                           hintText: StringConstants.countryText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    // DropdownButtonFormField<String>(
-                    //   isExpanded: true,
-                    //   decoration: InputDecoration(
-                    //     enabledBorder: UnderlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.grey,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     border: UnderlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.primary,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     focusedBorder: UnderlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.primary,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     errorBorder: UnderlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.primary,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   hint: Text(
-                    //     StringConstants.selectCountryText,
-                    //     style: const TextStyle(
-                    //       color: AppColors.grey,
-                    //     ),
-                    //   ),
-                    //   items: walletController.countriesList.map((dynamic value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value.countryName,
-                    //       child: Text(
-                    //         value.countryName,
-                    //         style: const TextStyle(
-                    //             color: AppColors.black,
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.w500),
-                    //       ),
-                    //     );
-                    //   }).toList(),
-                    //   onChanged: (value) {
-                    //     walletController.selectedCountry.value = value.toString();
-                    //   },
-                    // ),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.currencyText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height12SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        textCapitalization: TextCapitalization.words,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(40),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: walletController.currencyTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterCurrencyText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          isDense: true,
-                          hintText: StringConstants.currencyText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
                           border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),

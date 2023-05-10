@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class AddCardDetailScreen extends StatefulWidget {
-  AddCardDetailScreen({
+  const AddCardDetailScreen({
     Key? key,
   }) : super(key: key);
   @override
@@ -127,8 +127,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     themeColor: Colors.blue,
                     textColor: Colors.black,
                     cardNumberDecoration: InputDecoration(
-                      labelText: StringConstants.numberText,// 'Number',
-                      hintText: StringConstants.x4Text,//'XXXX XXXX XXXX XXXX',
+                      labelText: StringConstants.numberText, // 'Number',
+                      hintText: StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
@@ -139,23 +139,25 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: StringConstants.expiredDateText,//'Expired Date',
-                      hintText: StringConstants.x2Text,//'XX/XX',
+                      labelText:
+                          StringConstants.expiredDateText, //'Expired Date',
+                      hintText: StringConstants.x2Text, //'XX/XX',
                     ),
                     cvvCodeDecoration: InputDecoration(
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: StringConstants.cvvText,//'CVV',
-                      hintText: StringConstants.x1Text,//'XXX',
+                      labelText: StringConstants.cvvText, //'CVV',
+                      hintText: StringConstants.x1Text, //'XXX',
                     ),
                     cardHolderDecoration: InputDecoration(
                       hintStyle: const TextStyle(color: Colors.black),
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: border,
                       enabledBorder: border,
-                      labelText: StringConstants.cardHolderText,//'Card Holder',
+                      labelText:
+                          StringConstants.cardHolderText, //'Card Holder',
                     ),
                     onCreditCardModelChange:
                         addCardController.onCreditCardModelChange,
@@ -170,7 +172,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     ),
                     onTap: () async {
                       if (addCardController.cardHolderName.isEmpty) {
-                        Utility.showToast(AlertStringConstants.pleaseFillAllDetailsText);
+                        Utility.showToast(
+                            AlertStringConstants.pleaseFillAllDetailsText);
                       } else if (formKey.currentState!.validate()) {
                         addCardController.apiCreateStripeToken();
                       }
