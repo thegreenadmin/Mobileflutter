@@ -19,6 +19,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import 'store_owner/manage_store_main_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -422,7 +424,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                           : CarouselSlider(
                               items: homeController.getOwnerOfferlist
-                                  .map((item) => InkWell(onTap: (){},
+                                  .map((item) => InkWell(onTap: (){
+                                 Get.to(() => const ManageStoreMainScreen(), arguments: {
+                                   "isFromHome": true,
+                                   "storeId": item.store?.storeId??"",
+                                 });
+                              },
                                     child: Center(
                                             child: ClipRRect(
                                           borderRadius:
