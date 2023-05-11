@@ -352,40 +352,27 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           fontWeight: FontWeight.w400),
                     ),
                     height12SizedBox,
-                    TextFormField(
+                    Obx(
+                      () => DropdownButtonFormField<String>(
+                        isExpanded: true,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        textCapitalization: TextCapitalization.words,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(40),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: walletController.countryTextController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterCountry;
+                        validator: (v) {
+                          if (v == null || v.trim() == '') {
+                            return AlertStringConstants
+                                .pleaseSelectQuantityUnitText;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          isDense: true,
-                          hintText: StringConstants.countryText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
+                          errorMaxLines: 3,
+                          enabledBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
-                              color: AppColors.primary,
+                              color: AppColors.grey,
                               width: 1.0,
                             ),
                           ),
-                          errorBorder: UnderlineInputBorder(
+                          border: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
                               color: AppColors.primary,
@@ -399,14 +386,38 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                               width: 1.0,
                             ),
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          errorBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: const BorderSide(
-                              color: AppColors.grey,
+                              color: AppColors.primary,
                               width: 1.0,
                             ),
                           ),
-                        )),
+                        ),
+                        hint: Text(
+                          StringConstants.selectTypeText,
+                          style: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                        ),
+                        items:
+                            walletController.countryList.map((dynamic value) {
+                          return DropdownMenuItem<String>(
+                            value: value.abbrevation,
+                            child: Text(
+                              value.abbrevation,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          walletController.selectedCountry.value =
+                              value.toString();
+                        },
+                      ),
+                    ),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

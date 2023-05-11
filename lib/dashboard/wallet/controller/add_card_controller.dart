@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddCardController extends GetxController {
+  
   RxString? paymentType = "".obs;
   RxString userName = "".obs;
   RxString phoneNumber = "".obs;

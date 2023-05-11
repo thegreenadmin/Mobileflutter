@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
+import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_auto_recharge_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
@@ -41,6 +42,7 @@ class WalletController extends GetxController {
   RxString selectedFrequency = "".obs;
   RxString ownerSelectedStore = "".obs;
   RxString bankToken = "".obs;
+
   late RxString dateOfEvent = "".obs;
   late RxString timeOfEvent = "".obs;
 
@@ -66,7 +68,6 @@ class WalletController extends GetxController {
   TextEditingController rountingTextController = TextEditingController();
   TextEditingController accountNumberTextController = TextEditingController();
   TextEditingController currencyTextController = TextEditingController();
-  TextEditingController countryTextController = TextEditingController();
 
   TextEditingController thresholdAmountTextController = TextEditingController();
   TextEditingController chargeAmountTextController = TextEditingController();
@@ -81,8 +82,8 @@ class WalletController extends GetxController {
   RxList<Banks> bankAccountList = <Banks>[].obs;
 
   RxList<dynamic> selectedCards = <dynamic>[].obs;
-  late GetCountriesModel getCountriesModel = GetCountriesModel();
-  RxList<CountriesList> countriesList = <CountriesList>[].obs;
+  late CountryListModel countryListModel = CountryListModel();
+  RxList<Countries> countryList = <Countries>[].obs;
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   late GetAutoRechargeModel getAutoRechargeModel = GetAutoRechargeModel();
@@ -102,6 +103,7 @@ class WalletController extends GetxController {
       getApiData();
     } else {
       apiGetStoreList();
+      apiGetCountries();
     }
   }
 
@@ -196,7 +198,7 @@ class WalletController extends GetxController {
 
   //Get Countries Api
   Future apiGetCountries() async {
-    countriesList.clear();
+    countryList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     Map<String, String> headers = {
@@ -213,8 +215,8 @@ class WalletController extends GetxController {
       debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        getCountriesModel = GetCountriesModel.fromJson(value.body);
-        countriesList.value = getCountriesModel.data!.countries!;
+        countryListModel = CountryListModel.fromJson(value.body);
+        countryList.value = countryListModel.data!.countries!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -527,7 +529,7 @@ class WalletController extends GetxController {
       var request =
           http.Request('POST', Uri.parse(ServerCommunicator().createBankToken));
       request.bodyFields = {
-        'bank_account[country]': countryTextController.text.trim(),
+        'bank_account[country]': selectedCountry.value.trim(),
         'bank_account[currency]': "USD",
         'bank_account[account_holder_name]':
             accountHolderNameTextController.text.trim(),
@@ -589,7 +591,7 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
-        countryTextController.clear();
+        selectedCountry.value = "";
         currencyTextController.clear();
         accountHolderNameTextController.clear();
         accountHolderTypeText.value = "";
