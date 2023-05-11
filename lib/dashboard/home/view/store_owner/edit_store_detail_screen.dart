@@ -436,12 +436,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             fontWeight: FontWeight.w500),
                         controller: ownerStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
+                       /* validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterNickNameText;
                           }
                           return null;
-                        },
+                        },*/
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.nickNameText,

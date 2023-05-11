@@ -467,7 +467,7 @@ class OwnerStoresController extends GetxController {
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
         editStoreLogoOrigionalLinkfromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
-        storeNameTextController.text =
+        storeNameTextController.text =storeName.value=
             value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
             value?.body["data"]['store']['store_ein'] ?? "";
@@ -484,6 +484,9 @@ class OwnerStoresController extends GetxController {
             value?.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
             value?.body["data"]['store']['store_addresses'] ?? [];
+        storeLocation.value =  "${value?.body["data"]['store']['store_addresses'] [0]['address_line_1']?? "" },${value?.body["data"]['store']['store_addresses'][0] ['city']??"" },"
+            "${ value?.body["data"]['store']['store_addresses'][0] ['state']['state_name']?? ""},${value?.body["data"]['store']['store_addresses'][0] ['state']['country']['country_name']?? "" }";
+
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
         storeDeliveryServices.value =

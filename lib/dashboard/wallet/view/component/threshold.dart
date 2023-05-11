@@ -539,7 +539,7 @@ class _ThresholdViewState extends State<ThresholdView>
                   addCardController.selectPaymentType.value == "Cards"
                       ? Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 30),
+                              horizontal: 10, vertical: 20),
                           child: addCardController.cardList.isEmpty
                               ? addCardController.isLoading.value == true
                                   ? height0SizedBox
@@ -714,7 +714,7 @@ class _ThresholdViewState extends State<ThresholdView>
                         )
                       : height20SizedBox,
             ),
-            height20SizedBox,
+            // height15SizedBox,
             CustomButton(
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,

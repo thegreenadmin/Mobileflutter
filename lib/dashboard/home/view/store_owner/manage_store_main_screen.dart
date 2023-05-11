@@ -83,23 +83,23 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(
+            Obx(()=> Container(
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter:
-                      const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: ownerStoresController.storeImage!.value.isEmpty
+                  const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image: ownerStoresController.editStoreImageDynamicLinkfromServer.value.isEmpty
                       ? const AssetImage(
-                          ImageConstants.nopicfound,
-                        ) as ImageProvider
-                      : NetworkImage(ownerStoresController.storeImage!.value),
+                    ImageConstants.nopicfound,
+                  ) as ImageProvider
+                      : NetworkImage(ownerStoresController.editStoreImageDynamicLinkfromServer.value),
                 ),
               ),
               child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 65),
+                  const EdgeInsets.only(left: 20.0, right: 20, top: 65),
                   child: Column(
                     children: [
                       Row(
@@ -130,12 +130,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                             child: CircleAvatar(
                               radius: 28.0,
                               backgroundImage: ownerStoresController
-                                      .storeLogo!.value.isEmpty
+                                  .editStoreLogoDynamicLinkfromServer.value.isEmpty
                                   ? const AssetImage(
-                                      ImageConstants.nopicfound,
-                                    ) as ImageProvider
+                                ImageConstants.nopicfound,
+                              ) as ImageProvider
                                   : NetworkImage(
-                                      ownerStoresController.storeLogo!.value),
+                                  ownerStoresController.editStoreLogoDynamicLinkfromServer.value),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -145,13 +145,13 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Obx(() => Text(
-                                      ownerStoresController.storeName.value,
-                                      maxLines: 2,
-                                      style: const TextStyle(
-                                          color: AppColors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
-                                    )),
+                                  ownerStoresController.storeName.value,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                )),
                                 height8SizedBox,
                                 Row(
                                   children: [
@@ -162,7 +162,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     ),
                                     width4SizedBox,
                                     Obx(
-                                      () => Expanded(
+                                          () => Expanded(
                                         child: Text(
                                             ownerStoresController
                                                 .storeLocation.value,
@@ -178,16 +178,16 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 height8SizedBox,
                                 Obx(() => ownerStoresController.is247Time.value
                                     ? Text(StringConstants.storeHoursText,
-                                        style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400))
+                                    style: const TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400))
                                     : Text(
-                                        "${StringConstants.storeHourText} ${ownerStoresController.openingTime.value} to ${ownerStoresController.closingTime.value}",
-                                        style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400)))
+                                    "${StringConstants.storeHourText} ${ownerStoresController.openingTime.value} to ${ownerStoresController.closingTime.value}",
+                                    style: const TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400)))
                               ],
                             ),
                           )
@@ -195,7 +195,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                       )
                     ],
                   )),
-            )
+            ))
           ],
         ),
       ),

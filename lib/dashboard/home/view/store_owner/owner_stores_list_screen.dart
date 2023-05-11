@@ -208,7 +208,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                 .storeList[index].storeId ??
                                             "";
 
-                                    ownerStoresController.storeName.value =
+                                    /*ownerStoresController.storeName.value =
                                         ownerStoresController
                                                 .storeList[index].storeName ??
                                             "";
@@ -237,7 +237,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     ownerStoresController.storeLogo!.value =
                                         ownerStoresController.storeList[index]
                                                 .logo!.dynamicUrl ??
-                                            "";
+                                            "";*/
 
                                     await ownerStoresController
                                         .apiGetParticularStore();

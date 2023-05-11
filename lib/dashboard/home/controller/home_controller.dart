@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -311,7 +313,7 @@ class HomeController extends GetxController {
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
-      debugPrint("OWNER OFFERS LIST RESPONSE *******${value!.body}");
+      log("OWNER OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);

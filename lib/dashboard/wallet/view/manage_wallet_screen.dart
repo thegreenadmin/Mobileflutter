@@ -46,7 +46,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
           // return StatefulBuilder(
           //     builder: (BuildContext context, StateSetter setState) {
 
-          return Wrap(children: <Widget>[AutoReload(isFromEdit: isFromEdit)]);
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Wrap(children: <Widget>[AutoReload(isFromEdit: isFromEdit)]),
+          );
         }).then((value) => {
           // walletController.isautoRechargeEnable.value = false,
           // walletController.chargeAmountTextController.clear(),

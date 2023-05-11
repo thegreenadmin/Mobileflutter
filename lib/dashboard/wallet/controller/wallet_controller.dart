@@ -93,6 +93,7 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    autoChargeType.value ="threshold" ;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       if (Get.arguments == null
@@ -765,10 +766,10 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET AUTO RECHARGE DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getAutoRechargeModel = GetAutoRechargeModel.fromJson(value.body);
+      debugPrint("GET AUTO RECHARGE DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getAutoRechargeModel = GetAutoRechargeModel.fromJson(value?.body);
         if (getAutoRechargeModel.data!.userWalletAutoCharge != null) {
           if (getAutoRechargeModel.data!.userWalletAutoCharge!.status ==
               "active") {
@@ -797,12 +798,12 @@ class WalletController extends GetxController {
           isautoRechargeEnable.value = false;
         }
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
       }
     });
   }
