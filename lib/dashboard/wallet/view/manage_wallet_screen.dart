@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
@@ -109,6 +110,90 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
         child: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SharedPreferenceStorage.getData(Role.role.value) ==
+                    Role.customerRoleText
+                ? height0SizedBox
+                : Obx(() => walletController.storeList.isEmpty
+                    ? Column(
+                        children: [
+                          Text(StringConstants.toKnowBalanceYouDontHaveText),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Text(
+                              StringConstants.selectStoreText,
+                              style: TextStyle(
+                                  color: AppColors.blacklight, fontSize: 18),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                border: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              hint: Text(
+                                StringConstants.selectStoreText,
+                                style: const TextStyle(
+                                    color: AppColors.grey, fontSize: 14),
+                              ),
+                              items: walletController.storeList
+                                  .map((dynamic value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.storeId,
+                                  child: Text(
+                                    value.storeName,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                walletController.storeNameValue!.value =
+                                    value.toString();
+                                walletController.ownerSelectedStore.value =
+                                    value.toString();
+                                walletController.apiGetOwnerWalletBalance();
+                                walletController.apiGetStoreDetailsApi();
+                              },
+                            ),
+                          ),
+                        ],
+                      )),
+            height20SizedBox,
             Stack(
               alignment: Alignment.center,
               children: [
@@ -144,20 +229,30 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               ),
                               height12SizedBox,
                               InkWell(
-                                onTap: () {
-                                  SharedPreferenceStorage.getData(
-                                              Role.role.value) ==
-                                          Role.customerRoleText
-                                      ? walletController
-                                          .apiGetUserWalletBalance()
-                                      : walletController
-                                          .apiGetOwnerWalletBalance();
-                                },
-                                child: Image.asset(
-                                  ImageConstants.asofnow,
-                                  scale: 3.5,
-                                ),
-                              ),
+                                  onTap: () {
+                                    SharedPreferenceStorage.getData(
+                                                Role.role.value) ==
+                                            Role.customerRoleText
+                                        ? walletController
+                                            .apiGetUserWalletBalance()
+                                        : walletController
+                                            .apiGetOwnerWalletBalance();
+                                  },
+                                  child:
+                                      Obx(() => walletController.isLoading.value
+                                          ? Center(
+                                              child: LoadingAnimationWidget
+                                                  .twistingDots(
+                                                leftDotColor: AppColors.white,
+                                                rightDotColor:
+                                                    AppColors.primary,
+                                                size: 50,
+                                              ),
+                                            )
+                                          : Image.asset(
+                                              ImageConstants.asofnow,
+                                              scale: 3.5,
+                                            ))),
                             ],
                           )
                         : Column(
@@ -177,19 +272,37 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               ),
                               height12SizedBox,
                               InkWell(
-                                onTap: () {},
-                                child: Image.asset(
-                                  ImageConstants.asofnow,
-                                  scale: 3.5,
-                                ),
-                              ),
+                                  onTap: () {
+                                    SharedPreferenceStorage.getData(
+                                                Role.role.value) ==
+                                            Role.customerRoleText
+                                        ? walletController
+                                            .apiGetUserWalletBalance()
+                                        : walletController
+                                            .apiGetOwnerWalletBalance();
+                                  },
+                                  child:
+                                      Obx(() => walletController.isLoading.value
+                                          ? Center(
+                                              child: LoadingAnimationWidget
+                                                  .twistingDots(
+                                                leftDotColor: AppColors.white,
+                                                rightDotColor:
+                                                    AppColors.primary,
+                                                size: 50,
+                                              ),
+                                            )
+                                          : Image.asset(
+                                              ImageConstants.asofnow,
+                                              scale: 3.5,
+                                            ))),
                             ],
                           )
                   ],
                 )
               ],
             ),
-            height40SizedBox,
+            height30SizedBox,
             SharedPreferenceStorage.getData(Role.role.value) ==
                     Role.customerRoleText
                 ? Padding(
@@ -204,53 +317,43 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               scale: 3.2,
                             ),
                             width15SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(
-                                  () => !walletController
-                                          .isautoRechargeEnable.value
-                                      ? InkWell(
-                                          onTap: () {
-                                            walletController.cardList.clear();
-                                            bottomSheetToAddMoney(context,
-                                                isFromEdit: false);
-                                          },
-                                          child: Text(
-                                            StringConstants
-                                                .autoReloadIntoWalletText,
-                                            style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        )
-                                      : height0SizedBox,
-                                ),
-                                height12SizedBox,
-                                Obx(() =>
-                                    walletController.isautoRechargeEnable.value
-                                        ? InkWell(
-                                            onTap: () async {
-                                              await walletController
-                                                  .apiGetAutoRechargeDetail();
-                                              bottomSheetToAddMoney(context,
-                                                  isFromEdit: true);
-                                            },
-                                            child: Text(
-                                              StringConstants
-                                                  .editAutoReloadIntoWalletText,
-                                              style: const TextStyle(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  color: AppColors.primary,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          )
-                                        : height0SizedBox)
-                              ],
+                            Obx(
+                              () => !walletController.isautoRechargeEnable.value
+                                  ? InkWell(
+                                      onTap: () {
+                                        walletController.cardList.clear();
+                                        bottomSheetToAddMoney(context,
+                                            isFromEdit: false);
+                                      },
+                                      child: Text(
+                                        StringConstants
+                                            .autoReloadIntoWalletText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () async {
+                                        await walletController
+                                            .apiGetAutoRechargeDetail();
+                                        bottomSheetToAddMoney(context,
+                                            isFromEdit: true);
+                                      },
+                                      child: Text(
+                                        StringConstants
+                                            .editAutoReloadIntoWalletText,
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: AppColors.primary,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
                             ),
+                            height12SizedBox,
                           ],
                         ),
                         Obx(() => FlutterSwitch(

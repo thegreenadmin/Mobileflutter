@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
@@ -93,7 +91,7 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    autoChargeType.value ="threshold" ;
+    autoChargeType.value = "threshold";
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       if (Get.arguments == null
@@ -429,7 +427,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET USER WALLET BALANCE RESPONSE *******${value?.body}");
@@ -500,7 +498,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${ownerSelectedStore.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET OWNER WALLET BALANCE RESPONSE *******${value?.body}");
@@ -508,14 +506,19 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
-        ownerSelectedStore.value = "";
+        //ownerSelectedStore.value = "";
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        String msg = value!.body["message"].toString().toLowerCase();
+        if (msg.contains("store not found")) {
+          Utility.showToast("Please select store");
+        } else {
+          Utility.showToast(value.body['message'].toString());
+        }
       }
     });
   }

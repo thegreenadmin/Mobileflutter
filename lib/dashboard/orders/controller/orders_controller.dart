@@ -29,7 +29,6 @@ import '../../../utils/constants.dart';
 import '../view/component/order_status_enum.dart';
 
 class OrdersController extends GetxController {
-  
   TextEditingController reviewController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
 
@@ -869,6 +868,7 @@ class OrdersController extends GetxController {
             store.StoreDetailsResponse.fromJson(value?.body);
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
+            
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

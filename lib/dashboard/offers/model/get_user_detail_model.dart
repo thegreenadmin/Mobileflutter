@@ -55,6 +55,7 @@ class User {
   String? email;
   String? phone;
   String? phoneCode;
+  bool? hasStoreAccess;
   List<UserAddresses>? userAddresses;
 
   User(
@@ -65,6 +66,7 @@ class User {
       this.email,
       this.phone,
       this.phoneCode,
+      this.hasStoreAccess,
       this.userAddresses});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -75,6 +77,7 @@ class User {
     email = json['email'];
     phone = json['phone'];
     phoneCode = json['phone_code'];
+    hasStoreAccess = json['has_store_access'];
     if (json['user_addresses'] != null) {
       userAddresses = <UserAddresses>[];
       json['user_addresses'].forEach((v) {
@@ -92,6 +95,7 @@ class User {
     data['email'] = this.email;
     data['phone'] = this.phone;
     data['phone_code'] = this.phoneCode;
+    data['has_store_access'] = this.hasStoreAccess;
     if (this.userAddresses != null) {
       data['user_addresses'] =
           this.userAddresses!.map((v) => v.toJson()).toList();
@@ -172,7 +176,7 @@ class Country {
   String? countryId;
   String? countryName;
 
- Country({this.countryId, this.countryName});
+  Country({this.countryId, this.countryName});
 
   Country.fromJson(Map<String, dynamic> json) {
     countryId = json['country_id'];
@@ -188,12 +192,12 @@ class Country {
 }
 
 class UserProof {
-  Image? image;
+  Images? image;
   String? userId;
   String? proofTypeId;
   String? proofValue;
   bool? isVerified;
-  Null? expiredAt;
+  String? expiredAt;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -214,7 +218,7 @@ class UserProof {
       this.proofType});
 
   UserProof.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
     userId = json['user_id'];
     proofTypeId = json['proof_type_id'];
     proofValue = json['proof_value'];
@@ -250,13 +254,13 @@ class UserProof {
   }
 }
 
-class Image {
+class Images {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Image({this.orignalUrl, this.dynamicUrl});
+  Images({this.orignalUrl, this.dynamicUrl});
 
-  Image.fromJson(Map<String, dynamic> json) {
+  Images.fromJson(Map<String, dynamic> json) {
     orignalUrl = json['orignal_url'];
     dynamicUrl = json['dynamic_url'];
   }

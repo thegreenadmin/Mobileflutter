@@ -28,6 +28,7 @@ class HomeController extends GetxController {
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
 
+  RxBool? hasStoreAccess = false.obs;
   RxBool? isLoading = false.obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
@@ -41,13 +42,10 @@ class HomeController extends GetxController {
 
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
-  RxList<String> userCrouselImgList = <String>[].obs;
+  RxList<Offers> userCrouselImgList = <Offers>[].obs;
   RxList<String> ownerCrouselImgList = <String>[].obs;
 
   RxString? role = "".obs;
-
-  late GetStoreProductList getStoreProductList = GetStoreProductList();
-  RxList<Products> storeProductList = <Products>[].obs;
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
@@ -165,7 +163,8 @@ class HomeController extends GetxController {
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
         email!.value = getUserDetailModel.data!.user!.email ?? "";
         currentUserId!.value = getUserDetailModel.data!.user!.userId ?? "";
-
+        hasStoreAccess!.value =
+            getUserDetailModel.data!.user!.hasStoreAccess ?? false;
         SharedPreferenceStorage.setData(
             StringConstants.firstNameText, firstName!.value);
         SharedPreferenceStorage.setData(
@@ -209,13 +208,13 @@ class HomeController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value.body);
         userOfferList.value = userOffersModel.data!.offers!;
+
         for (int i = 0; i < userOfferList.length; i++) {
           storeId!.value = userOfferList[i].storeId.toString();
           if (i >= 5) {
-            break;
+            return;
           }
-          userCrouselImgList
-              .add(userOfferList[i].image!.dynamicUrl!.toString());
+          userCrouselImgList.add(userOfferList[i]);
         }
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -320,7 +319,6 @@ class HomeController extends GetxController {
         getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
         if (getOwnerOfferlist.isNotEmpty) {
           for (int i = 0; i < getOwnerOfferlist.length; i++) {
-            
             if (i >= 5) {
               break;
             }
@@ -341,17 +339,35 @@ class HomeController extends GetxController {
   Future apiGetOwnerFeaturedProducts() async {
     isLoading!.value = true;
     debugPrint("OWNER FEATURED PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopHomeFeaturedProducts}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
+
+    Map<String, dynamic> body = {
+      "q": "",
+      "store_id": null,
+      "page": 1,
+      "page_size": 10,
+      "order_by": "product_id",
+      "order_type": "ASC",
+      "category_id": null,
+      "filters": [
+        {
+          "filter_by": "is_featured_product",
+          "filter_value": true,
+          "operation": "eq"
+        }
+      ]
+    };
     UserProvider()
-        .getWithHeadersApi(
+        .postWithHeadersApi(
+            body,
             ServerCommunicator().baseUrl +
-                ServerCommunicator().shopHomeFeaturedProducts,
+                ServerCommunicator().storeProductList,
             headers,
             showLoading: false)
         .then((value) async {

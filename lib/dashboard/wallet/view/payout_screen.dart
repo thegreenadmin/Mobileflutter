@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/create_owner_bankaccount_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -152,6 +151,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                 onChanged: (value) {
                                   addCardController.storeId!.value =
                                       value.toString();
+                                  addCardController.apiGetStoreServiceCharge();
                                 },
                               ),
                             ),
@@ -176,7 +176,23 @@ class PayOutScreenState extends State<PayOutScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             keyboardType: TextInputType.phone,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              setState(() {});
+                              addCardController.totalWithdrawAmount.value =
+                                  double.parse(addCardController
+                                          .payoutAmountTextController.text) +
+                                      addCardController.storeServiceCharge.value
+                                          .toPrecision(2);
+                              // addCardController.totalWithdrawAmount.value =
+                              //     double.parse(addCardController
+                              //             .payoutAmountTextController.text) -
+                              //         (double.parse(addCardController
+                              //                     .payoutAmountTextController
+                              //                     .text) /
+                              //                 addCardController
+                              //                     .storeServiceCharge.value)
+                              //             .toPrecision(2);
+                            },
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -197,6 +213,9 @@ class PayOutScreenState extends State<PayOutScreen> {
                             },
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
+                              prefixText: "\$ ",
+                              prefixStyle:
+                                  const TextStyle(color: AppColors.black),
                               isDense: true,
                               hintText: StringConstants.amountText,
                               hintStyle: const TextStyle(color: AppColors.grey),
@@ -233,6 +252,37 @@ class PayOutScreenState extends State<PayOutScreen> {
                       ),
                     ],
                   ),
+                  height20SizedBox,
+                  addCardController.payoutAmountTextController.text.isEmpty
+                      ? height0SizedBox
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Store service charges are \$${addCardController.storeServiceCharge}",
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            height10SizedBox,
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.greencheck,
+                                  scale: 22,
+                                ),
+                                Text(
+                                  " Withdraw all \$${addCardController.totalWithdrawAmount.value}",
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                   height30SizedBox,
                   Text(
                     StringConstants.bankAccountsText,

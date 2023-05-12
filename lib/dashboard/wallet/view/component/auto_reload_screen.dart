@@ -11,7 +11,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
 import 'payment_configurations.dart' as payment_configurations;
 
 class AutoReload extends StatefulWidget {
@@ -102,10 +101,11 @@ class _AutoReloadState extends State<AutoReload> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: AppColors.white,
                                 border: Border.all(
-                                  color: walletController.autoChargeType.value ==
-                                          "threshold"
-                                      ? AppColors.primary
-                                      : AppColors.blacklight,
+                                  color:
+                                      walletController.autoChargeType.value ==
+                                              "threshold"
+                                          ? AppColors.primary
+                                          : AppColors.blacklight,
                                 )),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 12),
@@ -154,10 +154,11 @@ class _AutoReloadState extends State<AutoReload> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: AppColors.white,
                                 border: Border.all(
-                                  color: walletController.autoChargeType.value ==
-                                          "cyclic"
-                                      ? AppColors.primary
-                                      : AppColors.blacklight,
+                                  color:
+                                      walletController.autoChargeType.value ==
+                                              "cyclic"
+                                          ? AppColors.primary
+                                          : AppColors.blacklight,
                                 )),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 12),
@@ -165,7 +166,8 @@ class _AutoReloadState extends State<AutoReload> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                walletController.autoChargeType.value == "cyclic"
+                                walletController.autoChargeType.value ==
+                                        "cyclic"
                                     ? Stack(
                                         alignment: Alignment.center,
                                         children: [
@@ -292,42 +294,48 @@ class _AutoReloadState extends State<AutoReload> {
                                     controller: walletController
                                         .thresholdAmountTextController,
                                     validator: (value) {
-                                      if (value == null || value.trim().isEmpty) {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
                                         return AlertStringConstants
                                             .pleaseEnterAmountText;
                                       }
                                       return null;
                                     },
-                                    textCapitalization: TextCapitalization.words,
+                                    textCapitalization:
+                                        TextCapitalization.words,
                                     decoration: InputDecoration(
                                       isDense: true,
                                       hintText: StringConstants.amountText,
-                                      hintStyle:
-                                          const TextStyle(color: AppColors.grey),
+                                      hintStyle: const TextStyle(
+                                          color: AppColors.grey),
                                       fillColor: Colors.white,
                                       border: UnderlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: const BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       errorBorder: UnderlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: const BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: const BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: const BorderSide(
                                           color: AppColors.grey,
                                           width: 1.0,
@@ -348,6 +356,8 @@ class _AutoReloadState extends State<AutoReload> {
                                 ),
                                 height6SizedBox,
                                 DropdownButtonFormField<String>(
+                                  value: addCardController
+                                      .selectedPaymentForFrequency.value,
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -399,10 +409,12 @@ class _AutoReloadState extends State<AutoReload> {
                                     );
                                   }).toList(),
                                   onChanged: (v) {
-                                    addCardController.selectedPaymentForFrequency
+                                    addCardController
+                                        .selectedPaymentForFrequency
                                         .value = v.toString();
                                     if (addCardController
-                                            .selectedPaymentForFrequency.value ==
+                                            .selectedPaymentForFrequency
+                                            .value ==
                                         "Monthly") {
                                       walletController.selectedFrequency.value =
                                           "30";
@@ -426,7 +438,8 @@ class _AutoReloadState extends State<AutoReload> {
                                 Expanded(
                                   flex: 4,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.startDateText,
@@ -447,11 +460,12 @@ class _AutoReloadState extends State<AutoReload> {
                                             builder: (BuildContext context,
                                                 Widget? child) {
                                               return Theme(
-                                                data: ThemeData.light().copyWith(
+                                                data:
+                                                    ThemeData.light().copyWith(
                                                   colorScheme:
                                                       const ColorScheme.light(
-                                                          primary:
-                                                              AppColors.primary),
+                                                          primary: AppColors
+                                                              .primary),
                                                   buttonTheme:
                                                       const ButtonThemeData(
                                                           textTheme:
@@ -471,15 +485,16 @@ class _AutoReloadState extends State<AutoReload> {
                                           walletController.startformattedDate!
                                               .value = formatter.format(date);
                                           walletController
-                                                  .startDateTextController.text =
+                                                  .startDateTextController
+                                                  .text =
                                               walletController
                                                   .startformattedDate!.value;
                                           walletController.dateOfEvent.value =
                                               date.toIso8601String();
                                         },
                                         child: TextFormField(
-                                          autovalidateMode:
-                                              AutovalidateMode.onUserInteraction,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.done,
                                           enabled: false,
                                           style: const TextStyle(
@@ -490,11 +505,12 @@ class _AutoReloadState extends State<AutoReload> {
                                               .startDateTextController,
                                           decoration: InputDecoration(
                                             fillColor: Colors.white,
-                                            contentPadding: const EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                top: 5,
-                                                bottom: 5),
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 5,
+                                                    bottom: 5),
                                             hintText:
                                                 StringConstants.startDateText,
                                             hintStyle: const TextStyle(
@@ -523,7 +539,8 @@ class _AutoReloadState extends State<AutoReload> {
                                                 width: 1.0,
                                               ),
                                             ),
-                                            disabledBorder: UnderlineInputBorder(
+                                            disabledBorder:
+                                                UnderlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
@@ -541,7 +558,8 @@ class _AutoReloadState extends State<AutoReload> {
                                 Expanded(
                                   flex: 4,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         StringConstants.endDateText,
@@ -562,11 +580,12 @@ class _AutoReloadState extends State<AutoReload> {
                                             builder: (BuildContext context,
                                                 Widget? child) {
                                               return Theme(
-                                                data: ThemeData.light().copyWith(
+                                                data:
+                                                    ThemeData.light().copyWith(
                                                   colorScheme:
                                                       const ColorScheme.light(
-                                                          primary:
-                                                              AppColors.primary),
+                                                          primary: AppColors
+                                                              .primary),
                                                   buttonTheme:
                                                       const ButtonThemeData(
                                                           textTheme:
@@ -593,8 +612,8 @@ class _AutoReloadState extends State<AutoReload> {
                                               date.toIso8601String();
                                         },
                                         child: TextFormField(
-                                          autovalidateMode:
-                                              AutovalidateMode.onUserInteraction,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           textInputAction: TextInputAction.done,
                                           enabled: false,
                                           style: const TextStyle(
@@ -605,12 +624,14 @@ class _AutoReloadState extends State<AutoReload> {
                                               .endDateTextController,
                                           decoration: InputDecoration(
                                             fillColor: Colors.white,
-                                            contentPadding: const EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                top: 5,
-                                                bottom: 5),
-                                            hintText: StringConstants.endDateText,
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 5,
+                                                    bottom: 5),
+                                            hintText:
+                                                StringConstants.endDateText,
                                             hintStyle: const TextStyle(
                                                 color: AppColors.grey),
                                             border: UnderlineInputBorder(
@@ -637,7 +658,8 @@ class _AutoReloadState extends State<AutoReload> {
                                                 width: 1.0,
                                               ),
                                             ),
-                                            disabledBorder: UnderlineInputBorder(
+                                            disabledBorder:
+                                                UnderlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5.0),
                                               borderSide: const BorderSide(
@@ -669,7 +691,8 @@ class _AutoReloadState extends State<AutoReload> {
                     height4SizedBox,
                     walletController.autoChargeType.value == "threshold"
                         ? TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
@@ -680,7 +703,8 @@ class _AutoReloadState extends State<AutoReload> {
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
-                            controller: walletController.frequencyTextController,
+                            controller:
+                                walletController.frequencyTextController,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return AlertStringConstants
@@ -740,7 +764,8 @@ class _AutoReloadState extends State<AutoReload> {
                               ? addCardController.isLoading.value == true
                                   ? height0SizedBox
                                   : Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -773,11 +798,12 @@ class _AutoReloadState extends State<AutoReload> {
                                               ],
                                             ),
                                             onTap: () {
-                                              Get.to(() => AddCardDetailScreen());
+                                              Get.to(
+                                                  () => AddCardDetailScreen());
                                             },
                                             height: 50,
-                                            width:
-                                                WidgetConstants.screenWidth * 0.3,
+                                            width: WidgetConstants.screenWidth *
+                                                0.3,
                                             text: StringConstants.addCardText,
                                             borderRadius: 12,
                                             fontWeight: FontWeight.w500,
@@ -795,10 +821,12 @@ class _AutoReloadState extends State<AutoReload> {
                                   itemCount: addCardController.cardList.length,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, int index) {
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
                                     if (addCardController
                                         .userStripeCardId!.value.isEmpty) {
-                                      addCardController.userStripeCardId!.value =
+                                      addCardController
+                                              .userStripeCardId!.value =
                                           addCardController
                                               .cardList[0].userStripeCardId
                                               .toString();
@@ -828,12 +856,14 @@ class _AutoReloadState extends State<AutoReload> {
 
                                             addCardController
                                                     .userStripeCardId!.value =
-                                                addCardController.cardList[index]
+                                                addCardController
+                                                    .cardList[index]
                                                     .userStripeCardId
                                                     .toString();
                                             walletController
                                                     .userStripeCardId!.value =
-                                                addCardController.cardList[index]
+                                                addCardController
+                                                    .cardList[index]
                                                     .userStripeCardId
                                                     .toString();
                                             debugPrint(
@@ -855,14 +885,16 @@ class _AutoReloadState extends State<AutoReload> {
                                                         const EdgeInsets.only(
                                                             top: 8.0),
                                                     child: Image.asset(
-                                                        ImageConstants.mastercard,
+                                                        ImageConstants
+                                                            .mastercard,
                                                         fit: BoxFit.cover,
                                                         scale: 5),
                                                   ),
                                                   width15SizedBox,
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
                                                         addCardController
@@ -875,12 +907,14 @@ class _AutoReloadState extends State<AutoReload> {
                                                                         .selectedIndex!
                                                                         .value ==
                                                                     index
-                                                                ? AppColors.white
+                                                                ? AppColors
+                                                                    .white
                                                                 : AppColors
                                                                     .blacklight,
                                                             fontSize: 15,
                                                             fontWeight:
-                                                                FontWeight.w500),
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                       height10SizedBox,
                                                       Text(
@@ -890,12 +924,14 @@ class _AutoReloadState extends State<AutoReload> {
                                                                         .selectedIndex!
                                                                         .value ==
                                                                     index
-                                                                ? AppColors.white
+                                                                ? AppColors
+                                                                    .white
                                                                 : AppColors
                                                                     .blacklight,
                                                             fontSize: 15,
                                                             fontWeight:
-                                                                FontWeight.w500),
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                     ],
                                                   ),

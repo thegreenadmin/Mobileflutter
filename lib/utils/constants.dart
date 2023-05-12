@@ -65,6 +65,7 @@ class StringConstants {
       "amount will be deducted from your wallet. Do you want to proceed?";
   static String autoReloadText = "Auto Reload";
   static String applePayText = "Apple Pay";
+  static String activeMembershipText = "Active Membership";
 
   //B
   static String breadthText = "Breadth";
@@ -117,6 +118,7 @@ class StringConstants {
   static String companyText = "Company";
   static String claimStoreText = "Claim Store";
   static String cardText = "Card";
+  static String createMembershipText = "Create Membership";
 
   //D
   static String deliveryText = "Delivery";
@@ -159,7 +161,7 @@ class StringConstants {
   static String editAutoReloadText = "Edit Auto reload";
   static String enterEinNumberText = "Enter EIN Number";
   static String editAutoReloadIntoWalletText = "Edit Auto Reload Into Wallet";
-
+  static String endDateText = "End Date";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
@@ -259,8 +261,10 @@ class StringConstants {
   static String noMessagesYetText = "No Messages Yet!";
   static String noCardsFoundText = "No Cards Found";
   static String notificationsText = "Notifications";
+  static String noActiveMembershipText = "No Active Membership";
   static String noNotificationFoundYetText = "No Notifications Yet";
   static String noBankDetailsFoundText = "No Bank details found";
+  static String numberOfDaysText = "Number of days";
   //O
   static String okText = "Ok";
   static String oKText = "OK";
@@ -411,8 +415,9 @@ class StringConstants {
   static String storeTermsText = "Store Terms";
   static String storePrivacyText = "Store Privacy";
   static String startDateText = "Start Date";
-  static String endDateText = "End Date";
   static String selectCardText = "Select Card";
+  static String storeAccessText = "Store Access";
+  static String selectMembershipPlanText = "Select Membership Plan";
 
   //T
   static String thankOrderText = "Thank you for your Order !!";
@@ -490,6 +495,9 @@ class StringConstants {
   static String your420MarketPlace = "Your 420 Market Place";
   static String yesText = "Yes";
   static String yourThoughtText = "Your Thought";
+  static String yourAreQualifiedText =
+      "You are qualified to own stores by selecting Okay.";
+
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";

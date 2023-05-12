@@ -16,6 +16,7 @@ class ServerCommunicator {
 
 //***************************************************** URLS ********************************************************
 //A
+
 //B
 //C
   String createUser = 'user/create';
@@ -120,6 +121,7 @@ class ServerCommunicator {
   String shopProductDetails = 'shop/store/product/details';
   String shopStoreDetails = 'shop/store/details';
   String shopHomeFeaturedProducts = 'store/home/featured_products';
+
   String storeOrderList = 'store/order/list';
   String storeDelete = 'store/delete';
   String shopStoreHomeOffers = 'shop/home/offers/list';
@@ -142,7 +144,7 @@ class ServerCommunicator {
   String storeStripeBankAccountCreate = 'store/stripe/bank/account/create';
   String storeStripePayoutCreate = 'store/stripe/payout/create';
   String shopStoreProductList = 'shop/store/product/list';
-
+  String storeServiceCharge = 'store/service/charge';
   String storeDynamicLinkUpdate = 'store/dynamic/link/update';
 
 //T
@@ -166,7 +168,11 @@ class ServerCommunicator {
   String userWalletAutochargeGet = 'user/wallet/autocharge/details';
   String userWalletAutochargeDelete = 'user/wallet/autocharge/delete';
   String userWalletAutochargeUpdate = 'user/wallet/autocharge/update';
-  
+  String userStoreAccessCreate = 'user/store/access/create';
+  String utilMembershipPlans = 'utils/membership/plans';
+  String userMembershipCreate = 'user/membership/create';
+
+  String userMembershipList = 'user/membership/list';
 
 //V
 //W
