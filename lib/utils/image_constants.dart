@@ -55,6 +55,7 @@ class ImageConstants {
   //G
   static const String greenmall420 = '$assetsIcon/greenmall420.png';
   static const String gender = '$assetsIcon/gender.png';
+  static const String greencheck = '$assetsIcon/greencheck.png';
   //H
   static const String healthy = '$assetsIcon/healthy.png';
   static const String historymenu = '$assetsIcon/historymenu.png';

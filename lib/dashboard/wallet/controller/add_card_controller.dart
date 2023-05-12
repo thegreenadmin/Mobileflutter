@@ -34,7 +34,8 @@ class AddCardController extends GetxController {
   RxString? selectedStoreName = "".obs;
   RxString? storeId = "".obs;
   RxString selectedPaymentForFrequency = "".obs;
-
+  RxDouble storeServiceCharge = 0.0.obs;
+  RxDouble totalWithdrawAmount = 0.0.obs;
   RxBool isCvvFocused = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
@@ -483,6 +484,50 @@ class AddCardController extends GetxController {
           Utility.showToast(value.body['message']);
         } else {
           Utility.showToast(value.body['message']);
+        }
+      }
+    });
+  }
+
+  //Get Store service charge
+  Future apiGetStoreServiceCharge() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET STORE SERVICE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeServiceCharge}?store_id=${storeId!.value}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeServiceCharge}?store_id=${storeId!.value}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE SERVICE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        if (value?.body['data']['service_charge_value'] is int ||
+            value?.body['data']['service_charge_value'] is String) {
+          storeServiceCharge.value =
+              double.parse(value?.body['data']['service_charge_value']);
+        } else {
+          storeServiceCharge.value =
+              value?.body['data']['service_charge_value'];
+        }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        String msg = value!.body["message"].toString().toLowerCase();
+        if (msg.contains("store not found")) {
+          Utility.showToast("Please select store");
+        } else {
+          Utility.showToast(value.body['message'].toString());
         }
       }
     });

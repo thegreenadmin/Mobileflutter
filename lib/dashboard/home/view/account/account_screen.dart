@@ -5,6 +5,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
@@ -182,16 +183,20 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               InkWell(
                   onTap: () async {
-                    if (SharedPreferenceStorage.getData(Role.role.value)
-                            .toString() ==
-                        Role.customerRoleText) {
-                      SharedPreferenceStorage.setData(
-                          Role.role.value, Role.storeOwnerRoleText);
-                      await Get.offAll(BottomNavigation());
+                    if (accountController.hasStoreAccess.value == false) {
+                      accountController.storeAccessDailogue(context);
                     } else {
-                      SharedPreferenceStorage.setData(
-                          Role.role.value, Role.customerRoleText);
-                      await Get.offAll(BottomNavigation());
+                      if (SharedPreferenceStorage.getData(Role.role.value)
+                              .toString() ==
+                          Role.customerRoleText) {
+                        SharedPreferenceStorage.setData(
+                            Role.role.value, Role.storeOwnerRoleText);
+                        await Get.offAll(BottomNavigation());
+                      } else {
+                        SharedPreferenceStorage.setData(
+                            Role.role.value, Role.customerRoleText);
+                        await Get.offAll(BottomNavigation());
+                      }
                     }
                   },
                   child: Padding(
@@ -374,6 +379,51 @@ class _AccountScreenState extends State<AccountScreen> {
                           )
                         ],
                       ),
+                    ),
+                    Obx(
+                      () => accountController.hasStoreAccess.value
+                          ? const Divider(
+                              height: 40,
+                              thickness: 1,
+                            )
+                          : height0SizedBox,
+                    ),
+                    Obx(
+                      () => accountController.hasStoreAccess.value
+                          ? InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.to(const ActiveMembershipScreen());
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.accountId,
+                                        color: AppColors.primary,
+                                        scale: 3.5,
+                                      ),
+                                      width15SizedBox,
+                                      Text(StringConstants.activeMembershipText,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
+                                  Image.asset(
+                                    ImageConstants.arrowForward,
+                                    scale: 3.4,
+                                    color: AppColors.blacklight,
+                                  )
+                                ],
+                              ),
+                            )
+                          : height0SizedBox,
                     ),
                     const Divider(
                       height: 40,

@@ -136,63 +136,117 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           width10SizedBox,
-                          RawMaterialButton(
-                            elevation: 0,
-                            onPressed: () {
-                              if (SharedPreferenceStorage.getData(
-                                      Role.role.value) ==
-                                  Role.customerRoleText) {
-                                Get.to(
-                                  const SearchStoreUserScreen(),
-                                  arguments: {
-                                    "firstName":
-                                        homeController.firstName!.value,
-                                    "lastName": homeController.lastName!.value,
+                          Obx(() => homeController.hasStoreAccess!.value
+                              ? RawMaterialButton(
+                                  elevation: 0,
+                                  onPressed: () {
+                                    if (SharedPreferenceStorage.getData(
+                                            Role.role.value) ==
+                                        Role.customerRoleText) {
+                                      Get.to(
+                                        const SearchStoreUserScreen(),
+                                        arguments: {
+                                          "firstName":
+                                              homeController.firstName!.value,
+                                          "lastName":
+                                              homeController.lastName!.value,
+                                        },
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => const OwnerStoresListScreen(),
+                                        arguments: {
+                                          "firstName":
+                                              homeController.firstName!.value,
+                                          "lastName":
+                                              homeController.lastName!.value,
+                                        },
+                                      );
+                                    }
                                   },
-                                );
-                              } else {
-                                Get.to(
-                                  () => const OwnerStoresListScreen(),
-                                  arguments: {
-                                    "firstName":
-                                        homeController.firstName!.value,
-                                    "lastName": homeController.lastName!.value,
+                                  constraints: const BoxConstraints(),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      2.0, 2.0, 10.0, 2.0),
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 1.0, color: AppColors.primary),
+                                    borderRadius: BorderRadius.circular(28.0),
+                                  ),
+                                  fillColor: AppColors.white,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                          child: Image.asset(
+                                            ImageConstants.storeUnion,
+                                            scale: 2.2,
+                                            color: AppColors.white,
+                                          )),
+                                      width5SizedBox,
+                                      Text(
+                                        StringConstants.storesText,
+                                        style: const TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : RawMaterialButton(
+                                  elevation: 0,
+                                  onPressed: () {
+                                    if (SharedPreferenceStorage.getData(
+                                            Role.role.value) ==
+                                        Role.customerRoleText) {
+                                      Get.to(
+                                        const SearchStoreUserScreen(),
+                                        arguments: {
+                                          "firstName":
+                                              homeController.firstName!.value,
+                                          "lastName":
+                                              homeController.lastName!.value,
+                                        },
+                                      );
+                                    }
                                   },
-                                );
-                              }
-                            },
-                            constraints: const BoxConstraints(),
-                            padding:
-                                const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1.0, color: AppColors.primary),
-                              borderRadius: BorderRadius.circular(28.0),
-                            ),
-                            fillColor: AppColors.white,
-                            child: Row(
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Image.asset(
-                                      ImageConstants.storeUnion,
-                                      scale: 2.2,
-                                      color: AppColors.white,
-                                    )),
-                                width5SizedBox,
-                                Text(
-                                  StringConstants.storesText,
-                                  style: const TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
+                                  constraints: const BoxConstraints(),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      2.0, 2.0, 10.0, 2.0),
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 1.0, color: AppColors.primary),
+                                    borderRadius: BorderRadius.circular(28.0),
+                                  ),
+                                  fillColor: AppColors.white,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                          child: Image.asset(
+                                            ImageConstants.storeUnion,
+                                            scale: 2.2,
+                                            color: AppColors.white,
+                                          )),
+                                      width5SizedBox,
+                                      Text(
+                                        StringConstants.storesText,
+                                        style: const TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ))
                         ],
                       ),
                       Row(
@@ -283,20 +337,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )
                                 : CarouselSlider(
-                                    items: homeController.userOfferList
+                                    items: homeController.userCrouselImgList
                                         .map((item) => InkWell(
-                                          onTap: (){
-                                           Get.to(() => const StoreHomeMainScreen(),
-                                                arguments: {
-                                                  "isFromHome": true,
-                                                  "storeId": item.storeId??"",
-                                                });
-                                          },
-                                          child: Center(
+                                              onTap: () {
+                                                // Get.to(
+                                                //     () =>
+                                                //         const StoreHomeMainScreen(),
+                                                //     arguments: {
+                                                //       "isFromHome": true,
+                                                //       "storeId":
+                                                //           item.storeId ?? "",
+                                                //     });
+                                              },
+                                              child: Center(
                                                   child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(6.0),
-                                                child: Image.network(item.image?.dynamicUrl??"",
+                                                child: Image.network(
+                                                    item.image?.dynamicUrl
+                                                            .toString() ??
+                                                        "",
                                                     fit: BoxFit.fill,
                                                     height: WidgetConstants
                                                             .screenHeight *
@@ -305,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             .screenWidth *
                                                         0.85),
                                               )),
-                                        ))
+                                            ))
                                         .toList(),
                                     carouselController: _controller,
                                     options: CarouselOptions(
@@ -322,39 +382,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           });
                                         }),
                                   ),
-                      /*CarouselSlider(
-                                    items: homeController.userCrouselImgList
-                                        .map((item) => Center(
-                                                child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0),
-                                              child: Image.network(item,
-                                                  fit: BoxFit.fill,
-                                                  height: WidgetConstants
-                                                          .screenHeight *
-                                                      0.3,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.85),
-                                            )))
-                                        .toList(),
-                                    carouselController: _controller,
-                                    options: CarouselOptions(
-                                        enlargeStrategy:
-                                            CenterPageEnlargeStrategy.scale,
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        viewportFraction: 1.2,
-                                        enlargeCenterPage: false,
-                                        autoPlay: true,
-                                        aspectRatio: 1.5,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _current = index;
-                                          });
-                                        }),
-                                  ),*/
                         height5SizedBox,
-                        Obx(() => homeController.userOfferList.isEmpty
+                        Obx(() => homeController.userCrouselImgList.isEmpty
                             ? height0SizedBox
                             : InkWell(
                                 highlightColor: Colors.transparent,
@@ -362,7 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {},
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: homeController.userOfferList
+                                  children: homeController.userCrouselImgList
                                       .asMap()
                                       .entries
                                       .map((entry) {
@@ -424,25 +453,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                           : CarouselSlider(
                               items: homeController.getOwnerOfferlist
-                                  .map((item) => InkWell(onTap: (){
-                                 Get.to(() => const ManageStoreMainScreen(), arguments: {
-                                   "isFromHome": true,
-                                   "storeId": item.store?.storeId??"",
-                                 });
-                              },
-                                    child: Center(
+                                  .map((item) => InkWell(
+                                        onTap: () {
+                                          Get.to(
+                                              () =>
+                                                  const ManageStoreMainScreen(),
+                                              arguments: {
+                                                "isFromHome": true,
+                                                "storeId":
+                                                    item.store?.storeId ?? "",
+                                              });
+                                        },
+                                        child: Center(
                                             child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(6.0),
-                                          child: Image.network(item.image?.dynamicUrl??"",
+                                          child: Image.network(
+                                              item.image?.dynamicUrl ?? "",
                                               fit: BoxFit.fill,
                                               height:
                                                   WidgetConstants.screenHeight *
                                                       0.3,
-                                              width: WidgetConstants.screenWidth *
-                                                  0.85),
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.85),
                                         )),
-                                  ))
+                                      ))
                                   .toList(),
                               carouselController: _controller,
                               options: CarouselOptions(

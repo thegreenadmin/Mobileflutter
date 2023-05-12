@@ -97,7 +97,8 @@ class _WalletScreenState extends State<WalletScreen> {
           height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start, children: [
             SharedPreferenceStorage.getData(Role.role.value) ==
                     Role.customerRoleText
                 ? height0SizedBox

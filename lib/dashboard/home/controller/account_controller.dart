@@ -2,20 +2,26 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thegreenmall/dashboard/home/model/active_membership_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
+import 'package:thegreenmall/dashboard/home/model/membership_plan_model.dart';
 import 'package:thegreenmall/dashboard/home/model/notification_status_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -31,7 +37,7 @@ class AccountController extends GetxController {
   TextEditingController postalCodeTextController = TextEditingController();
   TextEditingController stateTextController = TextEditingController();
   TextEditingController countryTextController = TextEditingController();
-
+  TextEditingController noOfDaysTextController = TextEditingController();
   RxBool isScreenLockNotify = false.obs;
   RxBool isUserInboxMessagesNotify = false.obs;
   RxBool isOwnerInboxMessagesNotify = false.obs;
@@ -42,6 +48,9 @@ class AccountController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
+  RxBool isLoading = false.obs;
+  RxBool hasStoreAccess = false.obs;
+
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
@@ -53,6 +62,8 @@ class AccountController extends GetxController {
   RxString postalCode = "".obs;
   RxString country = "".obs;
   RxString state = "".obs;
+  int selectedIndex = 0;
+  RxString selectedMembershipPlanId = "".obs;
 
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
@@ -72,6 +83,13 @@ class AccountController extends GetxController {
   NotificationStatusModel notificationStatusModel = NotificationStatusModel();
   RxList<NotificationSettings> notificationStatusList =
       <NotificationSettings>[].obs;
+
+  MembershipPlanModel membershipPlanModel = MembershipPlanModel();
+  RxList<MembershipPlans> membershipList = <MembershipPlans>[].obs;
+
+  ActiveMembershipPlanModel activeMembershipPlanModel =
+      ActiveMembershipPlanModel();
+  RxList<ActiveMemberships> activeMembershipList = <ActiveMemberships>[].obs;
 
   List userAddress = [];
 
@@ -101,7 +119,6 @@ class AccountController extends GetxController {
         SharedPreferenceStorage.getData(
                 StringConstants.authenticatedText.toLowerCase()) ??
             false;
-
     if (SharedPreferenceStorage.getData(Role.role.value).toString() ==
         Role.customerRoleText) {
       await apiGetNotificationStatus(false);
@@ -115,26 +132,23 @@ class AccountController extends GetxController {
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            idProofImage.value = pickedFile;
-            await apiUploadImage();
-            update();
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       Get.back();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        idProofImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,
@@ -147,6 +161,194 @@ class AccountController extends GetxController {
         // api();
       }
     });
+  }
+
+  storeAccessDailogue(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              height10SizedBox,
+              Center(
+                child: Image.asset(
+                  ImageConstants.info,
+                  color: AppColors.green,
+                  scale: 2,
+                ),
+              ),
+              height12SizedBox,
+              Text(
+                StringConstants.storeAccessText,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.start,
+              ),
+              height12SizedBox,
+              Text(
+                StringConstants.yourAreQualifiedText,
+                style: TextStyle(
+                    color: AppColors.blacklight,
+                    fontSize: 18,
+                    height: 1.6,
+                    fontWeight: FontWeight.w400),
+                textAlign: TextAlign.start,
+              ),
+              height20SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      Get.back();
+                      apiCreateStoreAccess();
+                    },
+                    child: Container(
+                      height: 50.0,
+                      width: WidgetConstants.screenWidth * 0.3,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        border: Border.all(color: AppColors.primary),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          StringConstants.okayText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                              color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
+
+  noOfDaysForMembershipDailogue(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              height10SizedBox,
+              height12SizedBox,
+              const Text(
+                "Enter number of days",
+                style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+                textAlign: TextAlign.start,
+              ),
+              height12SizedBox,
+              TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
+                  autofocus: false,
+                  inputFormatters: <TextInputFormatter>[
+                    LengthLimitingTextInputFormatter(100),
+                  ],
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                  controller: noOfDaysTextController,
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    hintText: StringConstants.numberOfDaysText,
+                    hintStyle:
+                        const TextStyle(color: AppColors.grey, fontSize: 14),
+                    fillColor: Colors.white,
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                  )),
+              height20SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      if (noOfDaysTextController.text.isEmpty) {
+                        Utility.showToast("Please enter days");
+                      } else {
+                        Get.back();
+                        apiCreateMmembershipPlan();
+                      }
+                    },
+                    child: Container(
+                      height: 50.0,
+                      width: WidgetConstants.screenWidth * 0.3,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        border: Border.all(color: AppColors.primary),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          StringConstants.okayText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                              color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: const <Widget>[],
+      ),
+    );
   }
 
   //Api upload image to server
@@ -244,6 +446,8 @@ class AccountController extends GetxController {
         email.value = getUserDetailModel.data!.user!.email ?? "";
         emailTextController.text = email.value;
         phone.value = getUserDetailModel.data!.user!.phone ?? "";
+        hasStoreAccess.value =
+            getUserDetailModel.data!.user!.hasStoreAccess ?? false;
         List<UserAddresses> userAddress = <UserAddresses>[];
         userAddress = getUserDetailModel.data!.user!.userAddresses!;
         if (userAddress.isNotEmpty) {
@@ -273,6 +477,8 @@ class AccountController extends GetxController {
           }
         }
         await apiGetCountries();
+        await apiGetMembershipList();
+        await apiGetActiveMembershipList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -597,6 +803,144 @@ class AccountController extends GetxController {
         } else {
           await apiGetNotificationStatus(true);
         }
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Create store access
+  Future apiCreateStoreAccess() async {
+    debugPrint(
+        "CREATE USER ACCESS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {"has_store_access": true};
+    debugPrint("CREATE USER ACCESS BODY**********$data");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("CREATE USER ACCESS RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get membership list
+  Future apiGetMembershipList() async {
+    debugPrint(
+      "GET MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}",
+    );
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET MEMBERSHIP LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        membershipPlanModel = MembershipPlanModel.fromJson(value.body);
+        membershipList.value = membershipPlanModel.data!.membershipPlans!;
+        update();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  apiCreateMmembershipPlan() {
+    debugPrint(
+        "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "membership_plan_id": selectedMembershipPlanId.value,
+      "count": noOfDaysTextController.text.trim()
+    };
+    debugPrint("CREATE MEMBERSHIP BODY**********$data");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("CREATE MEMBERSHIP RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+        Get.back();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+        Utility.showToast(value.body['message']);
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Get active membership list
+  Future apiGetActiveMembershipList() async {
+    debugPrint(
+      "GET ACTIVE MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=100&order_by=membership_id&order_type=DESC",
+    );
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=100&order_by=membership_id&order_type=DESC",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET ACTIVE MEMBERSHIP LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        activeMembershipPlanModel =
+            ActiveMembershipPlanModel.fromJson(value.body);
+        activeMembershipList.value =
+            activeMembershipPlanModel.data!.memberships!;
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

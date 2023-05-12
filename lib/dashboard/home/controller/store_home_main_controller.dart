@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
@@ -18,13 +16,11 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -98,25 +94,21 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value =
-    Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
+    storeId.value = Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
     if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
       isFromHome.value = Get.arguments["isFromHome"] ?? false;
       storeId.value =
           Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
       productId.value =
           Get.arguments == null ? "" : Get.arguments["productId"] ?? "";
-
-      print("store Id-----" + storeId.value);
-      print("product Id-----" + productId.value);
     }
-
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       nearby.Store store = nearby.Store();
       store.storeId = storeId.value;
       storeAddress.value.store = store;
       isFavouriteStore.value = store.isFavouriteStore ?? false;
+      selectedIndex.value = 0;
       apiGetStoreDetailsApi();
       apiGetCartListApi();
       setupScrollController(Get.context);
@@ -145,6 +137,84 @@ class StoreHomeMainController extends GetxController {
     } else if (i == 2) {
       await apiFeatureProductListApi(isFavouriteProducts: true);
     } else if (i == 3) {}
+  }
+
+  void termsAndPrivacyDailogue(BuildContext context,
+      {String content = "", String contentType = ""}) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              height10SizedBox,
+              Center(
+                child: Image.asset(
+                  ImageConstants.info,
+                  color: AppColors.green,
+                  scale: 1.8,
+                ),
+              ),
+              height12SizedBox,
+              Text(
+                contentType == "terms"
+                    ? StringConstants.termsAndConditionsText
+                    : StringConstants.privacyPolicyText,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.start,
+              ),
+              height15SizedBox,
+              Text(
+                content,
+                style: TextStyle(
+                    color: AppColors.blacklight,
+                    fontSize: 16,
+                    height: 1.6,
+                    fontWeight: FontWeight.w400),
+                textAlign: TextAlign.start,
+              ),
+              height25SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      Get.back();
+                    },
+                    child: Container(
+                      height: 50.0,
+                      width: WidgetConstants.screenWidth * 0.3,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        border: Border.all(color: AppColors.primary),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          StringConstants.okayText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                              color: AppColors.primary),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: const <Widget>[],
+      ),
+    );
   }
 
   void moneydeductFromCartDailogue(BuildContext context, {String amount = ""}) {
@@ -722,8 +792,10 @@ class StoreHomeMainController extends GetxController {
       debugPrint("USER WALLET BALANCE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        if (value!.body["data"]["balance"] is int) {
-          walletBalance.value = double.parse(value.body["data"]["balance"]);
+        if (value!.body["data"]["balance"] is int ||
+            value.body["data"]["balance"] is String) {
+          walletBalance.value =
+              double.parse(value.body["data"]["balance"].toString());
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         } else if (value.body["data"]["balance"] is double) {
           walletBalance.value = value.body["data"]["balance"];
@@ -756,16 +828,22 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
+      debugPrint("STORE DETAILS RESPONSE 123 *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
+
+        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
+
+        debugPrint(
+            "store response before *******${storeDetailsResponse.value.data?.store?.storePages}");
+
         debugPrint(
             "isFavouriteStore before *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
+
         debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);

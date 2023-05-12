@@ -270,7 +270,19 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                if (storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![0].storePageType ==
+                        "privacy" ||
+                    storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![1].storePageType ==
+                        "privacy") {
+                  Get.back();
+                  storeHomeMainController.termsAndPrivacyDailogue(context,
+                      content: storeHomeMainController.storeDetailsResponse
+                          .value.data!.store!.storePages!.first.storePageContent
+                          .toString(),
+                      contentType: "privacy");
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,7 +305,16 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                if (storeHomeMainController.storeDetailsResponse.value.data!
+                        .store!.storePages!.first.storePageType ==
+                    "terms") {
+                  // Get.back();
+                  storeHomeMainController.termsAndPrivacyDailogue(context,
+                      content: storeHomeMainController.storeDetailsResponse
+                          .value.data!.store!.storePages!.first.storePageContent
+                          .toString(),
+                      contentType: "terms");
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
