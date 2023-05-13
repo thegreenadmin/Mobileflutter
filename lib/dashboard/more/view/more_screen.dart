@@ -174,7 +174,11 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(const ContactUsScreen());
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const ContactUsScreen(),
+              ));
+              // Get.to(const ContactUsScreen());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

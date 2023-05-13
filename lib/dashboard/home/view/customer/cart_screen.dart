@@ -297,7 +297,7 @@ class _CartScreenState extends State<CartScreen> {
                                               return await showDialog(
                                                 context: context,
                                                 builder:
-                                                    (BuildContext context) {
+                                                    (BuildContext _) {
                                                   return AlertDialog(
                                                     title: Text(
                                                       StringConstants.alertText,
@@ -326,11 +326,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
+                                                            Navigator.of(_).pop();
                                                             // Get.back();
-                                                            storeHomeMainController.apiDeleteCart(
+                                                            storeHomeMainController.apiDeleteCart(context,
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
                                                                             .cartItems[i]
@@ -462,7 +460,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                         await storeHomeMainController.apiGetUserWalletBalance();
                                         await storeHomeMainController
-                                            .apiGetCartListApi();
+                                            .apiGetCartListApi(context);
 
                                       },
                                       height: 40,
@@ -704,6 +702,10 @@ class _CartScreenState extends State<CartScreen> {
                                             child: Obx(
                                               () => InkWell(
                                                 onTap: () {
+                                                  SharedPreferenceStorage.setData("context", context);
+
+
+                                                  Get.parameters["isFromCart"] = "true";
                                                   storeHomeMainController
                                                                   .selectedUserAddress
                                                                   .value
@@ -714,10 +716,14 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .value
                                                                   .city ==
                                                               null
-                                                      ? Get.to(const PersonalInfoEditScreen(),
-                                                              arguments: ({
-                                                                "isFromCart": true
-                                                              }))
+                                                      ?
+                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (_) => const PersonalInfoEditScreen(),
+                                                  ))
+                                                  // Get.to(const PersonalInfoEditScreen(),
+                                                  //             arguments: ({
+                                                  //               "isFromCart": true
+                                                  //             }))
                                                           ?.then((value) => storeHomeMainController
                                                               .apiGetUserDetailsApi())
                                                       : /*storeHomeMainController
@@ -896,15 +902,15 @@ class _CartScreenState extends State<CartScreen> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 InkWell(
-                                  onTap: () {// SharedPreferenceStorage.setData("context", context);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (_) => const PersonalInfoEditScreen(),
-                                // ))
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                                Get.parameters["currentIndex"] = "1";
+                                  onTap: () {
+                                    SharedPreferenceStorage.setData("context", context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const WalletScreen(),
+                                ));
+
+                                Get.parameters["isFromCartScreen"] = "true";
                                     // Get.to(const WalletScreen(),
-                                        arguments: {"isFromCartScreen": true});
+                                    //     arguments: {"isFromCartScreen": true});
                                   },
                                   child: Text(
                                     StringConstants.addFundText,

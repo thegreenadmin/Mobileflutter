@@ -5,6 +5,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
@@ -222,8 +223,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            SharedPreferenceStorage.getData(Role.role.value)
-                                        .toString() ==
+                            SharedPreferenceStorage.getData(Role.role.value).toString() ==
                                     Role.customerRoleText
                                 ? StringConstants.switchToStoreText
                                 : StringConstants.switchToCustomerText,
@@ -428,7 +428,12 @@ class _AccountScreenState extends State<AccountScreen> {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                Get.to(const ActiveMembershipScreen());
+                                SharedPreferenceStorage.setData("context", context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const ActiveMembershipScreen(),
+                                ));
+
+                                // Get.to(const ActiveMembershipScreen());
                               },
                               child: Row(
                                 mainAxisAlignment:

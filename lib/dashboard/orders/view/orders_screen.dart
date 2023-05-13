@@ -28,6 +28,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   final OrdersController ordersController = Get.put(OrdersController());
 
+
   Container userOrdersTab() {
     return Container(
       height: 47,
@@ -402,7 +403,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
-                            )
+                            ),
+                            // Obx(() => Text(
+                            //   ordersController.role!.value,
+                            //   style: const TextStyle(
+                            //       fontSize: 22,
+                            //       color: AppColors.black,
+                            //       fontWeight: FontWeight.w600),
+                            // ))
+
                           ],
                         ),
                         Image.asset(
@@ -427,7 +436,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),),
 
               height25SizedBox,
-              ordersController.role!.value == Role.customerRoleText
+              Obx(()=> ordersController.role!.value == Role.customerRoleText
                   ? ordersController.orderList.isEmpty
                   ? ordersController.isLoading.value == true
                   ? height0SizedBox
@@ -487,16 +496,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const OrderConfirmationScreen(),
                             ));
+                            Get.parameters["orderStatus"] =ordersController
+                                .orderList[i].orderId ??
+                                "";
                             Get.parameters["isFromTransaction"] = "false";
                             Get.parameters["isFromNotification"] = "false";
-                            Get.parameters["storeId"] = ordersController
-                                .orderList[i]
-                                .store
-                                ?.storeId
-                                .toString() ??
-                                "";
+                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
 
-                           /* Get.to(
+                            /* Get.to(
                                     () =>
                                 const OrderConfirmationScreen(),
                                 arguments: {
@@ -849,14 +856,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 .storeOrderList[i]
                                 .orderId
                                 .toString()??"";              ordersController
-                                                      .storeOrderList[i]
-                                                      .orderHistories!
-                                                      .first
-                                                      .orderStatus!
-                                                      .orderStatusName == //"11"
-                                                  OrderStatus
-                                                      .returnRequest.statusName
-                                              ? Navigator.of(context).push(MaterialPageRoute(
+                                .storeOrderList[i]
+                                .orderHistories!
+                                .first
+                                .orderStatus!
+                                .orderStatusName == //"11"
+                                OrderStatus
+                                    .returnRequest.statusName
+                                ? Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const MarkReturnOrderScreen(),
                             ))
                             /*Get.to(
@@ -875,19 +882,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       .orderId
                                       .toString(),
                                 })*/?.then((value) {
-                                                  ordersController
-                                                      .apiGetStoreOrderListApi();
-                                                })
-                                              : ordersController
-                                                          .storeOrderList[i]
-                                                          .orderHistories!
-                                                          .first
-                                                          .orderStatus!
-                                                          .orderStatusName == //"12"
-                                                      OrderStatus
-                                                          .returnConfirmed
-                                                          .statusName
-                                                  ? Navigator.of(context).push(MaterialPageRoute(
+                              ordersController
+                                  .apiGetStoreOrderListApi();
+                            })
+                                : ordersController
+                                .storeOrderList[i]
+                                .orderHistories!
+                                .first
+                                .orderStatus!
+                                .orderStatusName == //"12"
+                                OrderStatus
+                                    .returnConfirmed
+                                    .statusName
+                                ? Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const ReturnConfirmOrderScreen(),
                             ))
                             /*Get.to(
@@ -908,12 +915,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       .orderId
                                       .toString(),
                                 })*/
-                                                  : ordersController
-                                                              .orderStatusName
-                                                              .value == //7
-                                                          OrderStatus.cancelled
-                                                              .statusName
-                                                      ? null:
+                                : ordersController
+                                .orderStatusName
+                                .value == //7
+                                OrderStatus.cancelled
+                                    .statusName
+                                ? null:
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const OrdersHomeMainScreen(),
                             ));
@@ -1217,7 +1224,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         return const SizedBox();
                       }
                     }),
-              )),
+              ))
+
             ],
           )),
     );

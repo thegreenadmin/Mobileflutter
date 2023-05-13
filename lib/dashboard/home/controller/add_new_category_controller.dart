@@ -94,7 +94,8 @@ class AddNewCategoryController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick:
         ()async{
-          Get.back();
+          // Get.back();
+          Navigator.of(context).pop();
           XFile? pickedFile = await ImagePickerClass.picker
               .pickImage(
               imageQuality: 50,
@@ -109,7 +110,8 @@ class AddNewCategoryController extends GetxController {
             // api();
           }
         }, onCameraClick: ()async{
-            Get.back();
+      // Get.back();
+      Navigator.of(context).pop();
             XFile? pickedFile = await ImagePickerClass.picker
                 .pickImage(
                 imageQuality: 50,
@@ -202,7 +204,8 @@ class AddNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(Get.context!).pop();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -237,7 +240,10 @@ class AddNewCategoryController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -274,13 +280,17 @@ class AddNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(Get.context!).pop();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

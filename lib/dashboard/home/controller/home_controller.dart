@@ -91,8 +91,13 @@ class HomeController extends GetxController {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Get.back();
-                    Get.to(const AccountScreen());
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const AccountScreen(),
+                    ));
+                    Navigator.of(context).pop();
+                    // Get.back();
+                    // Get.to(const AccountScreen());
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,8 +122,13 @@ class HomeController extends GetxController {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
-                Get.to(const AccountScreen());
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const AccountScreen(),
+                ));
+                Navigator.of(context).pop();
+                // Get.back();
+                // Get.to(const AccountScreen());
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +187,10 @@ class HomeController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -220,7 +233,10 @@ class HomeController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -276,7 +292,10 @@ class HomeController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -328,7 +347,10 @@ class HomeController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -382,7 +404,10 @@ class HomeController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }

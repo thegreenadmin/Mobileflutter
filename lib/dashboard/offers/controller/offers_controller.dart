@@ -42,7 +42,6 @@ class OffersController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
     if (Get.parameters == null
         ? false

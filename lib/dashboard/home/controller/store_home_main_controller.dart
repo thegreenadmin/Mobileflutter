@@ -97,14 +97,14 @@ class StoreHomeMainController extends GetxController {
     print("isFromHome================");
     print(Get.parameters["isFromHome"]);
     print(Get.parameters["storeId"]);
-    if (Get.parameters == null ? false : Get.parameters['isFromHome'] != "false") {
+    if (Get.parameters["isFromHome"] == null ? false : Get.parameters['isFromHome'] != "false") {
       isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
 
       productId.value =
-          Get.parameters == null ? "" : Get.parameters["productId"] ?? "";
+          Get.parameters["productId"] == null ? "" : Get.parameters["productId"] ?? "";
     }
     storeId.value =
-    Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
+    Get.parameters["storeId"] == null ? "" : Get.parameters["storeId"] ?? "";
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       nearby.Store store = nearby.Store();
@@ -113,7 +113,7 @@ class StoreHomeMainController extends GetxController {
       isFavouriteStore.value = store.isFavouriteStore ?? false;
       selectedIndex.value = 0;
       apiGetStoreDetailsApi();
-      apiGetCartListApi();
+      apiGetCartListApi(Get.context);
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
     } else {
@@ -225,7 +225,7 @@ class StoreHomeMainController extends GetxController {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -287,7 +287,8 @@ class StoreHomeMainController extends GetxController {
                 ),
                 InkWell(
                   onTap: () async {
-                    Get.back();
+                    Navigator.pop(_);
+                    // Get.back();
                     await apiPlaceOrder(context);
                   },
                   child: Container(
@@ -390,7 +391,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Get Cart List Api
-  Future apiGetCartListApi() async {
+  Future apiGetCartListApi(context) async {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
@@ -426,10 +427,12 @@ class StoreHomeMainController extends GetxController {
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty) {
           isDeleteCartItem.value = false;
+          print("isDeleteCartItem********************************************");
           // Get.offAll(BottomNavigation());
           // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
-          Navigator.of(Get.context!).pop();
-          Navigator.of(Get.context!).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
@@ -486,12 +489,21 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
-        Get.to(() => const OrderConfirmationScreen(), arguments: {
+        SharedPreferenceStorage.setData("context", context);
+        Get.parameters["storeId"] = storeAddress.value.store?.storeId.toString() ?? "0";
+        Get.parameters["orderStatus"] = orderStatus.value;
+        Get.parameters["isFromTransaction"] = "false";
+        Get.parameters["isFromNotification"] = "false";
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => const OrderConfirmationScreen(),
+        ));
+
+       /* Get.to(() => const OrderConfirmationScreen(), arguments: {
           "storeId": storeAddress.value.store?.storeId.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false,
           "isFromNotification": false
-        });
+        });*/
         update();
         isInsufficientBalance.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -587,7 +599,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
-        apiGetCartListApi();
+        apiGetCartListApi(Get.context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -599,7 +611,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Delete Cart Api
-  Future apiDeleteCart({int cartItemId = 0}) async {
+  Future apiDeleteCart(context,{int cartItemId = 0}) async {
     isLoading.value = true;
     debugPrint("DELETE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");
@@ -627,7 +639,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
-        apiGetCartListApi();
+        apiGetCartListApi(context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -644,7 +656,7 @@ class StoreHomeMainController extends GetxController {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -682,9 +694,12 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
+                    Navigator.of(_).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    // Get.back();
+                    // Get.back();
+                    // Get.back();
                   },
                   child: Container(
                     height: 50.0,
@@ -705,11 +720,16 @@ class StoreHomeMainController extends GetxController {
                   ),
                 ),
                 InkWell(
-                  onTap: () async {
-                    Get.back();
-                    await apiGetCartListApi();
-                    await apiGetUserWalletBalance();
-                    Get.to(const CartScreen());
+                  onTap: ()  {
+                    Navigator.of(_).pop();
+                    // Get.back();
+                    apiGetCartListApi(Get.context);
+                    apiGetUserWalletBalance();
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const CartScreen(),
+                    ));
+                    // Get.to(const CartScreen());
                   },
                   child: Container(
                     height: 50.0,

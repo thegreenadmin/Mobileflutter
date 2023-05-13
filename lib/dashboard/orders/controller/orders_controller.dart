@@ -94,23 +94,26 @@ class OrdersController extends GetxController {
       storeId.value = Get.parameters["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    orderStatus.value =
-        Get.parameters == null ? "" : Get.parameters["orderStatus"] ?? "";
+    if(Get.parameters["orderStatus"]!=null){
+      orderStatus.value = Get.parameters["orderStatus"] ?? "";
+      print("orderStatus.value:=========================================");
+      print(orderStatus.value);
+    }
+
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.newOrder.statusName;
     print("SharedPreferenceStorage:--Order Screen---------------");
+    role!.value = SharedPreferenceStorage.getData(Role.role.value);
     print(SharedPreferenceStorage.getData(Role.role.value));
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
-      role!.value = Role.customerRoleText;
+    print(role!.value);
+    if (role!.value == Role.customerRoleText) {
       apiGetOrderListApi();
       if (orderStatus.value != "") {
         apiGetOrderDetailsApi();
       }
       page.value = 1;
     } else {
-      role!.value = Role.storeOwnerRoleText;
       apiGetStoreOrderListApi();
       page.value = 1;
     }
@@ -972,7 +975,7 @@ class OrdersController extends GetxController {
   }
 
   //Cancel Order Api
-  Future apiCancelOrder() async {
+  Future apiCancelOrder(context) async {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
@@ -1005,13 +1008,17 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Navigator.of(Get.context!).pop();
+        // Navigator.of(context).pop();
+        BuildContext rContext = SharedPreferenceStorage.getData("context",);
+        print(rContext);
+        Navigator.of(rContext).popUntil(
+                (route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+         await Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());

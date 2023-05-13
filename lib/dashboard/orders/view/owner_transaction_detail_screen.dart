@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/transaction_detail_cont
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OwnerTransactionDetailScreen extends StatefulWidget {
@@ -18,6 +19,24 @@ class _OwnerTransactionDetailScreenState
     extends State<OwnerTransactionDetailScreen> {
   final TransactionDetailController transactionDetailController =
       Get.put(TransactionDetailController());
+
+  @override
+  void initState() {
+    super.initState();
+
+    transactionDetailController.storeWalletTransactionId!.value =
+        Get.parameters['store_wallet_transaction_id'] ?? "";
+    transactionDetailController.storeId!.value = Get.parameters['store_id'] ?? "";
+    transactionDetailController.isCurrentMonthSelected.value = true;
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      transactionDetailController.role!.value = Role.customerRoleText;
+      // apiGetUserOrderTransactionHistory();
+    } else {
+      transactionDetailController. role!.value = Role.storeOwnerRoleText;
+      transactionDetailController.apiGetOwnerTransactionDetail();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

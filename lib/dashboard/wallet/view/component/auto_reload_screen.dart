@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
@@ -78,7 +79,8 @@ class _AutoReloadState extends State<AutoReload> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Get.back();
+                          // Get.back();
+                          Navigator.of(context).pop();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -798,8 +800,12 @@ class _AutoReloadState extends State<AutoReload> {
                                               ],
                                             ),
                                             onTap: () {
-                                              Get.to(
-                                                  () => AddCardDetailScreen());
+                                              SharedPreferenceStorage.setData("context", context);
+                                              Navigator.of(context).push(MaterialPageRoute(
+                                                builder: (_) => const AddCardDetailScreen(),
+                                              ));
+                                              // Get.to(
+                                              //     () => AddCardDetailScreen());
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *
@@ -952,7 +958,7 @@ class _AutoReloadState extends State<AutoReload> {
                       onTap: () {
                         widget.isFromEdit == true
                             ? walletController.apiUpdateAutoRecharge()
-                            : walletController.validateAndSubmit(
+                            : walletController.validateAndSubmit(context,
                                 isFromautorecharge: true);
                       },
                       height: 50,

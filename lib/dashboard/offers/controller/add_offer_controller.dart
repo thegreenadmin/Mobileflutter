@@ -141,7 +141,7 @@ Navigator.of(context).pop();
       storeId.value = Get.parameters["storeId"] ?? "";
       offerId.value = Get.parameters["offerId"] ?? "";
       if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
-        apiGetOffersDetail(Get.context);
+        apiGetOffersDetail();
       }
     }
   }
@@ -353,7 +353,7 @@ Navigator.of(context).pop();
   }
 
 //Get Offers Detail List Api
-  Future apiGetOffersDetail(context) async {
+  Future apiGetOffersDetail() async {
     debugPrint(
       "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
     );

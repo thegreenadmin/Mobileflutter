@@ -47,7 +47,6 @@ class AddCardController extends GetxController {
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? selectedBankAccountIndex = 0.obs;
-  RxInt amount = 0.obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -73,7 +72,7 @@ class AddCardController extends GetxController {
 
   getApiData() async {
     await apiGetUserWalletBalance();
-    await apiGetCardList();
+    await apiGetCardList(Get.context!);
     await apiGetBankAccountList();
     await apiGetStoreList();
   }
@@ -149,7 +148,10 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -447,7 +449,10 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         if (!value.body['message']
             .toString()
@@ -490,12 +495,16 @@ class AddCardController extends GetxController {
             value.body['code'] == ApiConstants.statusCode200) {
           userStripeBankId!.value = "";
           payoutAmountTextController.clear();
-          Get.back();
+          // Get.back();
+          Navigator.of(Get.context!).pop();
           Utility.showToast(value.body['message']);
         } else if (value.body["status"] == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
           SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen());
+          Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+          // await Get.offAll(const StartJourneyScreen());
         } else if (value.body["status"] == ApiConstants.statusCode409) {
           Utility.showToast(value.body['message']);
         } else {
@@ -537,7 +546,10 @@ class AddCardController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {

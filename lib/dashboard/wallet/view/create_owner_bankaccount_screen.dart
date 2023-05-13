@@ -36,7 +36,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -427,7 +428,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                       ),
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        walletController.validateAndSubmit(
+                        walletController.validateAndSubmit(context,
                             isFromCreateOwnerBankBalance: true);
                       },
                       height: 50,

@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -578,8 +579,11 @@ class _ThresholdViewState extends State<ThresholdView>
                                               ],
                                             ),
                                             onTap: () {
-                                              Get.to(
-                                                  () => AddCardDetailScreen());
+                                              SharedPreferenceStorage.setData("context", context);
+                                              Navigator.of(context).push(MaterialPageRoute(
+                                                builder: (_) => const AddCardDetailScreen(),
+                                              ));
+                                              // Get.to(() => AddCardDetailScreen());
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *

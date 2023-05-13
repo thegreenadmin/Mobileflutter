@@ -181,9 +181,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         language: "en",
                         components: []);
                     searchStoreUserController.searchController.text =
-                        p!.description!.toString();
+                        p?.description!.toString()??"";
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p.description.toString(),
+                        address: p?.description.toString()??"",
                         googleMapApiKey: kGoogleApiKey);
                     updateMap(addresses.latitude, addresses.longitude);
                   },
@@ -231,7 +231,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
-              searchStoreUserController.apiGetNearByStores();
+              searchStoreUserController.apiGetNearByStores(context);
             },
             tabs: [
               Tab(
@@ -281,7 +281,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
-    await searchStoreUserController.apiGetNearByStores();
+    await searchStoreUserController.apiGetNearByStores(context);
     updateMarker(lat, lng);
   }
 

@@ -513,7 +513,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     Utility.showToast(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
-                    searchStoreUserController.apiGetNearByStores(
+                    searchStoreUserController.apiGetNearByStores(context,
                         isFilter: true,);
                   }
                 },

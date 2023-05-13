@@ -243,7 +243,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     await storeHomeMainController
                                         .apiGetShopProductDetailApi();
                                     await storeHomeMainController
-                                        .apiGetCartListApi();
+                                        .apiGetCartListApi(context);
                                     SharedPreferenceStorage.setData(
                                         "context", context);
                                     Navigator.of(context)

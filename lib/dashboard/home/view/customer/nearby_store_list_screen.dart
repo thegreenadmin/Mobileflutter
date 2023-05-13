@@ -74,14 +74,13 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             searchStoreUserController.storeAddresses.length) {
                           return InkWell(
                             onTap: () {
-                              Get.parameters["storeId"] =
-                                  searchStoreUserController
-                                          .storeAddresses[index]
-                                          .store
-                                          ?.storeId ??
-                                      "";
                               SharedPreferenceStorage.setData(
                                   "context", context);
+                              Get.parameters["storeId"] =
+                                  searchStoreUserController.storeAddresses[index].store?.storeId ?? "";
+                              print("nearby store is data : ---------------------------------------------" );
+                              print(searchStoreUserController.storeAddresses[index].store?.storeId );
+                              print(Get.parameters["storeId"] );
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));

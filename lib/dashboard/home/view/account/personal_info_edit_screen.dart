@@ -859,6 +859,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

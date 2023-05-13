@@ -669,7 +669,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   Navigator.of(context)
                                                       .push(MaterialPageRoute(
                                                     builder: (_) =>
-                                                        const AddOfferScreen(),
+                                                        const EditOfferScreen(),
                                                   ))
                                                       /*Get.to(const EditOfferScreen(),
                                                           arguments: {

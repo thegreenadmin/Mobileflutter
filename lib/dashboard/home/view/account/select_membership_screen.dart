@@ -39,7 +39,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              // Get.back();
+                              Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

@@ -68,9 +68,11 @@ class BottomNavController extends GetxController {
       try {
         BuildContext context = SharedPreferenceStorage.getData("context",);
         Navigator.of(context).popUntil((route) => route.isFirst);
-       // WalsletController controller = Get.find<WalletController>();
+
         WalletController controller = Get.put(WalletController());
+        WalletController controller1 = Get.find<WalletController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }
@@ -79,9 +81,10 @@ class BottomNavController extends GetxController {
       try {
         BuildContext context = SharedPreferenceStorage.getData("context",);
         Navigator.of(context).popUntil((route) => route.isFirst);
-        // OrdersController controller = Get.find<OrdersController>();
+
         OrdersController controller = Get.put(OrdersController());
-        controller.onInit();
+        OrdersController controller1 = Get.find<OrdersController>();
+        controller.onInit();controller1.onInit();
       } catch (e) {
         //Pass
       }
@@ -89,9 +92,10 @@ class BottomNavController extends GetxController {
       try {
         BuildContext context = SharedPreferenceStorage.getData("context",);
         Navigator.of(context).popUntil((route) => route.isFirst);
-        // OffersController controller = Get.find<OffersController>();
+
         OffersController controller = Get.put(OffersController());
-        controller.onInit();
+        OffersController controller1 = Get.find<OffersController>();
+        controller.onInit();controller1.onInit();
       } catch (e) {
         //Pass
       }
@@ -99,9 +103,10 @@ class BottomNavController extends GetxController {
       try {
         BuildContext context = SharedPreferenceStorage.getData("context",);
         Navigator.of(context).popUntil((route) => route.isFirst);
-        // MoreController controller = Get.find<MoreController>();
+
         MoreController controller =Get.put(MoreController());
-        controller.onInit();
+        MoreController controller1 = Get.find<MoreController>();
+        controller.onInit();controller1.onInit();
       } catch (e) {
         //Pass
       }

@@ -72,6 +72,8 @@ class LoginController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201) {
         phoneTextController.clear();
         Utility.showToast(value.body['message']);
+
+        Get.parameters["isFromCartScreen"] = "true";
         Get.to(() => const OtpVerificationScreen(), arguments: {
           "phoneNumber": phoneNumber.value.trim(),
           "countryCode": countryCode.value.trim()
