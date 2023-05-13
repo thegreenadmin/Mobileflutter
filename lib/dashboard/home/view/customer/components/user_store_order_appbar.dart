@@ -31,13 +31,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Obx(() => storeHomeMainController.isFromHome.value == true
-              ? storeHomeMainController.storeDetailsResponse.value.data !=
+          Obx(() => /*storeHomeMainController.isFromHome.value == true ?*/
+          storeHomeMainController.storeDetailsResponse.value.data !=
                           null &&
-                      storeHomeMainController
-                              .storeDetailsResponse.value.data!.store !=
-                          null &&
-                      storeHomeMainController.isFromHome.value == true
+                      storeHomeMainController.storeDetailsResponse.value.data!.store !=
+                          null /*&&
+                      storeHomeMainController.isFromHome.value == true*/
                   ? Container(
                       decoration: BoxDecoration(
                         color: const Color(0xff7c94b6),
@@ -88,7 +87,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Get.back();
+                                        Navigator.of(context).pop();
+                                        // Get.back();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,

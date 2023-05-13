@@ -79,7 +79,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Get.back();
+                                        Navigator.of(context).pop();
+                                      //Get.back();
                                         Get.back();
                                         Get.back();
                                       },
@@ -831,4 +832,5 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ],
     );
   }
+
 }

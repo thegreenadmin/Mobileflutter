@@ -19,92 +19,99 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
   final AccountController accountController = Get.put(AccountController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primarylight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                StringConstants.accountIdText,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 5,
-                          )
-                        ]),
-                  ],
-                )),
-          )),
-      body: SingleChildScrollView(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  color: AppColors.greymediumlight,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  child: Row(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(80.0),
+            child: Container(
+              color: AppColors.primarylight,
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  child: Column(
                     children: [
-                      Image.asset(
-                        ImageConstants.userAccount,
-                        scale: 3,
-                      ),
-                      width15SizedBox,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(() => Text(
-                                "${accountController.firstName!.value} ${accountController.lastName!.value}",
-                                style: const TextStyle(
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    // Get.back();
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
                                     color: AppColors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          Obx(() => Text(
-                                "${StringConstants.accountIdText}: #${accountController.userId!.value}",
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
-                              ))
-                        ],
-                      )
+                                    size: 24.0,
+                                  ),
+                                ),
+                                width10SizedBox,
+                                Text(
+                                  StringConstants.accountIdText,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 5,
+                            )
+                          ]),
                     ],
-                  ),
-                ),
-              ],
+                  )),
             )),
+        body: SingleChildScrollView(
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: AppColors.greymediumlight,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          ImageConstants.userAccount,
+                          scale: 3,
+                        ),
+                        width15SizedBox,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(() => Text(
+                                  "${accountController.firstName!.value} ${accountController.lastName!.value}",
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            Obx(() => Text(
+                                  "${StringConstants.accountIdText}: #${accountController.userId!.value}",
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }

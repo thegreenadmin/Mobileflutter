@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   const OwnerStoresListScreen({super.key});
@@ -43,7 +44,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                Navigator.of(context).pop();
+                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -56,12 +58,14 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
+                                Obx(
+                                  () => Text(
+                                    'Hi, ${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                                 Text(
                                   StringConstants.searchForStoreText,
@@ -173,7 +177,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                     AppColors.primary,
                                               ),
                                               onPressed: () {
-                                                Get.back();
+                                                Navigator.of(context).pop();
+                                                // Get.back();
                                                 ownerStoresController
                                                     .apiDeleteStore(
                                                         storeId:
@@ -191,7 +196,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                   AppColors.primary,
                                             ),
                                             onPressed: () {
-                                              Get.back();
+                                              Navigator.of(context).pop();
+                                              // Get.back();
                                             },
                                             child: Text(
                                                 StringConstants.cancelText),
@@ -245,9 +251,15 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
                                     ownerStoresController.onInit();
-
-                                    await Get.to(
-                                        () => const ManageStoreMainScreen());
+                                    SharedPreferenceStorage.setData(
+                                        "context", context);
+                                    await Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (_) =>
+                                          const ManageStoreMainScreen(),
+                                    ));
+                                    // await Get.to(
+                                    //     () => const ManageStoreMainScreen());
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -492,7 +504,12 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(const AddNewStoreScreen())!
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => const AddNewStoreScreen(),
+                    ))
+                    // Get.to(const AddNewStoreScreen())!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

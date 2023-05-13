@@ -33,11 +33,11 @@ class AddNewCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    categoryId.value = Get.arguments["categoryId"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
-        Get.arguments["isFeaturedSelectedType"] ?? false;
-    print(Get.arguments["isFeaturedSelectedType"]);
+        Get.parameters["isFeaturedSelectedType"] =="true"?true: false;
+    print(Get.parameters["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }

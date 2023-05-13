@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -64,12 +63,14 @@ class _WalletScreenState extends State<WalletScreen> {
                                 walletController.isFromCartScreen.value == true
                                     ? width10SizedBox
                                     : height0SizedBox,
-                                Text(
-                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
+                                Obx(
+                                      () => Text(
+                                    'Hi, ${walletController.firstName?.value} ${walletController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                               ],
                             ),

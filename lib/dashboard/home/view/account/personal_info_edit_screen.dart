@@ -23,300 +23,306 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primarylight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              SizedBox(
-                                child: Text(
-                                  StringConstants.personalInformationText,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 5,
-                          )
-                        ]),
-                  ],
-                )),
-          )),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        child: SingleChildScrollView(
-          child: Form(
-            key: accountController.formKey,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(80.0),
             child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.personalDetailText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-                    height15SizedBox,
-                    Text(
-                      StringConstants.firstNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
+              color: AppColors.primarylight,
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  child: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    // Get.back();
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.black,
+                                    size: 24.0,
+                                  ),
+                                ),
+                                width10SizedBox,
+                                SizedBox(
+                                  child: Text(
+                                    StringConstants.personalInformationText,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 5,
+                            )
+                          ]),
+                    ],
+                  )),
+            )),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: SingleChildScrollView(
+            child: Form(
+              key: accountController.formKey,
+              child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.personalDetailText,
                         style: const TextStyle(
                             color: AppColors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      ),
+                      height15SizedBox,
+                      Text(
+                        StringConstants.firstNameText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: accountController.firstNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterFirstNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.firstNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller: accountController.firstNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterFirstNameText;
+                            }
+                            return null;
+                          },
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            hintText: StringConstants.firstNameText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.lastNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
+                          )),
+                      height20SizedBox,
+                      Text(
+                        StringConstants.lastNameText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller: accountController.lastNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseEnterLastNameText;
+                            }
+                            return null;
+                          },
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            hintText: StringConstants.lastNameText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          )),
+                      height20SizedBox,
+                      Text(
+                        StringConstants.nickNameText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller: accountController.nickNameTextController,
+                          keyboardType: TextInputType.text,
+                        /*  validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseEnterNickNameText;
+                            }
+                            return null;
+                          },*/
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            hintText: StringConstants.nickNameText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          )),
+                      height20SizedBox,
+                      Text(
+                        StringConstants.addressText,
                         style: const TextStyle(
                             color: AppColors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      ),
+                      height20SizedBox,
+                      Text(
+                        StringConstants.addressLine1Text,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: accountController.lastNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLastNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.lastNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.nickNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: accountController.nickNameTextController,
-                        keyboardType: TextInputType.text,
-                      /*  validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterNickNameText;
-                          }
-                          return null;
-                        },*/
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.nickNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.addressText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.addressLine1Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    InkWell(
-                      onTap: () async {
-                        Prediction? p = await PlacesAutocomplete.show(
-                            offset: 0,
-                            radius: 1000,
-                            types: [],
-                            strictbounds: false,
-                            context: context,
-                            apiKey: accountController.kGoogleApiKey,
-                            mode: Mode.overlay,
-                            language: "en",
-                            components: []);
-                        int idx = p!.description!.indexOf(",");
-                        List parts = [
-                          p.description!.substring(0, idx).trim(),
-                          p.description!.substring(idx + 1).trim()
-                        ];
-                        accountController.addressLine1TextController.text =
-                            parts[0].toString();
-                        GeoData addresses = await Geocoder2.getDataFromAddress(
-                            address: p.description.toString(),
-                            googleMapApiKey: accountController.kGoogleApiKey);
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                      InkWell(
+                        onTap: () async {
+                          Prediction? p = await PlacesAutocomplete.show(
+                              offset: 0,
+                              radius: 1000,
+                              types: [],
+                              strictbounds: false,
+                              context: context,
+                              apiKey: accountController.kGoogleApiKey,
+                              mode: Mode.overlay,
+                              language: "en",
+                              components: []);
+                          int idx = p!.description!.indexOf(",");
+                          List parts = [
+                            p.description!.substring(0, idx).trim(),
+                            p.description!.substring(idx + 1).trim()
+                          ];
+                          accountController.addressLine1TextController.text =
+                              parts[0].toString();
+                          GeoData addresses = await Geocoder2.getDataFromAddress(
+                              address: p.description.toString(),
+                              googleMapApiKey: accountController.kGoogleApiKey);
 
                         if (addresses.address != null) {
                           if (addresses.city.isNotEmpty) {
@@ -838,7 +844,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                       ),
                       onTap: () {
                         // accountController.apiUpdateUserDetail();
-                        accountController.validateAndSubmit();
+                        accountController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.updateText,

@@ -76,7 +76,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                // Get.back();
+                                Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -89,13 +90,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
+                                Obx(()=> Text(
+                                  'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                      fontWeight: FontWeight.w400),
+                                ),),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
@@ -150,7 +151,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         child: InkWell(
                           onTap: () {
                             searchStoreUserController.searchController.clear();
-                            Get.to(const FilterOptionScreen());
+                            SharedPreferenceStorage.setData("context", context);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const FilterOptionScreen(),
+                            ));
+                            // Get.to(const FilterOptionScreen());
+
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,
@@ -275,11 +281,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
-    searchStoreUserController.storeAddresses.value = [];
-    searchStoreUserController.favStoreAddresses.value = [];
-    searchStoreUserController.page.value = 1;
     await searchStoreUserController.apiGetNearByStores();
-
     updateMarker(lat, lng);
   }
 

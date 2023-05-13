@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
   const OrdersHomeMainScreen({super.key});
@@ -144,7 +145,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                      Get.back();
+                                      Navigator.of(context).pop();
+                                      // Get.back();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -343,9 +345,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       "";
 
                               ordersHomeMainController.apiGetStoreOrderDetail();
-                              Get.to(
-                                () => const MarkOrderStatusScreen(),
-                              );
+
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const MarkOrderStatusScreen(),
+                              ));
+                              // Get.to(
+                              //   () => const MarkOrderStatusScreen(),
+                              // );
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

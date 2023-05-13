@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/owner_transaction_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/user_transaction_detail.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -208,7 +208,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -282,7 +283,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.to(
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) =>
+                                        const UserTransactionDetailScreen(),
+                                  ));
+                                  Get.parameters["isFromTransaction"] = "true";
+                                  Get.parameters["user_stripe_card_id"] =
+                                      transactionController
+                                              .userTransactionList![index]
+                                              .userWalletTransactionId ??
+                                          "";
+                                 /* Get.to(
                                       () => const UserTransactionDetailScreen(),
                                       arguments: {
                                         "isFromTransaction": true,
@@ -291,7 +304,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     .userTransactionList![index]
                                                     .userWalletTransactionId ??
                                                 "",
-                                      });
+                                      });*/
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -470,7 +483,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       index]
                                                                   .store ==
                                                               null
-                                                          ? StringConstants.walletTransactionText
+                                                          ? StringConstants
+                                                              .walletTransactionText
                                                           : transactionController
                                                                   .userTransactionList![
                                                                       index]
@@ -489,17 +503,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     index]
                                                                 .orderTransaction !=
                                                             null
-                                                        ? "\$${transactionController.userTransactionList![index]
-                                                        .orderTransaction!
-                                                        .transaction!
-                                                        .transactionAmount!
-                                                        .toStringAsFixed(
-                                                        2)}"
-                                                        : "\$${transactionController
-                                                        .userTransactionList![index]
-                                                        .netBalance
-                                                        .toStringAsFixed(
-                                                        2)}",
+                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                        : "\$${transactionController.userTransactionList![index].netBalance.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -514,7 +519,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text("${StringConstants.transactionTypeText}: ",
+                                                  Text(
+                                                      "${StringConstants.transactionTypeText}: ",
                                                       style: const TextStyle(
                                                           color:
                                                               AppColors.black,
@@ -588,29 +594,28 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Get.parameters[
+                                          "store_wallet_transaction_id"] =
+                                      transactionController
+                                          .ownerOrderTransactionList![index]
+                                          .storeWalletTransactionId;
+                                  Get.parameters["store_id"] =
+                                      transactionController
+                                          .ownerOrderTransactionList![index]
+                                          .storeId;
                                   transactionController
                                               .ownerOrderTransactionList![index]
                                               .orderTransaction !=
                                           null
-                                      ? Get.to(
-                                          const OwnerTransactionDetailScreen(),
-                                          arguments: {
-                                              "store_wallet_transaction_id":
-                                                  transactionController
-                                                      .ownerOrderTransactionList![
-                                                          index]
-                                                      .storeWalletTransactionId,
-                                              "store_id": transactionController
-                                                  .ownerOrderTransactionList![
-                                                      index]
-                                                  .storeId
-                                            })
-                                      : transactionController
-                                                  .ownerOrderTransactionList![
-                                                      index]
-                                                  .orderItemRefundTransaction !=
-                                              null
-                                          ? Get.to(
+                                      ? Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                          builder: (_) =>
+                                              const OwnerTransactionDetailScreen(),
+                                        ))
+
+                                     /* Get.to(
                                               const OwnerTransactionDetailScreen(),
                                               arguments: {
                                                   "store_wallet_transaction_id":
@@ -622,7 +627,31 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                       .ownerOrderTransactionList![
                                                           index]
                                                       .storeId
-                                                })
+                                                })*/
+                                      : transactionController
+                                                  .ownerOrderTransactionList![
+                                                      index]
+                                                  .orderItemRefundTransaction !=
+                                              null
+                                          ? Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const OwnerTransactionDetailScreen(),
+                                            ))
+
+                                          /*Get.to(
+                                                      const OwnerTransactionDetailScreen(),
+                                                      arguments: {
+                                                          "store_wallet_transaction_id":
+                                                              transactionController
+                                                                  .ownerOrderTransactionList![
+                                                                      index]
+                                                                  .storeWalletTransactionId,
+                                                          "store_id": transactionController
+                                                              .ownerOrderTransactionList![
+                                                                  index]
+                                                              .storeId
+                                                        })*/
                                           : null;
                                 },
                                 child: Container(
@@ -806,13 +835,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                               FontWeight.w500,
                                                           fontSize: 16)),
                                                   Text(
-                                                    "\$${ transactionController
-                                                        .ownerOrderTransactionList![
-                                                    index]
-                                                        .orderTransaction!
-                                                        .transaction!
-                                                        .transactionAmount!
-                                                        .toStringAsFixed(2)}",
+                                                    "\$${transactionController.ownerOrderTransactionList![index].orderTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -830,7 +853,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                 children: [
                                                   Text(
                                                       "${StringConstants.transactionTypeText}: ",
-                                                      style:const TextStyle(
+                                                      style: const TextStyle(
                                                           color:
                                                               AppColors.black,
                                                           fontWeight:

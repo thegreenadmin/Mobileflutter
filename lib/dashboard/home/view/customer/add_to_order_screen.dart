@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -33,8 +34,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             child: SingleChildScrollView(
                 child: Obx(
               () => Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,12 +53,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           flex: 4,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
-                            child: storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productImages ==
+                            child: storeHomeMainController.productDetailResponse
+                                            .value.data?.product?.productImages ==
                                         null ||
                                     storeHomeMainController
                                         .productDetailResponse
@@ -98,8 +94,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                       storeHomeMainController
@@ -154,12 +149,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               SizedBox(
                                 width: 200,
                                 child: Text(
-                                    storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.description ??
+                                    storeHomeMainController.productDetailResponse
+                                            .value.data?.product?.description ??
                                         "",
                                     style: TextStyle(
                                         fontSize: 14,
@@ -199,40 +190,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             fontWeight: FontWeight.w400,
                                             fontSize: 16)),
                                     TextSpan(
-                                      text: storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.offer
-                                                  ?.offerValue !=
-                                              null
-                                          ? storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data!
-                                                  .product!
-                                                  .offer!
-                                                  .offerType!
-                                                  .contains("percentage")
-                                              ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
-                                              : ''
-                                                  ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                          : storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data !=
-                                                  null
-                                              ? storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data!
-                                                      .product!
-                                                      .discountType!
-                                                      .contains("percentage")
-                                                  ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
-                                                  : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
-                                              : ' 0%',
+                                      text: storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue!=null?
+                                      storeHomeMainController.productDetailResponse.value.data!.product!.offer!.offerType!.contains("percentage")?
+                                      ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%':''
+                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}':
+                                      storeHomeMainController.productDetailResponse.value.data!=null ?
+                                      storeHomeMainController.productDetailResponse.value.data!.product!.discountType!.contains("percentage")?
+                                          ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%':
+                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}':' 0%',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16,
@@ -393,15 +358,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     Row(
                       children: [
                         Text(
-                          double.parse(storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data
-                                      ?.product
-                                      ?.averageRating
-                                      ?.toString() ??
-                                  "0.0")
-                              .toString(),
+                          double.parse(storeHomeMainController.productDetailResponse.value.data?.product?.averageRating?.toString()??"0.0").toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
@@ -413,23 +370,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RatingBar.builder(
-                              initialRating: storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data
-                                      ?.product
-                                      ?.averageRating
-                                      ?.toDouble() ??
-                                  0.0,
+                              initialRating: storeHomeMainController.productDetailResponse.value.data?.product?.averageRating?.toDouble()??0.0,
                               minRating: 1,
-                              direction: Axis.horizontal,
+                              direction:  Axis.horizontal,
                               allowHalfRating: false,
                               unratedColor: AppColors.grey,
                               itemCount: 5,
                               ignoreGestures: true,
                               itemSize: 20.0,
-                              itemPadding:
-                                  const EdgeInsets.symmetric(horizontal: 1.0),
+                              itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
                               itemBuilder: (context, _) => const Icon(
                                 // _selectedIcon ?? Icons.star,
                                 Icons.star,
@@ -457,9 +406,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         separatorBuilder: (BuildContext context, int index) {
                           return height12SizedBox;
                         },
-                        itemCount: storeHomeMainController.productDetailResponse
-                                .value.data?.product?.productReviews?.length ??
-                            0,
+                        itemCount: storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length??0,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int i) {
@@ -473,7 +420,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 )),
                             child: Column(children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: Colors.transparent,
@@ -486,46 +434,37 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
-                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
+                                         "${ storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
+                                             "${ storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
                                           style: const TextStyle(
                                               fontSize: 16.0,
                                               color: AppColors.black,
-                                              fontWeight: FontWeight.w600),
+                                              fontWeight:
+                                              FontWeight.w600),
                                         ),
                                         height6SizedBox,
                                         Row(
                                           children: [
                                             RatingBar.builder(
-                                              initialRating:
-                                                  storeHomeMainController
-                                                          .productDetailResponse
-                                                          .value
-                                                          .data
-                                                          ?.product
-                                                          ?.productReviews?[i]
-                                                          .rating
-                                                          ?.toDouble() ??
-                                                      0.0,
+                                              initialRating: storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i]
+                                                  .rating?.toDouble()??0.0,
                                               minRating: 1,
-                                              direction: Axis.horizontal,
+                                              direction:  Axis.horizontal,
                                               allowHalfRating: false,
-                                              unratedColor: AppColors.grey,
+                                              unratedColor:  AppColors.grey,
                                               itemCount: 5,
                                               ignoreGestures: true,
                                               itemSize: 20.0,
-                                              itemPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 1.0),
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(
+                                              itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                              itemBuilder: (context, _) => const Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
-                                              onRatingUpdate: (rating) {},
+                                              onRatingUpdate: (rating) {
+                                              },
                                               updateOnDrag: false,
                                             ),
                                             width8SizedBox,
@@ -544,19 +483,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         ),
                                         height6SizedBox,
                                         Text(
-                                          storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.productReviews?[i]
-                                                  .review ??
-                                              "",
+                                          storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i]
+                                              .review ?? "",
                                           style: const TextStyle(
                                               fontSize: 14.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w400),
                                         ),
+
                                       ],
                                     ),
                                   ),

@@ -5,15 +5,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/create_owner_bankaccount_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/payout_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import 'component/auto_reload_screen.dart';
@@ -80,7 +78,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

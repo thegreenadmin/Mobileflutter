@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MangeProductScreen extends StatefulWidget {
@@ -139,7 +140,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Navigator.of(context).pop();
+                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -188,11 +190,23 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(() => const AddNewCategoryScreen(), arguments: {
-                        "storeId": manageStoreController.storeId.value,
-                        "isFeaturedSelectedType":
-                            manageStoreController.isFeaturedTypeSelected.value,
-                      })!
+                      Get.parameters["storeId"] =
+                          manageStoreController.storeId.value;
+                      Get.parameters["isFeaturedSelectedType"] =
+                          manageStoreController.isFeaturedTypeSelected.value ==
+                                  true
+                              ? "true"
+                              : "false";
+                      SharedPreferenceStorage.setData("context", context);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                        builder: (_) => const AddNewCategoryScreen(),
+                      ))
+                          // Get.to(() => const AddNewCategoryScreen(), arguments: {
+                          //   "storeId": manageStoreController.storeId.value,
+                          //   "isFeaturedSelectedType":
+                          //       manageStoreController.isFeaturedTypeSelected.value,
+                          // })!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
                       });
@@ -294,7 +308,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           backgroundColor: AppColors.primary,
                                         ),
                                         onPressed: () {
-                                          Get.back();
+                                          Navigator.of(context).pop();
+                                          // Get.back();
                                           manageStoreController
                                                   .categoryId.value =
                                               manageStoreController
@@ -311,7 +326,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         backgroundColor: AppColors.primary,
                                       ),
                                       onPressed: () {
-                                        Get.back();
+                                        Navigator.of(context).pop();
+                                        // Get.back();
                                       },
                                       child: Text(StringConstants.cancelText),
                                     ),
@@ -331,8 +347,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           .categoriesList[index].categoryId ??
                                       "";
                               manageStoreController.apiGetStoreProducts();
-
-                              Get.to(const ProductListScreen());
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const ProductListScreen(),
+                              ));
+                              // Get.to(const ProductListScreen());
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -419,17 +439,30 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .categoriesList[index]
                                                     .categoryId ??
                                                 "";
-
-                                        Get.to(const EditCategoryScreen(),
-                                                arguments: {
-                                              "storeId": manageStoreController
-                                                  .storeId.value,
-                                              "categoryId":
-                                                  manageStoreController
-                                                          .categoriesList[index]
-                                                          .categoryId ??
-                                                      ""
-                                            })!
+                                        Get.parameters["storeId"] =
+                                            manageStoreController.storeId.value;
+                                        Get.parameters["categoryId"] =
+                                            manageStoreController
+                                                    .categoriesList[index]
+                                                    .categoryId ??
+                                                "";
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (_) =>
+                                              const EditCategoryScreen(),
+                                        ))
+                                            // Get.to(const EditCategoryScreen(),
+                                            //        arguments: {
+                                            //      "storeId": manageStoreController
+                                            //          .storeId.value,
+                                            //      "categoryId":
+                                            //          manageStoreController
+                                            //                  .categoriesList[index]
+                                            //                  .categoryId ??
+                                            //              ""
+                                            //    })!
                                             .then((value) {
                                           manageStoreController
                                               .apiGetCategoriesList();

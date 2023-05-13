@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -138,6 +139,9 @@ class OwnerStoresController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText);
+
     getApiData();
     getGkey();
     if (Get.arguments['isFromHome'] == true) {

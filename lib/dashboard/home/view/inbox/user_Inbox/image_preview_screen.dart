@@ -38,7 +38,8 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Navigator.of(context).pop();
+                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

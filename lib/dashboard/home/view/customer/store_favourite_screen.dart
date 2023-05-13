@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.da
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreFavouriteScreen extends StatefulWidget {
@@ -70,7 +71,11 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                   .toString();
                           await storeHomeMainController
                               .apiGetShopProductDetailApi();
-                          Get.to(const AddToOrderScreen());
+                          SharedPreferenceStorage.setData("context", context);
+                          await Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AddToOrderScreen(),
+                          ));
+                          // Get.to(const AddToOrderScreen());
                           await storeHomeMainController.apiGetCartListApi();
                         },
                         child: Column(

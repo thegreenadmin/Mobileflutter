@@ -56,6 +56,9 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText);
+
     setupScrollController(Get.context);
   }
 

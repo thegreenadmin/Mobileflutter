@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -217,7 +218,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
                     Get.to(const PreviousOrdersScreen());
                   },
@@ -246,7 +248,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Navigator.of(context).pop();
+                // Get.back();
                 contactAlertDailogue(context);
               },
               child: Row(
@@ -276,7 +279,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-                  Get.back();
+                  Navigator.of(context).pop();
+                  // Get.back();
                   storeHomeMainController.termsAndPrivacyDailogue(context,
                       content: storeHomeMainController.storeDetailsResponse
                           .value.data!.store!.storePages!.first.storePageContent

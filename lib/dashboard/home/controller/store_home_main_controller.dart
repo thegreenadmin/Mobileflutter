@@ -94,14 +94,17 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
-    if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
-      isFromHome.value = Get.arguments["isFromHome"] ?? false;
-      storeId.value =
-          Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
+    print("isFromHome================");
+    print(Get.parameters["isFromHome"]);
+    print(Get.parameters["storeId"]);
+    if (Get.parameters == null ? false : Get.parameters['isFromHome'] != "false") {
+      isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
+
       productId.value =
-          Get.arguments == null ? "" : Get.arguments["productId"] ?? "";
+          Get.parameters == null ? "" : Get.parameters["productId"] ?? "";
     }
+    storeId.value =
+    Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
     apiGetUserDetailsApi();
     if (isFromHome.value) {
       nearby.Store store = nearby.Store();
@@ -117,9 +120,10 @@ class StoreHomeMainController extends GetxController {
       nearby.Store store = nearby.Store();
       store.storeId = storeId.value;
       storeAddress.value.store = store;
-      storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      isFavouriteStore.value =
-          storeAddress.value.store?.isFavouriteStore ?? false;
+      isFavouriteStore.value = store.isFavouriteStore ?? false;
+      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+      // isFavouriteStore.value =
+      //     storeAddress.value.store?.isFavouriteStore ?? false;
       setupScrollController(Get.context);
       apiGetStoreDetailsApi();
       onIndexChange(0);
@@ -423,8 +427,9 @@ class StoreHomeMainController extends GetxController {
             cartListResponse.data!.cartItems!.isEmpty) {
           isDeleteCartItem.value = false;
           // Get.offAll(BottomNavigation());
-          Get.back();
-          Get.back();
+          // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
+          Navigator.of(Get.context!).pop();
+          Navigator.of(Get.context!).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
@@ -583,7 +588,6 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
         apiGetCartListApi();
-        await apiGetUserWalletBalance();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -624,7 +628,6 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
         apiGetCartListApi();
-        await apiGetUserWalletBalance();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -679,7 +682,6 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.back();
                     Get.back();
                     Get.back();
                     Get.back();
@@ -831,6 +833,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("STORE DETAILS RESPONSE 123 *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
 
@@ -1020,7 +1023,6 @@ class StoreHomeMainController extends GetxController {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                Get.back();
                                 selectedUserAddress.value = userAddress[index];
                               },
                               child: Container(

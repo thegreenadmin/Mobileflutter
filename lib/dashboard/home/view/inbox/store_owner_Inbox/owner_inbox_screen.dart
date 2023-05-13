@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.dart';
 
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -135,7 +135,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back();
+                                    Navigator.of(context).pop();
+                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -288,30 +289,53 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () {
-                                              Get.to(
-                                                  const OwnerInboxDetailScreen(),
-                                                  arguments: {
-                                                    "storeName":
-                                                        ownerInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .store!
-                                                                .storeName ??
-                                                            "",
-                                                    "storeId":
-                                                        ownerInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .store!
-                                                                .storeId ??
-                                                            "",
-                                                    "messageHeadId":
-                                                        ownerInboxController
-                                                                .inboxList[
-                                                                    index]
-                                                                .messageHeadId ??
-                                                            ""
-                                                  });
+                                              Get.parameters["storeName"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .store!
+                                                          .storeName ??
+                                                      "";
+                                              Get.parameters["storeId"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .store!
+                                                          .storeId ??
+                                                      "";
+                                              Get.parameters["messageHeadId"] =
+                                                  ownerInboxController
+                                                          .inboxList[index]
+                                                          .messageHeadId ??
+                                                      "";
+                                              SharedPreferenceStorage.setData(
+                                                  "context", context);
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          const OwnerInboxDetailScreen()));
+                                              // Get.to(
+                                              //     const OwnerInboxDetailScreen(),
+                                              //     arguments: {
+                                              //       "storeName":
+                                              //           ownerInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .store!
+                                              //                   .storeName ??
+                                              //               "",
+                                              //       "storeId":
+                                              //           ownerInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .store!
+                                              //                   .storeId ??
+                                              //               "",
+                                              //       "messageHeadId":
+                                              //           ownerInboxController
+                                              //                   .inboxList[
+                                              //                       index]
+                                              //                   .messageHeadId ??
+                                              //               ""
+                                              //     });
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(
@@ -368,7 +392,10 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Get.back();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            // Get.back();
                                                             ownerInboxController.apiDeleteStoreMessages(
                                                                 messageHeadId: ownerInboxController
                                                                         .inboxList[
@@ -391,7 +418,9 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Get.back();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          // Get.back();
                                                         },
                                                         child: Text(
                                                             StringConstants

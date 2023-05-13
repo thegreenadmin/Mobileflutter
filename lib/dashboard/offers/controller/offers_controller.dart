@@ -42,20 +42,23 @@ class OffersController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
-    if (Get.arguments == null
-        ? false
-        : Get.arguments['isFromNotification'] != false) {
-      isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
-    }
 
+    super.onInit();
+    if (Get.parameters == null
+        ? false
+        : Get.parameters['isFromNotification'] != "false") {
+      isFromNotification.value =
+      Get.parameters["isFromNotification"]=="true"?true:false;
+    }
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserOffersList();
+      apiGetUserOffersList(Get.context!);
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOffersList();
+      apiGetOwnerOffersList(Get.context!);
     }
   }
 
@@ -67,7 +70,7 @@ class OffersController extends GetxController {
   }
 
   //Get Offers List Api [OWNER]
-  Future apiGetOwnerOffersList() async {
+  Future apiGetOwnerOffersList(BuildContext context) async {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
@@ -102,7 +105,10 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -110,7 +116,7 @@ class OffersController extends GetxController {
   }
 
   //Get Offers List Api [USER]
-  Future apiGetUserOffersList() async {
+  Future apiGetUserOffersList(BuildContext context) async {
     isLoading!.value = true;
     debugPrint(
       "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
@@ -137,7 +143,10 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -145,7 +154,7 @@ class OffersController extends GetxController {
   }
 
 //Delete Offer
-  Future apiDeleteOffer() async {
+  Future apiDeleteOffer(BuildContext context) async {
     debugPrint(
         "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
     Map<String, String> headers = {
@@ -168,9 +177,9 @@ class OffersController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         if (role!.value == Role.customerRoleText) {
-          apiGetUserOffersList();
+          apiGetUserOffersList(context);
         } else {
-          apiGetOwnerOffersList();
+          apiGetOwnerOffersList(context);
         }
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode409) {
@@ -178,7 +187,10 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

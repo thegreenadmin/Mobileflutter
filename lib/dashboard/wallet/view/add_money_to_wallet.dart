@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pay/pay.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -12,6 +13,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'payment_configurations.dart' as payment_configurations;
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class AddMoneyToWallet extends StatefulWidget {
   const AddMoneyToWallet({
@@ -104,7 +106,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -464,8 +467,14 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                       ],
                                                     ),
                                                     onTap: () {
-                                                      Get.to(() =>
-                                                          AddCardDetailScreen());
+                                                      SharedPreferenceStorage
+                                                          .setData(
+                                                          "context", context);
+                                                      Navigator.of(context)
+                                                          .push(MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            AddCardDetailScreen(),
+                                                      ));
                                                     },
                                                     height: 50,
                                                     width: WidgetConstants
@@ -623,7 +632,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     colors: [AppColors.primary, AppColors.primary],
                   ),
                   onTap: () {
-                    addCardController.validateAndSubmit();
+                    addCardController.validateAndSubmit(context);
                   },
                   height: 50,
                   text: StringConstants.okText,

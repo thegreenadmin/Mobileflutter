@@ -5,7 +5,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
@@ -91,26 +90,33 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primarylight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back();
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(80.0),
+            child: Container(
+              color: AppColors.primarylight,
+              child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  child: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    // Get.back();
+                                    Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -190,169 +196,197 @@ class _AccountScreenState extends State<AccountScreen> {
                               .toString() ==
                           Role.customerRoleText) {
                         SharedPreferenceStorage.setData(
-                            Role.role.value, Role.storeOwnerRoleText);
-                        await Get.offAll(BottomNavigation());
+                            Role.role.value, Role.storeOwnerRoleText);setState(() {});
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        // Navigator.of(context).pop();
+                        //await Get.offAll(BottomNavigation());
                       } else {
                         SharedPreferenceStorage.setData(
-                            Role.role.value, Role.customerRoleText);
-                        await Get.offAll(BottomNavigation());
+                            Role.role.value, Role.customerRoleText);// Navigator.of(context)
+                        //     .pushReplacement(MaterialPageRoute(
+                        //   builder: (_) => BottomNavigation(),
+                        // ));
+                        setState(() {});
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+
+                        // Navigator.of(context).pop();
+                        //await Get.offAll(BottomNavigation());
                       }
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          SharedPreferenceStorage.getData(Role.role.value)
-                                      .toString() ==
-                                  Role.customerRoleText
-                              ? StringConstants.switchToStoreText
-                              : StringConstants.switchToCustomerText,
-                          style: TextStyle(
-                              fontSize: 16,
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 14.0, right: 14.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            SharedPreferenceStorage.getData(Role.role.value)
+                                        .toString() ==
+                                    Role.customerRoleText
+                                ? StringConstants.switchToStoreText
+                                : StringConstants.switchToCustomerText,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.blacklight,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Image.asset(
+                            ImageConstants.switchicon,
+                            scale: 2.6,
+                          ),
+                        ],
+                      ),
+                    )),
+                const Divider(
+                  thickness: 3,
+                  height: 30,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.profileText,
+                        style: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      height20SizedBox,
+                      InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+
+                          SharedPreferenceStorage.setData("context", context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const PersonalInfoScreen(),
+                          ));
+                          // Get.to(const PersonalInfoScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.person,
+                                  color: AppColors.primary,
+                                  scale: 3.5,
+                                ),
+                                width15SizedBox,
+                                Text(StringConstants.personalInformationText,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.arrowForward,
+                              scale: 3.4,
                               color: AppColors.blacklight,
-                              fontWeight: FontWeight.w500),
+                            )
+                          ],
                         ),
-                        Image.asset(
-                          ImageConstants.switchicon,
-                          scale: 2.6,
+                      ),
+                      const Divider(
+                        height: 40,
+                        thickness: 1,
+                      ),
+                      InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AddCardScreen(),
+                          ));
+                          // Get.to(const AddCardScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.cards,
+                                  color: AppColors.primary,
+                                  scale: 3.5,
+                                ),
+                                width15SizedBox,
+                                Text(StringConstants.cardAndPaymentsText,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.arrowForward,
+                              scale: 3.4,
+                              color: AppColors.blacklight,
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                  )),
-              const Divider(
-                thickness: 3,
-                height: 30,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.profileText,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    height20SizedBox,
-                    InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        Get.to(const PersonalInfoScreen());
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                ImageConstants.person,
-                                color: AppColors.primary,
-                                scale: 3.5,
-                              ),
-                              width15SizedBox,
-                              Text(StringConstants.personalInformationText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.arrowForward,
-                            scale: 3.4,
-                            color: AppColors.blacklight,
-                          )
-                        ],
                       ),
-                    ),
-                    const Divider(
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        Get.to(const AddCardScreen());
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                ImageConstants.cards,
-                                color: AppColors.primary,
-                                scale: 3.5,
-                              ),
-                              width15SizedBox,
-                              Text(StringConstants.cardAndPaymentsText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.arrowForward,
-                            scale: 3.4,
-                            color: AppColors.blacklight,
-                          )
-                        ],
+                      const Divider(
+                        height: 40,
+                        thickness: 1,
                       ),
-                    ),
-                    const Divider(
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        Get.to(const TransactionScreen());
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                ImageConstants.transactionHistory,
-                                color: AppColors.primary,
-                                scale: 3.5,
-                              ),
-                              width15SizedBox,
-                              Text(StringConstants.transactionHistoryText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.arrowForward,
-                            scale: 3.4,
-                            color: AppColors.blacklight,
-                          )
-                        ],
+                      InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const TransactionScreen(),
+                          ));
+                          // Get.to(const TransactionScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.transactionHistory,
+                                  color: AppColors.primary,
+                                  scale: 3.5,
+                                ),
+                                width15SizedBox,
+                                Text(StringConstants.transactionHistoryText,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.arrowForward,
+                              scale: 3.4,
+                              color: AppColors.blacklight,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    const Divider(
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        Get.to(const AccountIdScreen());
+                      const Divider(
+                        height: 40,
+                        thickness: 1,
+                      ),
+                      InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          SharedPreferenceStorage.setData("context", context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const AccountIdScreen(),
+                          ));
+                          //Get.to(const AccountIdScreen());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -536,137 +570,146 @@ class _AccountScreenState extends State<AccountScreen> {
                                         .isUserInboxMessagesNotify.value) {
                                       accountController
                                           .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: false,
-                                              notificationType: "message");
-                                    } else {
+                                              context,
+                                                isEnabled: true,
+                                                isOwner: false,
+                                                notificationType: "message");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: false,
+                                                isOwner: false,
+                                                notificationType: "message");
+                                      }
+                                    },
+                                  ))
+                              : Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
+                                        .isOwnerInboxMessagesNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
                                       accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: false,
-                                              isOwner: false,
-                                              notificationType: "message");
-                                    }
-                                  },
-                                ))
-                            : Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value: accountController
-                                      .isOwnerInboxMessagesNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController
-                                        .isOwnerInboxMessagesNotify.value = val;
+                                          .isOwnerInboxMessagesNotify
+                                          .value = val;
 
-                                    if (accountController
-                                        .isOwnerInboxMessagesNotify.value) {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: true,
-                                              notificationType: "message");
-                                    } else {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: false,
-                                              isOwner: true,
-                                              notificationType: "message");
-                                    }
-                                  },
-                                )),
-                      ],
-                    ),
-                    height15SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              StringConstants.tippingReceiptsAndOrdersText,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black,
+                                      if (accountController
+                                          .isOwnerInboxMessagesNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: true,
+                                                isOwner: true,
+                                                notificationType: "message");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: false,
+                                                isOwner: true,
+                                                notificationType: "message");
+                                      }
+                                    },
+                                  )),
+                        ],
+                      ),
+                      height15SizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                StringConstants.tippingReceiptsAndOrdersText,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SharedPreferenceStorage.getData(Role.role.value)
-                                    .toString() ==
-                                Role.customerRoleText
-                            ? Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value: accountController
-                                      .isUserTippingNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController
-                                        .isUserTippingNotify.value = val;
-                                    if (accountController
-                                        .isUserTippingNotify.value) {
+                            ],
+                          ),
+                          SharedPreferenceStorage.getData(Role.role.value)
+                                      .toString() ==
+                                  Role.customerRoleText
+                              ? Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
+                                        .isUserTippingNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
                                       accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: false,
-                                              notificationType: "order");
-                                    } else {
+                                          .isUserTippingNotify.value = val;
+                                      if (accountController
+                                          .isUserTippingNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: true,
+                                                isOwner: false,
+                                                notificationType: "order");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: false,
+                                                isOwner: false,
+                                                notificationType: "order");
+                                      }
+                                    },
+                                  ))
+                              : Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
+                                        .isOwnerTippingNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
                                       accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: false,
-                                              isOwner: false,
-                                              notificationType: "order");
-                                    }
-                                  },
-                                ))
-                            : Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value: accountController
-                                      .isOwnerTippingNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController
-                                        .isOwnerTippingNotify.value = val;
+                                          .isOwnerTippingNotify.value = val;
 
-                                    if (accountController
-                                        .isOwnerTippingNotify.value) {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: true,
-                                              notificationType: "order");
-                                    } else {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
+                                      if (accountController
+                                          .isOwnerTippingNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: true,
+                                                isOwner: true,
+                                                notificationType: "order");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                               isEnabled: false,
                                               isOwner: true,
                                               notificationType: "order");
@@ -697,97 +740,106 @@ class _AccountScreenState extends State<AccountScreen> {
                             ? Obx(() => FlutterSwitch(
                                   height: 28,
                                   width: 50,
-                                  value:
-                                      accountController.isUserOfferNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController.isUserOfferNotify.value =
-                                        val;
+                                  value:accountController
+                                        .isUserOfferNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
+                                      accountController
+                                          .isUserOfferNotify.value = val;
 
-                                    if (accountController
-                                        .isUserOfferNotify.value) {
+                                      if (accountController
+                                          .isUserOfferNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: true,
+                                                isOwner: false,
+                                                notificationType: "offer");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: false,
+                                                isOwner: false,
+                                                notificationType: "offer");
+                                      }
+                                    },
+                                  ))
+                              : Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
+                                        .isOnwerOfferNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
                                       accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: false,
-                                              notificationType: "offer");
-                                    } else {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: false,
-                                              isOwner: false,
-                                              notificationType: "offer");
-                                    }
-                                  },
-                                ))
-                            : Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value: accountController
-                                      .isOnwerOfferNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController.isOnwerOfferNotify.value =
-                                        val;
+                                          .isOnwerOfferNotify.value = val;
 
-                                    if (accountController
-                                        .isOnwerOfferNotify.value) {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: true,
-                                              isOwner: true,
-                                              notificationType: "offer");
-                                    } else {
-                                      accountController
-                                          .apiUpdateNotificationStatus(
-                                              isEnabled: false,
-                                              isOwner: true,
-                                              notificationType: "offer");
-                                    }
-                                  },
-                                )),
-                      ],
-                    ),
-                    height25SizedBox,
-                    CustomButton(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.redlight, AppColors.redlight],
+                                      if (accountController
+                                          .isOnwerOfferNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: true,
+                                                isOwner: true,
+                                                notificationType: "offer");
+                                      } else {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
+                                                isEnabled: false,
+                                                isOwner: true,
+                                                notificationType: "offer");
+                                      }
+                                    },
+                                  )),
+                        ],
                       ),
-                      onTap: () async {
-                        SharedPreferenceStorage.clearData();
-                        await Get.offAll(const StartJourneyScreen());
-                      },
-                      height: 50,
-                      textColor: AppColors.red,
-                      text: StringConstants.deleteAccountText,
-                      borderRadius: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    height25SizedBox,
-                  ],
+                      height25SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.redlight, AppColors.redlight],
+                        ),
+                        onTap: () async {
+                          SharedPreferenceStorage.clearData();
+                          await Navigator.of(Get.context!)
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (_) => const StartJourneyScreen(),
+                          ));
+                          // await Get.offAll(const StartJourneyScreen());
+                        },
+                        height: 50,
+                        textColor: AppColors.red,
+                        text: StringConstants.deleteAccountText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      height25SizedBox,
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class CartScreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,9 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(result: true);
+                                    Navigator.of(context).pop(true);
+                                    // Get.back();
+                                    // Get.back(result: true );
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -74,8 +76,7 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -325,7 +326,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                     .primary,
                                                           ),
                                                           onPressed: () {
-                                                            Get.back();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            // Get.back();
                                                             storeHomeMainController.apiDeleteCart(
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
@@ -343,7 +347,9 @@ class _CartScreenState extends State<CartScreen> {
                                                               AppColors.primary,
                                                         ),
                                                         onPressed: () {
-                                                          Get.back();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          // Get.back();
                                                         },
                                                         child: Text(
                                                             StringConstants
@@ -552,7 +558,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 )
                                               : Image.asset(
                                                   ImageConstants.curb,
-                                                  scale: 2,
+                                                  scale: 2.2,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
                                                               .value ==
@@ -890,8 +896,14 @@ class _CartScreenState extends State<CartScreen> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    Get.to(const WalletScreen(),
+                                  onTap: () {// SharedPreferenceStorage.setData("context", context);
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const PersonalInfoEditScreen(),
+                                // ))
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                                Get.parameters["currentIndex"] = "1";
+                                    // Get.to(const WalletScreen(),
                                         arguments: {"isFromCartScreen": true});
                                   },
                                   child: Text(

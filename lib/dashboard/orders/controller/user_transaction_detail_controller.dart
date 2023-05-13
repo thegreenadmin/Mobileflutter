@@ -24,7 +24,8 @@ class UserTransactionDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
+    userStripeCardId!.value = Get.parameters['user_stripe_card_id'] ?? "";
+    // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
     apiGetUserOrderTransactionHistory();
   }
 

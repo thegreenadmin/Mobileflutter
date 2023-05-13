@@ -32,8 +32,8 @@ class TransactionDetailController extends GetxController {
   void onInit() {
     super.onInit();
     storeWalletTransactionId!.value =
-        Get.arguments['store_wallet_transaction_id'] ?? "";
-    storeId!.value = Get.arguments['store_id'] ?? "";
+        Get.parameters['store_wallet_transaction_id'] ?? "";
+    storeId!.value = Get.parameters['store_id'] ?? "";
     isCurrentMonthSelected.value = true;
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {

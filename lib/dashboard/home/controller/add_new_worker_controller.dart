@@ -81,8 +81,8 @@ class AddNewWorkerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    storeName.value = Get.arguments["storeName"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
     apiGetUserStoreList();
     apiGetWorkerList();
     apiGetRoleList();

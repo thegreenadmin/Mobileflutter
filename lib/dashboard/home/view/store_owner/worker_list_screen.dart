@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class WorkerListScreen extends StatefulWidget {
   const WorkerListScreen({super.key});
@@ -42,7 +43,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Get.back();
+                                Navigator.of(context).pop();
+                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -97,7 +99,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      Get.to(const AddNewWorkerScreen());
+                      SharedPreferenceStorage.setData("context", context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const AddNewWorkerScreen(),
+                      ));
+                      // Get.to(const AddNewWorkerScreen());
                     },
                     child: Row(
                       children: [
@@ -209,7 +215,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                             backgroundColor: AppColors.primary,
                                           ),
                                           onPressed: () {
-                                            Get.back();
+                                            Navigator.of(context).pop();
+                                            // Get.back();
                                           },
                                           child:
                                               Text(StringConstants.deleteText)),
@@ -218,7 +225,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                           backgroundColor: AppColors.primary,
                                         ),
                                         onPressed: () {
-                                          Get.back();
+                                          Navigator.of(context).pop();
+                                          // Get.back();
                                         },
                                         child: Text(StringConstants.cancelText),
                                       ),
@@ -233,7 +241,12 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                Get.to(() => const EditWorkerScreen());
+                                SharedPreferenceStorage.setData(
+                                    "context", context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const EditWorkerScreen(),
+                                ));
+                                // Get.to(() => const EditWorkerScreen());
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },
@@ -326,8 +339,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
-                                                  fontWeight:
-                                                      FontWeight.w500),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             height8SizedBox,
                                             Row(
@@ -340,8 +352,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   "${StringConstants.storesText}: ",
                                                   style: TextStyle(
                                                       fontSize: 12.0,
-                                                      color: AppColors
-                                                          .blacklight,
+                                                      color:
+                                                          AppColors.blacklight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
@@ -352,8 +364,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                         .storeName.value,
                                                     style: const TextStyle(
                                                         fontSize: 12.0,
-                                                        color:
-                                                            AppColors.black,
+                                                        color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ),
@@ -390,14 +401,14 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                           "${concatenate.toString()} \n"
                                                           "${addNewWorkerController.workerList[index].storeUserTimings != null && addNewWorkerController.workerList[index].storeUserTimings!.isNotEmpty ? "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.startTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} - "
                                                               "${Utility.formatDateTime(addNewWorkerController.workerList[index].storeUserTimings?.first.endTime ?? "", firstFormat: "hh:mm:ss", secFormat: "hh:mm a").toString()} " : ""}",
-                                                          overflow: TextOverflow.visible,
+                                                          overflow: TextOverflow
+                                                              .visible,
                                                           maxLines: 3,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w400,
-                                                              fontSize:
-                                                                  12.0,
+                                                              fontSize: 12.0,
                                                               color: AppColors
                                                                   .blacklight),
                                                         ),
@@ -429,7 +440,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                             .toString() ??
                                                         "",
                                                     maxLines: 2,
-                                                    overflow: TextOverflow.visible,
+                                                    overflow:
+                                                        TextOverflow.visible,
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
@@ -459,14 +471,16 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                           .user
                                                           ?.phone
                                                           .toString() ??
-                                                      "",maxLines: 2,
-                                                  overflow: TextOverflow.visible,
+                                                      "",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.visible,
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 12.0,
-                                                      color: AppColors
-                                                          .blacklight),
+                                                      color:
+                                                          AppColors.blacklight),
                                                 )
                                               ],
                                             ),
