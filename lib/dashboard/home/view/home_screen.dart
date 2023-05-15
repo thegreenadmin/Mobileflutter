@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/home_offers_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
@@ -340,6 +341,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     items: homeController.userCrouselImgList
                                         .map((item) => InkWell(
                                               onTap: () {
+                                                // Get.to(HomeOffersDetailScreen(),
+                                                //     arguments: {
+                                                //       "storeId":
+                                                //           item.storeId ?? "",
+                                                //       "offerId":
+                                                //           item.offerId ?? ""
+                                                //     });
                                                 // Get.to(
                                                 //     () =>
                                                 //         const StoreHomeMainScreen(),

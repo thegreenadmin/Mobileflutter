@@ -656,7 +656,7 @@ class WalletController extends GetxController {
 //Delete Card api
   Future apiDeleteBankAccounts({String userStripeBankId = ""}) async {
     debugPrint(
-        "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
+        "DELETE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankDelete}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -668,7 +668,7 @@ class WalletController extends GetxController {
     UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankDelete}",
             headers,
             showLoading: false)
         .then((value) async {

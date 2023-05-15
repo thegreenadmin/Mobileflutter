@@ -21,6 +21,7 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class HomeController extends GetxController {
+  
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? email = "".obs;

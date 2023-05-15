@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
@@ -80,7 +81,8 @@ class StoreHomeMainController extends GetxController {
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
   final scrollController = ScrollController();
-
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
   void setupScrollController(context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
@@ -94,6 +96,7 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getCurrentLocation();
     storeId.value = Get.arguments == null ? "" : Get.arguments["storeId"] ?? "";
     if (Get.arguments == null ? false : Get.arguments['isFromHome'] != false) {
       isFromHome.value = Get.arguments["isFromHome"] ?? false;
@@ -109,7 +112,7 @@ class StoreHomeMainController extends GetxController {
       storeAddress.value.store = store;
       isFavouriteStore.value = store.isFavouriteStore ?? false;
       selectedIndex.value = 0;
-      apiGetStoreDetailsApi();
+
       apiGetCartListApi();
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
@@ -120,8 +123,8 @@ class StoreHomeMainController extends GetxController {
       storeAddress.value = Get.arguments["storeAddress"] ?? {};
       isFavouriteStore.value =
           storeAddress.value.store?.isFavouriteStore ?? false;
+
       setupScrollController(Get.context);
-      apiGetStoreDetailsApi();
       onIndexChange(0);
     }
     apiGetUserWalletBalance();
@@ -313,6 +316,14 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
+    await apiGetStoreDetailsApi();
+  }
+
   //Get Categories Api
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
@@ -375,6 +386,7 @@ class StoreHomeMainController extends GetxController {
         if (userAddress.isNotEmpty) {
           selectedUserAddress.value = userAddress.first;
         }
+        getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -815,7 +827,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}&latitude=$lat&longitude=$lng");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -823,7 +835,7 @@ class StoreHomeMainController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeAddress.value.store?.storeId}&latitude=$lat&longitude=$lng",
             headers,
             showLoading: false)
         .then((value) async {
@@ -859,7 +871,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
     debugPrint("Product Shop Detail  URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -868,7 +880,7 @@ class StoreHomeMainController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeAddress.value.store?.storeId}&product_id=${productId.value}&&latitude=$lat&longitude=$lng",
             headers,
             showLoading: true)
         .then((value) async {

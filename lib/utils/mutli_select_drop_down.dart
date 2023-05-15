@@ -27,21 +27,21 @@ class MultiCustomDropDown extends StatefulWidget {
 }
 
 class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
       var concatenate = StringBuffer();
       if (widget.list != null) {
-        for (var item in widget.list??[]) {
-          if(item.isSelected==true){
+        for (var item in widget.list ?? []) {
+          if (item.isSelected == true) {
             concatenate.write(item.name);
             concatenate.write(', ');
           }
         }
         widget.controller!.text = concatenate.toString();
       }
-      return  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+      return TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: widget.controller,
         validator: (val) {
           return widget.validator!(val);
@@ -75,7 +75,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           filled: false,
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide:  BorderSide(
+            borderSide: BorderSide(
               color: AppColors.blacklight,
               width: 1.0,
             ),
@@ -83,28 +83,28 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           border: InputBorder.none,
           disabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide:  BorderSide(
+            borderSide: BorderSide(
               color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           errorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide:  BorderSide(
+            borderSide: BorderSide(
               color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           focusedErrorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide:  BorderSide(
+            borderSide: BorderSide(
               color: AppColors.blacklight,
               width: 1.0,
             ),
           ),
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide:  BorderSide(
+            borderSide: BorderSide(
               color: AppColors.blacklight,
               width: 1.0,
             ),
@@ -126,10 +126,10 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
       },
     );
     var concatenate = StringBuffer();
-    onChanged!(results?.toList()?? []);
+    onChanged!(results?.toList() ?? []);
     if (results != null) {
       for (var item in results) {
-        if(item.isSelected==true){
+        if (item.isSelected == true) {
           concatenate.write(item.name);
           concatenate.write(', ');
         }
@@ -150,11 +150,10 @@ class MultiSelect extends StatefulWidget {
 }
 
 class _MultiSelectState extends State<MultiSelect> {
-
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(dynamic itemValue, bool isSelected) {
     setState(() {
-      itemValue.isSelected=isSelected;
+      itemValue.isSelected = isSelected;
     });
   }
 
@@ -180,7 +179,8 @@ class _MultiSelectState extends State<MultiSelect> {
         child: ListBody(
           children: widget.items
               .map((item) => CheckboxListTile(
-                    value:item.isSelected==true, //_selectedItems.contains(item),
+                    value: item.isSelected ==
+                        true, //_selectedItems.contains(item),
                     activeColor: AppColors.primary,
                     title: Text(item.name),
                     controlAffinity: ListTileControlAffinity.leading,

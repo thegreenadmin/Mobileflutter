@@ -9,8 +9,7 @@ import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:thegreenmall/utils/pdf_download.dart';
 
 RemoteMessage? initialRemoteMessage;
 
@@ -123,8 +122,7 @@ class _MyAppState extends State<MyApp> {
       ),
       getPages: Routers.route,
       //initialRoute: '/welcomeView',
-      //home: HomePage(),
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

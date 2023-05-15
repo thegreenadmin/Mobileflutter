@@ -404,7 +404,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           return DropdownMenuItem<String>(
                             value: value.abbrevation,
                             child: Text(
-                              value.abbrevation,
+                              value.abbrevation + " - " + value.countryName,
                               style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,

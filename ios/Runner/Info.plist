@@ -26,17 +26,19 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_dartobservatory._tcp</string>
 	</array>
-    <key>NSAppTransportSecurity</key>
-     <dict>
-          <key>NSAllowsArbitraryLoads</key>
-         <true/>
-     </dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Permission needed for profile pic selection</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -75,7 +77,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 </dict>
 </plist>

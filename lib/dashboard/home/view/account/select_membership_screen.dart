@@ -73,27 +73,29 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                     accountController.membershipList.isEmpty
                         ? accountController.isLoading.value == true
                             ? height0SizedBox
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      ImageConstants.nodata,
-                                      scale: 8,
-                                      color: AppColors.primary,
+                            : Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Image.asset(
+                                        ImageConstants.nodata,
+                                        scale: 8,
+                                        color: AppColors.primary,
+                                      ),
                                     ),
-                                  ),
-                                  height4SizedBox,
-                                  Center(
-                                    child: Text(
-                                      StringConstants.noActiveMembershipText,
-                                      style: const TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontSize: 16),
+                                    height4SizedBox,
+                                    Center(
+                                      child: Text(
+                                        StringConstants.noPlansYetText,
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontSize: 16),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               )
                         : Expanded(
                             child: ListView.separated(
@@ -152,7 +154,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "Plan Type: ${accountController.membershipList[index].planType}",
+                                                "Plan Type: ${accountController.membershipList[index].planType!.toUpperCase()}",
                                                 style: const TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 18,

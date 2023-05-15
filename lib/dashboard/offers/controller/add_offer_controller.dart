@@ -50,26 +50,23 @@ class AddOffersController extends GetxController {
   RxList<OfferProduct> productMergedList = <OfferProduct>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            categoryImage.value = pickedFile;
-            await apiUploadImage();
-            update();
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       Get.back();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        categoryImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,

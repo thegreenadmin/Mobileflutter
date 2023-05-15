@@ -262,6 +262,7 @@ class StringConstants {
   static String noCardsFoundText = "No Cards Found";
   static String notificationsText = "Notifications";
   static String noActiveMembershipText = "No Active Membership";
+  static String noPlansYetText = "No Plans Yet";
   static String noNotificationFoundYetText = "No Notifications Yet";
   static String noBankDetailsFoundText = "No Bank details found";
   static String numberOfDaysText = "Number of days";
@@ -483,7 +484,7 @@ class StringConstants {
   static String weightText = "Weight";
   static String workingDaysText = "Working Days";
   static String whenBalanceBelowText = "When Balance is below";
-  static String welcomeToGreenMallText = "Welcome to thegreenmall";
+  static String welcomeToGreenMallText = "Welcome to the green mall";
   static String walletTransactionText = "Wallet Transaction";
 
   //X

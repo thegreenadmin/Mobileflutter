@@ -776,6 +776,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       onTap: () async {
                         SharedPreferenceStorage.clearData();
                         await Get.offAll(const StartJourneyScreen());
+                        // accountController.apiDeleteUserAccount();
                       },
                       height: 50,
                       textColor: AppColors.red,

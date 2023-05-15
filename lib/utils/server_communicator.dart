@@ -1,15 +1,15 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
-  // String baseUrlWithoutApi = "http://54.190.192.105:3520/";
+  String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  String baseUrlWithoutApi = "http://54.190.192.105:3520/";
 
   // ********************** STAGING SERVER *************
 
-  String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
-  String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -157,7 +157,8 @@ class ServerCommunicator {
   String userStripeCardList = 'user/stripe/card/list';
   String userWalletRechargeStripe = 'user/wallet/recharge/stripe';
   String userWalletBalance = 'user/wallet/balance';
-  String userStripeCardDelete = 'user/stripe/bank/delete';
+  String userStripeCardDelete = 'user/stripe/card/delete';
+  String userStripeBankDelete = 'user/stripe/bank/delete';
   String userWalletTransactionList = 'user/wallet/transactions/list';
   String notificationSettingSave = 'notification/setting/save';
   String userWalletTransactionDetail = 'user/wallet/transaction/details';
@@ -171,8 +172,8 @@ class ServerCommunicator {
   String userStoreAccessCreate = 'user/store/access/create';
   String utilMembershipPlans = 'utils/membership/plans';
   String userMembershipCreate = 'user/membership/create';
-
   String userMembershipList = 'user/membership/list';
+  String userDelete = 'user/delete';
 
 //V
 //W

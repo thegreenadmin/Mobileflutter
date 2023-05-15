@@ -70,7 +70,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
           Obx(
             () => Container(
               height: WidgetConstants.screenHeight,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: accountController.activeMembershipList.isEmpty
                   ? accountController.isLoading.value == true
                       ? height0SizedBox

@@ -19,6 +19,7 @@ class StartJourneyScreen extends StatefulWidget {
 class _StartJourneyScreenState extends State<StartJourneyScreen> {
   final StartJourneyController startJourneyController =
       Get.put(StartJourneyController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

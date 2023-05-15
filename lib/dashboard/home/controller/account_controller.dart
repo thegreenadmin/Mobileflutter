@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/active_membership_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
@@ -62,7 +63,7 @@ class AccountController extends GetxController {
   RxString postalCode = "".obs;
   RxString country = "".obs;
   RxString state = "".obs;
-  int selectedIndex = 0;
+  int? selectedIndex;
   RxString selectedMembershipPlanId = "".obs;
 
   RxString countryDropdownValue = "".obs;
@@ -319,7 +320,7 @@ class AccountController extends GetxController {
                         Utility.showToast("Please enter days");
                       } else {
                         Get.back();
-                        apiCreateMmembershipPlan();
+                        apiCreateMembershipPlan();
                       }
                     },
                     child: Container(
@@ -835,6 +836,7 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        Get.offAll(()=>BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -879,7 +881,7 @@ class AccountController extends GetxController {
     });
   }
 
-  apiCreateMmembershipPlan() {
+  apiCreateMembershipPlan() {
     debugPrint(
         "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
     Map<String, String> headers = {
@@ -904,6 +906,7 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back();
+        noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -945,6 +948,39 @@ class AccountController extends GetxController {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value.body['message']);
+      }
+    });
+  }
+
+  //Delete User Account
+  Future apiDeleteUserAccount() async {
+    debugPrint(
+        "DELETE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {"has_store_access": true};
+    debugPrint("DELETE USER BODY**********$data");
+    UserProvider()
+        .deleteWithHeadersApi(
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("DELETE USER RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         Utility.showToast(value.body['message']);
       }

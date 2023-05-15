@@ -356,8 +356,8 @@ class _AutoReloadState extends State<AutoReload> {
                                 ),
                                 height6SizedBox,
                                 DropdownButtonFormField<String>(
-                                  value: addCardController
-                                      .selectedPaymentForFrequency.value,
+                                  // value: addCardController
+                                  //     .selectedPaymentForFrequency.value,
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
