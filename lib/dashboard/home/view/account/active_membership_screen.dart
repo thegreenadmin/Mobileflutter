@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ActiveMembershipScreen extends StatefulWidget {
@@ -40,7 +41,8 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -198,7 +200,12 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () async {
-                Get.to(const SelectMembershipPlan())!.then(
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const SelectMembershipPlan(),
+                ))
+                // Get.to(const SelectMembershipPlan())!
+                    .then(
                     (value) => accountController.apiGetActiveMembershipList());
               },
               height: 50,

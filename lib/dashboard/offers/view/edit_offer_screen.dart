@@ -20,6 +20,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
       Get.put(AddOffersController());
 
   @override
+  initState() {
+    super.initState();
+    addOffersController.apiGetStoreList();
+    // isFrom.value = Get.arguments["isFrom"] ?? "";
+    addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
+    if (addOffersController.isFrom.value == StringConstants.addOfferText) {
+    } else {
+      addOffersController.storeId.value = Get.parameters["storeId"] ?? "";
+      addOffersController.offerId.value = Get.parameters["offerId"] ?? "";
+
+      if (addOffersController.storeId.value.isNotEmpty &&
+          addOffersController.offerId.value.isNotEmpty) {
+        addOffersController.apiGetOffersDetail();
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -38,7 +56,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              // Get.back();
+                              Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -156,7 +175,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -174,7 +194,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                 .pleaseEnterOfferNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -527,7 +548,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               inputFormatters: <TextInputFormatter>[
@@ -593,7 +616,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(false);
+                        addOffersController.validateAndSubmit(false, context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

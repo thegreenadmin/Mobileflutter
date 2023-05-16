@@ -61,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(12.0),
             child: OutlinedButton(
               onPressed: () {
-                Get.back();
+                 Get.back();
+
               },
               style: OutlinedButton.styleFrom(
                 minimumSize: Size.zero,

@@ -8,8 +8,12 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
+as nearby;
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -29,6 +33,42 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.optionsText,
   ].obs;
 
+  @override
+  void initState() {
+    super.initState();
+    if (Get.parameters["isFromHome"] == null ? false : Get.parameters['isFromHome'] != "false") {
+      storeHomeMainController.isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
+
+      storeHomeMainController.productId.value =
+      Get.parameters["productId"] == null ? "" : Get.parameters["productId"] ?? "";
+    }
+    storeHomeMainController.storeId.value =
+    Get.parameters["storeId"] == null ? "" : Get.parameters["storeId"] ?? "";
+    storeHomeMainController.apiGetUserDetailsApi();
+    if (storeHomeMainController.isFromHome.value) {
+      nearby.Store store = nearby.Store();
+      store.storeId = storeHomeMainController.storeId.value;
+      storeHomeMainController.storeAddress.value.store = store;
+      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
+      storeHomeMainController.selectedIndex.value = 0;
+      storeHomeMainController.apiGetStoreDetailsApi();
+      storeHomeMainController.apiGetCartListApi(context);
+      storeHomeMainController.setupScrollController(Get.context);
+      storeHomeMainController.apiGetShopProductDetailApi();
+    } else {
+      nearby.Store store = nearby.Store();
+      store.storeId =storeHomeMainController.storeId.value;
+      storeHomeMainController.storeAddress.value.store = store;
+      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
+      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+      // isFavouriteStore.value =
+      //     storeAddress.value.store?.isFavouriteStore ?? false;
+      storeHomeMainController.setupScrollController(Get.context);
+      storeHomeMainController.apiGetStoreDetailsApi();
+      storeHomeMainController.onIndexChange(0);
+    }
+    storeHomeMainController.apiGetUserWalletBalance();
+  }
   void contactAlertDailogue(
     context,
   ) {
@@ -109,7 +149,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.back();
+                    // Get.back();
+                    Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -217,9 +258,14 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
-                    Get.to(const PreviousOrdersScreen());
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const PreviousOrdersScreen(),
+                    ));
+                    // Get.to(const PreviousOrdersScreen());
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +292,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Navigator.of(context).pop();
+                // Get.back();
                 contactAlertDailogue(context);
               },
               child: Row(
@@ -276,7 +323,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-                  Get.back();
+                  Navigator.of(context).pop();
+                  // Get.back();
                   storeHomeMainController.termsAndPrivacyDailogue(context,
                       content: storeHomeMainController.storeDetailsResponse
                           .value.data!.store!.storePages!.first.storePageContent

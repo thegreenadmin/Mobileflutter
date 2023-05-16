@@ -15,6 +15,9 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
+
+import 'bottom_nav_screen.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
@@ -32,9 +35,13 @@ class BottomNavController extends GetxController {
       ));
       initialRemoteMessage = null;
     }
-    selectedIndex.value =
-        Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
+    selectedIndex.value = Get.parameters["currentIndex"] != null
+        ? int.parse(Get.parameters["currentIndex"].toString())
+        : 0;
+    // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
+
+  late int getCurrentNavKey;
 
   List<Widget> tabs = [
     const HomeScreen(),
@@ -44,44 +51,75 @@ class BottomNavController extends GetxController {
     const MoreScreen(),
   ];
 
-  onItemTapped(int index) {
-    // print(index);
+  onItemTapped(int index) async {
     selectedIndex.value = index;
     if (selectedIndex.value == 0) {
       // print(index);
       try {
-        HomeController controller = Get.find<HomeController>();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        // HomeController controller = Get.find<HomeController>();
+        HomeController controller = Get.put(HomeController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 1) {
       try {
-        WalletController controller = Get.find<WalletController>();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+        WalletController controller = Get.put(WalletController());
+        WalletController controller1 = Get.find<WalletController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 2) {
       // print(index);
       try {
-        OrdersController controller = Get.find<OrdersController>();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+        OrdersController controller = Get.put(OrdersController());
+        OrdersController controller1 = Get.find<OrdersController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 3) {
-      //  print(index);
       try {
-        OffersController controller = Get.find<OffersController>();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+        OffersController controller = Get.put(OffersController());
+        OffersController controller1 = Get.find<OffersController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 4) {
       try {
-        MoreController controller = Get.find<MoreController>();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+        MoreController controller = Get.put(MoreController());
+        MoreController controller1 = Get.find<MoreController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }

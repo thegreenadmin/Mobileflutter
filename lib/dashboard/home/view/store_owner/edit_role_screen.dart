@@ -37,7 +37,8 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -237,7 +238,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                 colors: [AppColors.primary, AppColors.primary],
               ),
               onTap: () {
-                addNewRoleController.validateAndSubmitUpdate();
+                addNewRoleController.validateAndSubmitUpdate(context);
               },
               height: 50,
               text: StringConstants.saveText,

@@ -51,7 +51,8 @@ class AddOffersController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      Get.back();
+      // Get.back();
+//Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -65,7 +66,8 @@ class AddOffersController extends GetxController {
         // api();
       }
     }, onCameraClick: () async {
-      Get.back();
+      // Get.back();
+//Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -130,11 +132,13 @@ class AddOffersController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetStoreList();
-    isFrom.value = Get.arguments["isFrom"] ?? "";
+    // isFrom.value = Get.arguments["isFrom"] ?? "";
+    isFrom.value = Get.parameters["isFrom"] ?? "";
     if (isFrom.value == StringConstants.addOfferText) {
     } else {
-      storeId.value = Get.arguments["storeId"] ?? "";
-      offerId.value = Get.arguments["offerId"] ?? "";
+      storeId.value = Get.parameters["storeId"] ?? "";
+      offerId.value = Get.parameters["offerId"] ?? "";
+
       if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
         apiGetOffersDetail();
       }
@@ -151,7 +155,7 @@ class AddOffersController extends GetxController {
     }
   }
 
-  void validateAndSubmit(isValidateFromAddOffer) async {
+  void validateAndSubmit(isValidateFromAddOffer, context) async {
     if (validateAndSave()) {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
@@ -159,7 +163,9 @@ class AddOffersController extends GetxController {
         } else if (discountType.value.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseSelectDiscountType);
         } else {
-          isValidateFromAddOffer ? await apiAddOffer() : await apiUpdateOffer();
+          isValidateFromAddOffer
+              ? await apiAddOffer(context)
+              : await apiUpdateOffer(context);
         }
       } catch (_) {}
     } else {
@@ -168,7 +174,7 @@ class AddOffersController extends GetxController {
   }
 
   //Add Offer Api
-  Future apiAddOffer() async {
+  Future apiAddOffer(context) async {
     debugPrint(
         "ADD OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferCreate}");
     Map<String, String> headers = {
@@ -207,11 +213,15 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
-        Get.back();
+        // Get.back();
+        Navigator.of(context).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -249,7 +259,10 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -330,7 +343,10 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -379,7 +395,10 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -387,7 +406,7 @@ class AddOffersController extends GetxController {
   }
 
   //Update Offer Api
-  Future apiUpdateOffer() async {
+  Future apiUpdateOffer(context) async {
     selectedProducts.clear();
     for (int i = 0; i < productMergedList.length; i++) {
       selectedProducts.add({
@@ -428,11 +447,15 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
-        Get.back();
+        // Get.back();
+        Navigator.of(context).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

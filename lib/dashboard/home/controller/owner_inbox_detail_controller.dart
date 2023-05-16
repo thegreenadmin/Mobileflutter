@@ -33,16 +33,17 @@ class OwnerInboxDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    storeName.value = Get.arguments["storeName"] ?? "";
-    messageHeadId.value = Get.arguments["messageHeadId"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
+    messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     apiGetMessagesList();
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick:
         ()async{
-          Get.back();
+         // Navigator.of(context).pop();
+          // Get.back();
           XFile? pickedFile = await ImagePickerClass.picker
               .pickImage(
               imageQuality: 50,
@@ -57,7 +58,8 @@ class OwnerInboxDetailController extends GetxController {
             // api();
           }
     }, onCameraClick: ()async{
-      Get.back();
+     // Navigator.of(context).pop();
+      // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker
           .pickImage(
           imageQuality: 50,
@@ -147,7 +149,11 @@ class OwnerInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        
+         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -195,7 +201,10 @@ class OwnerInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

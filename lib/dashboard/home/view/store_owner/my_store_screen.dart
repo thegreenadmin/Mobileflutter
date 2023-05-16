@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MyStoreScreen extends StatefulWidget {
@@ -59,17 +60,29 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     gradient: const LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [AppColors.primary, AppColors.primary],
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.primary
+                                      ],
                                     ),
                                     onTap: () {
-                                      Get.to(const AddOfferScreen(), arguments: {
-                                        "isFrom": StringConstants.addOfferText,
-                                      })?.then((v){
+                                      Get.parameters["isFrom"] =
+                                          StringConstants.addOfferText;
+                                      SharedPreferenceStorage.setData(
+                                          "context", context);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (_) => const AddOfferScreen(),
+                                      ))
+                                          // Get.to(const AddOfferScreen(), arguments: {
+                                          //   "isFrom": StringConstants.addOfferText,
+                                          // })?
+                                          .then((v) {
                                         ownerStoresController.getApiData();
                                       });
                                     },
                                     height: 50,
-                                    width: WidgetConstants.screenWidth*0.3,
+                                    width: WidgetConstants.screenWidth * 0.3,
                                     text: StringConstants.addOfferText,
                                     borderRadius: 12,
                                     fontWeight: FontWeight.w500,

@@ -597,7 +597,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(false);
+                        addOffersController.validateAndSubmit(false, context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

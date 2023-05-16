@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -13,6 +13,7 @@ class AddCardScreen extends StatefulWidget {
   const AddCardScreen({
     Key? key,
   }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return AddCardScreenState();
@@ -21,6 +22,13 @@ class AddCardScreen extends StatefulWidget {
 
 class AddCardScreenState extends State<AddCardScreen> {
   final AddCardController addCardController = Get.put(AddCardController());
+
+  @override
+  void initState() {
+    addCardController.apiGetUserWalletBalance();
+    addCardController.apiGetCardList(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -175,7 +184,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                                         AppColors.primary,
                                                   ),
                                                   onPressed: () {
-                                                    Get.back();
+                                                    // Get.back();
+                                                    Navigator.of(context).pop();
                                                     addCardController.apiDeleteCard(
                                                         userStripeCardId:
                                                             addCardController
@@ -192,7 +202,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                                       AppColors.primary,
                                                 ),
                                                 onPressed: () {
-                                                  Get.back();
+                                                  // Get.back();
+                                                  Navigator.of(context).pop();
                                                 },
                                                 child: Text(
                                                     StringConstants.cancelText),
@@ -225,8 +236,13 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                Get.to(AddCardDetailScreen())!
-                    .then((value) => addCardController.apiGetCardList());
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => AddCardDetailScreen(),
+                    ))
+                    // Get.to(AddCardDetailScreen())!
+                    .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,
               text: StringConstants.addNewCardText,

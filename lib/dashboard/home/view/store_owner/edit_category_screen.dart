@@ -21,6 +21,20 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
       Get.put(AddNewCategoryController());
 
   @override
+  initState() {
+    super.initState();
+    addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
+    addNewCategoryController.categoryId.value =
+        Get.parameters["categoryId"] ?? "";
+    addNewCategoryController.isFeaturedTypeSelected.value =
+        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+    print(Get.parameters["isFeaturedSelectedType"]);
+    if (addNewCategoryController.categoryId.value.isNotEmpty) {
+      addNewCategoryController.apiGetCategoryDetail();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -41,7 +55,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -161,7 +176,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -180,7 +196,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                 .pleaseEnterCategoryNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -223,7 +240,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController.validateAndSubmitUpdate();
+                        addNewCategoryController
+                            .validateAndSubmitUpdate(context);
                       },
                       height: 50,
                       text: StringConstants.saveAndUpdateCategoryText,

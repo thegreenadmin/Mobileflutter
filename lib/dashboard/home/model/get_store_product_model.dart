@@ -407,12 +407,12 @@ class Products {
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  int? productPrice;
-  int? sellingPrice;
+  dynamic productPrice;
+  dynamic sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
-  int? returnDaysCount;
+  dynamic returnDaysCount;
   int? length;
   int? width;
   int? height;

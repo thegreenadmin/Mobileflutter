@@ -80,8 +80,8 @@ class SignupController extends GetxController {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {
-                    Get.back();
+                  onTap: () { Get.back();
+
                   },
                   child: Container(
                     height: 50.0,
@@ -106,7 +106,8 @@ class SignupController extends GetxController {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.back();
+                     Get.back();
+
                   },
                   child: Container(
                     height: 50.0,

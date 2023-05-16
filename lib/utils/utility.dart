@@ -176,13 +176,13 @@ class Utility {
       {void Function()? onGalleryClick, void Function()? onCameraClick}) {
     return showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext _context) {
           return AlertDialog(
               icon: Align(
                 alignment: Alignment.topRight,
                 child: InkWell(
                   onTap: () {
-                    Get.back();
+                    Navigator.pop(_context);
                   },
                   child: const Icon(
                     Icons.clear,
@@ -216,6 +216,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
+                        Navigator.pop(_context);
                         onGalleryClick!();
                       },
                     ),
@@ -235,6 +236,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
+                        Navigator.pop(_context);
                         onCameraClick!();
                       },
                     )

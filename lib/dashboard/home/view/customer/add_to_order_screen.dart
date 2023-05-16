@@ -8,8 +8,11 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
+    as nearby;
 
 class AddToOrderScreen extends StatefulWidget {
   const AddToOrderScreen({super.key});
@@ -21,6 +24,55 @@ class AddToOrderScreen extends StatefulWidget {
 class _AddToOrderScreenState extends State<AddToOrderScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
+  @override
+  initState() {
+    super.initState();
+    storeHomeMainController.getCurrentLocation();
+    storeHomeMainController.storeId.value =
+        Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
+    if (Get.parameters == null
+        ? false
+        : Get.parameters['isFromHome'] != false) {
+      storeHomeMainController.isFromHome.value =
+          Get.parameters["isFromHome"] == "true" ? true : false;
+      storeHomeMainController.storeId.value =
+          Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
+      storeHomeMainController.productId.value =
+          Get.parameters["productId"] == null
+              ? ""
+              : Get.parameters["productId"] ?? "";
+    }
+    print("PRODUCT ID--------" + Get.parameters["productId"].toString());
+    storeHomeMainController.storeId.value = Get.parameters["storeId"] == null
+        ? ""
+        : Get.parameters["storeId"] ?? "";
+    storeHomeMainController.apiGetUserDetailsApi();
+    print("is from homeee--" +
+        storeHomeMainController.isFromHome.value.toString());
+    if (storeHomeMainController.isFromHome.value) {
+      nearby.Store store = nearby.Store();
+      store.storeId = storeHomeMainController.storeId.value;
+      storeHomeMainController.storeAddress.value.store = store;
+      storeHomeMainController.isFavouriteStore.value =
+          store.isFavouriteStore ?? false;
+      storeHomeMainController.selectedIndex.value = 0;
+      storeHomeMainController.apiGetCartListApi(Get.context);
+      storeHomeMainController.setupScrollController(Get.context);
+      storeHomeMainController.apiGetShopProductDetailApi();
+    } else {
+      nearby.Store store = nearby.Store();
+      store.storeId = storeHomeMainController.storeId.value;
+      storeHomeMainController.storeAddress.value.store = store;
+      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+      storeHomeMainController.isFavouriteStore.value =
+          storeHomeMainController.storeAddress.value.store?.isFavouriteStore ??
+              false;
+      storeHomeMainController.setupScrollController(Get.context);
+      storeHomeMainController.onIndexChange(0);
+    }
+    storeHomeMainController.apiGetUserWalletBalance();
+  }
 
   @override
   Widget build(BuildContext context) {

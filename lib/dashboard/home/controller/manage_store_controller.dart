@@ -105,9 +105,9 @@ class ManageStoreController extends GetxController {
   void onInit() {
     super.onInit();
     isFeaturedTypeSelected.value = false;
-    storeId.value = Get.arguments["storeId"] ?? "";
-    storeName.value = Get.arguments["storeName"] ?? "";
-    storeLocation.value = Get.arguments["storeLocation"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
+    storeLocation.value = Get.parameters["storeLocation"] ?? "";
     apiGetCategoriesList();
     apiGetQuantityList();
   }
@@ -132,16 +132,16 @@ class ManageStoreController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(BuildContext bCntx) async {
     if (validateAndSave()) {
       try {
         if (imageFileList!.length < 1) {
-          Utility.showToast(AlertStringConstants.pleaseUploadAtLeastOneImageText);
+          Utility.showToast(
+              AlertStringConstants.pleaseUploadAtLeastOneImageText);
         } else if (selectedCategories.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseSelectCategoriesText);
         } else {
-          apiCreateProduct();
-          await apiGetProductList();
+          apiCreateProduct(bCntx);
         }
       } catch (_) {}
     } else {
@@ -159,7 +159,7 @@ class ManageStoreController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdateProduct() async {
+  void validateAndSubmitUpdateProduct(BuildContext ctx) async {
     if (validateAndSaveUpdateProduct()) {
       try {
         var data = selectedCategories
@@ -167,7 +167,7 @@ class ManageStoreController extends GetxController {
         if (data.isEmpty) {
           Utility.showToast("Please select categories");
         } else {
-          apiUpdateStoreProductDetail();
+          apiUpdateStoreProductDetail(ctx);
         }
       } catch (_) {}
     } else {
@@ -241,7 +241,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -274,7 +277,10 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -282,7 +288,7 @@ class ManageStoreController extends GetxController {
   }
 
   //Get Products List Api
-  Future apiGetProductList() async {
+  Future apiGetProductList(BuildContext bctxx) async {
     categoriesList.clear();
     isLoading.value = true;
     debugPrint("GET PRODUCT LIST URL **********"
@@ -306,7 +312,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -314,10 +323,10 @@ class ManageStoreController extends GetxController {
   }
 
   //Create Product Api
-  Future apiCreateProduct() async {
+  Future apiCreateProduct(BuildContext cntx) async {
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
-    product.quantityTypeId = int.parse(quantityValue.value ) ;
+    product.quantityTypeId = int.parse(quantityValue.value);
     product.quantity = int.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();
@@ -375,13 +384,14 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE STORE RESPONSE *******${value?.body}");
+      debugPrint("CREATE PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        apiGetCategoriesList();
-        Get.back();
-        Get.back();
+        Navigator.of(cntx).pop();
+        Navigator.of(cntx).pop();
+        await apiGetCategoriesList();
+        update();
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -401,7 +411,10 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -452,7 +465,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -567,7 +583,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -575,7 +594,7 @@ class ManageStoreController extends GetxController {
   }
 
 //Update  Store Product Api
-  Future apiUpdateStoreProductDetail() async {
+  Future apiUpdateStoreProductDetail(BuildContext ctxx) async {
     debugPrint(
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
     Map<String, String> headers = {
@@ -669,7 +688,8 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(ctxx).pop();
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -689,7 +709,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -697,7 +720,7 @@ class ManageStoreController extends GetxController {
   }
 
 //Api Delete Product
-  Future apiDeleteProduct() async {
+  Future apiDeleteProduct(BuildContext buildCtxt) async {
     debugPrint(
         "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
     Map<String, String> headers = {
@@ -718,14 +741,19 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await apiGetProductList();
+        await apiGetProductList(buildCtxt);
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
-        await apiGetProductList();
+        await apiGetProductList(buildCtxt);
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -761,7 +789,10 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

@@ -41,7 +41,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -518,6 +519,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
                     searchStoreUserController.apiGetNearByStores(
+                      context,
                       isFilter: true,
                     );
                   }

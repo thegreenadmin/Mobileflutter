@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import '../../../../../utils/image_constants.dart';
@@ -31,13 +32,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Obx(() => storeHomeMainController.isFromHome.value == true
-              ? storeHomeMainController.storeDetailsResponse.value.data !=
+          Obx(() => /*storeHomeMainController.isFromHome.value == true ?*/
+          storeHomeMainController.storeDetailsResponse.value.data !=
                           null &&
-                      storeHomeMainController
-                              .storeDetailsResponse.value.data!.store !=
-                          null &&
-                      storeHomeMainController.isFromHome.value == true
+                      storeHomeMainController.storeDetailsResponse.value.data!.store !=
+                          null /*&&
+                      storeHomeMainController.isFromHome.value == true*/
                   ? Container(
                       decoration: BoxDecoration(
                         color: const Color(0xff7c94b6),
@@ -88,7 +88,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Get.back();
+                                        Navigator.of(context).pop();
+                                        // Get.back();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -128,10 +129,13 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                   Row(
                                                     children: [
                                                       InkWell(
-                                                        onTap: () async {
-                                                          await storeHomeMainController.apiGetUserWalletBalance();
-                                                          Get.to(() =>
-                                                              const CartScreen());
+                                                        onTap: ()  {
+                                                          storeHomeMainController.apiGetUserWalletBalance();
+                                                          SharedPreferenceStorage.setData("context", context);
+                                                          Navigator.of(context).push(MaterialPageRoute(
+                                                            builder: (_) => const CartScreen(),
+                                                          ));
+                                                          // Get.to(() => const CartScreen());
                                                         },
                                                         child: Stack(
                                                           children: [
@@ -451,7 +455,6 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                             ],
                           )),
                     )
-                  : height0SizedBox
               : Container(
                   decoration: BoxDecoration(
                     color: const Color(0xff7c94b6),
@@ -527,10 +530,14 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                 Row(
                                                   children: [
                                                     InkWell(
-                                                      onTap: () async {
-                                                        await storeHomeMainController.apiGetUserWalletBalance();
-                                                        Get.to(() =>
-                                                            const CartScreen());
+                                                      onTap: ()  {
+                                                        storeHomeMainController.apiGetUserWalletBalance();
+                                                        SharedPreferenceStorage.setData("context", context);
+                                                        Navigator.of(context).push(MaterialPageRoute(
+                                                          builder: (_) => const CartScreen(),
+                                                        ));
+                                                        // Get.to(() =>
+                                                        //     const CartScreen());
                                                       },
                                                       child: Stack(
                                                         children: [
@@ -721,6 +728,11 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       children: [
                                         SizedBox(
                                           child: Text(
+                                    storeHomeMainController
+                                        .storeAddress.value
+                                            .store!=null && storeHomeMainController
+                                        .storeAddress.value
+                                        .store?.storeTimings!=null &&
                                               storeHomeMainController
                                                       .storeAddress
                                                       .value

@@ -20,6 +20,7 @@ class MoreScreen extends StatefulWidget {
 
 class _MoreScreenState extends State<MoreScreen> {
   final MoreController moreController = Get.put(MoreController());
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -40,12 +41,14 @@ class _MoreScreenState extends State<MoreScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Hi, ${SharedPreferenceStorage.getData(StringConstants.firstNameText) + " " + SharedPreferenceStorage.getData(StringConstants.lastNameText)}',
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
+                            Obx(
+                              () => Text(
+                                'Hi, ${moreController.firstName?.value} ${moreController.lastName?.value}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                             height4SizedBox,
                             Text(
@@ -74,11 +77,18 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "aboutus",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageAbout)
-                      .toString()));
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "aboutus",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                              ServerCommunicator().pageAbout)
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              // isFrom: "aboutus",
+              // url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //         ServerCommunicator().pageAbout)
+              //     .toString()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -117,11 +127,18 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "faq",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageFaq)
-                      .toString()));
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "faq",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                              ServerCommunicator().pageFaq)
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "faq",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pageFaq)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,7 +174,11 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(const ContactUsScreen());
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const ContactUsScreen(),
+              ));
+              // Get.to(const ContactUsScreen());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,11 +214,18 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () async {
-              Get.to(WebviewPageScreen(
-                  isFrom: "terms",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageTerms)
-                      .toString()));
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "terms",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                              ServerCommunicator().pageTerms)
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "terms",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pageTerms)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,11 +261,18 @@ class _MoreScreenState extends State<MoreScreen> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Get.to(WebviewPageScreen(
-                  isFrom: "privacy",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pagePolicy)
-                      .toString()));
+              SharedPreferenceStorage.setData("context", context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => WebviewPageScreen(
+                      isFrom: "privacy",
+                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                              ServerCommunicator().pagePolicy)
+                          .toString())));
+              // Get.to(WebviewPageScreen(
+              //     isFrom: "privacy",
+              //     url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+              //             ServerCommunicator().pagePolicy)
+              //         .toString()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

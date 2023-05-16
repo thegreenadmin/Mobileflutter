@@ -629,6 +629,7 @@ class AlertStringConstants {
   static String pleaseEnterStoreTermsText = "Please enter store terms";
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
   static String pleaseEnterFrequencyText = "Please enter frequency";
+  static String pleaseSelectCountryText = "Please select country";
 
   //S
   static String startTimeAlertText = "Start time can not be as end time";

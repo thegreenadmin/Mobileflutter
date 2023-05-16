@@ -9,7 +9,7 @@ import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -286,12 +286,23 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () {
-                                          Get.to(ImagePreviewScreen(
-                                            image: messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
+                                          SharedPreferenceStorage.setData(
+                                              "context", context);
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (_) => ImagePreviewScreen(
+                                              image: messageList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                            ),
                                           ));
+                                          // Get.to(ImagePreviewScreen(
+                                          //   image: messageList[index]
+                                          //       .image!
+                                          //       .dynamicUrl
+                                          //       .toString(),
+                                          // ));
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -417,12 +428,23 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () {
-                                        Get.to(ImagePreviewScreen(
-                                          image: messageList[index]
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(),
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (_) => ImagePreviewScreen(
+                                            image: messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                          ),
                                         ));
+                                        // Get.to(ImagePreviewScreen(
+                                        //   image: messageList[index]
+                                        //       .image!
+                                        //       .dynamicUrl
+                                        //       .toString(),
+                                        // ));
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -594,7 +616,8 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back();
+                                  Navigator.of(context).pop();
+                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

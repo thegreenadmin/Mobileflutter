@@ -48,8 +48,8 @@ class AddNewRoleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    storeName.value = Get.arguments["storeName"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
     apiGetControllers();
     apiGetStoreRole();
   }
@@ -64,14 +64,14 @@ class AddNewRoleController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(BuildContext mcontext) async {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
           Utility.showToast(
               AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
-          await apiCreateRole();
+          await apiCreateRole(mcontext);
         }
       } catch (_) {}
     } else {
@@ -89,10 +89,10 @@ class AddNewRoleController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdate() async {
+  void validateAndSubmitUpdate(BuildContext contextt) async {
     if (validateAndSaveUpdate()) {
       try {
-        await apiEditRole();
+        await apiEditRole(contextt);
       } catch (_) {}
     } else {
       autoValidateUpdate.value = true;
@@ -124,7 +124,10 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -132,7 +135,7 @@ class AddNewRoleController extends GetxController {
   }
 
   //Create Role Api
-  Future apiCreateRole() async {
+  Future apiCreateRole(BuildContext cntext) async {
     createRoleRequestModel.storeId = int.parse(storeId.value);
     createRoleRequestModel.roleName = roleNameTextController.text.trim();
 
@@ -158,15 +161,19 @@ class AddNewRoleController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE STORE RESPONSE *******${value!.body}");
+      debugPrint("CREATE ROLE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(cntext).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(cntext).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -203,7 +210,10 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -211,7 +221,7 @@ class AddNewRoleController extends GetxController {
   }
 
 //Delete Store Role
-  Future apiDeleteRole() async {
+  Future apiDeleteRole(BuildContext buildContext) async {
     debugPrint(
         "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
     Map<String, String> headers = {
@@ -242,7 +252,10 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(buildContext).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -294,7 +307,10 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -302,7 +318,7 @@ class AddNewRoleController extends GetxController {
   }
 
   //Edit Role Api
-  Future apiEditRole() async {
+  Future apiEditRole(BuildContext ctx) async {
     selectedRoles.clear();
     for (int i = 0; i < permissionListMerged.length; i++) {
       selectedRoles.add({
@@ -336,11 +352,15 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(ctx).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

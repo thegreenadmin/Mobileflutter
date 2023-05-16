@@ -33,11 +33,11 @@ class AddNewCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.arguments["storeId"] ?? "";
-    categoryId.value = Get.arguments["categoryId"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
+    categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
-        Get.arguments["isFeaturedSelectedType"] ?? false;
-    print(Get.arguments["isFeaturedSelectedType"]);
+        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+    print(Get.parameters["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }
@@ -53,13 +53,13 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(BuildContext nCon) async {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          await apiAddCategory();
+          await apiAddCategory(nCon);
         }
       } catch (_) {}
     } else {
@@ -77,13 +77,13 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdate() async {
+  void validateAndSubmitUpdate(BuildContext cntext) async {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
           Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          await apiUpdateCategory();
+          await apiUpdateCategory(cntext);
         }
       } catch (_) {}
     } else {
@@ -91,39 +91,38 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            categoryImage.value = pickedFile;
-            await apiUploadImage();
-            update();
-          } else {
-            // api();
-          }
-        }, onCameraClick: ()async{
-            Get.back();
-            XFile? pickedFile = await ImagePickerClass.picker
-                .pickImage(
-                imageQuality: 50,
-                source: ImageSource.camera,
-                maxWidth: 900,
-                maxHeight: 900);
-            if (pickedFile != null) {
-              categoryImage.value = pickedFile;
-              await apiUploadImage();
-              update();
-            } else {
-              // api();
-            }
-          });
+  Future<void> showSelectionDialog(BuildContext ncontext) {
+    return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
+      // Get.back();
+      // Navigator.of(context).pop();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        categoryImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      // Get.back();
+      // Navigator.of(context).pop();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.camera,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        categoryImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    });
   }
 
   //Api upload image to server
@@ -173,9 +172,10 @@ class AddNewCategoryController extends GetxController {
   }
 
   //Add Category Api
-  Future apiAddCategory() async {
+  Future apiAddCategory(BuildContext nContext) async {
     debugPrint(
-        "ADD CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
+        "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -202,7 +202,14 @@ class AddNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        categoryNameTextController.clear();
+        categoryImageOrigionalLinkfromServer.value = "";
+        isFeaturedTypeSelected.value = false;
+        storeId.value = "";
+        categoryImageDynamicLinkfromServer.value = "";
+        // Get.back();
+        Navigator.of(nContext).pop();
+        // Navigator.of(Get.context!).pop();
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -237,7 +244,10 @@ class AddNewCategoryController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -245,7 +255,7 @@ class AddNewCategoryController extends GetxController {
   }
 
   //Update Category Api
-  Future apiUpdateCategory() async {
+  Future apiUpdateCategory(BuildContext contextt) async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
     Map<String, String> headers = {
@@ -274,13 +284,17 @@ class AddNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        // Get.back();
+        Navigator.of(contextt).pop();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(contextt).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

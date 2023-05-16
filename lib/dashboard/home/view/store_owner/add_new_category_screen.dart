@@ -21,6 +21,16 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
       Get.put(AddNewCategoryController());
 
   @override
+  initState() {
+    super.initState();
+    addNewCategoryController.categoryNameTextController.clear();
+    addNewCategoryController.categoryNameTextController.clear();
+    addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
+    addNewCategoryController.isFeaturedTypeSelected.value = false;
+    addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -39,7 +49,8 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -157,7 +168,8 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -176,7 +188,8 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                 .pleaseEnterCategoryNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -219,7 +232,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController.validateAndSubmit();
+                        addNewCategoryController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.saveAndAddProductText,

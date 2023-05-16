@@ -45,7 +45,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -1777,7 +1778,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewStoreController.validateAndSubmit();
+                        addNewStoreController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

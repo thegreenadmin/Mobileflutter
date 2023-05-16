@@ -76,37 +76,52 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    if (Get.arguments == null
+    firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    if (Get.parameters == null
         ? false
-        : Get.arguments['isFromNotification'] != false) {
-      isFromNotification.value = Get.arguments["isFromNotification"] ?? false;
+        : Get.parameters['isFromNotification'] != "false") {
+      isFromNotification.value =
+          Get.parameters["isFromNotification"] == "true" ? true : false;
     }
-    if (Get.arguments == null ? false : Get.arguments['storeId'] != "") {
-      storeId.value = Get.arguments["storeId"] ?? "";
+    if (Get.parameters == null
+        ? false
+        : Get.parameters['storeId'] != "" &&
+            Get.parameters['storeId'] != null) {
+      storeId.value = Get.parameters["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
 
-    if (Get.arguments == null
+    if (Get.parameters == null
         ? false
-        : Get.arguments['isFromTransaction'] ?? false) {
-      storeId.value = Get.arguments["storeId"] ?? "";
+        : Get.parameters['isFromTransaction'] == "true"
+            ? true
+            : false) {
+      storeId.value = Get.parameters["storeId"] ?? "";
       apiGetStoreDetailsApi();
     }
-    orderStatus.value =
-        Get.arguments == null ? "" : Get.arguments["orderStatus"] ?? "";
+    if (Get.parameters["orderStatus"] != null) {
+      orderStatus.value = Get.parameters["orderStatus"] ?? "";
+      print("orderStatus.value:=========================================");
+      print(orderStatus.value);
+    }
+
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.newOrder.statusName;
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
-      role!.value = Role.customerRoleText;
+    print("SharedPreferenceStorage:--Order Screen---------------");
+    role!.value = SharedPreferenceStorage.getData(Role.role.value);
+    print(SharedPreferenceStorage.getData(Role.role.value));
+    print(role!.value);
+    if (role!.value == Role.customerRoleText) {
       apiGetOrderListApi();
       if (orderStatus.value != "") {
         apiGetOrderDetailsApi();
       }
       page.value = 1;
     } else {
-      role!.value = Role.storeOwnerRoleText;
       apiGetStoreOrderListApi();
       page.value = 1;
     }
@@ -172,7 +187,8 @@ class OrdersController extends GetxController {
                               onTap: () {
                                 reviewController.clear();
                                 ratingValue.value = 0.0;
-                                Get.back();
+                                Navigator.of(Get.context!).pop();
+                                // Get.back();
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -342,7 +358,8 @@ class OrdersController extends GetxController {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                Get.back();
+                                Navigator.of(Get.context!).pop();
+                                // Get.back();
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -616,12 +633,16 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
-        Get.back();
+        Navigator.of(Get.context!).pop();
+        // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -666,11 +687,15 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
-        Get.back();
+        Navigator.of(Get.context!).pop();
+        // Get.back();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -701,7 +726,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -767,7 +795,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -835,7 +866,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -846,7 +880,7 @@ class OrdersController extends GetxController {
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
@@ -854,7 +888,7 @@ class OrdersController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=",
             headers,
             showLoading: false)
         .then((value) async {
@@ -868,11 +902,13 @@ class OrdersController extends GetxController {
             store.StoreDetailsResponse.fromJson(value?.body);
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
-            
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -935,7 +971,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -943,7 +982,7 @@ class OrdersController extends GetxController {
   }
 
   //Cancel Order Api
-  Future apiCancelOrder() async {
+  Future apiCancelOrder(context) async {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
@@ -976,12 +1015,21 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Get.back();
+        // Navigator.of(context).pop();
+        BuildContext rContext = SharedPreferenceStorage.getData(
+          "context",
+        );
+        print(rContext);
+        Navigator.of(rContext).popUntil((route) => route.isFirst);
+        // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -1019,7 +1067,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -1058,7 +1109,10 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }

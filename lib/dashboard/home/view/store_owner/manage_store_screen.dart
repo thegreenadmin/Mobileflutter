@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_s
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageStoreScreen extends StatefulWidget {
@@ -34,7 +35,11 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const EditStoreDetailScreen());
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const EditStoreDetailScreen(),
+                ));
+                // Get.to(const EditStoreDetailScreen());
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -97,11 +102,20 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const MangeProductScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                  "storeLocation": ownerStoresController.storeLocation.value,
-                });
+                Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["storeName"] =
+                    ownerStoresController.storeName.value;
+                Get.parameters["storeLocation"] =
+                    ownerStoresController.storeLocation.value;
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const MangeProductScreen(),
+                ));
+                // Get.to(const MangeProductScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                //   "storeLocation": ownerStoresController.storeLocation.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -164,10 +178,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const WorkerListScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                });
+                Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["storeName"] =
+                    ownerStoresController.storeName.value;
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const WorkerListScreen(),
+                ));
+                // Get.to(const WorkerListScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -230,10 +251,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(const RoleAndPermissionScreen(), arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                });
+                Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["storeName"] =
+                    ownerStoresController.storeName.value;
+                SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const RoleAndPermissionScreen(),
+                ));
+                // Get.to(const RoleAndPermissionScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                // });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),

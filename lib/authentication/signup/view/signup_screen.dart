@@ -65,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
           padding: const EdgeInsets.all(12.0),
           child: OutlinedButton(
             onPressed: () {
-              Get.back();
+               Get.back();
             },
             style: OutlinedButton.styleFrom(
               minimumSize: Size.zero,

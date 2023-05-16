@@ -42,7 +42,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -396,10 +397,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: DropdownButtonFormField<String>(
                             isExpanded: true,
                             autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
+                                AutovalidateMode.onUserInteraction,
                             validator: (v) {
-                              if (v==null || v.trim()=='') {
-                                return AlertStringConstants.pleaseSelectQuantityUnitText;
+                              if (v == null || v.trim() == '') {
+                                return AlertStringConstants
+                                    .pleaseSelectQuantityUnitText;
                               }
                               return null;
                             },
@@ -804,7 +806,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           flex: 5,
                           child: DropdownButtonFormField<String>(
                             autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
+                                AutovalidateMode.onUserInteraction,
                             // validator: (v) {
                             //   if (v==null || v?.trim()=='') {
                             //     return AlertStringConstants.pleaseSelectDiscountTypeText;
@@ -941,10 +943,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height4SizedBox,
                     DropdownButtonFormField<String>(
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (v) {
-                          if (v==null || v.trim()=='') {
+                        if (v == null || v.trim() == '') {
                           return AlertStringConstants.pleaseSelectAnyOneText;
                         }
                         return null;
@@ -1331,10 +1332,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               ),
                               DropdownButtonFormField<String>(
                                 autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 validator: (v) {
-                                    if (v==null || v.trim()=='') {
-                                    return AlertStringConstants.pleaseSelectAnyOneText;
+                                  if (v == null || v.trim() == '') {
+                                    return AlertStringConstants
+                                        .pleaseSelectAnyOneText;
                                   }
                                   return null;
                                 },
@@ -1543,7 +1545,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             });
                           }
                         }
-                        manageStoreController.validateAndSubmit();
+                        manageStoreController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

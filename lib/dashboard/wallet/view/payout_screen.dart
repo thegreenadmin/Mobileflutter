@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PayOutScreen extends StatefulWidget {
@@ -41,7 +42,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -332,18 +334,24 @@ class PayOutScreenState extends State<PayOutScreen> {
                                             ],
                                           ),
                                           onTap: () {
-                                            Get.to(() =>
-                                                    const CreateOwnerBankAccount())!
+                                            SharedPreferenceStorage.setData(
+                                                "context", context);
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const CreateOwnerBankAccount(),
+                                                ))
+                                                // Get.to(() => const CreateOwnerBankAccount())!
                                                 .then((value) => addCardController
                                                     .apiGetBankAccountList());
                                           },
                                           height: 50,
                                           width:
-                                              WidgetConstants.screenWidth * 0.3,
+                                              WidgetConstants.screenWidth * 0.4,
                                           text: StringConstants
                                               .addBankDetailsText,
-                                          borderRadius: 12,
-                                          fontWeight: FontWeight.w500,
+                                          borderRadius: 10,
+                                          fontWeight: FontWeight.w400,
                                           iconL: false,
                                           fontSize: 16,
                                         ),
@@ -416,7 +424,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                       addCardController
                                                           .bankAccountList[
                                                               index]
-                                                          .card!
+                                                          .bank!
                                                           .accountHolderName
                                                           .toString(),
                                                       style: TextStyle(
@@ -433,7 +441,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                     ),
                                                     height10SizedBox,
                                                     Text(
-                                                      "**** **** **** **** ${addCardController.bankAccountList[index].card!.last4}",
+                                                      "**** **** **** **** ${addCardController.bankAccountList[index].bank!.last4}",
                                                       style: TextStyle(
                                                           color: addCardController
                                                                       .selectedBankAccountIndex!
@@ -464,7 +472,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      addCardController.validateAndSubmit(isFromPayout: true);
+                      addCardController.validateAndSubmit(context,
+                          isFromPayout: true);
                     },
                     height: 50,
                     text: StringConstants.oKText,

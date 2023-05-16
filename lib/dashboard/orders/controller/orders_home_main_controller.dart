@@ -43,8 +43,8 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    orderId.value = Get.arguments == null ? "" : Get.arguments["orderId"] ?? "";
-    storeId.value = Get.arguments["storeId"] ?? "";
+    orderId.value = Get.parameters == null ? "" : Get.parameters["orderId"] ?? "";
+    storeId.value = Get.parameters["storeId"] ?? "";
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;
     apiGetOwnerOrderHistory();
@@ -127,7 +127,10 @@ class OrdersHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -251,7 +254,10 @@ class OrdersHomeMainController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) =>  const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -293,7 +299,8 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        Navigator.of(Get.context!).pop();
+        // Get.back();
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -341,8 +348,8 @@ class OrdersHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
-        }
-        Get.back();
+        } Navigator.of(Get.context!).pop();
+        // Get.back();
         update();
       } else {
         Utility.showToast(value?.body['message']);
@@ -381,7 +388,8 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        Navigator.of(Get.context!).pop();
+        // Get.back();
         update();
       } else {
         Utility.showToast(value.body['message']);
@@ -430,7 +438,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-        Get.back();
+        Navigator.of(Get.context!).pop();
+        // Get.back();
         update();
       } else {
         Utility.showToast(value.body['message']);

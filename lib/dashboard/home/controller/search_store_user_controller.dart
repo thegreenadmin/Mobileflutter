@@ -47,7 +47,7 @@ class SearchStoreUserController extends GetxController {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          apiGetNearByStores();
+          apiGetNearByStores(Get.context!);
         }
       }
     });
@@ -56,6 +56,9 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText);
+
     setupScrollController(Get.context);
   }
 
@@ -139,7 +142,8 @@ class SearchStoreUserController extends GetxController {
                       Utility.showToast(
                           AlertStringConstants.pleaseEnterEinText);
                     } else {
-                      Get.back();
+                      // Get.back();
+                      Navigator.of(context).pop();
                       apiClaimStore(storeId: storeId);
                     }
                   },
@@ -171,12 +175,15 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Nearby Stores Api
-  Future apiGetNearByStores({
+  Future apiGetNearByStores(context,{
     bool isFilter = false,
   }) async {
     if(isFilter){
       page.value=1;
+      storeAddresses.clear();
+      favStoreAddresses.clear();
     }
+
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
@@ -251,14 +258,17 @@ class SearchStoreUserController extends GetxController {
           mileageTextController.clear();
           isOpenNow.value = false;
           initialIndex.value = 0;
-          storeAddresses.clear();
-          favStoreAddresses.clear();
-          Get.back();
+
+          // Get.back();
+          Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -295,7 +305,7 @@ class SearchStoreUserController extends GetxController {
         if (type.value == 2) {
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores();
+          apiGetNearByStores(Get.context!);
         } else {
           for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
@@ -307,7 +317,10 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -345,7 +358,7 @@ class SearchStoreUserController extends GetxController {
         if (type.value == 2) {
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores();
+          apiGetNearByStores(Get.context!);
         } else {
           for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
@@ -357,7 +370,10 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -397,7 +413,10 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }

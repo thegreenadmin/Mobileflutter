@@ -51,7 +51,10 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
         actions: <Widget>[
           ElevatedButton(
               onPressed: () {
-                Get.offAll(const StartJourneyScreen());
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) => const StartJourneyScreen(),
+                ));
+                // Get.offAll(const StartJourneyScreen());
               },
               style: ElevatedButton.styleFrom(
                 elevation: 0.0,
@@ -128,7 +131,10 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                     curve: Curves.ease,
                   );
                   if (onboardController.page.value == 3) {
-                    Get.offAll(const StartJourneyScreen());
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (_) => const StartJourneyScreen(),
+                    ));
+                    // Get.offAll(const StartJourneyScreen());
                   }
                 },
                 child: const Padding(

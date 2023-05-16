@@ -46,7 +46,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -436,7 +437,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             fontWeight: FontWeight.w500),
                         controller: ownerStoreController.nickNameTextController,
                         keyboardType: TextInputType.text,
-                       /* validator: (value) {
+                        /* validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterNickNameText;
                           }
@@ -1911,7 +1912,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        ownerStoreController.validateAndSubmit();
+                        ownerStoreController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.updateText,

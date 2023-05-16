@@ -72,7 +72,8 @@ class ContactUsController extends GetxController {
         emailTextController.clear;
         subjectTextController.clear;
         messageTextController.clear;
-        Get.back();
+        // Get.back();
+        Navigator.of(Get.context!).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showToast(value.body['message']);
       } else {

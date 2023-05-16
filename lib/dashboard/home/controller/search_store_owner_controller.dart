@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -138,10 +139,15 @@ class OwnerStoresController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
+    firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText);
+
     getApiData();
     getGkey();
-    if (Get.arguments['isFromHome'] == true) {
-      storeId.value = Get.arguments['storeId'] ?? "";
+    if (Get.parameters['isFromHome'] == "true") {
+      storeId.value = Get.parameters['storeId'] ?? "";
       apiGetParticularStore();
     }
   }
@@ -168,10 +174,10 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(BuildContext contextt) async {
     if (validateAndSave()) {
       try {
-        apiUpdateStoreDetail();
+        apiUpdateStoreDetail(contextt);
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -180,7 +186,8 @@ class OwnerStoresController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      Get.back();
+      // Get.back();
+      //  Navigator.of(Get.context!).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -200,7 +207,8 @@ class OwnerStoresController extends GetxController {
         // api();
       }
     }, onCameraClick: () async {
-      Get.back();
+      // Get.back();
+      //  Navigator.of(Get.context!).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -258,7 +266,10 @@ class OwnerStoresController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -309,7 +320,10 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -400,7 +414,10 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -434,7 +451,10 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }
@@ -467,8 +487,8 @@ class OwnerStoresController extends GetxController {
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
         editStoreLogoOrigionalLinkfromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
-        storeNameTextController.text =storeName.value=
-            value?.body["data"]['store']['store_name'] ?? "";
+        storeNameTextController.text =
+            storeName.value = value?.body["data"]['store']['store_name'] ?? "";
         einTextController.text =
             value?.body["data"]['store']['store_ein'] ?? "";
         nickNameTextController.text =
@@ -484,8 +504,9 @@ class OwnerStoresController extends GetxController {
             value?.body["data"]['store']['store_ein'] ?? "";
         storeAddresses.value =
             value?.body["data"]['store']['store_addresses'] ?? [];
-        storeLocation.value =  "${value?.body["data"]['store']['store_addresses'] [0]['address_line_1']?? "" },${value?.body["data"]['store']['store_addresses'][0] ['city']??"" },"
-            "${ value?.body["data"]['store']['store_addresses'][0] ['state']['state_name']?? ""},${value?.body["data"]['store']['store_addresses'][0] ['state']['country']['country_name']?? "" }";
+        storeLocation.value =
+            "${value?.body["data"]['store']['store_addresses'][0]['address_line_1'] ?? ""},${value?.body["data"]['store']['store_addresses'][0]['city'] ?? ""},"
+            "${value?.body["data"]['store']['store_addresses'][0]['state']['state_name'] ?? ""},${value?.body["data"]['store']['store_addresses'][0]['state']['country']['country_name'] ?? ""}";
 
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
@@ -583,7 +604,7 @@ class OwnerStoresController extends GetxController {
   }
 
   //Update Store Details Api
-  Future apiUpdateStoreDetail() async {
+  Future apiUpdateStoreDetail(BuildContext ctx) async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
     Map<String, String> headers = {
@@ -649,8 +670,10 @@ class OwnerStoresController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Get.back();
-        Get.back();
+        // Get.back();
+        Navigator.of(ctx).pop();
+        Navigator.of(ctx).pop();
+
         await apiGetStoreList();
         storeNameTextController.clear();
         einTextController.clear();
@@ -667,7 +690,10 @@ class OwnerStoresController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(ctx).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value?.body['message']);
       }
@@ -782,7 +808,10 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showToast(value.body['message']);
       }

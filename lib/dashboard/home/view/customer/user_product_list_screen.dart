@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
 
@@ -98,14 +99,19 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         itemBuilder: (BuildContext context, int i) {
                           return InkWell(
                             onTap: () async {
-                              storeHomeMainController.productId.value=
-                              storeHomeMainController
-                                  .featureProductList[i].productId
-                                  .toString();
+                              storeHomeMainController.productId.value =
+                                  storeHomeMainController
+                                      .featureProductList[i].productId
+                                      .toString();
                               await storeHomeMainController
                                   .apiGetShopProductDetailApi();
-                              Get.to(const AddToOrderScreen());
-                              await storeHomeMainController.apiGetCartListApi();
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const AddToOrderScreen(),
+                              ));
+                              // Get.to(const AddToOrderScreen());
+                              await storeHomeMainController.apiGetCartListApi(context);
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +263,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 "0",
                         orderBy: "2",
                         orderType: "2");
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // Get.back();
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,7 +295,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     storeHomeMainController.category.value.categoryId ?? "0",
                 orderBy: "2",
               );
-              Get.back();
+              Navigator.of(context).pop();
+              // Get.back();
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

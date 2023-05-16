@@ -19,6 +19,7 @@ class AddOfferScreen extends StatefulWidget {
 class _AddOfferScreenState extends State<AddOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +39,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              // Get.back();
+                              Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -609,7 +611,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(true);
+                        addOffersController.validateAndSubmit(true,context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

@@ -10,35 +10,20 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'payment_configurations.dart' as payment_configurations;
 
-class AutoReload extends StatefulWidget {
+class AutoReloadScreen extends StatefulWidget {
   bool isFromEdit = false;
-  AutoReload({Key? key, this.isFromEdit = false}) : super(key: key);
+  AutoReloadScreen({Key? key, this.isFromEdit = false}) : super(key: key);
 
   @override
-  State<AutoReload> createState() => _AutoReloadState();
+  State<AutoReloadScreen> createState() => _AutoReloadScreenState();
 }
 
-class _AutoReloadState extends State<AutoReload> {
+class _AutoReloadScreenState extends State<AutoReloadScreen> {
   final WalletController walletController = Get.put(WalletController());
   final AddCardController addCardController = Get.put(AddCardController());
-
-  final _paymentItems = [
-    PaymentItem(
-      label: 'Total',
-      amount: '99.99',
-      status: PaymentItemStatus.final_price,
-    )
-  ];
-  late Pay _payClient;
-  bool _hasApplePay = false;
-  bool _hasGooglePay = false;
-
-  void onApplePayResult(paymentResult) {
-    debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
-  }
 
   @override
   initState() {
@@ -78,7 +63,8 @@ class _AutoReloadState extends State<AutoReload> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Get.back();
+                          // Get.back();
+                          Navigator.of(context).pop();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -598,7 +584,7 @@ class _AutoReloadState extends State<AutoReload> {
                                             context: context,
                                             initialDate: DateTime.now(),
                                             firstDate: DateTime.utc(1200, 1, 1),
-                                            lastDate: DateTime.now(),
+                                            lastDate: DateTime(5100),
                                           ))!;
                                           final DateFormat formatter =
                                               DateFormat('yyyy-MM-dd');
@@ -798,8 +784,15 @@ class _AutoReloadState extends State<AutoReload> {
                                               ],
                                             ),
                                             onTap: () {
-                                              Get.to(
-                                                  () => AddCardDetailScreen());
+                                              SharedPreferenceStorage.setData(
+                                                  "context", context);
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddCardDetailScreen(),
+                                              ));
+                                              // Get.to(
+                                              //     () => AddCardDetailScreen());
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *
@@ -951,8 +944,8 @@ class _AutoReloadState extends State<AutoReload> {
                       ),
                       onTap: () {
                         widget.isFromEdit == true
-                            ? walletController.apiUpdateAutoRecharge()
-                            : walletController.validateAndSubmit(
+                            ? walletController.apiUpdateAutoRecharge(context)
+                            : walletController.validateAndSubmit(context,
                                 isFromautorecharge: true);
                       },
                       height: 50,

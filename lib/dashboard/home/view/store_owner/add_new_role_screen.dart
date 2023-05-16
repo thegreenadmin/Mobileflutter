@@ -37,7 +37,8 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back();
+                              Navigator.of(context).pop();
+                              // Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -275,7 +276,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                 colors: [AppColors.primary, AppColors.primary],
               ),
               onTap: () {
-                addNewRoleController.validateAndSubmit();
+                addNewRoleController.validateAndSubmit(context);
               },
               height: 50,
               text: StringConstants.saveText,
