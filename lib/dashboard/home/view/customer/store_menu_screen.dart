@@ -35,9 +35,10 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                 fontWeight: FontWeight.w600),
           ),
           height5SizedBox,
+
           Expanded(
-              child: Obx(
-            () => storeHomeMainController.categoriesList.isEmpty
+              child: Obx(() =>
+              storeHomeMainController.categoriesList.isEmpty
                 ? storeHomeMainController.isLoading.value == true
                     ? height0SizedBox
                     : Column(

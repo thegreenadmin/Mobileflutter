@@ -430,13 +430,13 @@ class StoreDeliveryService {
 }
 
 class StorePage {
-  String? storeId;
-  String? storePageType;
-  Image? storePageContent;
-  String? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  String? storePageId;
+    String? storeId;
+    String? storePageType;
+    Image? storePageContent;
+    String? status;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    String? storePageId;
 
   StorePage({
     this.storeId,
@@ -448,31 +448,29 @@ class StorePage {
     this.storePageId,
   });
 
-  StorePage copyWith({
-    String? storeId,
-    String? storePageType,
-    Image? storePageContent,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? storePageId,
-  }) =>
-      StorePage(
-        storeId: storeId ?? this.storeId,
-        storePageType: storePageType ?? this.storePageType,
-        storePageContent: storePageContent ?? this.storePageContent,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        storePageId: storePageId ?? this.storePageId,
-      );
+    StorePage copyWith({
+        String? storeId,
+        String? storePageType,
+        Image? storePageContent,
+        String? status,
+        DateTime? createdAt,
+        DateTime? updatedAt,
+        String? storePageId,
+    }) => 
+        StorePage(
+            storeId: storeId ?? this.storeId,
+            storePageType: storePageType ?? this.storePageType,
+            storePageContent: storePageContent ?? this.storePageContent,
+            status: status ?? this.status,
+            createdAt: createdAt ?? this.createdAt,
+            updatedAt: updatedAt ?? this.updatedAt,
+            storePageId: storePageId ?? this.storePageId,
+        );
 
   factory StorePage.fromJson(Map<String, dynamic> json) => StorePage(
         storeId: json["store_id"],
         storePageType: json["store_page_type"],
-        storePageContent: json["store_page_content"] == null
-            ? null
-            : Image.fromJson(json["store_page_content"]),
+        storePageContent: json["store_page_content"] == null ? null : Image.fromJson(json["store_page_content"]),
         status: json["status"],
         createdAt: json["createdAt"] == null
             ? null

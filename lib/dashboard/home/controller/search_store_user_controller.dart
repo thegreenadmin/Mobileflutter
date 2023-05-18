@@ -56,6 +56,7 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    searchController.clear();
     firstName?.value =
         SharedPreferenceStorage.getData(StringConstants.firstNameText);
     lastName?.value =

@@ -37,7 +37,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   var kGoogleApiKey = "";
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  static const CameraPosition _kGooglePlex = CameraPosition(
+  final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
@@ -45,6 +45,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
+    searchStoreUserController.searchController.clear();
     _tabController = TabController(
         initialIndex: searchStoreUserController.initialIndex.value,
         length: 3,
@@ -139,7 +140,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         child: GoogleMap(
                           myLocationButtonEnabled: false,
                           mapType: MapType.normal,
-                          zoomControlsEnabled: false,
+                          zoomControlsEnabled: true,
+                          // initialCameraPosition: const CameraPosition(
+                          //   target: LatLng(37.42796133580664, -122.085749655962),
+                          //   zoom: 14.4746,
+                          //   // zoom: 17,
+                          // ),
                           initialCameraPosition: _kGooglePlex,
                           markers: Set<Marker>.of(markers.values),
                           onMapCreated: (GoogleMapController controller) {
@@ -168,61 +174,83 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-                child: InkWell(
-                  onTap: () async {
-                    Prediction? p = await PlacesAutocomplete.show(
-                        offset: 0,
-                        radius: 1000,
-                        types: [],
-                        strictbounds: false,
-                        context: context,
-                        apiKey: kGoogleApiKey,
-                        mode: Mode.overlay,
-                        language: "en",
-                        components: []);
-                    searchStoreUserController.searchController.text =
-                        p?.description!.toString() ?? "";
-                    GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p?.description.toString() ?? "",
-                        googleMapApiKey: kGoogleApiKey);
-                    searchStoreUserController.zipCodeTextController.text =
-                        addresses.postalCode;
-                    updateMap(addresses.latitude, addresses.longitude);
-                  },
-                  child: TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      enabled: false,
-                      controller: searchStoreUserController.searchController,
-                      style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                      decoration: InputDecoration(
-                        filled: true,
-                        isDense: true,
-                        prefixIcon: Image.asset(
-                          ImageConstants.search,
+                child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () async {
+                      Prediction? p = await PlacesAutocomplete.show(
+                          offset: 0,
+                          radius: 1000,
+                          types: [],
+                          strictbounds: false,
+                          context: context,
+                          apiKey: kGoogleApiKey,
+                          mode: Mode.overlay,
+                          language: "en",
+                          components: []);
+                      searchStoreUserController.searchController.text =
+                          p?.description!.toString() ?? "";
+                      GeoData addresses = await Geocoder2.getDataFromAddress(
+                          address: p?.description.toString() ?? "",
+                          googleMapApiKey: kGoogleApiKey);
+                      searchStoreUserController.zipCodeTextController.text =
+                          addresses.postalCode;
+                      updateMap(addresses.latitude, addresses.longitude);
+                    },
+                    controller: searchStoreUserController.searchController,
+                    style: const TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      isDense: true,
+                      prefixIcon: Image.asset(
+                        ImageConstants.search,
+                        scale: 4,
+                      ),
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          searchStoreUserController.searchController.clear();
+                        },
+                        child: Image.asset(
+                          ImageConstants.cross,
                           scale: 4,
                         ),
-                        hintText: StringConstants.searchText,
-                        hintStyle: const TextStyle(color: AppColors.grey),
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
+                      ),
+                      focusColor: AppColors.grey,
+                      hintText: StringConstants.searchText,
+                      hintStyle: const TextStyle(color: AppColors.grey),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
-                          ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
                         ),
-                      )),
-                ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: AppColors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                    )),
               ),
             ],
           ),
