@@ -63,7 +63,7 @@ class StoreHomeMainController extends GetxController {
 
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<Products> previousOrderList = <Products>[].obs;
-
+  RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt itemsCount = 1.obs;
@@ -99,7 +99,6 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     getCurrentLocation();
-    apiGetCartListApi(Get.context);
     storeId.value =
         Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
     if (Get.parameters == null
@@ -124,7 +123,6 @@ class StoreHomeMainController extends GetxController {
       storeAddress.value.store = store;
       isFavouriteStore.value = store.isFavouriteStore ?? false;
       selectedIndex.value = 0;
-
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
     } else {
@@ -138,6 +136,7 @@ class StoreHomeMainController extends GetxController {
       onIndexChange(0);
     }
     apiGetUserWalletBalance();
+    apiGetCartListApi(Get.context);
   }
 
   void onIndexChange(int i) async {
@@ -411,10 +410,10 @@ class StoreHomeMainController extends GetxController {
   //Get Cart List Api
   Future apiGetCartListApi(context) async {
     isLoading.value = true;
+
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
-    debugPrint(
-        "GET CART LIST URL**********${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -436,11 +435,19 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CART LIST BODY *******${value?.body}");
+      debugPrint("GET CART LIST RESPONSE  123*******${value?.body}");
+      debugPrint(
+          "GET CART LIST URL 1*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}");
+      debugPrint(
+          "GET CART LIST URL 2*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}");
+      debugPrint(
+          "GET CART LIST URL 3*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeAddress.value.store?.storeId}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}");
+
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
+        cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty) {
@@ -932,6 +939,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
         Utility.showToast(value?.body['message']);
       }
