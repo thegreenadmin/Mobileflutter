@@ -201,12 +201,13 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
               ),
               onTap: () async {
                 SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const SelectMembershipPlan(),
-                ))
-                // Get.to(const SelectMembershipPlan())!
-                    .then(
-                    (value) => accountController.apiGetActiveMembershipList());
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => const SelectMembershipPlan(),
+                    ))
+                    // Get.to(const SelectMembershipPlan())!
+                    .then((value) =>
+                        accountController.apiGetActiveMembershipList());
               },
               height: 50,
               text: StringConstants.selectMembershipPlanText,

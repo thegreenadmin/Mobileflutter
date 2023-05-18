@@ -332,9 +332,17 @@ class AddNewStoreController extends GetxController {
         countryTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
+        storeImageOrigionalLinkfromServer.value = "";
+        storeLogoOrigionalLinkfromServer.value = "";
+        storeImageDynamicLinkfromServer.value = "";
+        storeLogoDynamicLinkfromServer.value = "";
+        deliveryServicesList.clear();
+        privacyTextController.clear();
+        termsTextController.clear();
         //storeIdValue.value = value.body["status"]
         storeIdValue.value = value.body["data"]['store_id'].toString();
-        dynamicLink = "https://54.190.192.105:3520/${storeIdValue.value}";
+        dynamicLink =
+            ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
         await createDynamicLink();
         await apiDynamicLink();
       } else if (value.body["status"] == ApiConstants.statusCode401) {

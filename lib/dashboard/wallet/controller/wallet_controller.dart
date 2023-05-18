@@ -759,15 +759,13 @@ class WalletController extends GetxController {
       "user_stripe_card_id": userStripeCardId!.value,
       "threshold_amount": thresholdAmountTextController.text.trim(),
       "charge_amount": chargeAmountTextController.text.trim(),
-      "start_date": autoChargeType.value == "threshold"
-          ? DateTime.now().toString()
-          : startDateTextController.text.trim(),
-      "end_date": autoChargeType.value == "threshold"
-          ? DateTime(date.year + 1, date.month, date.day).toString()
-          : endDateTextController.text.trim(),
-      "frequency": autoChargeType.value == "threshold"
-          ? frequencyTextController.text
-          : selectedFrequency.value
+      "start_date": DateTime.now().toString(),
+
+      // "end_date": autoChargeType.value == "threshold"
+      //     ? DateTime(date.year + 1, date.month, date.day).toString()
+      //     : endDateTextController.text.trim(),
+      "frequency":
+          autoChargeType.value == "threshold" ? "1" : selectedFrequency.value
     };
     debugPrint("TOKEN ********** $headers");
     debugPrint("CREATE AUTO RECHARGE BODY ********** $headers");
@@ -831,6 +829,7 @@ class WalletController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getAutoRechargeModel = GetAutoRechargeModel.fromJson(value?.body);
+
         if (getAutoRechargeModel.data!.userWalletAutoCharge != null) {
           if (getAutoRechargeModel.data!.userWalletAutoCharge!.status ==
               "active") {
@@ -840,11 +839,19 @@ class WalletController extends GetxController {
                 .data!.userWalletAutoCharge!.autoChargeType!;
 
             thresholdAmountTextController.text = getAutoRechargeModel
-                .data!.userWalletAutoCharge!.thresholdAmount
-                .toString();
+                        .data!.userWalletAutoCharge!.thresholdAmount ==
+                    null
+                ? ""
+                : getAutoRechargeModel
+                    .data!.userWalletAutoCharge!.thresholdAmount
+                    .toString();
+
             chargeAmountTextController.text = getAutoRechargeModel
-                .data!.userWalletAutoCharge!.chargeAmount
-                .toString();
+                        .data!.userWalletAutoCharge!.chargeAmount ==
+                    null
+                ? ""
+                : getAutoRechargeModel.data!.userWalletAutoCharge!.chargeAmount
+                    .toString();
 
             frequencyTextController.text = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.frequency
@@ -873,7 +880,7 @@ class WalletController extends GetxController {
     });
   }
 
-  apiUpdateAutoRecharge(BuildContext ctx) {
+  apiUpdateAutoRecharge(BuildContext ctxx) {
     var date = DateTime.now();
     isLoading.value = true;
     debugPrint(
@@ -889,15 +896,16 @@ class WalletController extends GetxController {
       "user_stripe_card_id": userStripeCardId!.value,
       "threshold_amount": thresholdAmountTextController.text.trim(),
       "charge_amount": chargeAmountTextController.text.trim(),
-      "start_date": autoChargeType.value == "threshold"
-          ? DateTime.now().toString()
-          : startDateTextController.text.trim(),
-      "end_date": autoChargeType.value == "threshold"
-          ? DateTime(date.year + 1, date.month, date.day).toString()
-          : endDateTextController.text.trim(),
+      "start_date": DateTime.now().toString(),
+
+      // "end_date": autoChargeType.value == "threshold"
+      //     ? DateTime(date.year + 1, date.month, date.day).toString()
+      //     : endDateTextController.text.trim(),
       "frequency": autoChargeType.value == "threshold"
-          ? frequencyTextController.text
-          : selectedFrequency.value
+          ? "1"
+          : selectedFrequency.value.isEmpty
+              ? frequencyTextController.text
+              : ""
     };
     debugPrint("TOKEN ********** $headers");
     debugPrint("UPDATE AUTO RECHARGE BODY ********** $headers");
@@ -912,6 +920,7 @@ class WalletController extends GetxController {
       isLoading.value = false;
       debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
       debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
+
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
@@ -923,13 +932,12 @@ class WalletController extends GetxController {
         accountNumberTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
-        Navigator.of(ctx).pop;
-        update();
-        await apiGetAutoRechargeDetail();
+        Navigator.of(ctxx).pop;
+        apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(ctx).pushReplacement(MaterialPageRoute(
+        Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());

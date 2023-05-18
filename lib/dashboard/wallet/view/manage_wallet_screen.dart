@@ -41,12 +41,12 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext ctxx) {
           // return StatefulBuilder(
           //     builder: (BuildContext context, StateSetter setState) {
 
           return Padding(
-            padding: MediaQuery.of(context).viewInsets,
+            padding: MediaQuery.of(ctxx).viewInsets,
             child: Wrap(
                 children: <Widget>[AutoReloadScreen(isFromEdit: isFromEdit)]),
           );
@@ -323,9 +323,9 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                     !walletController.isautoRechargeEnable.value
                                         ? InkWell(
                                             onTap: () {
-                                              walletController.cardList.clear();
-                                              bottomSheetToAddMoney(context,
-                                                  isFromEdit: false);
+                                              // walletController.cardList.clear();
+                                              // bottomSheetToAddMoney(context,
+                                              //     isFromEdit: false);
                                             },
                                             child: Text(
                                               StringConstants
@@ -338,10 +338,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           )
                                         : InkWell(
                                             onTap: () async {
-                                              await walletController
-                                                  .apiGetAutoRechargeDetail();
-                                              bottomSheetToAddMoney(context,
-                                                  isFromEdit: true);
+                                              // await walletController
+                                              //     .apiGetAutoRechargeDetail();
+                                              // bottomSheetToAddMoney(context,
+                                              //     isFromEdit: true);
                                             },
                                             child: Text(
                                               StringConstants

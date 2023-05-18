@@ -19,7 +19,8 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  bool isFromOwner = false;
+  SignupScreen({super.key, this.isFromOwner = false});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -65,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
           padding: const EdgeInsets.all(12.0),
           child: OutlinedButton(
             onPressed: () {
-               Get.back();
+              Get.back();
             },
             style: OutlinedButton.styleFrom(
               minimumSize: Size.zero,
@@ -560,7 +561,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          signupController.validateAndSubmit();
+                          signupController.validateAndSubmit(
+                              isFromOwner: widget.isFromOwner);
                         },
                         height: 50,
                         text: StringConstants.signUpText,

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
+import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -329,14 +330,12 @@ class AddCardController extends GetxController {
         if (value.body['success'] == true ||
             value.body['code'] == ApiConstants.statusCode201 ||
             value.body['code'] == ApiConstants.statusCode200) {
+          Navigator.of(ctx, rootNavigator: true).pop(ctx);
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          // Get.back();
-          //Navigator.of(ctx).pop();
-          Navigator.of(ctx).pop();
           update();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {

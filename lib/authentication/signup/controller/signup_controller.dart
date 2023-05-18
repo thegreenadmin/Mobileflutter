@@ -39,6 +39,16 @@ class SignupController extends GetxController {
   RxString selectedRegion = "".obs;
   String? formattedDate;
   RxBool autoValidate = false.obs;
+  RxBool isFromOwner = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Get.arguments['isFromOwner'] == null
+    //     ? false
+    //     : Get.parameters["isFromOwner"];
+    // isFromOwner.value = Get.arguments['isFromOwner'];
+  }
 
   void ageAlertDailogue(
     context,
@@ -80,8 +90,8 @@ class SignupController extends GetxController {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () { Get.back();
-
+                  onTap: () {
+                    Get.back();
                   },
                   child: Container(
                     height: 50.0,
@@ -106,8 +116,7 @@ class SignupController extends GetxController {
                 ),
                 InkWell(
                   onTap: () {
-                     Get.back();
-
+                    Get.back();
                   },
                   child: Container(
                     height: 50.0,
@@ -160,7 +169,7 @@ class SignupController extends GetxController {
   }
 
 // Fields Validation Method
-  void validateAndSubmit() async {
+  void validateAndSubmit({bool isFromOwner = false}) async {
     if (validateAndSave()) {
       SharedPreferenceStorage.setData("firstName", firstName.value.trim());
       SharedPreferenceStorage.setData("lastName", lastName.value.trim());
@@ -171,7 +180,7 @@ class SignupController extends GetxController {
         } else if (isTermsAccepted.value == false) {
           Utility.showToast(AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
-          apiCreateUser();
+          apiCreateUser(isFromOwner: isFromOwner);
         }
       } catch (_) {}
     } else {
@@ -180,14 +189,15 @@ class SignupController extends GetxController {
   }
 
   //Create Account User Api
-  Future apiCreateUser() async {
+  Future apiCreateUser({bool isFromOwner = false}) async {
     Map data = {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
       "email": emailTextController.text.trim(),
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
-      "dob": dateTextController.text.trim()
+      "dob": dateTextController.text.trim(),
+      "has_store_access": isFromOwner
     };
     debugPrint("CREATE USER BODY********** $data");
     debugPrint(
@@ -237,6 +247,7 @@ class SignupController extends GetxController {
         emailTextController.clear();
         dateTextController.clear();
         isTermsAccepted.value = false;
+        isFromOwner.value = false;
         phoneNumberTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //User not exist

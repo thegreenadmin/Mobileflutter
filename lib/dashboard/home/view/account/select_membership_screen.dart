@@ -128,7 +128,11 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
 
                                       accountController
                                           .noOfDaysForMembershipDailogue(
-                                              context);
+                                              context,
+                                              days: accountController
+                                                  .membershipList[index]
+                                                  .planDays
+                                                  .toString());
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(

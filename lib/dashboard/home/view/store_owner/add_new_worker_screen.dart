@@ -159,7 +159,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -178,7 +179,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 .pleaseEnterEmployeeNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -222,7 +224,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -322,7 +325,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -341,7 +345,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.sentences,
+                        },
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.addDescriptionText,
                           hintStyle: const TextStyle(
@@ -417,7 +422,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                              TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -469,7 +476,6 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     addNewWorkerController
                                         .startTimeTextController
                                         .text = date.format(context).toString();
-
                                   },
                                   decoration: InputDecoration(
                                     errorMaxLines: 3,
@@ -524,7 +530,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                              TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -573,8 +581,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                       },
                                     ))!;
 
-
-                                   /* final startDT = DateTime(9, 9, 9, date.hour, date.minute);
+                                    /* final startDT = DateTime(9, 9, 9, date.hour, date.minute);
                                     final endDT = DateTime(9, 9, 9, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).hour, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).minute);
                                     print(startDT);
                                     print(endDT);
@@ -713,7 +720,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 DropdownButtonFormField<String>(
                                   isExpanded: true,
                                   validator: (value) {
-                                    if (addNewWorkerController.storeRoleList.isNotEmpty && value == null) {
+                                    if (addNewWorkerController
+                                            .storeRoleList.isNotEmpty &&
+                                        value == null) {
                                       return AlertStringConstants
                                           .pleaseSelectRoleText;
                                     }
@@ -784,7 +793,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit();
+                        addNewWorkerController.validateAndSubmit(context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

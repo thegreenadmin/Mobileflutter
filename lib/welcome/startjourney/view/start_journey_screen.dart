@@ -82,7 +82,9 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                       colors: [AppColors.white, AppColors.white],
                     ),
                     onTap: () {
-                      Get.to(const SignupScreen());
+                      Get.to(SignupScreen(
+                        isFromOwner: false,
+                      ));
                     },
                     height: 50,
                     textColor: AppColors.primary,
@@ -93,32 +95,34 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                     iconL: false,
                   ),
                   height30SizedBox,
-                  // InkWell(
-                  //   onTap: () {
-                  //     Get.to(const SignupScreen());
-                  //   },
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Text(
-                  //         StringConstants.ownAStoreText,
-                  //         style: const TextStyle(
-                  //           fontSize: 16,
-                  //           color: AppColors.white,
-                  //           fontWeight: FontWeight.w400,
-                  //         ),
-                  //       ),
-                  //       Text(
-                  //         StringConstants.registerHereText,
-                  //         style: const TextStyle(
-                  //             fontWeight: FontWeight.w500,
-                  //             decoration: TextDecoration.underline,
-                  //             fontSize: 16,
-                  //             color: AppColors.white),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
+                  InkWell(
+                    onTap: () {
+                      Get.to(
+                        SignupScreen(isFromOwner: true),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          StringConstants.ownAStoreText,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          StringConstants.registerHereText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                              fontSize: 16,
+                              color: AppColors.white),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ))
         ],

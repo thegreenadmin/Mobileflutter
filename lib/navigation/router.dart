@@ -20,10 +20,6 @@ class Routers {
       page: () => const StartJourneyScreen(),
     ),
     GetPage(
-      name: '/registerView',
-      page: () => const SignupScreen(),
-    ),
-    GetPage(
       name: '/otpVerificationView',
       page: () => const OtpVerificationScreen(),
     ),

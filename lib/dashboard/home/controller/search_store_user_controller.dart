@@ -56,8 +56,10 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText);
-    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText);
+    firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText);
 
     setupScrollController(Get.context);
   }
@@ -175,15 +177,15 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Nearby Stores Api
-  Future apiGetNearByStores(context,{
+  Future apiGetNearByStores(
+    context, {
     bool isFilter = false,
   }) async {
-    if(isFilter){
-      page.value=1;
+    if (isFilter) {
+      page.value = 1;
       storeAddresses.clear();
       favStoreAddresses.clear();
     }
-
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
@@ -198,8 +200,8 @@ class SearchStoreUserController extends GetxController {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": lng,
-      "latitude": lat,
+      "longitude": zipCodeTextController.text != "" ? null : lng,
+      "latitude": zipCodeTextController.text != "" ? null : lat,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""

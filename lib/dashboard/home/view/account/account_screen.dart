@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
@@ -118,130 +117,142 @@ class _AccountScreenState extends State<AccountScreen> {
                                   onPressed: () {
                                     // Get.back();
                                     Navigator.of(context).pop();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.black,
+                                    size: 24.0,
+                                  ),
                                 ),
-                              ),
-                              width10SizedBox,
-                              Text(
-                                StringConstants.accountText,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
-          )),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.userAccount,
-                      scale: 3,
-                    ),
-                    width10SizedBox,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(() => Text(
-                                "${accountController.firstName!.value} ${accountController.lastName!.value}",
-                                overflow: TextOverflow.visible,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                          Obx(() => Text(
-                                accountController.email.value,
-                                style: const TextStyle(
-                                    overflow: TextOverflow.visible,
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
-                              )),
-                        ],
+                                width10SizedBox,
+                                Text(
+                                  StringConstants.accountText,
+                                  style: const TextStyle(
+                                      fontSize: 22,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 4,
+                            )
+                          ]),
+                    ],
+                  )),
+            )),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        ImageConstants.userAccount,
+                        scale: 3,
                       ),
-                    )
-                  ],
+                      width10SizedBox,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(() => Text(
+                                  "${accountController.firstName!.value} ${accountController.lastName!.value}",
+                                  overflow: TextOverflow.visible,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                            Obx(() => Text(
+                                  accountController.email.value,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.visible,
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(
-                thickness: 3,
-                height: 30,
-              ),
-              InkWell(
-                  onTap: () async {
-                    if (accountController.hasStoreAccess.value == false) {
-                      accountController.storeAccessDailogue(context);
-                    } else {
-                      if (SharedPreferenceStorage.getData(Role.role.value)
-                              .toString() ==
-                          Role.customerRoleText) {
-                        SharedPreferenceStorage.setData(
-                            Role.role.value, Role.storeOwnerRoleText);setState(() {});
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        // Navigator.of(context).pop();
-                        //await Get.offAll(BottomNavigation());
-                      } else {
-                        SharedPreferenceStorage.setData(
-                            Role.role.value, Role.customerRoleText);// Navigator.of(context)
-                        //     .pushReplacement(MaterialPageRoute(
-                        //   builder: (_) => BottomNavigation(),
-                        // ));
-                        setState(() {});
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
+                Obx(
+                  () => accountController.hasStoreAccess.value == false
+                      ? height0SizedBox
+                      : const Divider(
+                          thickness: 3,
+                          height: 30,
+                        ),
+                ),
+                Obx(
+                  () => accountController.hasStoreAccess.value == false
+                      ? height0SizedBox
+                      : InkWell(
+                          onTap: () async {
+                            if (SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText) {
+                              SharedPreferenceStorage.setData(
+                                  Role.role.value, Role.storeOwnerRoleText);
+                              setState(() {});
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
+                              // Navigator.of(context).pop();
+                              //await Get.offAll(BottomNavigation());
+                            } else {
+                              SharedPreferenceStorage.setData(Role.role.value,
+                                  Role.customerRoleText); // Navigator.of(context)
+                              //     .pushReplacement(MaterialPageRoute(
+                              //   builder: (_) => BottomNavigation(),
+                              // ));
+                              setState(() {});
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
 
-                        // Navigator.of(context).pop();
-                        //await Get.offAll(BottomNavigation());
-                      }
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            SharedPreferenceStorage.getData(Role.role.value).toString() ==
-                                    Role.customerRoleText
-                                ? StringConstants.switchToStoreText
-                                : StringConstants.switchToCustomerText,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Image.asset(
-                            ImageConstants.switchicon,
-                            scale: 2.6,
-                          ),
-                        ],
-                      ),
-                    )),
-                const Divider(
-                  thickness: 3,
-                  height: 30,
+                              // Navigator.of(context).pop();
+                              //await Get.offAll(BottomNavigation());
+                            }
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 14.0, right: 14.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  SharedPreferenceStorage.getData(
+                                                  Role.role.value)
+                                              .toString() ==
+                                          Role.customerRoleText
+                                      ? StringConstants.switchToStoreText
+                                      : StringConstants.switchToCustomerText,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.blacklight,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Image.asset(
+                                  ImageConstants.switchicon,
+                                  scale: 2.6,
+                                ),
+                              ],
+                            ),
+                          )),
+                ),
+                Obx(
+                  () => accountController.hasStoreAccess.value == false
+                      ? height0SizedBox
+                      : const Divider(
+                          thickness: 3,
+                          height: 30,
+                        ),
                 ),
                 Padding(
                   padding:
@@ -261,7 +272,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-
                           SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const PersonalInfoScreen(),
@@ -387,195 +397,205 @@ class _AccountScreenState extends State<AccountScreen> {
                             builder: (_) => const AccountIdScreen(),
                           ));
                           //Get.to(const AccountIdScreen());
-                      },
-                      child: Row(
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.accountId,
+                                  color: AppColors.primary,
+                                  scale: 3.5,
+                                ),
+                                width15SizedBox,
+                                Text(StringConstants.accountIdText,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.arrowForward,
+                              scale: 3.4,
+                              color: AppColors.blacklight,
+                            )
+                          ],
+                        ),
+                      ),
+                      Obx(
+                        () => SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText
+                            ? height0SizedBox
+                            : const Divider(
+                                height: 40,
+                                thickness: 1,
+                              ),
+                      ),
+                      Obx(
+                        () => SharedPreferenceStorage.getData(Role.role.value)
+                                    .toString() ==
+                                Role.customerRoleText
+                            ? height0SizedBox
+                            : InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) =>
+                                        const ActiveMembershipScreen(),
+                                  ));
+
+                                  // Get.to(const ActiveMembershipScreen());
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          ImageConstants.accountId,
+                                          color: AppColors.primary,
+                                          scale: 3.5,
+                                        ),
+                                        width15SizedBox,
+                                        Text(
+                                            StringConstants
+                                                .activeMembershipText,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: AppColors.black,
+                                                fontWeight: FontWeight.w500)),
+                                      ],
+                                    ),
+                                    Image.asset(
+                                      ImageConstants.arrowForward,
+                                      scale: 3.4,
+                                      color: AppColors.blacklight,
+                                    )
+                                  ],
+                                ),
+                              ),
+                      ),
+                      const Divider(
+                        height: 40,
+                        thickness: 1,
+                      ),
+                      Text(
+                        StringConstants.securityText,
+                        style: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      height20SizedBox,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                ImageConstants.accountId,
-                                color: AppColors.primary,
-                                scale: 3.5,
+                              Text(
+                                StringConstants.screenLockText,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black,
+                                ),
                               ),
-                              width15SizedBox,
-                              Text(StringConstants.accountIdText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500)),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.arrowForward,
-                            scale: 3.4,
-                            color: AppColors.blacklight,
-                          )
+                          Obx(() => FlutterSwitch(
+                                height: 28,
+                                width: 50,
+                                value:
+                                    accountController.isScreenLockNotify.value,
+                                activeToggleColor: AppColors.primary,
+                                inactiveToggleColor: AppColors.grey,
+                                activeSwitchBorder: Border.all(
+                                  color: AppColors.greylight,
+                                ),
+                                inactiveSwitchBorder: Border.all(
+                                  color: AppColors.greylight,
+                                ),
+                                activeColor: AppColors.greymediumlight,
+                                inactiveColor: AppColors.greymediumlight,
+                                onToggle: (val) {
+                                  accountController.isScreenLockNotify.value =
+                                      val;
+                                  if (accountController
+                                      .isScreenLockNotify.value) {
+                                    _authenticateWithBiometrics();
+                                  } else {
+                                    SharedPreferenceStorage.setData(
+                                        StringConstants.authenticatedText
+                                            .toLowerCase(),
+                                        false);
+                                    BioMetricAuthentication
+                                        .isBioMetricAuthenticated.value = false;
+                                  }
+                                },
+                              )),
                         ],
                       ),
-                    ),
-                    Obx(
-                      () => accountController.hasStoreAccess.value
-                          ? const Divider(
-                              height: 40,
-                              thickness: 1,
-                            )
-                          : height0SizedBox,
-                    ),
-                    Obx(
-                      () => accountController.hasStoreAccess.value
-                          ? InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                SharedPreferenceStorage.setData("context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const ActiveMembershipScreen(),
-                                ));
-
-                                // Get.to(const ActiveMembershipScreen());
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.accountId,
-                                        color: AppColors.primary,
-                                        scale: 3.5,
-                                      ),
-                                      width15SizedBox,
-                                      Text(StringConstants.activeMembershipText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                  Image.asset(
-                                    ImageConstants.arrowForward,
-                                    scale: 3.4,
-                                    color: AppColors.blacklight,
-                                  )
-                                ],
+                      const Divider(
+                        height: 40,
+                        thickness: 1,
+                      ),
+                      Text(
+                        StringConstants.notificationPreferencesText,
+                        style: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      height20SizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                StringConstants.inboxMessages,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black,
+                                ),
                               ),
-                            )
-                          : height0SizedBox,
-                    ),
-                    const Divider(
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    Text(
-                      StringConstants.securityText,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    height20SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              StringConstants.screenLockText,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Obx(() => FlutterSwitch(
-                              height: 28,
-                              width: 50,
-                              value: accountController.isScreenLockNotify.value,
-                              activeToggleColor: AppColors.primary,
-                              inactiveToggleColor: AppColors.grey,
-                              activeSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              inactiveSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              activeColor: AppColors.greymediumlight,
-                              inactiveColor: AppColors.greymediumlight,
-                              onToggle: (val) {
-                                accountController.isScreenLockNotify.value =
-                                    val;
-                                if (accountController
-                                    .isScreenLockNotify.value) {
-                                  _authenticateWithBiometrics();
-                                } else {
-                                  SharedPreferenceStorage.setData(
-                                      StringConstants.authenticatedText
-                                          .toLowerCase(),
-                                      false);
-                                  BioMetricAuthentication
-                                      .isBioMetricAuthenticated.value = false;
-                                }
-                              },
-                            )),
-                      ],
-                    ),
-                    const Divider(
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    Text(
-                      StringConstants.notificationPreferencesText,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    height20SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              StringConstants.inboxMessages,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SharedPreferenceStorage.getData(Role.role.value)
-                                    .toString() ==
-                                Role.customerRoleText
-                            ? Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value: accountController
-                                      .isUserInboxMessagesNotify.value,
-                                  activeToggleColor: AppColors.primary,
-                                  inactiveToggleColor: AppColors.grey,
-                                  activeSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  inactiveSwitchBorder: Border.all(
-                                    color: AppColors.greylight,
-                                  ),
-                                  activeColor: AppColors.greymediumlight,
-                                  inactiveColor: AppColors.greymediumlight,
-                                  onToggle: (val) {
-                                    accountController
-                                        .isUserInboxMessagesNotify.value = val;
-                                    if (accountController
-                                        .isUserInboxMessagesNotify.value) {
+                            ],
+                          ),
+                          SharedPreferenceStorage.getData(Role.role.value)
+                                      .toString() ==
+                                  Role.customerRoleText
+                              ? Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
+                                        .isUserInboxMessagesNotify.value,
+                                    activeToggleColor: AppColors.primary,
+                                    inactiveToggleColor: AppColors.grey,
+                                    activeSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    inactiveSwitchBorder: Border.all(
+                                      color: AppColors.greylight,
+                                    ),
+                                    activeColor: AppColors.greymediumlight,
+                                    inactiveColor: AppColors.greymediumlight,
+                                    onToggle: (val) {
                                       accountController
-                                          .apiUpdateNotificationStatus(
-                                              context,
+                                          .isUserInboxMessagesNotify
+                                          .value = val;
+                                      if (accountController
+                                          .isUserInboxMessagesNotify.value) {
+                                        accountController
+                                            .apiUpdateNotificationStatus(
+                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "message");
@@ -715,37 +735,37 @@ class _AccountScreenState extends State<AccountScreen> {
                                         accountController
                                             .apiUpdateNotificationStatus(
                                                 context,
-                                              isEnabled: false,
-                                              isOwner: true,
-                                              notificationType: "order");
-                                    }
-                                  },
-                                )),
-                      ],
-                    ),
-                    height15SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              StringConstants.storeOfferAndDiscountText,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black,
+                                                isEnabled: false,
+                                                isOwner: true,
+                                                notificationType: "order");
+                                      }
+                                    },
+                                  )),
+                        ],
+                      ),
+                      height15SizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                StringConstants.storeOfferAndDiscountText,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SharedPreferenceStorage.getData(Role.role.value)
-                                    .toString() ==
-                                Role.customerRoleText
-                            ? Obx(() => FlutterSwitch(
-                                  height: 28,
-                                  width: 50,
-                                  value:accountController
+                            ],
+                          ),
+                          SharedPreferenceStorage.getData(Role.role.value)
+                                      .toString() ==
+                                  Role.customerRoleText
+                              ? Obx(() => FlutterSwitch(
+                                    height: 28,
+                                    width: 50,
+                                    value: accountController
                                         .isUserOfferNotify.value,
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
@@ -826,12 +846,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           colors: [AppColors.redlight, AppColors.redlight],
                         ),
                         onTap: () async {
-                          SharedPreferenceStorage.clearData();
-                          await Navigator.of(Get.context!)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (_) => const StartJourneyScreen(),
-                          ));
-                          // await Get.offAll(const StartJourneyScreen());
+                          accountController.clearData();
                         },
                         height: 50,
                         textColor: AppColors.red,

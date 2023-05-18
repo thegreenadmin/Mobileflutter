@@ -81,15 +81,28 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(
-                      () => manageStoreController.imageFileList!.isEmpty
-                          ? height0SizedBox
-                          : Text(StringConstants.uploadProductPhotosText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                    ),
+                    Obx(() => manageStoreController.imageFileList!.isEmpty
+                        ? height0SizedBox
+                        : Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text:
+                                        StringConstants.uploadProductPhotosText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          )),
                     Obx(
                       () => manageStoreController.imageFileList!.isEmpty
                           ? height0SizedBox
@@ -180,13 +193,27 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       height10SizedBox,
-                                      Text(
-                                          StringConstants
-                                              .uploadProductPhotosText,
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500)),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: StringConstants
+                                                    .uploadProductPhotosText,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            const TextSpan(
+                                              text: "*",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       height10SizedBox,
                                       Text(
                                           StringConstants
@@ -204,12 +231,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           : height0SizedBox,
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.productNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.productNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -269,12 +308,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.categoriesText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.categoriesText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height10SizedBox,
                     Obx(
@@ -382,12 +433,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.quantityUnitText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.quantityUnitText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     Row(
@@ -526,12 +589,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.pricePerUnitText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.pricePerUnitText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -591,12 +666,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.shortDescriptionText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.shortDescriptionText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -656,12 +743,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.contentsAndStrainsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.contentsAndStrainsText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -721,12 +820,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.additionalLinksToResearchText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text:
+                                  StringConstants.additionalLinksToResearchText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -792,12 +904,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.discountsOrOffersText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.discountsOrOffersText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     Row(
@@ -934,12 +1058,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.featuredProductText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.featuredProductText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     DropdownButtonFormField<String>(
@@ -1015,12 +1151,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${StringConstants.lengthText}(in)",
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "${StringConstants.lengthText}(in)",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               TextFormField(
                                   autovalidateMode:
@@ -1090,12 +1239,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${StringConstants.breadthText}(in)",
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "${StringConstants.breadthText}(in)",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               TextFormField(
                                   autovalidateMode:
@@ -1169,12 +1331,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${StringConstants.heightText}(in)",
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "${StringConstants.heightText}(in)",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               TextFormField(
                                   autovalidateMode:
@@ -1244,12 +1419,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${StringConstants.weightText}(gm)",
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "${StringConstants.weightText}(in)",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               TextFormField(
                                   autovalidateMode:
@@ -1323,12 +1511,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                StringConstants.returnAvailableText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            StringConstants.returnAvailableText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               DropdownButtonFormField<String>(
                                 autovalidateMode:

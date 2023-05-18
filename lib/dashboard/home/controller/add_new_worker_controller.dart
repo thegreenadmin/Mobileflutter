@@ -99,13 +99,13 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
-  void validateAndSubmit({bool isEdit = false}) async {
+  void validateAndSubmit(BuildContext ctx, {bool isEdit = false}) async {
     if (validateAndSave()) {
       try {
         if (isEdit) {
-          apiEditWorker();
+          apiEditWorker(ctx);
         } else {
-          apiAddWorker();
+          apiAddWorker(ctx);
         }
       } catch (_) {}
     } else {
@@ -114,7 +114,7 @@ class AddNewWorkerController extends GetxController {
   }
 
   // Add Worker Api
-  Future<dynamic> apiAddWorker() async {
+  Future<dynamic> apiAddWorker(BuildContext contextt) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -175,11 +175,11 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-        Navigator.of(Get.context!).pop();
+        Navigator.of(contextt).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+        Navigator.of(contextt).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
@@ -190,7 +190,7 @@ class AddNewWorkerController extends GetxController {
   }
 
   // Edit Worker Api
-  Future<dynamic> apiEditWorker() async {
+  Future<dynamic> apiEditWorker(BuildContext contx) async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
         "EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
@@ -303,11 +303,11 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-        Navigator.of(Get.context!).pop();
+        Navigator.of(contx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+        Navigator.of(contx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
@@ -362,28 +362,25 @@ class AddNewWorkerController extends GetxController {
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-          // Get.back();
-         // Navigator.of(context).pop();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            categoryImage.value = pickedFile;
-            await apiUploadImage();
-            update();
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
+      // Get.back();
+      // Navigator.of(context).pop();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        categoryImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
       // Get.back();
       //Navigator.of(context).pop();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,

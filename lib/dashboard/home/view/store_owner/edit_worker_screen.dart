@@ -176,7 +176,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         readOnly: true,
@@ -196,7 +197,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 .pleaseEnterStoreNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -240,7 +242,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         readOnly: true,
@@ -341,7 +344,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -360,7 +364,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 .pleaseEnterShortDescriptionText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.sentences,
+                        },
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.addDescriptionText,
                           hintStyle: const TextStyle(
@@ -436,7 +441,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                              TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -537,7 +544,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     fontWeight: FontWeight.w400),
                               ),
                               height4SizedBox,
-                               TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                              TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
@@ -633,7 +642,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    IntlPhoneField(initialCountryCode: 'US',
+                    IntlPhoneField(
+                      initialCountryCode: 'US',
                       controller: addNewWorkerController.mobileNoTextController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -701,7 +711,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         : Obx(
                             () => DropdownButtonFormField<String>(
                               validator: (value) {
-                                if (addNewWorkerController.storeRoleList.isNotEmpty && value == null) {
+                                if (addNewWorkerController
+                                        .storeRoleList.isNotEmpty &&
+                                    value == null) {
                                   return AlertStringConstants
                                       .pleaseSelectRoleText;
                                 }
@@ -778,7 +790,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit(isEdit: true);
+                        addNewWorkerController.validateAndSubmit(context,
+                            isEdit: true);
                       },
                       height: 50,
                       text: StringConstants.saveText,

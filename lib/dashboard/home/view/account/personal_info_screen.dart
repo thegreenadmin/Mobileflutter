@@ -109,141 +109,126 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   ],
                 ),
                 height30SizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.firstNameText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.firstName!.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.firstNameText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.firstName!.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(StringConstants.lastNameText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16))),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.lastName!.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(StringConstants.lastNameText,
+                    style: TextStyle(
+                        color: AppColors.blacklight,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16)),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.lastName!.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(StringConstants.nickNameText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16))),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.nickName!.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(StringConstants.nickNameText,
+                    style: TextStyle(
+                        color: AppColors.blacklight,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16)),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.nickName!.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(StringConstants.emailIdText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16))),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.email.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(StringConstants.emailIdText,
+                    style: TextStyle(
+                        color: AppColors.blacklight,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16)),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.email.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.phoneNumberText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.phone.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.phoneNumberText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.phone.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
@@ -256,176 +241,158 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       fontSize: 20),
                 ),
                 height30SizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.addressLine1Text,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.addressLine1.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.addressLine1Text,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.addressLine1.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.addressLine2Text,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.addressLine2.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.addressLine2Text,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.addressLine2.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.townOrCityText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.city.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.townOrCityText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.city.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.postalCodeText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.postalCode.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.postalCodeText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.postalCode.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.countryText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.country.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.countryText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.country.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.stateText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                        )),
-                    Obx(() => Expanded(
-                        flex: 6,
-                        child: Text(
-                          accountController.state.value,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        )))
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                Text(
+                  StringConstants.stateText,
+                  style: TextStyle(
+                      color: AppColors.blacklight,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16),
                 ),
+                height10SizedBox,
+                Obx(() => Text(
+                      accountController.state.value,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )),
+                //   ],
+                // ),
                 height4SizedBox,
                 const Divider(
                   thickness: 1,

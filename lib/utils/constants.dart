@@ -38,6 +38,7 @@ class StringConstants {
   static String addMoneyToMyWalletText = "Add money to my wallet";
   static String alertText = "Alert";
   static String amountText = "Amount";
+  static String amountToBeAddedText = "Amount to be added";
   static String addDescriptionText = "Add Description";
   static String addNewText = "Add New";
   static String addWorkerText = "Add Worker";
@@ -297,6 +298,7 @@ class StringConstants {
   static String orderedDateText = "Ordered Date";
   static String orderAmountText = "Order Amount";
   static String orderTransactionText = "Order Transaction";
+  static String offerProductDetailText = "Offer Product Detail";
 
   //P
   static String pendingOrderText = "Pending Order";
@@ -437,6 +439,7 @@ class StringConstants {
   static String totalBalanceText = "Total Balance";
   static String thresholdText = "Threshold";
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
+  static String theGreenMallAppNameText = "The Green Mall";
 
   static String transactionIdText = "Transaction ID";
   static String toKnowBalanceYouDontHaveText =

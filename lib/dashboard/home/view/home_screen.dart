@@ -13,6 +13,7 @@ import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_scr
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/store_offers_detail.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -61,12 +62,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 )),
-                            Text(
-                              "${StringConstants.welcomeToText} ${StringConstants.appNameText}",
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400),
+                            const Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Welcome to ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'T',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'he',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' G',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'reen',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' M',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'all',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -404,21 +460,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     items: homeController.userCrouselImgList
                                         .map((item) => InkWell(
                                               onTap: () {
-                                                // Get.to(HomeOffersDetailScreen(),
-                                                //     arguments: {
-                                                //       "storeId":
-                                                //           item.storeId ?? "",
-                                                //       "offerId":
-                                                //           item.offerId ?? ""
-                                                //     });
-                                                // Get.to(
-                                                //     () =>
-                                                //         const StoreHomeMainScreen(),
-                                                //     arguments: {
-                                                //       "isFromHome": true,
-                                                //       "storeId":
-                                                //           item.storeId ?? "",
-                                                //     });
+                                                SharedPreferenceStorage.setData(
+                                                    "context", context);
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const StoreOfferDetailScreen(),
+                                                ));
+                                                Get.parameters["storeId"] =
+                                                    item.storeId ?? "";
+
+                                                Get.parameters["offerId"] =
+                                                    item.offerId ?? "";
                                               },
                                               child: Center(
                                                   child: ClipRRect(
@@ -496,7 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: const Center(
                                       child: CircularProgressIndicator(
                                           color: AppColors.primary)),
-                                ) //height0SizedBox
+                                )
                               : SizedBox(
                                   height: WidgetConstants.screenHeight * 0.50,
                                   child: Center(
@@ -526,14 +579,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               items: homeController.getOwnerOfferlist
                                   .map((item) => InkWell(
                                         onTap: () {
-                                          Get.to(
-                                              () =>
-                                                  const ManageStoreMainScreen(),
-                                              arguments: {
-                                                "isFromHome": true,
-                                                "storeId":
-                                                    item.store?.storeId ?? "",
-                                              });
+                                          // Get.parameters["offerId"] =
+                                          //     item.offerId ?? "";
+                                          // Get.parameters["storeId"] =
+                                          //     item.store!.storeId ?? "";
+                                          SharedPreferenceStorage.setData(
+                                              "context", context);
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (_) =>
+                                                const ManageStoreMainScreen(),
+                                          ));
+                                          Get.parameters["isFromHome"] = "true";
+                                          Get.parameters["storeId"] =
+                                              item.store!.storeId ?? "";
+
+                                          // Get.to(
+                                          //     () =>
+                                          //         const ManageStoreMainScreen(),
+                                          //     arguments: {
+                                          //       "isFromHome": true,
+                                          //       "storeId":
+                                          //           item.store?.storeId ?? "",
+                                          //     });
                                         },
                                         child: Center(
                                             child: ClipRRect(
