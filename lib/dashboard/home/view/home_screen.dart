@@ -714,6 +714,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (_) => const AddToOrderScreen(),
                                 ));
                                 Get.parameters["isFromHome"] = "true";
+                                Get.parameters["isFromFav"] = "false";
+                                Get.parameters["isFromMenu"] = "false";
                                 Get.parameters["productId"] = homeController
                                         .featuredUserProductList[index]
                                         .productId ??

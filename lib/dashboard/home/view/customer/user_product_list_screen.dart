@@ -470,20 +470,23 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           ),
                           itemBuilder: (BuildContext context, int i) {
                             return InkWell(
-                              onTap: ()  {
+                              onTap: () async {
                                 storeHomeMainController.productId.value =
                                     storeHomeMainController
                                         .featureProductList[i].productId
                                         .toString();
-                                storeHomeMainController
+                                await  storeHomeMainController
                                     .apiGetShopProductDetailApi();
+                                await  storeHomeMainController.apiGetCartListApi(context);
                                 SharedPreferenceStorage.setData("context", context);
+                                Get.parameters['isFromFav'] = "false";
+                                Get.parameters["isFromHome"] = "false";
                                 Get.parameters['isFromMenu'] = "true";
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => const AddToOrderScreen(),
                                 ));
                                 // Get.to(const AddToOrderScreen());
-                                storeHomeMainController.apiGetCartListApi(context);
+
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

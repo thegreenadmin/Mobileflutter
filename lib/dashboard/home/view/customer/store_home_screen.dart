@@ -246,6 +246,9 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                         .apiGetCartListApi(context);
                                     SharedPreferenceStorage.setData(
                                         "context", context);
+                                    Get.parameters['isFromFav'] = "false";
+                                    Get.parameters["isFromHome"] = "true";
+                                    Get.parameters["isFromMenu"] = "false";
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (_) => const AddToOrderScreen(),
