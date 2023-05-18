@@ -72,6 +72,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           await storeHomeMainController
                               .apiGetShopProductDetailApi();
                           SharedPreferenceStorage.setData("context", context);
+                          Get.parameters['isFromFav'] = "true";
                           await Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const AddToOrderScreen(),
                           ));

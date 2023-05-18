@@ -41,19 +41,30 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         : Get.parameters['isFromHome'] != "false") {
       storeHomeMainController.isFromHome.value =
           Get.parameters["isFromHome"] == "true" ? true : false;
-      storeHomeMainController.storeId.value =
-         Get.parameters["storeId"] ?? "";
+      storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
       storeHomeMainController.productId.value =
           Get.parameters["productId"] == null
               ? ""
               : Get.parameters["productId"] ?? "";
     }
+    storeHomeMainController.isFromMenu.value =
+        Get.parameters["isFromMenu"] == "true" ? true : false;
+    storeHomeMainController.isFromFav.value =
+        Get.parameters["isFromFav"] == "true" ? true : false;
+
     print("PRODUCT ID--------${Get.parameters["productId"]}");
     storeHomeMainController.storeId.value = Get.parameters["storeId"] == null
         ? ""
         : Get.parameters["storeId"] ?? "";
     storeHomeMainController.apiGetUserDetailsApi();
     print("is from homeee--${storeHomeMainController.isFromHome.value}");
+    if (storeHomeMainController.isFromMenu.value) {
+      storeHomeMainController.selectedIndex.value = 1;
+    }
+    if (storeHomeMainController.isFromFav.value) {
+      storeHomeMainController.selectedIndex.value = 2;
+    }
+
     if (storeHomeMainController.isFromHome.value) {
       nearby.Store store = nearby.Store();
       store.storeId = storeHomeMainController.storeId.value;
@@ -85,47 +96,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     StringConstants.optionsText,
   ].obs;
 
-/*
-  @override
-  void initState() {
-    super.initState();
-    if (Get.parameters["isFromHome"] == null ? false : Get.parameters['isFromHome'] != "false") {
-      storeHomeMainController.isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
-
-      storeHomeMainController.productId.value =
-      Get.parameters["productId"] == null ? "" : Get.parameters["productId"] ?? "";
-    }
-    storeHomeMainController.storeId.value =
-    Get.parameters["storeId"] == null ? "" : Get.parameters["storeId"] ?? "";
-    storeHomeMainController.apiGetUserDetailsApi();
-    if (storeHomeMainController.isFromHome.value) {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
-      storeHomeMainController.selectedIndex.value = 0;
-      storeHomeMainController.apiGetStoreDetailsApi();
-      storeHomeMainController.apiGetCartListApi(context);
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.apiGetShopProductDetailApi();
-    } else {
-      nearby.Store store = nearby.Store();
-      store.storeId =storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
-      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      // isFavouriteStore.value =
-      //     storeAddress.value.store?.isFavouriteStore ?? false;
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.apiGetStoreDetailsApi();
-      storeHomeMainController.onIndexChange(0);
-    }
-    storeHomeMainController.apiGetUserWalletBalance();
-  }*/
-
   void contactAlertDailogue(
-      context,
-      ) {
+    context,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -147,7 +120,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             height10SizedBox,
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storeName ??
+                      .storeDetailsResponse.value.data!.store!.storeName ??
                   "",
               style: const TextStyle(
                   color: AppColors.black,
@@ -167,7 +140,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storePhone ??
+                      .storeDetailsResponse.value.data!.store!.storePhone ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,
@@ -188,7 +161,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storeEmail ??
+                      .storeDetailsResponse.value.data!.store!.storeEmail ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,
@@ -234,7 +207,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   }
 
   Padding horizontalTabs() {
-
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SizedBox(
@@ -263,38 +235,38 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight:
-                          storeHomeMainController.selectedIndex.value == i
-                              ? FontWeight.w500
-                              : FontWeight.w400,
+                              storeHomeMainController.selectedIndex.value == i
+                                  ? FontWeight.w500
+                                  : FontWeight.w400,
                           color:
-                          storeHomeMainController.selectedIndex.value == i
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                              storeHomeMainController.selectedIndex.value == i
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                       i != 3
                           ? height0SizedBox
                           : PopupMenuButton(
-                        offset: const Offset(0, 25),
-                        shape: const TooltipShape(),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: storeHomeMainController
-                              .selectedIndex.value ==
-                              i
-                              ? AppColors.primary
-                              : AppColors.blacklight,
-                          size: 22,
-                        ),
-                        onSelected: (String value) async {
-                          FocusScope.of(context)
-                              .requestFocus(FocusNode());
-                        },
-                        itemBuilder: (context) =>
-                        createOptionsPopUpList(Get.context)!,
-                      )
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: storeHomeMainController
+                                            .selectedIndex.value ==
+                                        i
+                                    ? AppColors.primary
+                                    : AppColors.blacklight,
+                                size: 22,
+                              ),
+                              onSelected: (String value) async {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              },
+                              itemBuilder: (context) =>
+                                  createOptionsPopUpList(Get.context)!,
+                            )
                     ],
                   ));
             }),
@@ -373,10 +345,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             child: GestureDetector(
               onTap: () {
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages![0].storePageType ==
-                    "privacy" ||
+                            .store!.storePages![0].storePageType ==
+                        "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages![1].storePageType ==
+                            .store!.storePages![1].storePageType ==
                         "privacy") {
                   Navigator.of(context).pop();
                   // Get.back();
@@ -409,7 +381,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             child: GestureDetector(
               onTap: () {
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages!.first.storePageType ==
+                        .store!.storePages!.first.storePageType ==
                     "terms") {
                   // Get.back();
                   storeHomeMainController.termsAndPrivacyDailogue(context,
@@ -440,1189 +412,2071 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const UserStoreOrderAppBar(),
-      body: Column(
-        children: [
-          horizontalTabs(),
-          const Divider(
-            thickness: 1,
-          ),
-          storeHomeMainController.selectedIndex.value == 0
-              ?  Expanded(child:  storeHomeMainController.isFromHome.value == true ?
-                  Stack(
+        appBar: const UserStoreOrderAppBar(),
+        body: Obx(
+          () => Column(
             children: [
-              SizedBox(
-                height: WidgetConstants.screenHeight,
-                child: SingleChildScrollView(
-                    child:
-                    Obx(() =>
-                        Container(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                StringConstants.orderText,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                    color: AppColors.black),
-                              ),
-                              height20SizedBox,
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    flex: 4,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productImages ==
-                                          null ||
-                                          storeHomeMainController
-                                              .productDetailResponse
-                                              .value
-                                              .data!
-                                              .product!
-                                              .productImages!
-                                              .isEmpty
-                                          ? Image.asset(
-                                        ImageConstants.nopicfound,
-                                        fit: BoxFit.fill,
-                                        height: 120,
-                                        width: 120,
-                                      )
-                                          : Image.network(
-                                        storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productImages
-                                            ?.first
-                                            .image
-                                            ?.dynamicUrl
-                                            .toString() ??
-                                            "",
-                                        fit: BoxFit.fill,
-                                        height: 120,
-                                      ),
-                                    ),
-                                  ),
-                                  width10SizedBox,
-                                  Flexible(
-                                    flex: 7,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                                storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data
-                                                    ?.product
-                                                    ?.productName ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w600)),
-                                            storeHomeMainController
-                                                .isFavouriteProduct.value ==
-                                                true
-                                                ? InkWell(
-                                              onTap: () {
-                                                storeHomeMainController
-                                                    .apiRemoveFavouriteProduct(
-                                                    storeHomeMainController
-                                                        .productDetailResponse
-                                                        .value
-                                                        .data
-                                                        ?.product
-                                                        ?.productId);
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.liked,
-                                                scale: 3.2,
-                                              ),
-                                            )
-                                                : InkWell(
-                                              onTap: () {
-                                                storeHomeMainController
-                                                    .apiCreateFavouriteProduct(
-                                                    storeHomeMainController
-                                                        .productDetailResponse
-                                                        .value
-                                                        .data
-                                                        ?.product
-                                                        ?.productId);
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.fav,
-                                                scale: 3.2,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        height4SizedBox,
-                                        SizedBox(
-                                          width: 200,
-                                          child: Text(
-                                              storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.description ??
-                                                  "",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: AppColors.blacklight,
-                                                  fontWeight: FontWeight.w400)),
-                                        ),
-                                        height10SizedBox,
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  text:
-                                                  "${StringConstants.unitPriceText}:",
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontSize: 16)),
-                                              TextSpan(
-                                                text:
-                                                ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16,
-                                                    color: AppColors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        height8SizedBox,
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  text: StringConstants.discountText,
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontSize: 16)),
-                                              TextSpan(
-                                                text: storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data
-                                                    ?.product
-                                                    ?.offer
-                                                    ?.offerValue !=
-                                                    null
-                                                    ? storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data!
-                                                    .product!
-                                                    .offer!
-                                                    .offerType!
-                                                    .contains("percentage")
-                                                    ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
-                                                    : ''
-                                                    ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                                    : storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data !=
-                                                    null
-                                                    ? storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data!
-                                                    .product!
-                                                    .discountType!
-                                                    .contains("percentage")
-                                                    ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
-                                                    : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
-                                                    : ' 0%',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16,
-                                                    color: AppColors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        height20SizedBox,
-                                        Obx(() => Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: () {
-                                                  storeHomeMainController.itemsCount
-                                                      .value = storeHomeMainController
-                                                      .itemsCount.value !=
-                                                      0
-                                                      ? storeHomeMainController
-                                                      .itemsCount.value -
-                                                      1
-                                                      : storeHomeMainController
-                                                      .itemsCount.value;
-                                                },
-                                                child: Image.asset(
-                                                  ImageConstants.subtract,
-                                                  scale: 2.5,
-                                                )),
-                                            width10SizedBox,
-                                            Text(
-                                              storeHomeMainController.itemsCount
-                                                  .toString()
-                                                  .length <
-                                                  2
-                                                  ? storeHomeMainController.itemsCount
-                                                  .toString()
-                                                  .padLeft(2, '0')
-                                                  : storeHomeMainController.itemsCount
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14,
-                                                  color: AppColors.black),
-                                            ),
-                                            width10SizedBox,
-                                            InkWell(
-                                              onTap: () {
-                                                storeHomeMainController.itemsCount
-                                                    .value = storeHomeMainController
-                                                    .itemsCount.value +
-                                                    1;
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.add,
-                                                scale: 2.5,
-                                              ),
-                                            )
-                                          ],
-                                        ))
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              height20SizedBox,
-                              Text(
-                                StringConstants.aboutProductText,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                    color: AppColors.black),
-                              ),
-                              height10SizedBox,
-                              Text(
-                                storeHomeMainController.productDetailResponse.value.data
-                                    ?.product?.description ??
-                                    "",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: AppColors.black),
-                              ),
-                              height20SizedBox,
-                              Text(
-                                StringConstants.otherDetailText,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                    color: AppColors.black),
-                              ),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.categoriesText,
-                                  textData: storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data
-                                      ?.product
-                                      ?.productCategories
-                                      ?.first
-                                      .category
-                                      ?.categoryName ??
-                                      ""),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.quantityUnitText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.featuredProductText,
-                                  textData: storeHomeMainController.productDetailResponse
-                                      .value.data?.product?.isFeaturedProduct ==
-                                      true
-                                      ? "Yes"
-                                      : "No"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.lengthText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.breadthText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.heightText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.weightText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.returnAvailableText,
-                                  textData: storeHomeMainController.productDetailResponse
-                                      .value.data?.product?.isProductReturnable ==
-                                      true
-                                      ? "Yes"
-                                      : "No"),
-                              height20SizedBox,
-                              _buildRowOtherDetail(
-                                  title: StringConstants.daysText,
-                                  textData:
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
-                              height20SizedBox,
-                              Text(
-                                StringConstants.ratingReviewText,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                    color: AppColors.black),
-                              ),
-                              height20SizedBox,
-                              Row(
-                                children: [
-                                  Text(
-                                    double.parse(storeHomeMainController
-                                        .productDetailResponse
-                                        .value
-                                        .data
-                                        ?.product
-                                        ?.averageRating
-                                        ?.toString() ??
-                                        "0.0")
-                                        .toString(),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20,
-                                        color: AppColors.black),
-                                  ),
-                                  width8SizedBox,
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      RatingBar.builder(
-                                        initialRating: storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.averageRating
-                                            ?.toDouble() ??
-                                            0.0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        unratedColor: AppColors.grey,
-                                        itemCount: 5,
-                                        ignoreGestures: true,
-                                        itemSize: 20.0,
-                                        itemPadding:
-                                        const EdgeInsets.symmetric(horizontal: 1.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          // _selectedIcon ?? Icons.star,
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          // ratingValue.value = rating;
-                                        },
-                                        updateOnDrag: false,
-                                      ),
-                                      height6SizedBox,
-                                      Text(
-                                        "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length} ${StringConstants.reviewsText}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: AppColors.black),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              height20SizedBox,
-                              ListView.separated(
-                                  separatorBuilder: (BuildContext context, int index) {
-                                    return height12SizedBox;
-                                  },
-                                  itemCount: storeHomeMainController.productDetailResponse
-                                      .value.data?.product?.productReviews?.length ??
-                                      0,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, int i) {
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 0, vertical: 8),
-                                      decoration: const BoxDecoration(
-                                          color: AppColors.greylight,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0),
-                                          )),
-                                      child: Column(children: [
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const CircleAvatar(
-                                              backgroundColor: Colors.transparent,
-                                              radius: 20,
-                                              backgroundImage: AssetImage(
-                                                ImageConstants.nopicfound,
-                                              ),
-                                            ),
-                                            width10SizedBox,
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
-                                                        "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppColors.black,
-                                                        fontWeight: FontWeight.w600),
-                                                  ),
-                                                  height6SizedBox,
-                                                  Row(
-                                                    children: [
-                                                      RatingBar.builder(
-                                                        initialRating:
-                                                        storeHomeMainController
-                                                            .productDetailResponse
-                                                            .value
-                                                            .data
-                                                            ?.product
-                                                            ?.productReviews?[i]
-                                                            .rating
-                                                            ?.toDouble() ??
-                                                            0.0,
-                                                        minRating: 1,
-                                                        direction: Axis.horizontal,
-                                                        allowHalfRating: false,
-                                                        unratedColor: AppColors.grey,
-                                                        itemCount: 5,
-                                                        ignoreGestures: true,
-                                                        itemSize: 20.0,
-                                                        itemPadding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 1.0),
-                                                        itemBuilder: (context, _) =>
-                                                        const Icon(
-                                                          Icons.star,
-                                                          color: Colors.amber,
-                                                        ),
-                                                        onRatingUpdate: (rating) {},
-                                                        updateOnDrag: false,
-                                                      ),
-                                                      width8SizedBox,
-                                                      Text(
-                                                        Utility.formatDateTime(
-                                                            '${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}',
-                                                            firstFormat:
-                                                            "yyyy-dd-MM HH:mm:ss",
-                                                            secFormat: "dd/MM/yyyy"),
-                                                        style: const TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: AppColors.black,
-                                                            fontWeight: FontWeight.w400),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  height6SizedBox,
-                                                  Text(
-                                                    storeHomeMainController
-                                                        .productDetailResponse
-                                                        .value
-                                                        .data
-                                                        ?.product
-                                                        ?.productReviews?[i]
-                                                        .review ??
-                                                        "",
-                                                    style: const TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: AppColors.black,
-                                                        fontWeight: FontWeight.w400),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ]),
-                                    );
-                                  }),
-                              height20SizedBox,
-                              storeHomeMainController.productDetailResponse.value.data
-                                  ?.product !=
-                                  null &&
-                                  storeHomeMainController.productDetailResponse.value
-                                      .data!.product!.cartItems!.isNotEmpty
-                                  ? height80SizedBox
-                                  : height15SizedBox,
-                            ],
-                          ),
-                        ),
-                    )
-                ),
+              horizontalTabs(),
+              const Divider(
+                thickness: 1,
               ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.primary, AppColors.primary],
-                  ),
-                  onTap: () {
-                    if (storeHomeMainController.itemsCount.value != 0) {
-                      storeHomeMainController.apiAddToCart(context);
-                    } else {
-                      Utility.showToast(
-                          AlertStringConstants.pleaseAddAtleastOneItemText);
-                    }
-                  },
-                  height: 50,
-                  text: StringConstants.addToOrderText,
-                  borderRadius: 12,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  fontSize: 16,
-                ),
-              )
-            ],
-          ) : const StoreHomeScreen())
-              : storeHomeMainController.selectedIndex.value == 1
-              ?  const Expanded(child: StoreMenuScreen())
-              : storeHomeMainController.selectedIndex.value == 2
-              ?  const Expanded(child: StoreFavouriteScreen())
-              : storeHomeMainController.selectedIndex.value == 3
-              ?  const Expanded(child: StoreFavouriteScreen())
-              :  const Expanded(child: StoreHomeScreen()),
-          Stack(
-            children: [
-              SizedBox(
-                height: WidgetConstants.screenHeight,
-                child: SingleChildScrollView(
-                    child:
-                    Obx(() =>
-                      Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          StringConstants.orderText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: AppColors.black),
-                        ),
-                        height20SizedBox,
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              flex: 4,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: storeHomeMainController
-                                                .productDetailResponse
-                                                .value
-                                                .data
-                                                ?.product
-                                                ?.productImages ==
-                                            null ||
-                                        storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data!
-                                            .product!
-                                            .productImages!
-                                            .isEmpty
-                                    ? Image.asset(
-                                        ImageConstants.nopicfound,
-                                        fit: BoxFit.fill,
-                                        height: 120,
-                                        width: 120,
-                                      )
-                                    : Image.network(
-                                        storeHomeMainController
-                                                .productDetailResponse
-                                                .value
-                                                .data
-                                                ?.product
-                                                ?.productImages
-                                                ?.first
-                                                .image
-                                                ?.dynamicUrl
-                                                .toString() ??
-                                            "",
-                                        fit: BoxFit.fill,
-                                        height: 120,
-                                      ),
-                              ),
-                            ),
-                            width10SizedBox,
-                            Flexible(
-                              flex: 7,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.productName ??
-                                              "",
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w600)),
-                                      storeHomeMainController
-                                                  .isFavouriteProduct.value ==
-                                              true
-                                          ? InkWell(
-                                              onTap: () {
-                                                storeHomeMainController
-                                                    .apiRemoveFavouriteProduct(
-                                                        storeHomeMainController
-                                                            .productDetailResponse
-                                                            .value
-                                                            .data
-                                                            ?.product
-                                                            ?.productId);
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.liked,
-                                                scale: 3.2,
-                                              ),
-                                            )
-                                          : InkWell(
-                                              onTap: () {
-                                                storeHomeMainController
-                                                    .apiCreateFavouriteProduct(
-                                                        storeHomeMainController
-                                                            .productDetailResponse
-                                                            .value
-                                                            .data
-                                                            ?.product
-                                                            ?.productId);
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.fav,
-                                                scale: 3.2,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                  height4SizedBox,
-                                  SizedBox(
-                                    width: 200,
-                                    child: Text(
-                                        storeHomeMainController
-                                                .productDetailResponse
-                                                .value
-                                                .data
-                                                ?.product
-                                                ?.description ??
-                                            "",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: AppColors.blacklight,
-                                            fontWeight: FontWeight.w400)),
-                                  ),
-                                  height10SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text:
-                                                "${StringConstants.unitPriceText}:",
+              storeHomeMainController.selectedIndex.value == 0
+                  ? Expanded(
+                      child: storeHomeMainController.isFromHome.value == true
+                          ? Stack(
+                              children: [
+                                SizedBox(
+                                  height: WidgetConstants.screenHeight * 0.5,
+                                  child: SingleChildScrollView(
+                                      child: Obx(
+                                    () => Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 25),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            StringConstants.orderText,
                                             style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 16)),
-                                        TextSpan(
-                                          text:
-                                              ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              color: AppColors.black),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  height8SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: StringConstants.discountText,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: AppColors.black),
+                                          ),
+                                          height20SizedBox,
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                flex: 4,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.productImages ==
+                                                              null ||
+                                                          storeHomeMainController
+                                                              .productDetailResponse
+                                                              .value
+                                                              .data!
+                                                              .product!
+                                                              .productImages!
+                                                              .isEmpty
+                                                      ? Image.asset(
+                                                          ImageConstants
+                                                              .nopicfound,
+                                                          fit: BoxFit.fill,
+                                                          height: 120,
+                                                          width: 120,
+                                                        )
+                                                      : Image.network(
+                                                          storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.productImages
+                                                                  ?.first
+                                                                  .image
+                                                                  ?.dynamicUrl
+                                                                  .toString() ??
+                                                              "",
+                                                          fit: BoxFit.fill,
+                                                          height: 120,
+                                                        ),
+                                                ),
+                                              ),
+                                              width10SizedBox,
+                                              Flexible(
+                                                flex: 7,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            storeHomeMainController
+                                                                    .productDetailResponse
+                                                                    .value
+                                                                    .data
+                                                                    ?.product
+                                                                    ?.productName ??
+                                                                "",
+                                                            style: const TextStyle(
+                                                                fontSize: 18,
+                                                                color: AppColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                                        storeHomeMainController
+                                                                    .isFavouriteProduct
+                                                                    .value ==
+                                                                true
+                                                            ? InkWell(
+                                                                onTap: () {
+                                                                  storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.product
+                                                                      ?.productId);
+                                                                },
+                                                                child:
+                                                                    Image.asset(
+                                                                  ImageConstants
+                                                                      .liked,
+                                                                  scale: 3.2,
+                                                                ),
+                                                              )
+                                                            : InkWell(
+                                                                onTap: () {
+                                                                  storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.product
+                                                                      ?.productId);
+                                                                },
+                                                                child:
+                                                                    Image.asset(
+                                                                  ImageConstants
+                                                                      .fav,
+                                                                  scale: 3.2,
+                                                                ),
+                                                              ),
+                                                      ],
+                                                    ),
+                                                    height4SizedBox,
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Text(
+                                                          storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.description ??
+                                                              "",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400)),
+                                                    ),
+                                                    height10SizedBox,
+                                                    Text.rich(
+                                                      TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                              text:
+                                                                  "${StringConstants.unitPriceText}:",
+                                                              style: const TextStyle(
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontSize:
+                                                                      16)),
+                                                          TextSpan(
+                                                            text:
+                                                                ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                                color: AppColors
+                                                                    .black),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    height8SizedBox,
+                                                    Text.rich(
+                                                      TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                              text: StringConstants
+                                                                  .discountText,
+                                                              style: const TextStyle(
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontSize:
+                                                                      16)),
+                                                          TextSpan(
+                                                            text: storeHomeMainController
+                                                                        .productDetailResponse
+                                                                        .value
+                                                                        .data
+                                                                        ?.product
+                                                                        ?.offer
+                                                                        ?.offerValue !=
+                                                                    null
+                                                                ? storeHomeMainController
+                                                                        .productDetailResponse
+                                                                        .value
+                                                                        .data!
+                                                                        .product!
+                                                                        .offer!
+                                                                        .offerType!
+                                                                        .contains(
+                                                                            "percentage")
+                                                                    ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
+                                                                    : ''
+                                                                        ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
+                                                                : storeHomeMainController
+                                                                            .productDetailResponse
+                                                                            .value
+                                                                            .data !=
+                                                                        null
+                                                                    ? storeHomeMainController
+                                                                            .productDetailResponse
+                                                                            .value
+                                                                            .data!
+                                                                            .product!
+                                                                            .discountType!
+                                                                            .contains("percentage")
+                                                                        ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
+                                                                        : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
+                                                                    : ' 0%',
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                                color: AppColors
+                                                                    .black),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    height20SizedBox,
+                                                    Obx(() => Row(
+                                                          children: [
+                                                            InkWell(
+                                                                onTap: () {
+                                                                  storeHomeMainController
+                                                                      .itemsCount
+                                                                      .value = storeHomeMainController
+                                                                              .itemsCount
+                                                                              .value !=
+                                                                          0
+                                                                      ? storeHomeMainController
+                                                                              .itemsCount
+                                                                              .value -
+                                                                          1
+                                                                      : storeHomeMainController
+                                                                          .itemsCount
+                                                                          .value;
+                                                                },
+                                                                child:
+                                                                    Image.asset(
+                                                                  ImageConstants
+                                                                      .subtract,
+                                                                  scale: 2.5,
+                                                                )),
+                                                            width10SizedBox,
+                                                            Text(
+                                                              storeHomeMainController
+                                                                          .itemsCount
+                                                                          .toString()
+                                                                          .length <
+                                                                      2
+                                                                  ? storeHomeMainController
+                                                                      .itemsCount
+                                                                      .toString()
+                                                                      .padLeft(
+                                                                          2,
+                                                                          '0')
+                                                                  : storeHomeMainController
+                                                                      .itemsCount
+                                                                      .toString(),
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: 14,
+                                                                  color: AppColors
+                                                                      .black),
+                                                            ),
+                                                            width10SizedBox,
+                                                            InkWell(
+                                                              onTap: () {
+                                                                storeHomeMainController
+                                                                    .itemsCount
+                                                                    .value = storeHomeMainController
+                                                                        .itemsCount
+                                                                        .value +
+                                                                    1;
+                                                              },
+                                                              child:
+                                                                  Image.asset(
+                                                                ImageConstants
+                                                                    .add,
+                                                                scale: 2.5,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ))
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          height20SizedBox,
+                                          Text(
+                                            StringConstants.aboutProductText,
                                             style: const TextStyle(
-                                                color: AppColors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: AppColors.black),
+                                          ),
+                                          height10SizedBox,
+                                          Text(
+                                            storeHomeMainController
+                                                    .productDetailResponse
+                                                    .value
+                                                    .data
+                                                    ?.product
+                                                    ?.description ??
+                                                "",
+                                            style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
-                                                fontSize: 16)),
-                                        TextSpan(
-                                          text: storeHomeMainController
+                                                fontSize: 14,
+                                                color: AppColors.black),
+                                          ),
+                                          height20SizedBox,
+                                          Text(
+                                            StringConstants.otherDetailText,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: AppColors.black),
+                                          ),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants
+                                                  .categoriesText,
+                                              textData: storeHomeMainController
                                                       .productDetailResponse
                                                       .value
                                                       .data
                                                       ?.product
-                                                      ?.offer
-                                                      ?.offerValue !=
-                                                  null
-                                              ? storeHomeMainController
+                                                      ?.productCategories
+                                                      ?.first
+                                                      .category
+                                                      ?.categoryName ??
+                                                  ""),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants
+                                                  .quantityUnitText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants
+                                                  .featuredProductText,
+                                              textData: storeHomeMainController
+                                                          .productDetailResponse
+                                                          .value
+                                                          .data
+                                                          ?.product
+                                                          ?.isFeaturedProduct ==
+                                                      true
+                                                  ? "Yes"
+                                                  : "No"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants.lengthText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title:
+                                                  StringConstants.breadthText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants.heightText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants.weightText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants
+                                                  .returnAvailableText,
+                                              textData: storeHomeMainController
+                                                          .productDetailResponse
+                                                          .value
+                                                          .data
+                                                          ?.product
+                                                          ?.isProductReturnable ==
+                                                      true
+                                                  ? "Yes"
+                                                  : "No"),
+                                          height20SizedBox,
+                                          _buildRowOtherDetail(
+                                              title: StringConstants.daysText,
+                                              textData:
+                                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
+                                          height20SizedBox,
+                                          Text(
+                                            StringConstants.ratingReviewText,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: AppColors.black),
+                                          ),
+                                          height20SizedBox,
+                                          Row(
+                                            children: [
+                                              Text(
+                                                double.parse(storeHomeMainController
+                                                            .productDetailResponse
+                                                            .value
+                                                            .data
+                                                            ?.product
+                                                            ?.averageRating
+                                                            ?.toString() ??
+                                                        "0.0")
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20,
+                                                    color: AppColors.black),
+                                              ),
+                                              width8SizedBox,
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  RatingBar.builder(
+                                                    initialRating:
+                                                        storeHomeMainController
+                                                                .productDetailResponse
+                                                                .value
+                                                                .data
+                                                                ?.product
+                                                                ?.averageRating
+                                                                ?.toDouble() ??
+                                                            0.0,
+                                                    minRating: 1,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: false,
+                                                    unratedColor:
+                                                        AppColors.grey,
+                                                    itemCount: 5,
+                                                    ignoreGestures: true,
+                                                    itemSize: 20.0,
+                                                    itemPadding:
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 1.0),
+                                                    itemBuilder: (context, _) =>
+                                                        const Icon(
+                                                      // _selectedIcon ?? Icons.star,
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    onRatingUpdate: (rating) {
+                                                      // ratingValue.value = rating;
+                                                    },
+                                                    updateOnDrag: false,
+                                                  ),
+                                                  height6SizedBox,
+                                                  Text(
+                                                    "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length} ${StringConstants.reviewsText}",
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 14,
+                                                        color: AppColors.black),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          height20SizedBox,
+                                          ListView.separated(
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return height12SizedBox;
+                                              },
+                                              itemCount: storeHomeMainController
+                                                      .productDetailResponse
+                                                      .value
+                                                      .data
+                                                      ?.product
+                                                      ?.productReviews
+                                                      ?.length ??
+                                                  0,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int i) {
+                                                return Container(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 0,
+                                                      vertical: 8),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color: AppColors
+                                                              .greylight,
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(
+                                                                8.0),
+                                                          )),
+                                                  child: Column(children: [
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          radius: 20,
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                            ImageConstants
+                                                                .nopicfound,
+                                                          ),
+                                                        ),
+                                                        width10SizedBox,
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
+                                                                "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: AppColors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              height6SizedBox,
+                                                              Row(
+                                                                children: [
+                                                                  RatingBar
+                                                                      .builder(
+                                                                    initialRating: storeHomeMainController
+                                                                            .productDetailResponse
+                                                                            .value
+                                                                            .data
+                                                                            ?.product
+                                                                            ?.productReviews?[i]
+                                                                            .rating
+                                                                            ?.toDouble() ??
+                                                                        0.0,
+                                                                    minRating:
+                                                                        1,
+                                                                    direction: Axis
+                                                                        .horizontal,
+                                                                    allowHalfRating:
+                                                                        false,
+                                                                    unratedColor:
+                                                                        AppColors
+                                                                            .grey,
+                                                                    itemCount:
+                                                                        5,
+                                                                    ignoreGestures:
+                                                                        true,
+                                                                    itemSize:
+                                                                        20.0,
+                                                                    itemPadding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            1.0),
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                                _) =>
+                                                                            const Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                    ),
+                                                                    onRatingUpdate:
+                                                                        (rating) {},
+                                                                    updateOnDrag:
+                                                                        false,
+                                                                  ),
+                                                                  width8SizedBox,
+                                                                  Text(
+                                                                    Utility.formatDateTime(
+                                                                        '${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}',
+                                                                        firstFormat:
+                                                                            "yyyy-dd-MM HH:mm:ss",
+                                                                        secFormat:
+                                                                            "dd/MM/yyyy"),
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            14.0,
+                                                                        color: AppColors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w400),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              height6SizedBox,
+                                                              Text(
+                                                                storeHomeMainController
+                                                                        .productDetailResponse
+                                                                        .value
+                                                                        .data
+                                                                        ?.product
+                                                                        ?.productReviews?[
+                                                                            i]
+                                                                        .review ??
+                                                                    "",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        14.0,
+                                                                    color: AppColors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ]),
+                                                );
+                                              }),
+                                          height20SizedBox,
+                                          storeHomeMainController
+                                                          .productDetailResponse
+                                                          .value
+                                                          .data
+                                                          ?.product !=
+                                                      null &&
+                                                  storeHomeMainController
                                                       .productDetailResponse
                                                       .value
                                                       .data!
                                                       .product!
-                                                      .offer!
-                                                      .offerType!
-                                                      .contains("percentage")
-                                                  ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
-                                                  : ''
-                                                      ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                              : storeHomeMainController
-                                                          .productDetailResponse
-                                                          .value
-                                                          .data !=
-                                                      null
-                                                  ? storeHomeMainController
-                                                          .productDetailResponse
-                                                          .value
-                                                          .data!
-                                                          .product!
-                                                          .discountType!
-                                                          .contains("percentage")
-                                                      ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
-                                                      : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
-                                                  : ' 0%',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              color: AppColors.black),
-                                        ),
+                                                      .cartItems!
+                                                      .isNotEmpty
+                                              ? height80SizedBox
+                                              : height15SizedBox,
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                                ),
+                                Positioned(
+                                  bottom: 20,
+                                  left: 20,
+                                  right: 20,
+                                  child: CustomButton(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.primary
                                       ],
                                     ),
+                                    onTap: () {
+                                      if (storeHomeMainController
+                                              .itemsCount.value !=
+                                          0) {
+                                        storeHomeMainController
+                                            .apiAddToCart(context);
+                                      } else {
+                                        Utility.showToast(AlertStringConstants
+                                            .pleaseAddAtleastOneItemText);
+                                      }
+                                    },
+                                    height: 50,
+                                    text: StringConstants.addToOrderText,
+                                    borderRadius: 12,
+                                    fontWeight: FontWeight.w500,
+                                    iconL: false,
+                                    fontSize: 16,
                                   ),
-                                  height20SizedBox,
-                                  Obx(() => Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: () {
-                                                storeHomeMainController.itemsCount
-                                                    .value = storeHomeMainController
-                                                            .itemsCount.value !=
-                                                        0
-                                                    ? storeHomeMainController
-                                                            .itemsCount.value -
-                                                        1
-                                                    : storeHomeMainController
-                                                        .itemsCount.value;
-                                              },
-                                              child: Image.asset(
-                                                ImageConstants.subtract,
-                                                scale: 2.5,
-                                              )),
-                                          width10SizedBox,
-                                          Text(
-                                            storeHomeMainController.itemsCount
-                                                        .toString()
-                                                        .length <
-                                                    2
-                                                ? storeHomeMainController.itemsCount
-                                                    .toString()
-                                                    .padLeft(2, '0')
-                                                : storeHomeMainController.itemsCount
-                                                    .toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                                color: AppColors.black),
-                                          ),
-                                          width10SizedBox,
-                                          InkWell(
-                                            onTap: () {
-                                              storeHomeMainController.itemsCount
-                                                  .value = storeHomeMainController
-                                                      .itemsCount.value +
-                                                  1;
-                                            },
-                                            child: Image.asset(
-                                              ImageConstants.add,
-                                              scale: 2.5,
-                                            ),
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        height20SizedBox,
-                        Text(
-                          StringConstants.aboutProductText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: AppColors.black),
-                        ),
-                        height10SizedBox,
-                        Text(
-                          storeHomeMainController.productDetailResponse.value.data
-                                  ?.product?.description ??
-                              "",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: AppColors.black),
-                        ),
-                        height20SizedBox,
-                        Text(
-                          StringConstants.otherDetailText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: AppColors.black),
-                        ),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.categoriesText,
-                            textData: storeHomeMainController
-                                    .productDetailResponse
-                                    .value
-                                    .data
-                                    ?.product
-                                    ?.productCategories
-                                    ?.first
-                                    .category
-                                    ?.categoryName ??
-                                ""),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.quantityUnitText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.featuredProductText,
-                            textData: storeHomeMainController.productDetailResponse
-                                        .value.data?.product?.isFeaturedProduct ==
-                                    true
-                                ? "Yes"
-                                : "No"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.lengthText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.breadthText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.heightText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.weightText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.returnAvailableText,
-                            textData: storeHomeMainController.productDetailResponse
-                                        .value.data?.product?.isProductReturnable ==
-                                    true
-                                ? "Yes"
-                                : "No"),
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.daysText,
-                            textData:
-                                "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
-                        height20SizedBox,
-                        Text(
-                          StringConstants.ratingReviewText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: AppColors.black),
-                        ),
-                        height20SizedBox,
-                        Row(
-                          children: [
-                            Text(
-                              double.parse(storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.averageRating
-                                          ?.toString() ??
-                                      "0.0")
-                                  .toString(),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20,
-                                  color: AppColors.black),
-                            ),
-                            width8SizedBox,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RatingBar.builder(
-                                  initialRating: storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.averageRating
-                                          ?.toDouble() ??
-                                      0.0,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  unratedColor: AppColors.grey,
-                                  itemCount: 5,
-                                  ignoreGestures: true,
-                                  itemSize: 20.0,
-                                  itemPadding:
-                                      const EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    // _selectedIcon ?? Icons.star,
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    // ratingValue.value = rating;
-                                  },
-                                  updateOnDrag: false,
-                                ),
-                                height6SizedBox,
-                                Text(
-                                  "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length} ${StringConstants.reviewsText}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      color: AppColors.black),
-                                ),
+                                )
                               ],
-                            ),
-                          ],
-                        ),
-                        height20SizedBox,
-                        ListView.separated(
-                            separatorBuilder: (BuildContext context, int index) {
-                              return height12SizedBox;
-                            },
-                            itemCount: storeHomeMainController.productDetailResponse
-                                    .value.data?.product?.productReviews?.length ??
-                                0,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int i) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 8),
-                                decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    )),
-                                child: Column(children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const CircleAvatar(
-                                        backgroundColor: Colors.transparent,
-                                        radius: 20,
-                                        backgroundImage: AssetImage(
-                                          ImageConstants.nopicfound,
-                                        ),
-                                      ),
-                                      width10SizedBox,
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
-                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            height6SizedBox,
-                                            Row(
-                                              children: [
-                                                RatingBar.builder(
-                                                  initialRating:
-                                                      storeHomeMainController
+                            )
+                          : const StoreHomeScreen())
+                  : storeHomeMainController.selectedIndex.value == 1
+                      ? Expanded(
+                          child:
+                              storeHomeMainController.isFromMenu.value == true
+                                  ? Stack(
+                                      children: [
+                                        SizedBox(
+                                          height: WidgetConstants.screenHeight *
+                                              0.5,
+                                          child: SingleChildScrollView(
+                                              child: Obx(
+                                            () => Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 25,
+                                                      vertical: 25),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    StringConstants.orderText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 20,
+                                                        color: AppColors.black),
+                                                  ),
+                                                  height20SizedBox,
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Flexible(
+                                                        flex: 4,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                          child: storeHomeMainController
+                                                                          .productDetailResponse
+                                                                          .value
+                                                                          .data
+                                                                          ?.product
+                                                                          ?.productImages ==
+                                                                      null ||
+                                                                  storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data!
+                                                                      .product!
+                                                                      .productImages!
+                                                                      .isEmpty
+                                                              ? Image.asset(
+                                                                  ImageConstants
+                                                                      .nopicfound,
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                  height: 120,
+                                                                  width: 120,
+                                                                )
+                                                              : Image.network(
+                                                                  storeHomeMainController
+                                                                          .productDetailResponse
+                                                                          .value
+                                                                          .data
+                                                                          ?.product
+                                                                          ?.productImages
+                                                                          ?.first
+                                                                          .image
+                                                                          ?.dynamicUrl
+                                                                          .toString() ??
+                                                                      "",
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                  height: 120,
+                                                                ),
+                                                        ),
+                                                      ),
+                                                      width10SizedBox,
+                                                      Flexible(
+                                                        flex: 7,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                    storeHomeMainController
+                                                                            .productDetailResponse
+                                                                            .value
+                                                                            .data
+                                                                            ?.product
+                                                                            ?.productName ??
+                                                                        "",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: AppColors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                storeHomeMainController
+                                                                            .isFavouriteProduct
+                                                                            .value ==
+                                                                        true
+                                                                    ? InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
+                                                                              .productDetailResponse
+                                                                              .value
+                                                                              .data
+                                                                              ?.product
+                                                                              ?.productId);
+                                                                        },
+                                                                        child: Image
+                                                                            .asset(
+                                                                          ImageConstants
+                                                                              .liked,
+                                                                          scale:
+                                                                              3.2,
+                                                                        ),
+                                                                      )
+                                                                    : InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
+                                                                              .productDetailResponse
+                                                                              .value
+                                                                              .data
+                                                                              ?.product
+                                                                              ?.productId);
+                                                                        },
+                                                                        child: Image
+                                                                            .asset(
+                                                                          ImageConstants
+                                                                              .fav,
+                                                                          scale:
+                                                                              3.2,
+                                                                        ),
+                                                                      ),
+                                                              ],
+                                                            ),
+                                                            height4SizedBox,
+                                                            SizedBox(
+                                                              width: 200,
+                                                              child: Text(
+                                                                  storeHomeMainController
+                                                                          .productDetailResponse
+                                                                          .value
+                                                                          .data
+                                                                          ?.product
+                                                                          ?.description ??
+                                                                      "",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: AppColors
+                                                                          .blacklight,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400)),
+                                                            ),
+                                                            height10SizedBox,
+                                                            Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                      text:
+                                                                          "${StringConstants.unitPriceText}:",
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              16)),
+                                                                  TextSpan(
+                                                                    text:
+                                                                        ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: AppColors
+                                                                            .black),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            height8SizedBox,
+                                                            Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                      text: StringConstants
+                                                                          .discountText,
+                                                                      style: const TextStyle(
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              16)),
+                                                                  TextSpan(
+                                                                    text: storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue !=
+                                                                            null
+                                                                        ? storeHomeMainController.productDetailResponse.value.data!.product!.offer!.offerType!.contains(
+                                                                                "percentage")
+                                                                            ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
+                                                                            : ''
+                                                                                ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
+                                                                        : storeHomeMainController.productDetailResponse.value.data !=
+                                                                                null
+                                                                            ? storeHomeMainController.productDetailResponse.value.data!.product!.discountType!.contains("percentage")
+                                                                                ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
+                                                                                : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
+                                                                            : ' 0%',
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: AppColors
+                                                                            .black),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            height20SizedBox,
+                                                            Obx(() => Row(
+                                                                  children: [
+                                                                    InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          storeHomeMainController
+                                                                              .itemsCount
+                                                                              .value = storeHomeMainController.itemsCount.value !=
+                                                                                  0
+                                                                              ? storeHomeMainController.itemsCount.value - 1
+                                                                              : storeHomeMainController.itemsCount.value;
+                                                                        },
+                                                                        child: Image
+                                                                            .asset(
+                                                                          ImageConstants
+                                                                              .subtract,
+                                                                          scale:
+                                                                              2.5,
+                                                                        )),
+                                                                    width10SizedBox,
+                                                                    Text(
+                                                                      storeHomeMainController.itemsCount.toString().length <
+                                                                              2
+                                                                          ? storeHomeMainController.itemsCount.toString().padLeft(
+                                                                              2,
+                                                                              '0')
+                                                                          : storeHomeMainController
+                                                                              .itemsCount
+                                                                              .toString(),
+                                                                      style: const TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              AppColors.black),
+                                                                    ),
+                                                                    width10SizedBox,
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        storeHomeMainController
+                                                                            .itemsCount
+                                                                            .value = storeHomeMainController
+                                                                                .itemsCount.value +
+                                                                            1;
+                                                                      },
+                                                                      child: Image
+                                                                          .asset(
+                                                                        ImageConstants
+                                                                            .add,
+                                                                        scale:
+                                                                            2.5,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ))
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  height20SizedBox,
+                                                  Text(
+                                                    StringConstants
+                                                        .aboutProductText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 20,
+                                                        color: AppColors.black),
+                                                  ),
+                                                  height10SizedBox,
+                                                  Text(
+                                                    storeHomeMainController
+                                                            .productDetailResponse
+                                                            .value
+                                                            .data
+                                                            ?.product
+                                                            ?.description ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 14,
+                                                        color: AppColors.black),
+                                                  ),
+                                                  height20SizedBox,
+                                                  Text(
+                                                    StringConstants
+                                                        .otherDetailText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 20,
+                                                        color: AppColors.black),
+                                                  ),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .categoriesText,
+                                                      textData: storeHomeMainController
                                                               .productDetailResponse
                                                               .value
                                                               .data
                                                               ?.product
-                                                              ?.productReviews?[i]
-                                                              .rating
-                                                              ?.toDouble() ??
-                                                          0.0,
-                                                  minRating: 1,
-                                                  direction: Axis.horizontal,
-                                                  allowHalfRating: false,
-                                                  unratedColor: AppColors.grey,
-                                                  itemCount: 5,
-                                                  ignoreGestures: true,
-                                                  itemSize: 20.0,
-                                                  itemPadding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 1.0),
-                                                  itemBuilder: (context, _) =>
-                                                      const Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
+                                                              ?.productCategories
+                                                              ?.first
+                                                              .category
+                                                              ?.categoryName ??
+                                                          ""),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .quantityUnitText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .featuredProductText,
+                                                      textData: storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.isFeaturedProduct ==
+                                                              true
+                                                          ? "Yes"
+                                                          : "No"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .lengthText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .breadthText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .heightText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .weightText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .returnAvailableText,
+                                                      textData: storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.isProductReturnable ==
+                                                              true
+                                                          ? "Yes"
+                                                          : "No"),
+                                                  height20SizedBox,
+                                                  _buildRowOtherDetail(
+                                                      title: StringConstants
+                                                          .daysText,
+                                                      textData:
+                                                          "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
+                                                  height20SizedBox,
+                                                  Text(
+                                                    StringConstants
+                                                        .ratingReviewText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 20,
+                                                        color: AppColors.black),
                                                   ),
-                                                  onRatingUpdate: (rating) {},
-                                                  updateOnDrag: false,
-                                                ),
-                                                width8SizedBox,
-                                                Text(
-                                                  Utility.formatDateTime(
-                                                      '${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}',
-                                                      firstFormat:
-                                                          "yyyy-dd-MM HH:mm:ss",
-                                                      secFormat: "dd/MM/yyyy"),
-                                                  style: const TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: AppColors.black,
-                                                      fontWeight: FontWeight.w400),
-                                                ),
+                                                  height20SizedBox,
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        double.parse(storeHomeMainController
+                                                                    .productDetailResponse
+                                                                    .value
+                                                                    .data
+                                                                    ?.product
+                                                                    ?.averageRating
+                                                                    ?.toString() ??
+                                                                "0.0")
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 20,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      width8SizedBox,
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          RatingBar.builder(
+                                                            initialRating: storeHomeMainController
+                                                                    .productDetailResponse
+                                                                    .value
+                                                                    .data
+                                                                    ?.product
+                                                                    ?.averageRating
+                                                                    ?.toDouble() ??
+                                                                0.0,
+                                                            minRating: 1,
+                                                            direction:
+                                                                Axis.horizontal,
+                                                            allowHalfRating:
+                                                                false,
+                                                            unratedColor:
+                                                                AppColors.grey,
+                                                            itemCount: 5,
+                                                            ignoreGestures:
+                                                                true,
+                                                            itemSize: 20.0,
+                                                            itemPadding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        1.0),
+                                                            itemBuilder:
+                                                                (context, _) =>
+                                                                    const Icon(
+                                                              // _selectedIcon ?? Icons.star,
+                                                              Icons.star,
+                                                              color:
+                                                                  Colors.amber,
+                                                            ),
+                                                            onRatingUpdate:
+                                                                (rating) {
+                                                              // ratingValue.value = rating;
+                                                            },
+                                                            updateOnDrag: false,
+                                                          ),
+                                                          height6SizedBox,
+                                                          Text(
+                                                            "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length} ${StringConstants.reviewsText}",
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 14,
+                                                                color: AppColors
+                                                                    .black),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  height20SizedBox,
+                                                  ListView.separated(
+                                                      separatorBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return height12SizedBox;
+                                                      },
+                                                      itemCount:
+                                                          storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.productReviews
+                                                                  ?.length ??
+                                                              0,
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int i) {
+                                                        return Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal: 0,
+                                                                  vertical: 8),
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                                  color: AppColors
+                                                                      .greylight,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            8.0),
+                                                                  )),
+                                                          child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    const CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      radius:
+                                                                          20,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                        ImageConstants
+                                                                            .nopicfound,
+                                                                      ),
+                                                                    ),
+                                                                    width10SizedBox,
+                                                                    Expanded(
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
+                                                                            "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 16.0,
+                                                                                color: AppColors.black,
+                                                                                fontWeight: FontWeight.w600),
+                                                                          ),
+                                                                          height6SizedBox,
+                                                                          Row(
+                                                                            children: [
+                                                                              RatingBar.builder(
+                                                                                initialRating: storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].rating?.toDouble() ?? 0.0,
+                                                                                minRating: 1,
+                                                                                direction: Axis.horizontal,
+                                                                                allowHalfRating: false,
+                                                                                unratedColor: AppColors.grey,
+                                                                                itemCount: 5,
+                                                                                ignoreGestures: true,
+                                                                                itemSize: 20.0,
+                                                                                itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                                                                itemBuilder: (context, _) => const Icon(
+                                                                                  Icons.star,
+                                                                                  color: Colors.amber,
+                                                                                ),
+                                                                                onRatingUpdate: (rating) {},
+                                                                                updateOnDrag: false,
+                                                                              ),
+                                                                              width8SizedBox,
+                                                                              Text(
+                                                                                Utility.formatDateTime('${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-dd-MM HH:mm:ss", secFormat: "dd/MM/yyyy"),
+                                                                                style: const TextStyle(fontSize: 14.0, color: AppColors.black, fontWeight: FontWeight.w400),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          height6SizedBox,
+                                                                          Text(
+                                                                            storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].review ??
+                                                                                "",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 14.0,
+                                                                                color: AppColors.black,
+                                                                                fontWeight: FontWeight.w400),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ]),
+                                                        );
+                                                      }),
+                                                  height20SizedBox,
+                                                  storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product !=
+                                                              null &&
+                                                          storeHomeMainController
+                                                              .productDetailResponse
+                                                              .value
+                                                              .data!
+                                                              .product!
+                                                              .cartItems!
+                                                              .isNotEmpty
+                                                      ? height80SizedBox
+                                                      : height15SizedBox,
+                                                ],
+                                              ),
+                                            ),
+                                          )),
+                                        ),
+                                        Positioned(
+                                          bottom: 20,
+                                          left: 20,
+                                          right: 20,
+                                          child: CustomButton(
+                                            gradient: const LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                AppColors.primary,
+                                                AppColors.primary
                                               ],
                                             ),
-                                            height6SizedBox,
-                                            Text(
-                                              storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data
-                                                      ?.product
-                                                      ?.productReviews?[i]
-                                                      .review ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w400),
+                                            onTap: () {
+                                              if (storeHomeMainController
+                                                      .itemsCount.value !=
+                                                  0) {
+                                                storeHomeMainController
+                                                    .apiAddToCart(context);
+                                              } else {
+                                                Utility.showToast(
+                                                    AlertStringConstants
+                                                        .pleaseAddAtleastOneItemText);
+                                              }
+                                            },
+                                            height: 50,
+                                            text:
+                                                StringConstants.addToOrderText,
+                                            borderRadius: 12,
+                                            fontWeight: FontWeight.w500,
+                                            iconL: false,
+                                            fontSize: 16,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : const StoreMenuScreen())
+                      : storeHomeMainController.selectedIndex.value == 2
+                          ? Expanded(
+                              child:
+                                  storeHomeMainController.isFromFav.value ==
+                                          true
+                                      ? Stack(
+                                          children: [
+                                            SizedBox(
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.5,
+                                              child: SingleChildScrollView(
+                                                  child: Obx(
+                                                () => Container(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 25,
+                                                      vertical: 25),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        StringConstants
+                                                            .orderText,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 20,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      height20SizedBox,
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Flexible(
+                                                            flex: 4,
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                              child: storeHomeMainController
+                                                                              .productDetailResponse
+                                                                              .value
+                                                                              .data
+                                                                              ?.product
+                                                                              ?.productImages ==
+                                                                          null ||
+                                                                      storeHomeMainController
+                                                                          .productDetailResponse
+                                                                          .value
+                                                                          .data!
+                                                                          .product!
+                                                                          .productImages!
+                                                                          .isEmpty
+                                                                  ? Image.asset(
+                                                                      ImageConstants
+                                                                          .nopicfound,
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      height:
+                                                                          120,
+                                                                      width:
+                                                                          120,
+                                                                    )
+                                                                  : Image
+                                                                      .network(
+                                                                      storeHomeMainController
+                                                                              .productDetailResponse
+                                                                              .value
+                                                                              .data
+                                                                              ?.product
+                                                                              ?.productImages
+                                                                              ?.first
+                                                                              .image
+                                                                              ?.dynamicUrl
+                                                                              .toString() ??
+                                                                          "",
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      height:
+                                                                          120,
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                          width10SizedBox,
+                                                          Flexible(
+                                                            flex: 7,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        storeHomeMainController.productDetailResponse.value.data?.product?.productName ??
+                                                                            "",
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                18,
+                                                                            color:
+                                                                                AppColors.black,
+                                                                            fontWeight: FontWeight.w600)),
+                                                                    storeHomeMainController.isFavouriteProduct.value ==
+                                                                            true
+                                                                        ? InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController.productDetailResponse.value.data?.product?.productId);
+                                                                            },
+                                                                            child:
+                                                                                Image.asset(
+                                                                              ImageConstants.liked,
+                                                                              scale: 3.2,
+                                                                            ),
+                                                                          )
+                                                                        : InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController.productDetailResponse.value.data?.product?.productId);
+                                                                            },
+                                                                            child:
+                                                                                Image.asset(
+                                                                              ImageConstants.fav,
+                                                                              scale: 3.2,
+                                                                            ),
+                                                                          ),
+                                                                  ],
+                                                                ),
+                                                                height4SizedBox,
+                                                                SizedBox(
+                                                                  width: 200,
+                                                                  child: Text(
+                                                                      storeHomeMainController
+                                                                              .productDetailResponse
+                                                                              .value
+                                                                              .data
+                                                                              ?.product
+                                                                              ?.description ??
+                                                                          "",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color: AppColors
+                                                                              .blacklight,
+                                                                          fontWeight:
+                                                                              FontWeight.w400)),
+                                                                ),
+                                                                height10SizedBox,
+                                                                Text.rich(
+                                                                  TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                          text:
+                                                                              "${StringConstants.unitPriceText}:",
+                                                                          style: const TextStyle(
+                                                                              color: AppColors.black,
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 16)),
+                                                                      TextSpan(
+                                                                        text:
+                                                                            ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
+                                                                        style: const TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w600,
+                                                                            fontSize:
+                                                                                16,
+                                                                            color:
+                                                                                AppColors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                height8SizedBox,
+                                                                Text.rich(
+                                                                  TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                          text: StringConstants
+                                                                              .discountText,
+                                                                          style: const TextStyle(
+                                                                              color: AppColors.black,
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 16)),
+                                                                      TextSpan(
+                                                                        text: storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue !=
+                                                                                null
+                                                                            ? storeHomeMainController.productDetailResponse.value.data!.product!.offer!.offerType!.contains("percentage")
+                                                                                ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
+                                                                                : ''
+                                                                                    ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
+                                                                            : storeHomeMainController.productDetailResponse.value.data != null
+                                                                                ? storeHomeMainController.productDetailResponse.value.data!.product!.discountType!.contains("percentage")
+                                                                                    ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
+                                                                                    : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
+                                                                                : ' 0%',
+                                                                        style: const TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w600,
+                                                                            fontSize:
+                                                                                16,
+                                                                            color:
+                                                                                AppColors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                height20SizedBox,
+                                                                Obx(() => Row(
+                                                                      children: [
+                                                                        InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              storeHomeMainController.itemsCount.value = storeHomeMainController.itemsCount.value != 0 ? storeHomeMainController.itemsCount.value - 1 : storeHomeMainController.itemsCount.value;
+                                                                            },
+                                                                            child:
+                                                                                Image.asset(
+                                                                              ImageConstants.subtract,
+                                                                              scale: 2.5,
+                                                                            )),
+                                                                        width10SizedBox,
+                                                                        Text(
+                                                                          storeHomeMainController.itemsCount.toString().length < 2
+                                                                              ? storeHomeMainController.itemsCount.toString().padLeft(2, '0')
+                                                                              : storeHomeMainController.itemsCount.toString(),
+                                                                          style: const TextStyle(
+                                                                              fontWeight: FontWeight.w600,
+                                                                              fontSize: 14,
+                                                                              color: AppColors.black),
+                                                                        ),
+                                                                        width10SizedBox,
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            storeHomeMainController.itemsCount.value =
+                                                                                storeHomeMainController.itemsCount.value + 1;
+                                                                          },
+                                                                          child:
+                                                                              Image.asset(
+                                                                            ImageConstants.add,
+                                                                            scale:
+                                                                                2.5,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ))
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      height20SizedBox,
+                                                      Text(
+                                                        StringConstants
+                                                            .aboutProductText,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 20,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      height10SizedBox,
+                                                      Text(
+                                                        storeHomeMainController
+                                                                .productDetailResponse
+                                                                .value
+                                                                .data
+                                                                ?.product
+                                                                ?.description ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontSize: 14,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      height20SizedBox,
+                                                      Text(
+                                                        StringConstants
+                                                            .otherDetailText,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 20,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .categoriesText,
+                                                          textData: storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.productCategories
+                                                                  ?.first
+                                                                  .category
+                                                                  ?.categoryName ??
+                                                              ""),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .quantityUnitText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .featuredProductText,
+                                                          textData: storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.product
+                                                                      ?.isFeaturedProduct ==
+                                                                  true
+                                                              ? "Yes"
+                                                              : "No"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .lengthText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .breadthText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .heightText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .weightText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .returnAvailableText,
+                                                          textData: storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.product
+                                                                      ?.isProductReturnable ==
+                                                                  true
+                                                              ? "Yes"
+                                                              : "No"),
+                                                      height20SizedBox,
+                                                      _buildRowOtherDetail(
+                                                          title: StringConstants
+                                                              .daysText,
+                                                          textData:
+                                                              "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
+                                                      height20SizedBox,
+                                                      Text(
+                                                        StringConstants
+                                                            .ratingReviewText,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 20,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      height20SizedBox,
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            double.parse(storeHomeMainController
+                                                                        .productDetailResponse
+                                                                        .value
+                                                                        .data
+                                                                        ?.product
+                                                                        ?.averageRating
+                                                                        ?.toString() ??
+                                                                    "0.0")
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 20,
+                                                                color: AppColors
+                                                                    .black),
+                                                          ),
+                                                          width8SizedBox,
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              RatingBar.builder(
+                                                                initialRating: storeHomeMainController
+                                                                        .productDetailResponse
+                                                                        .value
+                                                                        .data
+                                                                        ?.product
+                                                                        ?.averageRating
+                                                                        ?.toDouble() ??
+                                                                    0.0,
+                                                                minRating: 1,
+                                                                direction: Axis
+                                                                    .horizontal,
+                                                                allowHalfRating:
+                                                                    false,
+                                                                unratedColor:
+                                                                    AppColors
+                                                                        .grey,
+                                                                itemCount: 5,
+                                                                ignoreGestures:
+                                                                    true,
+                                                                itemSize: 20.0,
+                                                                itemPadding:
+                                                                    const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            1.0),
+                                                                itemBuilder:
+                                                                    (context,
+                                                                            _) =>
+                                                                        const Icon(
+                                                                  // _selectedIcon ?? Icons.star,
+                                                                  Icons.star,
+                                                                  color: Colors
+                                                                      .amber,
+                                                                ),
+                                                                onRatingUpdate:
+                                                                    (rating) {
+                                                                  // ratingValue.value = rating;
+                                                                },
+                                                                updateOnDrag:
+                                                                    false,
+                                                              ),
+                                                              height6SizedBox,
+                                                              Text(
+                                                                "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length} ${StringConstants.reviewsText}",
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: AppColors
+                                                                        .black),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height20SizedBox,
+                                                      ListView.separated(
+                                                          separatorBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return height12SizedBox;
+                                                          },
+                                                          itemCount: storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.product
+                                                                  ?.productReviews
+                                                                  ?.length ??
+                                                              0,
+                                                          shrinkWrap: true,
+                                                          physics:
+                                                              const NeverScrollableScrollPhysics(),
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int i) {
+                                                            return Container(
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal: 0,
+                                                                  vertical: 8),
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                      color: AppColors
+                                                                          .greylight,
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .all(
+                                                                        Radius.circular(
+                                                                            8.0),
+                                                                      )),
+                                                              child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        const CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          radius:
+                                                                              20,
+                                                                          backgroundImage:
+                                                                              AssetImage(
+                                                                            ImageConstants.nopicfound,
+                                                                          ),
+                                                                        ),
+                                                                        width10SizedBox,
+                                                                        Expanded(
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(
+                                                                                "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.firstName?.toTitleCase() ?? ""} "
+                                                                                "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user?.lastName?.toTitleCase() ?? ""} ",
+                                                                                style: const TextStyle(fontSize: 16.0, color: AppColors.black, fontWeight: FontWeight.w600),
+                                                                              ),
+                                                                              height6SizedBox,
+                                                                              Row(
+                                                                                children: [
+                                                                                  RatingBar.builder(
+                                                                                    initialRating: storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].rating?.toDouble() ?? 0.0,
+                                                                                    minRating: 1,
+                                                                                    direction: Axis.horizontal,
+                                                                                    allowHalfRating: false,
+                                                                                    unratedColor: AppColors.grey,
+                                                                                    itemCount: 5,
+                                                                                    ignoreGestures: true,
+                                                                                    itemSize: 20.0,
+                                                                                    itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                                                                    itemBuilder: (context, _) => const Icon(
+                                                                                      Icons.star,
+                                                                                      color: Colors.amber,
+                                                                                    ),
+                                                                                    onRatingUpdate: (rating) {},
+                                                                                    updateOnDrag: false,
+                                                                                  ),
+                                                                                  width8SizedBox,
+                                                                                  Text(
+                                                                                    Utility.formatDateTime('${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-dd-MM HH:mm:ss", secFormat: "dd/MM/yyyy"),
+                                                                                    style: const TextStyle(fontSize: 14.0, color: AppColors.black, fontWeight: FontWeight.w400),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              height6SizedBox,
+                                                                              Text(
+                                                                                storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].review ?? "",
+                                                                                style: const TextStyle(fontSize: 14.0, color: AppColors.black, fontWeight: FontWeight.w400),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ]),
+                                                            );
+                                                          }),
+                                                      height20SizedBox,
+                                                      storeHomeMainController
+                                                                      .productDetailResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.product !=
+                                                                  null &&
+                                                              storeHomeMainController
+                                                                  .productDetailResponse
+                                                                  .value
+                                                                  .data!
+                                                                  .product!
+                                                                  .cartItems!
+                                                                  .isNotEmpty
+                                                          ? height80SizedBox
+                                                          : height15SizedBox,
+                                                    ],
+                                                  ),
+                                                ),
+                                              )),
                                             ),
+                                            Positioned(
+                                              bottom: 20,
+                                              left: 20,
+                                              right: 20,
+                                              child: CustomButton(
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    AppColors.primary,
+                                                    AppColors.primary
+                                                  ],
+                                                ),
+                                                onTap: () {
+                                                  if (storeHomeMainController
+                                                          .itemsCount.value !=
+                                                      0) {
+                                                    storeHomeMainController
+                                                        .apiAddToCart(context);
+                                                  } else {
+                                                    Utility.showToast(
+                                                        AlertStringConstants
+                                                            .pleaseAddAtleastOneItemText);
+                                                  }
+                                                },
+                                                height: 50,
+                                                text: StringConstants
+                                                    .addToOrderText,
+                                                borderRadius: 12,
+                                                fontWeight: FontWeight.w500,
+                                                iconL: false,
+                                                fontSize: 16,
+                                              ),
+                                            )
                                           ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                              );
-                            }),
-                        height20SizedBox,
-                        storeHomeMainController.productDetailResponse.value.data
-                                        ?.product !=
-                                    null &&
-                                storeHomeMainController.productDetailResponse.value
-                                    .data!.product!.cartItems!.isNotEmpty
-                            ? height80SizedBox
-                            : height15SizedBox,
-                      ],
-                    ),
-                  ),
-                )
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: CustomButton(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.primary, AppColors.primary],
-                  ),
-                  onTap: () {
-                    if (storeHomeMainController.itemsCount.value != 0) {
-                      storeHomeMainController.apiAddToCart(context);
-                    } else {
-                      Utility.showToast(
-                          AlertStringConstants.pleaseAddAtleastOneItemText);
-                    }
-                  },
-                  height: 50,
-                  text: StringConstants.addToOrderText,
-                  borderRadius: 12,
-                  fontWeight: FontWeight.w500,
-                  iconL: false,
-                  fontSize: 16,
-                ),
-              )
+                                        )
+                                      : const StoreFavouriteScreen())
+                          : storeHomeMainController.selectedIndex.value == 3
+                              ? const Expanded(child: StoreFavouriteScreen())
+                              : const Expanded(child: StoreHomeScreen()),
             ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Row _buildRowOtherDetail({

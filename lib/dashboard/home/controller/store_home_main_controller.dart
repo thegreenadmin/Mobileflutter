@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -72,6 +70,8 @@ class StoreHomeMainController extends GetxController {
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
   RxBool isFromHome = false.obs;
+  RxBool isFromFav = false.obs;
+  RxBool isFromMenu = false.obs;
   RxBool isFavouriteStore = false.obs;
   RxBool isDeleteCartItem = false.obs;
   RxBool isFavouriteProduct = false.obs;
@@ -98,6 +98,7 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    Future.delayed(const Duration(milliseconds: 500), () {});
     getCurrentLocation();
     storeId.value =
         Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
@@ -111,12 +112,23 @@ class StoreHomeMainController extends GetxController {
           ? ""
           : Get.parameters["productId"] ?? "";
     }
-    print("PRODUCT ID--------" + Get.parameters["productId"].toString());
+
+    isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
+    isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
+    print("isFromMenu--------${isFromFav.value}");
+    print("isFromFav-------${isFromMenu.value}");
+    print("PRODUCT ID--------${Get.parameters["productId"]}");
     storeId.value = Get.parameters["storeId"] == null
         ? ""
         : Get.parameters["storeId"] ?? "";
     apiGetUserDetailsApi();
     print("is from homeee--" + isFromHome.value.toString());
+    if (isFromMenu.value) {
+      selectedIndex.value = 1;
+    }
+    if (isFromFav.value) {
+      selectedIndex.value = 2;
+    }
     if (isFromHome.value) {
       nearby.Store store = nearby.Store();
       store.storeId = storeId.value;
@@ -876,7 +888,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("STORE DETAILS RESPONSE*******${value?.body}");
+      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");

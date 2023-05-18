@@ -477,8 +477,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                         .toString();
                                 storeHomeMainController
                                     .apiGetShopProductDetailApi();
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
+                                SharedPreferenceStorage.setData("context", context);
+                                Get.parameters['isFromMenu'] = "true";
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => const AddToOrderScreen(),
                                 ));
