@@ -405,7 +405,7 @@ class StoreDeliveryService {
 class StorePage {
     String? storeId;
     String? storePageType;
-    String? storePageContent;
+    Image? storePageContent;
     String? status;
     DateTime? createdAt;
     DateTime? updatedAt;
@@ -424,7 +424,7 @@ class StorePage {
     StorePage copyWith({
         String? storeId,
         String? storePageType,
-        String? storePageContent,
+        Image? storePageContent,
         String? status,
         DateTime? createdAt,
         DateTime? updatedAt,
@@ -443,7 +443,7 @@ class StorePage {
     factory StorePage.fromJson(Map<String, dynamic> json) => StorePage(
         storeId: json["store_id"],
         storePageType: json["store_page_type"],
-        storePageContent: json["store_page_content"],
+        storePageContent: json["store_page_content"] == null ? null : Image.fromJson(json["store_page_content"]),
         status: json["status"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -453,7 +453,7 @@ class StorePage {
     Map<String, dynamic> toJson() => {
         "store_id": storeId,
         "store_page_type": storePageType,
-        "store_page_content": storePageContent,
+        "store_page_content": storePageContent?.toJson(),
         "status": status,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
