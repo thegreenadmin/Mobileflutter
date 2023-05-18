@@ -338,10 +338,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           )
                                         : InkWell(
                                             onTap: () async {
-                                              // await walletController
-                                              //     .apiGetAutoRechargeDetail();
-                                              // bottomSheetToAddMoney(context,
-                                              //     isFromEdit: true);
+                                              await walletController
+                                                  .apiGetAutoRechargeDetail();
+                                              bottomSheetToAddMoney(context,
+                                                  isFromEdit: true);
                                             },
                                             child: Text(
                                               StringConstants

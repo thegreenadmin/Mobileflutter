@@ -22,12 +22,13 @@ class OtpVerificationController extends GetxController {
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  RxBool hasStoreAccess = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    phoneNumber.value = Get.arguments["phoneNumber"]??"";
-    countryCode.value = Get.arguments["countryCode"]??"";
+    phoneNumber.value = Get.arguments["phoneNumber"] ?? "";
+    countryCode.value = Get.arguments["countryCode"] ?? "";
     getFcmToken();
   }
 
@@ -83,7 +84,15 @@ class OtpVerificationController extends GetxController {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
-        SharedPreferenceStorage.setData(Role.role.value, Role.customerRoleText);
+        hasStoreAccess.value = value.body['data']['has_store_access'];
+        if (hasStoreAccess.value) {
+          SharedPreferenceStorage.setData(
+              Role.role.value, Role.storeOwnerRoleText);
+        } else {
+          SharedPreferenceStorage.setData(
+              Role.role.value, Role.customerRoleText);
+        }
+
         // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
         //   builder: (_) => BottomNavigation(),
         // ));

@@ -65,7 +65,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ? width10SizedBox
                                     : height0SizedBox,
                                 Obx(
-                                      () => Text(
+                                  () => Text(
                                     'Hi, ${walletController.firstName?.value} ${walletController.lastName?.value}',
                                     style: const TextStyle(
                                         fontSize: 20,
@@ -99,92 +99,91 @@ class _WalletScreenState extends State<WalletScreen> {
           height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Obx(() =>  walletController.role!.value==
-                      Role.customerRoleText
-                      ? height0SizedBox
-                      : walletController.storeList.isEmpty
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Obx(
+              () => walletController.role!.value == Role.customerRoleText
+                  ? height0SizedBox
+                  : walletController.storeList.isEmpty
                       ? Column(
-                    children: [
-                      Text(StringConstants.toKnowBalanceYouDontHaveText),
-                    ],
-                  )
+                          children: [
+                            Text(StringConstants.toKnowBalanceYouDontHaveText),
+                          ],
+                        )
                       : Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Text(
-                          StringConstants.selectStoreText,
-                          style: TextStyle(
-                              color: AppColors.blacklight, fontSize: 18),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 6,
-                        child: DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          hint: Text(
-                            StringConstants.selectStoreText,
-                            style: const TextStyle(
-                                color: AppColors.grey, fontSize: 14),
-                          ),
-                          items: walletController.storeList
-                              .map((dynamic value) {
-                            return DropdownMenuItem<String>(
-                              value: value.storeId,
+                          children: [
+                            Expanded(
+                              flex: 4,
                               child: Text(
-                                value.storeName,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                StringConstants.selectStoreText,
+                                style: TextStyle(
+                                    color: AppColors.blacklight, fontSize: 18),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            walletController.storeNameValue!.value =
-                                value.toString();
-                            walletController.ownerSelectedStore.value =
-                                value.toString();
-                            walletController.apiGetOwnerWalletBalance();
-                            walletController.apiGetStoreDetailsApi();
-                          },
+                            ),
+                            Expanded(
+                              flex: 6,
+                              child: DropdownButtonFormField<String>(
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.grey,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  border: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                                hint: Text(
+                                  StringConstants.selectStoreText,
+                                  style: const TextStyle(
+                                      color: AppColors.grey, fontSize: 14),
+                                ),
+                                items: walletController.storeList
+                                    .map((dynamic value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value.storeId,
+                                    child: Text(
+                                      value.storeName,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  walletController.storeNameValue!.value =
+                                      value.toString();
+                                  walletController.ownerSelectedStore.value =
+                                      value.toString();
+                                  walletController.apiGetOwnerWalletBalance();
+                                  walletController.apiGetStoreDetailsApi();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),),
-
+            ),
             height20SizedBox,
             Stack(
               alignment: Alignment.center,
@@ -202,61 +201,64 @@ class _WalletScreenState extends State<WalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() =>  walletController.role!.value==
-                        Role.customerRoleText
-                        ? Column(
-                      children: [
-                        Text(
-                          "\$${walletController.userWalletBalance!.value}",
-                          style: const TextStyle(
-                              color: AppColors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        height8SizedBox,
-                        Text(
-                          StringConstants.totalBalanceText,
-                          style: const TextStyle(
-                              color: AppColors.white, fontSize: 18),
-                        ),
-                        height12SizedBox,
-                        InkWell(
-                          onTap: () {
-                            SharedPreferenceStorage.setData("context", context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const AddMoneyToWallet(),
-                            ))
-                            // Get.to(const AddMoneyToWallet())!
-                                .then(
-                                    (value) => walletController
-                                    .apiGetUserWalletBalance());
-                          },
-                          child: Image.asset(
-                            ImageConstants.addMoney,
-                            scale: 3.5,
-                          ),
-                        ),
-                      ],
-                    )
-                        : Column(
-                      children: [
-                        Text(
-                          "\$${walletController.ownerWalletBalance!.value}",
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        height8SizedBox,
-                        Text(
-                          StringConstants.totalBalanceText,
-                          style: const TextStyle(
-                              color: AppColors.black, fontSize: 18),
-                        ),
-                        height12SizedBox,
-                      ],
-                    ))
-
+                    Obx(() =>
+                        walletController.role!.value == Role.customerRoleText
+                            ? Column(
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      "\$${walletController.userWalletBalance!.value}",
+                                      style: const TextStyle(
+                                          color: AppColors.white,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  height8SizedBox,
+                                  Text(
+                                    StringConstants.totalBalanceText,
+                                    style: const TextStyle(
+                                        color: AppColors.white, fontSize: 18),
+                                  ),
+                                  height12SizedBox,
+                                  InkWell(
+                                    onTap: () {
+                                      SharedPreferenceStorage.setData(
+                                          "context", context);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                            builder: (_) =>
+                                                const AddMoneyToWallet(),
+                                          ))
+                                          // Get.to(const AddMoneyToWallet())!
+                                          .then((value) => walletController
+                                              .apiGetUserWalletBalance());
+                                    },
+                                    child: Image.asset(
+                                      ImageConstants.addMoney,
+                                      scale: 3.5,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Text(
+                                    "\$${walletController.ownerWalletBalance!.value}",
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  height8SizedBox,
+                                  Text(
+                                    StringConstants.totalBalanceText,
+                                    style: const TextStyle(
+                                        color: AppColors.black, fontSize: 18),
+                                  ),
+                                  height12SizedBox,
+                                ],
+                              ))
                   ],
                 )
               ],
@@ -324,87 +326,84 @@ class _WalletScreenState extends State<WalletScreen> {
               ],
             ),
             height30SizedBox,
-                Obx(() =>  walletController.role!.value==
-                    Role.customerRoleText
-                    ? height0SizedBox
-                    : Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Column(
-                        //   children: [
-                        //     Image.asset(
-                        //       ImageConstants.rounddownload,
-                        //       scale: 3,
-                        //     ),
-                        //     const Text(
-                        //       "Download",
-                        //       style: TextStyle(
-                        //           fontSize: 14, fontWeight: FontWeight.w600),
-                        //     ),
-                        //   ],
-                        // ),
-                        QrImage(
-                          data: walletController.dynamicLink.value
-                              .toString(),
-                          size: 150,
-                          embeddedImageStyle: QrEmbeddedImageStyle(
-                            size: const Size(
-                              50,
-                              50,
+            Obx(() => walletController.role!.value == Role.customerRoleText
+                ? height0SizedBox
+                : Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Column(
+                          //   children: [
+                          //     Image.asset(
+                          //       ImageConstants.rounddownload,
+                          //       scale: 3,
+                          //     ),
+                          //     const Text(
+                          //       "Download",
+                          //       style: TextStyle(
+                          //           fontSize: 14, fontWeight: FontWeight.w600),
+                          //     ),
+                          //   ],
+                          // ),
+                          QrImage(
+                            data: walletController.dynamicLink.value.toString(),
+                            size: 150,
+                            embeddedImageStyle: QrEmbeddedImageStyle(
+                              size: const Size(
+                                50,
+                                50,
+                              ),
                             ),
                           ),
-                        ),
-                        // InkWell(
-                        //   onTap: () async {
-                        //     if (Platform.isIOS) {
-                        //       await Share.share(
-                        //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
-                        //       );
-                        //     } else {
-                        //       await Share.share(
-                        //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
-                        //       );
-                        //     }
-                        //   },
-                        //   child: Column(
-                        //     children: [
-                        //       Image.asset(
-                        //         ImageConstants.roundshare,
-                        //         scale: 3,
-                        //       ),
-                        //       const Text(
-                        //         "Share",
-                        //         style: TextStyle(
-                        //             fontSize: 14,
-                        //             fontWeight: FontWeight.w600),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    height10SizedBox,
-                    const Center(
-                      child: Text(
-                        "Scan QR Code",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                          // InkWell(
+                          //   onTap: () async {
+                          //     if (Platform.isIOS) {
+                          //       await Share.share(
+                          //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
+                          //       );
+                          //     } else {
+                          //       await Share.share(
+                          //         "Let's connect on The Green Mall! Get it at${walletController.dynamicLink.value}",
+                          //       );
+                          //     }
+                          //   },
+                          //   child: Column(
+                          //     children: [
+                          //       Image.asset(
+                          //         ImageConstants.roundshare,
+                          //         scale: 3,
+                          //       ),
+                          //       const Text(
+                          //         "Share",
+                          //         style: TextStyle(
+                          //             fontSize: 14,
+                          //             fontWeight: FontWeight.w600),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ],
                       ),
-                    ),
-                    height8SizedBox,
-                    const Center(
-                      child: Text(
-                          "It is a long established fact that a reader will be distracted by the readable content",
-                          textAlign: TextAlign.center,
+                      height10SizedBox,
+                      const Center(
+                        child: Text(
+                          "Scan QR Code",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500)),
-                    ),
-                  ],
-                ))
-
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      height8SizedBox,
+                      const Center(
+                        child: Text(
+                            "It is a long established fact that a reader will be distracted by the readable content",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ))
           ]),
         ),
       ),

@@ -97,7 +97,7 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     getCurrentLocation();
-
+    apiGetCartListApi(Get.context);
     storeId.value =
         Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
     if (Get.parameters == null
@@ -122,7 +122,7 @@ class StoreHomeMainController extends GetxController {
       storeAddress.value.store = store;
       isFavouriteStore.value = store.isFavouriteStore ?? false;
       selectedIndex.value = 0;
-      apiGetCartListApi(Get.context);
+
       setupScrollController(Get.context);
       apiGetShopProductDetailApi();
     } else {

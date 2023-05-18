@@ -472,7 +472,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      addCardController.validateAndSubmit(context,
+                      addCardController.validateAndSubmitFunction(context,
                           isFromPayout: true);
                     },
                     height: 50,

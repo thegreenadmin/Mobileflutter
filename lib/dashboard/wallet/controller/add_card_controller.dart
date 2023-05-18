@@ -89,7 +89,7 @@ class AddCardController extends GetxController {
   }
 
 // Fields Validation Method
-  void validateAndSubmit(BuildContext contextt,
+  Future validateAndSubmitFunction(BuildContext context,
       {bool isFromPayout = false}) async {
     if (validateAndSave()) {
       try {
@@ -100,7 +100,7 @@ class AddCardController extends GetxController {
               userStripeCardId!.value.isEmpty) {
             Utility.showToast(AlertStringConstants.pleaseSelectCardText);
           } else {
-            await apiAddMoneyToWallet(contextt);
+            await apiAddMoneyToWallet(context);
           }
         } else {
           if (storeId!.value.isEmpty) {
@@ -303,7 +303,7 @@ class AddCardController extends GetxController {
   }
 
 // Add Money to stripe wallet
-  apiAddMoneyToWallet(BuildContext ctx) {
+  apiAddMoneyToWallet(BuildContext context) {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -327,17 +327,20 @@ class AddCardController extends GetxController {
         .then((value) async {
       if (value != null) {
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
-        if (value.body['success'] == true ||
-            value.body['code'] == ApiConstants.statusCode201 ||
-            value.body['code'] == ApiConstants.statusCode200) {
-          Navigator.of(ctx, rootNavigator: true).pop(ctx);
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
+          Navigator.pop(context);
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
+          paymentType!.value = "";
+          paymentType!.value.isEmpty;
+
           update();
           Utility.showToast(value.body['message']);
+          return true;
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
         } else {

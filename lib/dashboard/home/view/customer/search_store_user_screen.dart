@@ -49,7 +49,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         initialIndex: searchStoreUserController.initialIndex.value,
         length: 3,
         vsync: this);
-
     updateCurrentLocation();
     super.initState();
   }
@@ -90,13 +89,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(()=> Text(
-                                  'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                ),),
+                                Obx(
+                                  () => Text(
+                                    'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
@@ -156,7 +157,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               builder: (_) => const FilterOptionScreen(),
                             ));
                             // Get.to(const FilterOptionScreen());
-
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,
@@ -181,10 +181,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         language: "en",
                         components: []);
                     searchStoreUserController.searchController.text =
-                        p?.description!.toString()??"";
+                        p?.description!.toString() ?? "";
                     GeoData addresses = await Geocoder2.getDataFromAddress(
-                        address: p?.description.toString()??"",
+                        address: p?.description.toString() ?? "",
                         googleMapApiKey: kGoogleApiKey);
+                    searchStoreUserController.zipCodeTextController.text =
+                        addresses.postalCode;
                     updateMap(addresses.latitude, addresses.longitude);
                   },
                   child: TextFormField(
@@ -320,3 +322,24 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         .asUint8List();
   }
 }
+
+        // Prediction? p = await PlacesAutocomplete.show(
+        //                       offset: 0,
+        //                       radius: 1000,
+        //                       types: [],
+        //                       strictbounds: false,
+        //                       context: context,
+        //                       apiKey: accountController.kGoogleApiKey,
+        //                       mode: Mode.overlay,
+        //                       language: "en",
+        //                       components: []);
+        //                   int idx = p!.description!.indexOf(",");
+        //                   List parts = [
+        //                     p.description!.substring(0, idx).trim(),
+        //                     p.description!.substring(idx + 1).trim()
+        //                   ];
+        //                   accountController.addressLine1TextController.text =
+        //                       parts[0].toString();
+        //                   GeoData addresses = await Geocoder2.getDataFromAddress(
+        //                       address: p.description.toString(),
+        //                       googleMapApiKey: accountController.kGoogleApiKey);

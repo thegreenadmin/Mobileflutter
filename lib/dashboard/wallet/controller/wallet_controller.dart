@@ -427,16 +427,14 @@ class WalletController extends GetxController {
         .then((value) async {
       if (value != null) {
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
-        if (value.body['success'] == true ||
-            value.body['code'] == ApiConstants.statusCode201 ||
-            value.body['code'] == ApiConstants.statusCode200) {
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
           Navigator.of(ctx).pop();
-          // Get.back();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showToast(value.body['message']);
@@ -853,6 +851,10 @@ class WalletController extends GetxController {
                 : getAutoRechargeModel.data!.userWalletAutoCharge!.chargeAmount
                     .toString();
 
+            if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
+                1) {
+              frequencyTextController.text = "7";
+            }
             frequencyTextController.text = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.frequency
                 .toString();
@@ -897,7 +899,6 @@ class WalletController extends GetxController {
       "threshold_amount": thresholdAmountTextController.text.trim(),
       "charge_amount": chargeAmountTextController.text.trim(),
       "start_date": DateTime.now().toString(),
-
       // "end_date": autoChargeType.value == "threshold"
       //     ? DateTime(date.year + 1, date.month, date.day).toString()
       //     : endDateTextController.text.trim(),
@@ -905,22 +906,20 @@ class WalletController extends GetxController {
           ? "1"
           : selectedFrequency.value.isEmpty
               ? frequencyTextController.text
-              : ""
+              : selectedFrequency.value
     };
     debugPrint("TOKEN ********** $headers");
-    debugPrint("UPDATE AUTO RECHARGE BODY ********** $headers");
     UserProvider()
         .putWithHeadersApi(
             body,
             ServerCommunicator().baseUrl +
                 ServerCommunicator().userWalletAutochargeUpdate,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
       debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
-
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
@@ -932,8 +931,8 @@ class WalletController extends GetxController {
         accountNumberTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
-        Navigator.of(ctxx).pop;
-        apiGetAutoRechargeDetail();
+        Navigator.of(ctxx).pop(ctxx);
+        await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();

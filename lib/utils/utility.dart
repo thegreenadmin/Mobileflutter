@@ -30,7 +30,7 @@ class Utility {
   static void showToast(dynamic message) {
     Fluttertoast.showToast(
         msg: message.toString(),
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
         backgroundColor: AppColors.primary,
         textColor: AppColors.white,
