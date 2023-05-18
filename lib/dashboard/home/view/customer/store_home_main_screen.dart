@@ -77,6 +77,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.onIndexChange(0);
     }
     storeHomeMainController.apiGetUserWalletBalance();
+    storeHomeMainController.apiGetCartListApi(Get.context);
   }
 
   void contactAlertDailogue(

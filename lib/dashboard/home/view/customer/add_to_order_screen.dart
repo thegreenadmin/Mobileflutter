@@ -62,6 +62,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
     print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
     print("is from homeee--${storeHomeMainController.isFromHome.value}");
+    if (storeHomeMainController.isFromMenu.value) {  storeHomeMainController.selectedIndex.value = 1;}
+    if (storeHomeMainController.isFromFav.value) {  storeHomeMainController.selectedIndex.value = 2;}
+
 
     if (storeHomeMainController.isFromHome.value) {
       nearby.Store store = nearby.Store();
@@ -91,7 +94,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     }
     storeHomeMainController.apiGetUserWalletBalance();
   }
-
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -124,7 +126,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             height10SizedBox,
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storeName ??
+                      .storeDetailsResponse.value.data!.store!.storeName ??
                   "",
               style: const TextStyle(
                   color: AppColors.black,
@@ -240,13 +242,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight:
-                          storeHomeMainController.selectedIndex.value == i
-                              ? FontWeight.w500
-                              : FontWeight.w400,
+                              storeHomeMainController.selectedIndex.value == i
+                                  ? FontWeight.w500
+                                  : FontWeight.w400,
                           color:
-                          storeHomeMainController.selectedIndex.value == i
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                              storeHomeMainController.selectedIndex.value == i
+                                  ? AppColors.primary
+                                  : AppColors.blacklight,
                         ),
                       ),
                       i != 3
