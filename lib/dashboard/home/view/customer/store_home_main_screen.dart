@@ -53,26 +53,24 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         : Get.parameters["storeId"] ?? "";
     storeHomeMainController.apiGetUserDetailsApi();
     if (storeHomeMainController.isFromHome.value) {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value =
-          store.isFavouriteStore ?? false;
+      // nearby.Store store = nearby.Store();
+      // store.storeId = storeHomeMainController.storeId.value;
+      // storeHomeMainController.storeAddress.value.store = store;
+      // storeHomeMainController.isFavouriteStore.value =
+      //     store.isFavouriteStore ?? false;
       storeHomeMainController.selectedIndex.value = 0;
       storeHomeMainController.apiGetStoreDetailsApi();
       storeHomeMainController.apiGetCartListApi(context);
-      storeHomeMainController.setupScrollController(Get.context);
       storeHomeMainController.apiGetShopProductDetailApi();
     } else {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value =
-          store.isFavouriteStore ?? false;
+      // nearby.Store store = nearby.Store();
+      // store.storeId = storeHomeMainController.storeId.value;
+      // storeHomeMainController.storeAddress.value.store = store;
+      // storeHomeMainController.isFavouriteStore.value =
+      //     store.isFavouriteStore ?? false;
       // storeAddress.value = Get.arguments["storeAddress"] ?? {};
       // isFavouriteStore.value =
       //     storeAddress.value.store?.isFavouriteStore ?? false;
-      storeHomeMainController.setupScrollController(Get.context);
       storeHomeMainController.apiGetStoreDetailsApi();
       storeHomeMainController.onIndexChange(0);
     }

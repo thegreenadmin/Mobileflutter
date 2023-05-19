@@ -33,66 +33,66 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   initState() {
     super.initState();
-    storeHomeMainController.getCurrentLocation();
-    storeHomeMainController.storeId.value =
-        Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromHome'] != "false") {
-
-      storeHomeMainController.storeId.value =
-         Get.parameters["storeId"] ?? "";
-      storeHomeMainController.productId.value =
-          Get.parameters["productId"] == null
-              ? ""
-              : Get.parameters["productId"] ?? "";
-    }
-    storeHomeMainController.isFromHome.value =
-    Get.parameters["isFromHome"] == "true" ? true : false;
-    storeHomeMainController.isFromMenu.value =
-    Get.parameters["isFromMenu"] == "true" ? true : false;
-    storeHomeMainController.isFromFav.value =
-    Get.parameters["isFromFav"] == "true" ? true : false;
-
-    print("PRODUCT ID--------${Get.parameters["productId"]}");
-    storeHomeMainController.storeId.value = Get.parameters["storeId"] == null
-        ? ""
-        : Get.parameters["storeId"] ?? "";
-    storeHomeMainController.apiGetUserDetailsApi();
-    print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
-    print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
-    print("is from homeee--${storeHomeMainController.isFromHome.value}");
-    if (storeHomeMainController.isFromMenu.value) {  storeHomeMainController.selectedIndex.value = 1;}
-    if (storeHomeMainController.isFromFav.value) {  storeHomeMainController.selectedIndex.value = 2;}
-
-
-    if (storeHomeMainController.isFromHome.value) {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value =
-          store.isFavouriteStore ?? false;
-      // storeHomeMainController.selectedIndex.value = 0;
-      storeHomeMainController.apiGetCartListApi(Get.context);
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.apiGetShopProductDetailApi();
-    } else {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      if (storeHomeMainController.isFromMenu.value) {
-        storeHomeMainController.selectedIndex.value = 1;
-      }else
-      if (storeHomeMainController.isFromFav.value) {
-        storeHomeMainController.selectedIndex.value = 2;
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if(storeHomeMainController.storeId.value != Get.parameters["storeId"] ){
+        storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+        storeHomeMainController.getCurrentLocation();
       }
-      storeHomeMainController.isFavouriteStore.value =
-          storeHomeMainController.storeAddress.value.store?.isFavouriteStore ?? false;
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.onIndexChange(0);
-    }
-    storeHomeMainController.apiGetUserWalletBalance();
+
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['isFromHome'] != "false") {
+
+        storeHomeMainController.productId.value =
+        Get.parameters["productId"] == null
+            ? ""
+            : Get.parameters["productId"] ?? "";
+      }
+
+      storeHomeMainController.isFromHome.value =
+      Get.parameters["isFromHome"] == "true" ? true : false;
+      storeHomeMainController.isFromMenu.value =
+      Get.parameters["isFromMenu"] == "true" ? true : false;
+      storeHomeMainController.isFromFav.value =
+      Get.parameters["isFromFav"] == "true" ? true : false;
+
+      print("PRODUCT ID--------${Get.parameters["productId"]}");
+
+      storeHomeMainController.apiGetUserDetailsApi();
+      print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
+      print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
+      print("is from homeee--${storeHomeMainController.isFromHome.value}");
+      if (storeHomeMainController.isFromMenu.value) {  storeHomeMainController.selectedIndex.value = 1;}
+      if (storeHomeMainController.isFromFav.value) {  storeHomeMainController.selectedIndex.value = 2;}
+
+
+      if (storeHomeMainController.isFromHome.value) {
+        // nearby.Store store = nearby.Store();
+        // store.storeId = storeHomeMainController.storeId.value;
+        // storeHomeMainController.storeAddress.value.store = store;
+        // storeHomeMainController.isFavouriteStore.value =
+        //     store.isFavouriteStore ?? false;
+        storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.apiGetCartListApi(Get.context);
+        storeHomeMainController.apiGetShopProductDetailApi();
+      } else {
+        // nearby.Store store = nearby.Store();
+        // store.storeId = storeHomeMainController.storeId.value;
+        // storeHomeMainController.storeAddress.value.store = store;
+        // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+        if (storeHomeMainController.isFromMenu.value) {
+          storeHomeMainController.selectedIndex.value = 1;
+        }else
+        if (storeHomeMainController.isFromFav.value) {
+          storeHomeMainController.selectedIndex.value = 2;
+        }
+        // storeHomeMainController.isFavouriteStore.value =
+        //     storeHomeMainController.storeAddress.value.store?.isFavouriteStore ?? false;
+        // storeHomeMainController.onIndexChange(0);
+      }
+      storeHomeMainController.apiGetUserWalletBalance();
+    });
+
   }
 
   RxList horizontalTabList = [
@@ -102,9 +102,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     StringConstants.optionsText,
   ].obs;
 
-  void contactAlertDailogue(
-      context,
-      ) {
+  void contactAlertDialog(context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -328,7 +326,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               onTap: () {
                 Navigator.of(context).pop();
                 // Get.back();
-                contactAlertDailogue(context);
+                contactAlertDialog(context);
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

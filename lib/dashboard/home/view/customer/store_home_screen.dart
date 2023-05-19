@@ -49,7 +49,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                   fontSize: 20)),
                           TextSpan(
                             text:
-                                " ${storeHomeMainController.storeAddress.value.store?.storeName ?? ""}",
+                                // " ${storeHomeMainController.storeAddress.value.store?.storeName ?? ""}",
+                                " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName??""}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,

@@ -39,7 +39,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
       Completer<GoogleMapController>();
   final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    // zoom: 14.4746,
+    zoom: 50.4746,
   );
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -141,11 +142,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           myLocationButtonEnabled: false,
                           mapType: MapType.normal,
                           zoomControlsEnabled: true,
-                          // initialCameraPosition: const CameraPosition(
-                          //   target: LatLng(37.42796133580664, -122.085749655962),
-                          //   zoom: 14.4746,
-                          //   // zoom: 17,
-                          // ),
+                          minMaxZoomPreference: MinMaxZoomPreference.unbounded,
                           initialCameraPosition: _kGooglePlex,
                           markers: Set<Marker>.of(markers.values),
                           onMapCreated: (GoogleMapController controller) {
