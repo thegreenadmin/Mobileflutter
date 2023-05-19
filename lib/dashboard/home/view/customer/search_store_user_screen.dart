@@ -12,8 +12,10 @@ import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -31,6 +33,7 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
@@ -51,6 +54,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         length: 3,
         vsync: this);
     updateCurrentLocation();
+    searchStoreUserController.apiActiveCartApi(Get.context);
     super.initState();
   }
 
@@ -58,7 +62,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(140.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -110,9 +114,116 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             ),
                           ],
                         ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
+                        Row(
+                          children: [
+                            Obx(
+                              () => Visibility(
+                                visible:
+                                    searchStoreUserController.cartCount.value !=
+                                        0,
+                                //      ||
+                                // storeHomeMainController
+                                //     .productDetailResponse
+                                //     .value
+                                //     .data!
+                                //     .product!
+                                //     .cartItems!
+                                //     .isNotEmpty,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [],
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              SharedPreferenceStorage.setData(
+                                                  "context", context);
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const StoreHomeMainScreen(),
+                                              ));
+                                              Get.parameters["storeId"] =
+                                                  searchStoreUserController
+                                                      .storeIdValue.value;
+                                              // searchStoreUserController
+                                              //     .apiGetUserWalletBalance();
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (_) =>
+                                              //       const CartScreen(),
+                                              // ));
+                                              // Get.to(() => const CartScreen());
+                                            },
+                                            child: Stack(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 22.0,
+                                                  backgroundColor: Colors.white,
+                                                  child: Image.asset(
+                                                      ImageConstants.cart,
+                                                      height: 16),
+                                                ),
+                                                Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              1.5),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.red,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.5),
+                                                      ),
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                        minWidth: 15,
+                                                        minHeight: 15,
+                                                      ),
+                                                      child: Obx(
+                                                        () => Text(
+                                                          searchStoreUserController
+                                                              .cartItems.length
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 4,
+                            ),
+                          ],
                         )
                       ]),
                   height20SizedBox,

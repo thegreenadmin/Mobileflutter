@@ -83,6 +83,7 @@ class StoreHomeMainController extends GetxController {
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
   final scrollController = ScrollController();
+
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   void setupScrollController(context) {
@@ -98,7 +99,6 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(milliseconds: 500), () {});
     getCurrentLocation();
     storeId.value =
         Get.parameters == null ? "" : Get.parameters["storeId"] ?? "";
