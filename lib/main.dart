@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> {
       ),
       getPages: Routers.route,
       //initialRoute: '/welcomeView',
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

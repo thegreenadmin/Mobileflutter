@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
+import 'package:thegreenmall/dashboard/home/model/favourite_stores_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
+import 'package:thegreenmall/dashboard/home/model/previous_stores_response_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -25,10 +27,14 @@ class SearchStoreUserController extends GetxController {
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
-  late NearbyStoreListResponse nearbyStoreListResponse =
-      NearbyStoreListResponse();
+  late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
+  late PreviousStoreResponse previousStoreListResponse = PreviousStoreResponse();
+  late FavouriteStoreResponse favouriteStoreListResponse = FavouriteStoreResponse();
+
+  RxList<FavouriteStore> favouriteStore = <FavouriteStore>[].obs;
+  RxList<PreviousStore> previousStore = <PreviousStore>[].obs;
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
-  RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
+  // RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
 
   late cart.CartListResponse cartListResponse = cart.CartListResponse();
   RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
@@ -338,7 +344,7 @@ class SearchStoreUserController extends GetxController {
     if (isFilter) {
       page.value = 1;
       storeAddresses.clear();
-      favStoreAddresses.clear();
+      // favStoreAddresses.clear();
     }
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
@@ -395,12 +401,12 @@ class SearchStoreUserController extends GetxController {
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             storeAddresses.value = [];
-            favStoreAddresses.value = [];
+            // favStoreAddresses.value = [];
           }
           storeAddresses.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
             if (element.store?.isFavouriteStore == true) {
-              favStoreAddresses.add(element);
+              // favStoreAddresses.add(element);
             }
           }
         }
@@ -431,9 +437,126 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
+
+  //Get Previous Stores Api
+  Future apiGetPreviousStores(
+      context, {
+        bool isFilter = false,
+      }) async {
+    isDataLoading.value = true;
+    previousStoreListResponse = PreviousStoreResponse();
+    isLoading.value = previousStore.isNotEmpty ? true : false;
+    debugPrint("GET GET PREVIOUS STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}?page=${page.value.toString()}&page_size=5",
+        headers,
+        showLoading: page.value == 1)
+        .then((value) async {
+      isLoading.value = false;
+      isFavLoading.value = false;
+      isDataLoading.value = false;
+      debugPrint("GET PREVIOUS STORES *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        previousStoreListResponse = PreviousStoreResponse.fromJson(value?.body);
+        List<PreviousStore>? storeAddressesNewList = [];
+        storeAddressesNewList = previousStoreListResponse.data!.previousStores;
+        if (storeAddressesNewList!.isNotEmpty) {
+          if (page.value == 1) {
+            previousStore.value = [];
+          }
+          previousStore.addAll(storeAddressesNewList);
+          for (var element in storeAddresses) {
+            if (element.store?.isFavouriteStore == true) {
+            }
+          }
+        }
+        previousStore.toSet().toList();
+        page.value++;
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Get Favorite Stores Api
+  Future apiGetFavoriteStores(
+      context, {
+        bool isFilter = false,
+      }) async {
+    isDataLoading.value = true;
+    favouriteStoreListResponse = FavouriteStoreResponse();
+    isLoading.value = favouriteStore.isNotEmpty ? true : false;
+    debugPrint("GET GET FAVOURITE STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}?page=${page.value.toString()}&page_size=5",
+        headers,
+        showLoading: page.value == 1)
+        .then((value) async {
+      isLoading.value = false;
+      isFavLoading.value = false;
+      isDataLoading.value = false;
+      debugPrint("GET FAVOURITE STORES *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        favouriteStoreListResponse = FavouriteStoreResponse.fromJson(value?.body);
+        List<FavouriteStore>? storeAddressesNewList = [];
+        storeAddressesNewList = favouriteStoreListResponse.data!.favouriteStores;
+        if (storeAddressesNewList!.isNotEmpty) {
+          if (page.value == 1) {
+            favouriteStore.value = [];
+          }
+          favouriteStore.addAll(storeAddressesNewList);
+          for (var element in storeAddresses) {
+            if (element.store?.isFavouriteStore == true) {
+            }
+          }
+        }
+        favouriteStore.toSet().toList();
+        page.value++;
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
   //Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
-    isLoading.value = storeAddresses.isNotEmpty ? true : false;
+    isLoading.value = favouriteStore.isNotEmpty ? true : false;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
     Map<String, String> headers = {
@@ -459,14 +582,22 @@ class SearchStoreUserController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         if (type.value == 2) {
-          storeAddresses.clear();
+          favouriteStore.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
-        } else {
+          apiGetFavoriteStores(Get.context!);
+        }else  if (type.value == 0) {
           for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
               element.store?.isFavouriteStore = true;
-              favStoreAddresses.add(element);
+              // favStoreAddresses.remove(element);
+            }
+          }
+
+        }else if (type.value == 1) {
+          for (var element in previousStore) {
+            if (element.storeId == id) {
+              element.isFavouriteStore = true;
+              // favStoreAddresses.remove(element);
             }
           }
         }
@@ -485,7 +616,7 @@ class SearchStoreUserController extends GetxController {
 
   //Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
-    isLoading.value = storeAddresses.isNotEmpty ? true : false;
+    isLoading.value = favouriteStore.isNotEmpty ? true : false;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
     Map<String, String> headers = {
@@ -499,10 +630,8 @@ class SearchStoreUserController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     debugPrint("data ********** ${data.toString()}");
     UserProvider()
-        .deleteWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
+        .deleteWithHeadersApi(data,
+            ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
@@ -512,14 +641,22 @@ class SearchStoreUserController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         if (type.value == 2) {
-          storeAddresses.clear();
+          favouriteStore.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
-        } else {
+          apiGetFavoriteStores(Get.context!);
+        } else  if (type.value == 0) {
           for (var element in storeAddresses) {
             if (element.store?.storeId == id) {
               element.store?.isFavouriteStore = false;
-              favStoreAddresses.remove(element);
+              // favStoreAddresses.remove(element);
+            }
+          }
+
+        }else if (type.value == 1) {
+          for (var element in previousStore) {
+            if (element.storeId == id) {
+              element.isFavouriteStore = false;
+              // favStoreAddresses.remove(element);
             }
           }
         }

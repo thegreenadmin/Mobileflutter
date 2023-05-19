@@ -47,6 +47,7 @@ class ServerCommunicator {
 //F
   String fileUpload = 'file/upload/single';
   String fileUploadMultiple = 'file/upload/multiple';
+  String favouriteStoreList = 'shop/stores/list/favourite';
 
 //G
   String generateOtp = 'user/otp/generate';
@@ -81,6 +82,7 @@ class ServerCommunicator {
   String pagePolicy = 'page/privacy';
   String pageFaq = 'page/faq';
   String pageAbout = 'page/about';
+  String previousStoreList = 'shop/stores/list/previous';
 
 //Q
 //R

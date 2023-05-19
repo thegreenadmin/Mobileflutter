@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -702,8 +703,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   null,
                                           child: Expanded(
                                             flex: 2,
-                                            child: Obx(
-                                              () => InkWell(
+                                            child: InkWell(
                                                 onTap: () {
                                                   SharedPreferenceStorage
                                                       .setData(
@@ -766,7 +766,6 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
                                           ),
                                         ),
                                       ])),
@@ -916,8 +915,10 @@ class _CartScreenState extends State<CartScreen> {
                                         "context", context);
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (_) => const WalletScreen(),
-                                    ));
+                                      builder: (_) => const AddMoneyToWallet(),
+                                    )).then((value) {
+                                      storeHomeMainController.apiGetUserWalletBalance();
+                                    });
 
                                     Get.parameters["isFromCartScreen"] = "true";
                                     // Get.to(const WalletScreen(),

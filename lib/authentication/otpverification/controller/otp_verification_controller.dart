@@ -84,7 +84,7 @@ class OtpVerificationController extends GetxController {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
-        hasStoreAccess.value = value.body['data']['has_store_access'];
+        hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(
               Role.role.value, Role.storeOwnerRoleText);
@@ -93,9 +93,6 @@ class OtpVerificationController extends GetxController {
               Role.role.value, Role.customerRoleText);
         }
 
-        // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-        //   builder: (_) => BottomNavigation(),
-        // ));
         Get.offAll(() => BottomNavigation());
         // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
         // Get.offAll(() => BottomNavigation());

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -30,8 +32,6 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class StoreHomeMainController extends GetxController {
-  // Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
-
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
   late offers.StoreOffersListResponse offersListResponse =
@@ -95,9 +95,7 @@ class StoreHomeMainController extends GetxController {
       getCurrentLocation();
     }
 
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromHome'] != false) {
+    if ( Get.parameters['isFromHome'] != false) {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
 
       productId.value = Get.parameters["productId"] == null
@@ -119,22 +117,11 @@ class StoreHomeMainController extends GetxController {
       selectedIndex.value = 2;
     }
     if (isFromHome.value) {
-      // nearby.Store store = nearby.Store();
-      // store.storeId = storeId.value;
-      // storeAddress.value.store = store;
-      // isFavouriteStore.value = store.isFavouriteStore ?? false;
       selectedIndex.value = 0;
       apiGetShopProductDetailApi();
     } else {
-      // nearby.Store store = nearby.Store();
-      // store.storeId = storeId.value;
-      // storeAddress.value.store = store;
-      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      // isFavouriteStore.value =
-      //     storeAddress.value.store?.isFavouriteStore ?? false;
       onIndexChange(0);
     }
-
 
     apiGetUserWalletBalance();
     apiGetCartListApi(Get.context);
@@ -924,7 +911,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Product Shop Detail  *******${value?.body}");
+      log("Product Shop Detail  *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =

@@ -1424,7 +1424,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   children: [
                                     TextSpan(
                                         text:
-                                            "${StringConstants.weightText}(in)",
+                                            "${StringConstants.weightText}(gms)",
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,

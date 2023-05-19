@@ -39,16 +39,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.getCurrentLocation();
       }
 
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromHome'] != "false") {
+      if ( Get.parameters['isFromHome'] != "false") {
 
         storeHomeMainController.productId.value =
         Get.parameters["productId"] == null
             ? ""
             : Get.parameters["productId"] ?? "";
       }
-
       storeHomeMainController.isFromHome.value =
       Get.parameters["isFromHome"] == "true" ? true : false;
       storeHomeMainController.isFromMenu.value =
@@ -67,29 +64,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
 
       if (storeHomeMainController.isFromHome.value) {
-        // nearby.Store store = nearby.Store();
-        // store.storeId = storeHomeMainController.storeId.value;
-        // storeHomeMainController.storeAddress.value.store = store;
-        // storeHomeMainController.isFavouriteStore.value =
-        //     store.isFavouriteStore ?? false;
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetCartListApi(Get.context);
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
-        // nearby.Store store = nearby.Store();
 
-        // store.storeId = storeHomeMainController.storeId.value;
-        // storeHomeMainController.storeAddress.value.store = store;
-        // storeAddress.value = Get.arguments["storeAddress"] ?? {};
         if (storeHomeMainController.isFromMenu.value) {
           storeHomeMainController.selectedIndex.value = 1;
         }else
         if (storeHomeMainController.isFromFav.value) {
           storeHomeMainController.selectedIndex.value = 2;
         }
-        // storeHomeMainController.isFavouriteStore.value =
-        //     storeHomeMainController.storeAddress.value.store?.isFavouriteStore ?? false;
-        // storeHomeMainController.onIndexChange(0);
       }
       storeHomeMainController.apiGetUserWalletBalance();
     });
@@ -612,7 +597,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                        text: StringConstants.discountText,
+                                        text:  storeHomeMainController
+                                            .productDetailResponse
+                                            .value
+                                            .data
+                                            ?.product
+                                            ?.offer
+                                            ?.offerValue !=
+                                            null? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}" : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}",
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w400,
@@ -637,18 +629,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
                                           : ''
                                           ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                          : storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data !=
-                                          null
-                                          ? storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data!
-                                          .product!
-                                          .discountType!
-                                          .contains("percentage")
+                                          : storeHomeMainController.productDetailResponse.value.data != null
+                                          ? storeHomeMainController.productDetailResponse.value.data!.product!.discountType!.contains("percentage")
                                           ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
                                           : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
                                           : ' 0%',

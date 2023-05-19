@@ -36,7 +36,12 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   @override
   void initState() {
     super.initState();
+    if(storeHomeMainController.storeId.value != Get.parameters["storeId"] ){
+      storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+      storeHomeMainController.getCurrentLocation();
+    }
     storeHomeMainController.apiGetCartListApi(context);
+
     if (Get.parameters["isFromHome"] == null
         ? false
         : Get.parameters['isFromHome'] != "false") {
@@ -53,24 +58,11 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         : Get.parameters["storeId"] ?? "";
     storeHomeMainController.apiGetUserDetailsApi();
     if (storeHomeMainController.isFromHome.value) {
-      // nearby.Store store = nearby.Store();
-      // store.storeId = storeHomeMainController.storeId.value;
-      // storeHomeMainController.storeAddress.value.store = store;
-      // storeHomeMainController.isFavouriteStore.value =
-      //     store.isFavouriteStore ?? false;
       storeHomeMainController.selectedIndex.value = 0;
       storeHomeMainController.apiGetStoreDetailsApi();
       storeHomeMainController.apiGetCartListApi(context);
       storeHomeMainController.apiGetShopProductDetailApi();
     } else {
-      // nearby.Store store = nearby.Store();
-      // store.storeId = storeHomeMainController.storeId.value;
-      // storeHomeMainController.storeAddress.value.store = store;
-      // storeHomeMainController.isFavouriteStore.value =
-      //     store.isFavouriteStore ?? false;
-      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      // isFavouriteStore.value =
-      //     storeAddress.value.store?.isFavouriteStore ?? false;
       storeHomeMainController.apiGetStoreDetailsApi();
       storeHomeMainController.onIndexChange(0);
     }
@@ -78,7 +70,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     storeHomeMainController.apiGetCartListApi(Get.context);
   }
 
-  void contactAlertDailogue(
+  void contactAlertDialog(
     context,
   ) {
     showDialog(
@@ -303,7 +295,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               onTap: () {
                 Navigator.of(context).pop();
                 // Get.back();
-                contactAlertDailogue(context);
+                contactAlertDialog(context);
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
