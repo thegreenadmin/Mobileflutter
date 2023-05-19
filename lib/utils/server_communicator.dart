@@ -146,6 +146,7 @@ class ServerCommunicator {
   String shopStoreProductList = 'shop/store/product/list';
   String storeServiceCharge = 'store/service/charge';
   String storeDynamicLinkUpdate = 'store/dynamic/link/update';
+  String shopCartActive = 'shop/cart/active';
 
 //T
 //U

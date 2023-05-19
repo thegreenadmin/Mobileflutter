@@ -19,11 +19,11 @@ class _UserTransactionDetailScreenState
   final UserTransactionDetailController userTransactionDetailController =
       Get.put(UserTransactionDetailController());
 
-@override
+  @override
   void initState() {
-   
     super.initState();
-    userTransactionDetailController.userStripeCardId!.value = Get.parameters['user_stripe_card_id'] ?? "";
+    userTransactionDetailController.userStripeCardId!.value =
+        Get.parameters['user_stripe_card_id'] ?? "";
     // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
     userTransactionDetailController.apiGetUserOrderTransactionHistory();
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -11,6 +13,9 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
+import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
+    as nearby;
 
 class SearchStoreUserController extends GetxController {
   TextEditingController zipCodeTextController = TextEditingController();
@@ -24,25 +29,42 @@ class SearchStoreUserController extends GetxController {
       NearbyStoreListResponse();
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
   RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
+
+  late cart.CartListResponse cartListResponse = cart.CartListResponse();
+  RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
+
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+  RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
+  Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
+
+  ActiveCartModel activeCartModel = ActiveCartModel();
+
   var kGoogleApiKey = "";
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
   RxInt selectedIndex = 0.obs;
-
+  RxString storeDeliveryServiceId = "0".obs;
+  RxString userAddressId = "0".obs;
   RxInt page = 1.obs;
   RxInt initialIndex = 0.obs;
-
+  RxString storeId = "".obs;
+  RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
   RxBool isFavLoading = false.obs;
   RxBool isOpenNow = false.obs;
+  RxBool isValidAddress = false.obs;
+  RxBool isOrderDeliverable = false.obs;
   RxBool isDataLoading = false.obs;
   RxInt type = 0.obs;
   final scrollController = ScrollController();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-
+  RxInt cartCount = 0.obs;
+  RxDouble walletBalance = 0.0.obs;
+  RxString storeAddressId = "".obs;
+  Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
   void setupScrollController(context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
@@ -61,12 +83,143 @@ class SearchStoreUserController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.firstNameText);
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText);
-
+    nearby.Store store = nearby.Store();
+    store.storeId = storeId.value;
+    storeAddress.value.store = store;
     setupScrollController(Get.context);
+    apiActiveCartApi(Get.context);
+  }
+
+  //Get Active Cart Api
+  Future apiActiveCartApi(context) async {
+    isLoading.value = true;
+    debugPrint(
+        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        activeCartModel = ActiveCartModel.fromJson(value?.body);
+        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 ||
+            activeCartModel.data!.cartItems!.isEmpty) {
+          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+        } else {
+          isValidAddress.value = activeCartModel.data!.isValidAddress!;
+          isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
+          storeIdValue.value = activeCartModel.data!.storeId.toString();
+          await apiGetCartListApi(context,
+              storeId: activeCartModel.data!.storeId.toString());
+        }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Get Cart List Api
+  Future apiGetCartListApi(context, {String storeId = ""}) async {
+    isLoading.value = true;
+    debugPrint(
+        "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            storeDeliveryServiceId.value.toString() == "0" &&
+                    selectedUserAddress.value.userAddressId == null
+                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId"
+                : storeDeliveryServiceId.value.toString() != "0" &&
+                        selectedUserAddress.value.userAddressId == null
+                    ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+                    : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET CART LIST RESPONSE  123*******${value?.body}");
+      debugPrint(
+          "GET CART LIST URL 1*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId");
+      debugPrint(
+          "GET CART LIST URL 2*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}");
+      debugPrint(
+          "GET CART LIST URL 3*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}");
+
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        cartListResponse = cart.CartListResponse.fromJson(value?.body);
+        cartItems.value = cartListResponse.data?.cartItems ?? [];
+        cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
+  }
+
+  //Get User Wallet Balance Api
+  Future apiGetUserWalletBalance() async {
+    isLoading.value = true;
+    debugPrint("User Wallet Balance URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("USER WALLET BALANCE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        if (value!.body["data"]["balance"] is int ||
+            value.body["data"]["balance"] is String) {
+          walletBalance.value =
+              double.parse(value.body["data"]["balance"].toString());
+          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+        } else if (value.body["data"]["balance"] is double) {
+          walletBalance.value = value.body["data"]["balance"];
+          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+        }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 
 //Alert
-
   void enterEinNumberAlert(context, String storeId) {
     showDialog(
       context: context,
