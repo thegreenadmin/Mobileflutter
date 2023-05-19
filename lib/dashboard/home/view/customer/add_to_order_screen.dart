@@ -77,6 +77,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
         // nearby.Store store = nearby.Store();
+
         // store.storeId = storeHomeMainController.storeId.value;
         // storeHomeMainController.storeAddress.value.store = store;
         // storeAddress.value = Get.arguments["storeAddress"] ?? {};
