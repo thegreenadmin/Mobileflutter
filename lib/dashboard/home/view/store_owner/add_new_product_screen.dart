@@ -527,13 +527,14 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Flexible(
                           flex: 5,
                           child: TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r"[0-9.]")),
+                              ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                              ],
                               style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
@@ -545,7 +546,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
                                       .pleaseEnterQuantityText;
-                                } else if (int.parse(value) == 0) {
+                                } else if (double.parse(value) == 0.0) {
                                   return AlertStringConstants
                                       .invalidQuantityText;
                                 }
@@ -626,7 +627,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPriceText;
-                          } else if (int.parse(value) == 0) {
+                          } else if (double.parse(value) == 0.0) {
                             return AlertStringConstants.invalidAmountText;
                           }
                           return null;
@@ -777,13 +778,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller: manageStoreController
                             .contentsAndStrainsTextController,
                         keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return AlertStringConstants
-                        //         .pleaseEnterContentAndStrainText;
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants
+                                .pleaseEnterContentAndStrainText;
+                          }
+                          return null;
+                        },
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
@@ -857,17 +858,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller:
                             manageStoreController.additionalLinkTextController,
                         keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return AlertStringConstants.pleaseEnterLinkText;
-                        //   } else if (!GetUtils.isURL(manageStoreController
-                        //       .additionalLinkTextController.text
-                        //       .trim())) {
-                        //     return AlertStringConstants
-                        //         .pleaseEnterValidLinkText;
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterLinkText;
+                          } else if (!GetUtils.isURL(manageStoreController
+                              .additionalLinkTextController.text
+                              .trim())) {
+                            return AlertStringConstants
+                                .pleaseEnterValidLinkText;
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           hintText:
                               StringConstants.additionalLinksToResearchText,
@@ -1001,8 +1002,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r"[0-9.]")),
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -1010,15 +1012,15 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller: manageStoreController
                                   .discountOrOfferTextController,
-                              // validator: (value) {
-                              //   if (value!.trim().isEmpty) {
-                              //     return AlertStringConstants
-                              //         .pleaseEnterAmountText;
-                              //   } else if (int.parse(value) == 0) {
-                              //     return AlertStringConstants.invalidAmountText;
-                              //   }
-                              //   return null;
-                              // },
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterAmountText;
+                                } else if (double.parse(value) == 0.0) {
+                                  return AlertStringConstants.invalidAmountText;
+                                }
+                                return null;
+                              },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: StringConstants.discountsOrOffersText,

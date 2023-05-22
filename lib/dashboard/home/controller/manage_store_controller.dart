@@ -139,7 +139,8 @@ class ManageStoreController extends GetxController {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadAtLeastOneImageText);
         } else if (selectedCategories.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectCategoriesText);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectCategoriesText);
         } else {
           apiCreateProduct(bCntx);
         }
@@ -327,16 +328,16 @@ class ManageStoreController extends GetxController {
     inputData.storeId = int.parse(storeId.value);
     Product product = Product();
     product.quantityTypeId = int.parse(quantityValue.value);
-    product.quantity = int.parse(quantityTextController.text.trim());
+    product.quantity = double.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();
     product.description = shortDescriptionTextController.text.trim();
-    product.productPrice = int.parse(pricePerUnitTextController.text.trim());
-    product.sellingPrice = int.parse(pricePerUnitTextController.text.trim());
+    product.productPrice = double.parse(pricePerUnitTextController.text.trim());
+    product.sellingPrice = double.parse(pricePerUnitTextController.text.trim());
     product.discountType = discountType.value.isEmpty
         ? "amount"
         : discountType.value.toLowerCase();
-    product.discountValue = int.parse(
+    product.discountValue = double.parse(
         discountOrOfferTextController.text.trim().isEmpty
             ? "0"
             : discountOrOfferTextController.text.trim());
@@ -607,16 +608,16 @@ class ManageStoreController extends GetxController {
     Product product = Product();
     product.productId = int.parse(productId.value);
     product.quantityTypeId = int.parse(quantityValue.value);
-    product.quantity = int.parse(quantityTextController.text.trim());
+    product.quantity = double.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
     product.productName = productNameTextController.text.trim();
     product.description = shortDescriptionTextController.text.trim();
-    product.productPrice = int.parse(pricePerUnitTextController.text.trim());
-    product.sellingPrice = int.parse(pricePerUnitTextController.text.trim());
+    product.productPrice = double.parse(pricePerUnitTextController.text.trim());
+    product.sellingPrice = double.parse(pricePerUnitTextController.text.trim());
     product.discountType = discountType.value.isEmpty
         ? "amount"
         : discountType.value.toLowerCase();
-    product.discountValue = int.parse(
+    product.discountValue = double.parse(
         discountOrOfferTextController.text.trim().isEmpty
             ? "0"
             : discountOrOfferTextController.text.trim());

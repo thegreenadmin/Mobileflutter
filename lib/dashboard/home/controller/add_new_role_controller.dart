@@ -68,7 +68,8 @@ class AddNewRoleController extends GetxController {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectAtleastOnePermissionText);
           // Utility.showToast(
           //     AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
@@ -321,12 +322,20 @@ class AddNewRoleController extends GetxController {
   //Edit Role Api
   Future apiEditRole(BuildContext ctx) async {
     selectedRoles.clear();
+    bool isEmptyList = true;
     for (int i = 0; i < permissionListMerged.length; i++) {
+      if (permissionListMerged[i].status == "active") {
+        isEmptyList = false;
+      }
       selectedRoles.add({
         "permission_id": permissionListMerged[i].permissionId,
         "controller_id": permissionListMerged[i].controllerId,
         "status": permissionListMerged[i].status
       });
+    }
+    if (isEmptyList) {
+      Utility.showToast("Please select one permission");
+      return;
     }
     Map data = {
       "store_id": storeId.value,

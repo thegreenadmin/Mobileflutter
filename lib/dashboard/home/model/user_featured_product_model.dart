@@ -52,7 +52,7 @@ class DataList {
   String? productId;
   bool? isFavouriteProduct;
   String? storeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
