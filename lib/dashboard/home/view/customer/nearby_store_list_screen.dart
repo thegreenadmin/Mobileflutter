@@ -23,6 +23,19 @@ class NearbyStoreListScreen extends StatefulWidget {
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
+@override
+  void initState() {
+
+    super.initState();
+    searchStoreUserController. searchController.clear();
+    searchStoreUserController.firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    searchStoreUserController. lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText);
+    searchStoreUserController.setupScrollController(Get.context);
+    searchStoreUserController.apiActiveCartApi(Get.context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -247,43 +260,43 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         )
                                       ],
                                     ),
-                                    Row(
+                                  Row(
                                       children: [
                                         searchStoreUserController
-                                                    .storeAddresses[index]
-                                                    .store
-                                                    ?.isFavouriteStore ==
-                                                true
+                                            .storeAddresses[index]
+                                            .store
+                                            ?.isFavouriteStore ==
+                                            true
                                             ? InkWell(
-                                                onTap: () {
-                                                  searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
-                                                    searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .store
-                                                        ?.storeId,
-                                                  );
-                                                },
-                                                child: Image.asset(
-                                                  ImageConstants.liked,
-                                                  scale: 3.2,
-                                                ),
-                                              )
+                                          onTap: () {
+                                            searchStoreUserController
+                                                .apiRemoveFavouriteStore(
+                                              searchStoreUserController
+                                                  .storeAddresses[index]
+                                                  .store
+                                                  ?.storeId,
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            ImageConstants.liked,
+                                            scale: 3.2,
+                                          ),
+                                        )
                                             : InkWell(
-                                                onTap: () {
-                                                  searchStoreUserController
-                                                      .apiCreateFavouriteStore(
-                                                    searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .store
-                                                        ?.storeId,
-                                                  );
-                                                },
-                                                child: Image.asset(
-                                                  ImageConstants.fav,
-                                                  scale: 3.2,
-                                                ),
-                                              ),
+                                          onTap: () {
+                                            searchStoreUserController
+                                                .apiCreateFavouriteStore(
+                                              searchStoreUserController
+                                                  .storeAddresses[index]
+                                                  .store
+                                                  ?.storeId,
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            ImageConstants.fav,
+                                            scale: 3.2,
+                                          ),
+                                        ),
                                         width10SizedBox,
                                         Image.asset(
                                           ImageConstants.info,
@@ -291,6 +304,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         )
                                       ],
                                     )
+
                                   ],
                                 ),
                                 SizedBox(

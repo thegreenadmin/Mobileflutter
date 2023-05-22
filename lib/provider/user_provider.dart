@@ -25,17 +25,17 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+       Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
       print("Alert:------");
       print( e.toString());
-      Utility.showMessage("Alert!", e.toString());
+     Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -56,21 +56,21 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
-        Utility.showMessage("Alert!", "FCM Error");
+         Utility.showAlertMessage("FCM Error",title: "Alert!");
         return null;
       }
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+       Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", e.toString());
+     Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -93,15 +93,15 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+       Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", e.toString());
+     Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -124,23 +124,25 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
-        Utility.showMessage("Alert!", "FCM Error");
+        //  Utility.showAlertMessage("FCM Error",title: "Alert!");
+        Utility.showAlertMessage("FCM Error",title: "Alert!");
         return null;
       }
 
       return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
+      // Utility.showAlertMessage("FCM Error",title: );
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+      Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
       debugPrint(e.toString());
-      Utility.showMessage("Alert!", e.toString());
+      Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -161,21 +163,22 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
-        Utility.showMessage("Alert!", "FCM Error");
+        Utility.showAlertMessage("FCM Error",title: "Alert!");
         return null;
       }
       return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
+      // Utility.showAlertMessage("FCM Error",title: );
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+      Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", e.toString());
+      Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -197,21 +200,21 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
-        Utility.showMessage("Alert!", "FCM Error");
+         Utility.showAlertMessage("FCM Error",title: "Alert!");
         return null;
       }
       return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+       Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", e.toString());
+      Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }
@@ -234,21 +237,21 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
-        Utility.showMessage("Alert!", "FCM Error");
+         Utility.showAlertMessage("FCM Error",title: "Alert!");
         return null;
       }
       return Response(statusCode: res.statusCode, body: json.decode(res.body), headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Utility.showMessage("No Internet Connection!", "Please check your network connection.");
+      Utility.showAlertMessage( "Please check your network connection.",title: "No Internet Connection!",);
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", "Connection timed out.");
+       Utility.showAlertMessage("Connection timed out.",title: "Alert!", );
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Utility.showMessage("Alert!", e.toString());
+      Utility.showAlertMessage( e.toString(),title: "Alert!",);
       return null;
     }
   }

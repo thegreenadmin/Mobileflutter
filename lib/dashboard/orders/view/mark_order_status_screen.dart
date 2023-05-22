@@ -646,7 +646,13 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                     onTap: () {
                       if (ordersHomeMainController.getOrderItems
                           .any((element) => element.isSelected == true)) {
-                        ordersHomeMainController.apiCancelOrder();
+                        Utility.showConfirmAlertMessage(
+                            AlertStringConstants.cancelOrderAlertText,
+                            okay: StringConstants.yesText,cancelText:  StringConstants.noText,
+                            okayTap: (){
+                              ordersHomeMainController.apiCancelOrder();
+                            });
+
                       } else {
                         Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);

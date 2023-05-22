@@ -841,12 +841,18 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 ],
                                               ),
                                               onTap: () {
-                                                ordersController
-                                                        .orderItemObj.value =
-                                                    ordersController
-                                                        .orderItems[i];
-                                                ordersController
-                                                    .apiCancelOrder(context);
+                                                Utility.showConfirmAlertMessage(
+                                                    AlertStringConstants.cancelOrderAlertText,
+                                                    okay: StringConstants.yesText,cancelText:  StringConstants.noText,
+                                                    okayTap: (){
+                                                  ordersController
+                                                      .orderItemObj.value =
+                                                  ordersController
+                                                      .orderItems[i];
+                                                  ordersController
+                                                      .apiCancelOrder(context);
+                                                });
+
                                               },
                                               height: 35,
                                               border: Border.all(
@@ -872,13 +878,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 3,
                                             child: InkWell(
                                               onTap: () {
-                                                ordersController
-                                                        .orderItemObj.value =
-                                                    ordersController
-                                                        .orderItems[i];
-                                                ordersController
-                                                    .bottomSheetReturnOrder(
-                                                        context);
+                                                Utility.showConfirmAlertMessage(
+                                                    AlertStringConstants.returnOrderAlertText,
+                                                    okay: StringConstants.yesText,cancelText:  StringConstants.noText,
+                                                    okayTap: (){
+                                                      ordersController
+                                                          .orderItemObj.value =
+                                                      ordersController
+                                                          .orderItems[i];
+                                                      ordersController
+                                                          .bottomSheetReturnOrder(
+                                                          context);
+                                                    });
+
                                               },
                                               child: Text(
                                                 StringConstants.returnOrderText,

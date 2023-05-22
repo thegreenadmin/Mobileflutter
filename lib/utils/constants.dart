@@ -445,7 +445,7 @@ class StringConstants {
 
   static String transactionIdText = "Transaction ID";
   static String toKnowBalanceYouDontHaveText =
-      "To know balance you don't have any store added. Please add store first!";
+      "You need to add store first in order the check the balance.";
 
   //U
   static String usingOurSearchText =
@@ -523,9 +523,12 @@ class BottomNavStringConstants {
 class AlertStringConstants {
   //A
   static String areYouSureText = "Are you sure you want to delete this item?";
+  static String areYouSureToConfirmReturnText = "Are you sure you want to accept return request?";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
+  static String cancelOrderAlertText =
+      "Do you really want to cancel ths order?";
   //E
   static String endTimeAlertText =
       "Closing time cannot be same as opening time";
@@ -537,7 +540,7 @@ class AlertStringConstants {
   static String invalidInputText = "Invalid input";
 
 //N
-  static String noProductFoundForThisStore = "No Products Found For This Store";
+  static String noProductFoundForThisStore = "No products found for this store.";
   static String noHistoryFoundText = "No History Found";
   static String noDataFoundText = "No Data Found";
 
@@ -545,10 +548,10 @@ class AlertStringConstants {
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
   static String only5MaximumImagesCanSelectText =
-      "Only 5 maximum images can select at a time";
+      "You can select a maximum of 5 images at a time.";
 
   //P
-  static String pleaseFillAllDetailsText = "Please fill all the details";
+  static String pleaseFillAllDetailsText = "Please fill all of the details";
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseSelectOneFilterText = "Please select one filter";
   static String pleaseSelectQuantityUnitText = "Please select quantity unit";
@@ -635,14 +638,17 @@ class AlertStringConstants {
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
   static String pleaseEnterFrequencyText = "Please enter frequency";
   static String pleaseSelectCountryText = "Please select country";
+  //R
 
+  static String returnOrderAlertText = "Do you really want to return this item";
+  static String rejectReturnOrderAlertText = "Do you really want to reject this return request";
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
 
   //T
   static String above18Text =
-      "The greenmall application is recommended for 18 above age group only!";
+      "The Green mall application is available for 18 years and above only!";
 }
 
 //Roles in app

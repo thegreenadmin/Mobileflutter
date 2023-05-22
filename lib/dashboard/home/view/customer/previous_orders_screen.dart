@@ -37,7 +37,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               // Get.back();
-                              Navigator.of(context).pop();
+                              Navigator.of(context).pop(context);
                             },
                             icon: const Icon(
                               Icons.arrow_back,

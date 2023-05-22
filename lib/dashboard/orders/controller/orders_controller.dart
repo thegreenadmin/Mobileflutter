@@ -326,9 +326,9 @@ class OrdersController extends GetxController {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext _) {
           return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+              builder: (BuildContext ctxx, StateSetter setState) {
             return ListView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -358,7 +358,7 @@ class OrdersController extends GetxController {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                Navigator.of(Get.context!).pop();
+                                Navigator.of(ctxx).pop();
                                 // Get.back();
                               },
                               child: Image.asset(

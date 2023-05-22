@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -88,13 +90,14 @@ class SearchStoreUserController extends GetxController {
   void onInit() {
     super.onInit();
     searchController.clear();
+    page.value = 1;
     firstName?.value =
         SharedPreferenceStorage.getData(StringConstants.firstNameText);
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText);
-    nearby.Store store = nearby.Store();
-    store.storeId = storeId.value;
-    storeAddress.value.store = store;
+    // nearby.Store store = nearby.Store();
+    // store.storeId = storeId.value;
+    // storeAddress.value.store = store;
     setupScrollController(Get.context);
     apiActiveCartApi(Get.context);
   }
@@ -407,7 +410,7 @@ class SearchStoreUserController extends GetxController {
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
-      debugPrint("GET NEARBY STORES *******${value?.body}");
+      log("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
@@ -600,22 +603,35 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
+
         }else  if (type.value == 0) {
-          for (var element in storeAddresses) {
-            if (element.store?.storeId == id) {
-              element.store?.isFavouriteStore = true;
-              // favStoreAddresses.remove(element);
-            }
-          }
+          debugPrint("Create Favourite Store *******${type.value}");
+          debugPrint("Create Favourite Store *******${type.value}");
+          storeAddresses.clear();
+          page.value = 1;
+          apiGetNearByStores(Get.context!);
+          // for (var element in storeAddresses) {
+          //   if (element.store?.storeId == id) {
+          //     debugPrint("Create before isFavouriteStore*******${element.store?.isFavouriteStore}");
+          //     element.store?.isFavouriteStore = true;
+          //     debugPrint("Create vstoreId *******${element.store?.storeId}");
+          //     debugPrint("Create after isFavouriteStore*******${element.store?.isFavouriteStore}");
+          //     // favStoreAddresses.remove(element);
+          //   }
+          // }
 
         }else if (type.value == 1) {
-          for (var element in previousStore) {
-            if (element.storeId == id) {
-              element.isFavouriteStore = true;
-              // favStoreAddresses.remove(element);
-            }
-          }
+          previousStore.clear();
+          page.value = 1;
+          apiGetPreviousStores(Get.context!);
+          // for (var element in previousStore) {
+          //   if (element.storeId == id) {
+          //     element.isFavouriteStore = true;
+          //     // favStoreAddresses.remove(element);
+          //   }
+          // }
         }
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -659,21 +675,28 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
+
         } else  if (type.value == 0) {
-          for (var element in storeAddresses) {
-            if (element.store?.storeId == id) {
-              element.store?.isFavouriteStore = false;
-              // favStoreAddresses.remove(element);
-            }
-          }
+          storeAddresses.clear();
+          page.value = 1;
+          apiGetNearByStores(Get.context!);
+          // for (var element in storeAddresses) {
+          //   if (element.store?.storeId == id) {
+          //     element.store?.isFavouriteStore = false;
+          //     // favStoreAddresses.remove(element);
+          //   }
+          // }
 
         }else if (type.value == 1) {
-          for (var element in previousStore) {
-            if (element.storeId == id) {
-              element.isFavouriteStore = false;
-              // favStoreAddresses.remove(element);
-            }
-          }
+          previousStore.clear();
+          page.value = 1;
+          apiGetPreviousStores(Get.context!);
+          // for (var element in previousStore) {
+          //   if (element.storeId == id) {
+          //     element.isFavouriteStore = false;
+          //     // favStoreAddresses.remove(element);
+          //   }
+          // }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

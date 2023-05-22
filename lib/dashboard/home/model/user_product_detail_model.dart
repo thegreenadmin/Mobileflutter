@@ -15,12 +15,12 @@ class ShopProductDetailResponse {
     this.data,
   });
 
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
   ShopProductDetailResponse copyWith({
-    int? status,
+    dynamic status,
     String? message,
     Data? data,
   }) =>
@@ -106,20 +106,20 @@ class Product {
   bool? isFavouriteProduct;
   String? storeId;
   String? quantityTypeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
   dynamic productPrice;
   double? sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
-  int? returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic returnDaysCount;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
   String? status;
   DateTime? createdAt;
@@ -140,20 +140,20 @@ class Product {
     bool? isFavouriteProduct,
     String? storeId,
     String? quantityTypeId,
-    int? quantity,
+    dynamic quantity,
     bool? isFeaturedProduct,
     String? productName,
     String? description,
     double? productPrice,
     double? sellingPrice,
     String? discountType,
-    int? discountValue,
+    dynamic discountValue,
     bool? isProductReturnable,
-    int? returnDaysCount,
-    int? length,
-    int? width,
-    int? height,
-    int? weight,
+    dynamic returnDaysCount,
+    dynamic length,
+    dynamic width,
+    dynamic height,
+    dynamic weight,
     bool? isEnabled,
     String? status,
     DateTime? createdAt,
@@ -293,7 +293,7 @@ class Offer {
   bool? isOfferForStore;
   String? offerName;
   String? offerType;
-  int? offerValue;
+  dynamic offerValue;
   bool? isExpired;
   dynamic expiredAt;
   String? status;
@@ -307,7 +307,7 @@ class Offer {
     bool? isOfferForStore,
     String? offerName,
     String? offerType,
-    int? offerValue,
+    dynamic offerValue,
     bool? isExpired,
     dynamic expiredAt,
     String? status,
@@ -379,7 +379,7 @@ class ProductReview {
   String? productId;
   String? userId;
   String? orderId;
-  int? rating;
+  dynamic rating;
   String? review;
   String? status;
   DateTime? createdAt;
@@ -391,7 +391,7 @@ class ProductReview {
     String? productId,
     String? userId,
     String? orderId,
-    int? rating,
+    dynamic rating,
     String? review,
     String? status,
     DateTime? createdAt,
@@ -536,11 +536,11 @@ class CartItem {
   });
 
   String? cartItemId;
-  int? itemsCount;
+  dynamic itemsCount;
 
   CartItem copyWith({
     String? cartItemId,
-    int? quantity,
+    dynamic quantity,
   }) =>
       CartItem(
         cartItemId: cartItemId ?? this.cartItemId,
@@ -634,14 +634,14 @@ class ProductContent {
   String? productContentId;
   String? heading;
   String? paragraph;
-  int? order;
+  dynamic order;
   String? status;
 
   ProductContent copyWith({
     String? productContentId,
     String? heading,
     String? paragraph,
-    int? order,
+    dynamic order,
     String? status,
   }) =>
       ProductContent(
@@ -678,13 +678,13 @@ class ProductImage {
   });
 
   String? productImageId;
-  int? order;
+  dynamic order;
   String? status;
   Image? image;
 
   ProductImage copyWith({
     String? productImageId,
-    int? order,
+    dynamic order,
     String? status,
     Image? image,
   }) =>
@@ -751,14 +751,14 @@ class ProductLink {
   String? productLinkId;
   String? name;
   String? link;
-  int? order;
+  dynamic order;
   String? status;
 
   ProductLink copyWith({
     String? productLinkId,
     String? name,
     String? link,
-    int? order,
+    dynamic order,
     String? status,
   }) =>
       ProductLink(

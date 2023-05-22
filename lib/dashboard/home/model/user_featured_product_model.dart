@@ -1,5 +1,5 @@
 class UserFeaturedProductModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -23,7 +23,7 @@ class UserFeaturedProductModel {
 }
 
 class Data {
-  int? totalCount;
+  dynamic totalCount;
   List<DataList>? products;
 
   Data({this.totalCount, this.products});
@@ -52,20 +52,20 @@ class DataList {
   String? productId;
   bool? isFavouriteProduct;
   String? storeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
   dynamic productPrice;
   dynamic sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
-  int? returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic returnDaysCount;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
   String? status;
   String? createdAt;
@@ -272,7 +272,7 @@ class Category {
 
 class ProductImages {
   String? productImageId;
-  int? order;
+  dynamic order;
   String? status;
   Image? image;
 
@@ -320,7 +320,7 @@ class ProductContents {
   String? productContentId;
   String? heading;
   String? paragraph;
-  int? order;
+  dynamic order;
   String? status;
 
   ProductContents(
@@ -355,7 +355,7 @@ class Offer {
   bool? isOfferForStore;
   String? offerName;
   String? offerType;
-  int? offerValue;
+  dynamic offerValue;
 
   Offer(
       {this.image,

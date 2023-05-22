@@ -345,7 +345,13 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                     colors: [AppColors.white, AppColors.white],
                   ),
                   onTap: () {
-                    ordersHomeMainController.apiRejectReturnRequest();
+                    Utility.showConfirmAlertMessage(
+                        AlertStringConstants.rejectReturnOrderAlertText,
+                        okay: StringConstants.yesText,cancelText:  StringConstants.noText,
+                        okayTap: (){
+                          ordersHomeMainController.apiRejectReturnRequest();
+                        });
+
                   },
                   height: 50,
                   width: WidgetConstants.screenWidth *0.42,
@@ -367,7 +373,13 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                     colors: [AppColors.primary, AppColors.primary],
                   ),
                   onTap: () {
-                    ordersHomeMainController.apiConfirmReturnRequest();
+                    Utility.showConfirmAlertMessage(
+                        AlertStringConstants.areYouSureToConfirmReturnText,
+                        okay: StringConstants.yesText,cancelText:  StringConstants.noText,
+                        okayTap: (){
+                          ordersHomeMainController.apiConfirmReturnRequest();
+                        });
+
                   },
                   height: 50,
                   width: WidgetConstants.screenWidth *0.42,

@@ -257,7 +257,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     .requestFocus(FocusNode());
                               },
                               itemBuilder: (context) =>
-                                  createOptionsPopUpList(Get.context)!,
+                                  createOptionsPopUpList(context)!,
                             )
                     ],
                   ));
@@ -266,7 +266,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     );
   }
 
-  List<PopupMenuEntry<String>>? createOptionsPopUpList(context) {
+  List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -277,11 +277,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Navigator.of(context).pop();
+                    Navigator.of(ctx).pop();
                     // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
+                    SharedPreferenceStorage.setData("context", ctx);
+                    Navigator.of(ctx).push(MaterialPageRoute(
                       builder: (_) => const PreviousOrdersScreen(),
                     ));
                     // Get.to(const PreviousOrdersScreen());
@@ -311,9 +311,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(ctx).pop();
                 // Get.back();
-                contactAlertDialog(context);
+                contactAlertDialog(ctx);
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,20 +336,21 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages![0].storePageType ==
-                    "privacy" ||
+                Navigator.of(ctx).pop();
+                /* if (storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![0].storePageType ==
+                        "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages![1].storePageType ==
+                            .store!.storePages![1].storePageType ==
                         "privacy") {
-                  Navigator.of(context).pop();
+
                   // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(context,
+                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
                       content: storeHomeMainController.storeDetailsResponse
                           .value.data!.store!.storePages!.first.storePageContent
                           .toString(),
                       contentType: "privacy");
-                }
+                }*/
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,16 +373,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages!.first.storePageType ==
+                Navigator.of(ctx).pop();
+                /* if (storeHomeMainController.storeDetailsResponse.value.data!
+                        .store!.storePages!.first.storePageType ==
                     "terms") {
+
                   // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(context,
+                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
                       content: storeHomeMainController.storeDetailsResponse
                           .value.data!.store!.storePages!.first.storePageContent
                           .toString(),
                       contentType: "terms");
-                }
+                }*/
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,6 +403,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       return null!;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
