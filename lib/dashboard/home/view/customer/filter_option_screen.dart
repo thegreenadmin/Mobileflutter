@@ -150,9 +150,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   controller: searchStoreUserController.mileageTextController,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                    hintText: StringConstants.mileageText,
+                    hintText: StringConstants.milesText,
                     hintStyle: const TextStyle(color: AppColors.grey),
-                    labelText: StringConstants.mileageText,
+                    labelText: StringConstants.milesText,
                     labelStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,

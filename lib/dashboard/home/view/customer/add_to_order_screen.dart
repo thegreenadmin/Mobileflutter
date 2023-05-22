@@ -42,10 +42,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       if ( Get.parameters['isFromHome'] != "false") {
 
         storeHomeMainController.productId.value =
-        Get.parameters["productId"] == null
-            ? ""
-            : Get.parameters["productId"] ?? "";
+            Get.parameters["productId"] == null
+                ? ""
+                : Get.parameters["productId"] ?? "";
       }
+
       storeHomeMainController.isFromHome.value =
       Get.parameters["isFromHome"] == "true" ? true : false;
       storeHomeMainController.isFromMenu.value =
@@ -71,14 +72,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
         if (storeHomeMainController.isFromMenu.value) {
           storeHomeMainController.selectedIndex.value = 1;
-        }else
-        if (storeHomeMainController.isFromFav.value) {
+        } else if (storeHomeMainController.isFromFav.value) {
           storeHomeMainController.selectedIndex.value = 2;
         }
       }
       storeHomeMainController.apiGetUserWalletBalance();
+      storeHomeMainController.apiGetCartListApi(Get.context);
+      storeHomeMainController.apiActiveCartApi(Get.context);
     });
-
   }
 
   RxList horizontalTabList = [
@@ -130,7 +131,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storePhone ??
+                      .storeDetailsResponse.value.data!.store!.storePhone ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,
@@ -151,7 +152,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
             Text(
               storeHomeMainController
-                  .storeDetailsResponse.value.data!.store!.storeEmail ??
+                      .storeDetailsResponse.value.data!.store!.storeEmail ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,
@@ -238,26 +239,26 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       i != 3
                           ? height0SizedBox
                           : PopupMenuButton(
-                        offset: const Offset(0, 25),
-                        shape: const TooltipShape(),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: storeHomeMainController
-                              .selectedIndex.value ==
-                              i
-                              ? AppColors.primary
-                              : AppColors.blacklight,
-                          size: 22,
-                        ),
-                        onSelected: (String value) async {
-                          FocusScope.of(context)
-                              .requestFocus(FocusNode());
-                        },
-                        itemBuilder: (context) =>
-                        createOptionsPopUpList(Get.context)!,
-                      )
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: storeHomeMainController
+                                            .selectedIndex.value ==
+                                        i
+                                    ? AppColors.primary
+                                    : AppColors.blacklight,
+                                size: 22,
+                              ),
+                              onSelected: (String value) async {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              },
+                              itemBuilder: (context) =>
+                                  createOptionsPopUpList(Get.context)!,
+                            )
                     ],
                   ));
             }),
@@ -990,11 +991,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               colors: [AppColors.primary, AppColors.primary],
             ),
             onTap: () {
-              if (storeHomeMainController.itemsCount.value != 0) {
-                storeHomeMainController.apiAddToCart(context);
+              if (int.parse(storeHomeMainController.storeIdValue.toString()) ==
+                  0) {
+                if (storeHomeMainController.itemsCount.value != 0) {
+                  storeHomeMainController.apiAddToCart(context);
+                } else {
+                  Utility.showAlertMessage(
+                      AlertStringConstants.pleaseAddAtleastOneItemText);
+                }
               } else {
-                Utility.showAlertMessage(
-                    AlertStringConstants.pleaseAddAtleastOneItemText);
+                if ((int.parse(
+                        storeHomeMainController.storeIdValue.toString()) !=
+                    int.parse(storeHomeMainController.storeId.toString()))) {
+                  print(
+                      "ACTIVE CART--${int.parse(storeHomeMainController.storeIdValue.toString())}");
+                  print(
+                      "STORE CART--${int.parse(storeHomeMainController.storeId.toString())}");
+                  storeHomeMainController.discardCartItems(context);
+                } else {
+                  if (storeHomeMainController.itemsCount.value != 0) {
+                    storeHomeMainController.apiAddToCart(context);
+                  } else {
+                    Utility.showAlertMessage(
+                        AlertStringConstants.pleaseAddAtleastOneItemText);
+                  }
+                }
               }
             },
             height: 50,

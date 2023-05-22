@@ -24,11 +24,11 @@ class ActiveCartModel {
 
 class Data {
   String? storeId;
-  double? cartTotalPrice;
+  dynamic cartTotalPrice;
   int? cartSubTotal;
-  double? cartTotalDiscount;
-  double? cartTotalServiceCharged;
-  double? cartTotalTax;
+  dynamic cartTotalDiscount;
+  dynamic cartTotalServiceCharged;
+  dynamic cartTotalTax;
   int? cartDeliveryServiceCharge;
   bool? isValidAddress;
   bool? isOrderDeliverable;
@@ -86,13 +86,13 @@ class CartItems {
   String? cartItemId;
   int? itemsCount;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
-  double? offerPrice;
-  double? totalDiscount;
-  double? totalTaxAmount;
-  double? totalPrice;
-  Null? offer;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
+  dynamic offerPrice;
+  dynamic totalDiscount;
+  dynamic totalTaxAmount;
+  dynamic totalPrice;
+
   Product? product;
 
   CartItems(
@@ -105,7 +105,6 @@ class CartItems {
       this.totalDiscount,
       this.totalTaxAmount,
       this.totalPrice,
-      this.offer,
       this.product});
 
   CartItems.fromJson(Map<String, dynamic> json) {
@@ -118,7 +117,7 @@ class CartItems {
     totalDiscount = json['total_discount'];
     totalTaxAmount = json['total_tax_amount'];
     totalPrice = json['total_price'];
-    offer = json['offer'];
+
     product =
         json['product'] != null ? new Product.fromJson(json['product']) : null;
   }
@@ -134,7 +133,6 @@ class CartItems {
     data['total_discount'] = this.totalDiscount;
     data['total_tax_amount'] = this.totalTaxAmount;
     data['total_price'] = this.totalPrice;
-    data['offer'] = this.offer;
     if (this.product != null) {
       data['product'] = this.product!.toJson();
     }
@@ -144,7 +142,7 @@ class CartItems {
 
 class Product {
   String? productId;
-  Image? image;
+  Images? image;
   String? storeId;
   String? quantityTypeId;
   int? quantity;
@@ -192,7 +190,7 @@ class Product {
 
   Product.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
     storeId = json['store_id'];
     quantityTypeId = json['quantity_type_id'];
     quantity = json['quantity'];
@@ -245,13 +243,13 @@ class Product {
   }
 }
 
-class Image {
-  Null? orignalUrl;
-  Null? dynamicUrl;
+class Images {
+  String? orignalUrl;
+  String? dynamicUrl;
 
-  Image({this.orignalUrl, this.dynamicUrl});
+  Images({this.orignalUrl, this.dynamicUrl});
 
-  Image.fromJson(Map<String, dynamic> json) {
+  Images.fromJson(Map<String, dynamic> json) {
     orignalUrl = json['orignal_url'];
     dynamicUrl = json['dynamic_url'];
   }

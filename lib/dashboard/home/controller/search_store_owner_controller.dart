@@ -402,7 +402,7 @@ class OwnerStoresController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");

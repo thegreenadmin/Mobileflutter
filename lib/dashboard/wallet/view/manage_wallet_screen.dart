@@ -114,11 +114,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ? Column(
-                          children: [
-                            Text(StringConstants.toKnowBalanceYouDontHaveText),
-                          ],
-                        )
+                      ? Text(StringConstants.toKnowBalanceYouDontHaveText)
                       : Row(
                           children: [
                             Expanded(

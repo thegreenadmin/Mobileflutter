@@ -25,47 +25,58 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   @override
   void initState() {
     super.initState();
-    ordersController.firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
-    ordersController.lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromNotification'] != "false") {
-      ordersController.isFromNotification.value = Get.parameters["isFromNotification"] =="true"?true:false;
-    }
-    if (Get.parameters == null ? false : Get.parameters['storeId'] != "" && Get.parameters['storeId'] !=null) {
-      ordersController.storeId.value = Get.parameters["storeId"] ?? "";
-      ordersController.apiGetStoreDetailsApi();
-    }
-
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromTransaction'] =="true"?true:false) {
-      ordersController.storeId.value = Get.parameters["storeId"] ?? "";
-      ordersController.apiGetStoreDetailsApi();
-    }
-    if(Get.parameters["orderStatus"]!=null){
-      ordersController.orderStatus.value = Get.parameters["orderStatus"] ?? "";
-    }
-    ordersController.isActiveOrders.value = true;
-    ordersController.orderStatusId.value = 2;
-    // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
-    print("SharedPreferenceStorage:--Order Screen---------------");
-    print(SharedPreferenceStorage.getData(Role.role.value));
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
-      ordersController.role!.value = Role.customerRoleText;
-      ordersController.apiGetOrderListApi();
-      if (ordersController.orderStatus.value != "") {
-        ordersController.apiGetOrderDetailsApi();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ordersController.firstName?.value =
+          SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+      ordersController.lastName?.value =
+          SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['isFromNotification'] != "false") {
+        ordersController.isFromNotification.value =
+            Get.parameters["isFromNotification"] == "true" ? true : false;
       }
-      ordersController.page.value = 1;
-    } else {
-      ordersController.role!.value = Role.storeOwnerRoleText;
-      ordersController.apiGetStoreOrderListApi();
-      ordersController.page.value = 1;
-    }
-    ordersController.apiGetOrderStatusListApi();
-    ordersController.setupScrollController(Get.context);
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['storeId'] != "" &&
+              Get.parameters['storeId'] != null) {
+        ordersController.storeId.value = Get.parameters["storeId"] ?? "";
+        ordersController.apiGetStoreDetailsApi();
+      }
+
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['isFromTransaction'] == "true"
+              ? true
+              : false) {
+        ordersController.storeId.value = Get.parameters["storeId"] ?? "";
+        ordersController.apiGetStoreDetailsApi();
+      }
+      if (Get.parameters["orderStatus"] != null) {
+        ordersController.orderStatus.value =
+            Get.parameters["orderStatus"] ?? "";
+      }
+      ordersController.isActiveOrders.value = true;
+      ordersController.orderStatusId.value = 2;
+      // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
+      print("SharedPreferenceStorage:--Order Screen---------------");
+      print(SharedPreferenceStorage.getData(Role.role.value));
+      if (SharedPreferenceStorage.getData(Role.role.value) ==
+          Role.customerRoleText) {
+        ordersController.role!.value = Role.customerRoleText;
+        ordersController.apiGetOrderListApi();
+        if (ordersController.orderStatus.value != "") {
+          ordersController.apiGetOrderDetailsApi();
+        }
+        ordersController.page.value = 1;
+      } else {
+        ordersController.role!.value = Role.storeOwnerRoleText;
+        ordersController.apiGetStoreOrderListApi();
+        ordersController.page.value = 1;
+      }
+      ordersController.apiGetOrderStatusListApi();
+      ordersController.setupScrollController(Get.context);
+    });
   }
 
   @override
@@ -131,9 +142,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
                                         Navigator.of(context).pop();
-                                      //Get.back();
-                                      //   Get.back();
-                                      //   Get.back();
+                                        //Get.back();
+                                        //   Get.back();
+                                        //   Get.back();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -433,14 +444,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           fontSize: 16,
                           color: AppColors.black),
                     ),
-                    Obx(()=>Text(
-                      ordersController.orderStatus.value,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: AppColors.primary),
-                    ),)
-
+                    Obx(
+                      () => Text(
+                        ordersController.orderStatus.value,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: AppColors.primary),
+                      ),
+                    )
                   ],
                 ),
                 height12SizedBox,
@@ -528,10 +540,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            BuildContext rContext = SharedPreferenceStorage.getData("context",);
-                           print(rContext);
-                            Navigator.of(rContext).popUntil(
-                                    (route) => route.isFirst);
+                            BuildContext rContext =
+                                SharedPreferenceStorage.getData(
+                              "context",
+                            );
+                            print(rContext);
+                            Navigator.of(rContext)
+                                .popUntil((route) => route.isFirst);
                             // Get.offAll(BottomNavigation());
                           },
                           height: 50,
@@ -888,5 +903,4 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ],
     );
   }
-
 }

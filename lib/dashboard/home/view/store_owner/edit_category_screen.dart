@@ -133,7 +133,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                             ),
                                             height6SizedBox,
                                             Text(StringConstants
-                                                .uploadCategoriesImageText)
+                                                .uploadCategoryImageText)
                                           ]),
                                     ),
                                   ),

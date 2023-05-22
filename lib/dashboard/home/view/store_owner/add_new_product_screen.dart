@@ -1172,64 +1172,65 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .lengthTextController,
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterLengthText;
-                                    } else if (int.parse(value) == 0) {
-                                      return AlertStringConstants
-                                          .invalidInputText;
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants.lengthText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r"[0-9.]")),
+                                ],
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                autofocus: false,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                controller:
+                                    manageStoreController.lengthTextController,
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseEnterLengthText;
+                                  } else if (double.parse(value) == 0.0) {
+                                    return AlertStringConstants
+                                        .invalidInputText;
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: StringConstants.lengthText,
+                                  hintStyle: const TextStyle(
+                                      color: AppColors.grey, fontSize: 14),
+                                  fillColor: Colors.white,
+                                  border: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
                                     ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
+                                  ),
+                                  errorBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
                                     ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.grey,
+                                      width: 1.0,
                                     ),
-                                  )),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -1278,7 +1279,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseEnterBreadthText;
-                                    } else if (int.parse(value) == 0) {
+                                    } else if (double.parse(value) == 0.0) {
                                       return AlertStringConstants
                                           .invalidInputText;
                                     }
@@ -1370,7 +1371,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseEnterHeightText;
-                                    } else if (int.parse(value) == 0) {
+                                    } else if (double.parse(value) == 0.0) {
                                       return AlertStringConstants
                                           .invalidInputText;
                                     }
@@ -1424,7 +1425,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   children: [
                                     TextSpan(
                                         text:
-                                            "${StringConstants.weightText}(gms)",
+                                            "${StringConstants.weightText}(oz)",
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
@@ -1458,7 +1459,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseEnterWeightText;
-                                    } else if (int.parse(value) == 0) {
+                                    } else if (double.parse(value) == 0.0) {
                                       return AlertStringConstants
                                           .invalidInputText;
                                     }

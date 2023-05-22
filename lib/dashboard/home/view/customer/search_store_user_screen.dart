@@ -51,6 +51,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
+    super.initState();
     searchStoreUserController.searchController.clear();
     _tabController = TabController(
         initialIndex: searchStoreUserController.initialIndex.value,
@@ -58,7 +59,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         vsync: this);
     updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi(Get.context);
-    super.initState();
   }
 
   @override
@@ -153,9 +153,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                                   "context", context);
                                               Navigator.of(context)
                                                   .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const StoreHomeMainScreen(),
-                                              ));
+                                                    builder: (_) =>
+                                                        const CartScreen(),
+                                                  ))
+                                                  .then((value) =>
+                                                      searchStoreUserController
+                                                          .apiActiveCartApi(
+                                                              context));
                                               Get.parameters["storeId"] =
                                                   searchStoreUserController
                                                       .storeIdValue.value;

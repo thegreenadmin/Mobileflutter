@@ -113,10 +113,10 @@ class Product {
   int? discountValue;
   bool? isProductReturnable;
   int? returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
 
   Product(

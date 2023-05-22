@@ -21,6 +21,74 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
+        storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+        storeHomeMainController.getCurrentLocation();
+      }
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['isFromHome'] != "false") {
+        storeHomeMainController.productId.value =
+            Get.parameters["productId"] == null
+                ? ""
+                : Get.parameters["productId"] ?? "";
+      }
+
+      storeHomeMainController.isFromHome.value =
+          Get.parameters["isFromHome"] == "true" ? true : false;
+      storeHomeMainController.isFromMenu.value =
+          Get.parameters["isFromMenu"] == "true" ? true : false;
+      storeHomeMainController.isFromFav.value =
+          Get.parameters["isFromFav"] == "true" ? true : false;
+
+      print("PRODUCT ID--------${Get.parameters["productId"]}");
+
+      storeHomeMainController.apiGetUserDetailsApi();
+      print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
+      print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
+      print("is from homeee--${storeHomeMainController.isFromHome.value}");
+      if (storeHomeMainController.isFromMenu.value) {
+        storeHomeMainController.selectedIndex.value = 1;
+      }
+      if (storeHomeMainController.isFromFav.value) {
+        storeHomeMainController.selectedIndex.value = 2;
+      }
+
+      if (storeHomeMainController.isFromHome.value) {
+        // nearby.Store store = nearby.Store();
+        // store.storeId = storeHomeMainController.storeId.value;
+        // storeHomeMainController.storeAddress.value.store = store;
+        // storeHomeMainController.isFavouriteStore.value =
+        //     store.isFavouriteStore ?? false;
+        storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.apiGetCartListApi(Get.context);
+        storeHomeMainController.apiGetShopProductDetailApi();
+      } else {
+        // nearby.Store store = nearby.Store();
+
+        // store.storeId = storeHomeMainController.storeId.value;
+        // storeHomeMainController.storeAddress.value.store = store;
+        // storeAddress.value = Get.arguments["storeAddress"] ?? {};
+        if (storeHomeMainController.isFromMenu.value) {
+          storeHomeMainController.selectedIndex.value = 1;
+        } else if (storeHomeMainController.isFromFav.value) {
+          storeHomeMainController.selectedIndex.value = 2;
+        }
+        // storeHomeMainController.isFavouriteStore.value =
+        //     storeHomeMainController.storeAddress.value.store?.isFavouriteStore ?? false;
+        // storeHomeMainController.onIndexChange(0);
+      }
+      storeHomeMainController.apiGetUserWalletBalance();
+      storeHomeMainController.apiGetCartListApi(Get.context);
+      storeHomeMainController.apiActiveCartApi(Get.context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -383,7 +451,7 @@ class _CartScreenState extends State<CartScreen> {
                         SizedBox(
                           height: 40,
                           width: WidgetConstants.screenWidth,
-                          child: ListView.separated(
+                          child: Obx(() => ListView.separated(
                               separatorBuilder:
                                   (BuildContext context, int index) {
                                 return width10SizedBox;
@@ -576,7 +644,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       : AppColors.primary,
                                                 ),
                                     ));
-                              }),
+                              })),
                         ),
                         height20SizedBox,
                         Obx(
@@ -704,65 +772,60 @@ class _CartScreenState extends State<CartScreen> {
                                           child: Expanded(
                                             flex: 2,
                                             child: InkWell(
-                                                onTap: () {
-                                                  SharedPreferenceStorage
-                                                      .setData(
-                                                          "context", context);
-
-                                                  Get.parameters["isFromCart"] =
-                                                      "true";
-                                                  storeHomeMainController
-                                                                  .selectedUserAddress
-                                                                  .value
-                                                                  .addressLine1 ==
-                                                              null &&
-                                                          storeHomeMainController
-                                                                  .selectedUserAddress
-                                                                  .value
-                                                                  .city ==
-                                                              null
-                                                      ? Navigator.of(context)
-                                                          .push(
-                                                              MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                const PersonalInfoEditScreen(),
-                                                          ))
-                                                          // Get.to(const PersonalInfoEditScreen(),
-                                                          //             arguments: ({
-                                                          //               "isFromCart": true
-                                                          //             }))
-                                                          .then((value) =>
-                                                              storeHomeMainController
-                                                                  .apiGetUserDetailsApi())
-                                                      : /*storeHomeMainController
+                                              onTap: () {
+                                                SharedPreferenceStorage.setData(
+                                                    "context", context);
+                                                Get.parameters["isFromCart"] =
+                                                    "true";
+                                                storeHomeMainController
+                                                                .selectedUserAddress
+                                                                .value
+                                                                .addressLine1 ==
+                                                            null &&
+                                                        storeHomeMainController
+                                                                .selectedUserAddress
+                                                                .value
+                                                                .city ==
+                                                            null
+                                                    ? Navigator.of(context)
+                                                        .push(MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              const PersonalInfoEditScreen(),
+                                                        ))
+                                                        // Get.to(const PersonalInfoEditScreen(),
+                                                        //             arguments: ({
+                                                        //               "isFromCart": true
+                                                        //             }))
+                                                        .then((value) =>
+                                                            storeHomeMainController
+                                                                .apiGetUserDetailsApi())
+                                                    : /*storeHomeMainController
                                                               .userAddress
                                                               .isNotEmpty
                                                           ? storeHomeMainController.bottomSheetChangePickupLocation(context)
                                                           : */
-                                                      null;
-                                                },
-                                                child: Container(
-                                                  height: 40.0,
-                                                  width: 60.0,
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.white,
-                                                    border: Border.all(
+                                                    null;
+                                              },
+                                              child: Container(
+                                                height: 40.0,
+                                                width: 60.0,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  border: Border.all(
+                                                      color: AppColors.primary),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    StringConstants.addText,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 14.0,
                                                         color:
                                                             AppColors.primary),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      StringConstants.addText,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14.0,
-                                                          color: AppColors
-                                                              .primary),
-                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -884,143 +947,162 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                // alignment: Alignment.bottomCenter,
-                child: Obx(() => Column(
-                      children: [
-                        Visibility(
-                          visible: storeHomeMainController.walletBalance.value <
-                                  storeHomeMainController
-                                      .cartData.value.cartTotalPrice! ||
-                              storeHomeMainController
-                                  .isInsufficientBalance.value,
-                          child: Container(
-                            color: AppColors.redlight,
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  StringConstants.inSufficientFundText,
-                                  style: const TextStyle(
-                                      color: AppColors.red,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) => const AddMoneyToWallet(),
-                                    )).then((value) {
-                                      storeHomeMainController.apiGetUserWalletBalance();
-                                    });
-
-                                    Get.parameters["isFromCartScreen"] = "true";
-                                    // Get.to(const WalletScreen(),
-                                    //     arguments: {"isFromCartScreen": true});
-                                  },
-                                  child: Text(
-                                    StringConstants.addFundText,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    children: [
+                      Obx(() => Visibility(
+                            visible: storeHomeMainController
+                                        .cartData.value.cartTotalPrice !=
+                                    null
+                                ? storeHomeMainController.walletBalance.value <
+                                        storeHomeMainController
+                                            .cartData.value.cartTotalPrice! ||
+                                    storeHomeMainController
+                                            .isInsufficientBalance!.value ==
+                                        true
+                                : false,
+                            child: Container(
+                              color: AppColors.redlight,
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    StringConstants.inSufficientFundText,
                                     style: const TextStyle(
-                                        decoration: TextDecoration.underline,
                                         color: AppColors.red,
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w600),
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                ),
-                              ],
+                                  InkWell(
+                                    onTap: () {
+                                      SharedPreferenceStorage.setData(
+                                          "context", context);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (_) => const AddMoneyToWallet(),
+                                    )).then((value) {
+                                      storeHomeMainController.apiGetUserWalletBalance();
+                                      });
+
+                                      Get.parameters["isFromCartScreen"] =
+                                          "true";
+                                      // Get.to(const WalletScreen(),
+                                      //     arguments: {"isFromCartScreen": true});
+                                    },
+                                    child: Text(
+                                      StringConstants.addFundText,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: AppColors.red,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          color: AppColors.primaryBackgroundLight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      StringConstants.payNowText,
+                          )),
+                      Container(
+                        color: AppColors.primaryBackgroundLight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    StringConstants.payNowText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Obx(
+                                    () => Text(
+                                      "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
                                       style: const TextStyle(
                                           color: AppColors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                    Obx(
-                                      () => Text(
-                                        "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    )
-                                  ],
+                                  )
+                                ],
+                              ),
+                              CustomButton(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: storeHomeMainController
+                                              .cartData.value.cartTotalPrice !=
+                                          null
+                                      ? storeHomeMainController
+                                                      .walletBalance.value <
+                                                  storeHomeMainController
+                                                      .cartData
+                                                      .value
+                                                      .cartTotalPrice! ||
+                                              storeHomeMainController
+                                                      .isInsufficientBalance!
+                                                      .value ==
+                                                  true
+                                          ? [AppColors.grey, AppColors.grey]
+                                          : [
+                                              AppColors.primary,
+                                              AppColors.primary
+                                            ]
+                                      : [AppColors.grey, AppColors.grey],
                                 ),
-                                CustomButton(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: storeHomeMainController
+                                onTap: () {
+                                  if (storeHomeMainController
+                                              .walletBalance.value >
+                                          storeHomeMainController
+                                              .cartData.value.cartTotalPrice! &&
+                                      !storeHomeMainController
+                                          .isInsufficientBalance!.value) {
+                                    storeHomeMainController
+                                        .moneydeductFromCartDailogue(context,
+                                            amount: storeHomeMainController
+                                                    .cartData
+                                                    .value
+                                                    .cartTotalPrice
+                                                    ?.toStringAsFixed(2) ??
+                                                "0");
+                                  }
+                                },
+                                height: 45,
+                                width: 120,
+                                text: StringConstants.payNowText,
+                                textColor: storeHomeMainController
+                                            .cartData.value.cartTotalPrice !=
+                                        null
+                                    ? storeHomeMainController
                                                     .walletBalance.value <
                                                 storeHomeMainController.cartData
                                                     .value.cartTotalPrice! ||
                                             storeHomeMainController
-                                                .isInsufficientBalance.value
-                                        ? [AppColors.grey, AppColors.grey]
-                                        : [
-                                            AppColors.primary,
-                                            AppColors.primary
-                                          ],
-                                  ),
-                                  onTap: () {
-                                    if (storeHomeMainController
-                                                .walletBalance.value >
-                                            storeHomeMainController.cartData
-                                                .value.cartTotalPrice! &&
-                                        !storeHomeMainController
-                                            .isInsufficientBalance.value) {
-                                      storeHomeMainController
-                                          .moneydeductFromCartDailogue(context,
-                                              amount: storeHomeMainController
-                                                      .cartData
-                                                      .value
-                                                      .cartTotalPrice
-                                                      ?.toStringAsFixed(2) ??
-                                                  "0");
-                                    }
-                                  },
-                                  height: 45,
-                                  width: 120,
-                                  text: StringConstants.payNowText,
-                                  textColor: storeHomeMainController
-                                                  .walletBalance.value <
-                                              storeHomeMainController.cartData
-                                                  .value.cartTotalPrice! ||
-                                          storeHomeMainController
-                                              .isInsufficientBalance.value
-                                      ? AppColors.black
-                                      : AppColors.white,
-                                  borderRadius: 12,
-                                  fontWeight: FontWeight.w500,
-                                  iconL: false,
-                                  fontSize: 14,
-                                ),
-                              ],
-                            ),
+                                                    .isInsufficientBalance!
+                                                    .value ==
+                                                true
+                                        ? AppColors.black
+                                        : AppColors.white
+                                    : AppColors.black,
+                                borderRadius: 12,
+                                fontWeight: FontWeight.w500,
+                                iconL: false,
+                                fontSize: 14,
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    )),
-              ),
+                      ),
+                    ],
+                  )),
             ],
           ),
         ));

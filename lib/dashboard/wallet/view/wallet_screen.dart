@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
@@ -21,6 +22,31 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
+
+  @override
+  initState() {
+    super.initState();
+    walletController.autoChargeType.value = "threshold";
+    walletController.firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    walletController.lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    walletController.role?.value =
+        SharedPreferenceStorage.getData(Role.role.value);
+    if (SharedPreferenceStorage.getData(Role.role.value) ==
+        Role.customerRoleText) {
+      if (Get.parameters == null
+          ? false
+          : Get.parameters['isFromCartScreen'] != "false") {
+        walletController.isFromCartScreen.value =
+            Get.parameters["isFromCartScreen"] == "true" ? true : false;
+      }
+      walletController.getApiData();
+    } else {
+      walletController.apiGetStoreList();
+      walletController.apiGetCountries();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +130,7 @@ class _WalletScreenState extends State<WalletScreen> {
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ? Column(
-                          children: [
-                            Text(StringConstants.toKnowBalanceYouDontHaveText),
-                          ],
-                        )
+                      ? Text(StringConstants.toKnowBalanceYouDontHaveText)
                       : Row(
                           children: [
                             Expanded(
@@ -201,64 +223,80 @@ class _WalletScreenState extends State<WalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() =>
-                        walletController.role!.value == Role.customerRoleText
-                            ? Column(
-                                children: [
-                                  Obx(
-                                    () => Text(
+                    Obx(() => walletController.role!.value ==
+                            Role.customerRoleText
+                        ? Column(
+                            children: [
+                              walletController.isLoading.value
+                                  ? Center(
+                                      child:
+                                          LoadingAnimationWidget.twistingDots(
+                                        leftDotColor: AppColors.white,
+                                        rightDotColor: AppColors.primary,
+                                        size: 50,
+                                      ),
+                                    )
+                                  : Text(
                                       "\$${walletController.userWalletBalance!.value}",
                                       style: const TextStyle(
                                           color: AppColors.white,
                                           fontSize: 26,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                  ),
-                                  height8SizedBox,
-                                  Text(
-                                    StringConstants.totalBalanceText,
-                                    style: const TextStyle(
-                                        color: AppColors.white, fontSize: 18),
-                                  ),
-                                  height12SizedBox,
-                                  InkWell(
-                                    onTap: () {
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                            builder: (_) =>
-                                                const AddMoneyToWallet(),
-                                          ))
-                                          // Get.to(const AddMoneyToWallet())!
-                                          .then((value) => walletController
-                                              .apiGetUserWalletBalance());
-                                    },
-                                    child: Image.asset(
-                                      ImageConstants.addMoney,
-                                      scale: 3.5,
+                              height8SizedBox,
+                              Text(
+                                StringConstants.totalBalanceText,
+                                style: const TextStyle(
+                                    color: AppColors.white, fontSize: 18),
+                              ),
+                              height12SizedBox,
+                              InkWell(
+                                onTap: () {
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                        builder: (_) =>
+                                            const AddMoneyToWallet(),
+                                      ))
+                                      // Get.to(const AddMoneyToWallet())!
+                                      .then((value) => walletController
+                                          .apiGetUserWalletBalance());
+                                },
+                                child: Image.asset(
+                                  ImageConstants.addMoney,
+                                  scale: 3.5,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              walletController.isLoading.value
+                                  ? Center(
+                                      child:
+                                          LoadingAnimationWidget.twistingDots(
+                                        leftDotColor: AppColors.white,
+                                        rightDotColor: AppColors.primary,
+                                        size: 50,
+                                      ),
+                                    )
+                                  : Text(
+                                      "\$${walletController.ownerWalletBalance!.value}",
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w500),
                                     ),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Text(
-                                    "\$${walletController.ownerWalletBalance!.value}",
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  height8SizedBox,
-                                  Text(
-                                    StringConstants.totalBalanceText,
-                                    style: const TextStyle(
-                                        color: AppColors.black, fontSize: 18),
-                                  ),
-                                  height12SizedBox,
-                                ],
-                              ))
+                              height8SizedBox,
+                              Text(
+                                StringConstants.totalBalanceText,
+                                style: const TextStyle(
+                                    color: AppColors.black, fontSize: 18),
+                              ),
+                              height12SizedBox,
+                            ],
+                          ))
                   ],
                 )
               ],

@@ -57,12 +57,11 @@ class SearchStoreUserController extends GetxController {
   RxInt page = 1.obs;
   RxInt initialIndex = 0.obs;
   RxString storeId = "".obs;
-  RxString storeIdValue = "".obs;
+
   RxBool isLoading = false.obs;
   RxBool isFavLoading = false.obs;
   RxBool isOpenNow = false.obs;
-  RxBool isValidAddress = false.obs;
-  RxBool isOrderDeliverable = false.obs;
+
   RxBool isDataLoading = false.obs;
   RxInt type = 0.obs;
   final scrollController = ScrollController();
@@ -71,6 +70,9 @@ class SearchStoreUserController extends GetxController {
   RxInt cartCount = 0.obs;
   RxDouble walletBalance = 0.0.obs;
   RxString storeAddressId = "".obs;
+  RxBool isValidAddress = false.obs;
+  RxBool isOrderDeliverable = false.obs;
+  RxString storeIdValue = "".obs;
   Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
   void setupScrollController(context) {
     scrollController.addListener(() {

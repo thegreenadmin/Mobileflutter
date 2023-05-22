@@ -35,6 +35,7 @@ class StringConstants {
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
   static String addCategoriesText = "Add Categories";
+  static String addCategoryText = "Add Category";
   static String addMoneyToMyWalletText = "Add money to my wallet";
   static String alertText = "Alert";
   static String amountText = "Amount";
@@ -234,6 +235,7 @@ class StringConstants {
   static String mileageText = "Mileage";
   static String marchText = "March";
   static String mayText = "May";
+  static String milesText = "Miles";
 
   //N
   static String nearbyText = "Nearby";
@@ -410,7 +412,7 @@ class StringConstants {
   static String selectDateText = "Select a Date";
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";
-  static String selectStoreText = "Select Store";
+  static String selectStoreText = "Select store";
   static String shopYourFavouriteText = "Shop your favorite";
   static String sepText = "September";
   static String selectCountryText = "Select Country";
@@ -457,7 +459,7 @@ class StringConstants {
   static String uploadText = "Upload";
   static String uploadImageText = "Upload Image";
   static String uploadPhotoHereText = "Upload photo here";
-  static String uploadCategoriesImageText = " Upload Categories Image";
+  static String uploadCategoryImageText = " Upload Category Image";
   static String uploadStoreImageText = " Upload Store Image";
   static String updateText = "Update";
   static String unitPriceText = "Unit price";
