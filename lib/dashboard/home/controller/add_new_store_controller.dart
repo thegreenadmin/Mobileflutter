@@ -141,9 +141,9 @@ class AddNewStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (storeLogoDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectLogoText);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectLogoText);
         } else if (storeImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectBannerText);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
           apiCreateStore(ctx);
         }
@@ -241,7 +241,7 @@ class AddNewStoreController extends GetxController {
 
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
-        Utility.showToast(responseData['message'].toString());
+        Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
       debugPrint(e.toString());
@@ -317,7 +317,11 @@ class AddNewStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-        Navigator.of(contextt).pop();
+        openingTimeTextController.clear();
+        closingTimeTextController.clear();
+        deliveryServicesTextController.clear();
+        workingDaysTextController.clear();
+
         storeNameTextController.clear();
         einTextController.clear();
         storeNickNameTextController.clear();
@@ -327,7 +331,6 @@ class AddNewStoreController extends GetxController {
         addressLine2TextController.clear();
         townOrCityTextController.clear();
         zipCodeTextController.clear();
-        deliveryServicesTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
         stateTextController.clear();
@@ -337,23 +340,27 @@ class AddNewStoreController extends GetxController {
         storeImageDynamicLinkfromServer.value = "";
         storeLogoDynamicLinkfromServer.value = "";
         deliveryServicesList.clear();
+        deliveryServices.clear();
+        weekDaysList.clear();
         privacyTextController.clear();
+        storeTimmingList.clear();
         termsTextController.clear();
         //storeIdValue.value = value.body["status"]
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
+        Navigator.of(contextt).pop();
         await createDynamicLink();
         await apiDynamicLink();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(contextt).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -385,7 +392,7 @@ class AddNewStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.pop(Get.context!);
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -420,14 +427,14 @@ class AddNewStoreController extends GetxController {
         deliveryServices.value =
             deliveryServicesResponse.data!.deliveryServices!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -458,14 +465,14 @@ class AddNewStoreController extends GetxController {
         }
         apiGetStates();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -501,14 +508,14 @@ class AddNewStoreController extends GetxController {
           stateId.value = statesList[0].stateId.toString();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

@@ -321,7 +321,7 @@ class AccountController extends GetxController {
                   InkWell(
                     onTap: () async {
                       if (noOfDaysTextController.text.isEmpty) {
-                        Utility.showToast("Please enter days");
+                        Utility.showAlertMessage("Please enter days");
                       } else {
                         Get.back();
                         apiCreateMembershipPlan();
@@ -386,7 +386,7 @@ class AccountController extends GetxController {
         await apiAddUserIdProof(context);
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
-        Utility.showToast(responseData['message'].toString());
+        Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
       debugPrint(e.toString());
@@ -487,7 +487,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         await apiGetCountries(context);
       } else if (value.body["status"] == 401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         if (Get.context != null) {
           Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -496,7 +496,7 @@ class AccountController extends GetxController {
         }
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message'].toString());
+        Utility.showAlertMessage(value.body['message'].toString());
       }
     });
   }
@@ -535,14 +535,14 @@ class AccountController extends GetxController {
         }
         apiGetStates(context);
       } else if (value.body["status"] == ApiConstants.statusCode403) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -581,7 +581,7 @@ class AccountController extends GetxController {
           stateId.value = statesList[0].stateId.toString();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
 
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -589,7 +589,7 @@ class AccountController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -632,7 +632,7 @@ class AccountController extends GetxController {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
@@ -656,7 +656,7 @@ class AccountController extends GetxController {
           await apiGetUserDetailApi(context);
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         // if(Get.context!=null){
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -666,7 +666,7 @@ class AccountController extends GetxController {
 
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -699,7 +699,7 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -707,7 +707,7 @@ class AccountController extends GetxController {
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -791,14 +791,14 @@ class AccountController extends GetxController {
 
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -847,7 +847,7 @@ class AccountController extends GetxController {
           );
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
 
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -855,7 +855,7 @@ class AccountController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -881,10 +881,11 @@ class AccountController extends GetxController {
       debugPrint("CREATE USER ACCESS RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+
         Utility.showToast(value.body['message']);
         Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -892,7 +893,7 @@ class AccountController extends GetxController {
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -921,14 +922,14 @@ class AccountController extends GetxController {
         membershipList.value = membershipPlanModel.data!.membershipPlans!;
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -960,16 +961,16 @@ class AccountController extends GetxController {
         Get.back();
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -1000,14 +1001,14 @@ class AccountController extends GetxController {
             activeMembershipPlanModel.data!.memberships!;
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -1035,12 +1036,12 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

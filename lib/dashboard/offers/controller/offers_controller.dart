@@ -102,14 +102,14 @@ class OffersController extends GetxController {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
         getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -140,14 +140,14 @@ class OffersController extends GetxController {
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
         getUserOfferlist.value = getUserOffersListModel.data!.stores!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -182,16 +182,16 @@ class OffersController extends GetxController {
         }
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

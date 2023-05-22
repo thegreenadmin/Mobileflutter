@@ -132,7 +132,7 @@ class OrdersHomeMainController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -206,7 +206,7 @@ class OrdersHomeMainController extends GetxController {
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -252,14 +252,14 @@ class OrdersHomeMainController extends GetxController {
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
          await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -303,7 +303,7 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -352,7 +352,7 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -392,7 +392,7 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -442,7 +442,7 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -490,7 +490,7 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -537,7 +537,7 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -584,7 +584,7 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -631,7 +631,7 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

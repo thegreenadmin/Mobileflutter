@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -45,6 +46,172 @@ class Utility {
 
   static String loadImageUrl(String url) {
     return ServerCommunicator().baseUrlWithoutV1 + url;
+  }
+
+
+  static  void showConfirmAlertMessage(title, {
+    String description = "", String? cancelText , String? okay ,void Function()? okayTap,void Function()? cancelTap }) {
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            height10SizedBox,
+            Image.asset(
+              ImageConstants.info,
+              color: AppColors.red,
+              scale: 1.5,
+            ),
+           /* height12SizedBox,
+            Text(
+              title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),*/
+            height15SizedBox,
+            Text(
+              description,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
+            ),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: ()  {
+                    cancelTap ??  Navigator.pop(_);
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: WidgetConstants.screenWidth * 0.3,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(color: AppColors.primary),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        cancelText ?? StringConstants.cancelText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                            color: AppColors.primary),
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                   okayTap ??  Navigator.pop(_);
+                    // Get.back();
+                    // await apiPlaceOrder(context);
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: WidgetConstants.screenWidth * 0.3,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        okay ?? StringConstants.okayText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
+
+
+  static  void showAlertMessage(title, {
+    String description = "", String? cancelText , String? okay ,void Function()? okayTap,void Function()? cancelTap }) {
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            height10SizedBox,
+            Image.asset(
+              ImageConstants.info,
+              color: AppColors.red,
+              scale: 1.5,
+            ),
+            /*height12SizedBox,
+            Text(
+              title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),*/
+            height15SizedBox,
+            Text(
+              title,
+              style: TextStyle(
+                  color: AppColors.blacklight,
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
+            ),
+            height25SizedBox,
+            InkWell(
+              onTap: () {
+               okayTap ??  Navigator.pop(_);
+                // Get.back();
+                // await apiPlaceOrder(context);
+              },
+              child: Container(
+                height: 50.0,
+                width: WidgetConstants.screenWidth * 0.3,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Center(
+                  child: Text(
+                    okay ?? StringConstants.okayText,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
   }
 
   static showAlert(

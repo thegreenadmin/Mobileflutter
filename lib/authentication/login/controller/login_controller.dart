@@ -80,12 +80,12 @@ class LoginController extends GetxController {
         });
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //User not exist
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

@@ -75,9 +75,9 @@ class ContactUsController extends GetxController {
         // Get.back();
         Navigator.of(Get.context!).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

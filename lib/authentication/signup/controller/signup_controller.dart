@@ -176,9 +176,9 @@ class SignupController extends GetxController {
       SharedPreferenceStorage.setData("email", email.value.trim());
       try {
         if (dateTextController.text.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectAge);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectAge);
         } else if (isTermsAccepted.value == false) {
-          Utility.showToast(AlertStringConstants.pleaseEnterTermsAndConditions);
+          Utility.showAlertMessage(AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
           apiCreateUser(isFromOwner: isFromOwner);
         }
@@ -216,9 +216,9 @@ class SignupController extends GetxController {
         await apiGenerateOtp();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -251,12 +251,12 @@ class SignupController extends GetxController {
         phoneNumberTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //User not exist
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

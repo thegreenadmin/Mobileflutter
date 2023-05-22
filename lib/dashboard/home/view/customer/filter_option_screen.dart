@@ -515,7 +515,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       searchStoreUserController
                               .closingTimeTextController.text ==
                           "") {
-                    Utility.showToast(
+                    Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
                     searchStoreUserController.apiGetNearByStores(

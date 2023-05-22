@@ -20,6 +20,7 @@ import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.d
     as nearby;
 
 class SearchStoreUserController extends GetxController {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController zipCodeTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();
   TextEditingController storeOpeningTextController = TextEditingController();
@@ -44,7 +45,7 @@ class SearchStoreUserController extends GetxController {
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
   ActiveCartModel activeCartModel = ActiveCartModel();
-
+  RxBool autoValidate = false.obs;
   var kGoogleApiKey = "";
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -129,11 +130,11 @@ class SearchStoreUserController extends GetxController {
               storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -176,11 +177,11 @@ class SearchStoreUserController extends GetxController {
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -216,11 +217,11 @@ class SearchStoreUserController extends GetxController {
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -246,68 +247,80 @@ class SearchStoreUserController extends GetxController {
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
-            TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                textInputAction: TextInputAction.next,
-                autofocus: false,
-                textCapitalization: TextCapitalization.words,
-                inputFormatters: <TextInputFormatter>[
-                  LengthLimitingTextInputFormatter(40),
-                ],
-                style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-                controller: einNumberTextController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: StringConstants.enterEinNumberText,
-                  hintStyle: const TextStyle(color: AppColors.grey),
-                  fillColor: Colors.white,
-                  border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
+            Form(
+              key: formKey,
+              child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
+                  autofocus: false,
+                  textCapitalization: TextCapitalization.words,
+                  inputFormatters: <TextInputFormatter>[
+                    LengthLimitingTextInputFormatter(40),
+                  ],
+                  validator: (v){
+                    if(v!.isEmpty){
+                      return  AlertStringConstants.pleaseEnterEinText;
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                  controller: einNumberTextController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: StringConstants.enterEinNumberText,
+                    hintStyle: const TextStyle(color: AppColors.grey),
+                    fillColor: Colors.white,
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
                     ),
-                  ),
-                  errorBorder: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
                     ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
+                    focusedBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
                     ),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.0,
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
             height25SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
                   onTap: () {
-                    if (einNumberTextController.text.isEmpty) {
-                      Utility.showToast(
-                          AlertStringConstants.pleaseEnterEinText);
-                    } else {
+                    // if (einNumberTextController.text.isEmpty) {
+                      // Utility.showAlertMessage(context,
+                      //     title:   AlertStringConstants.pleaseEnterEinText ,);
+                      // Utility.showToast(
+                      //     AlertStringConstants.pleaseEnterEinText);
+                    // } else {
                       // Get.back();
                       Navigator.of(context).pop();
-                      apiClaimStore(storeId: storeId);
-                    }
+                      validateAndSubmit(context,storeId: storeId);
+                      // apiClaimStore(storeId: storeId);
+                    // }
                   },
                   child: Container(
                     height: 50.0,
@@ -425,14 +438,14 @@ class SearchStoreUserController extends GetxController {
           Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -484,14 +497,14 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -542,14 +555,14 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -602,14 +615,14 @@ class SearchStoreUserController extends GetxController {
           }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -661,18 +674,40 @@ class SearchStoreUserController extends GetxController {
           }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
 
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmit(BuildContext mcontext,{
+    String storeId = "",
+  }) async {
+    if (validateAndSave()) {
+      try {
+          await apiClaimStore(storeId: storeId);
+
+      } catch (_) {}
+    } else {
+      autoValidate.value = true;
+    }
+  }
   apiClaimStore({
     String storeId = "",
   }) {
@@ -704,14 +739,14 @@ class SearchStoreUserController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }

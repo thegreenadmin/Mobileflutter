@@ -91,7 +91,7 @@ class ManageStoreController extends GetxController {
     );
     if (selectedImages.isNotEmpty) {
       if (selectedImages.length >= 5) {
-        return Utility.showToast(
+        return Utility.showAlertMessage(
             AlertStringConstants.only5MaximumImagesCanSelectText);
       }
       //else {
@@ -136,10 +136,10 @@ class ManageStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (imageFileList!.length < 1) {
-          Utility.showToast(
+          Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadAtLeastOneImageText);
         } else if (selectedCategories.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectCategoriesText);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectCategoriesText);
         } else {
           apiCreateProduct(bCntx);
         }
@@ -165,7 +165,7 @@ class ManageStoreController extends GetxController {
         var data = selectedCategories
             .where((element) => element["status"] == 'active');
         if (data.isEmpty) {
-          Utility.showToast("Please select categories");
+          Utility.showAlertMessage("Please select categories");
         } else {
           apiUpdateStoreProductDetail(ctx);
         }
@@ -211,7 +211,7 @@ class ManageStoreController extends GetxController {
         imageUrlList.refresh();
       });
     } else {
-      Utility.showToast("Please Select atleast one image");
+      Utility.showAlertMessage("Please Select atleast one image");
     }
     return null;
   }
@@ -239,14 +239,14 @@ class ManageStoreController extends GetxController {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -275,14 +275,14 @@ class ManageStoreController extends GetxController {
             quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -310,14 +310,14 @@ class ManageStoreController extends GetxController {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -409,14 +409,14 @@ class ManageStoreController extends GetxController {
         isFeatured.value = false;
         selectedCategories.value = [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -463,14 +463,14 @@ class ManageStoreController extends GetxController {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -581,14 +581,14 @@ class ManageStoreController extends GetxController {
         }
         isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -707,14 +707,14 @@ class ManageStoreController extends GetxController {
         isFeatured.value = false;
         selectedCategories.value = [];
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -744,18 +744,18 @@ class ManageStoreController extends GetxController {
         await apiGetProductList(buildCtxt);
         update();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetProductList(buildCtxt);
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -784,17 +784,17 @@ class ManageStoreController extends GetxController {
         Utility.showToast(value.body['message']);
         await apiGetCategoriesList();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetCategoriesList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

@@ -177,14 +177,14 @@ class AddNewWorkerController extends GetxController {
         // Get.back();
         Navigator.of(contextt).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message'] ?? "");
+        Utility.showAlertMessage(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
         Navigator.of(contextt).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message'] ?? "");
+        Utility.showAlertMessage(value?.body['message'] ?? "");
       }
     });
   }
@@ -305,14 +305,14 @@ class AddNewWorkerController extends GetxController {
         // Get.back();
         Navigator.of(contx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(contx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -346,17 +346,17 @@ class AddNewWorkerController extends GetxController {
         Utility.showToast(value.body['message']);
         await apiGetWorkerList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetWorkerList();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -427,7 +427,7 @@ class AddNewWorkerController extends GetxController {
 
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
-        Utility.showToast(responseData['message'].toString());
+        Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
       debugPrint(e.toString());
@@ -509,7 +509,7 @@ class AddNewWorkerController extends GetxController {
         }
         update();
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -534,14 +534,14 @@ class AddNewWorkerController extends GetxController {
         getUserStoreListModel = GetUserStoreListModel.fromJson(value.body);
         getUserStoreList.value = getUserStoreListModel.data!.stores!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -569,14 +569,14 @@ class AddNewWorkerController extends GetxController {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -604,14 +604,14 @@ class AddNewWorkerController extends GetxController {
         storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -687,14 +687,14 @@ class AddNewWorkerController extends GetxController {
         }
         workingDaysTextController.text = concatenate.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }

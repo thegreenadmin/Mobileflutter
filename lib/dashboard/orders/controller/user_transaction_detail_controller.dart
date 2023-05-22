@@ -100,7 +100,7 @@ class UserTransactionDetailController extends GetxController {
           ).toString();
         }
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

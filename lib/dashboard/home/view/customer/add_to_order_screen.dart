@@ -993,7 +993,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               if (storeHomeMainController.itemsCount.value != 0) {
                 storeHomeMainController.apiAddToCart(context);
               } else {
-                Utility.showToast(
+                Utility.showAlertMessage(
                     AlertStringConstants.pleaseAddAtleastOneItemText);
               }
             },

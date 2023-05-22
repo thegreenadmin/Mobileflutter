@@ -648,7 +648,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                           .any((element) => element.isSelected == true)) {
                         ordersHomeMainController.apiCancelOrder();
                       } else {
-                        Utility.showToast(AlertStringConstants
+                        Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);
                       }
                     },
@@ -707,7 +707,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         : ordersHomeMainController
                                             .apiMarkOrderReady();
                       } else {
-                        Utility.showToast(AlertStringConstants
+                        Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);
                       }
                     },

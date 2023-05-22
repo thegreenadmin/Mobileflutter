@@ -57,7 +57,7 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
+          Utility.showAlertMessage(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiAddCategory(nCon);
         }
@@ -81,7 +81,7 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseUploadCategoryImage);
+          Utility.showAlertMessage(AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiUpdateCategory(cntext);
         }
@@ -155,7 +155,7 @@ class AddNewCategoryController extends GetxController {
 
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
-        Utility.showToast(responseData['message'].toString());
+        Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
       debugPrint(e.toString());
@@ -211,7 +211,7 @@ class AddNewCategoryController extends GetxController {
         Navigator.of(nContext).pop();
         // Navigator.of(Get.context!).pop();
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -242,14 +242,14 @@ class AddNewCategoryController extends GetxController {
         isFeaturedCategory.value =
             value.body["data"]['category']['is_featured_category'] ?? false;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -289,14 +289,14 @@ class AddNewCategoryController extends GetxController {
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(contextt).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

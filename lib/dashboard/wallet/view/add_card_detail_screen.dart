@@ -175,7 +175,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                     ),
                     onTap: () async {
                       if (addCardController.cardHolderName.isEmpty) {
-                        Utility.showToast(
+                        Utility.showAlertMessage(
                             AlertStringConstants.pleaseFillAllDetailsText);
                       } else if (formKey.currentState!.validate()) {
                         addCardController.apiCreateStripeToken(context);

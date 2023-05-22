@@ -147,22 +147,22 @@ class WalletController extends GetxController {
       try {
         if (isFromautorecharge == true) {
           if (autoChargeType.value.isEmpty) {
-            Utility.showToast("Please select autoreload type");
+            Utility.showAlertMessage("Please select autoreload type");
           } else {
             apiCreateAutoRecharge(mcontext);
           }
         } else if (isFromCreateOwnerBankBalance == false) {
           if (selectPaymentType.isEmpty) {
-            Utility.showToast(AlertStringConstants.pleaseSelectPaymentTypeText);
+            Utility.showAlertMessage(AlertStringConstants.pleaseSelectPaymentTypeText);
           } else if (selectPaymentType.value == "Cards" &&
               userStripeCardId!.value.isEmpty) {
-            Utility.showToast(AlertStringConstants.pleaseSelectCardText);
+            Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
           } else {
             await apiAddMoneyToWallet(mcontext);
           }
         } else {
           if (accountHolderTypeText.isEmpty) {
-            Utility.showToast("Please select account holder type");
+            Utility.showAlertMessage("Please select account holder type");
           } else {
             apiCreateBankToken(mcontext);
           }
@@ -207,14 +207,14 @@ class WalletController extends GetxController {
             storeDetailsResponse.value.data!.store!.dynamicLink.toString();
         debugPrint("DEEP LINK ***********${dynamicLink.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -241,14 +241,14 @@ class WalletController extends GetxController {
         countryListModel = CountryListModel.fromJson(value.body);
         countryList.value = countryListModel.data!.countries!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -278,14 +278,14 @@ class WalletController extends GetxController {
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -352,9 +352,9 @@ class WalletController extends GetxController {
           Navigator.of(context).pop();
           await apiGetCardList(context);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -385,7 +385,7 @@ class WalletController extends GetxController {
         cardList.value = cardListModel.data?.cards ?? [];
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -396,7 +396,7 @@ class WalletController extends GetxController {
             .toString()
             .toLowerCase()
             .contains("stripe")) {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -437,9 +437,9 @@ class WalletController extends GetxController {
           Navigator.of(ctx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -470,14 +470,14 @@ class WalletController extends GetxController {
             value?.body['data']['balance'].toStringAsFixed(2);
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -507,17 +507,17 @@ class WalletController extends GetxController {
         Utility.showToast(value.body['message']);
         await apiGetCardList(context);
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetCardList(context);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -548,7 +548,7 @@ class WalletController extends GetxController {
         //ownerSelectedStore.value = "";
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -557,9 +557,9 @@ class WalletController extends GetxController {
       } else {
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {
-          Utility.showToast("Please select store");
+          Utility.showAlertMessage("Please select store");
         } else {
-          Utility.showToast(value.body['message'].toString());
+          Utility.showAlertMessage(value.body['message'].toString());
         }
       }
     });
@@ -599,10 +599,10 @@ class WalletController extends GetxController {
         apiCreateStoreStripeAccount(ctxx);
       } else if (response.statusCode == 400) {
         var parsed = jsonDecode(streamResponse.body);
-        Utility.showToast(parsed['error']['message'].toString());
+        Utility.showAlertMessage(parsed['error']['message'].toString());
       } else {
         var parsed = jsonDecode(streamResponse.body);
-        Utility.showToast(parsed['error']['message'].toString());
+        Utility.showAlertMessage(parsed['error']['message'].toString());
       }
     } catch (error) {
       debugPrint(error.toString());
@@ -646,16 +646,16 @@ class WalletController extends GetxController {
         // Get.back();
         Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -685,7 +685,7 @@ class WalletController extends GetxController {
         bankAccountList.value = bankAccountListModel.data?.banks ?? [];
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -696,7 +696,7 @@ class WalletController extends GetxController {
             .toString()
             .toLowerCase()
             .contains("stripe")) {
-          Utility.showToast(value.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -727,17 +727,17 @@ class WalletController extends GetxController {
         Utility.showToast(value.body['message']);
         await apiGetBankAccountList();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetBankAccountList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -791,16 +791,16 @@ class WalletController extends GetxController {
         // Get.back();
         Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -870,14 +870,14 @@ class WalletController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -934,16 +934,16 @@ class WalletController extends GetxController {
         Navigator.of(ctxx).pop(ctxx);
         await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -976,17 +976,17 @@ class WalletController extends GetxController {
         Utility.showToast(value.body['message']);
         await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

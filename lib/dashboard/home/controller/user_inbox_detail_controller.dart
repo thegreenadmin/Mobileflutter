@@ -148,14 +148,14 @@ class UserInboxDetailController extends GetxController {
         messageListModel = UserMessageListModel.fromJson(value.body);
         messageList.value = messageListModel.data?.messages ?? [];
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
          await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
@@ -198,14 +198,14 @@ class UserInboxDetailController extends GetxController {
         update();
         await apiGetMessagesList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
          await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) =>  const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showToast(value.body['message']);
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }
