@@ -255,6 +255,7 @@ class WalletController extends GetxController {
 
   //Get Store List Api
   Future apiGetStoreList() async {
+    storeList.clear();
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
@@ -277,6 +278,7 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -447,6 +449,7 @@ class WalletController extends GetxController {
 
   //Get Card List Api
   Future apiGetUserWalletBalance() async {
+    userWalletBalance!.value = "";
     isLoading.value = true;
     debugPrint("GET USER WALLET BALANCE URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
@@ -545,7 +548,7 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
-        //ownerSelectedStore.value = "";
+
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);

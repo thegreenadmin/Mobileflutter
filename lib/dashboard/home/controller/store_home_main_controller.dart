@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
@@ -76,8 +77,10 @@ class StoreHomeMainController extends GetxController {
   RxBool isDeleteCartItem = false.obs;
   RxBool isFavouriteProduct = false.obs;
   RxString orderStatus = "".obs;
-  RxBool isInsufficientBalance = false.obs;
-
+  RxBool? isInsufficientBalance = false.obs;
+  RxBool isValidAddress = false.obs;
+  RxBool isOrderDeliverable = false.obs;
+  RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
@@ -85,12 +88,13 @@ class StoreHomeMainController extends GetxController {
   final scrollController = ScrollController();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+  ActiveCartModel activeCartModel = ActiveCartModel();
 
   @override
   void onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 500), () {});
-    if(storeId.value != Get.parameters["storeId"] ){
+    if (storeId.value != Get.parameters["storeId"]) {
       storeId.value = Get.parameters["storeId"] ?? "";
       getCurrentLocation();
     }
@@ -134,11 +138,9 @@ class StoreHomeMainController extends GetxController {
       //     storeAddress.value.store?.isFavouriteStore ?? false;
       onIndexChange(0);
     }
-
-
     apiGetUserWalletBalance();
     apiGetCartListApi(Get.context);
-
+    apiActiveCartApi(Get.context);
   }
 
   void onIndexChange(int i) async {
@@ -328,12 +330,152 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
+  void discardCartItems(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            const Text(
+              "Replace cart item?",
+              style: TextStyle(
+                  color: AppColors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            const Text(
+              "Your cart contains items. Do you want to discard the selection and add new items?",
+              style: TextStyle(
+                  color: AppColors.black,
+                  fontSize: 14,
+                  height: 1.6,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    // Get.back();
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primarylight,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.noText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+                height25SizedBox,
+                InkWell(
+                  onTap: () {
+                    // Get.back();
+                    if (itemsCount.value != 0) {
+                      Navigator.of(ctx).pop();
+                      apiAddToCart(context);
+                    } else {
+                      Utility.showToast(
+                          AlertStringConstants.pleaseAddAtleastOneItemText);
+                    }
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.yesText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
+
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
     await apiGetStoreDetailsApi();
+  }
+
+  //Get Active Cart Api
+  Future apiActiveCartApi(context) async {
+    isLoading.value = true;
+    debugPrint(
+        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        activeCartModel = ActiveCartModel.fromJson(value?.body);
+        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 ||
+            activeCartModel.data!.cartItems!.isEmpty) {
+          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+          storeIdValue.value = activeCartModel.data!.storeId.toString();
+        } else {
+          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+          isValidAddress.value = activeCartModel.data!.isValidAddress!;
+          isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
+          storeIdValue.value = activeCartModel.data!.storeId.toString();
+          print("STORE ID VALUE" + storeIdValue.value.toString());
+          // await apiGetCartListApi(context,
+          //     storeId: activeCartModel.data!.storeId.toString());
+        }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showToast(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showToast(value?.body['message']);
+      }
+    });
   }
 
   //Get Categories Api
@@ -491,8 +633,7 @@ class StoreHomeMainController extends GetxController {
     }
 
     Map<String, dynamic> data = {
-      "store_id":
-          int.parse(storeId.value.toString() ?? "0"),
+      "store_id": int.parse(storeId.value.toString() ?? "0"),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
       "user_address_id": selectedDeliveryService.value == "1" ||
               selectedDeliveryService.value == "3"
@@ -517,8 +658,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
         SharedPreferenceStorage.setData("context", context);
-        Get.parameters["storeId"] =
-            storeId.value.toString() ?? "0";
+        Get.parameters["storeId"] = storeId.value.toString() ?? "0";
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
@@ -533,16 +673,16 @@ class StoreHomeMainController extends GetxController {
           "isFromNotification": false
         });*/
         update();
-        isInsufficientBalance.value = false;
+        isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         if (value?.body["message"] == "Insufficient balance") {
-          isInsufficientBalance.value = true;
+          isInsufficientBalance!.value = true;
         } else {
-          isInsufficientBalance.value = false;
+          isInsufficientBalance!.value = false;
           Utility.showToast(value?.body['message']);
         }
       } else if (value?.body == null) {
@@ -683,7 +823,7 @@ class StoreHomeMainController extends GetxController {
   ) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -723,8 +863,8 @@ class StoreHomeMainController extends GetxController {
                 InkWell(
                   onTap: () {
                     Navigator.of(_).pop();
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    Navigator.of(_).pop();
+                    Navigator.of(_).pop();
                     // Get.back();
                     // Get.back();
                     // Get.back();
@@ -846,10 +986,10 @@ class StoreHomeMainController extends GetxController {
             value.body["data"]["balance"] is String) {
           walletBalance.value =
               double.parse(value.body["data"]["balance"].toString());
-          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+          debugPrint("USER WALLET BALANCE 1*******${walletBalance.value}");
         } else if (value.body["data"]["balance"] is double) {
-          walletBalance.value = value.body["data"]["balance"];
-          debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
+          walletBalance.value = value.body["data"]["balance"]??0.0;
+          debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);

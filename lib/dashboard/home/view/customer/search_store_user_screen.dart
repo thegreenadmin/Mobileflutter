@@ -49,6 +49,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
   @override
   void initState() {
+    super.initState();
     searchStoreUserController.searchController.clear();
     _tabController = TabController(
         initialIndex: searchStoreUserController.initialIndex.value,
@@ -56,14 +57,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         vsync: this);
     updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi(Get.context);
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(140.0),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.14),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -151,9 +151,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                                   "context", context);
                                               Navigator.of(context)
                                                   .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const StoreHomeMainScreen(),
-                                              ));
+                                                    builder: (_) =>
+                                                        const CartScreen(),
+                                                  ))
+                                                  .then((value) =>
+                                                      searchStoreUserController
+                                                          .apiActiveCartApi(
+                                                              context));
                                               Get.parameters["storeId"] =
                                                   searchStoreUserController
                                                       .storeIdValue.value;
@@ -281,7 +285,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 1),
                 child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onTap: () async {

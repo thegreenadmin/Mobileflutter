@@ -456,7 +456,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   )
-                                : CarouselSlider(
+                                :
+                                // USER CROUSEL
+                                CarouselSlider(
                                     items: homeController.userCrouselImgList
                                         .map((item) => InkWell(
                                               onTap: () {
@@ -575,6 +577,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 )
+                          //OWNER CROUSEL
                           : CarouselSlider(
                               items: homeController.getOwnerOfferlist
                                   .map((item) => InkWell(
@@ -593,7 +596,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Get.parameters["isFromHome"] = "true";
                                           Get.parameters["storeId"] =
                                               item.store!.storeId ?? "";
-
+                                          print(Get.parameters["isFromHome"]);
+                                          print(item.store!.storeId ?? "");
                                           // Get.to(
                                           //     () =>
                                           //         const ManageStoreMainScreen(),

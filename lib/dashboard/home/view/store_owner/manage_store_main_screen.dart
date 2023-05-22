@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/my_store_screen.dar
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageStoreMainScreen extends StatefulWidget {
@@ -76,6 +77,28 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
   }
 
   @override
+  initState() {
+    super.initState();
+    ownerStoresController.selectedIndex.value = 0;
+    ownerStoresController.firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    ownerStoresController.lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText);
+    ownerStoresController.getApiData();
+    ownerStoresController.getGkey();
+    if (Get.parameters['isFromHome'] == "true") {
+      ownerStoresController.storeId.value = Get.parameters['storeId'] ?? "";
+      ownerStoresController.apiGetParticularStore();
+    }
+  }
+
+  getApiData() async {
+    await ownerStoresController.apiGetStoreList();
+    await ownerStoresController.apiGetDeliveryServices();
+    await ownerStoresController.apiGetOwnerOffersList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -83,120 +106,127 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Obx(()=> Container(
-              decoration: BoxDecoration(
-                color: const Color(0xff7c94b6),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  colorFilter:
-                  const ColorFilter.mode(Colors.black45, BlendMode.darken),
-                  image: ownerStoresController.editStoreImageDynamicLinkfromServer.value.isEmpty
-                      ? const AssetImage(
-                    ImageConstants.nopicfound,
-                  ) as ImageProvider
-                      : NetworkImage(ownerStoresController.editStoreImageDynamicLinkfromServer.value),
-                ),
-              ),
-              child: Padding(
-                  padding:
-                  const EdgeInsets.only(left: 20.0, right: 20, top: 65),
-                  child: Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                // Get.back();
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: AppColors.white,
-                                size: 24.0,
-                              ),
-                            ),
-                          ]),
-                      height10SizedBox,
-                      Row(
+            Obx(() => Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xff7c94b6),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black45, BlendMode.darken),
+                      image: ownerStoresController
+                              .editStoreImageDynamicLinkfromServer.value.isEmpty
+                          ? const AssetImage(
+                              ImageConstants.nopicfound,
+                            ) as ImageProvider
+                          : NetworkImage(ownerStoresController
+                              .editStoreImageDynamicLinkfromServer.value),
+                    ),
+                  ),
+                  child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20.0, right: 20, top: 65),
+                      child: Column(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: AppColors.white, width: 1)),
-                            child: CircleAvatar(
-                              radius: 28.0,
-                              backgroundImage: ownerStoresController
-                                  .editStoreLogoDynamicLinkfromServer.value.isEmpty
-                                  ? const AssetImage(
-                                ImageConstants.nopicfound,
-                              ) as ImageProvider
-                                  : NetworkImage(
-                                  ownerStoresController.editStoreLogoDynamicLinkfromServer.value),
-                              backgroundColor: Colors.transparent,
-                            ),
-                          ),
-                          width10SizedBox,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Obx(() => Text(
-                                  ownerStoresController.storeName.value,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                )),
-                                height8SizedBox,
-                                Row(
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    // Get.back();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.white,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ]),
+                          height10SizedBox,
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: AppColors.white, width: 1)),
+                                child: CircleAvatar(
+                                  radius: 28.0,
+                                  backgroundImage: ownerStoresController
+                                          .editStoreLogoDynamicLinkfromServer
+                                          .value
+                                          .isEmpty
+                                      ? const AssetImage(
+                                          ImageConstants.nopicfound,
+                                        ) as ImageProvider
+                                      : NetworkImage(ownerStoresController
+                                          .editStoreLogoDynamicLinkfromServer
+                                          .value),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                              width10SizedBox,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image.asset(
-                                      ImageConstants.loc,
-                                      color: AppColors.white,
-                                      scale: 2,
-                                    ),
-                                    width4SizedBox,
-                                    Obx(
+                                    Obx(() => Text(
+                                          ownerStoresController.storeName.value,
+                                          maxLines: 2,
+                                          style: const TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                    height8SizedBox,
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          ImageConstants.loc,
+                                          color: AppColors.white,
+                                          scale: 2,
+                                        ),
+                                        width4SizedBox,
+                                        Obx(
                                           () => Expanded(
-                                        child: Text(
-                                            ownerStoresController
-                                                .storeLocation.value,
-                                            maxLines: 1,
+                                            child: Text(
+                                                ownerStoresController
+                                                    .storeLocation.value,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                    color: AppColors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    height8SizedBox,
+                                    Obx(() => ownerStoresController
+                                            .is247Time.value
+                                        ? Text(StringConstants.storeHoursText,
                                             style: const TextStyle(
                                                 color: AppColors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                      ),
-                                    ),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400))
+                                        : Text(
+                                            "${StringConstants.storeHourText} ${ownerStoresController.openingTime.value} to ${ownerStoresController.closingTime.value}",
+                                            style: const TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400)))
                                   ],
                                 ),
-                                height8SizedBox,
-                                Obx(() => ownerStoresController.is247Time.value
-                                    ? Text(StringConstants.storeHoursText,
-                                    style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400))
-                                    : Text(
-                                    "${StringConstants.storeHourText} ${ownerStoresController.openingTime.value} to ${ownerStoresController.closingTime.value}",
-                                    style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400)))
-                              ],
-                            ),
+                              )
+                            ],
                           )
                         ],
-                      )
-                    ],
-                  )),
-            ))
+                      )),
+                ))
           ],
         ),
       ),

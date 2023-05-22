@@ -344,10 +344,10 @@ class ManageStoreController extends GetxController {
     product.returnDaysCount = daysTextController.text.trim().isEmpty
         ? 0
         : int.parse(daysTextController.text.trim());
-    product.length = int.parse(lengthTextController.text.trim());
-    product.width = int.parse(breadthTextController.text.trim());
-    product.height = int.parse(heightTextController.text.trim());
-    product.weight = int.parse(weightTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim());
+    product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
     List<ProductCategory> listProductCategory = <ProductCategory>[];
@@ -624,10 +624,10 @@ class ManageStoreController extends GetxController {
     product.returnDaysCount = daysTextController.text.trim().isEmpty
         ? 0
         : int.parse(daysTextController.text.trim());
-    product.length = int.parse(lengthTextController.text.trim());
-    product.width = int.parse(breadthTextController.text.trim());
-    product.height = int.parse(heightTextController.text.trim());
-    product.weight = int.parse(weightTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim());
+    product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
     List<ProductCategory> listProductCategory = <ProductCategory>[];

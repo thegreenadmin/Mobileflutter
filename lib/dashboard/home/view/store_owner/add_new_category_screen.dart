@@ -60,7 +60,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.addCategoriesText,
+                            StringConstants.addCategoryText,
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: AppColors.black,
@@ -86,7 +86,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.uploadCategoriesImageText,
+                      StringConstants.uploadCategoryImageText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
@@ -125,7 +125,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                             ),
                                             height6SizedBox,
                                             Text(StringConstants
-                                                .uploadCategoriesImageText)
+                                                .uploadCategoryImageText)
                                           ]),
                                     ),
                                   ),
@@ -162,7 +162,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                     ),
                     height35SizedBox,
                     Text(
-                      StringConstants.categoriesNameText,
+                      StringConstants.categoryNameText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,

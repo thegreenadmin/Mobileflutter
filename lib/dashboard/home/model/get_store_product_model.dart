@@ -413,10 +413,10 @@ class Products {
   dynamic discountValue;
   bool? isProductReturnable;
   dynamic returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
   String? status;
   String? createdAt;

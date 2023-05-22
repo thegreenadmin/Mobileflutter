@@ -50,7 +50,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                           TextSpan(
                             text:
                                 // " ${storeHomeMainController.storeAddress.value.store?.storeName ?? ""}",
-                                " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName??""}",
+                                " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
@@ -236,10 +236,9 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               children: <Widget>[
                                 InkWell(
                                   onTap: () async {
-                                    storeHomeMainController.productId.value=
+                                    storeHomeMainController.productId.value =
                                         storeHomeMainController
-                                            .featureProductList[index]
-                                            .productId
+                                            .featureProductList[index].productId
                                             .toString();
                                     await storeHomeMainController
                                         .apiGetShopProductDetailApi();
