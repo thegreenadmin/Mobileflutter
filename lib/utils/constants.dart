@@ -539,6 +539,7 @@ class AlertStringConstants {
   static String invalidQuantityText = "Invalid quantity";
   static String invalidInputText = "Invalid input";
 
+
 //N
   static String noProductFoundForThisStore = "No products found for this store.";
   static String noHistoryFoundText = "No History Found";
