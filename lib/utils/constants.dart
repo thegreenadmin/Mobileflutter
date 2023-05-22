@@ -640,8 +640,8 @@ class AlertStringConstants {
   static String pleaseSelectCountryText = "Please select country";
   //R
 
-  static String returnOrderAlertText = "Do you really want to return this item";
-  static String rejectReturnOrderAlertText = "Do you really want to reject this return request";
+  static String returnOrderAlertText = "Do you really want to return this item?";
+  static String rejectReturnOrderAlertText = "Do you really want to reject this return request?";
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
