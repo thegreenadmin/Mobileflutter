@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
@@ -143,8 +144,7 @@ class OwnerStoresController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.firstNameText);
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText);
-
-    getApiData();
+    getCurrentLocation();
     getGkey();
     if (Get.parameters['isFromHome'] == "true") {
       storeId.value = Get.parameters['storeId'] ?? "";
@@ -156,6 +156,14 @@ class OwnerStoresController extends GetxController {
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
+    getApiData();
   }
 
   getApiData() async {

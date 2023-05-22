@@ -30,9 +30,12 @@ class SearchStoreUserController extends GetxController {
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
-  late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
-  late PreviousStoreResponse previousStoreListResponse = PreviousStoreResponse();
-  late FavouriteStoreResponse favouriteStoreListResponse = FavouriteStoreResponse();
+  late NearbyStoreListResponse nearbyStoreListResponse =
+      NearbyStoreListResponse();
+  late PreviousStoreResponse previousStoreListResponse =
+      PreviousStoreResponse();
+  late FavouriteStoreResponse favouriteStoreListResponse =
+      FavouriteStoreResponse();
 
   RxList<FavouriteStore> favouriteStore = <FavouriteStore>[].obs;
   RxList<PreviousStore> previousStore = <PreviousStore>[].obs;
@@ -262,9 +265,9 @@ class SearchStoreUserController extends GetxController {
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(40),
                   ],
-                  validator: (v){
-                    if(v!.isEmpty){
-                      return  AlertStringConstants.pleaseEnterEinText;
+                  validator: (v) {
+                    if (v!.isEmpty) {
+                      return AlertStringConstants.pleaseEnterEinText;
                     }
                     return null;
                   },
@@ -316,15 +319,15 @@ class SearchStoreUserController extends GetxController {
                 InkWell(
                   onTap: () {
                     // if (einNumberTextController.text.isEmpty) {
-                      // Utility.showAlertMessage(context,
-                      //     title:   AlertStringConstants.pleaseEnterEinText ,);
-                      // Utility.showToast(
-                      //     AlertStringConstants.pleaseEnterEinText);
+                    // Utility.showAlertMessage(context,
+                    //     title:   AlertStringConstants.pleaseEnterEinText ,);
+                    // Utility.showToast(
+                    //     AlertStringConstants.pleaseEnterEinText);
                     // } else {
-                      // Get.back();
-                      Navigator.of(context).pop();
-                      validateAndSubmit(context,storeId: storeId);
-                      // apiClaimStore(storeId: storeId);
+                    // Get.back();
+                    Navigator.of(context).pop();
+                    validateAndSubmit(context, storeId: storeId);
+                    // apiClaimStore(storeId: storeId);
                     // }
                   },
                   child: Container(
@@ -458,9 +461,9 @@ class SearchStoreUserController extends GetxController {
 
   //Get Previous Stores Api
   Future apiGetPreviousStores(
-      context, {
-        bool isFilter = false,
-      }) async {
+    context, {
+    bool isFilter = false,
+  }) async {
     isDataLoading.value = true;
     previousStoreListResponse = PreviousStoreResponse();
     isLoading.value = previousStore.isNotEmpty ? true : false;
@@ -469,15 +472,15 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}?page=${page.value.toString()}&page_size=5",
-        headers,
-        showLoading: page.value == 1)
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}?page=${page.value.toString()}&page_size=5",
+            headers,
+            showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
       isFavLoading.value = false;
@@ -494,8 +497,7 @@ class SearchStoreUserController extends GetxController {
           }
           previousStore.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {
-            }
+            if (element.store?.isFavouriteStore == true) {}
           }
         }
         previousStore.toSet().toList();
@@ -516,9 +518,9 @@ class SearchStoreUserController extends GetxController {
 
   //Get Favorite Stores Api
   Future apiGetFavoriteStores(
-      context, {
-        bool isFilter = false,
-      }) async {
+    context, {
+    bool isFilter = false,
+  }) async {
     isDataLoading.value = true;
     favouriteStoreListResponse = FavouriteStoreResponse();
     isLoading.value = favouriteStore.isNotEmpty ? true : false;
@@ -527,15 +529,15 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}?page=${page.value.toString()}&page_size=5",
-        headers,
-        showLoading: page.value == 1)
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}?page=${page.value.toString()}&page_size=5",
+            headers,
+            showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
       isFavLoading.value = false;
@@ -543,17 +545,18 @@ class SearchStoreUserController extends GetxController {
       debugPrint("GET FAVOURITE STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        favouriteStoreListResponse = FavouriteStoreResponse.fromJson(value?.body);
+        favouriteStoreListResponse =
+            FavouriteStoreResponse.fromJson(value?.body);
         List<FavouriteStore>? storeAddressesNewList = [];
-        storeAddressesNewList = favouriteStoreListResponse.data!.favouriteStores;
+        storeAddressesNewList =
+            favouriteStoreListResponse.data!.favouriteStores;
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             favouriteStore.value = [];
           }
           favouriteStore.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {
-            }
+            if (element.store?.isFavouriteStore == true) {}
           }
         }
         favouriteStore.toSet().toList();
@@ -604,7 +607,7 @@ class SearchStoreUserController extends GetxController {
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
 
-        }else  if (type.value == 0) {
+        } else if (type.value == 0) {
           debugPrint("Create Favourite Store *******${type.value}");
           debugPrint("Create Favourite Store *******${type.value}");
           storeAddresses.clear();
@@ -619,8 +622,7 @@ class SearchStoreUserController extends GetxController {
           //     // favStoreAddresses.remove(element);
           //   }
           // }
-
-        }else if (type.value == 1) {
+        } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
           apiGetPreviousStores(Get.context!);
@@ -661,8 +663,10 @@ class SearchStoreUserController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     debugPrint("data ********** ${data.toString()}");
     UserProvider()
-        .deleteWithHeadersApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore,
+        .deleteWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
@@ -676,7 +680,7 @@ class SearchStoreUserController extends GetxController {
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
 
-        } else  if (type.value == 0) {
+        } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
           apiGetNearByStores(Get.context!);
@@ -686,8 +690,7 @@ class SearchStoreUserController extends GetxController {
           //     // favStoreAddresses.remove(element);
           //   }
           // }
-
-        }else if (type.value == 1) {
+        } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
           apiGetPreviousStores(Get.context!);
@@ -721,13 +724,13 @@ class SearchStoreUserController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext mcontext,{
+  void validateAndSubmit(
+    BuildContext mcontext, {
     String storeId = "",
   }) async {
     if (validateAndSave()) {
       try {
-          await apiClaimStore(storeId: storeId);
-
+        await apiClaimStore(storeId: storeId);
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -763,6 +766,7 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
+        einNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

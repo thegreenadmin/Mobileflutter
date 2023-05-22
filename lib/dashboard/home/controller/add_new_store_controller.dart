@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as mdio;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
@@ -99,11 +100,20 @@ class AddNewStoreController extends GetxController {
   dynamic lng = 0.0;
   ShortDynamicLink? shortLink;
   String? dynamicLink;
+
   @override
   void onInit() {
     super.onInit();
     getGkey();
     apiGetDeliveryServices();
+    getCurrentLocation();
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
   }
 
   Future<void> createDynamicLink() async {

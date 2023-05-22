@@ -90,10 +90,16 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                               SharedPreferenceStorage.setData(
                                   "context", context);
                               Get.parameters["storeId"] =
-                                  searchStoreUserController.storeAddresses[index].store?.storeId ?? "";
-                              print("nearby store is data : ---------------------------------------------" );
-                              print(searchStoreUserController.storeAddresses[index].store?.storeId );
-                              print(Get.parameters["storeId"] );
+                                  searchStoreUserController
+                                          .storeAddresses[index]
+                                          .store
+                                          ?.storeId ??
+                                      "";
+                              print(
+                                  "nearby store is data : ---------------------------------------------");
+                              print(searchStoreUserController
+                                  .storeAddresses[index].store?.storeId);
+                              print(Get.parameters["storeId"]);
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));

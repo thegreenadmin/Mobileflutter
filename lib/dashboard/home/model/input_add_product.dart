@@ -103,14 +103,14 @@ class ProductImagesList {
 class Product {
   int? quantityTypeId;
   int? productId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
   dynamic productPrice;
   dynamic sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
   int? returnDaysCount;
   dynamic length;

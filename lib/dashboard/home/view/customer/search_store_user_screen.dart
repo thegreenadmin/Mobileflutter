@@ -65,11 +65,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:  Size.fromHeight(WidgetConstants.screenHeight * 0.12),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.14),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50,bottom: 0),
+              padding: const EdgeInsets.only(
+                  left: 20.0, right: 20, top: 50, bottom: 0),
               child: Column(
                 children: [
                   Row(
@@ -244,7 +245,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           Stack(
             children: [
               Container(
-                height: WidgetConstants.screenHeight * 0.3,//250,
+                height: WidgetConstants.screenHeight * 0.3, //250,
                 width: WidgetConstants.screenWidth,
                 color: AppColors.primarylight,
               ),
@@ -253,7 +254,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 child: Stack(
                   children: [
                     SizedBox(
-                        height:WidgetConstants.screenHeight * 0.3,//250,
+                        height: WidgetConstants.screenHeight * 0.3, //250,
                         width: WidgetConstants.screenWidth,
                         child: GoogleMap(
                           myLocationButtonEnabled: false,
@@ -287,7 +288,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18.0,top: 1),
+                padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 1),
                 child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onTap: () async {
@@ -378,14 +379,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.page.value = 1;
 
               searchStoreUserController.type.value = i;
-              if(i==0){
+              if (i == 0) {
                 searchStoreUserController.apiGetNearByStores(context);
-              }else if (i==1){
+              } else if (i == 1) {
                 searchStoreUserController.apiGetPreviousStores(context);
-              }else if (i==2){
+              } else if (i == 2) {
                 searchStoreUserController.apiGetFavoriteStores(context);
               }
-
             },
             tabs: [
               Tab(

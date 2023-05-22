@@ -22,7 +22,6 @@ class AddNewStoreScreen extends StatefulWidget {
 }
 
 class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
-  
   final AddNewStoreController addNewStoreController =
       Get.put(AddNewStoreController());
 
@@ -438,7 +437,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         controller:
                             addNewStoreController.storeNickNameTextController,
                         keyboardType: TextInputType.text,
-                       /* validator: (value) {
+                        /* validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterNickNameText;
                           }
@@ -652,18 +651,19 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             p.description!.substring(0, idx).trim(),
                             p.description!.substring(idx + 1).trim()
                           ];
-                          addNewStoreController.addressLine1TextController.text =
-                              parts[0].toString();
+                          addNewStoreController.addressLine1TextController
+                              .text = parts[0].toString();
 
-                          GeoData addresses = await Geocoder2.getDataFromAddress(
-                              address: p.description.toString(),
-                              googleMapApiKey:
-                              addNewStoreController.kGoogleApiKey);
+                          GeoData addresses =
+                              await Geocoder2.getDataFromAddress(
+                                  address: p.description.toString(),
+                                  googleMapApiKey:
+                                      addNewStoreController.kGoogleApiKey);
 
                           if (addresses.address != null) {
                             if (addresses.city.isNotEmpty) {
-                              addNewStoreController
-                                  .townOrCityTextController.text = addresses.city;
+                              addNewStoreController.townOrCityTextController
+                                  .text = addresses.city;
                             }
                             if (addresses.country.isNotEmpty) {
                               addNewStoreController.countryTextController.text =
@@ -689,7 +689,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           debugPrint("ADDRESSES---->${addresses.address}");
                           debugPrint("CITY---->${addresses.city}");
                           debugPrint("COUNTRY---->${addresses.country}");
-                          debugPrint("COUNTRY CODE---->${addresses.countryCode}");
+                          debugPrint(
+                              "COUNTRY CODE---->${addresses.countryCode}");
                           debugPrint("POSTALCODE---->${addresses.postalCode}");
                           debugPrint("STATE---->${addresses.state}");
                           debugPrint(
@@ -715,8 +716,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterAddressText;
+                            return AlertStringConstants.pleaseEnterAddressText;
                           }
                           return null;
                         },

@@ -403,7 +403,7 @@ class Products {
   bool? isSelected;
   String? productId;
   String? storeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;

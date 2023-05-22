@@ -634,127 +634,126 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
-                    InkWell(
-                      onTap: () async {
-                        Prediction? p = await PlacesAutocomplete.show(
-                            offset: 0,
-                            radius: 1000,
-                            types: [],
-                            strictbounds: false,
-                            context: context,
-                            apiKey: ownerStoreController.kGoogleApiKey,
-                            mode: Mode.overlay,
-                            language: "en",
-                            components: []);
+                    TextFormField(
+                        onTap: () async {
+                          Prediction? p = await PlacesAutocomplete.show(
+                              offset: 0,
+                              radius: 1000,
+                              types: [],
+                              strictbounds: false,
+                              context: context,
+                              apiKey: ownerStoreController.kGoogleApiKey,
+                              mode: Mode.overlay,
+                              language: "en",
+                              components: []);
 
-                        int idx = p!.description!.indexOf(",");
-                        List parts = [
-                          p.description!.substring(0, idx).trim(),
-                          p.description!.substring(idx + 1).trim()
-                        ];
-                        ownerStoreController.addressLine1TextController.text =
-                            parts[0].toString();
-                        GeoData addresses = await Geocoder2.getDataFromAddress(
-                            address: p.description.toString(),
-                            googleMapApiKey:
-                                ownerStoreController.kGoogleApiKey);
-                        if (addresses.address != null) {
-                          if (addresses.city.isNotEmpty) {
-                            ownerStoreController.townOrCityTextController.text =
-                                addresses.city;
-                          }
-                          if (addresses.country.isNotEmpty) {
-                            ownerStoreController.countryTextController.text =
-                                addresses.country;
-                          }
-
-                          if (addresses.postalCode.isNotEmpty) {
-                            ownerStoreController.postalCodeTextController.text =
-                                addresses.postalCode;
-                          }
-                          if (addresses.state.isNotEmpty) {
-                            ownerStoreController.stateTextController.text =
-                                addresses.state;
-                          }
-                          if (addresses.latitude != null ||
-                              addresses.longitude != null) {
-                            ownerStoreController.lng =
-                                addresses.longitude.toString();
-                            ownerStoreController.lat =
-                                addresses.latitude.toString();
-                          }
-                        }
-                        debugPrint("ADDRESSES---->${addresses.address}");
-                        debugPrint("CITY---->${addresses.city}");
-                        debugPrint("COUNTRY---->${addresses.country}");
-                        debugPrint("COUNTRY CODE---->${addresses.countryCode}");
-                        debugPrint("POSTALCODE---->${addresses.postalCode}");
-                        debugPrint("STATE---->${addresses.state}");
-                        debugPrint(
-                            "STREETNUMBER---->${addresses.streetNumber}");
-                        debugPrint("LAT---->${addresses.latitude}");
-                        debugPrint("LONG---->${addresses.longitude}");
-                      },
-                      child: TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          enabled: false,
-                          minLines: 1,
-                          maxLines: 5,
-                          textInputAction: TextInputAction.next,
-                          autofocus: false,
-                          inputFormatters: <TextInputFormatter>[
-                            LengthLimitingTextInputFormatter(500),
-                          ],
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                          controller:
-                              ownerStoreController.addressLine1TextController,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants
-                                  .pleaseEnterAddressText;
+                          int idx = p!.description!.indexOf(",");
+                          List parts = [
+                            p.description!.substring(0, idx).trim(),
+                            p.description!.substring(idx + 1).trim()
+                          ];
+                          ownerStoreController.addressLine1TextController.text =
+                              parts[0].toString();
+                          GeoData addresses =
+                              await Geocoder2.getDataFromAddress(
+                                  address: p.description.toString(),
+                                  googleMapApiKey:
+                                      ownerStoreController.kGoogleApiKey);
+                          if (addresses.address != null) {
+                            if (addresses.city.isNotEmpty) {
+                              ownerStoreController.townOrCityTextController
+                                  .text = addresses.city;
                             }
-                            return null;
-                          },
-                          textCapitalization: TextCapitalization.words,
-                          decoration: InputDecoration(
-                            hintText: StringConstants.addressLine1Text,
-                            hintStyle: const TextStyle(
-                                color: AppColors.grey, fontSize: 14),
-                            fillColor: Colors.white,
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
+                            if (addresses.country.isNotEmpty) {
+                              ownerStoreController.countryTextController.text =
+                                  addresses.country;
+                            }
+
+                            if (addresses.postalCode.isNotEmpty) {
+                              ownerStoreController.postalCodeTextController
+                                  .text = addresses.postalCode;
+                            }
+                            if (addresses.state.isNotEmpty) {
+                              ownerStoreController.stateTextController.text =
+                                  addresses.state;
+                            }
+                            if (addresses.latitude != null ||
+                                addresses.longitude != null) {
+                              ownerStoreController.lng =
+                                  addresses.longitude.toString();
+                              ownerStoreController.lat =
+                                  addresses.latitude.toString();
+                            }
+                          }
+                          debugPrint("ADDRESSES---->${addresses.address}");
+                          debugPrint("CITY---->${addresses.city}");
+                          debugPrint("COUNTRY---->${addresses.country}");
+                          debugPrint(
+                              "COUNTRY CODE---->${addresses.countryCode}");
+                          debugPrint("POSTALCODE---->${addresses.postalCode}");
+                          debugPrint("STATE---->${addresses.state}");
+                          debugPrint(
+                              "STREETNUMBER---->${addresses.streetNumber}");
+                          debugPrint("LAT---->${addresses.latitude}");
+                          debugPrint("LONG---->${addresses.longitude}");
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        //enabled: false,
+                        minLines: 1,
+                        maxLines: 5,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller:
+                            ownerStoreController.addressLine1TextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterAddressText;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: StringConstants.addressLine1Text,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
                             ),
-                          )),
-                    ),
+                          ),
+                        )),
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
