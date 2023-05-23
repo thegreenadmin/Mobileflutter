@@ -51,6 +51,7 @@ class OwnerStoresController extends GetxController {
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
 
+
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
   RxBool isTippingNotify = false.obs;

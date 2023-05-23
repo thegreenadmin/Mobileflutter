@@ -51,7 +51,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.1.0
 #  geocoder2: ^1.4.0
-  global_configs: ^1.1.2
+  global_configs: ^13.1.2
   easy_stepper: ^0.4.0
   flutter_rating_bar: ^4.0.1
   firebase_messaging: ^14.4.0
