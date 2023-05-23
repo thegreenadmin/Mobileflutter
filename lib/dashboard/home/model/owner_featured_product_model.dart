@@ -51,7 +51,7 @@ class Data {
 class ProductsList {
   String? productId;
   String? storeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;

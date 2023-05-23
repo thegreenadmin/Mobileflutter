@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -124,6 +125,9 @@ class OwnerStoresController extends GetxController {
   Rx<XFile> editStoreImage = XFile("").obs;
   Rx<XFile> editStoreLogo = XFile("").obs;
 
+  Rx<XFile> termsFile = XFile("").obs;
+  Rx<XFile> privacyFile = XFile("").obs;
+
   RxList<Categories> weekDaysList = [
     Categories(id: 1, name: "Monday", isSelected: false),
     Categories(id: 2, name: "Tuesday", isSelected: false),
@@ -135,6 +139,10 @@ class OwnerStoresController extends GetxController {
   ].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+
+  RxBool isTermsSelected = false.obs;
+  RxString privacyOrigionalLinkfromServer = "".obs;
+  RxString termsOrigionalLinkfromServer = "".obs;
 
   @override
   void onInit() {
@@ -149,6 +157,91 @@ class OwnerStoresController extends GetxController {
     if (Get.parameters['isFromHome'] == "true") {
       storeId.value = Get.parameters['storeId'] ?? "";
       apiGetParticularStore();
+    }
+  }
+
+  filePicker() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      if (isTermsSelected.value) {
+        termsFile.value = XFile(result.files.single.path!);
+        debugPrint("TERMS FILEE *********** $termsFile");
+        uploadPdfToServer();
+      } else {
+        privacyFile.value = XFile(result.files.single.path!);
+        debugPrint("PRIVACY FILEE *********** $termsFile");
+        uploadPdfToServer();
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  //Api upload PDF to server
+  Future uploadPdfToServer() async {
+    try {
+      final dio = mdio.Dio();
+      mdio.FormData formData = mdio.FormData.fromMap({});
+      Map<String, String> headers = {
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      };
+      formData.files.add(MapEntry(
+          "file",
+          mdio.MultipartFile.fromBytes(
+              isTermsSelected.value
+                  ? await termsFile.value.readAsBytes()
+                  : await privacyFile.value.readAsBytes(),
+              contentType: MediaType.parse("file/pdf"),
+              filename: isTermsSelected.value
+                  ? termsFile.value.path.split("/").last
+                  : privacyFile.value.path.split("/").last)));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
+      final responseData = res.data;
+      debugPrint(
+          "PDF UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint("PDF UPLOAD URL RESPONSE *******$responseData");
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
+        if (isTermsSelected.value) {
+          storeTermsTextController.text = responseData['data']['urls']
+                  ['dynamic_url']
+              .split("?")[0]
+              .split("/")
+              .last;
+          termsOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+
+          isTermsSelected.value = false;
+        } else {
+          storePrivacyTextController.text = responseData['data']['urls']
+                  ['dynamic_url']
+              .split("?")[0]
+              .split("/")
+              .last;
+          privacyOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          isTermsSelected.value = false;
+        }
+
+        return responseData;
+      } else if (res.statusCode == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(responseData['message'].toString());
+      } else {}
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e is mdio.DioError) {
+        if (e.type == mdio.DioErrorType.badResponse) {
+          debugPrint("${e.response?.data ?? ""}");
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
+          return responseData;
+        }
+      }
+      throw Exception('Failed to load data ! $e');
     }
   }
 
@@ -410,7 +503,7 @@ class OwnerStoresController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
@@ -591,20 +684,35 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
-        List storePages = value?.body["data"]['store_pages'] ?? [];
+        List storePages = value?.body["data"]['store']['store_pages'] ?? [];
+
         if (storePages.isNotEmpty) {
           for (int i = 0; i < storePages.length; i++) {
             if (storePages[i]['store_page_type'] == "terms") {
-              storeTermsTextController.text =
-                  storePages[i]['store_page_content'];
-            } else {
-              storePrivacyTextController.text =
-                  storePages[i]['store_page_content'];
+              storeTermsTextController.text = storePages[i]
+                          ['store_page_content']['dynamic_url']
+                      .split("pdf")[0]
+                      .split("/")
+                      .last +
+                  "pdf";
+
+              termsOrigionalLinkfromServer.value =
+                  storePages[i]['store_page_content']['orignal_url'];
+
+              update();
+            }
+            if (storePages[i]['store_page_type'] == "privacy") {
+              storePrivacyTextController.text = storePages[i]
+                          ['store_page_content']['dynamic_url']
+                      .split("pdf")[0]
+                      .split("/")
+                      .last +
+                  "pdf";
+              privacyOrigionalLinkfromServer.value =
+                  storePages[i]['store_page_content']['orignal_url'];
             }
           }
         }
-
-        //  await apiGetCountries();
       } else {
         Utility.showAlertMessage(value?.body['message']);
       }
@@ -657,11 +765,11 @@ class OwnerStoresController extends GetxController {
       "store_pages": [
         {
           "store_page_type": "terms",
-          "store_page_content": storeTermsTextController.text
+          "store_page_content": termsOrigionalLinkfromServer.value
         },
         {
           "store_page_type": "privacy",
-          "store_page_content": storePrivacyTextController.text
+          "store_page_content": privacyOrigionalLinkfromServer.value
         }
       ]
     };

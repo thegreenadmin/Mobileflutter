@@ -419,6 +419,7 @@ class StringConstants {
   static String shippingAddressText = "Shipping Address";
   static String storeTermsText = "Store Terms";
   static String storePrivacyText = "Store Privacy";
+
   static String startDateText = "Start Date";
   static String selectCardText = "Select Card";
   static String storeAccessText = "Store Access";
@@ -473,6 +474,8 @@ class StringConstants {
   static String updateRoleText = "Update Role";
   static String updateOfferText = "Update Offer";
   static String userText = "User";
+  static String uploadStorePolicyAsPdfText = "Upload store policy as PDF";
+  static String uploadStoreTermsAsPdfText = "Upload store terms as PDF";
 
   //V
   static String verificationCodeText = "Verification code";
@@ -523,7 +526,8 @@ class BottomNavStringConstants {
 class AlertStringConstants {
   //A
   static String areYouSureText = "Are you sure you want to delete this item?";
-  static String areYouSureToConfirmReturnText = "Are you sure you want to accept return request?";
+  static String areYouSureToConfirmReturnText =
+      "Are you sure you want to accept return request?";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
@@ -539,9 +543,9 @@ class AlertStringConstants {
   static String invalidQuantityText = "Invalid quantity";
   static String invalidInputText = "Invalid input";
 
-
 //N
-  static String noProductFoundForThisStore = "No products found for this store.";
+  static String noProductFoundForThisStore =
+      "No products found for this store.";
   static String noHistoryFoundText = "No History Found";
   static String noDataFoundText = "No Data Found";
 
@@ -642,8 +646,10 @@ class AlertStringConstants {
   static String pleaseSelectCountryText = "Please select country";
   //R
 
-  static String returnOrderAlertText = "Do you really want to return this item?";
-  static String rejectReturnOrderAlertText = "Do you really want to reject this return request?";
+  static String returnOrderAlertText =
+      "Do you really want to return this item?";
+  static String rejectReturnOrderAlertText =
+      "Do you really want to reject this return request?";
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";

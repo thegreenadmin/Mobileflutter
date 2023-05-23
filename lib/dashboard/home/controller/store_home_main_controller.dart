@@ -101,7 +101,7 @@ class StoreHomeMainController extends GetxController {
       getCurrentLocation();
     }
 
-    if ( Get.parameters['isFromHome'] != false) {
+    if (Get.parameters['isFromHome'] != false) {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
 
       productId.value = Get.parameters["productId"] == null
@@ -666,8 +666,7 @@ class StoreHomeMainController extends GetxController {
         });*/
         update();
         isInsufficientBalance!.value = false;
-      } else if (value?.body["status"]
-          == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
@@ -981,7 +980,7 @@ class StoreHomeMainController extends GetxController {
               double.parse(value.body["data"]["balance"].toString());
           debugPrint("USER WALLET BALANCE 1*******${walletBalance.value}");
         } else if (value.body["data"]["balance"] is double) {
-          walletBalance.value = value.body["data"]["balance"]??0.0;
+          walletBalance.value = value.body["data"]["balance"] ?? 0.0;
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

@@ -1690,12 +1690,16 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
+                        onTap: () {
+                          addNewStoreController.isTermsSelected.value = true;
+                          addNewStoreController.filePicker();
+                        },
                         maxLines: null,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         style: const TextStyle(
-                            color: AppColors.black,
+                            color: AppColors.primary,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: addNewStoreController.termsTextController,
@@ -1709,7 +1713,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.storeTermsText,
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                addNewStoreController.isTermsSelected.value =
+                                    true;
+                                addNewStoreController.filePicker();
+                              },
+                              icon: const Icon(Icons.attach_file_rounded)),
+                          hintText: StringConstants.uploadStoreTermsAsPdfText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -1752,12 +1763,16 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
+                        onTap: () {
+                          addNewStoreController.isTermsSelected.value = false;
+                          addNewStoreController.filePicker();
+                        },
                         maxLines: null,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         style: const TextStyle(
-                            color: AppColors.black,
+                            color: AppColors.primary,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: addNewStoreController.privacyTextController,
@@ -1771,7 +1786,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.storePrivacyText,
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                addNewStoreController.isTermsSelected.value =
+                                    false;
+                                addNewStoreController.filePicker();
+                              },
+                              icon: const Icon(Icons.attach_file_rounded)),
+                          hintText: StringConstants.uploadStorePolicyAsPdfText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,

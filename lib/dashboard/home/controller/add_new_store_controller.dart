@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart' as mdio;
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,7 +52,7 @@ class AddNewStoreController extends GetxController {
 
   RxBool autoValidate = false.obs;
   RxBool isStoreLogoSelected = false.obs;
-
+  RxBool isTermsSelected = false.obs;
   RxBool is247Time = false.obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
@@ -75,11 +78,17 @@ class AddNewStoreController extends GetxController {
   Rx<XFile> storeImage = XFile("").obs;
   Rx<XFile> storeLogo = XFile("").obs;
 
+  Rx<XFile> termsFile = XFile("").obs;
+  Rx<XFile> privacyFile = XFile("").obs;
+
   RxString storeImageOrigionalLinkfromServer = "".obs;
   RxString storeImageDynamicLinkfromServer = "".obs;
 
   RxString storeLogoOrigionalLinkfromServer = "".obs;
   RxString storeLogoDynamicLinkfromServer = "".obs;
+
+  RxString privacyOrigionalLinkfromServer = "".obs;
+  RxString termsOrigionalLinkfromServer = "".obs;
 
   RxList<dynamic> selectedWeekDaysList = [].obs;
 
@@ -100,6 +109,25 @@ class AddNewStoreController extends GetxController {
   dynamic lng = 0.0;
   ShortDynamicLink? shortLink;
   String? dynamicLink;
+
+  filePicker() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      if (isTermsSelected.value) {
+        termsFile.value = XFile(result.files.single.path!);
+
+        debugPrint(
+            "TERMS FILEE ***********" + termsFile.value.path.split("/").last);
+        uploadPdfToServer();
+      } else {
+        privacyFile.value = XFile(result.files.single.path!);
+        debugPrint("PRIVACY FILEE *********** $termsFile");
+        uploadPdfToServer();
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
 
   @override
   void onInit() {
@@ -267,6 +295,73 @@ class AddNewStoreController extends GetxController {
     }
   }
 
+  //Api upload PDF to server
+  Future uploadPdfToServer() async {
+    try {
+      final dio = mdio.Dio();
+      mdio.FormData formData = mdio.FormData.fromMap({});
+      Map<String, String> headers = {
+        'Authorization':
+            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      };
+      formData.files.add(MapEntry(
+          "file",
+          mdio.MultipartFile.fromBytes(
+              isTermsSelected.value
+                  ? await termsFile.value.readAsBytes()
+                  : await privacyFile.value.readAsBytes(),
+              contentType: MediaType.parse("file/pdf"),
+              filename: isTermsSelected.value
+                  ? termsFile.value.path.split("/").last
+                  : privacyFile.value.path.split("/").last)));
+      final res = await dio.post(
+          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData,
+          options: mdio.Options(headers: headers));
+      final responseData = res.data;
+      debugPrint(
+          "PDF UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint("PDF UPLOAD URL RESPONSE *******$responseData");
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
+        if (isTermsSelected.value) {
+          termsOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          termsTextController.text = responseData['data']['urls']['dynamic_url']
+                  .split("pdf")[0]
+                  .split("/")
+                  .last +
+              "pdf";
+          isTermsSelected.value = false;
+        } else {
+          privacyTextController.text = responseData['data']['urls']
+                      ['dynamic_url']
+                  .split("pdf")[0]
+                  .split("/")
+                  .last +
+              "pdf";
+          privacyOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
+          isTermsSelected.value = false;
+        }
+        return responseData;
+      } else if (res.statusCode == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(responseData['message'].toString());
+      } else {}
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e is mdio.DioError) {
+        if (e.type == mdio.DioErrorType.badResponse) {
+          debugPrint("${e.response?.data ?? ""}");
+          final responseData =
+              json.decode(e.response?.data) as Map<String, dynamic>;
+          return responseData;
+        }
+      }
+      throw Exception('Failed to load data ! $e');
+    }
+  }
+
   //Create Store Api
   Future apiCreateStore(BuildContext contextt) async {
     Map data = {
@@ -299,11 +394,11 @@ class AddNewStoreController extends GetxController {
       "store_pages": [
         {
           "store_page_type": "terms",
-          "store_page_content": termsTextController.text.trim()
+          "store_page_content": termsOrigionalLinkfromServer.value
         },
         {
           "store_page_type": "privacy",
-          "store_page_content": privacyTextController.text.trim()
+          "store_page_content": privacyOrigionalLinkfromServer.value
         }
       ]
     };
@@ -331,7 +426,6 @@ class AddNewStoreController extends GetxController {
         closingTimeTextController.clear();
         deliveryServicesTextController.clear();
         workingDaysTextController.clear();
-
         storeNameTextController.clear();
         einTextController.clear();
         storeNickNameTextController.clear();
@@ -355,6 +449,8 @@ class AddNewStoreController extends GetxController {
         privacyTextController.clear();
         storeTimmingList.clear();
         termsTextController.clear();
+        termsOrigionalLinkfromServer.value = "";
+        privacyOrigionalLinkfromServer.value = "";
         //storeIdValue.value = value.body["status"]
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =
