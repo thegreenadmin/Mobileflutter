@@ -1783,12 +1783,16 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
+                        onTap: () {
+                          ownerStoreController.isTermsSelected.value = true;
+                          ownerStoreController.filePicker();
+                        },
                         maxLines: null,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         style: const TextStyle(
-                            color: AppColors.black,
+                            color: AppColors.primary,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
@@ -1803,7 +1807,14 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.storeTermsText,
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                ownerStoreController.isTermsSelected.value =
+                                    true;
+                                ownerStoreController.filePicker();
+                              },
+                              icon: const Icon(Icons.attach_file_rounded)),
+                          hintText: StringConstants.uploadStoreTermsAsPdfText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -1846,6 +1857,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
+                        onTap: () {
+                          ownerStoreController.isTermsSelected.value = false;
+                          ownerStoreController.filePicker();
+                        },
                         maxLines: null,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
@@ -1854,7 +1869,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           LengthLimitingTextInputFormatter(100),
                         ],
                         style: const TextStyle(
-                            color: AppColors.black,
+                            color: AppColors.primary,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller:
@@ -1869,7 +1884,14 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.storePrivacyText,
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                ownerStoreController.isTermsSelected.value =
+                                    false;
+                                ownerStoreController.filePicker();
+                              },
+                              icon: const Icon(Icons.attach_file_rounded)),
+                          hintText: StringConstants.uploadStorePolicyAsPdfText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -1902,7 +1924,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             ),
                           ),
                         )),
-                    height20SizedBox,
+
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

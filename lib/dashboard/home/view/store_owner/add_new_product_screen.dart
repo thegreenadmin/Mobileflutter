@@ -527,6 +527,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Flexible(
                           flex: 5,
                           child: TextFormField(
+                              keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r"[0-9.]")),
@@ -541,7 +542,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller:
                                   manageStoreController.quantityTextController,
-                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
@@ -611,6 +611,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
+                        keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
@@ -623,7 +624,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             fontWeight: FontWeight.w500),
                         controller:
                             manageStoreController.pricePerUnitTextController,
-                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPriceText;
@@ -1021,7 +1021,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 }
                                 return null;
                               },
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 hintText: StringConstants.discountsOrOffersText,
                                 hintStyle: const TextStyle(
@@ -1174,6 +1174,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
+                                keyboardType: TextInputType.phone,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r"[0-9.]")),
@@ -1263,6 +1264,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
+                                  keyboardType: TextInputType.phone,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1276,7 +1278,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .breadthTextController,
-                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1355,6 +1356,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
+                                  keyboardType: TextInputType.phone,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1368,7 +1370,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .heightTextController,
-                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
@@ -1443,6 +1444,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
+                                  keyboardType: TextInputType.phone,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1456,7 +1458,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .weightTextController,
-                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
