@@ -659,6 +659,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   address: p.description.toString(),
                                   googleMapApiKey:
                                       ownerStoreController.kGoogleApiKey);
+                         print("addresses:----------------");
+                          print(addresses);
                           if (addresses.address != null) {
                             if (addresses.city.isNotEmpty) {
                               ownerStoreController.townOrCityTextController
@@ -685,6 +687,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   addresses.latitude.toString();
                             }
                           }
+                          debugPrint("ADDRESSES--*************-->${addresses.toString()}");
                           debugPrint("ADDRESSES---->${addresses.address}");
                           debugPrint("CITY---->${addresses.city}");
                           debugPrint("COUNTRY---->${addresses.country}");

@@ -687,6 +687,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             }
                           }
                           debugPrint("ADDRESSES---->${addresses.address}");
+                          debugPrint("ADDRESSES---->${addresses.address}");
                           debugPrint("CITY---->${addresses.city}");
                           debugPrint("COUNTRY---->${addresses.country}");
                           debugPrint(
