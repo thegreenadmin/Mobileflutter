@@ -385,16 +385,16 @@ class _WalletScreenState extends State<WalletScreen> {
                           //     ),
                           //   ],
                           // ),
-                          QrImage(
-                            data: walletController.dynamicLink.value.toString(),
-                            size: 150,
-                            embeddedImageStyle: QrEmbeddedImageStyle(
-                              size: const Size(
-                                50,
-                                50,
-                              ),
-                            ),
-                          ),
+                          // QrImage(
+                          //   data: walletController.dynamicLink.value.toString(),
+                          //   size: 150,
+                          //   embeddedImageStyle: QrEmbeddedImageStyle(
+                          //     size: const Size(
+                          //       50,
+                          //       50,
+                          //     ),
+                          //   ),
+                          // ),
                           // InkWell(
                           //   onTap: () async {
                           //     if (Platform.isIOS) {
@@ -425,21 +425,21 @@ class _WalletScreenState extends State<WalletScreen> {
                         ],
                       ),
                       height10SizedBox,
-                      const Center(
-                        child: Text(
-                          "Scan QR Code",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      // const Center(
+                      //   child: Text(
+                      //     "Scan QR Code",
+                      //     style: TextStyle(
+                      //         fontSize: 14, fontWeight: FontWeight.w600),
+                      //   ),
+                      // ),
                       height8SizedBox,
-                      const Center(
-                        child: Text(
-                            "It is a long established fact that a reader will be distracted by the readable content",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500)),
-                      ),
+                      // const Center(
+                      //   child: Text(
+                      //       "It is a long established fact that a reader will be distracted by the readable content",
+                      //       textAlign: TextAlign.center,
+                      //       style: TextStyle(
+                      //           fontSize: 14, fontWeight: FontWeight.w500)),
+                      // ),
                     ],
                   ))
           ]),
