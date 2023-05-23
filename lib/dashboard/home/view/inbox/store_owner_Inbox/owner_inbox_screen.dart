@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class OwnerInboxScreen extends StatefulWidget {
   const OwnerInboxScreen({Key? key}) : super(key: key);
@@ -360,76 +361,19 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () async {
-                                              return await showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                      StringConstants.alertText,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 20),
-                                                    ),
-                                                    content: Text(
-                                                        AlertStringConstants
-                                                            .areYouSureText,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                AppColors.black,
-                                                            fontSize: 20)),
-                                                    actions: <Widget>[
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .primary,
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            // Get.back();
-                                                            ownerInboxController.apiDeleteStoreMessages(
-                                                                messageHeadId: ownerInboxController
-                                                                        .inboxList[
-                                                                            index]
-                                                                        .messageHeadId ??
-                                                                    "",
-                                                                storeId: ownerInboxController
-                                                                        .inboxList[
-                                                                            index]
-                                                                        .storeId ??
-                                                                    "");
-                                                          },
-                                                          child: Text(
-                                                              StringConstants
-                                                                  .deleteText)),
-                                                      ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              AppColors.primary,
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          // Get.back();
-                                                        },
-                                                        child: Text(
-                                                            StringConstants
-                                                                .cancelText),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
+                                              Utility.showConfirmAlertMessage( AlertStringConstants
+                                                  .areYouSureText,okay:  StringConstants
+                                                  .deleteText,okayTap: (){
+                                                ownerInboxController.apiDeleteStoreMessages(
+                                                    messageHeadId: ownerInboxController
+                                                        .inboxList[index]
+                                                        .messageHeadId ??
+                                                        "", storeId: ownerInboxController
+                                                        .inboxList[index]
+                                                        .storeId ??
+                                                        "");
+                                              });
+
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

@@ -365,70 +365,13 @@ class _CartScreenState extends State<CartScreen> {
                                         width10SizedBox,
                                         InkWell(
                                             onTap: () async {
-                                              return await showDialog(
-                                                context: context,
-                                                builder: (BuildContext _) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                      StringConstants.alertText,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 20),
-                                                    ),
-                                                    content: Text(
-                                                        AlertStringConstants
-                                                            .areYouSureText,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                AppColors.black,
-                                                            fontSize: 20)),
-                                                    actions: <Widget>[
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .primary,
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(_)
-                                                                .pop();
-                                                            // Get.back();
-                                                            storeHomeMainController.apiDeleteCart(
-                                                                context,
-                                                                cartItemId: int.parse(
-                                                                    storeHomeMainController
-                                                                            .cartItems[i]
-                                                                            .cartItemId ??
-                                                                        "0"));
-                                                          },
-                                                          child: Text(
-                                                              StringConstants
-                                                                  .deleteText)),
-                                                      ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              AppColors.primary,
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          // Get.back();
-                                                        },
-                                                        child: Text(
-                                                            StringConstants
-                                                                .cancelText),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
+                                              Utility.showConfirmAlertMessage( AlertStringConstants
+                                                  .areYouSureText,okay:  StringConstants
+                                                  .deleteText,okayTap: (){
+                                                storeHomeMainController.apiDeleteCart(context, cartItemId: int.parse(
+                                                        storeHomeMainController.cartItems[i].cartItemId ?? "0"));
+                                              });
+
                                             },
                                             child: Image.asset(
                                               ImageConstants.deleteicon,
@@ -1050,30 +993,38 @@ class _CartScreenState extends State<CartScreen> {
                                       : [AppColors.primary, AppColors.primary],
                                 ),
                                 onTap: () {
-                                  if (storeHomeMainController.walletBalance.value >
-                                          storeHomeMainController
-                                              .cartData.value.cartTotalPrice! &&
-                                      !storeHomeMainController
-                                          .isInsufficientBalance!.value) {
-                                    storeHomeMainController
-                                        .moneydeductFromCartDailogue(context,
-                                            amount: storeHomeMainController.cartData.value
-                                                    .cartTotalPrice?.toStringAsFixed(2) ?? "0");
-                                  }else{
-                                    Utility.showConfirmAlertMessage( StringConstants.inSufficientFundText,okay:  StringConstants.addFundsText,
-                                        okayTap: (){
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) => const AddMoneyToWallet(),
-                                      )).then((value) {
-                                        storeHomeMainController.apiGetUserWalletBalance();
-                                      });
+                                  if(storeHomeMainController
+                                      .storeDeliveryServiceId
+                                      .value!="0"){
+                                    if (storeHomeMainController.walletBalance.value >
+                                        storeHomeMainController
+                                            .cartData.value.cartTotalPrice! &&
+                                        !storeHomeMainController
+                                            .isInsufficientBalance!.value) {
+                                      storeHomeMainController
+                                          .moneydeductFromCartDailogue(context,
+                                          amount: storeHomeMainController.cartData.value
+                                              .cartTotalPrice?.toStringAsFixed(2) ?? "0");
+                                    }else{
+                                      Utility.showConfirmAlertMessage( StringConstants.inSufficientFundText,okay:  StringConstants.addFundsText,
+                                          okayTap: (){
+                                            SharedPreferenceStorage.setData(
+                                                "context", context);
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (_) => const AddMoneyToWallet(),
+                                            )).then((value) {
+                                              storeHomeMainController.apiGetUserWalletBalance();
+                                            });
 
-                                      Get.parameters["isFromCartScreen"] = "true";
-                                    });
+                                            Get.parameters["isFromCartScreen"] = "true";
+                                          });
+                                    }
+                                  }else{
+                                    Utility.showAlertMessage( AlertStringConstants.pleaseSelectOrderTypeText);
+
                                   }
+
                                 },
                                 height: 45,
                                 width: 120,

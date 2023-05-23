@@ -320,8 +320,7 @@ class AddNewWorkerController extends GetxController {
   // Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
     debugPrint("storeId ***${storeId.value}*");
-    debugPrint(
-        "deleteWithHeadersApi WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
+    debugPrint("deleteWithHeadersApi WORKER***${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

@@ -13,6 +13,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 import 'component/auto_reload_screen.dart';
 
@@ -601,69 +602,19 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       ),
                                       InkWell(
                                           onTap: () async {
-                                            return await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                    StringConstants.alertText,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: AppColors.black,
-                                                        fontSize: 20),
-                                                  ),
-                                                  content: Text(
-                                                      AlertStringConstants
-                                                          .areYouSureText,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 20)),
-                                                  actions: <Widget>[
-                                                    ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              AppColors.primary,
-                                                        ),
-                                                        onPressed: () {
-                                                          // Get.back();
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          walletController.apiDeleteCard(
-                                                              context,
-                                                              userStripeCardId:
-                                                                  walletController
-                                                                          .cardList[
-                                                                              index]
-                                                                          .userStripeCardId ??
-                                                                      "");
-                                                        },
-                                                        child: Text(
-                                                            StringConstants
-                                                                .deleteText)),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            AppColors.primary,
-                                                      ),
-                                                      onPressed: () {
-                                                        // Get.back();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text(
-                                                          StringConstants
-                                                              .cancelText),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
+                                            Utility.showConfirmAlertMessage( AlertStringConstants
+                                                .areYouSureText,okay:  StringConstants
+                                                .deleteText,okayTap: () async{
+                                              walletController.apiDeleteCard(
+                                                  context,
+                                                  userStripeCardId:
+                                                  walletController
+                                                      .cardList[
+                                                  index]
+                                                      .userStripeCardId ??
+                                                      "");
+                                            });
+
                                           },
                                           child: Image.asset(
                                             ImageConstants.deleteicon,
@@ -735,68 +686,14 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       ),
                                       InkWell(
                                           onTap: () async {
-                                            return await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                    StringConstants.alertText,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: AppColors.black,
-                                                        fontSize: 20),
-                                                  ),
-                                                  content: Text(
-                                                      AlertStringConstants
-                                                          .areYouSureText,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 20)),
-                                                  actions: <Widget>[
-                                                    ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              AppColors.primary,
-                                                        ),
-                                                        onPressed: () {
-                                                          // Get.back();
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          walletController.apiDeleteBankAccounts(
-                                                              userStripeBankId:
-                                                                  walletController
-                                                                          .bankAccountList[
-                                                                              index]
-                                                                          .userStripeBankId ??
-                                                                      "");
-                                                        },
-                                                        child: Text(
-                                                            StringConstants
-                                                                .deleteText)),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            AppColors.primary,
-                                                      ),
-                                                      onPressed: () {
-                                                        // Get.back();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text(
-                                                          StringConstants
-                                                              .cancelText),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
+                                            Utility.showConfirmAlertMessage( AlertStringConstants
+                                                .areYouSureText,okay:  StringConstants
+                                                .deleteText,okayTap: () async{
+                                              walletController.apiDeleteBankAccounts(
+                                                  userStripeBankId:
+                                                  walletController.bankAccountList[index].userStripeBankId ?? "");
+                                            });
+
                                           },
                                           child: Image.asset(
                                             ImageConstants.deleteicon,

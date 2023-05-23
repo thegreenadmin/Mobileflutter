@@ -23,6 +23,18 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
       Get.put(AddNewWorkerController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    addNewWorkerController.storeId.value = Get.parameters["storeId"] ?? "";
+    addNewWorkerController.storeName.value = Get.parameters["storeName"] ?? "";
+    addNewWorkerController.apiGetUserStoreList();
+    addNewWorkerController.apiGetWorkerList();
+    addNewWorkerController. apiGetRoleList();
+    addNewWorkerController. apiGetParticularStore();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -192,48 +204,16 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              return await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      StringConstants.alertText,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black,
-                                          fontSize: 20),
-                                    ),
-                                    content: Text(
-                                        AlertStringConstants.areYouSureText,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.black,
-                                            fontSize: 20)),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: AppColors.primary,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            // Get.back();
-                                          },
-                                          child:
-                                              Text(StringConstants.deleteText)),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.primary,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          // Get.back();
-                                        },
-                                        child: Text(StringConstants.cancelText),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              Utility.showConfirmAlertMessage( AlertStringConstants
+                                  .areYouSureText,okay:  StringConstants
+                                  .deleteText,okayTap: (){
+                                addNewWorkerController.workerId.value =
+                                    addNewWorkerController
+                                        .workerList[index].storeUserId
+                                        .toString();
+                                addNewWorkerController.apiDeleteWorker();
+                              });
+
                             },
                             child: InkWell(
                               onTap: () async {

@@ -178,10 +178,10 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                Get.parameters["storeId"] = ownerStoresController.storeId.value;
-                Get.parameters["storeName"] =
-                    ownerStoresController.storeName.value;
                 SharedPreferenceStorage.setData("context", context);
+                Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["storeName"] = ownerStoresController.storeName.value;
+
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const WorkerListScreen(),
                 ));

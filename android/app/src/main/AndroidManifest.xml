@@ -17,6 +17,8 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:enableOnBackInvokedCallback="true"
+        android:allowBackup="false"
+        android:fullBackupOnly="false"
         android:icon="@mipmap/app_icon">
         <activity
             android:name=".MainActivity"

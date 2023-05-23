@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   const OwnerStoresListScreen({super.key});
@@ -153,59 +154,17 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  return await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          StringConstants.alertText,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.black,
-                                              fontSize: 20),
-                                        ),
-                                        content: Text(
-                                            AlertStringConstants.areYouSureText,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.black,
-                                                fontSize: 20)),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.primary,
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                // Get.back();
-                                                ownerStoresController
-                                                    .apiDeleteStore(
-                                                        storeId:
-                                                            ownerStoresController
-                                                                .storeList[
-                                                                    index]
-                                                                .storeId
-                                                                .toString());
-                                              },
-                                              child: Text(
-                                                  StringConstants.deleteText)),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  AppColors.primary,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              // Get.back();
-                                            },
-                                            child: Text(
-                                                StringConstants.cancelText),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                      Utility.showConfirmAlertMessage( AlertStringConstants
+                                          .areYouSureText,okay:  StringConstants
+                                          .deleteText,okayTap: (){
+                                        ownerStoresController
+                                            .apiDeleteStore(
+                                            storeId: ownerStoresController
+                                                .storeList[index]
+                                                .storeId
+                                                .toString());
+                                      });
+
                                 },
                                 child: InkWell(
                                   onTap: () async {
