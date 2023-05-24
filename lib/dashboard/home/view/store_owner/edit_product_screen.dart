@@ -499,6 +499,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Flexible(
                             flex: 5,
                             child: TextFormField(
+                                keyboardType: TextInputType.phone,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
@@ -512,7 +513,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     fontWeight: FontWeight.w500),
                                 controller: manageStoreController
                                     .quantityTextController,
-                                keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
                                     return AlertStringConstants
@@ -579,7 +579,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               fontWeight: FontWeight.w500),
                           controller:
                               manageStoreController.pricePerUnitTextController,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
                               return AlertStringConstants.pleaseEnterPriceText;
@@ -919,15 +919,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     fontWeight: FontWeight.w500),
                                 controller: manageStoreController
                                     .discountOrOfferTextController,
-                                keyboardType: TextInputType.text,
-                                // validator: (value) {
-                                //   if (value!.trim().isEmpty) {
-                                //     return AlertStringConstants
-                                //         .pleaseEnterDiscountOrOfferText;
-                                //   }
-                                //   return null;
-                                // },
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseEnterDiscountOrOfferText;
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
+                                  errorMaxLines: 5,
                                   hintText:
                                       StringConstants.discountsOrOffersText,
                                   hintStyle: const TextStyle(
@@ -1065,6 +1066,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextFormField(
+                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
@@ -1078,7 +1080,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .lengthTextController,
-                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1141,6 +1142,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextFormField(
+                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
@@ -1154,7 +1156,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .breadthTextController,
-                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1221,6 +1222,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextFormField(
+                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
@@ -1234,7 +1236,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .heightTextController,
-                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1297,6 +1298,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextFormField(
+                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
@@ -1310,7 +1312,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .weightTextController,
-                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants

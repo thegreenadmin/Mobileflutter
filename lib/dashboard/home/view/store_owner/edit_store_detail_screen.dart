@@ -1366,7 +1366,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             TimeOfDay date = TimeOfDay.now();
                                             FocusScope.of(context)
                                                 .requestFocus(FocusNode());
-                                            date = (await showTimePicker(
+                                            date = (await showTimePicker(    initialEntryMode:
+                                                    TimePickerEntryMode.input,
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,
@@ -1488,7 +1489,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             TimeOfDay date = TimeOfDay.now();
                                             FocusScope.of(context)
                                                 .requestFocus(FocusNode());
-                                            date = (await showTimePicker(
+                                            date = (await showTimePicker(    initialEntryMode:
+                                                    TimePickerEntryMode.input,
                                               helpText: "Select Time",
                                               initialTime: TimeOfDay.now(),
                                               context: context,

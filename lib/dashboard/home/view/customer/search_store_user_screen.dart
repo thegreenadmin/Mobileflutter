@@ -308,10 +308,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
                       ///ADDRESSES BY GEOCODING
 
-                      List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+                      List<geocoding.Location> locations = await geocoding
+                          .locationFromAddress(p?.description.toString() ?? "");
 
-                      List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
-                      String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+                      List<geocoding.Placemark> placeMark =
+                          await geocoding.placemarkFromCoordinates(
+                              locations.first.latitude,
+                              locations.first.longitude);
+                      String address =
+                          "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
 
                       debugPrint("ADDRESSES---->$address");
 

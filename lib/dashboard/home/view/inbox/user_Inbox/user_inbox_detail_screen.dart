@@ -26,11 +26,20 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
   final UserInboxDetailController userInboxDetailController =
       Get.put(UserInboxDetailController());
 
+  @override
+  void initState() {
+    userInboxDetailController.storeId.value = Get.parameters["storeId"] ?? "";
+    userInboxDetailController.storeName.value =
+        Get.parameters["storeName"] ?? "";
+    userInboxDetailController.messageHeadId.value =
+        Get.parameters["messageHeadId"] ?? "";
+    userInboxDetailController.apiGetMessagesList();
+  }
+
   Container buildPhotoLibraryGridView() {
     return Container(
         height: 120,
         child:
-
             // ListView.builder(
             //     scrollDirection: Axis.horizontal,
             //     shrinkWrap: true,

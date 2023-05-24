@@ -30,10 +30,10 @@ class ContactUsController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext ctx) async {
+  void validateAndSubmit(BuildContext contx) async {
     if (validateAndSave()) {
       try {
-        apiContactUs(ctx);
+        apiContactUs(contx);
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -68,10 +68,10 @@ class ContactUsController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        nameTextController.clear;
-        emailTextController.clear;
-        subjectTextController.clear;
-        messageTextController.clear;
+        nameTextController.clear();
+        emailTextController.clear();
+        subjectTextController.clear();
+        messageTextController.clear();
         // Get.back();
         Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {

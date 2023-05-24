@@ -22,6 +22,7 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.url);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(AppColors.white)
@@ -39,7 +40,8 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(widget.url));
+      ..loadRequest(Uri.parse(
+          "https://docs.google.com/gview?embedded=true&url=${widget.url}"));
     // #enddocregion webview_controller
   }
 

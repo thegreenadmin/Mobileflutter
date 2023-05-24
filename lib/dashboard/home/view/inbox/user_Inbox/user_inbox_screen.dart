@@ -367,16 +367,20 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () async {
-                                              Utility.showConfirmAlertMessage( AlertStringConstants
-                                                  .areYouSureText,okay:  StringConstants
-                                                  .deleteText,okayTap: (){
+                                              Utility.showConfirmAlertMessage(
+                                                  AlertStringConstants
+                                                      .areYouSureText,
+                                                  okay: StringConstants
+                                                      .deleteText, okayTap: () {
                                                 userInboxController
                                                     .apiDeleteUserMessages(
-                                                    messageHeadId:
-                                                    userInboxController.inboxList[index].messageHeadId ??
-                                                        "");
+                                                        messageHeadId:
+                                                            userInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .messageHeadId ??
+                                                                "");
                                               });
-
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

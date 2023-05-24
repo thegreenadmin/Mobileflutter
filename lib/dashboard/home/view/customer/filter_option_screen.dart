@@ -283,6 +283,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                             TimeOfDay date = TimeOfDay.now();
                             FocusScope.of(context).requestFocus(FocusNode());
                             date = (await showTimePicker(
+                              initialEntryMode: TimePickerEntryMode.input,
                               helpText: StringConstants.selectTimeText,
                               initialTime: TimeOfDay.now(),
                               context: context,
@@ -379,6 +380,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                               TimeOfDay date = TimeOfDay.now();
                               FocusScope.of(context).requestFocus(FocusNode());
                               date = (await showTimePicker(
+                                initialEntryMode: TimePickerEntryMode.input,
                                 helpText: StringConstants.selectTimeText,
                                 initialTime: TimeOfDay.now(),
                                 context: context,

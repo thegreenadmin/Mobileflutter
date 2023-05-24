@@ -22,10 +22,11 @@ class _ViewPdfScreenState extends State<ViewPdfScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: PDFView(
-      filePath: widget.url,
-      autoSpacing: true,
-      enableSwipe: true,
-    ));
+          filePath: widget.url,
+          autoSpacing: true,
+          enableSwipe: true,
+        ));
   }
 }
