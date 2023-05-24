@@ -35,6 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final CarouselController _controller = CarouselController();
   final HomeController homeController = Get.put(HomeController());
 
+  Future<void> _pullRefresh() async {
+    if( homeController.role!.value == Role.customerRoleText){
+      homeController.apiGetUserOffersList();
+      homeController.apiGetUserFeaturedProducts();
+      homeController.apiGetUserDetail();
+    }else{
+      homeController.apiGetOwnerFeaturedProducts();
+      homeController.apiGetOwnerOffersList();
+      homeController.apiGetUserDetail();
+    }
+    // why use freshNumbers var? https://stackoverflow.com/a/52992836/2301224
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -413,27 +425,150 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: WidgetConstants.screenHeight*0.84,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Obx(() => homeController.role!.value == Role.customerRoleText
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                        homeController.isLoading!.value == true
-                            ? SizedBox(
-                                height: WidgetConstants.screenHeight * 0.35,
-                                child: const Center(
-                                    child: CircularProgressIndicator(
-                                        color: AppColors.primary)),
-                              ) //
-                            : homeController.userCrouselImgList.isEmpty
+      body:  RefreshIndicator(
+        onRefresh: _pullRefresh,
+        child: SingleChildScrollView(
+          child: Container(
+            height: WidgetConstants.screenHeight*0.84,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Obx(() => homeController.role!.value == Role.customerRoleText
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                          homeController.isLoading!.value == true
+                              ? SizedBox(
+                                  height: WidgetConstants.screenHeight * 0.35,
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                          color: AppColors.primary)),
+                                ) //
+                              : homeController.userCrouselImgList.isEmpty
+                                  ? SizedBox(
+                                      height: homeController.featuredUserProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
+                                      child: Center(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              ImageConstants.greenmall420,
+                                            ),
+                                            Text(
+                                              StringConstants
+                                                  .welcomeToGreenMallText,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.primary),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  :
+                                  /// USER CAROUSEL
+                                  CarouselSlider(
+                                      items: homeController.userCrouselImgList
+                                          .map((item) => InkWell(
+                                                onTap: () {
+                                                  SharedPreferenceStorage.setData(
+                                                      "context", context);
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const StoreOfferDetailScreen(),
+                                                  ));
+                                                  Get.parameters["storeId"] =
+                                                      item.storeId ?? "";
+
+                                                  Get.parameters["offerId"] =
+                                                      item.offerId ?? "";
+                                                },
+                                                child: Center(
+                                                    child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6.0),
+                                                  child: Image.network(
+                                                      item.image?.dynamicUrl
+                                                              .toString() ??
+                                                          "",
+                                                      fit: BoxFit.fill,
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.3,
+                                                      width: WidgetConstants
+                                                              .screenWidth *
+                                                          0.85),
+                                                )),
+                                              ))
+                                          .toList(),
+                                      carouselController: _controller,
+                                      options: CarouselOptions(
+                                          enlargeStrategy:
+                                              CenterPageEnlargeStrategy.scale,
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          viewportFraction: 1.2,
+                                          enlargeCenterPage: false,
+                                          autoPlay: true,
+                                          aspectRatio: 1.5,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _current = index;
+                                            });
+                                          }),
+                                    ),
+                          height5SizedBox,
+                          Obx(() => homeController.userCrouselImgList.isEmpty
+                              ? height0SizedBox
+                              : InkWell(
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  onTap: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: homeController.userCrouselImgList
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            _controller.animateToPage(entry.key),
+                                        child: Container(
+                                          width: _current == entry.key ? 25 : 10,
+                                          height: 5.0,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8.0, horizontal: 4.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              shape: BoxShape.rectangle,
+                                              color: _current == entry.key
+                                                  ? AppColors.primary
+                                                  : AppColors.grey),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ))
+                        ])
+                  : Column(
+                      children: [
+                        homeController.getOwnerOfferlist.isEmpty
+                            ? homeController.isLoading!.value == true
                                 ? SizedBox(
-                                    height: homeController.featuredUserProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
-                                    child: Center(
+                                    height: WidgetConstants.screenHeight * 0.20,
+                                    child: const Center(
+                                        child: CircularProgressIndicator(
+                                            color: AppColors.primary)),
+                                  )
+                                : SizedBox(
+                                  height: homeController.ownerFeatureProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
+                                  child: Center(
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -456,461 +591,341 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   )
-                                :
-                                /// USER CAROUSEL
-                                CarouselSlider(
-                                    items: homeController.userCrouselImgList
-                                        .map((item) => InkWell(
-                                              onTap: () {
-                                                SharedPreferenceStorage.setData(
-                                                    "context", context);
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const StoreOfferDetailScreen(),
-                                                ));
-                                                Get.parameters["storeId"] =
-                                                    item.storeId ?? "";
-
-                                                Get.parameters["offerId"] =
-                                                    item.offerId ?? "";
-                                              },
-                                              child: Center(
-                                                  child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
-                                                child: Image.network(
-                                                    item.image?.dynamicUrl
-                                                            .toString() ??
-                                                        "",
-                                                    fit: BoxFit.fill,
-                                                    height: WidgetConstants
-                                                            .screenHeight *
+                            ///OWNER CAROUSEL
+                            : CarouselSlider(
+                                items: homeController.getOwnerOfferlist
+                                    .map((item) => InkWell(
+                                          onTap: () {
+                                            // Get.parameters["offerId"] =
+                                            //     item.offerId ?? "";
+                                            // Get.parameters["storeId"] =
+                                            //     item.store!.storeId ?? "";
+                                            SharedPreferenceStorage.setData(
+                                                "context", context);
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const ManageStoreMainScreen(),
+                                            ));
+                                            Get.parameters["isFromHome"] = "true";
+                                            Get.parameters["storeId"] =
+                                                item.store!.storeId ?? "";
+                                            print(Get.parameters["isFromHome"]);
+                                            print(item.store!.storeId ?? "");
+                                            // Get.to(
+                                            //     () =>
+                                            //         const ManageStoreMainScreen(),
+                                            //     arguments: {
+                                            //       "isFromHome": true,
+                                            //       "storeId":
+                                            //           item.store?.storeId ?? "",
+                                            //     });
+                                          },
+                                          child: Center(
+                                              child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(6.0),
+                                            child: Image.network(
+                                                item.image?.dynamicUrl ?? "",
+                                                fit: BoxFit.fill,
+                                                height:
+                                                    WidgetConstants.screenHeight *
                                                         0.3,
-                                                    width: WidgetConstants
-                                                            .screenWidth *
+                                                width:
+                                                    WidgetConstants.screenWidth *
                                                         0.85),
-                                              )),
-                                            ))
-                                        .toList(),
-                                    carouselController: _controller,
-                                    options: CarouselOptions(
-                                        enlargeStrategy:
-                                            CenterPageEnlargeStrategy.scale,
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        viewportFraction: 1.2,
-                                        enlargeCenterPage: false,
-                                        autoPlay: true,
-                                        aspectRatio: 1.5,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _current = index;
-                                          });
-                                        }),
-                                  ),
+                                          )),
+                                        ))
+                                    .toList(),
+                                carouselController: _controller,
+                                options: CarouselOptions(
+                                    enlargeStrategy:
+                                        CenterPageEnlargeStrategy.scale,
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    viewportFraction: 1.2,
+                                    enlargeCenterPage: false,
+                                    autoPlay: true,
+                                    aspectRatio: 1.5,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _current = index;
+                                      });
+                                    }),
+                              ),
                         height5SizedBox,
-                        Obx(() => homeController.userCrouselImgList.isEmpty
+                        homeController.getOwnerOfferlist.isEmpty
                             ? height0SizedBox
-                            : InkWell(
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: homeController.getOwnerOfferlist
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        _controller.animateToPage(entry.key),
+                                    child: Container(
+                                      width: _current == entry.key ? 25 : 10,
+                                      height: 5.0,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 4.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          shape: BoxShape.rectangle,
+                                          color: _current == entry.key
+                                              ? AppColors.primary
+                                              : AppColors.grey),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                      ],
+                    )),
+              height5SizedBox,
+              Obx(
+                () => homeController.role!.value == Role.customerRoleText
+                    ? homeController.featuredUserProductList.isEmpty
+                        ? height0SizedBox
+                        : Text(
+                            StringConstants.featuredProductText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22),
+                          )
+                    : homeController.ownerFeatureProductList.isEmpty
+                        ? height0SizedBox
+                        : Text(
+                            StringConstants.featuredProductText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22),
+                          ),
+              ),
+              height12SizedBox,
+              Obx(
+                () => homeController.role!.value == Role.customerRoleText
+                    ? homeController.featuredUserProductList.isEmpty
+                        ? height0SizedBox
+                        : SizedBox(
+                            height: WidgetConstants.screenHeight * 0.26,
+                            width: WidgetConstants.screenWidth,
+                            child: ListView.separated(
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return width12SizedBox;
+                              },
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  homeController.featuredUserProductList.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  InkWell(
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
-                                onTap: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: homeController.userCrouselImgList
-                                      .asMap()
-                                      .entries
-                                      .map((entry) {
-                                    return GestureDetector(
-                                      onTap: () =>
-                                          _controller.animateToPage(entry.key),
-                                      child: Container(
-                                        width: _current == entry.key ? 25 : 10,
-                                        height: 5.0,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 4.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            shape: BoxShape.rectangle,
-                                            color: _current == entry.key
-                                                ? AppColors.primary
-                                                : AppColors.grey),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ))
-                      ])
-                : Column(
-                    children: [
-                      homeController.getOwnerOfferlist.isEmpty
-                          ? homeController.isLoading!.value == true
-                              ? SizedBox(
-                                  height: WidgetConstants.screenHeight * 0.20,
-                                  child: const Center(
-                                      child: CircularProgressIndicator(
-                                          color: AppColors.primary)),
-                                )
-                              : SizedBox(
-                                height: homeController.ownerFeatureProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
-                                child: Center(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          ImageConstants.greenmall420,
-                                        ),
-                                        Text(
-                                          StringConstants
-                                              .welcomeToGreenMallText,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontStyle: FontStyle.italic,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.primary),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                          ///OWNER CAROUSEL
-                          : CarouselSlider(
-                              items: homeController.getOwnerOfferlist
-                                  .map((item) => InkWell(
-                                        onTap: () {
-                                          // Get.parameters["offerId"] =
-                                          //     item.offerId ?? "";
-                                          // Get.parameters["storeId"] =
-                                          //     item.store!.storeId ?? "";
-                                          SharedPreferenceStorage.setData(
-                                              "context", context);
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (_) =>
-                                                const ManageStoreMainScreen(),
-                                          ));
-                                          Get.parameters["isFromHome"] = "true";
-                                          Get.parameters["storeId"] =
-                                              item.store!.storeId ?? "";
-                                          print(Get.parameters["isFromHome"]);
-                                          print(item.store!.storeId ?? "");
-                                          // Get.to(
-                                          //     () =>
-                                          //         const ManageStoreMainScreen(),
-                                          //     arguments: {
-                                          //       "isFromHome": true,
-                                          //       "storeId":
-                                          //           item.store?.storeId ?? "",
-                                          //     });
-                                        },
-                                        child: Center(
-                                            child: ClipRRect(
+                                onTap: () {
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const AddToOrderScreen(),
+                                  ));
+                                  Get.parameters["isFromHome"] = "true";
+                                  Get.parameters["isFromFav"] = "false";
+                                  Get.parameters["isFromMenu"] = "false";
+                                  Get.parameters["productId"] = homeController
+                                          .featuredUserProductList[index]
+                                          .productId ??
+                                      "";
+                                  Get.parameters["storeId"] = homeController
+                                          .featuredUserProductList[index]
+                                          .storeId ??
+                                      "";
+
+                                  // Get.to(() => const AddToOrderScreen(),
+                                  //      arguments: {
+                                  //        "isFromHome": true,
+                                  //        "productId": homeController
+                                  //                .featuredUserProductList[index]
+                                  //                .productId ??
+                                  //            "",
+                                  //        "storeId": homeController
+                                  //                .featuredUserProductList[index]
+                                  //                .storeId ??
+                                  //            "",
+                                  //      });
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: WidgetConstants.screenHeight * 0.22,
+                                      width: WidgetConstants.screenWidth * 0.44,
+                                      child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(6.0),
-                                          child: Image.network(
-                                              item.image?.dynamicUrl ?? "",
-                                              fit: BoxFit.fill,
-                                              height:
-                                                  WidgetConstants.screenHeight *
-                                                      0.3,
-                                              width:
-                                                  WidgetConstants.screenWidth *
-                                                      0.85),
-                                        )),
-                                      ))
-                                  .toList(),
-                              carouselController: _controller,
-                              options: CarouselOptions(
-                                  enlargeStrategy:
-                                      CenterPageEnlargeStrategy.scale,
-                                  autoPlayCurve: Curves.fastOutSlowIn,
-                                  viewportFraction: 1.2,
-                                  enlargeCenterPage: false,
-                                  autoPlay: true,
-                                  aspectRatio: 1.5,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      _current = index;
-                                    });
-                                  }),
-                            ),
-                      height5SizedBox,
-                      homeController.getOwnerOfferlist.isEmpty
-                          ? height0SizedBox
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: homeController.getOwnerOfferlist
-                                  .asMap()
-                                  .entries
-                                  .map((entry) {
-                                return GestureDetector(
-                                  onTap: () =>
-                                      _controller.animateToPage(entry.key),
-                                  child: Container(
-                                    width: _current == entry.key ? 25 : 10,
-                                    height: 5.0,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 4.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        shape: BoxShape.rectangle,
-                                        color: _current == entry.key
-                                            ? AppColors.primary
-                                            : AppColors.grey),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                    ],
-                  )),
-            height5SizedBox,
-            Obx(
-              () => homeController.role!.value == Role.customerRoleText
-                  ? homeController.featuredUserProductList.isEmpty
-                      ? height0SizedBox
-                      : Text(
-                          StringConstants.featuredProductText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22),
-                        )
-                  : homeController.ownerFeatureProductList.isEmpty
-                      ? height0SizedBox
-                      : Text(
-                          StringConstants.featuredProductText,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22),
-                        ),
-            ),
-            height12SizedBox,
-            Obx(
-              () => homeController.role!.value == Role.customerRoleText
-                  ? homeController.featuredUserProductList.isEmpty
-                      ? height0SizedBox
-                      : SizedBox(
-                          height: WidgetConstants.screenHeight * 0.26,
-                          width: WidgetConstants.screenWidth,
-                          child: ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return width12SizedBox;
-                            },
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                homeController.featuredUserProductList.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const AddToOrderScreen(),
-                                ));
-                                Get.parameters["isFromHome"] = "true";
-                                Get.parameters["isFromFav"] = "false";
-                                Get.parameters["isFromMenu"] = "false";
-                                Get.parameters["productId"] = homeController
-                                        .featuredUserProductList[index]
-                                        .productId ??
-                                    "";
-                                Get.parameters["storeId"] = homeController
-                                        .featuredUserProductList[index]
-                                        .storeId ??
-                                    "";
-
-                                // Get.to(() => const AddToOrderScreen(),
-                                //      arguments: {
-                                //        "isFromHome": true,
-                                //        "productId": homeController
-                                //                .featuredUserProductList[index]
-                                //                .productId ??
-                                //            "",
-                                //        "storeId": homeController
-                                //                .featuredUserProductList[index]
-                                //                .storeId ??
-                                //            "",
-                                //      });
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: WidgetConstants.screenHeight * 0.22,
-                                    width: WidgetConstants.screenWidth * 0.44,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages ==
-                                                    null ||
-                                                homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages!
-                                                    .isEmpty ||
-                                                homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages![0]
-                                                        .image!
-                                                        .dynamicUrl ==
-                                                    null ||
-                                                homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages!
-                                                    .isEmpty
-                                            ? Image.asset(
-                                                ImageConstants.nopicfound,
-                                                fit: BoxFit.fill,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.4,
-                                              )
-                                            : Image.network(
-                                                homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages![0]
-                                                    .image!
-                                                    .dynamicUrl
-                                                    .toString(),
-                                                fit: BoxFit.fill,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.4,
-                                              )),
-                                  ),
-                                  height8SizedBox,
-                                  Text(
-                                    homeController
-                                            .featuredUserProductList[index]
-                                            .productName ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
+                                              BorderRadius.circular(8.0),
+                                          child: homeController
+                                                          .featuredUserProductList[
+                                                              index]
+                                                          .productImages ==
+                                                      null ||
+                                                  homeController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productImages!
+                                                      .isEmpty ||
+                                                  homeController
+                                                          .featuredUserProductList[
+                                                              index]
+                                                          .productImages![0]
+                                                          .image!
+                                                          .dynamicUrl ==
+                                                      null ||
+                                                  homeController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productImages!
+                                                      .isEmpty
+                                              ? Image.asset(
+                                                  ImageConstants.nopicfound,
+                                                  fit: BoxFit.fill,
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.4,
+                                                )
+                                              : Image.network(
+                                                  homeController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString(),
+                                                  fit: BoxFit.fill,
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.4,
+                                                )),
+                                    ),
+                                    height8SizedBox,
+                                    Text(
+                                      homeController
+                                              .featuredUserProductList[index]
+                                              .productName ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                  : homeController.ownerFeatureProductList.isEmpty
-                      ? height0SizedBox
-                      : SizedBox(
-                          height: WidgetConstants.screenHeight * 0.26,
-                          width: WidgetConstants.screenWidth,
-                          child: ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return width12SizedBox;
-                            },
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                homeController.ownerFeatureProductList.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                InkWell(
-                              onTap: () {
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const EditStoreDetailScreen(),
-                                ));
-                                Get.parameters["isFromHome"] = "true";
-                                Get.parameters["storeId"] = homeController
-                                    .ownerFeatureProductList[index].storeId;
-
-                                /* Get.to(const EditStoreDetailScreen(),
-                                    arguments: {
-                                      "isFromHome": true,
-                                      'storeId': homeController
-                                          .ownerFeatureProductList[index]
-                                          .storeId
-                                    });*/
+                          )
+                    : homeController.ownerFeatureProductList.isEmpty
+                        ? height0SizedBox
+                        : SizedBox(
+                            height: WidgetConstants.screenHeight * 0.26,
+                            width: WidgetConstants.screenWidth,
+                            child: ListView.separated(
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return width12SizedBox;
                               },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: WidgetConstants.screenHeight * 0.22,
-                                    width: WidgetConstants.screenWidth * 0.44,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: homeController
-                                                        .ownerFeatureProductList[
-                                                            index]
-                                                        .productImages ==
-                                                    null ||
-                                                homeController
-                                                        .ownerFeatureProductList[
-                                                            index]
-                                                        .productImages![0]
-                                                        .image!
-                                                        .dynamicUrl ==
-                                                    null ||
-                                                homeController
-                                                    .ownerFeatureProductList[
-                                                        index]
-                                                    .productImages!
-                                                    .isEmpty
-                                            ? Image.asset(
-                                                ImageConstants.nopicfound,
-                                                fit: BoxFit.fill,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.4,
-                                              )
-                                            : Image.network(
-                                                homeController
-                                                    .ownerFeatureProductList[
-                                                        index]
-                                                    .productImages![0]
-                                                    .image!
-                                                    .dynamicUrl
-                                                    .toString(),
-                                                fit: BoxFit.fill,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.4,
-                                              )),
-                                  ),
-                                  height8SizedBox,
-                                  Text(
-                                    homeController
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  homeController.ownerFeatureProductList.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  InkWell(
+                                onTap: () {
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const EditStoreDetailScreen(),
+                                  ));
+                                  Get.parameters["isFromHome"] = "true";
+                                  Get.parameters["storeId"] = homeController
+                                      .ownerFeatureProductList[index].storeId;
+
+                                  /* Get.to(const EditStoreDetailScreen(),
+                                      arguments: {
+                                        "isFromHome": true,
+                                        'storeId': homeController
                                             .ownerFeatureProductList[index]
-                                            .productName ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
+                                            .storeId
+                                      });*/
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: WidgetConstants.screenHeight * 0.22,
+                                      width: WidgetConstants.screenWidth * 0.44,
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: homeController
+                                                          .ownerFeatureProductList[
+                                                              index]
+                                                          .productImages ==
+                                                      null ||
+                                                  homeController
+                                                          .ownerFeatureProductList[
+                                                              index]
+                                                          .productImages![0]
+                                                          .image!
+                                                          .dynamicUrl ==
+                                                      null ||
+                                                  homeController
+                                                      .ownerFeatureProductList[
+                                                          index]
+                                                      .productImages!
+                                                      .isEmpty
+                                              ? Image.asset(
+                                                  ImageConstants.nopicfound,
+                                                  fit: BoxFit.fill,
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.4,
+                                                )
+                                              : Image.network(
+                                                  homeController
+                                                      .ownerFeatureProductList[
+                                                          index]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString(),
+                                                  fit: BoxFit.fill,
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.4,
+                                                )),
+                                    ),
+                                    height8SizedBox,
+                                    Text(
+                                      homeController
+                                              .ownerFeatureProductList[index]
+                                              .productName ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-            )
-          ]),
+              )
+            ]),
+          ),
         ),
       ),
     );

@@ -166,10 +166,10 @@ class HomeController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
         email!.value = getUserDetailModel.data!.user!.email ?? "";
@@ -185,15 +185,15 @@ class HomeController extends GetxController {
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
         await getCurrentLocation();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
@@ -217,10 +217,10 @@ class HomeController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET USER OFFER STORES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        userOffersModel = GetUserOfferModel.fromJson(value.body);
+      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        userOffersModel = GetUserOfferModel.fromJson(value?.body);
         userOfferList.value = userOffersModel.data!.offers!;
 
         for (int i = 0; i < userOfferList.length; i++) {
@@ -231,15 +231,15 @@ class HomeController extends GetxController {
           userCrouselImgList.add(userOfferList[i]);
         }
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }
