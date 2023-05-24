@@ -351,20 +351,21 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => WebviewPageScreen(
-                          isFrom: "aboutus",
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                  // SharedPreferenceStorage.setData("context", context);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (_) => WebviewPageScreen(
+                  //         isFrom: "aboutus",
+                  //         url: storeHomeMainController
+                  //             .storeDetailsResponse
+                  //             .value
+                  //             .data!
+                  //             .store!
+                  //             .storePages!
+                  //             .first
+                  //             .storePageContent!
+                  //             .dynamicUrl
+                  //             .toString())
+                  //             ));
 
                   // Get.to(ViewPdfScreen(
                   //     url: storeHomeMainController
