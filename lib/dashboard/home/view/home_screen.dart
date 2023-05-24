@@ -437,14 +437,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                          homeController.isLoading!.value == true
+                          /*homeController.isLoading!.value == true
                               ? SizedBox(
                                   height: WidgetConstants.screenHeight * 0.35,
                                   child: const Center(
                                       child: CircularProgressIndicator(
                                           color: AppColors.primary)),
                                 ) //
-                              : homeController.userCrouselImgList.isEmpty
+                              :*/ homeController.userCrouselImgList.isEmpty
                                   ? SizedBox(
                                       height: homeController.featuredUserProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
                                       child: Center(
@@ -559,14 +559,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   : Column(
                       children: [
                         homeController.getOwnerOfferlist.isEmpty
-                            ? homeController.isLoading!.value == true
+                            ? /*homeController.isLoading!.value == true
                                 ? SizedBox(
                                     height: WidgetConstants.screenHeight * 0.20,
                                     child: const Center(
                                         child: CircularProgressIndicator(
                                             color: AppColors.primary)),
                                   )
-                                : SizedBox(
+                                :*/ SizedBox(
                                   height: homeController.ownerFeatureProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
                                   child: Center(
                                       child: Column(
