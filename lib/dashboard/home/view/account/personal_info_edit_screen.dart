@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder2/geocoder2.dart';
+// import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 class PersonalInfoEditScreen extends StatefulWidget {
   const PersonalInfoEditScreen({super.key});
@@ -329,7 +330,33 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             ];
                             accountController.addressLine1TextController.text =
                                 parts[0].toString();
-                            GeoData addresses =
+
+                            ///ADDRESSES BY GEOCODING
+
+                            List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+
+                            List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
+                            String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+
+                            debugPrint("ADDRESSES---->$address");
+
+                            if(placeMark.isNotEmpty){
+                              accountController.townOrCityTextController
+                                  .text = placeMark.first.locality??"";
+
+                              accountController.countryTextController.text =
+                                  placeMark.first.country??"";
+
+                              accountController.postalCodeTextController.text =
+                                  placeMark.first.postalCode??"";
+
+                              accountController.stateTextController.text =
+                                  placeMark.first.administrativeArea??"";
+
+                            }
+
+                            ///--------------------------------------
+                         /*   GeoData addresses =
                                 await Geocoder2.getDataFromAddress(
                                     address: p.description.toString(),
                                     googleMapApiKey:
@@ -367,7 +394,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             debugPrint(
                                 "LAT---->" + addresses.latitude.toString());
                             debugPrint(
-                                "LONG---->" + addresses.longitude.toString());
+                                "LONG---->" + addresses.longitude.toString());*/
                           },
                           child: TextFormField(
                               autovalidateMode:

@@ -32,7 +32,13 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
     return LayoutBuilder(builder: (context, constraint) {
       var concatenate = StringBuffer();
       if (widget.list != null) {
+
         for (var item in widget.list ?? []) {
+          // print("MultiCustomDropDown item ------->>>>>");
+          // print(item.toString());
+          // print(item.name);
+          // print(item.isSelected);
+          // print(item.id);
           if (item.isSelected == true) {
             concatenate.write(item.name);
             concatenate.write(', ');

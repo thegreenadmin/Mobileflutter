@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:geocoder2/geocoder2.dart';
+// import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -15,6 +15,7 @@ import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 class EditStoreDetailScreen extends StatefulWidget {
   const EditStoreDetailScreen({super.key});
@@ -654,11 +655,46 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ];
                           ownerStoreController.addressLine1TextController.text =
                               parts[0].toString();
-                          GeoData addresses =
+
+
+                          ///ADDRESSES BY GEOCODING
+
+                          List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+
+                          List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
+                          String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+
+                          debugPrint("ADDRESSES---->$address");
+
+                          if(placeMark.isNotEmpty){
+                            ownerStoreController.townOrCityTextController
+                                .text = placeMark.first.locality??"";
+
+                            ownerStoreController.countryTextController.text =
+                                placeMark.first.country??"";
+
+                            ownerStoreController.postalCodeTextController.text =
+                                placeMark.first.postalCode??"";
+
+                            ownerStoreController.stateTextController.text =
+                                placeMark.first.administrativeArea??"";
+
+                          }
+                          if(locations.isNotEmpty){
+                            ownerStoreController.lng =
+                                locations.first.longitude.toString()??"";
+                            ownerStoreController.lat =
+                                locations.first.latitude.toString()??"";
+                          }
+
+
+                          ///--------------------------------------
+                       /*   GeoData addresses =
                               await Geocoder2.getDataFromAddress(
                                   address: p.description.toString(),
                                   googleMapApiKey:
                                       ownerStoreController.kGoogleApiKey);
+
                           if (addresses.address != null) {
                             if (addresses.city.isNotEmpty) {
                               ownerStoreController.townOrCityTextController
@@ -685,6 +721,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   addresses.latitude.toString();
                             }
                           }
+                          debugPrint("ADDRESSES--*************-->${addresses.toString()}");
                           debugPrint("ADDRESSES---->${addresses.address}");
                           debugPrint("CITY---->${addresses.city}");
                           debugPrint("COUNTRY---->${addresses.country}");
@@ -695,10 +732,11 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           debugPrint(
                               "STREETNUMBER---->${addresses.streetNumber}");
                           debugPrint("LAT---->${addresses.latitude}");
-                          debugPrint("LONG---->${addresses.longitude}");
+                          debugPrint("LONG---->${addresses.longitude}");*/
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         //enabled: false,
+                        readOnly: true,
                         minLines: 1,
                         maxLines: 5,
                         textInputAction: TextInputAction.next,
@@ -1659,21 +1697,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
+
                     MultiCustomDropDown(
                         onChanged: (v) {
                           ownerStoreController.deliveryServicesList.clear();
                           if (ownerStoreController
                               .storeDeliveryServices.isNotEmpty) {
                             for (int i = 0;
-                                i <
-                                    ownerStoreController
-                                        .deliveryServices.length;
+                                i < ownerStoreController.deliveryServices.length;
                                 i++) {
                               for (var element in ownerStoreController
                                   .storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==
-                                    ownerStoreController
-                                        .deliveryServices[i].id) {
+                                    ownerStoreController.deliveryServices[i].id) {
                                   ownerStoreController.deliveryServicesList
                                       .add({
                                     "store_delivery_service_id":
@@ -1687,8 +1723,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 }
                               }
 
-                              if (ownerStoreController
-                                          .deliveryServices[i].isSelected ==
+                              if (ownerStoreController.deliveryServices[i].isSelected ==
                                       true &&
                                   !ownerStoreController.storeDeliveryServices
                                       .any((element) =>
@@ -1706,13 +1741,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             }
                           } else {
                             for (int i = 0;
-                                i <
-                                    ownerStoreController
-                                        .deliveryServices.length;
-                                i++) {
-                              if (ownerStoreController
-                                      .deliveryServices[i].isSelected ==
-                                  true) {
+                                i < ownerStoreController
+                                        .deliveryServices.length; i++) {
+                              if (ownerStoreController.deliveryServices[i].isSelected == true) {
                                 ownerStoreController.deliveryServicesList.add({
                                   "store_delivery_service_id": null,
                                   "delivery_service_id": ownerStoreController

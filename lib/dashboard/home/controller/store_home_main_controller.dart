@@ -569,7 +569,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CART LIST RESPONSE  123*******${value?.body}");
+      debugPrint("GET CART LIST RESPONSE 123*******${value?.body}");
       debugPrint(
           "GET CART LIST URL 1*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}");
       debugPrint(
@@ -584,11 +584,13 @@ class StoreHomeMainController extends GetxController {
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
-            cartListResponse.data!.cartItems!.isEmpty) {
+            cartListResponse.data!.cartItems!.isEmpty && isFromHome.value == true) {
           isDeleteCartItem.value = false;
-          print("isDeleteCartItem********************************************");
-          // Get.offAll(BottomNavigation());
           // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }else if(isDeleteCartItem.value == true &&
+            cartListResponse.data!.cartItems!.isEmpty && isFromHome.value == false){
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();

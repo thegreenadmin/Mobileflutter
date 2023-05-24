@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder2/geocoder2.dart';
+// import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
@@ -13,6 +15,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 class AddNewStoreScreen extends StatefulWidget {
   const AddNewStoreScreen({super.key});
@@ -646,57 +649,89 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               language: "en",
                               components: []);
 
-                          int idx = p!.description!.indexOf(",");
+                          debugPrint("ADDRESSES---description->${p?.description}");
+
+                          int idx = p?.description?.indexOf(",")??0;
                           List parts = [
-                            p.description!.substring(0, idx).trim(),
-                            p.description!.substring(idx + 1).trim()
+                            p?.description?.substring(0, idx).trim(),
+                            p?.description?.substring(idx + 1).trim()
                           ];
                           addNewStoreController.addressLine1TextController
                               .text = parts[0].toString();
 
-                          GeoData addresses =
+                          ///ADDRESSES BY GEOCODING
+
+                          List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+
+                          List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
+                          String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+
+                          debugPrint("ADDRESSES---->$address");
+
+                         if(placeMark.isNotEmpty){
+                           addNewStoreController.townOrCityTextController
+                               .text = placeMark.first.locality??"";
+
+                           addNewStoreController.countryTextController.text =
+                               placeMark.first.country??"";
+
+                           addNewStoreController.zipCodeTextController.text =
+                               placeMark.first.postalCode??"";
+
+                           addNewStoreController.stateTextController.text =
+                               placeMark.first.administrativeArea??"";
+
+                         }
+                         if(locations.isNotEmpty){
+                           addNewStoreController.lng =
+                               locations.first.longitude.toString()??"";
+                           addNewStoreController.lat =
+                               locations.first.latitude.toString()??"";
+                         }
+
+
+                        ///--------------------------------------
+                        /*  GeoData addresses =
                               await Geocoder2.getDataFromAddress(
-                                  address: p.description.toString(),
+                                  address: p?.description.toString()??"",
                                   googleMapApiKey:
                                       addNewStoreController.kGoogleApiKey);
 
-                          if (addresses.address != null) {
-                            if (addresses.city.isNotEmpty) {
-                              addNewStoreController.townOrCityTextController
-                                  .text = addresses.city;
-                            }
-                            if (addresses.country.isNotEmpty) {
-                              addNewStoreController.countryTextController.text =
-                                  addresses.country;
-                            }
-
-                            if (addresses.postalCode.isNotEmpty) {
-                              addNewStoreController.zipCodeTextController.text =
-                                  addresses.postalCode;
-                            }
-                            if (addresses.state.isNotEmpty) {
-                              addNewStoreController.stateTextController.text =
-                                  addresses.state;
-                            }
-                            if (addresses.latitude != null ||
-                                addresses.longitude != null) {
-                              addNewStoreController.lng =
-                                  addresses.longitude.toString();
-                              addNewStoreController.lat =
-                                  addresses.latitude.toString();
-                            }
+                          if (addresses.city.isNotEmpty) {
+                            addNewStoreController.townOrCityTextController
+                                .text = addresses.city;
                           }
+                          if (addresses.country.isNotEmpty) {
+                            addNewStoreController.countryTextController.text =
+                                addresses.country;
+                          }
+
+                          if (addresses.postalCode.isNotEmpty) {
+                            addNewStoreController.zipCodeTextController.text =
+                                addresses.postalCode;
+                          }
+                          if (addresses.state.isNotEmpty) {
+                            addNewStoreController.stateTextController.text =
+                                addresses.state;
+                          }
+                          if (addresses.latitude != null ||
+                              addresses.longitude != null) {
+                            addNewStoreController.lng =
+                                addresses.longitude.toString();
+                            addNewStoreController.lat =
+                                addresses.latitude.toString();
+                          }
+
                           debugPrint("ADDRESSES---->${addresses.address}");
                           debugPrint("CITY---->${addresses.city}");
                           debugPrint("COUNTRY---->${addresses.country}");
-                          debugPrint(
-                              "COUNTRY CODE---->${addresses.countryCode}");
+                          debugPrint("COUNTRY CODE---->${addresses.countryCode}");
                           debugPrint("POSTALCODE---->${addresses.postalCode}");
                           debugPrint("STATE---->${addresses.state}");
                           debugPrint(
                               "STREETNUMBER---->${addresses.streetNumber}");
                           debugPrint("LAT---->${addresses.latitude}");
-                          debugPrint("LONG---->${addresses.longitude}");
+                          debugPrint("LONG---->${addresses.longitude}");*/
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         minLines: 1,
@@ -720,6 +755,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           return null;
                         },
+                        readOnly: true,
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.addressLine1Text,

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder2/geocoder2.dart';
+// import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
@@ -24,6 +24,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 class SearchStoreUserScreen extends StatefulWidget {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
@@ -304,12 +305,31 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           components: []);
                       searchStoreUserController.searchController.text =
                           p?.description!.toString() ?? "";
-                      GeoData addresses = await Geocoder2.getDataFromAddress(
+
+                      ///ADDRESSES BY GEOCODING
+
+                      List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+
+                      List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
+                      String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+
+                      debugPrint("ADDRESSES---->$address");
+
+                      if(placeMark.isNotEmpty){
+                        searchStoreUserController.zipCodeTextController.text =
+                            placeMark.first.postalCode??"";
+                      }
+                      if(locations.isNotEmpty){
+                        updateMap(locations.first.latitude.toString()??"", locations.first.longitude.toString()??"");
+                      }
+
+                      ///--------------------------------
+                       /*GeoData addresses = await Geocoder2.getDataFromAddress(
                           address: p?.description.toString() ?? "",
                           googleMapApiKey: kGoogleApiKey);
                       searchStoreUserController.zipCodeTextController.text =
                           addresses.postalCode;
-                      updateMap(addresses.latitude, addresses.longitude);
+                      updateMap(addresses.latitude, addresses.longitude);*/
                     },
                     controller: searchStoreUserController.searchController,
                     style: const TextStyle(

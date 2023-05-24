@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});
@@ -470,67 +471,27 @@ class _OffersScreenState extends State<OffersScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  return await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          StringConstants.alertText,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.black,
-                                              fontSize: 20),
-                                        ),
-                                        content: Text(
-                                            AlertStringConstants.areYouSureText,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.black,
-                                                fontSize: 20)),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.primary,
-                                              ),
-                                              onPressed: () async {
-                                                Navigator.of(context).pop();
-                                                // Get.back();
-                                                offersController.storeId!
-                                                    .value = offersController
-                                                        .getOwnerOfferlist[
-                                                            index]
-                                                        .store!
-                                                        .storeId ??
-                                                    "";
-                                                offersController.offerId!
-                                                    .value = offersController
-                                                        .getOwnerOfferlist[
-                                                            index]
-                                                        .offerId ??
-                                                    "";
+                                      Utility.showConfirmAlertMessage( AlertStringConstants
+                                          .areYouSureText,okay:  StringConstants
+                                          .deleteText,okayTap: () async{
+                                        offersController.storeId!
+                                            .value = offersController
+                                            .getOwnerOfferlist[
+                                        index]
+                                            .store!
+                                            .storeId ??
+                                            "";
+                                        offersController.offerId!
+                                            .value = offersController
+                                            .getOwnerOfferlist[
+                                        index]
+                                            .offerId ??
+                                            "";
 
-                                                await offersController
-                                                    .apiDeleteOffer(context);
-                                              },
-                                              child: Text(
-                                                  StringConstants.deleteText)),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  AppColors.primary,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              // Get.back();
-                                            },
-                                            child: Text(
-                                                StringConstants.cancelText),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                        await offersController
+                                            .apiDeleteOffer(context);
+                                      });
+
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

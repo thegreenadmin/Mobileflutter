@@ -415,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: WidgetConstants.screenHeight,
+          height: WidgetConstants.screenHeight*0.84,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -425,14 +425,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                         homeController.isLoading!.value == true
                             ? SizedBox(
-                                height: WidgetConstants.screenHeight * 0.20,
+                                height: WidgetConstants.screenHeight * 0.35,
                                 child: const Center(
                                     child: CircularProgressIndicator(
                                         color: AppColors.primary)),
                               ) //
                             : homeController.userCrouselImgList.isEmpty
                                 ? SizedBox(
-                                    height: WidgetConstants.screenHeight * 0.50,
+                                    height: homeController.featuredUserProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
                                     child: Center(
                                       child: Column(
                                         crossAxisAlignment:
@@ -457,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )
                                 :
-                                // USER CROUSEL
+                                /// USER CAROUSEL
                                 CarouselSlider(
                                     items: homeController.userCrouselImgList
                                         .map((item) => InkWell(
@@ -553,8 +553,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: AppColors.primary)),
                                 )
                               : SizedBox(
-                                  height: WidgetConstants.screenHeight * 0.50,
-                                  child: Center(
+                                height: homeController.ownerFeatureProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
+                                child: Center(
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -577,7 +577,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 )
-                          //OWNER CROUSEL
+                          ///OWNER CAROUSEL
                           : CarouselSlider(
                               items: homeController.getOwnerOfferlist
                                   .map((item) => InkWell(
@@ -696,7 +696,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? homeController.featuredUserProductList.isEmpty
                       ? height0SizedBox
                       : SizedBox(
-                          height: WidgetConstants.screenHeight * 0.28,
+                          height: WidgetConstants.screenHeight * 0.26,
                           width: WidgetConstants.screenWidth,
                           child: ListView.separated(
                             separatorBuilder:
@@ -814,7 +814,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   : homeController.ownerFeatureProductList.isEmpty
                       ? height0SizedBox
                       : SizedBox(
-                          height: WidgetConstants.screenHeight * 0.28,
+                          height: WidgetConstants.screenHeight * 0.26,
                           width: WidgetConstants.screenWidth,
                           child: ListView.separated(
                             separatorBuilder:

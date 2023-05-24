@@ -76,7 +76,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
     );
   }
 
-  @override
+ /* @override
   initState() {
     super.initState();
     ownerStoresController.selectedIndex.value = 0;
@@ -96,7 +96,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
     await ownerStoresController.apiGetStoreList();
     await ownerStoresController.apiGetDeliveryServices();
     await ownerStoresController.apiGetOwnerOffersList();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
