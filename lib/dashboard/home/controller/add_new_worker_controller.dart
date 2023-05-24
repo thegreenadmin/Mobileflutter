@@ -166,7 +166,7 @@ class AddNewWorkerController extends GetxController {
             addWorkerRequest,
             ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||

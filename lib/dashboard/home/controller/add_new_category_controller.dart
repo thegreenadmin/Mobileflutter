@@ -181,6 +181,12 @@ class AddNewCategoryController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
+    debugPrint("ADD CATEGORY headers********** $headers");
+    print("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
+    print("ADD CATEGORY is_featured_category********** ${isFeaturedTypeSelected.value}");
+    print("ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
+    print("ADD CATEGORY image_url********** ${categoryImageOrigionalLinkfromServer.value}");
+
     Map body = {
       "store_id": int.parse(storeId.value),
       "parent_category_id": null,

@@ -2,6 +2,7 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -528,40 +529,36 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   ),
                 ),
                 height30SizedBox,
-                Obx(
-                  () => Visibility(
-                    visible: ordersController.activeStep.value == 0,
-                    child: Column(
-                      children: [
-                        CustomButton(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.primary, AppColors.primary],
-                          ),
-                          onTap: () {
-                            BuildContext rContext =
-                                SharedPreferenceStorage.getData(
-                              "context",
-                            );
-                            print(rContext);
-                            Navigator.of(rContext)
-                                .popUntil((route) => route.isFirst);
-                            // Get.offAll(BottomNavigation());
-                          },
-                          height: 50,
-                          width: WidgetConstants.screenWidth * 0.5,
-                          text: StringConstants.continueShoppingText,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconL: false,
-                          fontSize: 16,
-                        ),
-                        height20SizedBox
-                      ],
-                    ),
+                CustomButton(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.primary, AppColors.primary],
                   ),
+                  onTap: () {
+                    BuildContext rContext =
+                    SharedPreferenceStorage.getData(
+                      "context",
+                    );
+                    // print(rContext);
+                    Get.parameters["storeId"] = ordersController.storeId.value;
+                    print(Get.parameters["storeId"]);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const StoreHomeMainScreen(),
+                    ));
+                    // Navigator.of(rContext)
+                    //     .popUntil((route) => route.isFirst);
+                    // Get.offAll(BottomNavigation());
+                  },
+                  height: 50,
+                  width: WidgetConstants.screenWidth * 0.5,
+                  text: StringConstants.continueShoppingText,
+                  borderRadius: 12,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  fontSize: 16,
                 ),
+                height20SizedBox,
                 buildOrderItems()
               ],
             ),

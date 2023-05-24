@@ -13,6 +13,10 @@ class ImageConstants {
   static const String addcard = '$assetsIcon/addcard.png';
   static const String asofnow = '$assetsIcon/asofnow.png';
   static const String addBank = '$assetsIcon/addbank.png';
+  static const String alertRed = '$assetsIcon/alertRed.png';
+  static const String alertInfo = '$assetsIcon/alertInfo.png';
+  static const String alertMark = '$assetsIcon/alertMark.png';
+  static const String alert48 = '$assetsIcon/alert48.png';
 
   //B
   static const String bag = '$assetsIcon/bag.png';

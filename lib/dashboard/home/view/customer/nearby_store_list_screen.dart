@@ -26,13 +26,16 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   @override
   void initState() {
     super.initState();
-    searchStoreUserController.searchController.clear();
-    searchStoreUserController.firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText);
-    searchStoreUserController.lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText);
-    searchStoreUserController.setupScrollController(Get.context);
-    searchStoreUserController.apiActiveCartApi(Get.context);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      searchStoreUserController.searchController.clear();
+      searchStoreUserController.firstName?.value =
+          SharedPreferenceStorage.getData(StringConstants.firstNameText);
+      searchStoreUserController.lastName?.value =
+          SharedPreferenceStorage.getData(StringConstants.lastNameText);
+      searchStoreUserController.setupScrollController(Get.context);
+      searchStoreUserController.apiActiveCartApi(Get.context);
+    });
+
   }
 
   @override

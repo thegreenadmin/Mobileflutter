@@ -349,7 +349,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            contactUsController.validateAndSubmit();
+                            contactUsController.validateAndSubmit(context);
                           },
                           height: 50,
                           text: StringConstants.sendMessageText,

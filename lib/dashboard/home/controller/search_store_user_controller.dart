@@ -56,6 +56,9 @@ class SearchStoreUserController extends GetxController {
   RxString? lastName = "".obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
+  RxString city = "".obs;
+  RxString state = "".obs;
+  RxString country = "".obs;
   RxInt selectedIndex = 0.obs;
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
@@ -361,8 +364,10 @@ class SearchStoreUserController extends GetxController {
   Future apiGetNearByStores(
     context, {
     bool isFilter = false,
+    bool isSearch = false,
   }) async {
-    if (isFilter) {
+    debugPrint("GET GET NEARBY STORES isSearch********** $isSearch");
+    if (isFilter || isSearch ) {
       page.value = 1;
       storeAddresses.clear();
       // favStoreAddresses.clear();
@@ -383,6 +388,9 @@ class SearchStoreUserController extends GetxController {
       "page_size": 5,
       "longitude": zipCodeTextController.text != "" ? null : lng,
       "latitude": zipCodeTextController.text != "" ? null : lat,
+      "city": city.value,
+      "state": state.value,
+      "country": country.value,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
@@ -444,6 +452,14 @@ class SearchStoreUserController extends GetxController {
 
           // Get.back();
           Navigator.of(context).pop();
+        }
+        if(isSearch){
+          zipCodeTextController.clear();
+          openingTimeTextController.clear();
+          closingTimeTextController.clear();
+          mileageTextController.clear();
+          isOpenNow.value = false;
+          initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

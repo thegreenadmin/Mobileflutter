@@ -66,9 +66,9 @@ class Utility {
               height10SizedBox,
               Center(
                 child: Image.asset(
-                  ImageConstants.info,
+                  ImageConstants.alert48,
                   color: AppColors.red,
-                  scale: 1.5,
+                  // scale: 1.5, 
                 ),
               ),
              /* height12SizedBox,
@@ -165,9 +165,9 @@ class Utility {
           children: [
             height10SizedBox,
             Image.asset(
-              ImageConstants.info,
+             ImageConstants.alert48,
               color: AppColors.red,
-              scale: 1.5,
+              // scale: 1.5,
             ),
             height12SizedBox,
             Visibility(

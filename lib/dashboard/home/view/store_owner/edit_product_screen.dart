@@ -1078,7 +1078,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .lengthTextController,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1154,7 +1154,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .breadthTextController,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1234,7 +1234,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .heightTextController,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants
@@ -1310,7 +1310,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .weightTextController,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value!.trim().isEmpty) {
                                         return AlertStringConstants

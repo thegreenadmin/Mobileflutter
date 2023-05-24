@@ -30,10 +30,10 @@ class ContactUsController extends GetxController {
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(BuildContext ctx) async {
     if (validateAndSave()) {
       try {
-        apiContactUs();
+        apiContactUs(ctx);
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -41,7 +41,7 @@ class ContactUsController extends GetxController {
   }
 
   //Contact us Api
-  Future apiContactUs() async {
+  Future apiContactUs(BuildContext ctx) async {
     Map data = {
       "name": nameTextController.text.trim(),
       "email": emailTextController.text.trim(),
@@ -73,7 +73,7 @@ class ContactUsController extends GetxController {
         subjectTextController.clear;
         messageTextController.clear;
         // Get.back();
-        Navigator.of(Get.context!).pop();
+        Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {

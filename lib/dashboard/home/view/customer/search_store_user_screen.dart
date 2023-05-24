@@ -316,11 +316,17 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       debugPrint("ADDRESSES---->$address");
 
                       if(placeMark.isNotEmpty){
-                        searchStoreUserController.zipCodeTextController.text =
+                        searchStoreUserController.city.value =
+                            placeMark.first.locality!;
+                      searchStoreUserController.state.value =
+                            placeMark.first.administrativeArea!;
+                      searchStoreUserController.country.value =
+                            placeMark.first.country!;
+                      searchStoreUserController.zipCodeTextController.text =
                             placeMark.first.postalCode??"";
                       }
                       if(locations.isNotEmpty){
-                        updateMap(locations.first.latitude.toString()??"", locations.first.longitude.toString()??"");
+                        updateMap(locations.first.latitude, locations.first.longitude);
                       }
 
                       ///--------------------------------
@@ -392,6 +398,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           TabBar(
             unselectedLabelColor: AppColors.blacklight,
             labelColor: AppColors.primary,
+            isScrollable: false,
             onTap: (i) {
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.previousStore.clear();
@@ -407,6 +414,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 searchStoreUserController.apiGetFavoriteStores(context);
               }
             },
+
             tabs: [
               Tab(
                 child: Text(
@@ -432,6 +440,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           ),
           Expanded(
             child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: const [
                 Center(child: NearbyStoreListScreen()),
@@ -446,6 +455,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   }
 
   void updateMap(lat, lng) async {
+
     CameraPosition kLake = CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(lat, lng),
@@ -455,8 +465,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
-    await searchStoreUserController.apiGetNearByStores(context);
-    updateMarker(lat, lng);
+    searchStoreUserController.type.value = 0;
+    // WidgetsBinding.instance.addPostFrameCallback((_)async{
+      await searchStoreUserController.apiGetNearByStores(context,isSearch:true);
+      updateMarker(lat, lng);
+    // });
+
+
   }
 
   void updateMarker(latitude, longitude) async {
