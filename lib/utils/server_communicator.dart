@@ -62,6 +62,8 @@ class ServerCommunicator {
   String messageList = 'message/list';
   String messageSend = 'message/send';
   String messageDelete = 'message/delete';
+   String messageStore = 'message/store';
+  
 
 //N
   String nearByStoreList = 'shop/stores/list/nearby';

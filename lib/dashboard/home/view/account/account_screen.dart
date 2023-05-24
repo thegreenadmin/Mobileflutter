@@ -308,46 +308,56 @@ class _AccountScreenState extends State<AccountScreen> {
                         height: 40,
                         thickness: 1,
                       ),
-                      InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const AddCardScreen(),
-                          ));
-                          // Get.to(const AddCardScreen());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  ImageConstants.cards,
-                                  color: AppColors.primary,
-                                  scale: 3.5,
-                                ),
-                                width15SizedBox,
-                                Text(StringConstants.cardAndPaymentsText,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                            Image.asset(
-                              ImageConstants.arrowForward,
-                              scale: 3.4,
-                              color: AppColors.blacklight,
+                      SharedPreferenceStorage.getData(Role.role.value)
+                                  .toString() ==
+                              Role.customerRoleText
+                          ? InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                SharedPreferenceStorage.setData(
+                                    "context", context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const AddCardScreen(),
+                                ));
+                                // Get.to(const AddCardScreen());
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.cards,
+                                        color: AppColors.primary,
+                                        scale: 3.5,
+                                      ),
+                                      width15SizedBox,
+                                      Text(StringConstants.cardAndPaymentsText,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
+                                  Image.asset(
+                                    ImageConstants.arrowForward,
+                                    scale: 3.4,
+                                    color: AppColors.blacklight,
+                                  )
+                                ],
+                              ),
                             )
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 40,
-                        thickness: 1,
-                      ),
+                          : height0SizedBox,
+                      SharedPreferenceStorage.getData(Role.role.value)
+                                  .toString() ==
+                              Role.customerRoleText
+                          ? const Divider(
+                              height: 40,
+                              thickness: 1,
+                            )
+                          : height0SizedBox,
                       InkWell(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,

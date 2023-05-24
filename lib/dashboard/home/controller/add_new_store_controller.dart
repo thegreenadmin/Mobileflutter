@@ -310,7 +310,7 @@ class AddNewStoreController extends GetxController {
               isTermsSelected.value
                   ? await termsFile.value.readAsBytes()
                   : await privacyFile.value.readAsBytes(),
-              contentType: MediaType.parse("file/pdf"),
+              contentType: MediaType.parse("application/pdf"),
               filename: isTermsSelected.value
                   ? termsFile.value.path.split("/").last
                   : privacyFile.value.path.split("/").last)));

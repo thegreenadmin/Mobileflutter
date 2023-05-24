@@ -308,23 +308,29 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
                       ///ADDRESSES BY GEOCODING
 
-                      List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+                      List<geocoding.Location> locations = await geocoding
+                          .locationFromAddress(p?.description.toString() ?? "");
 
-                      List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
-                      String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+                      List<geocoding.Placemark> placeMark =
+                          await geocoding.placemarkFromCoordinates(
+                              locations.first.latitude,
+                              locations.first.longitude);
+                      String address =
+                          "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
 
                       debugPrint("ADDRESSES---->$address");
 
-                      if(placeMark.isNotEmpty){
+                      if (placeMark.isNotEmpty) {
                         searchStoreUserController.zipCodeTextController.text =
-                            placeMark.first.postalCode??"";
+                            placeMark.first.postalCode ?? "";
                       }
-                      if(locations.isNotEmpty){
-                        updateMap(locations.first.latitude.toString()??"", locations.first.longitude.toString()??"");
+                      if (locations.isNotEmpty) {
+                        updateMap(locations.first.latitude.toString() ?? "",
+                            locations.first.longitude.toString() ?? "");
                       }
 
                       ///--------------------------------
-                       /*GeoData addresses = await Geocoder2.getDataFromAddress(
+                      /*GeoData addresses = await Geocoder2.getDataFromAddress(
                           address: p?.description.toString() ?? "",
                           googleMapApiKey: kGoogleApiKey);
                       searchStoreUserController.zipCodeTextController.text =

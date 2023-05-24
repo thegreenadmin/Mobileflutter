@@ -469,6 +469,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
+                                      initialEntryMode:
+                                          TimePickerEntryMode.input,
                                       helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
@@ -572,6 +574,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     date = (await showTimePicker(
+                                      initialEntryMode:
+                                          TimePickerEntryMode.input,
                                       helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,

@@ -20,6 +20,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -468,6 +469,47 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
+  //Api Contact store
+  Future apiContactStore(BuildContext ctx) async {
+    isLoading.value = true;
+    debugPrint("CONTACT STORE URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageStore}?store_id=${storeId.value}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageStore}?store_id=${storeId.value}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CONTACT STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Navigator.of(ctx).pop();
+        Get.parameters["storeName"] = value!.body["data"]["store_name"] ?? "";
+        Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
+        Get.parameters["messageHeadId"] =
+            value.body["data"]["message_head_id"] ?? "";
+        SharedPreferenceStorage.setData("context", ctx);
+        Navigator.of(ctx).push(MaterialPageRoute(
+          builder: (_) => const UserInboxDetailScreen(),
+        ));
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value?.body['message']);
+      }
+    });
+  }
+
   //Get Categories Api
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
@@ -584,13 +626,15 @@ class StoreHomeMainController extends GetxController {
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
-            cartListResponse.data!.cartItems!.isEmpty && isFromHome.value == true) {
+            cartListResponse.data!.cartItems!.isEmpty &&
+            isFromHome.value == true) {
           isDeleteCartItem.value = false;
           // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-        }else if(isDeleteCartItem.value == true &&
-            cartListResponse.data!.cartItems!.isEmpty && isFromHome.value == false){
+        } else if (isDeleteCartItem.value == true &&
+            cartListResponse.data!.cartItems!.isEmpty &&
+            isFromHome.value == false) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
@@ -1016,7 +1060,6 @@ class StoreHomeMainController extends GetxController {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
-  
 
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
 

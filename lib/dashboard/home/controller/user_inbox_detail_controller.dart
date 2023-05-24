@@ -37,32 +37,32 @@ class UserInboxDetailController extends GetxController {
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
+    print("store name--->" + storeName.value);
+    print("store storeId--->" + storeId.value);
+    print("store messageHeadId--->" + messageHeadId.value);
     apiGetMessagesList();
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
-    return Utility.showSelectionMediaDialog(context, onGalleryClick:
-        ()async{
-        //  Navigator.of(context).pop();
-          // Get.back();
-          XFile? pickedFile = await ImagePickerClass.picker
-              .pickImage(
-              imageQuality: 50,
-              source: ImageSource.gallery,
-              maxWidth: 900,
-              maxHeight: 900);
-          if (pickedFile != null) {
-            userSelectedImage.value = pickedFile;
-            await apiUploadImage();
-            update();
-          } else {
-            // api();
-          }
-    }, onCameraClick: ()async{
-    //  Navigator.of(context).pop();
+    return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
+      //  Navigator.of(context).pop();
       // Get.back();
-      XFile? pickedFile = await ImagePickerClass.picker
-          .pickImage(
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
+          imageQuality: 50,
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900);
+      if (pickedFile != null) {
+        userSelectedImage.value = pickedFile;
+        await apiUploadImage();
+        update();
+      } else {
+        // api();
+      }
+    }, onCameraClick: () async {
+      //  Navigator.of(context).pop();
+      // Get.back();
+      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
           maxWidth: 900,
@@ -150,8 +150,8 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
@@ -200,8 +200,8 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {

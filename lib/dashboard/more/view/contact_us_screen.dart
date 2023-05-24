@@ -98,9 +98,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               fontSize: 18),
                         ),
                         height20SizedBox,
-                         TextFormField(
-                             textCapitalization: TextCapitalization.words,
-                             autovalidateMode: AutovalidateMode.onUserInteraction,
+                        TextFormField(
+                            textCapitalization: TextCapitalization.words,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -158,7 +159,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                        TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -220,7 +223,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                        TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
@@ -280,7 +285,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               ),
                             )),
                         height20SizedBox,
-                         TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                        TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             maxLines: 4,
                             textInputAction: TextInputAction.done,
                             autofocus: false,
@@ -300,7 +307,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     .pleaseEnterMessageText;
                               }
                               return null;
-                            },textCapitalization: TextCapitalization.words,
+                            },
+                            textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               hintText: StringConstants.messageText,
@@ -349,7 +357,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            contactUsController.validateAndSubmit();
+                            contactUsController.validateAndSubmit(context);
                           },
                           height: 50,
                           text: StringConstants.sendMessageText,

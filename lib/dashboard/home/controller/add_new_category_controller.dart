@@ -57,7 +57,8 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseUploadCategoryImage);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiAddCategory(nCon);
         }
@@ -81,7 +82,8 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkfromServer.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseUploadCategoryImage);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseUploadCategoryImage);
         } else {
           await apiUpdateCategory(cntext);
         }
@@ -205,7 +207,6 @@ class AddNewCategoryController extends GetxController {
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
         isFeaturedTypeSelected.value = false;
-        storeId.value = "";
         categoryImageDynamicLinkfromServer.value = "";
         // Get.back();
         Navigator.of(nContext).pop();

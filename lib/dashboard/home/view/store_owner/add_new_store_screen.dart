@@ -649,9 +649,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                               language: "en",
                               components: []);
 
-                          debugPrint("ADDRESSES---description->${p?.description}");
+                          debugPrint(
+                              "ADDRESSES---description->${p?.description}");
 
-                          int idx = p?.description?.indexOf(",")??0;
+                          int idx = p?.description?.indexOf(",") ?? 0;
                           List parts = [
                             p?.description?.substring(0, idx).trim(),
                             p?.description?.substring(idx + 1).trim()
@@ -661,37 +662,41 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                           ///ADDRESSES BY GEOCODING
 
-                          List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+                          List<geocoding.Location> locations =
+                              await geocoding.locationFromAddress(
+                                  p?.description.toString() ?? "");
 
-                          List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
-                          String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
+                          List<geocoding.Placemark> placeMark =
+                              await geocoding.placemarkFromCoordinates(
+                                  locations.first.latitude,
+                                  locations.first.longitude);
+                          String address =
+                              "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
 
                           debugPrint("ADDRESSES---->$address");
 
-                         if(placeMark.isNotEmpty){
-                           addNewStoreController.townOrCityTextController
-                               .text = placeMark.first.locality??"";
+                          if (placeMark.isNotEmpty) {
+                            addNewStoreController.townOrCityTextController
+                                .text = placeMark.first.locality ?? "";
 
-                           addNewStoreController.countryTextController.text =
-                               placeMark.first.country??"";
+                            addNewStoreController.countryTextController.text =
+                                placeMark.first.country ?? "";
 
-                           addNewStoreController.zipCodeTextController.text =
-                               placeMark.first.postalCode??"";
+                            addNewStoreController.zipCodeTextController.text =
+                                placeMark.first.postalCode ?? "";
 
-                           addNewStoreController.stateTextController.text =
-                               placeMark.first.administrativeArea??"";
+                            addNewStoreController.stateTextController.text =
+                                placeMark.first.administrativeArea ?? "";
+                          }
+                          if (locations.isNotEmpty) {
+                            addNewStoreController.lng =
+                                locations.first.longitude.toString() ?? "";
+                            addNewStoreController.lat =
+                                locations.first.latitude.toString() ?? "";
+                          }
 
-                         }
-                         if(locations.isNotEmpty){
-                           addNewStoreController.lng =
-                               locations.first.longitude.toString()??"";
-                           addNewStoreController.lat =
-                               locations.first.latitude.toString()??"";
-                         }
-
-
-                        ///--------------------------------------
-                        /*  GeoData addresses =
+                          ///--------------------------------------
+                          /*  GeoData addresses =
                               await Geocoder2.getDataFromAddress(
                                   address: p?.description.toString()??"",
                                   googleMapApiKey:
@@ -1367,6 +1372,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
+                                                initialEntryMode:
+                                                    TimePickerEntryMode.input,
                                                 helpText: StringConstants
                                                     .selectTimeText,
                                                 initialTime: TimeOfDay.now(),
@@ -1504,6 +1511,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
+                                                    initialEntryMode:
+                                                    TimePickerEntryMode.input,
                                                 helpText: StringConstants
                                                     .selectTimeText,
                                                 initialTime: TimeOfDay.now(),

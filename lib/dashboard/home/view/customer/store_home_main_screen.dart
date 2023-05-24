@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/user_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -147,6 +150,22 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
+            InkWell(
+              onTap: () {
+                // Navigator.pop(context);
+                storeHomeMainController.apiContactStore(context);
+              },
+              child: const Text(
+                "Have issue/question?",
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: AppColors.primary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            height15SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -251,6 +270,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
+    print("object2");
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -317,23 +337,34 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-
+                print("privacy----" +
+                    storeHomeMainController.storeDetailsResponse.value.data!
+                        .store!.storePages!.first.storePageContent!.dynamicUrl
+                        .toString());
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![0].storePageType ==
                         "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-                  print(storeHomeMainController.storeDetailsResponse.value.data!
-                      .store!.storePages!.first.storePageContent!.dynamicUrl
-                      .toString());
-
-                  Get.to(ViewPdfScreen(
-                      url: "https://fluttercampus.com/sample.pdf"));
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => WebviewPageScreen(
+                          isFrom: "aboutus",
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
 
                   // Get.to(ViewPdfScreen(
                   //     url: storeHomeMainController
@@ -373,7 +404,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();

@@ -135,6 +135,7 @@ class StringConstants {
   static String decText = "December";
   static String detailText = "Detail";
   static String debitMoneyFromWalletText = "Debit money from my wallet";
+  static String descriptionOftheIssueText = "Description of the issue/question";
 
   //E
 
@@ -202,7 +203,7 @@ class StringConstants {
   static String inProgress = "In-progress";
   static String imageText = "Image";
   static String individualText = "Individual";
-  static String inSufficientFundText = "In-sufficient fund in your wallet ";
+  static String inSufficientFundText = "In-sufficient funds in your wallet ";
 
   //J
   static String janText = "January";
