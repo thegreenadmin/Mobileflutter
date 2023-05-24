@@ -1014,6 +1014,7 @@ class StoreHomeMainController extends GetxController {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
+  
 
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
 

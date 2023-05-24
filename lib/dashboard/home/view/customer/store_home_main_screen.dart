@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -36,7 +37,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   @override
   void initState() {
     super.initState();
-    if(storeHomeMainController.storeId.value != Get.parameters["storeId"] ){
+    if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
       storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
       storeHomeMainController.getCurrentLocation();
     }
@@ -320,20 +321,39 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-               /* if (storeHomeMainController.storeDetailsResponse.value.data!
+
+                if (storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![0].storePageType ==
                         "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
+                  print(storeHomeMainController.storeDetailsResponse.value.data!
+                      .store!.storePages!.first.storePageContent!.dynamicUrl
+                      .toString());
 
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "privacy");
-                }*/
+                  Get.to(ViewPdfScreen(
+                      url: "https://fluttercampus.com/sample.pdf"));
+
+                  // Get.to(ViewPdfScreen(
+                  //     url: storeHomeMainController
+                  //         .storeDetailsResponse
+                  //         .value
+                  //         .data!
+                  //         .store!
+                  //         .storePages!
+                  //         .first
+                  //         .storePageContent!
+                  //         .dynamicUrl
+                  //         .toString().split("pdf")[0]+'pdf'));
+
+                  //   // Get.back();
+                  //   // storeHomeMainController.termsAndPrivacyDailogue(ctx,
+                  //   //     content: storeHomeMainController.storeDetailsResponse
+                  //   //         .value.data!.store!.storePages!.first.storePageContent
+                  //   //         .toString(),
+                  //   //     contentType: "privacy");
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,7 +377,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-               /* if (storeHomeMainController.storeDetailsResponse.value.data!
+                /* if (storeHomeMainController.storeDetailsResponse.value.data!
                         .store!.storePages!.first.storePageType ==
                     "terms") {
 

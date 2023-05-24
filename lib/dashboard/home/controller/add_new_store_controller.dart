@@ -334,14 +334,14 @@ class AddNewStoreController extends GetxController {
               "pdf";
           isTermsSelected.value = false;
         } else {
+          privacyOrigionalLinkfromServer.value =
+              responseData['data']['urls']['orignal_url'];
           privacyTextController.text = responseData['data']['urls']
                       ['dynamic_url']
                   .split("pdf")[0]
                   .split("/")
                   .last +
               "pdf";
-          privacyOrigionalLinkfromServer.value =
-              responseData['data']['urls']['orignal_url'];
           isTermsSelected.value = false;
         }
         return responseData;
