@@ -70,20 +70,22 @@ class DeliveryService {
   DeliveryService({
     this.id,
     this.name,
-    this.isSelected,
+    this.isSelected = false,
   });
 
   String? id;
   String? name;
-  bool? isSelected;
+  bool isSelected;
 
   DeliveryService copyWith({
     String? id,
     String? name,
+    bool? isSelected
   }) =>
       DeliveryService(
         id: id ?? this.id,
         name: name ?? this.name,
+        isSelected: isSelected ?? this.isSelected,
       );
 
   factory DeliveryService.fromJson(Map<String, dynamic> json) => DeliveryService(

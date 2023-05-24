@@ -101,6 +101,7 @@ class OwnerStoresController extends GetxController {
   late DeliveryServicesResponse deliveryServicesResponse =
       DeliveryServicesResponse();
   RxList<DeliveryService> deliveryServices = <DeliveryService>[].obs;
+  RxList<DeliveryService> deliveryServices2 = <DeliveryService>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
@@ -650,14 +651,12 @@ class OwnerStoresController extends GetxController {
               openingTimeTextController.text = Utility.formatDateTime(
                       storeTimings[i]["opening_time"] ?? '',
                       firstFormat: "hh:mm:ss",
-                      secFormat: "hh:mm a")
-                  .toString();
+                      secFormat: "hh:mm a").toString();
               openingTime.value = openingTimeTextController.text;
               closingTimeTextController.text = Utility.formatDateTime(
                       storeTimings[i]["closing_time"] ?? '',
                       firstFormat: "hh:mm:ss",
-                      secFormat: "hh:mm a")
-                  .toString();
+                      secFormat: "hh:mm a").toString();
               closingTime.value = closingTimeTextController.text;
             }
           }
@@ -673,8 +672,10 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
-        debugPrint(
-            "deliveryServices isNotEmpty: ===== ${deliveryServices.isNotEmpty}");
+        
+        debugPrint("deliveryServices : ===== ${deliveryServices.isNotEmpty}");
+        debugPrint("deliveryServices isNotEmpty: ===== ${jsonEncode(deliveryServices.toString())}");
+       // List<DeliveryService> deliveryServicesData = deliveryServices ?? [];
 
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {
@@ -685,35 +686,36 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
+        // deliveryServices.value = deliveryServicesData;
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 
         if (storePages.isNotEmpty) {
           for (int i = 0; i < storePages.length; i++) {
             if (storePages[i]['store_page_type'] == "terms") {
-              storeTermsTextController.text = storePages[i]
-                          ['store_page_content']['dynamic_url']
-                      .split("pdf")[0]
-                      .split("/")
-                      .last +
-                  "pdf";
-
-              termsOrigionalLinkfromServer.value =
-                  storePages[i]['store_page_content']['orignal_url'];
-
+              if(storePages[i]['store_page_content']['dynamic_url']!=null){
+                storeTermsTextController.text = storePages[i]['store_page_content']['dynamic_url']
+                    .split("pdf")[0].split("/").last + "pdf";
+              }
+             if( storePages[i]['store_page_content']['orignal_url']!=null){
+               termsOrigionalLinkfromServer.value =
+               storePages[i]['store_page_content']['orignal_url'];
+              }
               update();
             }
             if (storePages[i]['store_page_type'] == "privacy") {
-              storePrivacyTextController.text = storePages[i]
-                          ['store_page_content']['dynamic_url']
-                      .split("pdf")[0]
-                      .split("/")
-                      .last +
-                  "pdf";
-              privacyOrigionalLinkfromServer.value =
-                  storePages[i]['store_page_content']['orignal_url'];
+              if( storePages[i]['store_page_content']['dynamic_url']!=null){
+                storePrivacyTextController.text = storePages[i]
+                ['store_page_content']['dynamic_url'].split("pdf")[0].split("/").last + "pdf";
+              }
+              if( storePages[i]['store_page_content']['orignal_url']!=null){
+                privacyOrigionalLinkfromServer.value =
+                storePages[i]['store_page_content']['orignal_url'];
+              }
+
             }
           }
         }
+        update();
       } else {
         Utility.showAlertMessage(value?.body['message']);
       }

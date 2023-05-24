@@ -173,39 +173,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                 .storeList[index].storeId ??
                                             "";
 
-                                    /*ownerStoresController.storeName.value =
-                                        ownerStoresController
-                                                .storeList[index].storeName ??
-                                            "";
-
-                                    ownerStoresController.storeLocation.value =
-                                        ownerStoresController
-                                            .storeList[index]
-                                            .storeAddresses![
-                                                ownerStoresController
-                                                    .addressListIndex!.value]
-                                            .addressLine1!;
-
-                                    ownerStoresController.storeLocation.value =
-                                        ownerStoresController
-                                            .storeList[index]
-                                            .storeAddresses![
-                                                ownerStoresController
-                                                    .addressListIndex!.value]
-                                            .addressLine1!;
-
-                                    ownerStoresController.storeImage!.value =
-                                        ownerStoresController.storeList[index]
-                                                .image!.dynamicUrl ??
-                                            "";
-
-                                    ownerStoresController.storeLogo!.value =
-                                        ownerStoresController.storeList[index]
-                                                .logo!.dynamicUrl ??
-                                            "";*/
-
+                                    // await ownerStoresController
+                                    //     .apiGetDeliveryServices();
                                     await ownerStoresController
                                         .apiGetParticularStore();
+
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();

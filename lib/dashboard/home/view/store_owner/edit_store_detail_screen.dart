@@ -1697,21 +1697,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
+
                     MultiCustomDropDown(
                         onChanged: (v) {
                           ownerStoreController.deliveryServicesList.clear();
                           if (ownerStoreController
                               .storeDeliveryServices.isNotEmpty) {
                             for (int i = 0;
-                                i <
-                                    ownerStoreController
-                                        .deliveryServices.length;
+                                i < ownerStoreController.deliveryServices.length;
                                 i++) {
                               for (var element in ownerStoreController
                                   .storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==
-                                    ownerStoreController
-                                        .deliveryServices[i].id) {
+                                    ownerStoreController.deliveryServices[i].id) {
                                   ownerStoreController.deliveryServicesList
                                       .add({
                                     "store_delivery_service_id":
@@ -1725,8 +1723,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 }
                               }
 
-                              if (ownerStoreController
-                                          .deliveryServices[i].isSelected ==
+                              if (ownerStoreController.deliveryServices[i].isSelected ==
                                       true &&
                                   !ownerStoreController.storeDeliveryServices
                                       .any((element) =>
@@ -1744,13 +1741,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             }
                           } else {
                             for (int i = 0;
-                                i <
-                                    ownerStoreController
-                                        .deliveryServices.length;
-                                i++) {
-                              if (ownerStoreController
-                                      .deliveryServices[i].isSelected ==
-                                  true) {
+                                i < ownerStoreController
+                                        .deliveryServices.length; i++) {
+                              if (ownerStoreController.deliveryServices[i].isSelected == true) {
                                 ownerStoreController.deliveryServicesList.add({
                                   "store_delivery_service_id": null,
                                   "delivery_service_id": ownerStoreController
