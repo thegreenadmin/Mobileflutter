@@ -474,22 +474,12 @@ class _OffersScreenState extends State<OffersScreen> {
                                       Utility.showConfirmAlertMessage( AlertStringConstants
                                           .areYouSureText,okay:  StringConstants
                                           .deleteText,okayTap: () async{
-                                        offersController.storeId!
-                                            .value = offersController
-                                            .getOwnerOfferlist[
-                                        index]
-                                            .store!
-                                            .storeId ??
-                                            "";
-                                        offersController.offerId!
-                                            .value = offersController
-                                            .getOwnerOfferlist[
-                                        index]
-                                            .offerId ??
-                                            "";
+                                      Navigator.pop(Get.context!);
+                                        offersController.storeId!.value = offersController
+                                            .getOwnerOfferlist[index].store!.storeId ?? "";
+                                        offersController.offerId!.value = offersController.getOwnerOfferlist[index].offerId ?? "";
 
-                                        await offersController
-                                            .apiDeleteOffer(context);
+                                        await offersController.apiDeleteOffer(context);
                                       });
 
                                 },

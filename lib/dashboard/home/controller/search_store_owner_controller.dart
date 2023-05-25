@@ -150,9 +150,9 @@ class OwnerStoresController extends GetxController {
     super.onInit();
     selectedIndex.value = 0;
     firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText);
+        SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
     lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText);
+        SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     getCurrentLocation();
     getGkey();
     if (Get.parameters['isFromHome'] == "true") {

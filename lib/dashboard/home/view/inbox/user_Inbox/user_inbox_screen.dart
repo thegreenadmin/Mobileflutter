@@ -372,6 +372,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                       .areYouSureText,
                                                   okay: StringConstants
                                                       .deleteText, okayTap: () {
+                                                Navigator.pop(Get.context!);
                                                 userInboxController
                                                     .apiDeleteUserMessages(
                                                         messageHeadId:

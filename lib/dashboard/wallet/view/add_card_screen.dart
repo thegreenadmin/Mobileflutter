@@ -162,6 +162,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                                       Utility.showConfirmAlertMessage( AlertStringConstants
                                           .areYouSureText,okay:  StringConstants
                                           .deleteText,okayTap: () async{
+                                        Navigator.pop(Get.context!);
                                         addCardController.apiDeleteCard(
                                             userStripeCardId:
                                             addCardController

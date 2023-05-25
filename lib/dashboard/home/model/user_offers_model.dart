@@ -1,5 +1,5 @@
 class GetUserOfferModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -23,7 +23,7 @@ class GetUserOfferModel {
 }
 
 class Data {
-  int? totalCount;
+  dynamic totalCount;
   List<Offers>? offers;
 
   Data({this.totalCount, this.offers});
@@ -55,7 +55,7 @@ class Offers {
   bool? isOfferForStore;
   String? offerName;
   String? offerType;
-  int? offerValue;
+  dynamic offerValue;
   bool? isExpired;
   String? expiredAt;
   String? status;
@@ -77,7 +77,7 @@ class Offers {
       this.updatedAt});
 
   Offers.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ?  Image.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     storeId = json['store_id'];
     isOfferForStore = json['is_offer_for_store'];
@@ -92,7 +92,7 @@ class Offers {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this.image != null) {
       data['image'] = this.image!.toJson();
     }
@@ -123,7 +123,7 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['orignal_url'] = this.orignalUrl;
     data['dynamic_url'] = this.dynamicUrl;
     return data;

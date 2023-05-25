@@ -364,6 +364,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                               Utility.showConfirmAlertMessage( AlertStringConstants
                                                   .areYouSureText,okay:  StringConstants
                                                   .deleteText,okayTap: (){
+                                                Navigator.pop(Get.context!);
                                                 ownerInboxController.apiDeleteStoreMessages(
                                                     messageHeadId: ownerInboxController
                                                         .inboxList[index]

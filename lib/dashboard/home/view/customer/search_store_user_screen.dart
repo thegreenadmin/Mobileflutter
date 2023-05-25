@@ -1,23 +1,20 @@
 import 'dart:async';
 import 'dart:ui' as ui;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-// import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
+import "package:google_maps_webservice/places.dart";
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/favourite_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -140,13 +137,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [],
-                                      ),
                                       Row(
                                         children: [
                                           InkWell(
@@ -307,7 +297,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           p?.description!.toString() ?? "";
 
                       ///ADDRESSES BY GEOCODING
-
+                      searchStoreUserController.placeId.value =
+                          p?.placeId.toString() ?? "";
                       List<geocoding.Location> locations = await geocoding
                           .locationFromAddress(p?.description.toString() ?? "");
 
@@ -335,11 +326,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       }
 
                       ///--------------------------------
-                       /*GeoData addresses = await Geocoder2.getDataFromAddress(
+                      /* GeoData addresses = await Geocoder2.getDataFromAddress(
                           address: p?.description.toString() ?? "",
                           googleMapApiKey: kGoogleApiKey);
                       searchStoreUserController.zipCodeTextController.text =
                           addresses.postalCode;
+
                       updateMap(addresses.latitude, addresses.longitude);*/
                     },
                     controller: searchStoreUserController.searchController,

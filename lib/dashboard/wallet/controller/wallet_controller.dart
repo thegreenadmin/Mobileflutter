@@ -108,6 +108,14 @@ class WalletController extends GetxController {
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     role?.value = SharedPreferenceStorage.getData(Role.role.value);
+    print("SharedPreferenceStorage:-------------->");
+
+    print( SharedPreferenceStorage.getData(StringConstants.firstNameText));
+    print(SharedPreferenceStorage.getData(StringConstants.lastNameText));
+    print(SharedPreferenceStorage.getData(Role.role.value));
+    print(  firstName?.value);
+    print(  lastName?.value);
+    print(  role?.value);
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       if (Get.parameters == null

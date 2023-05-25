@@ -610,8 +610,7 @@ class AccountController extends GetxController {
         "nick_name": nickNameTextController.text.trim(),
       },
       "address": {
-        "user_address_id": null,
-        // "state_id": stateId.value,
+        "user_address_id": getUserDetailModel.data?.user?.userAddresses?.first.userAddressId ??0,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
@@ -632,7 +631,7 @@ class AccountController extends GetxController {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showToast(value.body['message']);
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
