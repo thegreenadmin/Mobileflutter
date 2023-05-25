@@ -35,7 +35,7 @@ class Offer {
   String? offerName;
   String? imageUrl;
   String? offerType;
-  int? offerValue;
+  dynamic offerValue;
 
   Offer(
       {this.isOfferForStore,

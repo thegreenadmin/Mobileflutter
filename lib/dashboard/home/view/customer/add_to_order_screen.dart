@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -179,22 +180,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               ),
             ),
             height15SizedBox,
-            InkWell(
-              onTap: () {
-                // Navigator.pop(context);
-                storeHomeMainController.apiContactStore(context);
-              },
-              child: const Text(
-                "Have issue/question?",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: AppColors.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            height15SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -299,7 +284,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    print("object");
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -366,24 +350,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                /* if (storeHomeMainController.storeDetailsResponse.value.data!
+                if (storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![0].storePageType ==
                         "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "privacy");
-                }*/
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: true,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,21 +394,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                /* if (storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages!.first.storePageType ==
-                    "terms") {
-
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "terms");
-                }*/
+                if (storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![0].storePageType ==
+                        "terms" ||
+                    storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![1].storePageType ==
+                        "terms") {
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: true,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -812,7 +813,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   _buildRowOtherDetail(
                       title: StringConstants.weightText,
                       textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} grams"),
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.returnAvailableText,

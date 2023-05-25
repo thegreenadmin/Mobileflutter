@@ -471,27 +471,25 @@ class _OffersScreenState extends State<OffersScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                      Utility.showConfirmAlertMessage( AlertStringConstants
-                                          .areYouSureText,okay:  StringConstants
-                                          .deleteText,okayTap: () async{
-                                        offersController.storeId!
-                                            .value = offersController
-                                            .getOwnerOfferlist[
-                                        index]
-                                            .store!
-                                            .storeId ??
+                                  Utility.showConfirmAlertMessage(
+                                      AlertStringConstants.areYouSureText,
+                                      okay: StringConstants.deleteText,
+                                      okayTap: () async {
+                                    offersController.storeId!.value =
+                                        offersController
+                                                .getOwnerOfferlist[index]
+                                                .store!
+                                                .storeId ??
                                             "";
-                                        offersController.offerId!
-                                            .value = offersController
-                                            .getOwnerOfferlist[
-                                        index]
-                                            .offerId ??
+                                    offersController.offerId!.value =
+                                        offersController
+                                                .getOwnerOfferlist[index]
+                                                .offerId ??
                                             "";
 
-                                        await offersController
-                                            .apiDeleteOffer(context);
-                                      });
-
+                                    await offersController
+                                        .apiDeleteOffer(context);
+                                  });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

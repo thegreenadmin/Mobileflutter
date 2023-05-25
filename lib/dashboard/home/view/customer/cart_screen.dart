@@ -916,6 +916,13 @@ class _CartScreenState extends State<CartScreen> {
                                 storeHomeMainController
                                         .isInsufficientBalance!.value ==
                                     true,
+                            // visible:
+                            //     storeHomeMainController.walletBalance.value <
+                            //             storeHomeMainController
+                            //                 .cartTotalPrice.value &&
+                            //         storeHomeMainController
+                            //                 .isInsufficientBalance!.value ==
+                            //             true,
                             child: Container(
                               color: AppColors.redlight,
                               padding: const EdgeInsets.all(10.0),
@@ -923,13 +930,13 @@ class _CartScreenState extends State<CartScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "${StringConstants.inSufficientFundText} \$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
-                                    style: const TextStyle(
-                                        color: AppColors.red,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                  Obx(() => Text(
+                                        "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.cartTotalPrice.value.toStringAsFixed(2)})",
+                                        style: const TextStyle(
+                                            color: AppColors.red,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      )),
                                   InkWell(
                                     onTap: () {
                                       SharedPreferenceStorage.setData(
@@ -994,19 +1001,27 @@ class _CartScreenState extends State<CartScreen> {
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                  colors: storeHomeMainController.cartData.value
-                                                      .cartTotalPrice !=
-                                                  null &&
+                                  colors: storeHomeMainController
+                                                  .walletBalance.value <
                                               storeHomeMainController
-                                                      .walletBalance.value <
-                                                  storeHomeMainController
-                                                      .cartData
-                                                      .value
-                                                      .cartTotalPrice! ||
+                                                  .cartTotalPrice.value &&
                                           storeHomeMainController
                                                   .isInsufficientBalance!
                                                   .value ==
                                               true
+                                      // storeHomeMainController.cartData.value
+                                      //                     .cartTotalPrice !=
+                                      //                 null &&
+                                      //             storeHomeMainController
+                                      //                     .walletBalance.value <
+                                      //                 storeHomeMainController
+                                      //                     .cartData
+                                      //                     .value
+                                      //                     .cartTotalPrice! ||
+                                      //         storeHomeMainController
+                                      //                 .isInsufficientBalance!
+                                      //                 .value ==
+                                      //             true
                                       ? [AppColors.grey, AppColors.grey]
                                       : [AppColors.primary, AppColors.primary],
                                 ),
@@ -1015,11 +1030,12 @@ class _CartScreenState extends State<CartScreen> {
                                           .storeDeliveryServiceId.value !=
                                       "0") {
                                     if (storeHomeMainController
-                                                .walletBalance.value >
-                                            storeHomeMainController.cartData
-                                                .value.cartTotalPrice! &&
-                                        !storeHomeMainController
-                                            .isInsufficientBalance!.value) {
+                                                .walletBalance.value <
+                                            storeHomeMainController
+                                                .cartTotalPrice.value &&
+                                        storeHomeMainController
+                                                .isInsufficientBalance!.value ==
+                                            true) {
                                       storeHomeMainController
                                           .moneydeductFromCartDailogue(context,
                                               amount: storeHomeMainController
@@ -1058,13 +1074,10 @@ class _CartScreenState extends State<CartScreen> {
                                 height: 45,
                                 width: 120,
                                 text: StringConstants.payNowText,
-                                textColor: storeHomeMainController.cartData
-                                                    .value.cartTotalPrice !=
-                                                null &&
+                                textColor: storeHomeMainController
+                                                .walletBalance.value <
                                             storeHomeMainController
-                                                    .walletBalance.value <
-                                                storeHomeMainController.cartData
-                                                    .value.cartTotalPrice! ||
+                                                .cartTotalPrice.value &&
                                         storeHomeMainController
                                                 .isInsufficientBalance!.value ==
                                             true

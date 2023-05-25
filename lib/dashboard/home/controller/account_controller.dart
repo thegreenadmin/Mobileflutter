@@ -881,7 +881,6 @@ class AccountController extends GetxController {
       debugPrint("CREATE USER ACCESS RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-
         Utility.showToast(value.body['message']);
         Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode401) {

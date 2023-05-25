@@ -1511,7 +1511,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               FocusScope.of(context)
                                                   .requestFocus(FocusNode());
                                               date = (await showTimePicker(
-                                                    initialEntryMode:
+                                                initialEntryMode:
                                                     TimePickerEntryMode.input,
                                                 helpText: StringConstants
                                                     .selectTimeText,

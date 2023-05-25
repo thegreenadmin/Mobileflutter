@@ -334,7 +334,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  StringConstants.paymentText,
+                                  StringConstants.paymentTypeText,
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,

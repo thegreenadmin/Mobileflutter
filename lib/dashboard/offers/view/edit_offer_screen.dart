@@ -549,20 +549,21 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         Flexible(
                           flex: 5,
                           child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r"[0-9.]")),
+                              ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                              ],
                               style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
                               controller: addOffersController
                                   .discountOrOfferTextController,
-                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants

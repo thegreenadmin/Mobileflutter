@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';

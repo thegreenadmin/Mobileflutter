@@ -55,7 +55,7 @@ class Offers {
   bool? isOfferForStore;
   String? offerName;
   String? offerType;
-  int? offerValue;
+  dynamic offerValue;
   bool? isExpired;
   String? expiredAt;
   String? status;

@@ -158,7 +158,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
@@ -176,7 +177,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 .pleaseEnterOfferNameText;
                           }
                           return null;
-                        },textCapitalization: TextCapitalization.words,
+                        },
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: StringConstants.enterNameText,
                           hintStyle: const TextStyle(
@@ -543,11 +545,15 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child:  TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r"[0-9.]")),
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -555,12 +561,11 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                   fontWeight: FontWeight.w500),
                               controller: addOffersController
                                   .discountOrOfferTextController,
-                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
                                       .pleaseEnterDiscountOrOfferText;
-                                } else if (int.parse(value) == 0) {
+                                } else if (double.parse(value) == 0) {
                                   return AlertStringConstants.invalidAmountText;
                                 }
                                 return null;
@@ -611,7 +616,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addOffersController.validateAndSubmit(true,context);
+                        addOffersController.validateAndSubmit(true, context);
                       },
                       height: 50,
                       text: StringConstants.saveText,

@@ -88,6 +88,8 @@ class StoreHomeMainController extends GetxController {
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
+  RxDouble cartTotalPrice = 0.0.obs;
+
   final scrollController = ScrollController();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
@@ -96,42 +98,43 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(milliseconds: 500), () {});
-    if (storeId.value != Get.parameters["storeId"]) {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      getCurrentLocation();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (storeId.value != Get.parameters["storeId"]) {
+        storeId.value = Get.parameters["storeId"] ?? "";
+        getCurrentLocation();
+      }
+      if (Get.parameters['isFromHome'] != false) {
+        isFromHome.value =
+            Get.parameters["isFromHome"] == "true" ? true : false;
 
-    if (Get.parameters['isFromHome'] != false) {
-      isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
+        productId.value = Get.parameters["productId"] == null
+            ? ""
+            : Get.parameters["productId"] ?? "";
+      }
 
-      productId.value = Get.parameters["productId"] == null
-          ? ""
-          : Get.parameters["productId"] ?? "";
-    }
+      isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
+      isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
+      print("isFromMenu--------${isFromFav.value}");
+      print("isFromFav-------${isFromMenu.value}");
+      print("PRODUCT ID--------${Get.parameters["productId"]}");
 
-    isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
-    isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-    print("isFromMenu--------${isFromFav.value}");
-    print("isFromFav-------${isFromMenu.value}");
-    print("PRODUCT ID--------${Get.parameters["productId"]}");
-
-    apiGetUserDetailsApi();
-    if (isFromMenu.value) {
-      selectedIndex.value = 1;
-    }
-    if (isFromFav.value) {
-      selectedIndex.value = 2;
-    }
-    if (isFromHome.value) {
-      selectedIndex.value = 0;
-      apiGetShopProductDetailApi();
-    } else {
-      onIndexChange(0);
-    }
-    apiGetUserWalletBalance();
-    apiGetCartListApi(Get.context);
-    apiActiveCartApi(Get.context);
+      apiGetUserDetailsApi();
+      if (isFromMenu.value) {
+        selectedIndex.value = 1;
+      }
+      if (isFromFav.value) {
+        selectedIndex.value = 2;
+      }
+      if (isFromHome.value) {
+        selectedIndex.value = 0;
+        apiGetShopProductDetailApi();
+      } else {
+        onIndexChange(0);
+      }
+      apiGetUserWalletBalance();
+      apiGetCartListApi(Get.context);
+      apiActiveCartApi(Get.context);
+    });
   }
 
   void onIndexChange(int i) async {
@@ -452,10 +455,19 @@ class StoreHomeMainController extends GetxController {
           storeIdValue.value = activeCartModel.data!.storeId.toString();
         } else {
           cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+          if (cartListResponse.data?.cartTotalPrice is int ||
+              cartListResponse.data?.cartTotalPrice is String) {
+            cartTotalPrice.value = double.parse(
+                cartListResponse.data?.cartTotalPrice.toString() ?? "0.0");
+          } else {
+            cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
+          }
+
+          print("CART TOTAL VALUE" + cartTotalPrice.value.toString());
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-          print("STORE ID VALUE" + storeIdValue.value.toString());
+
           // await apiGetCartListApi(context,
           //     storeId: activeCartModel.data!.storeId.toString());
         }
@@ -624,6 +636,14 @@ class StoreHomeMainController extends GetxController {
         cartListResponse = cart.CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+        if (cartListResponse.data?.cartTotalPrice is int ||
+            cartListResponse.data?.cartTotalPrice is String) {
+          cartTotalPrice.value = double.parse(
+              cartListResponse.data?.cartTotalPrice.toString() ?? "0.0");
+        } else {
+          cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
+        }
+        print("CART TOTAL VALUE" + cartTotalPrice.value.toString());
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
@@ -1027,6 +1047,7 @@ class StoreHomeMainController extends GetxController {
           walletBalance.value = value.body["data"]["balance"] ?? 0.0;
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

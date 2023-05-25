@@ -1700,7 +1700,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Row(
                           children: [
                             Text(
-                              StringConstants.enabledText,
+                              StringConstants.enabledText +
+                                  StringConstants.productText,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,

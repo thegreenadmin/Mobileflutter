@@ -1,32 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'dart:async';
-import 'dart:io';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-
-class ViewPdfScreen extends StatefulWidget {
+class PdfViewScreen extends StatefulWidget {
+  bool isShowPrivacy = false;
   String url = "";
-  ViewPdfScreen({super.key, this.url = ""});
+  PdfViewScreen({Key? key, this.url = "", this.isShowPrivacy = false})
+      : super(key: key);
 
   @override
-  State<ViewPdfScreen> createState() => _ViewPdfScreenState();
+  State<PdfViewScreen> createState() => _PdfViewScreenState();
 }
 
-class _ViewPdfScreenState extends State<ViewPdfScreen> {
+class _PdfViewScreenState extends State<PdfViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: PDFView(
-          filePath: widget.url,
-          autoSpacing: true,
-          enableSwipe: true,
-        ));
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(90.0),
+          child: Container(
+            color: AppColors.primarylight,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              // Get.back();
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                              size: 24.0,
+                            ),
+                          ),
+                          width10SizedBox,
+                          Text(
+                            widget.isShowPrivacy
+                                ? StringConstants.privacyPolicyText
+                                : StringConstants.termsAndConditionsText,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        ImageConstants.homeMall,
+                        scale: 4,
+                      )
+                    ])),
+          )),
+      body: SfPdfViewer.network(
+        widget.url.toString(),
+      ),
+    );
   }
 }

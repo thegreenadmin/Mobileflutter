@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -330,24 +331,31 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                /* if (storeHomeMainController.storeDetailsResponse.value.data!
+                if (storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![0].storePageType ==
                         "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "privacy");
-                }*/
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: true,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,21 +375,31 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 130,
+            width: 150,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                /* if (storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages!.first.storePageType ==
-                    "terms") {
-
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "terms");
-                }*/
+                if (storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![0].storePageType ==
+                        "terms" ||
+                    storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![1].storePageType ==
+                        "terms") {
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: true,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

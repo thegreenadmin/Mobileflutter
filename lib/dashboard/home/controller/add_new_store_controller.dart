@@ -111,7 +111,10 @@ class AddNewStoreController extends GetxController {
   String? dynamicLink;
 
   filePicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowedExtensions: ["pdf"],
+        type: FileType.custom,
+        allowMultiple: false);
     if (result != null) {
       if (isTermsSelected.value) {
         termsFile.value = XFile(result.files.single.path!);

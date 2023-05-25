@@ -40,8 +40,7 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(
-          "https://docs.google.com/gview?embedded=true&url=${widget.url}"));
+      ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
   }
 

@@ -162,7 +162,10 @@ class OwnerStoresController extends GetxController {
   }
 
   filePicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowedExtensions: ["pdf"],
+        type: FileType.custom,
+        allowMultiple: false);
     if (result != null) {
       if (isTermsSelected.value) {
         termsFile.value = XFile(result.files.single.path!);
@@ -799,22 +802,25 @@ class OwnerStoresController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         // Get.back();
-        Navigator.of(ctx).pop();
-        Navigator.of(ctx).pop();
-
-        await apiGetStoreList();
-        storeNameTextController.clear();
-        einTextController.clear();
-        nickNameTextController.clear();
-        emailTextController.clear();
-        phoneTextController.clear();
-        addressLine1TextController.clear();
-        addressLine2TextController.clear();
-        townOrCityTextController.clear();
-        postalCodeTextController.clear();
-        stateTextController.clear();
-        countryTextController.clear();
-        countryCode.value = "";
+        if (Get.parameters['isFromHome'] == "true") {
+          Navigator.of(ctx).pop();
+        } else {
+          Navigator.of(ctx).pop();
+          Navigator.of(ctx).pop();
+          await apiGetStoreList();
+          storeNameTextController.clear();
+          einTextController.clear();
+          nickNameTextController.clear();
+          emailTextController.clear();
+          phoneTextController.clear();
+          addressLine1TextController.clear();
+          addressLine2TextController.clear();
+          townOrCityTextController.clear();
+          postalCodeTextController.clear();
+          stateTextController.clear();
+          countryTextController.clear();
+          countryCode.value = "";
+        }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

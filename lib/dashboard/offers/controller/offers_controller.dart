@@ -47,10 +47,12 @@ class OffersController extends GetxController {
         ? false
         : Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
-      Get.parameters["isFromNotification"]=="true"?true:false;
+          Get.parameters["isFromNotification"] == "true" ? true : false;
     }
-    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
-    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
+    firstName?.value =
+        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value =
+        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -105,7 +107,7 @@ class OffersController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
@@ -143,7 +145,7 @@ class OffersController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
@@ -187,7 +189,7 @@ class OffersController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {

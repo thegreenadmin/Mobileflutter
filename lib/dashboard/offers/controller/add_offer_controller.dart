@@ -196,7 +196,7 @@ class AddOffersController extends GetxController {
     offer.offerName = offerNameTextController.text.trim();
     offer.imageUrl = offerImageOrigionalLinkfromServer.value;
     offer.offerType = discountType.value.toLowerCase();
-    offer.offerValue = int.parse(discountOrOfferTextController.text.trim());
+    offer.offerValue = double.parse(discountOrOfferTextController.text.trim());
     addOfferRequestModel.offer = offer;
     debugPrint("ADD OFFER BODY********** ${addOfferRequestModel.toJson()}");
     debugPrint("TOKEN ********** $headers");
@@ -215,6 +215,11 @@ class AddOffersController extends GetxController {
         radioValue.value = "";
         // Get.back();
         Navigator.of(context).pop();
+        offerNameTextController.clear();
+        storeIdValue.value = "";
+        offerImageOrigionalLinkfromServer.value = "";
+        offerImageDynamicLinkfromServer.value = "";
+        discountOrOfferTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -428,7 +433,7 @@ class AddOffersController extends GetxController {
         "offer_id": offerId.value,
         "offer_name": offerNameTextController.text.trim(),
         "image_url": offerImageOrigionalLinkfromServer.value.trim(),
-        "offer_value": discountOrOfferTextController.text.trim(),
+        "offer_value": double.parse(discountOrOfferTextController.text.trim()),
         //"is_expired": false
       },
       "offer_products": selectedProducts

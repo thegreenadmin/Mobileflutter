@@ -53,7 +53,7 @@ class Data {
     this.cartItems,
   });
 
-  double? cartTotalPrice;
+  dynamic cartTotalPrice;
   dynamic cartSubTotal;
   double? cartTotalDiscount;
   double? cartTotalTax;

@@ -333,6 +333,7 @@ class StringConstants {
   static String pickUpDateText = "Pickup Date";
   static String paymentMethodText = "Payment Method";
   static String paymentText = "Payment";
+  static String paymentTypeText = "Payment Type";
   static String pleaseAddCardFirstText = "Please add card first";
   static String pleaseAddBankDetailFirstText = "Please add bank detail first";
   static String payoutText = "Payout";

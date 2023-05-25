@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
+
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -270,7 +271,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    print("object2");
+  
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -341,50 +342,26 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                print("privacy----" +
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages!.first.storePageContent!.dynamicUrl
-                        .toString());
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![0].storePageType ==
                         "privacy" ||
                     storeHomeMainController.storeDetailsResponse.value.data!
                             .store!.storePages![1].storePageType ==
                         "privacy") {
-                  // SharedPreferenceStorage.setData("context", context);
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (_) => WebviewPageScreen(
-                  //         isFrom: "aboutus",
-                  //         url: storeHomeMainController
-                  //             .storeDetailsResponse
-                  //             .value
-                  //             .data!
-                  //             .store!
-                  //             .storePages!
-                  //             .first
-                  //             .storePageContent!
-                  //             .dynamicUrl
-                  //             .toString())
-                  //             ));
-
-                  // Get.to(ViewPdfScreen(
-                  //     url: storeHomeMainController
-                  //         .storeDetailsResponse
-                  //         .value
-                  //         .data!
-                  //         .store!
-                  //         .storePages!
-                  //         .first
-                  //         .storePageContent!
-                  //         .dynamicUrl
-                  //         .toString().split("pdf")[0]+'pdf'));
-
-                  //   // Get.back();
-                  //   // storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                  //   //     content: storeHomeMainController.storeDetailsResponse
-                  //   //         .value.data!.store!.storePages!.first.storePageContent
-                  //   //         .toString(),
-                  //   //     contentType: "privacy");
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: true,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
                 }
               },
               child: Row(
@@ -409,17 +386,27 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(ctx).pop();
-                /* if (storeHomeMainController.storeDetailsResponse.value.data!
-                        .store!.storePages!.first.storePageType ==
-                    "terms") {
-
-                  // Get.back();
-                  storeHomeMainController.termsAndPrivacyDailogue(ctx,
-                      content: storeHomeMainController.storeDetailsResponse
-                          .value.data!.store!.storePages!.first.storePageContent
-                          .toString(),
-                      contentType: "terms");
-                }*/
+                if (storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![0].storePageType ==
+                        "terms" ||
+                    storeHomeMainController.storeDetailsResponse.value.data!
+                            .store!.storePages![1].storePageType ==
+                        "terms") {
+                  SharedPreferenceStorage.setData("context", context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                          isShowPrivacy: false,
+                          url: storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .storePages!
+                              .first
+                              .storePageContent!
+                              .dynamicUrl
+                              .toString())));
+                }
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
