@@ -334,7 +334,7 @@ class AddNewRoleController extends GetxController {
       });
     }
     if (isEmptyList) {
-      Utility.showToast("Please select one permission");
+      Utility.showAlertMessage("Please select one permission");
       return;
     }
     Map data = {

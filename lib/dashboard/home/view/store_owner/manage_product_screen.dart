@@ -300,7 +300,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
                             Utility.showConfirmAlertMessage( AlertStringConstants
-                                .areYouSureText,okay:  StringConstants
+                                .areYouSureText, okay:  StringConstants
                                 .deleteText,okayTap: (){
                               // Navigator.pop(Get.context!);
                               manageStoreController
