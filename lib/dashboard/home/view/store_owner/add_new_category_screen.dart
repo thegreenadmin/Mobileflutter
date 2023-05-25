@@ -62,7 +62,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              // Get.back();
+
                             },
                             icon: const Icon(
                               Icons.arrow_back,
