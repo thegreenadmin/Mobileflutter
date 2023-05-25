@@ -202,15 +202,17 @@ class _AccountScreenState extends State<AccountScreen> {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
+                              Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
 
                               Future.delayed(const Duration(milliseconds: 200), () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
+                                Navigator.of(context).popUntil((route) => route.isFirst);
                               });
 
                             } else {
                               SharedPreferenceStorage.setData(Role.role.value,
                                   Role.customerRoleText);
+
+                              Get.parameters[Role.role.value] =  Role.customerRoleText;
 
                               setState(() {});
                               Future.delayed(const Duration(milliseconds: 200), () {

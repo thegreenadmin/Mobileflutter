@@ -302,7 +302,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                             Utility.showConfirmAlertMessage( AlertStringConstants
                                 .areYouSureText,okay:  StringConstants
                                 .deleteText,okayTap: (){
-                              Navigator.pop(Get.context!);
+                              // Navigator.pop(Get.context!);
                               manageStoreController
                                   .categoryId.value =
                                   manageStoreController

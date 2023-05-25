@@ -207,7 +207,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               Utility.showConfirmAlertMessage( AlertStringConstants
                                   .areYouSureText,okay:  StringConstants
                                   .deleteText,okayTap: (){
-                                Navigator.pop(Get.context!);
+                                // Navigator.pop(Get.context!);
                                 addNewWorkerController.workerId.value =
                                     addNewWorkerController
                                         .workerList[index].storeUserId

@@ -183,7 +183,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         Utility.showConfirmAlertMessage( AlertStringConstants
                                             .areYouSureText,okay:  StringConstants
                                             .deleteText,okayTap: (){
-                                          Navigator.pop(Get.context!);
+                                          // Navigator.pop(Get.context!);
                                           addNewRoleController
                                               .roleId.value =
                                               addNewRoleController

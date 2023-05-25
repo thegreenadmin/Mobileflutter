@@ -60,66 +60,72 @@ class BottomNavController extends GetxController {
           "context",
         );
         Navigator.of(context).popUntil((route) => route.isFirst);
-        // HomeController controller = Get.find<HomeController>();
+
         HomeController controller = Get.put(HomeController());
+        HomeController controller1 = Get.find<HomeController>();
         controller.onInit();
+        controller1.onInit();
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 1) {
       try {
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
 
         WalletController controller = Get.put(WalletController());
         WalletController controller1 = Get.find<WalletController>();
         controller.onInit();
         controller1.onInit();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 2) {
       // print(index);
       try {
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
 
         OrdersController controller = Get.put(OrdersController());
         OrdersController controller1 = Get.find<OrdersController>();
         controller.onInit();
         controller1.onInit();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 3) {
       try {
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
 
         OffersController controller = Get.put(OffersController());
         OffersController controller1 = Get.find<OffersController>();
         controller.onInit();
         controller1.onInit();
-      } catch (e) {
-        //Pass
-      }
-    } else if (selectedIndex.value == 4) {
-      try {
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
         Navigator.of(context).popUntil((route) => route.isFirst);
 
+      } catch (e) {
+        //Pass
+      }
+    } else if (selectedIndex.value == 4) {
+      try {
+
+
         MoreController controller = Get.put(MoreController());
         MoreController controller1 = Get.find<MoreController>();
         controller.onInit();
         controller1.onInit();
+        BuildContext context = SharedPreferenceStorage.getData(
+          "context",
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
       } catch (e) {
         //Pass
       }
