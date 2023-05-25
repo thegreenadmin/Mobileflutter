@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -85,6 +84,7 @@ class StoreHomeMainController extends GetxController {
   RxBool isOrderDeliverable = false.obs;
   RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
+  RxBool isPlaceOrder = true.obs;
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
@@ -294,8 +294,9 @@ class StoreHomeMainController extends GetxController {
                 InkWell(
                   onTap: () async {
                     Navigator.pop(_);
-                    // Get.back();
-                    await apiPlaceOrder(context);
+                    if (isPlaceOrder.value == true) {
+                      await apiPlaceOrder(context);
+                    }
                   },
                   child: Container(
                     height: 50.0,
@@ -671,6 +672,7 @@ class StoreHomeMainController extends GetxController {
 
   //Place Order Api
   Future apiPlaceOrder(context) async {
+    isPlaceOrder.value = false;
     isLoading.value = true;
     debugPrint("API PLACE ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
@@ -713,11 +715,14 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatus.value = value?.body["data"]["order_id"];
+        isPlaceOrder.value = true;
+        debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
         SharedPreferenceStorage.setData("context", context);
         Get.parameters["storeId"] = storeId.value.toString() ?? "0";
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
+
         Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => const OrderConfirmationScreen(),
         ));
@@ -731,10 +736,12 @@ class StoreHomeMainController extends GetxController {
         update();
         isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isPlaceOrder.value = true;
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        isPlaceOrder.value = true;
         if (value?.body["message"] == "Insufficient balance") {
           isInsufficientBalance!.value = true;
         } else {
@@ -742,9 +749,8 @@ class StoreHomeMainController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         }
       } else if (value?.body == null) {
+        isPlaceOrder.value = true;
         Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
-      } else {
-        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }

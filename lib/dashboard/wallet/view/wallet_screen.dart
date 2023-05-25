@@ -33,14 +33,15 @@ class _WalletScreenState extends State<WalletScreen> {
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     walletController.role?.value =
         SharedPreferenceStorage.getData(Role.role.value);
+    print("SharedPreferenceStorage:-------------->");
+    print(SharedPreferenceStorage.getData(StringConstants.firstNameText));
+    print(SharedPreferenceStorage.getData(StringConstants.lastNameText));
+    print(SharedPreferenceStorage.getData(Role.role.value));
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromCartScreen'] != "false") {
         walletController.isFromCartScreen.value =
             Get.parameters["isFromCartScreen"] == "true" ? true : false;
-      }
+
       walletController.getApiData();
     } else {
       walletController.apiGetStoreList();

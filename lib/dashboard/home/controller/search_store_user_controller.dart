@@ -56,6 +56,7 @@ class SearchStoreUserController extends GetxController {
   RxString? lastName = "".obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
+  RxString placeId = "".obs;
   RxString city = "".obs;
   RxString state = "".obs;
   RxString country = "".obs;
@@ -367,6 +368,7 @@ class SearchStoreUserController extends GetxController {
     bool isSearch = false,
   }) async {
     debugPrint("GET GET NEARBY STORES isSearch********** $isSearch");
+
     if (isFilter || isSearch ) {
       page.value = 1;
       storeAddresses.clear();
@@ -389,13 +391,14 @@ class SearchStoreUserController extends GetxController {
       "longitude": zipCodeTextController.text != "" ? null : lng,
       "latitude": zipCodeTextController.text != "" ? null : lat,
       "city": city.value,
+      "place_id": placeId.value,
       "state": state.value,
       "country": country.value,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
           ? int.parse(mileageTextController.text)
-          : 1000,
+          : 100,
       "is_open_now": isOpenNow.value,
       "opening_time": openingTimeTextController.text != ""
           ? Utility.formatDateTime(openingTimeTextController.text,

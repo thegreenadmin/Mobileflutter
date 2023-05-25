@@ -202,22 +202,22 @@ class _AccountScreenState extends State<AccountScreen> {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                              // Navigator.of(context).pop();
-                              //await Get.offAll(BottomNavigation());
+
+                              Future.delayed(const Duration(milliseconds: 200), () {
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              });
+
                             } else {
                               SharedPreferenceStorage.setData(Role.role.value,
-                                  Role.customerRoleText); // Navigator.of(context)
-                              //     .pushReplacement(MaterialPageRoute(
-                              //   builder: (_) => BottomNavigation(),
-                              // ));
-                              setState(() {});
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
+                                  Role.customerRoleText);
 
-                              // Navigator.of(context).pop();
-                              //await Get.offAll(BottomNavigation());
+                              setState(() {});
+                              Future.delayed(const Duration(milliseconds: 200), () {
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              });
+
                             }
                           },
                           child: Padding(

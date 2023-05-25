@@ -605,6 +605,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                             Utility.showConfirmAlertMessage( AlertStringConstants
                                                 .areYouSureText,okay:  StringConstants
                                                 .deleteText,okayTap: () async{
+                                              Navigator.pop(Get.context!);
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:
@@ -689,6 +690,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                             Utility.showConfirmAlertMessage( AlertStringConstants
                                                 .areYouSureText,okay:  StringConstants
                                                 .deleteText,okayTap: () async{
+                                              Navigator.pop(Get.context!);
                                               walletController.apiDeleteBankAccounts(
                                                   userStripeBankId:
                                                   walletController.bankAccountList[index].userStripeBankId ?? "");

@@ -157,6 +157,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                       Utility.showConfirmAlertMessage( AlertStringConstants
                                           .areYouSureText,okay:  StringConstants
                                           .deleteText,okayTap: (){
+                                        Navigator.pop(Get.context!);
                                         ownerStoresController
                                             .apiDeleteStore(
                                             storeId: ownerStoresController

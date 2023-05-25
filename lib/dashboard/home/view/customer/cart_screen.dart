@@ -370,6 +370,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       .areYouSureText,
                                                   okay: StringConstants
                                                       .deleteText, okayTap: () {
+
                                                 storeHomeMainController
                                                     .apiDeleteCart(context,
                                                         cartItemId: int.parse(
