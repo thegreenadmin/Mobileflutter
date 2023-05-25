@@ -271,7 +271,6 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-  
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(

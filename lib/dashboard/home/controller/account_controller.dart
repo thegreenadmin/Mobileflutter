@@ -610,7 +610,9 @@ class AccountController extends GetxController {
         "nick_name": nickNameTextController.text.trim(),
       },
       "address": {
-        "user_address_id": getUserDetailModel.data?.user?.userAddresses?.first.userAddressId ??0,
+        "user_address_id":
+            getUserDetailModel.data?.user?.userAddresses?.first.userAddressId ??
+                0,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
@@ -967,6 +969,7 @@ class AccountController extends GetxController {
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
+        noOfDaysTextController.clear();
       } else {
         Utility.showAlertMessage(value.body['message']);
       }

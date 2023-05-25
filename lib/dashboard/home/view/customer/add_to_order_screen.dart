@@ -407,7 +407,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   SharedPreferenceStorage.setData("context", context);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => PdfViewScreen(
-                          isShowPrivacy: true,
+                          isShowPrivacy: false,
                           url: storeHomeMainController
                               .storeDetailsResponse
                               .value
@@ -770,7 +770,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   ),
                   height20SizedBox,
                   _buildRowOtherDetail(
-                      title: StringConstants.categoriesText,
+                      title: StringConstants.categoryNameText,
                       textData: storeHomeMainController
                               .productDetailResponse
                               .value

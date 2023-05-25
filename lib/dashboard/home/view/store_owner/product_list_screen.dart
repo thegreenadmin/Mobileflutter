@@ -207,8 +207,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   okay: StringConstants.deleteText,
                                   okayTap: () {
                                 // Navigator.pop(Get.context!);
-                                manageStoreController
-                                    .productId.value =
+                                manageStoreController.productId.value =
                                     manageStoreController
                                         .storeProductList[index].productId
                                         .toString();
@@ -352,11 +351,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                                   .productPrice ==
                                                               null
                                                           ? ""
-                                                          : manageStoreController
-                                                              .storeProductList[
-                                                                  index]
-                                                              .productPrice
-                                                              .toString(),
+                                                          : "\$${manageStoreController.storeProductList[index].productPrice}",
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:

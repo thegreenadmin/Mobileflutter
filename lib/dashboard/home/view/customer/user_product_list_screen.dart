@@ -264,7 +264,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    print("object3");
+ 
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -388,7 +388,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   SharedPreferenceStorage.setData("context", context);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => PdfViewScreen(
-                          isShowPrivacy: true,
+                          isShowPrivacy: false,
                           url: storeHomeMainController
                               .storeDetailsResponse
                               .value

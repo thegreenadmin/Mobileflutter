@@ -75,7 +75,7 @@ class Products {
   List<ProductCategories>? productCategories;
   List<ProductImages>? productImages;
   List<ProductContents>? productContents;
-  double? offerPrice;
+  dynamic offerPrice;
   Offer? offer;
 
   Products(
