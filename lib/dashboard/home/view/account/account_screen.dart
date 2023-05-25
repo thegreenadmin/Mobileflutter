@@ -202,6 +202,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
+
                               Future.delayed(const Duration(milliseconds: 200), () {
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);
