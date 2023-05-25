@@ -361,20 +361,27 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                           RawMaterialButton(
                                             elevation: 0,
                                             onPressed: () async {
-                                              Utility.showConfirmAlertMessage( AlertStringConstants
-                                                  .areYouSureText,okay:  StringConstants
-                                                  .deleteText,okayTap: (){
-                                                Navigator.pop(Get.context!);
-                                                ownerInboxController.apiDeleteStoreMessages(
-                                                    messageHeadId: ownerInboxController
-                                                        .inboxList[index]
-                                                        .messageHeadId ??
-                                                        "", storeId: ownerInboxController
-                                                        .inboxList[index]
-                                                        .storeId ??
-                                                        "");
+                                              Utility.showConfirmAlertMessage(
+                                                  AlertStringConstants
+                                                      .areYouSureText,
+                                                  okay: StringConstants
+                                                      .deleteText, okayTap: () {
+                                                // Navigator.pop(Get.context!);
+                                                ownerInboxController
+                                                    .apiDeleteStoreMessages(
+                                                        messageHeadId:
+                                                            ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .messageHeadId ??
+                                                                "",
+                                                        storeId:
+                                                            ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .storeId ??
+                                                                "");
                                               });
-
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

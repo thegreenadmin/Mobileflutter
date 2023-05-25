@@ -299,8 +299,9 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            Utility.showConfirmAlertMessage( AlertStringConstants
-                                .areYouSureText, okay:  StringConstants
+                            Utility.showConfirmAlertMessage(
+                                AlertStringConstants.areYouSureText,
+                                 okay:  StringConstants
                                 .deleteText,okayTap: (){
                               // Navigator.pop(Get.context!);
                               manageStoreController

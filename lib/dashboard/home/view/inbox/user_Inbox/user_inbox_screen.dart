@@ -264,23 +264,53 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                       ),
                                       height4SizedBox,
                                       Text(
-                                        userInboxController
-                                                    .inboxList[index].orderId ==
-                                                null
-                                            ?
-                                            // userInboxController
-                                            //             .inboxList[index].offer ==
-                                            //         null
-                                            //     ?
-                                            userInboxController.inboxList[index]
-                                                    .offer!.offerName ??
+                                        userInboxController.inboxList[index]
+                                                        .orderId ==
+                                                    null &&
+                                                userInboxController
+                                                        .inboxList[index]
+                                                        .offerId !=
+                                                    null
+                                            ? userInboxController
+                                                    .inboxList[index]
+                                                    .offer!
+                                                    .offerName ??
                                                 ""
-                                            // :
-                                            //  userInboxController
-                                            //         .inboxList[index].orderId ??
-                                            //     ""
-                                            : "Order: "
-                                                "#${userInboxController.inboxList[index].orderId}",
+                                            : userInboxController
+                                                            .inboxList[index]
+                                                            .orderId !=
+                                                        null &&
+                                                    userInboxController
+                                                            .inboxList[index]
+                                                            .offerId ==
+                                                        null
+                                                ? "Order: "
+                                                    "#${userInboxController.inboxList[index].orderId}"
+                                                : userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .orderId ==
+                                                            null &&
+                                                        userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .offerId ==
+                                                            null
+                                                    ? "StoreId: "
+                                                        "#${userInboxController.inboxList[index].storeId}"
+                                                    : "",
+
+                                        // : userInboxController
+                                        //             .inboxList[index]
+                                        //             .orderId ==
+                                        //         null
+                                        //     ? userInboxController
+                                        //             .inboxList[index]
+                                        //             .offer!
+                                        //             .offerName ??
+                                        //         ""
+                                        //     : "Order: "
+                                        //         "#${userInboxController.inboxList[index].orderId}",
                                         textAlign: TextAlign.justify,
                                         style: const TextStyle(
                                             fontSize: 16.0,
@@ -372,7 +402,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                       .areYouSureText,
                                                   okay: StringConstants
                                                       .deleteText, okayTap: () {
-                                                Navigator.pop(Get.context!);
+                                                // Navigator.pop(Get.context!);
                                                 userInboxController
                                                     .apiDeleteUserMessages(
                                                         messageHeadId:
