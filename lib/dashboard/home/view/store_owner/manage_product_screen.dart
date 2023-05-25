@@ -304,6 +304,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                  okay:  StringConstants
                                 .deleteText,okayTap: (){
                               // Navigator.pop(Get.context!);
+
                               manageStoreController
                                   .categoryId.value =
                                   manageStoreController
