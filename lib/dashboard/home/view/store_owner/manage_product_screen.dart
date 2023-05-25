@@ -299,20 +299,16 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            Utility.showConfirmAlertMessage( AlertStringConstants
-                                .areYouSureText,okay:  StringConstants
-                                .deleteText,okayTap: (){
-                              Navigator.pop(Get.context!);
-                              manageStoreController
-                                  .categoryId.value =
+                            Utility.showConfirmAlertMessage(
+                                AlertStringConstants.areYouSureText,
+                                okay: StringConstants.deleteText, okayTap: () {
+                              //  Navigator.pop(Get.context!);
+                              manageStoreController.categoryId.value =
                                   manageStoreController
-                                      .categoriesList[index]
-                                      .categoryId
+                                      .categoriesList[index].categoryId
                                       .toString();
-                              manageStoreController
-                                  .apiDeleteCategory();
+                              manageStoreController.apiDeleteCategory();
                             });
-
                           },
                           child: InkWell(
                             onTap: () {

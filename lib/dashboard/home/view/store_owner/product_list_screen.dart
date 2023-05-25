@@ -202,20 +202,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              Utility.showConfirmAlertMessage( AlertStringConstants
-                                  .areYouSureText,okay:  StringConstants
-                                  .deleteText,okayTap: (){
-                                Navigator.pop(Get.context!);
-                                manageStoreController
-                                    .productId.value =
+                              Utility.showConfirmAlertMessage(
+                                  AlertStringConstants.areYouSureText,
+                                  okay: StringConstants.deleteText,
+                                  okayTap: () {
+                                //Navigator.pop(Get.context!);
+                                manageStoreController.productId.value =
                                     manageStoreController
-                                        .storeProductList[index]
-                                        .productId
+                                        .storeProductList[index].productId
                                         .toString();
-                                manageStoreController
-                                    .apiDeleteProduct(context);
+                                manageStoreController.apiDeleteProduct(context);
                               });
-
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
