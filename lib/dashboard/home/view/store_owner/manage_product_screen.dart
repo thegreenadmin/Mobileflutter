@@ -26,6 +26,9 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
   initState() {
     super.initState();
     manageStoreController.isFeaturedTypeSelected.value = false;
+    print("storeName:------>>>>>>" );
+    print(Get.parameters["storeName"] );
+    print( Get.parameters["storeId"] );
     manageStoreController.storeId.value = Get.parameters["storeId"] ?? "";
     manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
     manageStoreController.storeLocation.value =

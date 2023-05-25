@@ -86,22 +86,18 @@ class OrdersController extends GetxController {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['storeId'] != "" &&
+    if ( Get.parameters['storeId'] != "" &&
             Get.parameters['storeId'] != null) {
       storeId.value = Get.parameters["storeId"] ?? "";
-      apiGetStoreDetailsApi();
+      if ( Get.parameters['isFromTransaction'] == "true"
+          ? true
+          : false) {
+        storeId.value = Get.parameters["storeId"] ?? "";
+        apiGetStoreDetailsApi();
+      }
     }
 
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromTransaction'] == "true"
-            ? true
-            : false) {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      apiGetStoreDetailsApi();
-    }
+
     if (Get.parameters["orderStatus"] != null) {
       orderStatus.value = Get.parameters["orderStatus"] ?? "";
       print("orderStatus.value:=========================================");

@@ -33,6 +33,9 @@ class AddNewCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print("storeName:------>>>>>>" );
+    print(Get.parameters["storeName"] );
+    print( Get.parameters["storeId"] );
     storeId.value = Get.parameters["storeId"] ?? "";
     categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =

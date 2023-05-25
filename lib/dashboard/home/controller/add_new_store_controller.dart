@@ -447,7 +447,9 @@ class AddNewStoreController extends GetxController {
         storeImageDynamicLinkfromServer.value = "";
         storeLogoDynamicLinkfromServer.value = "";
         deliveryServicesList.clear();
-        deliveryServices.clear();
+        for (var element in deliveryServices) {
+          element.isSelected = false;
+        }
         weekDaysList.clear();
         privacyTextController.clear();
         storeTimmingList.clear();
@@ -461,6 +463,7 @@ class AddNewStoreController extends GetxController {
         Navigator.of(contextt).pop();
         await createDynamicLink();
         await apiDynamicLink();
+        // await apiGetDeliveryServices();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
