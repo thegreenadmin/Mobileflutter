@@ -905,6 +905,7 @@ class WalletController extends GetxController {
                 .data!.userWalletAutoCharge!.frequency
                 .toString();
 
+
             day.value= getAutoRechargeModel.data?.userWalletAutoCharge?.day.toString() ??"";
 
             userWalletAutoChargeId.value = getAutoRechargeModel
