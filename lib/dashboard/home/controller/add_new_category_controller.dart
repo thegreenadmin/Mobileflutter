@@ -221,8 +221,10 @@ class AddNewCategoryController extends GetxController {
         Navigator.of(nContext).pop();
         // Navigator.of(Get.context!).pop();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -259,8 +261,10 @@ class AddNewCategoryController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -306,8 +310,10 @@ class AddNewCategoryController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

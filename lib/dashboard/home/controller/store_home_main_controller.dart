@@ -881,10 +881,10 @@ class StoreHomeMainController extends GetxController {
   }
 
   void addToCartDialog(
-    BuildContext context,
+    BuildContext ctx,
   ) {
     showDialog(
-      context: context,
+      context: ctx,
       barrierDismissible: true,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -924,12 +924,14 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.of(_).pop();
-                    Navigator.of(_).pop();
-                    Navigator.of(_).pop();
-                    // Get.back();
-                    // Get.back();
-                    // Get.back();
+                    if(isFromHome.value){
+                      Navigator.of(_).pop();
+                      Navigator.of(ctx).pop();
+                    }else{
+                      Navigator.of(_).pop();
+                      Navigator.of(ctx).pop();
+                      Navigator.of(ctx).pop();
+                    }
                   },
                   child: Container(
                     height: 50.0,
@@ -953,10 +955,10 @@ class StoreHomeMainController extends GetxController {
                   onTap: () {
                     Navigator.of(_).pop();
                     // Get.back();
-                    apiGetCartListApi(Get.context);
+                    apiGetCartListApi(ctx);
                     apiGetUserWalletBalance();
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
+                    SharedPreferenceStorage.setData("context", ctx);
+                    Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                       builder: (_) => const CartScreen(),
                     ));
                     // Get.to(const CartScreen());

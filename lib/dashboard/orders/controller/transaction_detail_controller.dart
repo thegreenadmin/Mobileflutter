@@ -111,8 +111,10 @@ class TransactionDetailController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -166,8 +168,10 @@ class TransactionDetailController extends GetxController {
         }
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

@@ -13,7 +13,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class BottomNavigation extends StatefulWidget {
 
-  BottomNavigation({Key? key}) : super(key: key);
+  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -23,20 +23,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final BottomNavController _bottomNavigationPageController =
       Get.put(BottomNavController());
 
-  Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
+ /* Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
     0: GlobalKey<NavigatorState>(),
     1: GlobalKey<NavigatorState>(),
     2: GlobalKey<NavigatorState>(),
     3: GlobalKey<NavigatorState>(),
     4: GlobalKey<NavigatorState>(),
-  };
+  };*/
 
-  final _tabNavigator = GlobalKey<TabNavigatorState>();
-  final _tab1 = GlobalKey<NavigatorState>();
-  final _tab2 = GlobalKey<NavigatorState>();
-  final _tab3 = GlobalKey<NavigatorState>();
-  final _tab4 = GlobalKey<NavigatorState>();
-  final _tab5 = GlobalKey<NavigatorState>();
+  GlobalKey<TabNavigatorState> _tabNavigator = GlobalKey<TabNavigatorState>();
+  GlobalKey<NavigatorState> _tab1 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _tab2 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _tab3 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _tab4 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _tab5 = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -272,14 +272,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
     );
   }
 
-  Widget  buildNavigator() {
+/*  Widget  buildNavigator() {
     return Navigator(
       key: navigatorKeysAll[_bottomNavigationPageController.selectedIndex.value],
       onGenerateRoute: (RouteSettings settings){
         return MaterialPageRoute(builder: (_) => _bottomNavigationPageController.tabs.elementAt(_bottomNavigationPageController.selectedIndex.value));
       },
     );
-  }
+  }*/
 }
 
 class TabItem {

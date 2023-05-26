@@ -52,6 +52,7 @@ class UserWalletAutoCharge {
   String? endDate;
   int? frequency;
   String? status;
+  int? day;
   String? createdAt;
   String? updatedAt;
   String? userWalletAutoChargeId;
@@ -66,6 +67,7 @@ class UserWalletAutoCharge {
       this.endDate,
       this.frequency,
       this.status,
+      this.day,
       this.createdAt,
       this.updatedAt,
       this.userWalletAutoChargeId});
@@ -80,6 +82,7 @@ class UserWalletAutoCharge {
     endDate = json['end_date'];
     frequency = json['frequency'];
     status = json['status'];
+    day = json['day'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     userWalletAutoChargeId = json['user_wallet_auto_charge_id'];
@@ -96,6 +99,7 @@ class UserWalletAutoCharge {
     data['end_date'] = this.endDate;
     data['frequency'] = this.frequency;
     data['status'] = this.status;
+    data['day'] = this.day;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['user_wallet_auto_charge_id'] = this.userWalletAutoChargeId;

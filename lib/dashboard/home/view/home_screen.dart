@@ -142,8 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
+                                SharedPreferenceStorage.setData("context", context);
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) =>

@@ -206,8 +206,10 @@ class OrdersHomeMainController extends GetxController {
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -259,8 +261,10 @@ class OrdersHomeMainController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -303,8 +307,10 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -392,8 +398,10 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -442,8 +450,10 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -490,8 +500,10 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -537,8 +549,10 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -584,8 +598,10 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -631,8 +647,10 @@ class OrdersHomeMainController extends GetxController {
         }
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

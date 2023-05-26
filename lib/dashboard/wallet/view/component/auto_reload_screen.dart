@@ -29,6 +29,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
   initState() {
     super.initState();
     addCardController.selectPaymentType.value = "";
+    walletController.monthDays();
   }
 
   @override
@@ -420,6 +421,172 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               ],
                             ),
                     ),
+                    Obx(()=>
+                    walletController.autoChargeType.value != "threshold" &&
+                        walletController.selectedFrequency.value !=""  &&
+                    walletController.selectedFrequency.value == "30" ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            height20SizedBox,
+                            Text(
+                              StringConstants.daysText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            height6SizedBox,
+                            DropdownButtonFormField<String>(
+
+                              value: widget.isFromEdit
+                                  ? walletController.frequencyTextController
+                                              .text ==
+                                          "30"
+                                      ? walletController.day.value : null
+                                  : null,
+                              //value: walletController.autoChargeType.value,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                border: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              isExpanded: true,
+                              hint: Text(
+                                StringConstants.selectDayMonthText,
+                                style: const TextStyle(
+                                  color: AppColors.grey,
+                                ),
+                              ),
+                              items: walletController.monthDayList
+                                  .map((dynamic value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value.toString(),
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (month) {
+                                walletController.day.value = month.toString();
+
+                              },
+                            ),
+                          ],
+                        ):height0SizedBox),
+                    Obx(
+                      () =>
+                      walletController.autoChargeType.value != "threshold" &&
+                          walletController.selectedFrequency.value !="" &&
+                      walletController.selectedFrequency.value == "7"?
+                           Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                height20SizedBox,
+                                Text(
+                                  StringConstants.daysText,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                height6SizedBox,
+                                DropdownButtonFormField(
+
+                                  value: widget.isFromEdit
+                                      ? walletController.frequencyTextController
+                                      .text ==
+                                      "7"
+                                      ? walletController.day.value : null
+                                      : null,
+                                  //value: walletController.autoChargeType.value,
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  hint: Text(
+                                    StringConstants.selectDayWeekText,
+                                    style: const TextStyle(
+                                      color: AppColors.grey,
+                                    ),
+                                  ),
+                                  items: walletController.weekDaysList
+                                      .map((dynamic value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.id.toString(),
+                                      child: Text(
+                                        value.name,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (day) {
+                                   walletController.day.value = day.toString();
+                                  },
+                                ),
+                              ],
+                            ):height0SizedBox,
+                    ),
+
                     // walletController.autoChargeType.value == "threshold"
                     //     ? height0SizedBox
                     //     : height20SizedBox,
