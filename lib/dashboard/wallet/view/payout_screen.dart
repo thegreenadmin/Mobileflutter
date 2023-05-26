@@ -72,7 +72,7 @@ class PayOutScreenState extends State<PayOutScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addCardController.formKey,
+            key: addCardController.formKey2,
             child: Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
               child: Column(

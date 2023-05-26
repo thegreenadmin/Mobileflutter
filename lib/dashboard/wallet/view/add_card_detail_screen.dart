@@ -28,6 +28,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
 
   @override
   void initState() {
+    super.initState();
     border = const OutlineInputBorder(
       borderSide: BorderSide(
         color: AppColors.primary,
@@ -36,7 +37,9 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
     );
     addCardController.apiGetUserWalletBalance();
     addCardController.apiGetCardList(context);
-    super.initState();
+    addCardController.apiGetCountries();
+    addCardController.apiGetUserDetailApi(Get.context);
+
   }
 
   @override
@@ -167,8 +170,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         addCardController.onCreditCardModelChange,
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 10),
+                    padding: const EdgeInsets.only(left: 21, right: 21, top: 10),
                     child: Form(
                       key: addCardController.formKey,
                       child: Column(
@@ -462,11 +464,12 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                           height20SizedBox,
                           Obx(
                             () => DropdownButtonFormField<String>(
-                              value:
-                                  addCardController.selectedCountry.value != ""
+                              value: addCardController.selectedCountry.value != ""
+                                      && addCardController.countryId.value!=null
+                                      && addCardController.countryId.value!=""
                                       ? addCardController.countryList
                                           .firstWhere((element) =>
-                                              element.countryId ==
+                                              element.countryId.toString() ==
                                               addCardController.countryId.value)
                                           .countryId
                                       : null,

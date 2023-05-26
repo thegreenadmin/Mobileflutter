@@ -55,6 +55,8 @@ class AddCardController extends GetxController {
   RxString selectedState = "".obs;
   RxString stateId = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey1 = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
 
   TextEditingController amountTextController = TextEditingController();
   TextEditingController payoutAmountTextController = TextEditingController();
@@ -92,6 +94,7 @@ class AddCardController extends GetxController {
     await apiGetBankAccountList();
     await apiGetStoreList();
     await apiGetUserDetailApi(Get.context);
+    await apiGetCountries();
   }
 
   //Get User Detail Info Api
@@ -158,7 +161,25 @@ class AddCardController extends GetxController {
   String token1 =
       "Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6";
   bool validateAndSave() {
-    final form = formKey.currentState;
+    final form = formKey1.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+  bool validateAndSave2() {
+    final form = formKey2.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+  bool validateAndSave1() {
+    final form = formKey1.currentState;
     if (form!.validate()) {
       form.save();
       return true;
@@ -170,7 +191,7 @@ class AddCardController extends GetxController {
 // Fields Validation Method
   Future validateAndSubmitFunction(BuildContext context,
       {bool isFromPayout = false}) async {
-    if (validateAndSave()) {
+    if (validateAndSave1()) {
       try {
         if (isFromPayout == false) {
           if (selectPaymentType.isEmpty) {
@@ -454,6 +475,8 @@ class AddCardController extends GetxController {
 
   //Get Card List Api
   Future apiGetCardList(context) async {
+    userStripeCardId?.value ="";
+    cardList.clear();
     isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}");
@@ -474,7 +497,7 @@ class AddCardController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         cardListModel = CardListModel.fromJson(value.body);
-        cardList.value = cardListModel.data!.cards ?? [];
+        cardList.value = cardListModel.data?.cards ?? [];
 
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {

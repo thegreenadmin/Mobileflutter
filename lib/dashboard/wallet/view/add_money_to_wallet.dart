@@ -41,7 +41,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   @override
   void initState() {
     super.initState();
-
+    addCardController.apiGetCardList(Get.context!);
     _payClient = Pay({
       PayProvider.google_pay: PaymentConfiguration.fromJsonString(
           payment_configurations.defaultGooglePay),
@@ -135,7 +135,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addCardController.formKey,
+            key: addCardController.formKey1,
             child: Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: Column(
@@ -476,7 +476,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                 MaterialPageRoute(
                                                           builder: (_) =>
                                                               AddCardDetailScreen(),
-                                                        ));
+                                                        )).then((value) {
+                                                          print("AddCardDetailScreen:-----------------");
+                                                          addCardController.apiGetCardList(context);
+                                                        });
                                                       },
                                                       height: 50,
                                                       width: WidgetConstants
@@ -505,17 +508,20 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                 const NeverScrollableScrollPhysics(),
                                             itemBuilder: (BuildContext context,
                                                 int index) {
+                                              debugPrint("userStripeCardId:--------------->>>>>>");
+                                              debugPrint(addCardController.userStripeCardId!.value);
+
                                               if (addCardController
                                                   .userStripeCardId!
                                                   .value
                                                   .isEmpty) {
                                                 addCardController
-                                                        .userStripeCardId!.value =
+                                                        .userStripeCardId?.value =
                                                     addCardController.cardList[0]
                                                         .userStripeCardId
                                                         .toString();
-                                                debugPrint(addCardController
-                                                    .userStripeCardId!.value);
+                                                debugPrint("userStripeCardId:--------------->>>>>>");
+                                                debugPrint(addCardController.userStripeCardId!.value);
                                               }
                                               return Container(
                                                 padding: const EdgeInsets.only(

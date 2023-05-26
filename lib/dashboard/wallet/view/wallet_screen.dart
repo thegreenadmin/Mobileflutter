@@ -253,6 +253,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
+
                                   SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context)
