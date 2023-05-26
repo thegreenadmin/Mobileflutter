@@ -615,8 +615,12 @@ class AccountController extends GetxController {
       },
       "address": {
         "user_address_id":
-            getUserDetailModel.data?.user?.userAddresses?.first.userAddressId ??
-                0,
+            getUserDetailModel.data?.user?.userAddresses != null &&
+                    getUserDetailModel.data!.user!.userAddresses!.isNotEmpty
+                ? getUserDetailModel
+                        .data?.user?.userAddresses?.first.userAddressId ??
+                    0
+                : null,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
