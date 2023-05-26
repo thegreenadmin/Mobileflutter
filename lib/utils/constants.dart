@@ -23,8 +23,8 @@ class StringConstants {
   static String addressText = "Address";
   static String addText = "Add";
   static String addAddressText = "Add Address";
-  static String addressLine1Text = "Address Line1";
-  static String addressLine2Text = "Address Line2";
+  static String addressLine1Text = "Address Line 1";
+  static String addressLine2Text = "Address Line 2";
   static String aboutProductText = "About Product";
   static String addToOrderText = "Add to Order";
   static String activeOffersText = "Active Offers";
@@ -76,7 +76,10 @@ class StringConstants {
   static String byCheckTermsConditionText =
       "By checking this box, you agree to the green mall Inc’s Terms & Conditions of use and the green mall Apps terms & conditions and acknowledge the receipts of the green mall Inc’s privacy policy.";
   static String bankAccountsText = "Bank Accounts";
+  static String billingAddressText = "Billing Address";
+
   //C
+  static String cardNumberText = "Card Number";
   static String createYourAccountText = "Create your Account";
   static String createStripeAccountText = "Create Stripe Account";
   static String createAccountText = "Create account";
@@ -93,7 +96,7 @@ class StringConstants {
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";
   static String cvvText = "CVV";
-  static String cardHolderText = "Card Holder";
+  static String cardHolderNameText = "Card Holder Name";
   static String changeText = "Change";
   static String categoriesNameText = "Categories Name";
   static String categoryNameText = "Category Name";
@@ -160,7 +163,7 @@ class StringConstants {
   static String enabledText = "Enabled ";
   static String employeeTimingText = "Employee Timing";
   static String editOfferText = "Edit Offer";
-  static String expiredDateText = "Expired Date";
+  static String expiryDateText = "Expiry Date";
   static String editAutoReloadText = "Edit Auto reload";
   static String enterEinNumberText = "Enter EIN Number";
   static String editAutoReloadIntoWalletText = "Edit Auto Reload Into Wallet";
@@ -426,6 +429,7 @@ class StringConstants {
   static String selectCardText = "Select Card";
   static String storeAccessText = "Store Access";
   static String selectMembershipPlanText = "Select Membership Plan";
+  static String selectStateText = "Select State Text";
 
   //T
   static String thankOrderText = "Thank you for your Order !!";
@@ -646,6 +650,8 @@ class AlertStringConstants {
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
   static String pleaseEnterFrequencyText = "Please enter frequency";
   static String pleaseSelectCountryText = "Please select country";
+  static String pleaseSelectStateText = "Please select state";
+
   //R
 
   static String returnOrderAlertText =

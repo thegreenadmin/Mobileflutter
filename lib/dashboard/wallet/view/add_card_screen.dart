@@ -159,19 +159,17 @@ class AddCardScreenState extends State<AddCardScreen> {
                                 ),
                                 InkWell(
                                     onTap: () async {
-                                      Utility.showConfirmAlertMessage( AlertStringConstants
-                                          .areYouSureText,okay:  StringConstants
-                                          .deleteText,okayTap: () async{
+                                      Utility.showConfirmAlertMessage(
+                                          AlertStringConstants.areYouSureText,
+                                          okay: StringConstants.deleteText,
+                                          okayTap: () async {
                                         Navigator.pop(Get.context!);
                                         addCardController.apiDeleteCard(
-                                            userStripeCardId:
-                                            addCardController
-                                                .cardList[
-                                            index]
-                                                .userStripeCardId ??
+                                            userStripeCardId: addCardController
+                                                    .cardList[index]
+                                                    .userStripeCardId ??
                                                 "");
                                       });
-
                                     },
                                     child: Image.asset(
                                       ImageConstants.deleteicon,
@@ -196,6 +194,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
+                addCardController.apiGetUserDetailApi(Get.context!);
                 SharedPreferenceStorage.setData("context", context);
                 Navigator.of(context)
                     .push(MaterialPageRoute(

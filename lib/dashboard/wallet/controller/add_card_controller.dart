@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
+import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -48,15 +51,24 @@ class AddCardController extends GetxController {
   RxBool isLoading = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? selectedBankAccountIndex = 0.obs;
-
+  RxString selectedCountry = "".obs;
+  RxString selectedState = "".obs;
+  RxString stateId = "".obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController amountTextController = TextEditingController();
   TextEditingController payoutAmountTextController = TextEditingController();
-
+  TextEditingController addressLine1TextController = TextEditingController();
+  TextEditingController addressLine2TextController = TextEditingController();
+  TextEditingController cityTextController = TextEditingController();
+  TextEditingController zipCodeTextController = TextEditingController();
+  TextEditingController stateTextController = TextEditingController();
+  TextEditingController countryTextController = TextEditingController();
+  late CountryListModel countryListModel = CountryListModel();
+  RxList<Countries> countryList = <Countries>[].obs;
   late CardListModel cardListModel = CardListModel();
   RxList<Cards> cardList = <Cards>[].obs;
-
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
@@ -65,6 +77,9 @@ class AddCardController extends GetxController {
   late BankAccountListModel bankAccountListModel = BankAccountListModel();
   RxList<Banks> bankAccountList = <Banks>[].obs;
 
+  late GetStatesModel getStateModel = GetStatesModel();
+  RxList<StatesList> statesList = <StatesList>[].obs;
+  RxString countryId = "".obs;
   @override
   void onInit() {
     super.onInit();
@@ -76,8 +91,72 @@ class AddCardController extends GetxController {
     await apiGetCardList(Get.context!);
     await apiGetBankAccountList();
     await apiGetStoreList();
+    await apiGetUserDetailApi(Get.context);
   }
 
+  //Get User Detail Info Api
+  Future apiGetUserDetailApi(context) async {
+    debugPrint(
+        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+        List<UserAddresses> userAddress = <UserAddresses>[];
+        userAddress = getUserDetailModel.data!.user!.userAddresses!;
+        if (userAddress.isNotEmpty) {
+          userAddress = getUserDetailModel.data!.user!.userAddresses!;
+          for (int i = 0; i < userAddress.length; i++) {
+            countryId.value = userAddress[i].state!.country!.countryId ?? "";
+            print("countryId.value ----->" + countryId.value);
+            // countryDropdownValue.value =
+            //     userAddress[i].state!.country!.countryName ?? "";
+            selectedCountry.value =
+                userAddress[i].state!.country!.countryName ?? "";
+            print("selectedCountry.value ----->" + selectedCountry.value);
+            // countryTextController.text = countryDropdownValue.value;
+            stateTextController.text = userAddress[i].state!.stateName ?? "";
+            selectedState.value = userAddress[i].state!.stateName ?? "";
+            addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
+            //   addressLine1.value = addressLine1TextController.text;
+            addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
+            //addressLine2.value = addressLine2TextController.text;
+            cityTextController.text = userAddress[i].city ?? "";
+            print("city.value ----->" + cityTextController.text);
+            // city.value = townOrCityTextController.text;
+            zipCodeTextController.text = userAddress[i].postalCode ?? "";
+            // postalCode.value = postalCodeTextController.text;
+            await apiGetCountries();
+          }
+        }
+      } else if (value.body["status"] == 401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        if (Get.context != null) {
+          Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+            builder: (_) => const StartJourneyScreen(),
+          ));
+        }
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value.body['message'].toString());
+      }
+    });
+  }
+
+  String token1 =
+      "Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6";
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -95,7 +174,8 @@ class AddCardController extends GetxController {
       try {
         if (isFromPayout == false) {
           if (selectPaymentType.isEmpty) {
-            Utility.showAlertMessage(AlertStringConstants.pleaseSelectPaymentTypeText);
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseSelectPaymentTypeText);
           } else if (selectPaymentType.value == "Cards" &&
               userStripeCardId!.value.isEmpty) {
             Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
@@ -113,6 +193,104 @@ class AddCardController extends GetxController {
     } else {
       autoValidate.value = true;
     }
+  }
+
+  bool validateAndSaveCard() {
+    final form1 = formKey.currentState;
+    if (form1!.validate()) {
+      form1.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void validateAndSubmitCard(BuildContext ctx) async {
+    if (validateAndSaveCard()) {
+      try {
+        apiCreateStripeToken(ctx);
+      } catch (_) {}
+    } else {
+      autoValidate.value = true;
+    }
+  }
+
+  //Get Countries Api
+  Future apiGetCountries() async {
+    countryList.clear();
+    debugPrint(
+        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        countryListModel = CountryListModel.fromJson(value.body);
+        countryList.value = countryListModel.data!.countries!;
+        // apiGetStates();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value.body['message']);
+      }
+    });
+  }
+
+  //Get States Api
+  Future apiGetStates() async {
+    statesList.clear();
+    debugPrint(
+        "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
+    Map<String, String> headers = {
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            headers,
+            showLoading: false)
+        .then((value) async {
+      debugPrint("GET STATES RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getStateModel = GetStatesModel.fromJson(value.body);
+        statesList.value = getStateModel.data!.states!;
+        if (stateId.value.isNotEmpty) {
+          for (int i = 0; i < statesList.length; i++) {
+            if (stateId.value == statesList[i].stateId) {
+              stateId.value = statesList[i].stateId.toString();
+            }
+          }
+        } else {
+          stateId.value = statesList[0].stateId.toString();
+        }
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value.body['message']);
+      }
+    });
   }
 
   void onCreditCardModelChange(CreditCardModel? creditCardModel) {
@@ -167,8 +345,7 @@ class AddCardController extends GetxController {
     var year = parts[1].trim();
     try {
       var headers = {
-        'Authorization':
-            'Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6',
+        'Authorization': token1,
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
@@ -177,7 +354,13 @@ class AddCardController extends GetxController {
         'card[number]': cardNumber.value,
         'card[exp_month]': month,
         'card[exp_year]': year,
-        'card[cvc]': cvvCode.value
+        'card[cvc]': cvvCode.value,
+        'card[address_line1]': addressLine1TextController.text.trim(),
+        'card[address_line2]': addressLine2TextController.text.trim(),
+        'card[address_city]': cityTextController.text.trim(),
+        'card[address_zip]': zipCodeTextController.text.trim(),
+        'card[address_state]': selectedState.value,
+        'card[address_country]': selectedCountry.value
       };
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -247,7 +430,15 @@ class AddCardController extends GetxController {
           cardId = ''.obs;
           stripeToken.value = "";
           isCvvFocused = false.obs;
-
+          addressLine1TextController.clear();
+          addressLine2TextController.clear();
+          cityTextController.clear();
+          zipCodeTextController.clear();
+          stateTextController.clear();
+          selectedCountry.value = "";
+          selectedState.value = "";
+          countryId.value = "";
+          stateId.value = "";
           // Get.back();
           Navigator.of(context).pop();
         } else if (value.statusCode == ApiConstants.statusCode401) {
