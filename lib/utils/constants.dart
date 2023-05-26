@@ -411,6 +411,8 @@ class StringConstants {
   static String selectDeliveryServicesText = "Select Delivery Services";
   static String startTimeText = "Start Time";
   static String selectTimeText = "Select Time";
+  static String selectDayMonthText = "Select day of month";
+  static String selectDayWeekText = "Select day of week";
   static String selectDateText = "Select a Date";
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";

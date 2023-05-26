@@ -228,8 +228,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -269,8 +271,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -353,8 +357,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -405,8 +411,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -462,8 +470,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

@@ -100,8 +100,10 @@ class OtpVerificationController extends GetxController {
         //email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

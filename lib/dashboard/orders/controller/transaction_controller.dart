@@ -298,8 +298,10 @@ class TransactionController extends GetxController {
             getUserTransactionModel.data!.transactions!.cast<Transactionss>();
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -342,8 +344,10 @@ class TransactionController extends GetxController {
             getOwnerTransactionModel.data!.transactions!;
         update();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

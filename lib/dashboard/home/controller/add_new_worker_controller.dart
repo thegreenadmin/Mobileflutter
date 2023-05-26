@@ -312,8 +312,10 @@ class AddNewWorkerController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -355,8 +357,10 @@ class AddNewWorkerController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         await apiGetWorkerList();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -540,8 +544,10 @@ class AddNewWorkerController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 

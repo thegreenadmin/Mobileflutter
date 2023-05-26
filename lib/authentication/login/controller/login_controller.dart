@@ -85,8 +85,10 @@ class LoginController extends GetxController {
         //Phone Number is not valid
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

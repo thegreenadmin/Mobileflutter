@@ -155,8 +155,10 @@ class AddCardController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -303,7 +305,7 @@ class AddCardController extends GetxController {
   }
 
 // Add Money to stripe wallet
-  apiAddMoneyToWallet(BuildContext context) {
+  apiAddMoneyToWallet(BuildContext ctx) {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -329,7 +331,7 @@ class AddCardController extends GetxController {
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
-          Navigator.pop(context);
+          Navigator.pop(ctx);
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
@@ -340,12 +342,14 @@ class AddCardController extends GetxController {
 
           update();
           Utility.showToast(value.body['message']);
-          return true;
+          // return true;
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showAlertMessage(value.body['message']);
-        }
+       if (value.body['message']!=null) {
+        Utility.showAlertMessage(value.body['message']);
+      }
+    }
       }
     });
   }
@@ -381,8 +385,10 @@ class AddCardController extends GetxController {
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
-      } else {
-        Utility.showAlertMessage(value.body['message']);
+      }else {
+        if (value.body['message']!=null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
     });
   }
@@ -422,7 +428,9 @@ class AddCardController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message']!=null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
     });
   }
@@ -513,7 +521,9 @@ class AddCardController extends GetxController {
         } else if (value.body["status"] == ApiConstants.statusCode409) {
           Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showAlertMessage(value.body['message']);
+          if (value.body['message']!=null) {
+            Utility.showAlertMessage(value.body['message']);
+          }
         }
       }
     });
@@ -560,8 +570,10 @@ class AddCardController extends GetxController {
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-          Utility.showAlertMessage(value.body['message'].toString());
-        }
+       if (value.body['message']!=null) {
+        Utility.showAlertMessage(value.body['message']);
+      }
+    }
       }
     });
   }

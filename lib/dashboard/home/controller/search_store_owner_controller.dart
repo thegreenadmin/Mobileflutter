@@ -430,8 +430,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -524,8 +526,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -561,8 +565,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -869,8 +875,10 @@ class OwnerStoresController extends GetxController {
         }
         apiGetState();
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -907,8 +915,10 @@ class OwnerStoresController extends GetxController {
           stateId.value = statesList[0].stateId.toString();
         }
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -947,8 +957,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

@@ -218,8 +218,10 @@ class SignupController extends GetxController {
         //email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -256,8 +258,10 @@ class SignupController extends GetxController {
         //Phone Number is not valid
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }

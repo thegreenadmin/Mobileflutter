@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
@@ -26,6 +28,7 @@ class WalletController extends GetxController {
   RxString? role = "".obs;
   RxString email = "".obs;
   RxString phone = "".obs;
+  RxString day = "".obs;
   RxInt amount = 0.obs;
   RxString userName = "".obs;
   RxString phoneNumber = "".obs;
@@ -98,6 +101,16 @@ class WalletController extends GetxController {
   late GetAutoRechargeModel getAutoRechargeModel = GetAutoRechargeModel();
 
   RxList<Stores> storeList = <Stores>[].obs;
+  RxList<String> monthDayList = <String>[].obs;
+  RxList<Categories> weekDaysList = [
+    Categories(id: 1, name: "Monday", isSelected: false),
+    Categories(id: 2, name: "Tuesday", isSelected: false),
+    Categories(id: 3, name: "Wednesday", isSelected: false),
+    Categories(id: 4, name: "Thursday", isSelected: false),
+    Categories(id: 5, name: "Friday", isSelected: false),
+    Categories(id: 6, name: "Saturday", isSelected: false),
+    Categories(id: 7, name: "Sunday", isSelected: false),
+  ].obs;
 
   @override
   void onInit() {
@@ -128,6 +141,13 @@ class WalletController extends GetxController {
     } else {
       apiGetStoreList();
       apiGetCountries();
+    }
+  }
+
+  monthDays(){
+    monthDayList.clear();
+    for (int i = 1; i <= 31; i++){
+      monthDayList.add(i.toString());
     }
   }
 
@@ -256,8 +276,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -295,8 +317,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -528,8 +552,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -570,8 +596,10 @@ class WalletController extends GetxController {
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-          Utility.showAlertMessage(value.body['message'].toString());
-        }
+       if (value.body['message']!=null) {
+        Utility.showAlertMessage(value.body['message']);
+      }
+    }
       }
     });
   }
@@ -666,8 +694,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -748,8 +778,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -773,6 +805,7 @@ class WalletController extends GetxController {
       // "end_date": autoChargeType.value == "threshold"
       //     ? DateTime(date.year + 1, date.month, date.day).toString()
       //     : endDateTextController.text.trim(),
+      "day": day.value,
       "frequency":
           autoChargeType.value == "threshold" ? "1" : selectedFrequency.value
     };
@@ -798,7 +831,7 @@ class WalletController extends GetxController {
         autoChargeType.value = "";
         rountingTextController.clear();
         accountNumberTextController.clear();
-        apiGetAutoRechargeDetail();
+         await  apiGetAutoRechargeDetail();
         // Get.back();
         Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -811,8 +844,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -834,16 +869,16 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET AUTO RECHARGE DETAIL RESPONSE *******${value?.body}");
+      log("GET AUTO RECHARGE DETAIL RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getAutoRechargeModel = GetAutoRechargeModel.fromJson(value?.body);
 
-        if (getAutoRechargeModel.data!.userWalletAutoCharge != null) {
-          if (getAutoRechargeModel.data!.userWalletAutoCharge!.status ==
+        if (getAutoRechargeModel.data?.userWalletAutoCharge != null) {
+          if (getAutoRechargeModel.data?.userWalletAutoCharge?.status ==
               "active") {
-            isautoRechargeEnable.value = true;
 
+            isautoRechargeEnable.value = true;
             autoChargeType.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.autoChargeType!;
 
@@ -865,10 +900,12 @@ class WalletController extends GetxController {
             if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
                 1) {
               frequencyTextController.text = "7";
-            }
-            frequencyTextController.text = getAutoRechargeModel
+              }
+            selectedFrequency.value =  frequencyTextController.text = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.frequency
                 .toString();
+
+            day.value= getAutoRechargeModel.data?.userWalletAutoCharge?.day.toString() ??"";
 
             userWalletAutoChargeId.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.userWalletAutoChargeId
@@ -913,7 +950,9 @@ class WalletController extends GetxController {
       // "end_date": autoChargeType.value == "threshold"
       //     ? DateTime(date.year + 1, date.month, date.day).toString()
       //     : endDateTextController.text.trim(),
-      "frequency": autoChargeType.value == "threshold"
+      "day": day.value,
+      "frequency":
+      autoChargeType.value == "threshold"
           ? "1"
           : selectedFrequency.value.isEmpty
               ? frequencyTextController.text
@@ -954,8 +993,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 
@@ -997,8 +1038,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+       if (value.body['message']!=null) {
         Utility.showAlertMessage(value.body['message']);
       }
+    }
     });
   }
 }
