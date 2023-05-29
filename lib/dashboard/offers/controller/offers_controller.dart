@@ -58,10 +58,9 @@ class OffersController extends GetxController {
 
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
-    // lat = currentLocation.latitude;
-    // lng = currentLocation.longitude;
-    lat = "43.661784399999995";
-    lng = "-79.3977525";
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
