@@ -36,17 +36,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _pullRefresh() async {
-    if( homeController.role!.value == Role.customerRoleText){
+    if (homeController.role!.value == Role.customerRoleText) {
       homeController.apiGetUserOffersList();
       homeController.apiGetUserFeaturedProducts();
       homeController.apiGetUserDetail();
-    }else{
+    } else {
       homeController.apiGetOwnerFeaturedProducts();
       homeController.apiGetOwnerOffersList();
       homeController.apiGetUserDetail();
     }
     // why use freshNumbers var? https://stackoverflow.com/a/52992836/2301224
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -142,7 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                SharedPreferenceStorage.setData("context", context);
+                                SharedPreferenceStorage.setData(
+                                    "context", context);
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) =>
@@ -424,11 +426,11 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
         ),
       ),
-      body:  RefreshIndicator(
+      body: RefreshIndicator(
         onRefresh: _pullRefresh,
         child: SingleChildScrollView(
           child: Container(
-            height: WidgetConstants.screenHeight*0.84,
+            height: WidgetConstants.screenHeight * 0.84,
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -443,84 +445,89 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: CircularProgressIndicator(
                                           color: AppColors.primary)),
                                 ) //
-                              :*/ homeController.userCrouselImgList.isEmpty
-                                  ? SizedBox(
-                                      height: homeController.featuredUserProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
-                                      child: Center(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              ImageConstants.greenmall420,
-                                            ),
-                                            Text(
-                                              StringConstants
-                                                  .welcomeToGreenMallText,
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontStyle: FontStyle.italic,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.primary),
-                                            )
-                                          ],
+                              :*/
+                          homeController.userCrouselImgList.isEmpty
+                              ? SizedBox(
+                                  height: homeController
+                                          .featuredUserProductList.isEmpty
+                                      ? WidgetConstants.screenHeight * 0.60
+                                      : WidgetConstants.screenHeight * 0.35,
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          ImageConstants.greenmall420,
                                         ),
-                                      ),
-                                    )
-                                  :
-                                  /// USER CAROUSEL
-                                  CarouselSlider(
-                                      items: homeController.userCrouselImgList
-                                          .map((item) => InkWell(
-                                                onTap: () {
-                                                  SharedPreferenceStorage.setData(
-                                                      "context", context);
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const StoreOfferDetailScreen(),
-                                                  ));
-                                                  Get.parameters["storeId"] =
-                                                      item.storeId ?? "";
-
-                                                  Get.parameters["offerId"] =
-                                                      item.offerId ?? "";
-                                                },
-                                                child: Center(
-                                                    child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6.0),
-                                                  child: Image.network(
-                                                      item.image?.dynamicUrl
-                                                              .toString() ??
-                                                          "",
-                                                      fit: BoxFit.fill,
-                                                      height: WidgetConstants
-                                                              .screenHeight *
-                                                          0.3,
-                                                      width: WidgetConstants
-                                                              .screenWidth *
-                                                          0.85),
-                                                )),
-                                              ))
-                                          .toList(),
-                                      carouselController: _controller,
-                                      options: CarouselOptions(
-                                          enlargeStrategy:
-                                              CenterPageEnlargeStrategy.scale,
-                                          autoPlayCurve: Curves.fastOutSlowIn,
-                                          viewportFraction: 1.2,
-                                          enlargeCenterPage: false,
-                                          autoPlay: true,
-                                          aspectRatio: 1.5,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _current = index;
-                                            });
-                                          }),
+                                        Text(
+                                          StringConstants
+                                              .welcomeToGreenMallText,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontStyle: FontStyle.italic,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.primary),
+                                        )
+                                      ],
                                     ),
+                                  ),
+                                )
+                              :
+
+                              /// USER CAROUSEL
+                              CarouselSlider(
+                                  items: homeController.userCrouselImgList
+                                      .map((item) => InkWell(
+                                            onTap: () {
+                                              SharedPreferenceStorage.setData(
+                                                  "context", context);
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const StoreHomeMainScreen(),
+                                              ));
+                                              Get.parameters["storeId"] =
+                                                  item.storeId ?? "";
+
+                                              Get.parameters["offerId"] =
+                                                  item.offerId ?? "";
+                                            },
+                                            child: Center(
+                                                child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              child: Image.network(
+                                                  item.image?.dynamicUrl
+                                                          .toString() ??
+                                                      "",
+                                                  fit: BoxFit.fill,
+                                                  height: WidgetConstants
+                                                          .screenHeight *
+                                                      0.3,
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.85),
+                                            )),
+                                          ))
+                                      .toList(),
+                                  carouselController: _controller,
+                                  options: CarouselOptions(
+                                      enlargeStrategy:
+                                          CenterPageEnlargeStrategy.scale,
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      viewportFraction: 1.2,
+                                      enlargeCenterPage: false,
+                                      autoPlay: true,
+                                      aspectRatio: 1.5,
+                                      onPageChanged: (index, reason) {
+                                        setState(() {
+                                          _current = index;
+                                        });
+                                      }),
+                                ),
                           height5SizedBox,
                           Obx(() => homeController.userCrouselImgList.isEmpty
                               ? height0SizedBox
@@ -535,10 +542,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .entries
                                         .map((entry) {
                                       return GestureDetector(
-                                        onTap: () =>
-                                            _controller.animateToPage(entry.key),
+                                        onTap: () => _controller
+                                            .animateToPage(entry.key),
                                         child: Container(
-                                          width: _current == entry.key ? 25 : 10,
+                                          width:
+                                              _current == entry.key ? 25 : 10,
                                           height: 5.0,
                                           margin: const EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 4.0),
@@ -565,31 +573,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: CircularProgressIndicator(
                                             color: AppColors.primary)),
                                   )
-                                :*/ SizedBox(
-                                  height: homeController.ownerFeatureProductList.isEmpty?WidgetConstants.screenHeight * 0.60:WidgetConstants.screenHeight * 0.35,
-                                  child: Center(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            ImageConstants.greenmall420,
-                                          ),
-                                          Text(
-                                            StringConstants
-                                                .welcomeToGreenMallText,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontStyle: FontStyle.italic,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.primary),
-                                          )
-                                        ],
+                                :*/
+                            SizedBox(
+                                height: homeController
+                                        .ownerFeatureProductList.isEmpty
+                                    ? WidgetConstants.screenHeight * 0.60
+                                    : WidgetConstants.screenHeight * 0.35,
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.greenmall420,
                                       ),
-                                    ),
-                                  )
+                                      Text(
+                                        StringConstants.welcomeToGreenMallText,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.primary),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+
                             ///OWNER CAROUSEL
                             : CarouselSlider(
                                 items: homeController.getOwnerOfferlist
@@ -606,7 +617,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               builder: (_) =>
                                                   const ManageStoreMainScreen(),
                                             ));
-                                            Get.parameters["isFromHome"] = "true";
+                                            Get.parameters["isFromHome"] =
+                                                "true";
                                             Get.parameters["storeId"] =
                                                 item.store!.storeId ?? "";
                                             print(Get.parameters["isFromHome"]);
@@ -627,12 +639,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Image.network(
                                                 item.image?.dynamicUrl ?? "",
                                                 fit: BoxFit.fill,
-                                                height:
-                                                    WidgetConstants.screenHeight *
-                                                        0.3,
-                                                width:
-                                                    WidgetConstants.screenWidth *
-                                                        0.85),
+                                                height: WidgetConstants
+                                                        .screenHeight *
+                                                    0.3,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.85),
                                           )),
                                         ))
                                     .toList(),
@@ -760,7 +772,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     SizedBox(
-                                      height: WidgetConstants.screenHeight * 0.22,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.22,
                                       width: WidgetConstants.screenWidth * 0.44,
                                       child: ClipRRect(
                                           borderRadius:
@@ -844,7 +857,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => const EditStoreDetailScreen(),
+                                    builder: (_) =>
+                                        const EditStoreDetailScreen(),
                                   ));
                                   Get.parameters["isFromHome"] = "true";
                                   Get.parameters["storeId"] = homeController
@@ -863,7 +877,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     SizedBox(
-                                      height: WidgetConstants.screenHeight * 0.22,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.22,
                                       width: WidgetConstants.screenWidth * 0.44,
                                       child: ClipRRect(
                                           borderRadius:

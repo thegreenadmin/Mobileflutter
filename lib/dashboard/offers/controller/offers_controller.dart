@@ -53,6 +53,16 @@ class OffersController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    getCurrentLocation();
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    // lat = currentLocation.latitude;
+    // lng = currentLocation.longitude;
+    lat = "43.661784399999995";
+    lng = "-79.3977525";
+    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
@@ -61,13 +71,6 @@ class OffersController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOffersList(Get.context!);
     }
-  }
-
-  getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
   }
 
   //Get Offers List Api [OWNER]
@@ -111,10 +114,10 @@ class OffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -122,7 +125,16 @@ class OffersController extends GetxController {
   Future apiGetUserOffersList(BuildContext context) async {
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
+      "GET USER OFFERS LIST URL********** " +
+          ServerCommunicator().baseUrl +
+          ServerCommunicator().shopeOffersList +
+          "?longitude=" +
+          lng.toString() +
+          "&latitude=" +
+          lat.toString() +
+          "&mileage=" +
+          "1000" +
+          "&page=1&page_size=20",
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -130,10 +142,17 @@ class OffersController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
-
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopeOffersList}?longitude=37.0902&latitude=95.7129&mileage=1000&page=1&page_size=20",
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().shopeOffersList +
+                "?longitude=" +
+                lng.toString() +
+                "&latitude=" +
+                lat.toString() +
+                "&mileage=" +
+                "1000" +
+                "&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {
@@ -151,10 +170,10 @@ class OffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -197,10 +216,10 @@ class OffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }
