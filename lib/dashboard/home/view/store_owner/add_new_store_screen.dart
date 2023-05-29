@@ -698,17 +698,15 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                           ///--------------------------------------
                           GeoData addresses =
-                          await Geocoder2.getDataFromAddress(
-                              address: p?.description.toString()??"",
-                              googleMapApiKey:
-                              addNewStoreController.kGoogleApiKey);
+                              await Geocoder2.getDataFromAddress(
+                                  address: p?.description.toString() ?? "",
+                                  googleMapApiKey:
+                                      addNewStoreController.kGoogleApiKey);
 
-
-                            if (addresses.state.isNotEmpty) {
-                              addNewStoreController.stateTextController.text =
-                                  addresses.state;
-                            }
-
+                          if (addresses.state.isNotEmpty) {
+                            addNewStoreController.stateTextController.text =
+                                addresses.state;
+                          }
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         minLines: 1,

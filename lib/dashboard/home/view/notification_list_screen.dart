@@ -114,7 +114,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                             SharedPreferenceStorage.setData("context", context);
                             Get.parameters["storeId"] =
                                 notificationListController
-                                        .notificationList[index].storeId ?? "";
+                                        .notificationList[index].storeId ??
+                                    "";
                             Get.parameters["storeName"] =
                                 notificationListController
                                     .notificationList[index].store!.storeName;
