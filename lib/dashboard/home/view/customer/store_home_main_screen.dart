@@ -8,9 +8,6 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
-
-import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
-import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';

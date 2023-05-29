@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
