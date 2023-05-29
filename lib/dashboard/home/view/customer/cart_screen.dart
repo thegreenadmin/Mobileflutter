@@ -112,7 +112,7 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop(true);
+                                    Navigator.of(context).pop();
                                     // Get.back();
                                     // Get.back(result: true );
                                   },

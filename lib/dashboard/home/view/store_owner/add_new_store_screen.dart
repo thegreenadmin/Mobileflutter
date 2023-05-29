@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geocoder2/geocoder2.dart';
 // import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -685,8 +686,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             addNewStoreController.zipCodeTextController.text =
                                 placeMark.first.postalCode ?? "";
 
-                            addNewStoreController.stateTextController.text =
-                                placeMark.first.administrativeArea ?? "";
+                            // addNewStoreController.stateTextController.text =
+                            //     placeMark.first.administrativeArea ?? "";
                           }
                           if (locations.isNotEmpty) {
                             addNewStoreController.lng =
@@ -696,47 +697,18 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
 
                           ///--------------------------------------
-                          /*  GeoData addresses =
-                              await Geocoder2.getDataFromAddress(
-                                  address: p?.description.toString()??"",
-                                  googleMapApiKey:
-                                      addNewStoreController.kGoogleApiKey);
+                          GeoData addresses =
+                          await Geocoder2.getDataFromAddress(
+                              address: p?.description.toString()??"",
+                              googleMapApiKey:
+                              addNewStoreController.kGoogleApiKey);
 
-                          if (addresses.city.isNotEmpty) {
-                            addNewStoreController.townOrCityTextController
-                                .text = addresses.city;
-                          }
-                          if (addresses.country.isNotEmpty) {
-                            addNewStoreController.countryTextController.text =
-                                addresses.country;
-                          }
 
-                          if (addresses.postalCode.isNotEmpty) {
-                            addNewStoreController.zipCodeTextController.text =
-                                addresses.postalCode;
-                          }
-                          if (addresses.state.isNotEmpty) {
-                            addNewStoreController.stateTextController.text =
-                                addresses.state;
-                          }
-                          if (addresses.latitude != null ||
-                              addresses.longitude != null) {
-                            addNewStoreController.lng =
-                                addresses.longitude.toString();
-                            addNewStoreController.lat =
-                                addresses.latitude.toString();
-                          }
+                            if (addresses.state.isNotEmpty) {
+                              addNewStoreController.stateTextController.text =
+                                  addresses.state;
+                            }
 
-                          debugPrint("ADDRESSES---->${addresses.address}");
-                          debugPrint("CITY---->${addresses.city}");
-                          debugPrint("COUNTRY---->${addresses.country}");
-                          debugPrint("COUNTRY CODE---->${addresses.countryCode}");
-                          debugPrint("POSTALCODE---->${addresses.postalCode}");
-                          debugPrint("STATE---->${addresses.state}");
-                          debugPrint(
-                              "STREETNUMBER---->${addresses.streetNumber}");
-                          debugPrint("LAT---->${addresses.latitude}");
-                          debugPrint("LONG---->${addresses.longitude}");*/
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         minLines: 1,

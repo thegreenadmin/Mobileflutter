@@ -543,18 +543,21 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                    storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productName ??
-                                        "",
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600)),
+                                Expanded(
+                                  child: Text(
+                                      storeHomeMainController
+                                              .productDetailResponse
+                                              .value
+                                              .data
+                                              ?.product
+                                              ?.productName ??
+                                          "",
+                                      style: const TextStyle(
+                                        overflow: TextOverflow.visible,
+                                          fontSize: 18,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600)),
+                                ),
                                 storeHomeMainController
                                             .isFavouriteProduct.value ==
                                         true

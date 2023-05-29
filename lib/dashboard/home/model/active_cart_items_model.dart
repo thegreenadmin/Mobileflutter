@@ -1,5 +1,5 @@
 class ActiveCartModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -25,11 +25,11 @@ class ActiveCartModel {
 class Data {
   String? storeId;
   dynamic cartTotalPrice;
-  int? cartSubTotal;
+  dynamic cartSubTotal;
   dynamic cartTotalDiscount;
   dynamic cartTotalServiceCharged;
   dynamic cartTotalTax;
-  int? cartDeliveryServiceCharge;
+  dynamic cartDeliveryServiceCharge;
   bool? isValidAddress;
   bool? isOrderDeliverable;
   List<CartItems>? cartItems;
@@ -84,7 +84,7 @@ class Data {
 
 class CartItems {
   String? cartItemId;
-  int? itemsCount;
+  dynamic itemsCount;
   String? serviceChargeType;
   dynamic serviceChargeValue;
   dynamic totalServiceCharged;
@@ -145,20 +145,20 @@ class Product {
   Images? image;
   String? storeId;
   String? quantityTypeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  int? productPrice;
-  int? sellingPrice;
+  dynamic productPrice;
+  dynamic sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
-  int? returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic returnDaysCount;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
   String? status;
   String? createdAt;

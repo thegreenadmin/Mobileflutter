@@ -430,6 +430,7 @@ class StoreHomeMainController extends GetxController {
 
   //Get Active Cart Api
   Future apiActiveCartApi(context) async {
+
     isLoading.value = true;
     debugPrint(
         "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
@@ -445,14 +446,19 @@ class StoreHomeMainController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
+
       isLoading.value = false;
       debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 ||
+        debugPrint("ACTIVE CART activeCartModel*******${int.parse(activeCartModel.data?.storeId.toString() ??"0") == 0}");
+        debugPrint("ACTIVE CART activeCartModel1*******${activeCartModel.data!.cartItems!.isEmpty}");
+        debugPrint("ACTIVE CART activeCartModel2*******${activeCartModel.data!.cartItems}");
+
+        if (int.parse(activeCartModel.data?.storeId.toString() ??"0") == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
-          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+          cartCount.value = 0;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
         } else {
           cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
@@ -464,7 +470,7 @@ class StoreHomeMainController extends GetxController {
             cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
           }
 
-          print("CART TOTAL VALUE" + cartTotalPrice.value.toString());
+          print("CART TOTAL VALUE${cartTotalPrice.value}");
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
@@ -961,7 +967,6 @@ class StoreHomeMainController extends GetxController {
                     Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                       builder: (_) => const CartScreen(),
                     ));
-                    // Get.to(const CartScreen());
                   },
                   child: Container(
                     height: 50.0,

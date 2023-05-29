@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-// import 'package:geocoder2/geocoder2.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -323,15 +323,16 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 mode: Mode.overlay,
                                 language: "en",
                                 components: []);
-                            int idx = p!.description!.indexOf(",");
+                            int idx = p?.description?.indexOf(",")??0;
                             List parts = [
-                              p.description!.substring(0, idx).trim(),
-                              p.description!.substring(idx + 1).trim()
+                              p?.description?.substring(0, idx).trim()??'',
+                              p?.description?.substring(idx + 1).trim()
                             ];
                             accountController.addressLine1TextController.text =
                                 parts[0].toString();
 
-                            ///ADDRESSES BY GEOCODING
+                            ///ADDRESSES BY GEOCODING COZ Geocodr2 RETURNS
+                            ///subAdministrativeArea INSTEAD OF CITY
 
                             List<geocoding.Location> locations =
                                 await geocoding.locationFromAddress(
@@ -356,50 +357,26 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               accountController.postalCodeTextController.text =
                                   placeMark.first.postalCode ?? "";
 
-                              accountController.stateTextController.text =
-                                  placeMark.first.administrativeArea ?? "";
+                              // accountController.stateTextController.text =
+                              //     placeMark.first.administrativeArea ?? "";
                             }
 
-                            ///--------------------------------------
-                            /*   GeoData addresses =
+                            /// state BY Geocodr2  COZ GEOCODING RETURNS abbreviation
+                            /// of administrativeArea instead of full name
+
+                            GeoData addresses =
                                 await Geocoder2.getDataFromAddress(
-                                    address: p.description.toString(),
+                                    address: p?.description.toString()??"",
                                     googleMapApiKey:
                                         accountController.kGoogleApiKey);
 
                             if (addresses.address != null) {
-                              if (addresses.city.isNotEmpty) {
-                                accountController.townOrCityTextController
-                                    .text = addresses.city;
-                              }
-                              if (addresses.country.isNotEmpty) {
-                                accountController.countryTextController.text =
-                                    addresses.country;
-                              }
-
-                              if (addresses.postalCode.isNotEmpty) {
-                                accountController.postalCodeTextController
-                                    .text = addresses.postalCode;
-                              }
                               if (addresses.state.isNotEmpty) {
                                 accountController.stateTextController.text =
                                     addresses.state;
                               }
                             }
-                            debugPrint("ADDRESSES---->" + addresses.address);
-                            debugPrint("CITY---->" + addresses.city);
-                            debugPrint("COUNTRY---->" + addresses.country);
-                            debugPrint(
-                                "COUNTRY CODE---->" + addresses.countryCode);
-                            debugPrint(
-                                "POSTALCODE---->" + addresses.postalCode);
-                            debugPrint("STATE---->" + addresses.state);
-                            debugPrint(
-                                "STREETNUMBER---->" + addresses.streetNumber);
-                            debugPrint(
-                                "LAT---->" + addresses.latitude.toString());
-                            debugPrint(
-                                "LONG---->" + addresses.longitude.toString());*/
+
                           },
                           child: TextFormField(
                               autovalidateMode:

@@ -123,8 +123,10 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                         .push(MaterialPageRoute(
                                                       builder: (_) =>
                                                           const CartScreen(),
-                                                    ));
-                                                    // Get.to(() => const CartScreen());
+                                                    )).then((value) =>
+                                                        storeHomeMainController
+                                                            .apiActiveCartApi(
+                                                            context));
                                                   },
                                                   child: Stack(
                                                     children: [
