@@ -187,6 +187,7 @@ class _CartScreenState extends State<CartScreen> {
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           child: Container(
+
                                             width: 80,
                                             height: 90,
                                             decoration: BoxDecoration(
