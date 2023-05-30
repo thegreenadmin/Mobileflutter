@@ -362,6 +362,7 @@ class StringConstants {
   static String receivedText = "Received";
   static String roleText = "Role";
   static String readyForPickUpText = "Ready for Pick Up";
+  static String readyForShippedText = "Ready for Shipped";
   static String rateNowText = "Rate Now";
   static String ratingText = "Rating";
   static String returnOrderText = "Return Order";
@@ -374,6 +375,8 @@ class StringConstants {
   static String routingNumberText = "Routing Number";
   //S
   static String signUpText = "Sign up";
+  static String orderShippedText = "Order shipped";
+  static String orderPickedText = "Order picked";
   static String shareYourFeedbackText = "Share your feedback";
   static String skipText = "Skip";
   static String storeText = "Store";

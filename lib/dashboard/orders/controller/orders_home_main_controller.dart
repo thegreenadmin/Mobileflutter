@@ -269,7 +269,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Confirm Return Request
-  apiConfirmReturnRequest() async {
+  apiConfirmReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
@@ -303,7 +303,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Navigator.of(Get.context!).pop();
+        Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {
@@ -364,7 +364,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Reject Return Request
-  apiRejectReturnRequest() async {
+  apiRejectReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
@@ -394,7 +394,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Navigator.of(Get.context!).pop();
+        Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {
@@ -406,7 +406,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Cancel order ready
-  apiCancelOrder() async {
+  apiCancelOrder(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");
@@ -446,7 +446,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-        Navigator.of(Get.context!).pop();
+        Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {

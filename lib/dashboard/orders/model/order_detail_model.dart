@@ -15,12 +15,12 @@ class OrderDetailResponse {
     this.data,
   });
 
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
   OrderDetailResponse copyWith({
-    int? status,
+    dynamic status,
     String? message,
     Data? data,
   }) =>
@@ -489,14 +489,14 @@ class OrderItem {
 
   String? orderId;
   String? productId;
-  int? orderItemCount;
+  dynamic orderItemCount;
   dynamic orderItemPrice;
   String? serviceChargeType;
   double? serviceChargeValue;
   double? totalServiceCharged;
   String? discountName;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   double? totalDiscount;
   String? status;
   DateTime? createdAt;
@@ -513,14 +513,14 @@ class OrderItem {
   OrderItem copyWith({
     String? orderId,
     String? productId,
-    int? orderItemCount,
-    int? orderItemPrice,
+    dynamic orderItemCount,
+    dynamic orderItemPrice,
     String? serviceChargeType,
     double? serviceChargeValue,
     double? totalServiceCharged,
     String? discountName,
     String? discountType,
-    int? discountValue,
+    dynamic discountValue,
     double? totalDiscount,
     String? status,
     DateTime? createdAt,
@@ -639,20 +639,20 @@ class Product {
 
   String? storeId;
   String? quantityTypeId;
-  int? quantity;
+  dynamic quantity;
   bool? isFeaturedProduct;
   String? productName;
   String? description;
-  int? productPrice;
-  int? sellingPrice;
+  dynamic productPrice;
+  dynamic sellingPrice;
   String? discountType;
-  int? discountValue;
+  dynamic discountValue;
   bool? isProductReturnable;
-  int? returnDaysCount;
-  int? length;
-  int? width;
-  int? height;
-  int? weight;
+  dynamic returnDaysCount;
+  dynamic length;
+  dynamic width;
+  dynamic height;
+  dynamic weight;
   bool? isEnabled;
   String? status;
   DateTime? createdAt;
@@ -664,20 +664,20 @@ class Product {
   Product copyWith({
     String? storeId,
     String? quantityTypeId,
-    int? quantity,
+    dynamic quantity,
     bool? isFeaturedProduct,
     String? productName,
     String? description,
-    int? productPrice,
-    int? sellingPrice,
+    dynamic productPrice,
+    dynamic sellingPrice,
     String? discountType,
-    int? discountValue,
+    dynamic discountValue,
     bool? isProductReturnable,
-    int? returnDaysCount,
-    int? length,
-    int? width,
-    int? height,
-    int? weight,
+    dynamic returnDaysCount,
+    dynamic length,
+    dynamic width,
+    dynamic height,
+    dynamic weight,
     bool? isEnabled,
     String? status,
     DateTime? createdAt,
@@ -779,7 +779,7 @@ class ProductImage {
 
   String? productId;
   String? imageUrl;
-  int? order;
+  dynamic order;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -789,7 +789,7 @@ class ProductImage {
   ProductImage copyWith({
     String? productId,
     String? imageUrl,
-    int? order,
+    dynamic order,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -875,7 +875,7 @@ class ProductReview {
   String? productId;
   String? userId;
   String? orderId;
-  int? rating;
+  dynamic rating;
   String? review;
   String? status;
   DateTime? createdAt;
@@ -886,7 +886,7 @@ class ProductReview {
     String? productId,
     String? userId,
     String? orderId,
-    int? rating,
+    dynamic rating,
     String? review,
     String? status,
     DateTime? createdAt,
@@ -944,7 +944,7 @@ class ReturnOrderItem {
   });
 
   String? orderItemId;
-  int? returnItemsCount;
+  dynamic returnItemsCount;
   String? remarks;
   double? totalTaxReversed;
   double? totalAmountReversed;
@@ -955,7 +955,7 @@ class ReturnOrderItem {
 
   ReturnOrderItem copyWith({
     String? orderItemId,
-    int? returnItemsCount,
+    dynamic returnItemsCount,
     String? remarks,
     double? totalTaxReversed,
     double? totalAmountReversed,

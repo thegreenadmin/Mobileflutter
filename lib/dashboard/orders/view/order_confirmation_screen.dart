@@ -60,23 +60,23 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ordersController.isActiveOrders.value = true;
       ordersController.orderStatusId.value = 2;
       // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
-      print("SharedPreferenceStorage:--Order Screen---------------");
-      print(SharedPreferenceStorage.getData(Role.role.value));
+      // print("SharedPreferenceStorage:--Order Screen---------------");
+      // print(SharedPreferenceStorage.getData(Role.role.value));
       if (SharedPreferenceStorage.getData(Role.role.value) ==
           Role.customerRoleText) {
         ordersController.role!.value = Role.customerRoleText;
-        ordersController.apiGetOrderListApi();
+        // ordersController.apiGetOrderListApi();
         if (ordersController.orderStatus.value != "") {
           ordersController.apiGetOrderDetailsApi();
         }
-        ordersController.page.value = 1;
-      } else {
+        // ordersController.page.value = 1;
+      } /*else {
         ordersController.role!.value = Role.storeOwnerRoleText;
         ordersController.apiGetStoreOrderListApi();
         ordersController.page.value = 1;
-      }
-      ordersController.apiGetOrderStatusListApi();
-      ordersController.setupScrollController(Get.context);
+      }*/
+      // ordersController.apiGetOrderStatusListApi();
+      // ordersController.setupScrollController(Get.context);
     });
   }
 
