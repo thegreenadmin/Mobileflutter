@@ -255,7 +255,7 @@ class AddNewWorkerController extends GetxController {
                   secFormat: "hh:mm:ss")
               .toString();
           debugPrint("test isSelected dayOfWeek");
-          print(element.id);
+          debugPrint(element.id);
           // print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
           if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
             employeeTimings.add(employeeTiming);

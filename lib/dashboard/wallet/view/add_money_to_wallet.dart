@@ -61,9 +61,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       setState(() {
         // Write here your code..
       });
-      print('Apple Pay is available on this device!');
+      debugPrint('Apple Pay is available on this device!');
     } else {
-      print('Apple Pay is not available on this device!');
+      debugPrint('Apple Pay is not available on this device!');
     }
   }
 
@@ -73,9 +73,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       setState(() {
         // Write here your code..
       });
-      print('Google Pay is available on this device!');
+      debugPrint('Google Pay is available on this device!');
     } else {
-      print('Google Pay is not available on this device!');
+      debugPrint('Google Pay is not available on this device!');
     }
   }
 
@@ -416,7 +416,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             onError: (Object? error) {
                               debugPrint('error');
                             },
-                            onPressed: () => {print("Hello")},
                             paymentConfiguration:
                                 PaymentConfiguration.fromJsonString(
                                     payment_configurations.defaultGooglePay),
@@ -501,11 +500,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                             .push(
                                                                 MaterialPageRoute(
                                                           builder: (_) =>
-                                                              AddCardDetailScreen(),
+                                                              const AddCardDetailScreen(),
                                                         ))
                                                             .then((value) {
-                                                          print(
-                                                              "AddCardDetailScreen:-----------------");
                                                           addCardController
                                                               .apiGetCardList(
                                                                   context);

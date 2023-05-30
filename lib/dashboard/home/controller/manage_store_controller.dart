@@ -105,9 +105,9 @@ class ManageStoreController extends GetxController {
   void onInit() {
     super.onInit();
     isFeaturedTypeSelected.value = false;
-    print("storeName:------>>>>>>" );
-    print(Get.parameters["storeName"] );
-    print( Get.parameters["storeId"] );
+    debugPrint("storeName:------>>>>>>" );
+    debugPrint(Get.parameters["storeName"] );
+    debugPrint( Get.parameters["storeId"] );
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     storeLocation.value = Get.parameters["storeLocation"] ?? "";

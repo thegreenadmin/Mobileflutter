@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -691,9 +690,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           if (locations.isNotEmpty) {
                             addNewStoreController.lng =
-                                locations.first.longitude.toString() ?? "";
+                                locations.first.longitude.toString() ;
                             addNewStoreController.lat =
-                                locations.first.latitude.toString() ?? "";
+                                locations.first.latitude.toString() ;
                           }
 
                           ///--------------------------------------
@@ -1378,7 +1377,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                       .openingTime.value =
                                                   "${date.hour}:${date.minute}:00";
 
-                                              print(
+                                              debugPrint(
                                                   "${date.hour}:${date.minute}:00");
                                             }
                                           },

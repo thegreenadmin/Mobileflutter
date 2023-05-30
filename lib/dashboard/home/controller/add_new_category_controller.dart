@@ -33,14 +33,14 @@ class AddNewCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print("storeName:------>>>>>>" );
-    print(Get.parameters["storeName"] );
-    print( Get.parameters["storeId"] );
+    debugPrint("storeName:------>>>>>>");
+    debugPrint(Get.parameters["storeName"]);
+    debugPrint(Get.parameters["storeId"]);
     storeId.value = Get.parameters["storeId"] ?? "";
     categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
         Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    print(Get.parameters["isFeaturedSelectedType"]);
+    debugPrint(Get.parameters["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }
@@ -187,10 +187,13 @@ class AddNewCategoryController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("ADD CATEGORY headers********** $headers");
-    print("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
-    print("ADD CATEGORY is_featured_category********** ${isFeaturedTypeSelected.value}");
-    print("ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
-    print("ADD CATEGORY image_url********** ${categoryImageOrigionalLinkfromServer.value}");
+    debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
+    debugPrint(
+        "ADD CATEGORY is_featured_category********** ${isFeaturedTypeSelected.value}");
+    debugPrint(
+        "ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
+    debugPrint(
+        "ADD CATEGORY image_url********** ${categoryImageOrigionalLinkfromServer.value}");
 
     Map body = {
       "store_id": int.parse(storeId.value),
@@ -221,10 +224,10 @@ class AddNewCategoryController extends GetxController {
         Navigator.of(nContext).pop();
         // Navigator.of(Get.context!).pop();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -261,10 +264,10 @@ class AddNewCategoryController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -293,7 +296,7 @@ class AddNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      print(value);
+      (value);
       debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -310,10 +313,10 @@ class AddNewCategoryController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

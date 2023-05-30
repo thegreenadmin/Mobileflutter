@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
@@ -354,8 +353,8 @@ class HomeController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value?.body['message']!=null){
-          Utility.showAlertMessage(value?.body['message']);
+        if(value.body['message']!=null){
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });

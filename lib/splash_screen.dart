@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigationPage() async {
     if (SharedPreferenceStorage.getData('token') != null) {
-      Get.offAll(() => BottomNavigation());
+      Get.offAll(() => const BottomNavigation());
     } else {
       Get.offNamed('/onboardView');
     }

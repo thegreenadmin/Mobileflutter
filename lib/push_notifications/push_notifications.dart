@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
@@ -47,7 +45,7 @@ notificationPermission() async {
 getNotification() {
   FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
     RemoteNotification? notification = message!.notification;
-    debugPrint("notification data---------------" + message.data.toString());
+    debugPrint("notification data---------------${message.data}");
     //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
@@ -83,8 +81,8 @@ getNotificationOpenedApp() {
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
-  debugPrint("firebaseMessagingBackgroundHandler data 12345---" +
-      message!.data.toString());
+  debugPrint(
+      "firebaseMessagingBackgroundHandler data 12345---${message!.data}");
   // getNotification();
   //await Firebase.initializeApp();
   selectNotification(NotificationResponse(
@@ -101,7 +99,7 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 }
 
 void selectNotification(NotificationResponse notificationResponse) async {
-  print("payload 2---------->" + notificationResponse.payload.toString());
+  debugPrint("payload 2---------->${notificationResponse.payload}");
 
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
@@ -113,8 +111,7 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Get.parameters["orderId"] = notificationData.orderId.toString();
       Get.parameters["isFromNotification"] = "true";
 
-      Navigator.of(Get.context!)
-          .push(MaterialPageRoute(
+      Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const OrdersScreen(),
       ));
       /*Get.to(() => const OrdersScreen(), arguments: {
@@ -126,15 +123,13 @@ void selectNotification(NotificationResponse notificationResponse) async {
     });
   } else if (notificationData.type == "offer") {
     Future.delayed(const Duration(milliseconds: 600), () async {
-
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["orderId"] = notificationData.orderId.toString();
-      Navigator.of(Get.context!)
-          .push(MaterialPageRoute(
+      Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const OffersScreen(),
       ));
-     /* Get.to(() => const OffersScreen(), arguments: {
+      /* Get.to(() => const OffersScreen(), arguments: {
         "isFromTransaction": false,
         "storeId": notificationData.storeId.toString(),
         "orderId": notificationData.orderId.toString(),
@@ -145,12 +140,12 @@ void selectNotification(NotificationResponse notificationResponse) async {
     Future.delayed(const Duration(seconds: 2), () async {
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
-      Get.parameters["messageHeadId"] = notificationData.messageHeadId.toString();
-      Navigator.of(Get.context!)
-          .push(MaterialPageRoute(
+      Get.parameters["messageHeadId"] =
+          notificationData.messageHeadId.toString();
+      Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const OwnerInboxDetailScreen(),
       ));
-     /* Get.to(() => const OwnerInboxDetailScreen(), arguments: {
+      /* Get.to(() => const OwnerInboxDetailScreen(), arguments: {
         "isFromTransaction": false,
         "storeId": notificationData.storeId ?? "",
         "messageHeadId": notificationData.messageHeadId.toString(),
@@ -161,9 +156,9 @@ void selectNotification(NotificationResponse notificationResponse) async {
     Future.delayed(const Duration(seconds: 2), () async {
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
-      Get.parameters["messageHeadId"] = notificationData.messageHeadId.toString();
-      Navigator.of(Get.context!)
-          .push(MaterialPageRoute(
+      Get.parameters["messageHeadId"] =
+          notificationData.messageHeadId.toString();
+      Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const UserInboxDetailScreen(),
       ));
       /*Get.to(() => const UserInboxDetailScreen(), arguments: {

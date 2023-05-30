@@ -682,9 +682,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           if(locations.isNotEmpty){
                             ownerStoreController.lng =
-                                locations.first.longitude.toString()??"";
+                                locations.first.longitude.toString();
                             ownerStoreController.lat =
-                                locations.first.latitude.toString()??"";
+                                locations.first.latitude.toString();
                           }
 
 

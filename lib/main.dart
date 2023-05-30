@@ -9,7 +9,7 @@ import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
-import 'package:thegreenmall/utils/pdf_download.dart';
+
 
 RemoteMessage? initialRemoteMessage;
 
@@ -82,13 +82,11 @@ class _MyAppState extends State<MyApp> {
     try {
       FirebaseDynamicLinks.instance.onLink.listen(
         (pendingDynamicLinkData) {
-          print("MOHITYTYYY");
           // Set up the `onLink` event listener next as it may be received here
           if (pendingDynamicLinkData != null) {
             final Uri deepLink = pendingDynamicLinkData.link;
             // Example of using the dynamic link to push the user to a different screen
             Navigator.pushNamed(context, deepLink.path);
-            print("MOHITYTYYYGFHFRT");
           }
         },
       );

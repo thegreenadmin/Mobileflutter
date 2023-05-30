@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
 import 'package:thegreenmall/dashboard/wallet/view/manage_wallet_screen.dart';
@@ -11,7 +11,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:share_plus/share_plus.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -33,14 +32,14 @@ class _WalletScreenState extends State<WalletScreen> {
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     walletController.role?.value =
         SharedPreferenceStorage.getData(Role.role.value);
-    print("SharedPreferenceStorage");
-    print(SharedPreferenceStorage.getData(StringConstants.firstNameText));
-    print(SharedPreferenceStorage.getData(StringConstants.lastNameText));
-    print(SharedPreferenceStorage.getData(Role.role.value));
+    debugPrint("SharedPreferenceStorage");
+    debugPrint(SharedPreferenceStorage.getData(StringConstants.firstNameText));
+    debugPrint(SharedPreferenceStorage.getData(StringConstants.lastNameText));
+    debugPrint(SharedPreferenceStorage.getData(Role.role.value));
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
-        walletController.isFromCartScreen.value =
-            Get.parameters["isFromCartScreen"] == "true" ? true : false;
+      walletController.isFromCartScreen.value =
+          Get.parameters["isFromCartScreen"] == "true" ? true : false;
 
       walletController.getApiData();
     } else {
@@ -182,7 +181,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       color: AppColors.grey, fontSize: 14),
                                 ),
                                 items: walletController.storeList
-                                    .map((dynamic value) {                       
+                                    .map((dynamic value) {
                                   return DropdownMenuItem<String>(
                                     value: value.storeId,
                                     child: Text(
@@ -253,7 +252,6 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
-
                                   SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context)

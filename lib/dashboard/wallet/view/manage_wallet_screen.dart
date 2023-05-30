@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -602,20 +602,21 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       ),
                                       InkWell(
                                           onTap: () async {
-                                            Utility.showConfirmAlertMessage( AlertStringConstants
-                                                .areYouSureText,okay:  StringConstants
-                                                .deleteText,okayTap: () async{
+                                            Utility.showConfirmAlertMessage(
+                                                AlertStringConstants
+                                                    .areYouSureText,
+                                                okay:
+                                                    StringConstants.deleteText,
+                                                okayTap: () async {
                                               Navigator.pop(Get.context!);
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:
-                                                  walletController
-                                                      .cardList[
-                                                  index]
-                                                      .userStripeCardId ??
-                                                      "");
+                                                      walletController
+                                                              .cardList[index]
+                                                              .userStripeCardId ??
+                                                          "");
                                             });
-
                                           },
                                           child: Image.asset(
                                             ImageConstants.deleteicon,
@@ -687,15 +688,21 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       ),
                                       InkWell(
                                           onTap: () async {
-                                            Utility.showConfirmAlertMessage( AlertStringConstants
-                                                .areYouSureText,okay:  StringConstants
-                                                .deleteText,okayTap: () async{
+                                            Utility.showConfirmAlertMessage(
+                                                AlertStringConstants
+                                                    .areYouSureText,
+                                                okay:
+                                                    StringConstants.deleteText,
+                                                okayTap: () async {
                                               Navigator.pop(Get.context!);
                                               walletController.apiDeleteBankAccounts(
                                                   userStripeBankId:
-                                                  walletController.bankAccountList[index].userStripeBankId ?? "");
+                                                      walletController
+                                                              .bankAccountList[
+                                                                  index]
+                                                              .userStripeBankId ??
+                                                          "");
                                             });
-
                                           },
                                           child: Image.asset(
                                             ImageConstants.deleteicon,

@@ -93,17 +93,17 @@ class OtpVerificationController extends GetxController {
               Role.role.value, Role.customerRoleText);
         }
 
-        Get.offAll(() => BottomNavigation());
+        Get.offAll(() => const BottomNavigation());
         // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
         // Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

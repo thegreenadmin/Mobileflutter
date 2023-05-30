@@ -6,8 +6,7 @@ import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
 import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
     as feature_product;
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
-    as nearby;
+
 import 'package:thegreenmall/dashboard/home/model/previous_orders_model.dart';
 import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart'
     as categories;
@@ -114,9 +113,9 @@ class StoreHomeMainController extends GetxController {
 
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-      print("isFromMenu--------${isFromFav.value}");
-      print("isFromFav-------${isFromMenu.value}");
-      print("PRODUCT ID--------${Get.parameters["productId"]}");
+      debugPrint("isFromMenu--------${isFromFav.value}");
+      debugPrint("isFromFav-------${isFromMenu.value}");
+      debugPrint("PRODUCT ID--------${Get.parameters["productId"]}");
 
       apiGetUserDetailsApi();
       if (isFromMenu.value) {
@@ -430,7 +429,6 @@ class StoreHomeMainController extends GetxController {
 
   //Get Active Cart Api
   Future apiActiveCartApi(context) async {
-
     isLoading.value = true;
     debugPrint(
         "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
@@ -446,17 +444,19 @@ class StoreHomeMainController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-
       isLoading.value = false;
       debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        debugPrint("ACTIVE CART activeCartModel*******${int.parse(activeCartModel.data?.storeId.toString() ??"0") == 0}");
-        debugPrint("ACTIVE CART activeCartModel1*******${activeCartModel.data!.cartItems!.isEmpty}");
-        debugPrint("ACTIVE CART activeCartModel2*******${activeCartModel.data!.cartItems}");
+        debugPrint(
+            "ACTIVE CART activeCartModel*******${int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0}");
+        debugPrint(
+            "ACTIVE CART activeCartModel1*******${activeCartModel.data!.cartItems!.isEmpty}");
+        debugPrint(
+            "ACTIVE CART activeCartModel2*******${activeCartModel.data!.cartItems}");
 
-        if (int.parse(activeCartModel.data?.storeId.toString() ??"0") == 0 &&
+        if (int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
@@ -470,7 +470,7 @@ class StoreHomeMainController extends GetxController {
             cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
           }
 
-          print("CART TOTAL VALUE${cartTotalPrice.value}");
+          debugPrint("CART TOTAL VALUE${cartTotalPrice.value}");
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
@@ -650,7 +650,7 @@ class StoreHomeMainController extends GetxController {
         } else {
           cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
         }
-        print("CART TOTAL VALUE" + cartTotalPrice.value.toString());
+        debugPrint("CART TOTAL VALUE${cartTotalPrice.value}");
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
@@ -697,7 +697,7 @@ class StoreHomeMainController extends GetxController {
     }
 
     Map<String, dynamic> data = {
-      "store_id": int.parse(storeId.value.toString() ?? "0"),
+      "store_id": int.parse(storeId.value.toString()),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
       "user_address_id": selectedDeliveryService.value == "1" ||
               selectedDeliveryService.value == "3"
@@ -724,7 +724,7 @@ class StoreHomeMainController extends GetxController {
         isPlaceOrder.value = true;
         debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
         SharedPreferenceStorage.setData("context", context);
-        Get.parameters["storeId"] = storeId.value.toString() ?? "0";
+        Get.parameters["storeId"] = storeId.value.toString();
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
@@ -930,10 +930,10 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-                    if(isFromHome.value){
+                    if (isFromHome.value) {
                       Navigator.of(_).pop();
                       Navigator.of(ctx).pop();
-                    }else{
+                    } else {
                       Navigator.of(_).pop();
                       Navigator.of(ctx).pop();
                       Navigator.of(ctx).pop();

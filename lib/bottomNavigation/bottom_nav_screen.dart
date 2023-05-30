@@ -12,7 +12,6 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class BottomNavigation extends StatefulWidget {
-
   const BottomNavigation({Key? key}) : super(key: key);
 
   @override
@@ -23,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final BottomNavController _bottomNavigationPageController =
       Get.put(BottomNavController());
 
- /* Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
+  /* Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
     0: GlobalKey<NavigatorState>(),
     1: GlobalKey<NavigatorState>(),
     2: GlobalKey<NavigatorState>(),
@@ -31,21 +30,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
     4: GlobalKey<NavigatorState>(),
   };*/
 
-  GlobalKey<TabNavigatorState> _tabNavigator = GlobalKey<TabNavigatorState>();
-  GlobalKey<NavigatorState> _tab1 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> _tab2 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> _tab3 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> _tab4 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> _tab5 = GlobalKey<NavigatorState>();
+  GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
+  GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
-
           int id = _bottomNavigationPageController.selectedIndex.toInt();
-          Get.back(id:id );
+          Get.back(id: id);
           return false;
         },
         child: Scaffold(
@@ -79,7 +77,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   Obx(
                     () => BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
-                      selectedLabelStyle: const TextStyle(color: AppColors.primary),
+                      selectedLabelStyle:
+                          const TextStyle(color: AppColors.primary),
                       selectedFontSize: 0.0,
                       elevation: 0,
                       showSelectedLabels: true,
@@ -88,19 +87,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       currentIndex:
                           _bottomNavigationPageController.selectedIndex.value,
                       onTap: (i) async {
-
-                      await  _bottomNavigationPageController.onItemTapped(i);
+                        await _bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
                               _bottomNavigationPageController
-                                          .selectedIndex.value == 0
+                                          .selectedIndex.value ==
+                                      0
                                   ? ImageConstants.homefill
                                   : ImageConstants.home,
                               color: _bottomNavigationPageController
-                                          .selectedIndex.value == 0
+                                          .selectedIndex.value ==
+                                      0
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.8,
@@ -110,7 +110,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
                                   color: _bottomNavigationPageController
-                                              .selectedIndex.value == 0
+                                              .selectedIndex.value ==
+                                          0
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -247,16 +248,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
           ),
           body: TabNavigator(
-            key: _tabNavigator,
+            key: tabNavigator,
             tabs: <TabItem>[
-              TabItem(_tab1, const HomeScreen()),
-              TabItem(_tab2, const WalletScreen()),
-              TabItem(_tab3, const OrdersScreen()),
-              TabItem(_tab4, const OffersScreen()),
-              TabItem(_tab5, const MoreScreen()),
+              TabItem(tab1, const HomeScreen()),
+              TabItem(tab2, const WalletScreen()),
+              TabItem(tab3, const OrdersScreen()),
+              TabItem(tab4, const OffersScreen()),
+              TabItem(tab5, const MoreScreen()),
             ],
             selectedIndex: _bottomNavigationPageController.selectedIndex.value,
-            popStack:  true,
+            popStack: true,
           ),
 
           // body: buildNavigator(),
