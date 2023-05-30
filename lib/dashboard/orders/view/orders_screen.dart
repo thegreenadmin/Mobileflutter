@@ -347,6 +347,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ordersController.setupScrollController(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(90.0),
@@ -438,7 +439,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               height25SizedBox,
               Obx(()=> ordersController.role!.value == Role.customerRoleText
                   ? ordersController.orderList.isEmpty
-                  ? ordersController.isLoading.value == true
+                  ? ordersController.isDataLoading.value == true
                   ? height0SizedBox
                   : Expanded(
                 child: Column(
@@ -799,7 +800,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     }),
               )
                   :  ordersController.storeOrderList.isEmpty
-                  ? ordersController.isLoading.value == true
+                  ? ordersController.isDataLoading.value == true
                   ? height0SizedBox
                   : Expanded(
                 child: Column(

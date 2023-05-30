@@ -349,7 +349,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                         AlertStringConstants.rejectReturnOrderAlertText,
                         okay: StringConstants.yesText,cancelText:  StringConstants.noText,
                         okayTap: (){
-                          ordersHomeMainController.apiRejectReturnRequest();
+                          ordersHomeMainController.apiRejectReturnRequest(context);
                         });
 
                   },
@@ -377,7 +377,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                         AlertStringConstants.areYouSureToConfirmReturnText,
                         okay: StringConstants.yesText,cancelText:  StringConstants.noText,
                         okayTap: (){
-                          ordersHomeMainController.apiConfirmReturnRequest();
+                          ordersHomeMainController.apiConfirmReturnRequest(context);
                         });
 
                   },

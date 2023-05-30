@@ -96,11 +96,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           .store
                                           ?.storeId ??
                                       "";
-                              print(
-                                  "nearby store is data : ---------------------------------------------");
-                              print(searchStoreUserController
-                                  .storeAddresses[index].store?.storeId);
-                              print(Get.parameters["storeId"]);
+
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));

@@ -62,9 +62,7 @@ class BottomNavController extends GetxController {
         Navigator.of(context).popUntil((route) => route.isFirst);
 
         HomeController controller = Get.put(HomeController());
-        HomeController controller1 = Get.find<HomeController>();
         controller.onInit();
-        controller1.onInit();
       } catch (e) {
         //Pass
       }
@@ -72,9 +70,7 @@ class BottomNavController extends GetxController {
       try {
 
         WalletController controller = Get.put(WalletController());
-        WalletController controller1 = Get.find<WalletController>();
         controller.onInit();
-        controller1.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
@@ -88,9 +84,7 @@ class BottomNavController extends GetxController {
       try {
 
         OrdersController controller = Get.put(OrdersController());
-        OrdersController controller1 = Get.find<OrdersController>();
         controller.onInit();
-        controller1.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
@@ -103,9 +97,8 @@ class BottomNavController extends GetxController {
       try {
 
         OffersController controller = Get.put(OffersController());
-        OffersController controller1 = Get.find<OffersController>();
+
         controller.onInit();
-        controller1.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
@@ -119,9 +112,7 @@ class BottomNavController extends GetxController {
 
 
         MoreController controller = Get.put(MoreController());
-        MoreController controller1 = Get.find<MoreController>();
         controller.onInit();
-        controller1.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );

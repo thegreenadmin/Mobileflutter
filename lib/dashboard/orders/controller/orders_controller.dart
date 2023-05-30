@@ -35,6 +35,7 @@ class OrdersController extends GetxController {
   RxBool isActiveOrders = false.obs;
   RxBool isFromNotification = false.obs;
   RxBool isLoading = false.obs;
+  RxBool preventCall = false.obs;
   RxBool isDataLoading = false.obs;
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -46,6 +47,8 @@ class OrdersController extends GetxController {
   RxString storeId = "0".obs;
   RxString productId = "".obs;
   RxInt page = 1.obs;
+  RxInt totalCount = 1.obs;
+  RxInt pageStore = 1.obs;
   RxInt activeStep = 0.obs;
   RxInt orderStatusId = 2.obs;
   RxString orderStatusName = OrderStatus.newOrder.statusName.obs;
@@ -100,44 +103,49 @@ class OrdersController extends GetxController {
 
     if (Get.parameters["orderStatus"] != null) {
       orderStatus.value = Get.parameters["orderStatus"] ?? "";
-      print("orderStatus.value:=========================================");
-      print(orderStatus.value);
     }
 
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.newOrder.statusName;
-    print("SharedPreferenceStorage:--Order Screen---------------");
     role!.value = SharedPreferenceStorage.getData(Role.role.value);
-    print(SharedPreferenceStorage.getData(Role.role.value));
-    print(role!.value);
     if (role!.value == Role.customerRoleText) {
+      page.value = 1;
       apiGetOrderListApi();
       if (orderStatus.value != "") {
         apiGetOrderDetailsApi();
       }
-      page.value = 1;
     } else {
-      apiGetStoreOrderListApi();
       page.value = 1;
+      apiGetStoreOrderListApi();
     }
+
     apiGetOrderStatusListApi();
-    setupScrollController(Get.context);
+    setupScrollController();
     super.onInit();
   }
 
   final scrollController = ScrollController();
+  final scrollController1 = ScrollController();
 
-  void setupScrollController(context) {
+  setupScrollController() {
     scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent -10) {
           if (role!.value == Role.customerRoleText) {
-            apiGetOrderListApi();
+            orderListResponse = order_list.OrderListResponse();
+            if (orderList.length < totalCount.value ) {
+              page.value++;
+              apiGetOrderListApi().then((_) => preventCall.value = false);
+              preventCall.value = true;
+            }
           } else {
-            apiGetStoreOrderListApi();
+            storeOrderListResponse = store_order.StoreOrderListResponse();
+            if (storeOrderList.length < totalCount.value ) {
+              page.value++;
+              apiGetStoreOrderListApi().then((_) => preventCall.value = false);
+              preventCall.value = true;
+            }
           }
-        }
       }
     });
   }
@@ -515,7 +523,7 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          apiReturnOrder();
+                          apiReturnOrder(ctxx);
                         },
                         height: 50,
                         text: StringConstants.submitText,
@@ -646,7 +654,7 @@ class OrdersController extends GetxController {
   }
 
   //RETURN ORDER
-  Future apiReturnOrder() async {
+  Future apiReturnOrder(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint("RETURN ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
@@ -683,12 +691,14 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
-        Navigator.of(Get.context!).pop();
-        // Get.back();
+        apiGetOrderDetailsApi();
+        Navigator.of(ctx).pop();
+        Navigator.of(ctx).pop();
+
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
@@ -734,10 +744,15 @@ class OrdersController extends GetxController {
 
   //Get Order List Api
   Future apiGetOrderListApi() async {
-    isDataLoading.value = true;
+    if (page.value == 1) {
+      orderList.clear();
+    }
+    orderListResponse =order_list.OrderListResponse();
+    isDataLoading.value =  orderList.isNotEmpty ? true : false;
+    // orderListResponse = order_list.OrderListResponse();
     isLoading.value = orderList.isNotEmpty ? true : false;
     debugPrint("role List URL**********${role!.value}");
-    debugPrint("Order List URL**********"
+    debugPrint("Order List URL****${page.value}******"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -747,7 +762,7 @@ class OrdersController extends GetxController {
     Map<String, dynamic> data = {
       "store_id": null,
       "page": page.value,
-      "page_size": 5,
+      "page_size": 10,
       "order_by": "order_id",
       "order_type": "DESC",
       "from_date": null,
@@ -763,7 +778,7 @@ class OrdersController extends GetxController {
           : []
     };
 
-    debugPrint("data ********** ${jsonEncode(data)}");
+    log("Order List data ********** ${jsonEncode(data)}");
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .postWithHeadersApi(
@@ -772,11 +787,14 @@ class OrdersController extends GetxController {
             headers,
             showLoading: page.value == 1)
         .then((value) async {
+      log("Order List *******${page.value}*******${value?.body}");
       isLoading.value = false;
-      debugPrint("Order List *******${value?.body}");
+      isDataLoading.value = false;
+
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderListResponse = order_list.OrderListResponse.fromJson(value?.body);
+        totalCount.value = orderListResponse.data!.totalCount;
         List<order_list.Order>? orders = [];
         orders = orderListResponse.data!.orders ?? [];
         if (orders.isNotEmpty) {
@@ -786,7 +804,7 @@ class OrdersController extends GetxController {
           orderList.addAll(orders);
         }
         orderList.toSet().toList();
-        page.value++;
+
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -803,8 +821,12 @@ class OrdersController extends GetxController {
 
   //Get Store Order List Api
   Future apiGetStoreOrderListApi() async {
-    isLoading.value = true;
-    isDataLoading.value = true;
+    if (pageStore.value == 1) {
+      storeOrderList.value = [];
+    }
+    storeOrderListResponse = store_order.StoreOrderListResponse();
+    isDataLoading.value =  storeOrderList.isNotEmpty ? true : false;
+    isLoading.value = storeOrderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
     Map<String, String> headers = {
@@ -851,13 +873,12 @@ class OrdersController extends GetxController {
         List<store_order.StoreOrder>? orders = [];
         orders = storeOrderListResponse.data!.orders ?? [];
         if (orders.isNotEmpty) {
-          if (page.value == 1) {
+          if (pageStore.value == 1) {
             storeOrderList.value = [];
           }
           storeOrderList.addAll(orders);
         }
         storeOrderList.toSet().toList();
-        page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
