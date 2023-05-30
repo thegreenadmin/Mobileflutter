@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -82,8 +83,24 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
     debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
   }
 
-  void onGooglePayResult(paymentResult) {
+  Future<void> onGooglePayResult(paymentResult) async {
     debugPrint("GOOGLE PAYMENT RESULT *************$paymentResult");
+    if (await paymentResult
+        .userCanPay(PayProvider.google_pay /*Or apple_pay*/)) {
+      // final paymentResult = await payClient.showPaymentSelector(
+      //   provider: PayProvider.google_pay, //Or apple_pay
+      //   paymentItems: _paymentItems,
+      // );
+      try {
+        final token =
+            paymentResult['paymentMethodData']['tokenizationData']['token'];
+        final tokenJson = Map.castFrom(json.decode(token));
+        var tokenId = tokenJson['id'];
+        //Send token to a server or to Google or Apple for confirmation
+      } catch (e) {
+        //An error has occured
+      }
+    }
   }
 
   @override
@@ -223,17 +240,19 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                           child: InkWell(
                             onTap: () {
                               addCardController.paymentType!.value = "card";
-                              addCardController.selectPaymentType.value = "card";
+                              addCardController.selectPaymentType.value =
+                                  "card";
                             },
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: AppColors.white,
                                   border: Border.all(
-                                    color: addCardController.paymentType!.value ==
-                                            "card"
-                                        ? AppColors.primary
-                                        : AppColors.blacklight,
+                                    color:
+                                        addCardController.paymentType!.value ==
+                                                "card"
+                                            ? AppColors.primary
+                                            : AppColors.blacklight,
                                   )),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 12),
@@ -294,7 +313,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -314,7 +334,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                 ],
                                               )
                                             : Image.asset(
-                                                ImageConstants.circleBlackUnFill,
+                                                ImageConstants
+                                                    .circleBlackUnFill,
                                                 scale: 2.8,
                                               ),
                                         width8SizedBox,
@@ -350,7 +371,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -370,7 +392,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                 ],
                                               )
                                             : Image.asset(
-                                                ImageConstants.circleBlackUnFill,
+                                                ImageConstants
+                                                    .circleBlackUnFill,
                                                 scale: 2.8,
                                               ),
                                         width8SizedBox,
@@ -393,6 +416,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             onError: (Object? error) {
                               debugPrint('error');
                             },
+                            onPressed: () => {print("Hello")},
                             paymentConfiguration:
                                 PaymentConfiguration.fromJsonString(
                                     payment_configurations.defaultGooglePay),
@@ -404,7 +428,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                               child: CircularProgressIndicator(),
                             ),
                           )
-                        : addCardController.selectPaymentType.value == "applePay"
+                        : addCardController.selectPaymentType.value ==
+                                "applePay"
                             ? ApplePayButton(
                                 width: WidgetConstants.screenWidth,
                                 height: 45,
@@ -420,7 +445,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                   child: CircularProgressIndicator(),
                                 ),
                               )
-                            : addCardController.selectPaymentType.value == "card"
+                            : addCardController.selectPaymentType.value ==
+                                    "card"
                                 ? Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 30),
@@ -476,9 +502,13 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                 MaterialPageRoute(
                                                           builder: (_) =>
                                                               AddCardDetailScreen(),
-                                                        )).then((value) {
-                                                          print("AddCardDetailScreen:-----------------");
-                                                          addCardController.apiGetCardList(context);
+                                                        ))
+                                                            .then((value) {
+                                                          print(
+                                                              "AddCardDetailScreen:-----------------");
+                                                          addCardController
+                                                              .apiGetCardList(
+                                                                  context);
                                                         });
                                                       },
                                                       height: 50,
@@ -488,7 +518,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                       text: StringConstants
                                                           .addCardText,
                                                       borderRadius: 12,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       iconL: false,
                                                       fontSize: 16,
                                                     ),
@@ -501,27 +532,33 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                     int index) {
                                               return height15SizedBox;
                                             },
-                                            itemCount:
-                                                addCardController.cardList.length,
+                                            itemCount: addCardController
+                                                .cardList.length,
                                             shrinkWrap: true,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
                                             itemBuilder: (BuildContext context,
                                                 int index) {
-                                              debugPrint("userStripeCardId:--------------->>>>>>");
-                                              debugPrint(addCardController.userStripeCardId!.value);
+                                              debugPrint(
+                                                  "userStripeCardId:--------------->>>>>>");
+                                              debugPrint(addCardController
+                                                  .userStripeCardId!.value);
 
                                               if (addCardController
                                                   .userStripeCardId!
                                                   .value
                                                   .isEmpty) {
                                                 addCardController
-                                                        .userStripeCardId?.value =
-                                                    addCardController.cardList[0]
+                                                        .userStripeCardId
+                                                        ?.value =
+                                                    addCardController
+                                                        .cardList[0]
                                                         .userStripeCardId
                                                         .toString();
-                                                debugPrint("userStripeCardId:--------------->>>>>>");
-                                                debugPrint(addCardController.userStripeCardId!.value);
+                                                debugPrint(
+                                                    "userStripeCardId:--------------->>>>>>");
+                                                debugPrint(addCardController
+                                                    .userStripeCardId!.value);
                                               }
                                               return Container(
                                                 padding: const EdgeInsets.only(
@@ -549,9 +586,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                               .cardList[index]
                                                               .userStripeCardId
                                                               .toString();
-                                                      debugPrint(addCardController
-                                                          .userStripeCardId!
-                                                          .value);
+                                                      debugPrint(
+                                                          addCardController
+                                                              .userStripeCardId!
+                                                              .value);
                                                     });
                                                   },
                                                   child: Row(
@@ -593,7 +631,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                       .funding
                                                                       .toString(),
                                                                   style: TextStyle(
-                                                                      color: addCardController.selectedIndex!.value ==
+                                                                      color: addCardController
+                                                                                  .selectedIndex!.value ==
                                                                               index
                                                                           ? AppColors
                                                                               .white
@@ -609,7 +648,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                 Text(
                                                                   "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
                                                                   style: TextStyle(
-                                                                      color: addCardController.selectedIndex!.value ==
+                                                                      color: addCardController
+                                                                                  .selectedIndex!.value ==
                                                                               index
                                                                           ? AppColors
                                                                               .white
@@ -641,7 +681,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     ),
                     onTap: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      await addCardController.validateAndSubmitFunction(context);
+                      await addCardController
+                          .validateAndSubmitFunction(context);
                     },
                     height: 50,
                     text: StringConstants.okText,

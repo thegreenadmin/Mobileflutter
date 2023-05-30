@@ -70,7 +70,7 @@ const String defaultGooglePay = '''{
         "tokenizationSpecification": {
           "type": "PAYMENT_GATEWAY",
           "parameters": {
-            "gateway": "example",
+            "gateway": "HI Business",
             "gatewayMerchantId": "BCR2DN4TZLO6RPDD"
           }
         },
@@ -85,18 +85,20 @@ const String defaultGooglePay = '''{
         }
       }
     ],
-    "merchantInfo": {
+    "merchantInfo": { 
       "merchantId": "BCR2DN4TZLO6RPDD",
       "merchantName": "HI Business"
     },
-    "transactionInfo": {
+    "transactionInfo": { 
+       "totalPriceStatus": "FINAL",
+      "totalPrice": "12.34",
       "countryCode": "US",
       "currencyCode": "USD"
     }
   }
 }''';
 
-const String basicGooglePayIsReadyToPay = '''{
+const String basicGooglePayIsReadyToPay = '''{ "provider": "google_pay",
   "apiVersion": 2,
   "apiVersionMinor": 0,
   "allowedPaymentMethods": [
@@ -107,7 +109,11 @@ const String basicGooglePayIsReadyToPay = '''{
         "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
       }
     }
-  ]
+  ],
+  "merchantInfo": {
+      "merchantId": "BCR2DN4TZLO6RPDD",
+      "merchantName": "HI Business"
+    }
 }''';
 
 const String basicGooglePayLoadPaymentData = '''{

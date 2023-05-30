@@ -123,12 +123,12 @@ class WalletController extends GetxController {
     role?.value = SharedPreferenceStorage.getData(Role.role.value);
     print("SharedPreferenceStorage:-------------->");
 
-    print( SharedPreferenceStorage.getData(StringConstants.firstNameText));
+    print(SharedPreferenceStorage.getData(StringConstants.firstNameText));
     print(SharedPreferenceStorage.getData(StringConstants.lastNameText));
     print(SharedPreferenceStorage.getData(Role.role.value));
-    print(  firstName?.value);
-    print(  lastName?.value);
-    print(  role?.value);
+    print(firstName?.value);
+    print(lastName?.value);
+    print(role?.value);
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       if (Get.parameters == null
@@ -144,9 +144,9 @@ class WalletController extends GetxController {
     }
   }
 
-  monthDays(){
+  monthDays() {
     monthDayList.clear();
-    for (int i = 1; i <= 31; i++){
+    for (int i = 1; i <= 31; i++) {
       monthDayList.add(i.toString());
     }
   }
@@ -181,7 +181,8 @@ class WalletController extends GetxController {
           }
         } else if (isFromCreateOwnerBankBalance == false) {
           if (selectPaymentType.isEmpty) {
-            Utility.showAlertMessage(AlertStringConstants.pleaseSelectPaymentTypeText);
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseSelectPaymentTypeText);
           } else if (selectPaymentType.value == "Cards" &&
               userStripeCardId!.value.isEmpty) {
             Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
@@ -276,10 +277,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -317,10 +318,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -552,10 +553,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -596,10 +597,10 @@ class WalletController extends GetxController {
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
-      }
-    }
+          if (value.body['message'] != null) {
+            Utility.showAlertMessage(value.body['message']);
+          }
+        }
       }
     });
   }
@@ -694,10 +695,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -778,10 +779,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -831,7 +832,7 @@ class WalletController extends GetxController {
         autoChargeType.value = "";
         rountingTextController.clear();
         accountNumberTextController.clear();
-         await  apiGetAutoRechargeDetail();
+        await apiGetAutoRechargeDetail();
         // Get.back();
         Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -844,10 +845,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -877,7 +878,6 @@ class WalletController extends GetxController {
         if (getAutoRechargeModel.data?.userWalletAutoCharge != null) {
           if (getAutoRechargeModel.data?.userWalletAutoCharge?.status ==
               "active") {
-
             isautoRechargeEnable.value = true;
             autoChargeType.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.autoChargeType!;
@@ -900,13 +900,14 @@ class WalletController extends GetxController {
             if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
                 1) {
               frequencyTextController.text = "7";
-              }
-            selectedFrequency.value =  frequencyTextController.text = getAutoRechargeModel
-                .data!.userWalletAutoCharge!.frequency
-                .toString();
+            }
+            selectedFrequency.value = frequencyTextController.text =
+                getAutoRechargeModel.data!.userWalletAutoCharge!.frequency
+                    .toString();
 
-
-            day.value= getAutoRechargeModel.data?.userWalletAutoCharge?.day.toString() ??"";
+            day.value = getAutoRechargeModel.data?.userWalletAutoCharge?.day
+                    .toString() ??
+                "";
 
             userWalletAutoChargeId.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.userWalletAutoChargeId
@@ -952,8 +953,7 @@ class WalletController extends GetxController {
       //     ? DateTime(date.year + 1, date.month, date.day).toString()
       //     : endDateTextController.text.trim(),
       "day": day.value,
-      "frequency":
-      autoChargeType.value == "threshold"
+      "frequency": autoChargeType.value == "threshold"
           ? "1"
           : selectedFrequency.value.isEmpty
               ? frequencyTextController.text
@@ -994,10 +994,10 @@ class WalletController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -1039,10 +1039,10 @@ class WalletController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

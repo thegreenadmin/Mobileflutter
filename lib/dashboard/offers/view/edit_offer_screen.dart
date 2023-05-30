@@ -296,7 +296,10 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     Obx(() => addOffersController.storeList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<String>(
-                            value: addOffersController.storeIdValue.value != ""
+                            value: addOffersController.storeIdValue.value !=
+                                        "" &&
+                                    addOffersController.storeIdValue.value !=
+                                        null
                                 ? addOffersController.storeList
                                     .firstWhere((element) =>
                                         element.storeId ==
@@ -485,9 +488,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: Obx(() => addOffersController
-                                  .discountType == null && addOffersController
-                                  .discountType.value.isEmpty
+                          child: Obx(() => addOffersController.discountType ==
+                                      null &&
+                                  addOffersController.discountType.value.isEmpty
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
                                   value: addOffersController.discountType.value,

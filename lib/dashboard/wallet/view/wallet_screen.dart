@@ -182,7 +182,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       color: AppColors.grey, fontSize: 14),
                                 ),
                                 items: walletController.storeList
-                                    .map((dynamic value) {
+                                    .map((dynamic value) {                       
                                   return DropdownMenuItem<String>(
                                     value: value.storeId,
                                     child: Text(
