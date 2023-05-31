@@ -336,11 +336,11 @@ class ProductLinks {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_link_id'] = this.productLinkId;
-    data['name'] = this.name;
-    data['link'] = this.link;
-    data['order'] = this.order;
-    data['status'] = this.status;
+    data['product_link_id'] = productLinkId;
+    data['name'] = name;
+    data['link'] = link;
+    data['order'] = order;
+    data['status'] = status;
     return data;
   }
 }

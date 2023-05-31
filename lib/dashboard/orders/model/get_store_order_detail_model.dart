@@ -8,13 +8,13 @@ class GetStoreOrderDetailModel {
   GetStoreOrderDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -28,13 +28,13 @@ class Data {
   Data({this.order});
 
   Data.fromJson(Map<String, dynamic> json) {
-    order = json['order'] != null ? new Order.fromJson(json['order']) : null;
+    order = json['order'] != null ? Order.fromJson(json['order']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.order != null) {
-      data['order'] = this.order!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (order != null) {
+      data['order'] = order!.toJson();
     }
     return data;
   }
@@ -108,61 +108,60 @@ class Order {
     updatedAt = json['updatedAt'];
     orderId = json['order_id'];
     deliveryService = json['delivery_service'] != null
-        ? new DeliveryService.fromJson(json['delivery_service'])
+        ? DeliveryService.fromJson(json['delivery_service'])
         : null;
     if (json['order_histories'] != null) {
       orderHistories = <OrderHistories>[];
       json['order_histories'].forEach((v) {
-        orderHistories!.add(new OrderHistories.fromJson(v));
+        orderHistories!.add(OrderHistories.fromJson(v));
       });
     }
     if (json['order_delivery_addresses'] != null) {
       orderDeliveryAddresses = <OrderDeliveryAddresses>[];
       json['order_delivery_addresses'].forEach((v) {
-        orderDeliveryAddresses!.add(new OrderDeliveryAddresses.fromJson(v));
+        orderDeliveryAddresses!.add(OrderDeliveryAddresses.fromJson(v));
       });
     }
     if (json['order_items'] != null) {
       orderItems = <OrderItems>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItems.fromJson(v));
+        orderItems!.add(OrderItems.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['store_id'] = this.storeId;
-    data['delivery_service_id'] = this.deliveryServiceId;
-    data['delivery_charge'] = this.deliveryCharge;
-    data['tax_type'] = this.taxType;
-    data['tax_value'] = this.taxValue;
-    data['total_tax_charged'] = this.totalTaxCharged;
-    data['total_amount'] = this.totalAmount;
-    data['customer_name'] = this.customerName;
-    data['customer_email'] = this.customerEmail;
-    data['customer_phone'] = this.customerPhone;
-    data['customer_phone_code'] = this.customerPhoneCode;
-    data['estimate_delivery_date'] = this.estimateDeliveryDate;
-    data['order_date'] = this.orderDate;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['order_id'] = this.orderId;
-    if (this.deliveryService != null) {
-      data['delivery_service'] = this.deliveryService!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['store_id'] = storeId;
+    data['delivery_service_id'] = deliveryServiceId;
+    data['delivery_charge'] = deliveryCharge;
+    data['tax_type'] = taxType;
+    data['tax_value'] = taxValue;
+    data['total_tax_charged'] = totalTaxCharged;
+    data['total_amount'] = totalAmount;
+    data['customer_name'] = customerName;
+    data['customer_email'] = customerEmail;
+    data['customer_phone'] = customerPhone;
+    data['customer_phone_code'] = customerPhoneCode;
+    data['estimate_delivery_date'] = estimateDeliveryDate;
+    data['order_date'] = orderDate;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['order_id'] = orderId;
+    if (deliveryService != null) {
+      data['delivery_service'] = deliveryService!.toJson();
     }
-    if (this.orderHistories != null) {
-      data['order_histories'] =
-          this.orderHistories!.map((v) => v.toJson()).toList();
+    if (orderHistories != null) {
+      data['order_histories'] = orderHistories!.map((v) => v.toJson()).toList();
     }
-    if (this.orderDeliveryAddresses != null) {
+    if (orderDeliveryAddresses != null) {
       data['order_delivery_addresses'] =
-          this.orderDeliveryAddresses!.map((v) => v.toJson()).toList();
+          orderDeliveryAddresses!.map((v) => v.toJson()).toList();
     }
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    if (orderItems != null) {
+      data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -180,9 +179,9 @@ class DeliveryService {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['delivery_service_name'] = this.deliveryServiceName;
-    data['delivery_service_id'] = this.deliveryServiceId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['delivery_service_name'] = deliveryServiceName;
+    data['delivery_service_id'] = deliveryServiceId;
     return data;
   }
 }
@@ -210,19 +209,19 @@ class OrderHistories {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderStatus = json['order_status'] != null
-        ? new OrderStatus.fromJson(json['order_status'])
+        ? OrderStatus.fromJson(json['order_status'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_history_id'] = this.orderHistoryId;
-    data['order_status_id'] = this.orderStatusId;
-    data['is_current_status'] = this.isCurrentStatus;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.orderStatus != null) {
-      data['order_status'] = this.orderStatus!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_history_id'] = orderHistoryId;
+    data['order_status_id'] = orderStatusId;
+    data['is_current_status'] = isCurrentStatus;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (orderStatus != null) {
+      data['order_status'] = orderStatus!.toJson();
     }
     return data;
   }
@@ -240,9 +239,9 @@ class OrderStatus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_status_id'] = this.orderStatusId;
-    data['order_status_name'] = this.orderStatusName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_status_id'] = orderStatusId;
+    data['order_status_name'] = orderStatusName;
     return data;
   }
 }
@@ -278,21 +277,21 @@ class OrderDeliveryAddresses {
     city = json['city'];
     postalCode = json['postal_code'];
     orderDeliveryAddressId = json['order_delivery_address_id'];
-    state = json['state'] != null ? new State.fromJson(json['state']) : null;
+    state = json['state'] != null ? State.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_id'] = this.orderId;
-    data['state_id'] = this.stateId;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    data['order_delivery_address_id'] = this.orderDeliveryAddressId;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_id'] = orderId;
+    data['state_id'] = stateId;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['landmark'] = landmark;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
+    data['order_delivery_address_id'] = orderDeliveryAddressId;
+    if (state != null) {
+      data['state'] = state!.toJson();
     }
     return data;
   }
@@ -309,15 +308,15 @@ class State {
     stateId = json['state_id'];
     stateName = json['state_name'];
     country =
-        json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? Country.fromJson(json['country']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state_id'] = this.stateId;
-    data['state_name'] = this.stateName;
-    if (this.country != null) {
-      data['country'] = this.country!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['state_id'] = stateId;
+    data['state_name'] = stateName;
+    if (country != null) {
+      data['country'] = country!.toJson();
     }
     return data;
   }
@@ -327,7 +326,7 @@ class Country {
   String? countryId;
   String? countryName;
 
- Country({this.countryId, this.countryName});
+  Country({this.countryId, this.countryName});
 
   Country.fromJson(Map<String, dynamic> json) {
     countryId = json['country_id'];
@@ -335,9 +334,9 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country_id'] = this.countryId;
-    data['country_name'] = this.countryName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country_id'] = countryId;
+    data['country_name'] = countryName;
     return data;
   }
 }
@@ -367,31 +366,31 @@ class OrderItems {
   dynamic deliveredAt;
   dynamic returedAt;
 
-  OrderItems(
-      {this.orderId,
-      this.productId,
-      this.orderItemCount,
-      this.orderItemPrice,
-      this.serviceChargeType,
-      this.serviceChargeValue,
-      this.totalServiceCharged,
-      this.discountName,
-      this.discountType,
-      this.discountValue,
-      this.totalDiscount,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.orderItemId,
-      this.product,
-      this.isSelected,
-      this.returnOrderItems,
-      this.orderItemStatus,
-      this.cancelledAt,
-      this.shippedAt,
-      this.deliveredAt,
-      this.returedAt,
-      });
+  OrderItems({
+    this.orderId,
+    this.productId,
+    this.orderItemCount,
+    this.orderItemPrice,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
+    this.discountName,
+    this.discountType,
+    this.discountValue,
+    this.totalDiscount,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.orderItemId,
+    this.product,
+    this.isSelected,
+    this.returnOrderItems,
+    this.orderItemStatus,
+    this.cancelledAt,
+    this.shippedAt,
+    this.deliveredAt,
+    this.returedAt,
+  });
 
   OrderItems.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -409,44 +408,49 @@ class OrderItems {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderItemId = json['order_item_id'];
-    product = json['product'] != null ? new Product.fromJson(json['product']) : null;
-    returnOrderItems= json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x)));
-    orderItemStatus= json["order_item_status"];
-    cancelledAt= json["cancelledAt"];
-    shippedAt= json["shippedAt"];
-    deliveredAt= json["deliveredAt"];
-    returedAt= json["returedAt"];
+    product =
+        json['product'] != null ? Product.fromJson(json['product']) : null;
+    returnOrderItems = json["return_order_items"] == null
+        ? []
+        : List<ReturnOrderItem>.from(json["return_order_items"]!
+            .map((x) => ReturnOrderItem.fromJson(x)));
+    orderItemStatus = json["order_item_status"];
+    cancelledAt = json["cancelledAt"];
+    shippedAt = json["shippedAt"];
+    deliveredAt = json["deliveredAt"];
+    returedAt = json["returedAt"];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_id'] = this.orderId;
-    data['product_id'] = this.productId;
-    data['order_item_count'] = this.orderItemCount;
-    data['order_item_price'] = this.orderItemPrice;
-    data['service_charge_type'] = this.serviceChargeType;
-    data['service_charge_value'] = this.serviceChargeValue;
-    data['total_service_charged'] = this.totalServiceCharged;
-    data['discount_name'] = this.discountName;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['total_discount'] = this.totalDiscount;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['order_item_id'] = this.orderItemId;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_id'] = orderId;
+    data['product_id'] = productId;
+    data['order_item_count'] = orderItemCount;
+    data['order_item_price'] = orderItemPrice;
+    data['service_charge_type'] = serviceChargeType;
+    data['service_charge_value'] = serviceChargeValue;
+    data['total_service_charged'] = totalServiceCharged;
+    data['discount_name'] = discountName;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['total_discount'] = totalDiscount;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['order_item_id'] = orderItemId;
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
-    if (this.returnOrderItems != null) {
-      data['return_order_items'] = List<dynamic>.from(returnOrderItems!.map((x) => x.toJson()));
+    if (returnOrderItems != null) {
+      data['return_order_items'] =
+          List<dynamic>.from(returnOrderItems!.map((x) => x.toJson()));
     }
-    data['return_order_items'] = this.returnOrderItems;
-    data['order_item_status'] = this.orderItemStatus;
-    data['cancelledAt'] = this.cancelledAt;
-    data['shippedAt'] = this.shippedAt;
-    data['deliveredAt'] = this.deliveredAt;
-    data['returedAt'] = this.returedAt;
+    data['return_order_items'] = returnOrderItems;
+    data['order_item_status'] = orderItemStatus;
+    data['cancelledAt'] = cancelledAt;
+    data['shippedAt'] = shippedAt;
+    data['deliveredAt'] = deliveredAt;
+    data['returedAt'] = returedAt;
     return data;
   }
 }
@@ -526,47 +530,45 @@ class Product {
     if (json['product_reviews'] != null) {
       productReviews = <ProductReviews>[];
       json['product_reviews'].forEach((v) {
-        productReviews!.add(new ProductReviews.fromJson(v));
+        productReviews!.add(ProductReviews.fromJson(v));
       });
     }
     if (json['product_images'] != null) {
       productImages = <ProductImages>[];
       json['product_images'].forEach((v) {
-        productImages!.add(new ProductImages.fromJson(v));
+        productImages!.add(ProductImages.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['quantity_type_id'] = this.quantityTypeId;
-    data['quantity'] = this.quantity;
-    data['is_featured_product'] = this.isFeaturedProduct;
-    data['product_name'] = this.productName;
-    data['description'] = this.description;
-    data['product_price'] = this.productPrice;
-    data['selling_price'] = this.sellingPrice;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['is_product_returnable'] = this.isProductReturnable;
-    data['return_days_count'] = this.returnDaysCount;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['product_id'] = this.productId;
-    if (this.productReviews != null) {
-      data['product_reviews'] =
-          this.productReviews!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['store_id'] = storeId;
+    data['quantity_type_id'] = quantityTypeId;
+    data['quantity'] = quantity;
+    data['is_featured_product'] = isFeaturedProduct;
+    data['product_name'] = productName;
+    data['description'] = description;
+    data['product_price'] = productPrice;
+    data['selling_price'] = sellingPrice;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['is_product_returnable'] = isProductReturnable;
+    data['return_days_count'] = returnDaysCount;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['product_id'] = productId;
+    if (productReviews != null) {
+      data['product_reviews'] = productReviews!.map((v) => v.toJson()).toList();
     }
-    if (this.productImages != null) {
-      data['product_images'] =
-          this.productImages!.map((v) => v.toJson()).toList();
+    if (productImages != null) {
+      data['product_images'] = productImages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -618,29 +620,34 @@ class ReturnOrderItem {
         returnOrderItemId: returnOrderItemId ?? this.returnOrderItemId,
       );
 
-  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) => ReturnOrderItem(
-    orderItemId: json["order_item_id"],
-    returnItemsCount: json["return_items_count"],
-    remarks: json["remarks"],
-    totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
-    totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    returnOrderItemId: json["return_order_item_id"],
-  );
+  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) =>
+      ReturnOrderItem(
+        orderItemId: json["order_item_id"],
+        returnItemsCount: json["return_items_count"],
+        remarks: json["remarks"],
+        totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
+        totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        returnOrderItemId: json["return_order_item_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "order_item_id": orderItemId,
-    "return_items_count": returnItemsCount,
-    "remarks": remarks,
-    "total_tax_reversed": totalTaxReversed,
-    "total_amount_reversed": totalAmountReversed,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "return_order_item_id": returnOrderItemId,
-  };
+        "order_item_id": orderItemId,
+        "return_items_count": returnItemsCount,
+        "remarks": remarks,
+        "total_tax_reversed": totalTaxReversed,
+        "total_amount_reversed": totalAmountReversed,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "return_order_item_id": returnOrderItemId,
+      };
 }
 
 class ProductReviews {
@@ -678,16 +685,16 @@ class ProductReviews {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['user_id'] = this.userId;
-    data['order_id'] = this.orderId;
-    data['rating'] = this.rating;
-    data['review'] = this.review;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['product_review_id'] = this.productReviewId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['user_id'] = userId;
+    data['order_id'] = orderId;
+    data['rating'] = rating;
+    data['review'] = review;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['product_review_id'] = productReviewId;
     return data;
   }
 }
@@ -698,13 +705,13 @@ class ProductImages {
   ProductImages({this.image});
 
   ProductImages.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
     return data;
   }
@@ -722,9 +729,9 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

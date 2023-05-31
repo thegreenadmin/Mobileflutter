@@ -68,6 +68,7 @@ class StringConstants {
   static String autoReloadText = "Auto Reload";
   static String applePayText = "Apple Pay";
   static String activeMembershipText = "Active Membership";
+  static String availableBalanceText = "Available Balance";
 
   //B
   static String breadthText = "Breadth";

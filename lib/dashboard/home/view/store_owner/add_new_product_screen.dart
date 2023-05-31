@@ -527,11 +527,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Flexible(
                           flex: 5,
                           child: TextFormField(
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r"[0-9.]")),
-                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
@@ -546,6 +544,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
                                       .pleaseEnterQuantityText;
+                                } else if (value == ".") {
+                                  return AlertStringConstants.invalidInputText;
                                 } else if (double.parse(value) == 0.0) {
                                   return AlertStringConstants
                                       .invalidQuantityText;
@@ -611,7 +611,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
-                        keyboardType: TextInputType.phone,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
@@ -627,6 +628,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterPriceText;
+                          } else if (value == ".") {
+                            return AlertStringConstants.invalidInputText;
                           } else if (double.parse(value) == 0.0) {
                             return AlertStringConstants.invalidAmountText;
                           }
@@ -1016,12 +1019,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
                                       .pleaseEnterAmountText;
+                                } else if (value == ".") {
+                                  return AlertStringConstants.invalidInputText;
                                 } else if (double.parse(value) == 0.0) {
                                   return AlertStringConstants.invalidAmountText;
                                 }
                                 return null;
                               },
-                              keyboardType: TextInputType.phone,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               decoration: InputDecoration(
                                 hintText: StringConstants.discountsOrOffersText,
                                 hintStyle: const TextStyle(
@@ -1174,7 +1181,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
-                                keyboardType: TextInputType.phone,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r"[0-9.]")),
@@ -1264,7 +1273,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1356,7 +1367,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1444,7 +1457,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 ),
                               ),
                               TextFormField(
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   textInputAction: TextInputAction.next,
@@ -1462,6 +1477,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     if (value!.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseEnterWeightText;
+                                    } else if (value == ".") {
+                                      return AlertStringConstants
+                                          .invalidInputText;
                                     } else if (double.parse(value) == 0.0) {
                                       return AlertStringConstants
                                           .invalidInputText;

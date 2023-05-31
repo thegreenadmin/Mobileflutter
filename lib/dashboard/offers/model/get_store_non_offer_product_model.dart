@@ -124,64 +124,63 @@ class ProductsList {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     quantityType = json['quantity_type'] != null
-        ? new QuantityType.fromJson(json['quantity_type'])
+        ? QuantityType.fromJson(json['quantity_type'])
         : null;
     if (json['product_categories'] != null) {
       productCategories = <ProductCategories>[];
       json['product_categories'].forEach((v) {
-        productCategories!.add(new ProductCategories.fromJson(v));
+        productCategories!.add(ProductCategories.fromJson(v));
       });
     }
     if (json['product_images'] != null) {
       productImages = <ProductImages>[];
       json['product_images'].forEach((v) {
-        productImages!.add(new ProductImages.fromJson(v));
+        productImages!.add(ProductImages.fromJson(v));
       });
     }
     if (json['product_contents'] != null) {
       productContents = <ProductContents>[];
       json['product_contents'].forEach((v) {
-        productContents!.add(new ProductContents.fromJson(v));
+        productContents!.add(ProductContents.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['store_id'] = this.storeId;
-    data['quantity'] = this.quantity;
-    data['is_featured_product'] = this.isFeaturedProduct;
-    data['product_name'] = this.productName;
-    data['description'] = this.description;
-    data['product_price'] = this.productPrice;
-    data['selling_price'] = this.sellingPrice;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['is_product_returnable'] = this.isProductReturnable;
-    data['return_days_count'] = this.returnDaysCount;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.quantityType != null) {
-      data['quantity_type'] = this.quantityType!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['store_id'] = storeId;
+    data['quantity'] = quantity;
+    data['is_featured_product'] = isFeaturedProduct;
+    data['product_name'] = productName;
+    data['description'] = description;
+    data['product_price'] = productPrice;
+    data['selling_price'] = sellingPrice;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['is_product_returnable'] = isProductReturnable;
+    data['return_days_count'] = returnDaysCount;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (quantityType != null) {
+      data['quantity_type'] = quantityType!.toJson();
     }
-    if (this.productCategories != null) {
+    if (productCategories != null) {
       data['product_categories'] =
-          this.productCategories!.map((v) => v.toJson()).toList();
+          productCategories!.map((v) => v.toJson()).toList();
     }
-    if (this.productImages != null) {
-      data['product_images'] =
-          this.productImages!.map((v) => v.toJson()).toList();
+    if (productImages != null) {
+      data['product_images'] = productImages!.map((v) => v.toJson()).toList();
     }
-    if (this.productContents != null) {
+    if (productContents != null) {
       data['product_contents'] =
-          this.productContents!.map((v) => v.toJson()).toList();
+          productContents!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -192,7 +191,7 @@ class QuantityType {
   String? quantityTypeName;
   String? status;
 
-  QuantityType({this.quantityTypeId, this.quantityTypeName, this.status});
+  QuantityType({quantityTypeId, this.quantityTypeName, this.status});
 
   QuantityType.fromJson(Map<String, dynamic> json) {
     quantityTypeId = json['quantity_type_id'];
@@ -201,10 +200,10 @@ class QuantityType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['quantity_type_id'] = this.quantityTypeId;
-    data['quantity_type_name'] = this.quantityTypeName;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['quantity_type_id'] = quantityTypeId;
+    data['quantity_type_name'] = quantityTypeName;
+    data['status'] = status;
     return data;
   }
 }
@@ -222,18 +221,17 @@ class ProductCategories {
     productCategoryId = json['product_category_id'];
     categoryId = json['category_id'];
     status = json['status'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_category_id'] = this.productCategoryId;
-    data['category_id'] = this.categoryId;
-    data['status'] = this.status;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_category_id'] = productCategoryId;
+    data['category_id'] = categoryId;
+    data['status'] = status;
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
     return data;
   }
@@ -251,9 +249,9 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
     return data;
   }
 }
@@ -264,22 +262,22 @@ class ProductImages {
   String? status;
   Image? image;
 
-  ProductImages({this.productImageId, this.order, this.status, this.image});
+  ProductImages({productImageId, order, status, image});
 
   ProductImages.fromJson(Map<String, dynamic> json) {
     productImageId = json['product_image_id'];
     order = json['order'];
     status = json['status'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_image_id'] = this.productImageId;
-    data['order'] = this.order;
-    data['status'] = this.status;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_image_id'] = productImageId;
+    data['order'] = order;
+    data['status'] = status;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
     return data;
   }
@@ -297,9 +295,9 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -327,12 +325,12 @@ class ProductContents {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_content_id'] = this.productContentId;
-    data['heading'] = this.heading;
-    data['paragraph'] = this.paragraph;
-    data['order'] = this.order;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_content_id'] = productContentId;
+    data['heading'] = heading;
+    data['paragraph'] = paragraph;
+    data['order'] = order;
+    data['status'] = status;
     return data;
   }
 }

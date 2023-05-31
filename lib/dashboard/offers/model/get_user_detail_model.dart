@@ -8,13 +8,13 @@ class GetUserDetailModel {
   GetUserDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -29,19 +29,19 @@ class Data {
   Data({this.user, this.userProof});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     userProof = json['user_proof'] != null
-        ? new UserProof.fromJson(json['user_proof'])
+        ? UserProof.fromJson(json['user_proof'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.userProof != null) {
-      data['user_proof'] = this.userProof!.toJson();
+    if (userProof != null) {
+      data['user_proof'] = userProof!.toJson();
     }
     return data;
   }
@@ -81,24 +81,23 @@ class User {
     if (json['user_addresses'] != null) {
       userAddresses = <UserAddresses>[];
       json['user_addresses'].forEach((v) {
-        userAddresses!.add(new UserAddresses.fromJson(v));
+        userAddresses!.add(UserAddresses.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['nick_name'] = this.nickName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['phone_code'] = this.phoneCode;
-    data['has_store_access'] = this.hasStoreAccess;
-    if (this.userAddresses != null) {
-      data['user_addresses'] =
-          this.userAddresses!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['nick_name'] = nickName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['phone_code'] = phoneCode;
+    data['has_store_access'] = hasStoreAccess;
+    if (userAddresses != null) {
+      data['user_addresses'] = userAddresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -129,19 +128,19 @@ class UserAddresses {
     addressLine2 = json['address_line_2'];
     city = json['city'];
     postalCode = json['postal_code'];
-    state = json['state'] != null ? new State.fromJson(json['state']) : null;
+    state = json['state'] != null ? State.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_address_id'] = this.userAddressId;
-    data['address_name'] = this.addressName;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_address_id'] = userAddressId;
+    data['address_name'] = addressName;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
+    if (state != null) {
+      data['state'] = state!.toJson();
     }
     return data;
   }
@@ -158,15 +157,15 @@ class State {
     stateId = json['state_id'];
     stateName = json['state_name'];
     country =
-        json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? Country.fromJson(json['country']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state_id'] = this.stateId;
-    data['state_name'] = this.stateName;
-    if (this.country != null) {
-      data['country'] = this.country!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['state_id'] = stateId;
+    data['state_name'] = stateName;
+    if (country != null) {
+      data['country'] = country!.toJson();
     }
     return data;
   }
@@ -184,9 +183,9 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country_id'] = this.countryId;
-    data['country_name'] = this.countryName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country_id'] = countryId;
+    data['country_name'] = countryName;
     return data;
   }
 }
@@ -218,7 +217,7 @@ class UserProof {
       this.proofType});
 
   UserProof.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
     userId = json['user_id'];
     proofTypeId = json['proof_type_id'];
     proofValue = json['proof_value'];
@@ -229,26 +228,26 @@ class UserProof {
     updatedAt = json['updatedAt'];
     userProofId = json['user_proof_id'];
     proofType = json['proof_type'] != null
-        ? new ProofType.fromJson(json['proof_type'])
+        ? ProofType.fromJson(json['proof_type'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['user_id'] = this.userId;
-    data['proof_type_id'] = this.proofTypeId;
-    data['proof_value'] = this.proofValue;
-    data['is_verified'] = this.isVerified;
-    data['expiredAt'] = this.expiredAt;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['user_proof_id'] = this.userProofId;
-    if (this.proofType != null) {
-      data['proof_type'] = this.proofType!.toJson();
+    data['user_id'] = userId;
+    data['proof_type_id'] = proofTypeId;
+    data['proof_value'] = proofValue;
+    data['is_verified'] = isVerified;
+    data['expiredAt'] = expiredAt;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['user_proof_id'] = userProofId;
+    if (proofType != null) {
+      data['proof_type'] = proofType!.toJson();
     }
     return data;
   }
@@ -266,9 +265,9 @@ class Images {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -302,14 +301,14 @@ class ProofType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['proof_name'] = this.proofName;
-    data['has_expiration'] = this.hasExpiration;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['proof_name'] = proofName;
+    data['has_expiration'] = hasExpiration;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
