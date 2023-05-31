@@ -407,28 +407,39 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 height30SizedBox,
-                Image.asset(ImageConstants.tickBorder, scale: 1.2),
-                height8SizedBox,
-                Text(
-                  StringConstants.orderConfirmedText,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                      color: AppColors.black),
+                Visibility(
+                  visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
+
+                  child: Column(
+                    children: [
+                      Image.asset(ImageConstants.tickBorder, scale: 1.2),
+                      height8SizedBox,
+                      Text(
+                        StringConstants.orderConfirmedText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: AppColors.black),
+                      ),
+                      height8SizedBox,
+                      Text(
+                        StringConstants.thankOrderText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: AppColors.black),
+                      ),
+                      height10SizedBox,
+                      const Divider(
+                        height: 20,
+                        color: AppColors.grey,
+                      ),
+                    ],
+                  ),
                 ),
-                height8SizedBox,
-                Text(
-                  StringConstants.thankOrderText,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: AppColors.black),
-                ),
-                height10SizedBox,
-                const Divider(
-                  height: 20,
-                  color: AppColors.grey,
-                ),
+
                 height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -503,12 +514,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                      Text(
+                         ordersController.orderDetailResponse.data?.order?.createdAt!=null?
                       Utility.formatDateTime(
                           '${ordersController.orderDetailResponse.data?.order?.createdAt.toString().substring(0, 10)} ${ordersController.orderDetailResponse.data?.order?.createdAt.toString().substring(11, 23)}',
                           firstFormat:
                           "yyyy-MM-dd HH:mm:ss",
                           secFormat:
-                          "dd MMM yyyy"),
+                          "dd MMM yyyy"):"",
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -876,37 +888,35 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                    text:
-                                                    "${StringConstants.statusText}: ",
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                        FontWeight.w400,
-                                                        fontSize: 12)),
-                                                TextSpan(
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
                                                   text:
-                                                  ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                                                      ? StringConstants.inProgress
-                                                      : ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName?
-                                                  StringConstants.approvedText:StringConstants.completedText,
+                                                  "${StringConstants.statusText}: ",
                                                   style: TextStyle(
-                                                      fontWeight:
-                                                      FontWeight.w600,
-                                                      fontSize: 14,
                                                       color: AppColors
-                                                          .blacklight),
-                                                ),
-                                              ],
-                                            ),
-                                            overflow: TextOverflow.visible,
-                                            textAlign: TextAlign.end,
+                                                          .blacklight,
+                                                      fontWeight:
+                                                      FontWeight.w400,
+                                                      fontSize: 12)),
+                                              TextSpan(
+                                                text:
+                                                ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
+                                                    ? StringConstants.inProgress
+                                                    : ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName?
+                                                StringConstants.approvedText:StringConstants.completedText,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w600,
+                                                    fontSize: 14,
+                                                    color: AppColors
+                                                        .blacklight),
+                                              ),
+                                            ],
                                           ),
+                                          overflow: TextOverflow.visible,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ],
                                     ),
@@ -1078,12 +1088,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               fontSize: 12)),
                                       TextSpan(
                                         text:
+                                        ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
                                         Utility.formatDateTime(
                                             '${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(11, 23)}',
                                             firstFormat:
                                             "yyyy-MM-dd HH:mm:ss",
                                             secFormat:
-                                            "dd MMM yyyy"),
+                                            "dd MMM yyyy"):"",
                                         style: TextStyle(
                                             fontWeight:
                                             FontWeight.w600,
@@ -1159,7 +1170,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             fontSize: 12)),
                                     TextSpan(
                                       text:
-                                      "\$${ordersController.orderItems[i].returnOrderItems?.first.totalTaxReversed?.toStringAsFixed(2) ?? ""}",
+                                      ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
+                                      "\$${ordersController.orderItems[i].returnOrderItems?.first.totalTaxReversed?.toStringAsFixed(2) ?? ""}":"",
                                       style: TextStyle(
                                           fontWeight:
                                           FontWeight.w600,
@@ -1185,10 +1197,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             fontSize: 12)),
                                     TextSpan(
                                       text:
+                                      ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
                                       Utility.formatDateTime(
                                           '${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.updatedAt.toString().substring(11, 23)}',
                                           firstFormat: "yyyy-MM-dd HH:mm:ss",
-                                          secFormat: "dd MMM yyyy"),
+                                          secFormat: "dd MMM yyyy"):"",
                                       style: TextStyle(
                                           fontWeight:
                                           FontWeight.w600,
