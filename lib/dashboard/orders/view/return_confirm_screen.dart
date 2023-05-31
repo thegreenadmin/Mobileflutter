@@ -75,7 +75,6 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
             child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Obx(() => SizedBox(
-                height: 150,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -119,19 +118,24 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                         fontSize: 16)),
                                 height4SizedBox,
                                 Row(children: [
-                                  Text(
-                                      "${StringConstants.orderedDateText}: ",
-                                      style: TextStyle(
-                                          color: AppColors.blacklight,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14)),
-                                  Text(
-                                      ordersHomeMainController
-                                          .orderDate.value,
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14)),
+                                  Expanded(
+                                    child: Text(
+                                        "${StringConstants.orderedDateText}: ",
+                                        style: TextStyle(overflow: TextOverflow.ellipsis,
+                                            color: AppColors.blacklight,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14)),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                        ordersHomeMainController
+                                            .orderDate.value,
+                                        style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14)),
+                                  ),
                                 ]),
                                 height4SizedBox,
                                 Row(
@@ -158,7 +162,132 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                         ],
                       ),
                       Divider(
-                        height: 20,
+                        height: 10,
+                        color: AppColors.blacklight,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: const BoxDecoration(
+                            color: AppColors.greylight,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            )),
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        border: Border.all(
+                                            color: AppColors.white,
+                                            width: 1)),
+                                    child: Image.asset(
+                                      ImageConstants.licenseImg,
+                                      fit: BoxFit.fill,
+                                      height: 40,
+                                      width: 55,
+                                    ),
+                                  ),
+                                  width8SizedBox,
+                                  Text(
+                                      StringConstants.drivingLicenceText,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16)),
+                                ],
+                              ),
+
+                              InkWell(
+                                onTap: (){
+                                  if(ordersHomeMainController
+                                      .getStoreOrderDetailModel.value.data
+                                      ?.userProof?.image?.dynamicUrl !=
+                                      null ){
+                                    showDialog(
+                                      context: Get.context!,
+                                      barrierDismissible: false,
+                                      builder: (_) => AlertDialog(
+                                        icon: Align(
+                                          alignment: Alignment.topRight,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pop(_);
+                                            },
+                                            child: const Icon(
+                                              Icons.clear,
+                                              color: AppColors.primary,
+                                              size: 24.0,
+                                            ),
+                                          ),
+                                        ),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                        content: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              height10SizedBox,
+                                              Center(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.rectangle,
+                                                      border: Border.all(
+                                                          color: AppColors.white,
+                                                          width: 1)),
+                                                  child: ordersHomeMainController
+                                                      .getStoreOrderDetailModel.value.data
+                                                      ?.userProof?.image?.dynamicUrl ==
+                                                      null ||
+                                                      ordersHomeMainController
+                                                          .getStoreOrderDetailModel.value.data
+                                                      !.userProof!.image!.dynamicUrl!.isEmpty
+                                                      ? Image.asset(
+                                                    ImageConstants.nopicfound,
+                                                    fit: BoxFit.fill,
+                                                    // height: 70,
+                                                  )
+                                                      : Image.network(
+                                                    ordersHomeMainController
+                                                        .getStoreOrderDetailModel
+                                                        .value.data?.userProof?.image?.dynamicUrl.toString()??"",
+                                                    // height: 70,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: const <Widget>[],
+                                      ),
+                                    );
+                                  }
+
+                                },
+                                child:Text( StringConstants.viewText,
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: AppColors
+                                            .primary,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontSize: 14)),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
+
+                      Divider(
+                        height: 10,
                         color: AppColors.blacklight,
                       ),
                     ]),

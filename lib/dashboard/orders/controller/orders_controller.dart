@@ -52,6 +52,7 @@ class OrdersController extends GetxController {
   RxInt activeStep = 0.obs;
   RxInt orderStatusId = 2.obs;
   RxString orderStatusName = OrderStatus.newOrder.statusName.obs;
+  RxString orderStatusTypeName = OrderStatus.newOrder.statusName.obs;
   RxDouble ratingValue = 0.0.obs;
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
@@ -957,6 +958,8 @@ class OrdersController extends GetxController {
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
+            orderStatusTypeName.value = element.orderStatus?.orderStatusName??"";
+
             activeStep.value = element.orderStatus?.orderStatusName ==
                     OrderStatus.newOrder.statusName
                 ? 0
@@ -1037,6 +1040,60 @@ class OrdersController extends GetxController {
           "context",
         );
         print(rContext);
+        Navigator.of(rContext).popUntil((route) => route.isFirst);
+        // Get.back();
+        // Get.offAll(BottomNavigation());
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value?.body['message']);
+      }
+    });
+  }
+
+  //Cancel Order Api
+  Future apiCancelReturnRequestOrder(context) async {
+    isLoading.value = true;
+    debugPrint("Cancel Return Request URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map<String, dynamic> data = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderStatus.value),
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl + ServerCommunicator().cancelReturnOrder,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Cancel Return Request  *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        orderStatusName.value =
+            OrderStatus.newOrder.statusName;
+        isActiveOrders.value =true;
+        page.value = 1;
+        orderList.clear();
+        apiGetOrderListApi();
+        BuildContext rContext = SharedPreferenceStorage.getData(
+          "context",
+        );
         Navigator.of(rContext).popUntil((route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());

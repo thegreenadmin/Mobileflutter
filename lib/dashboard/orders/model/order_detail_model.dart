@@ -485,6 +485,7 @@ class OrderItem {
     this.shippedAt,
     this.deliveredAt,
     this.returedAt,
+    this.enableReturnButton,
   });
 
   String? orderId;
@@ -509,6 +510,7 @@ class OrderItem {
   dynamic shippedAt;
   dynamic deliveredAt;
   dynamic returedAt;
+  bool? enableReturnButton;
 
   OrderItem copyWith({
     String? orderId,
@@ -533,6 +535,7 @@ class OrderItem {
     dynamic shippedAt,
     dynamic deliveredAt,
     dynamic returedAt,
+    bool? enableReturnButton
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -557,6 +560,7 @@ class OrderItem {
         shippedAt: shippedAt ?? this.shippedAt,
         deliveredAt: deliveredAt ?? this.deliveredAt,
         returedAt: returedAt ?? this.returedAt,
+        enableReturnButton: enableReturnButton ?? this.enableReturnButton,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -582,6 +586,7 @@ class OrderItem {
     shippedAt: json["shippedAt"],
     deliveredAt: json["deliveredAt"],
     returedAt: json["returedAt"],
+    enableReturnButton: json["enable_return_button"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -607,6 +612,7 @@ class OrderItem {
     "shippedAt": shippedAt,
     "deliveredAt": deliveredAt,
     "returedAt": returedAt,
+    "enable_return_button": enableReturnButton,
   };
 }
 

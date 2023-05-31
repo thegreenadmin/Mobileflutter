@@ -25,22 +25,25 @@ class GetOwnerOrderHistoryModel {
 class Data {
   dynamic totalCount;
   List<Orders>? orders;
-
-  Data({this.totalCount, this.orders});
+  dynamic userProof;
+  Data({this.totalCount, this.orders,this.userProof,});
 
   Data.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
+    userProof= json["user_proof"];
     if (json['orders'] != null) {
       orders = <Orders>[];
       json['orders'].forEach((v) {
-        orders!.add(new Orders.fromJson(v));
+        orders!.add(Orders.fromJson(v));
       });
     }
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total_count'] = this.totalCount;
+    data['user_proof'] = this.userProof;
     if (this.orders != null) {
       data['orders'] = this.orders!.map((v) => v.toJson()).toList();
     }
@@ -68,6 +71,7 @@ class Orders {
   String? updatedAt;
   String? orderId;
   Store? store;
+  DeliveryService? deliveryService;
   List<OrderHistories>? orderHistories;
   List<OrderItems>? orderItems;
   List<OrderDeliveryAddresses>? orderDeliveryAddresses;
@@ -92,6 +96,7 @@ class Orders {
       this.updatedAt,
       this.orderId,
       this.store,
+        this.deliveryService,
       this.orderHistories,
       this.orderItems,
       this.orderDeliveryAddresses});
@@ -115,7 +120,8 @@ class Orders {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderId = json['order_id'];
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
+    deliveryService = json['delivery_service'] != null ? DeliveryService.fromJson(json['delivery_service']) : null;
     if (json['order_histories'] != null) {
       orderHistories = <OrderHistories>[];
       json['order_histories'].forEach((v) {
@@ -159,6 +165,10 @@ class Orders {
     if (this.store != null) {
       data['store'] = this.store!.toJson();
     }
+    if (this.deliveryService != null) {
+      data['delivery_service'] = this.deliveryService!.toJson();
+    }
+
     if (this.orderHistories != null) {
       data['order_histories'] =
           this.orderHistories!.map((v) => v.toJson()).toList();
@@ -172,6 +182,34 @@ class Orders {
     }
     return data;
   }
+}
+class DeliveryService {
+  String? deliveryServiceName;
+  String? deliveryServiceId;
+
+  DeliveryService({
+    this.deliveryServiceName,
+    this.deliveryServiceId,
+  });
+
+  DeliveryService copyWith({
+    String? deliveryServiceName,
+    String? deliveryServiceId,
+  }) =>
+      DeliveryService(
+        deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
+        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
+      );
+
+  factory DeliveryService.fromJson(Map<String, dynamic> json) => DeliveryService(
+    deliveryServiceName: json["delivery_service_name"],
+    deliveryServiceId: json["delivery_service_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "delivery_service_name": deliveryServiceName,
+    "delivery_service_id": deliveryServiceId,
+  };
 }
 
 class Store {

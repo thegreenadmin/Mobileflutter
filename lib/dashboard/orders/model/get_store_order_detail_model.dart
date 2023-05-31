@@ -8,11 +8,11 @@ class GetStoreOrderDetailModel {
   GetStoreOrderDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.data != null) {
@@ -24,22 +24,165 @@ class GetStoreOrderDetailModel {
 
 class Data {
   Order? order;
-
-  Data({this.order});
+  UserProof? userProof;
+  Data({this.order,this.userProof});
 
   Data.fromJson(Map<String, dynamic> json) {
-    order = json['order'] != null ? new Order.fromJson(json['order']) : null;
+    order = json['order'] != null ?  Order.fromJson(json['order']) : null;
+    userProof = json['user_proof'] != null ?  UserProof.fromJson(json['user_proof']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this.order != null) {
       data['order'] = this.order!.toJson();
+    } if (this.userProof != null) {
+      data['user_proof'] = this.userProof!.toJson();
     }
     return data;
   }
 }
 
+class UserProof {
+  Image? image;
+  String? userId;
+  String? proofTypeId;
+  String? proofValue;
+  bool? isVerified;
+  dynamic expiredAt;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? userProofId;
+  ProofType? proofType;
+
+  UserProof({
+    this.image,
+    this.userId,
+    this.proofTypeId,
+    this.proofValue,
+    this.isVerified,
+    this.expiredAt,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.userProofId,
+    this.proofType,
+  });
+
+  UserProof copyWith({
+    Image? image,
+    String? userId,
+    String? proofTypeId,
+    String? proofValue,
+    bool? isVerified,
+    dynamic expiredAt,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? userProofId,
+    ProofType? proofType,
+  }) =>
+      UserProof(
+        image: image ?? this.image,
+        userId: userId ?? this.userId,
+        proofTypeId: proofTypeId ?? this.proofTypeId,
+        proofValue: proofValue ?? this.proofValue,
+        isVerified: isVerified ?? this.isVerified,
+        expiredAt: expiredAt ?? this.expiredAt,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        userProofId: userProofId ?? this.userProofId,
+        proofType: proofType ?? this.proofType,
+      );
+
+  factory UserProof.fromJson(Map<String, dynamic> json) => UserProof(
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+    userId: json["user_id"],
+    proofTypeId: json["proof_type_id"],
+    proofValue: json["proof_value"],
+    isVerified: json["is_verified"],
+    expiredAt: json["expiredAt"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    userProofId: json["user_proof_id"],
+    proofType: json["proof_type"] == null ? null : ProofType.fromJson(json["proof_type"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "image": image?.toJson(),
+    "user_id": userId,
+    "proof_type_id": proofTypeId,
+    "proof_value": proofValue,
+    "is_verified": isVerified,
+    "expiredAt": expiredAt,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "user_proof_id": userProofId,
+    "proof_type": proofType?.toJson(),
+  };
+}
+class ProofType {
+  String? id;
+  String? proofName;
+  bool? hasExpiration;
+  bool? isEnabled;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  ProofType({
+    this.id,
+    this.proofName,
+    this.hasExpiration,
+    this.isEnabled,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  ProofType copyWith({
+    String? id,
+    String? proofName,
+    bool? hasExpiration,
+    bool? isEnabled,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      ProofType(
+        id: id ?? this.id,
+        proofName: proofName ?? this.proofName,
+        hasExpiration: hasExpiration ?? this.hasExpiration,
+        isEnabled: isEnabled ?? this.isEnabled,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory ProofType.fromJson(Map<String, dynamic> json) => ProofType(
+    id: json["id"],
+    proofName: json["proof_name"],
+    hasExpiration: json["has_expiration"],
+    isEnabled: json["is_enabled"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "proof_name": proofName,
+    "has_expiration": hasExpiration,
+    "is_enabled": isEnabled,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
 class Order {
   String? userId;
   String? storeId;
@@ -108,30 +251,30 @@ class Order {
     updatedAt = json['updatedAt'];
     orderId = json['order_id'];
     deliveryService = json['delivery_service'] != null
-        ? new DeliveryService.fromJson(json['delivery_service'])
+        ? DeliveryService.fromJson(json['delivery_service'])
         : null;
     if (json['order_histories'] != null) {
       orderHistories = <OrderHistories>[];
       json['order_histories'].forEach((v) {
-        orderHistories!.add(new OrderHistories.fromJson(v));
+        orderHistories!.add(OrderHistories.fromJson(v));
       });
     }
     if (json['order_delivery_addresses'] != null) {
       orderDeliveryAddresses = <OrderDeliveryAddresses>[];
       json['order_delivery_addresses'].forEach((v) {
-        orderDeliveryAddresses!.add(new OrderDeliveryAddresses.fromJson(v));
+        orderDeliveryAddresses!.add(OrderDeliveryAddresses.fromJson(v));
       });
     }
     if (json['order_items'] != null) {
       orderItems = <OrderItems>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItems.fromJson(v));
+        orderItems!.add(OrderItems.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['user_id'] = this.userId;
     data['store_id'] = this.storeId;
     data['delivery_service_id'] = this.deliveryServiceId;
@@ -180,7 +323,7 @@ class DeliveryService {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['delivery_service_name'] = this.deliveryServiceName;
     data['delivery_service_id'] = this.deliveryServiceId;
     return data;
@@ -210,12 +353,12 @@ class OrderHistories {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderStatus = json['order_status'] != null
-        ? new OrderStatus.fromJson(json['order_status'])
+        ? OrderStatus.fromJson(json['order_status'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['order_history_id'] = this.orderHistoryId;
     data['order_status_id'] = this.orderStatusId;
     data['is_current_status'] = this.isCurrentStatus;
@@ -240,7 +383,7 @@ class OrderStatus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['order_status_id'] = this.orderStatusId;
     data['order_status_name'] = this.orderStatusName;
     return data;
@@ -278,11 +421,11 @@ class OrderDeliveryAddresses {
     city = json['city'];
     postalCode = json['postal_code'];
     orderDeliveryAddressId = json['order_delivery_address_id'];
-    state = json['state'] != null ? new State.fromJson(json['state']) : null;
+    state = json['state'] != null ? State.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['order_id'] = this.orderId;
     data['state_id'] = this.stateId;
     data['address_line_1'] = this.addressLine1;
@@ -309,11 +452,11 @@ class State {
     stateId = json['state_id'];
     stateName = json['state_name'];
     country =
-        json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? Country.fromJson(json['country']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['state_id'] = this.stateId;
     data['state_name'] = this.stateName;
     if (this.country != null) {
@@ -335,7 +478,7 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['country_id'] = this.countryId;
     data['country_name'] = this.countryName;
     return data;
@@ -409,7 +552,7 @@ class OrderItems {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderItemId = json['order_item_id'];
-    product = json['product'] != null ? new Product.fromJson(json['product']) : null;
+    product = json['product'] != null ? Product.fromJson(json['product']) : null;
     returnOrderItems= json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x)));
     orderItemStatus= json["order_item_status"];
     cancelledAt= json["cancelledAt"];
@@ -419,7 +562,7 @@ class OrderItems {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['order_id'] = this.orderId;
     data['product_id'] = this.productId;
     data['order_item_count'] = this.orderItemCount;
@@ -526,19 +669,19 @@ class Product {
     if (json['product_reviews'] != null) {
       productReviews = <ProductReviews>[];
       json['product_reviews'].forEach((v) {
-        productReviews!.add(new ProductReviews.fromJson(v));
+        productReviews!.add(ProductReviews.fromJson(v));
       });
     }
     if (json['product_images'] != null) {
       productImages = <ProductImages>[];
       json['product_images'].forEach((v) {
-        productImages!.add(new ProductImages.fromJson(v));
+        productImages!.add(ProductImages.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['store_id'] = this.storeId;
     data['quantity_type_id'] = this.quantityTypeId;
     data['quantity'] = this.quantity;
@@ -678,7 +821,7 @@ class ProductReviews {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['product_id'] = this.productId;
     data['user_id'] = this.userId;
     data['order_id'] = this.orderId;
@@ -698,11 +841,11 @@ class ProductImages {
   ProductImages({this.image});
 
   ProductImages.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.image != null) {
       data['image'] = this.image!.toJson();
     }
@@ -722,7 +865,7 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['orignal_url'] = this.orignalUrl;
     data['dynamic_url'] = this.dynamicUrl;
     return data;

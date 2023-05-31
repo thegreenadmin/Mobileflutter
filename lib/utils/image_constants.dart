@@ -75,6 +75,7 @@ class ImageConstants {
   //L
   static const String liked = '$assetsIcon/liked.png';
   static const String loc = '$assetsIcon/loc.png';
+  static const String licenseImg = '$assetsIcon/licenseImg.png';
   //M
   static const String mall = '$assetsIcon/mall.png';
   static const String mallIcon = '$assetsIcon/mallIcon.png';
