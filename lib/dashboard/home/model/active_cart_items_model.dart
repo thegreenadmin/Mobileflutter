@@ -8,13 +8,13 @@ class ActiveCartModel {
   ActiveCartModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -59,24 +59,24 @@ class Data {
     if (json['cart_items'] != null) {
       cartItems = <CartItems>[];
       json['cart_items'].forEach((v) {
-        cartItems!.add(new CartItems.fromJson(v));
+        cartItems!.add(CartItems.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['cart_total_price'] = this.cartTotalPrice;
-    data['cart_sub_total'] = this.cartSubTotal;
-    data['cart_total_discount'] = this.cartTotalDiscount;
-    data['cart_total_service_charged'] = this.cartTotalServiceCharged;
-    data['cart_total_tax'] = this.cartTotalTax;
-    data['cart_delivery_service_charge'] = this.cartDeliveryServiceCharge;
-    data['is_valid_address'] = this.isValidAddress;
-    data['is_order_deliverable'] = this.isOrderDeliverable;
-    if (this.cartItems != null) {
-      data['cart_items'] = this.cartItems!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    data['cart_total_price'] = cartTotalPrice;
+    data['cart_sub_total'] = cartSubTotal;
+    data['cart_total_discount'] = cartTotalDiscount;
+    data['cart_total_service_charged'] = cartTotalServiceCharged;
+    data['cart_total_tax'] = cartTotalTax;
+    data['cart_delivery_service_charge'] = cartDeliveryServiceCharge;
+    data['is_valid_address'] = isValidAddress;
+    data['is_order_deliverable'] = isOrderDeliverable;
+    if (cartItems != null) {
+      data['cart_items'] = cartItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -119,22 +119,22 @@ class CartItems {
     totalPrice = json['total_price'];
 
     product =
-        json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cart_item_id'] = this.cartItemId;
-    data['items_count'] = this.itemsCount;
-    data['service_charge_type'] = this.serviceChargeType;
-    data['service_charge_value'] = this.serviceChargeValue;
-    data['total_service_charged'] = this.totalServiceCharged;
-    data['offer_price'] = this.offerPrice;
-    data['total_discount'] = this.totalDiscount;
-    data['total_tax_amount'] = this.totalTaxAmount;
-    data['total_price'] = this.totalPrice;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cart_item_id'] = cartItemId;
+    data['items_count'] = itemsCount;
+    data['service_charge_type'] = serviceChargeType;
+    data['service_charge_value'] = serviceChargeValue;
+    data['total_service_charged'] = totalServiceCharged;
+    data['offer_price'] = offerPrice;
+    data['total_discount'] = totalDiscount;
+    data['total_tax_amount'] = totalTaxAmount;
+    data['total_price'] = totalPrice;
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
     return data;
   }
@@ -214,31 +214,31 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['store_id'] = this.storeId;
-    data['quantity_type_id'] = this.quantityTypeId;
-    data['quantity'] = this.quantity;
-    data['is_featured_product'] = this.isFeaturedProduct;
-    data['product_name'] = this.productName;
-    data['description'] = this.description;
-    data['product_price'] = this.productPrice;
-    data['selling_price'] = this.sellingPrice;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['is_product_returnable'] = this.isProductReturnable;
-    data['return_days_count'] = this.returnDaysCount;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    data['store_id'] = storeId;
+    data['quantity_type_id'] = quantityTypeId;
+    data['quantity'] = quantity;
+    data['is_featured_product'] = isFeaturedProduct;
+    data['product_name'] = productName;
+    data['description'] = description;
+    data['product_price'] = productPrice;
+    data['selling_price'] = sellingPrice;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['is_product_returnable'] = isProductReturnable;
+    data['return_days_count'] = returnDaysCount;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -255,9 +255,9 @@ class Images {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

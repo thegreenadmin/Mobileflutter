@@ -216,15 +216,15 @@ class State {
     stateId = json['state_id'];
     stateName = json['state_name'];
     country =
-        json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? Country.fromJson(json['country']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state_id'] = this.stateId;
-    data['state_name'] = this.stateName;
-    if (this.country != null) {
-      data['country'] = this.country!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['state_id'] = stateId;
+    data['state_name'] = stateName;
+    if (country != null) {
+      data['country'] = country!.toJson();
     }
     return data;
   }
@@ -234,7 +234,7 @@ class Country {
   String? countryId;
   String? countryName;
 
-  Country({this.countryId, this.countryName});
+  Country({countryId, countryName});
 
   Country.fromJson(Map<String, dynamic> json) {
     countryId = json['country_id'];
@@ -242,9 +242,9 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country_id'] = this.countryId;
-    data['country_name'] = this.countryName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country_id'] = countryId;
+    data['country_name'] = countryName;
     return data;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -26,13 +27,21 @@ class _WebViewExampleState extends State<WebViewExample> {
           onProgress: (int progress) {
             // Update loading bar.
           },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageStarted: (String url) {
+            print("onPageStarted" + url);
+          },
+          onPageFinished: (String url) {
+            print("onPageFinished" + url);
+          },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
+            print("NavigationRequest" + request.url);
             // if (request.url.startsWith('https://www.youtube.com/')) {
             //   return NavigationDecision.prevent;
             // }
+            if (request.url.contains('Return to Hi Systems')) {
+              //return NavigationDecision.prevent;
+            }
             return NavigationDecision.navigate;
           },
         ),

@@ -39,7 +39,6 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
     addCardController.apiGetCardList(context);
     addCardController.apiGetCountries();
     addCardController.apiGetUserDetailApi(Get.context);
-
   }
 
   @override
@@ -170,7 +169,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         addCardController.onCreditCardModelChange,
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 21, right: 21, top: 10),
+                    padding:
+                        const EdgeInsets.only(left: 21, right: 21, top: 10),
                     child: Form(
                       key: addCardController.formKey,
                       child: Column(
@@ -464,15 +464,17 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                           height20SizedBox,
                           Obx(
                             () => DropdownButtonFormField<String>(
-                              value: addCardController.selectedCountry.value != ""
-                                      && addCardController.countryId.value!=null
-                                      && addCardController.countryId.value!=""
-                                      ? addCardController.countryList
-                                          .firstWhere((element) =>
-                                              element.countryId.toString() ==
-                                              addCardController.countryId.value)
-                                          .countryId
-                                      : null,
+                              value: addCardController.selectedCountry.value !=
+                                          "" &&
+                                      addCardController.countryId.value !=
+                                          null &&
+                                      addCardController.countryId.value != ""
+                                  ? addCardController.countryList
+                                      .firstWhere((element) =>
+                                          element.countryId.toString() ==
+                                          addCardController.countryId.value)
+                                      .countryId
+                                  : null,
                               isExpanded: true,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

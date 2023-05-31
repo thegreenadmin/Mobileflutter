@@ -1,15 +1,15 @@
 class ServerCommunicator {
   // ******************** DEVELOPMENT SERVER ***********
 
-  String baseUrl = "http://54.190.192.105:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
-  String baseUrlWithoutApi = "http://54.190.192.105:3520/";
+  // String baseUrl = "http://54.190.192.105:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://54.190.192.105:3520/api/";
+  // String baseUrlWithoutApi = "http://54.190.192.105:3520/";
 
   // ********************** STAGING SERVER *************
 
-  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
-  // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+  String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
   //Not yet!
@@ -179,6 +179,8 @@ class ServerCommunicator {
   String userMembershipCreate = 'user/membership/create';
   String userMembershipList = 'user/membership/list';
   String userDelete = 'user/delete';
+  String userStripeConnectedAccountDetails =
+      'user/stripe/connected/account/details';
 
 //V
 //W

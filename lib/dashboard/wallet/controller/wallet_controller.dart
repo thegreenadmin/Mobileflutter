@@ -112,6 +112,10 @@ class WalletController extends GetxController {
     Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
 
+  RxString capability = "".obs;
+  RxBool payouts = false.obs;
+  RxString accountLink = "".obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -139,8 +143,10 @@ class WalletController extends GetxController {
       }
       getApiData();
     } else {
+      apiGetBankAccountList();
       apiGetStoreList();
       apiGetCountries();
+      apiGetAccountDetails();
     }
   }
 
@@ -381,8 +387,8 @@ class WalletController extends GetxController {
       if (value != null) {
         debugPrint("CREATE CARD  RESPONSE *******${value.body}");
         if (value.body['success'] == true ||
-            value.body['code'] == ApiConstants.statusCode201 ||
-            value.body['code'] == ApiConstants.statusCode200) {
+            value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
           // Get.back();
           Navigator.of(context).pop();
           await apiGetCardList(context);
@@ -1042,6 +1048,44 @@ class WalletController extends GetxController {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
+      }
+    });
+  }
+
+  apiGetAccountDetails() {
+    isLoading.value = true;
+    debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint(
+          "GET STRIPE CONNECTED ACCOUNT DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        capability.value =
+            value.body["data"]['account']['capabilities']['transfers'];
+        payouts.value = value.body["data"]['account']['payouts_enabled'];
+        accountLink.value = value.body["data"]['accountLink']['url'];
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

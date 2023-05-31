@@ -86,7 +86,10 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                             : widget.isFrom == "privacy"
                                                 ? StringConstants
                                                     .privacyPolicyText
-                                                : "",
+                                                : widget.isFrom ==
+                                                        'connectAccount'
+                                                    ? "Connect Account"
+                                                    : "",
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -105,7 +108,7 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
       body: Container(
         color: AppColors.white,
         child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20, top: 30),
+          padding: const EdgeInsets.only(left: 5.0, right: 5, top: 0),
           child: WebViewWidget(controller: controller),
         ),
       ),

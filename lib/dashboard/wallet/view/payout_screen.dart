@@ -153,12 +153,38 @@ class PayOutScreenState extends State<PayOutScreen> {
                                 onChanged: (value) {
                                   addCardController.storeId!.value =
                                       value.toString();
+                                  addCardController.selectedStore.value =
+                                      value.toString();
+                                  addCardController.apiGetOwnerWalletBalance();
                                   addCardController.apiGetStoreServiceCharge();
                                 },
                               ),
                             ),
                           ],
                         )),
+                  height25SizedBox,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          StringConstants.availableBalanceText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Obx(() => Expanded(
+                          flex: 6,
+                          child: Text(
+                              "\$${addCardController.ownerWalletBalance!.value}",
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)))),
+                    ],
+                  ),
                   height25SizedBox,
                   Row(
                     children: [
@@ -180,20 +206,20 @@ class PayOutScreenState extends State<PayOutScreen> {
                             keyboardType: TextInputType.phone,
                             onChanged: (value) {
                               setState(() {});
-                              addCardController.totalWithdrawAmount.value =
-                                  double.parse(addCardController
-                                          .payoutAmountTextController.text) +
-                                      addCardController.storeServiceCharge.value
-                                          .toPrecision(2);
                               // addCardController.totalWithdrawAmount.value =
                               //     double.parse(addCardController
-                              //             .payoutAmountTextController.text) -
-                              //         (double.parse(addCardController
-                              //                     .payoutAmountTextController
-                              //                     .text) /
-                              //                 addCardController
-                              //                     .storeServiceCharge.value)
+                              //             .payoutAmountTextController.text) +
+                              //         addCardController.storeServiceCharge.value
                               //             .toPrecision(2);
+                              addCardController.totalWithdrawAmount.value =
+                                  double.parse(addCardController
+                                          .payoutAmountTextController.text) -
+                                      (double.parse(addCardController
+                                                  .payoutAmountTextController
+                                                  .text) /
+                                              addCardController
+                                                  .storeServiceCharge.value)
+                                          .toPrecision(2);
                             },
                             textInputAction: TextInputAction.next,
                             autofocus: false,
@@ -395,12 +421,14 @@ class PayOutScreenState extends State<PayOutScreen> {
                                           addCardController
                                               .selectedBankAccountIndex!
                                               .value = index;
+
                                           addCardController
-                                                  .userStripeCardId!.value =
+                                                  .userStripeBankId!.value =
                                               addCardController
                                                   .bankAccountList[index]
                                                   .userStripeBankId
                                                   .toString();
+
                                           debugPrint(addCardController
                                               .userStripeCardId!.value);
                                         });
@@ -425,7 +453,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                           .bankAccountList[
                                                               index]
                                                           .bank!
-                                                          .accountHolderName
+                                                          .bankName
                                                           .toString(),
                                                       style: TextStyle(
                                                           color: addCardController
@@ -472,8 +500,9 @@ class PayOutScreenState extends State<PayOutScreen> {
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      addCardController.validateAndSubmitFunction(context,
-                          isFromPayout: true);
+                      addCardController.validateAndSavePayOut(
+                        context,
+                      );
                     },
                     height: 50,
                     text: StringConstants.oKText,

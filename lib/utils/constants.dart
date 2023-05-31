@@ -69,6 +69,7 @@ class StringConstants {
   static String applePayText = "Apple Pay";
   static String approvedText = "Approved";
   static String activeMembershipText = "Active Membership";
+  static String availableBalanceText = "Available Balance";
 
   //B
   static String breadthText = "Breadth";

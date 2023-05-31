@@ -8,13 +8,13 @@ class CardListModel {
   CardListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -31,15 +31,15 @@ class Data {
     if (json['cards'] != null) {
       cards = <Cards>[];
       json['cards'].forEach((v) {
-        cards!.add(new Cards.fromJson(v));
+        cards!.add(Cards.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cards != null) {
-      data['cards'] = this.cards!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (cards != null) {
+      data['cards'] = cards!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -70,19 +70,19 @@ class Cards {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     userStripeCardId = json['user_stripe_card_id'];
-    card = json['card'] != null ? new Card.fromJson(json['card']) : null;
+    card = json['card'] != null ? Card.fromJson(json['card']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_stripe_id'] = this.userStripeId;
-    data['stripe_card_id'] = this.stripeCardId;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['user_stripe_card_id'] = this.userStripeCardId;
-    if (this.card != null) {
-      data['card'] = this.card!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_stripe_id'] = userStripeId;
+    data['stripe_card_id'] = stripeCardId;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['user_stripe_card_id'] = userStripeCardId;
+    if (card != null) {
+      data['card'] = card!.toJson();
     }
     return data;
   }
@@ -136,20 +136,20 @@ class Card {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['object'] = this.object;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['object'] = object;
 
-    data['brand'] = this.brand;
-    data['country'] = this.country;
-    data['customer'] = this.customer;
-    data['cvc_check'] = this.cvcCheck;
+    data['brand'] = brand;
+    data['country'] = country;
+    data['customer'] = customer;
+    data['cvc_check'] = cvcCheck;
 
-    data['exp_month'] = this.expMonth;
-    data['exp_year'] = this.expYear;
-    data['fingerprint'] = this.fingerprint;
-    data['funding'] = this.funding;
-    data['last4'] = this.last4;
+    data['exp_month'] = expMonth;
+    data['exp_year'] = expYear;
+    data['fingerprint'] = fingerprint;
+    data['funding'] = funding;
+    data['last4'] = last4;
 
     return data;
   }

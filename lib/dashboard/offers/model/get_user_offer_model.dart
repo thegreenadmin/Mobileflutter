@@ -8,14 +8,14 @@ class GetUserOfferListModel {
   GetUserOfferListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.data != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (data != null) {
       data['data'] = this.data!.toJson();
     }
     return data;
@@ -33,16 +33,16 @@ class Data {
     if (json['stores'] != null) {
       stores = <Stores>[];
       json['stores'].forEach((v) {
-        stores!.add(new Stores.fromJson(v));
+        stores!.add(Stores.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.stores != null) {
-      data['stores'] = this.stores!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (stores != null) {
+      data['stores'] = stores!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -67,7 +67,7 @@ class Stores {
       this.offers});
 
   Stores.fromJson(Map<String, dynamic> json) {
-    logo = json['logo'] != null ? new Logo.fromJson(json['logo']) : null;
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
     storeId = json['store_id'];
     storeName = json['store_name'];
     isVerified = json['is_verified'];
@@ -75,32 +75,31 @@ class Stores {
     if (json['store_addresses'] != null) {
       storeAddresses = <StoreAddresses>[];
       json['store_addresses'].forEach((v) {
-        storeAddresses!.add(new StoreAddresses.fromJson(v));
+        storeAddresses!.add(StoreAddresses.fromJson(v));
       });
     }
     if (json['offers'] != null) {
       offers = <Offers>[];
       json['offers'].forEach((v) {
-        offers!.add(new Offers.fromJson(v));
+        offers!.add(Offers.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.logo != null) {
-      data['logo'] = this.logo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
     }
-    data['store_id'] = this.storeId;
-    data['store_name'] = this.storeName;
-    data['is_verified'] = this.isVerified;
-    data['is_enabled'] = this.isEnabled;
-    if (this.storeAddresses != null) {
-      data['store_addresses'] =
-          this.storeAddresses!.map((v) => v.toJson()).toList();
+    data['store_id'] = storeId;
+    data['store_name'] = storeName;
+    data['is_verified'] = isVerified;
+    data['is_enabled'] = isEnabled;
+    if (storeAddresses != null) {
+      data['store_addresses'] = storeAddresses!.map((v) => v.toJson()).toList();
     }
-    if (this.offers != null) {
-      data['offers'] = this.offers!.map((v) => v.toJson()).toList();
+    if (offers != null) {
+      data['offers'] = offers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -118,9 +117,9 @@ class Logo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -163,17 +162,17 @@ class StoreAddresses {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_address_id'] = this.storeAddressId;
-    data['address_name'] = this.addressName;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    data['distance'] = this.distance;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['store_address_id'] = storeAddressId;
+    data['address_name'] = addressName;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['landmark'] = landmark;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
+    data['distance'] = distance;
     return data;
   }
 }
@@ -199,7 +198,7 @@ class Offers {
       this.expiredAt});
 
   Offers.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Logo.fromJson(json['image']) : null;
+    image = json['image'] != null ? Logo.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     isOfferForStore = json['is_offer_for_store'];
     offerName = json['offer_name'];
@@ -210,17 +209,17 @@ class Offers {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['offer_id'] = this.offerId;
-    data['is_offer_for_store'] = this.isOfferForStore;
-    data['offer_name'] = this.offerName;
-    data['offer_type'] = this.offerType;
-    data['offer_value'] = this.offerValue;
-    data['is_expired'] = this.isExpired;
-    data['expiredAt'] = this.expiredAt;
+    data['offer_id'] = offerId;
+    data['is_offer_for_store'] = isOfferForStore;
+    data['offer_name'] = offerName;
+    data['offer_type'] = offerType;
+    data['offer_value'] = offerValue;
+    data['is_expired'] = isExpired;
+    data['expiredAt'] = expiredAt;
     return data;
   }
 }

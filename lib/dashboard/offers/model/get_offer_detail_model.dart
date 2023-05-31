@@ -8,13 +8,13 @@ class GetOfferDetailModel {
   GetOfferDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -49,7 +49,7 @@ class Data {
       this.store});
 
   Data.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     isOfferForStore = json['is_offer_for_store'];
     offerName = json['offer_name'];
@@ -61,31 +61,30 @@ class Data {
     if (json['offer_products'] != null) {
       offerProducts = <OfferProduct>[];
       json['offer_products'].forEach((v) {
-        offerProducts!.add(new OfferProduct.fromJson(v));
+        offerProducts!.add(OfferProduct.fromJson(v));
       });
     }
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['offer_id'] = this.offerId;
-    data['is_offer_for_store'] = this.isOfferForStore;
-    data['offer_name'] = this.offerName;
-    data['offer_type'] = this.offerType;
-    data['offer_value'] = this.offerValue;
-    data['is_expired'] = this.isExpired;
-    data['expiredAt'] = this.expiredAt;
-    data['createdAt'] = this.createdAt;
-    if (this.offerProducts != null) {
-      data['offer_products'] =
-          this.offerProducts!.map((v) => v.toJson()).toList();
+    data['offer_id'] = offerId;
+    data['is_offer_for_store'] = isOfferForStore;
+    data['offer_name'] = offerName;
+    data['offer_type'] = offerType;
+    data['offer_value'] = offerValue;
+    data['is_expired'] = isExpired;
+    data['expiredAt'] = expiredAt;
+    data['createdAt'] = createdAt;
+    if (offerProducts != null) {
+      data['offer_products'] = offerProducts!.map((v) => v.toJson()).toList();
     }
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
+    if (store != null) {
+      data['store'] = store!.toJson();
     }
     return data;
   }
@@ -103,9 +102,9 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -124,16 +123,16 @@ class OfferProduct {
     productId = json['product_id'];
     status = json['status'];
     product =
-        json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['offer_product_id'] = this.offerProductId;
-    data['product_id'] = this.productId;
-    data['status'] = this.status;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['offer_product_id'] = offerProductId;
+    data['product_id'] = productId;
+    data['status'] = status;
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
     return data;
   }
@@ -189,7 +188,7 @@ class Product {
 
   Product.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
     storeId = json['store_id'];
     quantityTypeId = json['quantity_type_id'];
     quantity = json['quantity'];
@@ -213,31 +212,31 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['store_id'] = this.storeId;
-    data['quantity_type_id'] = this.quantityTypeId;
-    data['quantity'] = this.quantity;
-    data['is_featured_product'] = this.isFeaturedProduct;
-    data['product_name'] = this.productName;
-    data['description'] = this.description;
-    data['product_price'] = this.productPrice;
-    data['selling_price'] = this.sellingPrice;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['is_product_returnable'] = this.isProductReturnable;
-    data['return_days_count'] = this.returnDaysCount;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    data['store_id'] = storeId;
+    data['quantity_type_id'] = quantityTypeId;
+    data['quantity'] = quantity;
+    data['is_featured_product'] = isFeaturedProduct;
+    data['product_name'] = productName;
+    data['description'] = description;
+    data['product_price'] = productPrice;
+    data['selling_price'] = sellingPrice;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['is_product_returnable'] = isProductReturnable;
+    data['return_days_count'] = returnDaysCount;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -254,9 +253,9 @@ class Store {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['store_name'] = this.storeName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    data['store_name'] = storeName;
     return data;
   }
 }

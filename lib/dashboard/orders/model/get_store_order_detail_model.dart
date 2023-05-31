@@ -296,16 +296,15 @@ class Order {
     if (this.deliveryService != null) {
       data['delivery_service'] = this.deliveryService!.toJson();
     }
-    if (this.orderHistories != null) {
-      data['order_histories'] =
-          this.orderHistories!.map((v) => v.toJson()).toList();
+    if (orderHistories != null) {
+      data['order_histories'] = orderHistories!.map((v) => v.toJson()).toList();
     }
-    if (this.orderDeliveryAddresses != null) {
+    if (orderDeliveryAddresses != null) {
       data['order_delivery_addresses'] =
-          this.orderDeliveryAddresses!.map((v) => v.toJson()).toList();
+          orderDeliveryAddresses!.map((v) => v.toJson()).toList();
     }
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    if (orderItems != null) {
+      data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -470,7 +469,7 @@ class Country {
   String? countryId;
   String? countryName;
 
- Country({this.countryId, this.countryName});
+  Country({this.countryId, this.countryName});
 
   Country.fromJson(Map<String, dynamic> json) {
     countryId = json['country_id'];
@@ -510,31 +509,31 @@ class OrderItems {
   dynamic deliveredAt;
   dynamic returedAt;
 
-  OrderItems(
-      {this.orderId,
-      this.productId,
-      this.orderItemCount,
-      this.orderItemPrice,
-      this.serviceChargeType,
-      this.serviceChargeValue,
-      this.totalServiceCharged,
-      this.discountName,
-      this.discountType,
-      this.discountValue,
-      this.totalDiscount,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.orderItemId,
-      this.product,
-      this.isSelected,
-      this.returnOrderItems,
-      this.orderItemStatus,
-      this.cancelledAt,
-      this.shippedAt,
-      this.deliveredAt,
-      this.returedAt,
-      });
+  OrderItems({
+    this.orderId,
+    this.productId,
+    this.orderItemCount,
+    this.orderItemPrice,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
+    this.discountName,
+    this.discountType,
+    this.discountValue,
+    this.totalDiscount,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.orderItemId,
+    this.product,
+    this.isSelected,
+    this.returnOrderItems,
+    this.orderItemStatus,
+    this.cancelledAt,
+    this.shippedAt,
+    this.deliveredAt,
+    this.returedAt,
+  });
 
   OrderItems.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -581,15 +580,16 @@ class OrderItems {
     if (this.product != null) {
       data['product'] = this.product!.toJson();
     }
-    if (this.returnOrderItems != null) {
-      data['return_order_items'] = List<dynamic>.from(returnOrderItems!.map((x) => x.toJson()));
+    if (returnOrderItems != null) {
+      data['return_order_items'] =
+          List<dynamic>.from(returnOrderItems!.map((x) => x.toJson()));
     }
-    data['return_order_items'] = this.returnOrderItems;
-    data['order_item_status'] = this.orderItemStatus;
-    data['cancelledAt'] = this.cancelledAt;
-    data['shippedAt'] = this.shippedAt;
-    data['deliveredAt'] = this.deliveredAt;
-    data['returedAt'] = this.returedAt;
+    data['return_order_items'] = returnOrderItems;
+    data['order_item_status'] = orderItemStatus;
+    data['cancelledAt'] = cancelledAt;
+    data['shippedAt'] = shippedAt;
+    data['deliveredAt'] = deliveredAt;
+    data['returedAt'] = returedAt;
     return data;
   }
 }
@@ -707,9 +707,8 @@ class Product {
       data['product_reviews'] =
           this.productReviews!.map((v) => v.toJson()).toList();
     }
-    if (this.productImages != null) {
-      data['product_images'] =
-          this.productImages!.map((v) => v.toJson()).toList();
+    if (productImages != null) {
+      data['product_images'] = productImages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -761,29 +760,34 @@ class ReturnOrderItem {
         returnOrderItemId: returnOrderItemId ?? this.returnOrderItemId,
       );
 
-  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) => ReturnOrderItem(
-    orderItemId: json["order_item_id"],
-    returnItemsCount: json["return_items_count"],
-    remarks: json["remarks"],
-    totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
-    totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    returnOrderItemId: json["return_order_item_id"],
-  );
+  factory ReturnOrderItem.fromJson(Map<String, dynamic> json) =>
+      ReturnOrderItem(
+        orderItemId: json["order_item_id"],
+        returnItemsCount: json["return_items_count"],
+        remarks: json["remarks"],
+        totalTaxReversed: json["total_tax_reversed"]?.toDouble(),
+        totalAmountReversed: json["total_amount_reversed"]?.toDouble(),
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        returnOrderItemId: json["return_order_item_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "order_item_id": orderItemId,
-    "return_items_count": returnItemsCount,
-    "remarks": remarks,
-    "total_tax_reversed": totalTaxReversed,
-    "total_amount_reversed": totalAmountReversed,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "return_order_item_id": returnOrderItemId,
-  };
+        "order_item_id": orderItemId,
+        "return_items_count": returnItemsCount,
+        "remarks": remarks,
+        "total_tax_reversed": totalTaxReversed,
+        "total_amount_reversed": totalAmountReversed,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "return_order_item_id": returnOrderItemId,
+      };
 }
 
 class ProductReviews {

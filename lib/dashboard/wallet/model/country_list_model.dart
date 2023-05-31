@@ -8,13 +8,13 @@ class CountryListModel {
   CountryListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -31,15 +31,15 @@ class Data {
     if (json['countries'] != null) {
       countries = <Countries>[];
       json['countries'].forEach((v) {
-        countries!.add(new Countries.fromJson(v));
+        countries!.add(Countries.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.countries != null) {
-      data['countries'] = this.countries!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (countries != null) {
+      data['countries'] = countries!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -59,10 +59,10 @@ class Countries {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country_id'] = this.countryId;
-    data['country_name'] = this.countryName;
-    data['abbrevation'] = this.abbrevation;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country_id'] = countryId;
+    data['country_name'] = countryName;
+    data['abbrevation'] = abbrevation;
     return data;
   }
 }

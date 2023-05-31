@@ -8,13 +8,13 @@ class ActiveMembershipPlanModel {
   ActiveMembershipPlanModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,16 +33,16 @@ class Data {
     if (json['memberships'] != null) {
       memberships = <ActiveMemberships>[];
       json['memberships'].forEach((v) {
-        memberships!.add(new ActiveMemberships.fromJson(v));
+        memberships!.add(ActiveMemberships.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.memberships != null) {
-      data['memberships'] = this.memberships!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (memberships != null) {
+      data['memberships'] = memberships!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -89,25 +89,25 @@ class ActiveMemberships {
     paymentServiceId = json['payment_service_id'];
     membershipId = json['membership_id'];
     membershipPlan = json['membership_plan'] != null
-        ? new MembershipPlan.fromJson(json['membership_plan'])
+        ? MembershipPlan.fromJson(json['membership_plan'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['membership_plan_id'] = this.membershipPlanId;
-    data['transaction_id'] = this.transactionId;
-    data['membership_charge'] = this.membershipCharge;
-    data['duration'] = this.duration;
-    data['expiredAt'] = this.expiredAt;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['payment_service_id'] = this.paymentServiceId;
-    data['membership_id'] = this.membershipId;
-    if (this.membershipPlan != null) {
-      data['membership_plan'] = this.membershipPlan!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['membership_plan_id'] = membershipPlanId;
+    data['transaction_id'] = transactionId;
+    data['membership_charge'] = membershipCharge;
+    data['duration'] = duration;
+    data['expiredAt'] = expiredAt;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['payment_service_id'] = paymentServiceId;
+    data['membership_id'] = membershipId;
+    if (membershipPlan != null) {
+      data['membership_plan'] = membershipPlan!.toJson();
     }
     return data;
   }
@@ -142,14 +142,14 @@ class MembershipPlan {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['plan_type'] = this.planType;
-    data['plan_days'] = this.planDays;
-    data['plan_charge'] = this.planCharge;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['membership_plan_id'] = this.membershipPlanId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['plan_type'] = planType;
+    data['plan_days'] = planDays;
+    data['plan_charge'] = planCharge;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['membership_plan_id'] = membershipPlanId;
     return data;
   }
 }
