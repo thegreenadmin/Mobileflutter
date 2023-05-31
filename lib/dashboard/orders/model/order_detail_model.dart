@@ -525,6 +525,7 @@ class OrderItem {
     this.shippedAt,
     this.deliveredAt,
     this.returedAt,
+    this.enableReturnButton,
   });
 
   String? orderId;
@@ -549,6 +550,7 @@ class OrderItem {
   dynamic shippedAt;
   dynamic deliveredAt;
   dynamic returedAt;
+  bool? enableReturnButton;
 
   OrderItem copyWith({
     String? orderId,
@@ -573,6 +575,7 @@ class OrderItem {
     dynamic shippedAt,
     dynamic deliveredAt,
     dynamic returedAt,
+    bool? enableReturnButton
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -597,67 +600,60 @@ class OrderItem {
         shippedAt: shippedAt ?? this.shippedAt,
         deliveredAt: deliveredAt ?? this.deliveredAt,
         returedAt: returedAt ?? this.returedAt,
+        enableReturnButton: enableReturnButton ?? this.enableReturnButton,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-        orderId: json["order_id"],
-        productId: json["product_id"],
-        orderItemCount: json["order_item_count"],
-        orderItemPrice: json["order_item_price"],
-        serviceChargeType: json["service_charge_type"],
-        serviceChargeValue: json["service_charge_value"]?.toDouble(),
-        totalServiceCharged: json["total_service_charged"]?.toDouble(),
-        discountName: json["discount_name"],
-        discountType: json["discount_type"],
-        discountValue: json["discount_value"],
-        totalDiscount: json["total_discount"]?.toDouble(),
-        status: json["status"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        orderItemId: json["order_item_id"],
-        product:
-            json["product"] == null ? null : Product.fromJson(json["product"]),
-        returnOrderItems: json["return_order_items"] == null
-            ? []
-            : List<ReturnOrderItem>.from(json["return_order_items"]!
-                .map((x) => ReturnOrderItem.fromJson(x))),
-        orderItemStatus: json["order_item_status"],
-        cancelledAt: json["cancelledAt"],
-        shippedAt: json["shippedAt"],
-        deliveredAt: json["deliveredAt"],
-        returedAt: json["returedAt"],
-      );
+    orderId: json["order_id"],
+    productId: json["product_id"],
+    orderItemCount: json["order_item_count"],
+    orderItemPrice: json["order_item_price"],
+    serviceChargeType: json["service_charge_type"],
+    serviceChargeValue: json["service_charge_value"]?.toDouble(),
+    totalServiceCharged: json["total_service_charged"]?.toDouble(),
+    discountName: json["discount_name"],
+    discountType: json["discount_type"],
+    discountValue: json["discount_value"],
+    totalDiscount: json["total_discount"]?.toDouble(),
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    orderItemId: json["order_item_id"],
+    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    returnOrderItems: json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x))),
+    orderItemStatus: json["order_item_status"],
+    cancelledAt: json["cancelledAt"],
+    shippedAt: json["shippedAt"],
+    deliveredAt: json["deliveredAt"],
+    returedAt: json["returedAt"],
+    enableReturnButton: json["enable_return_button"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "order_id": orderId,
-        "product_id": productId,
-        "order_item_count": orderItemCount,
-        "order_item_price": orderItemPrice,
-        "service_charge_type": serviceChargeType,
-        "service_charge_value": serviceChargeValue,
-        "total_service_charged": totalServiceCharged,
-        "discount_name": discountName,
-        "discount_type": discountType,
-        "discount_value": discountValue,
-        "total_discount": totalDiscount,
-        "status": status,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "order_item_id": orderItemId,
-        "product": product?.toJson(),
-        "return_order_items": returnOrderItems == null
-            ? []
-            : List<dynamic>.from(returnOrderItems!.map((x) => x.toJson())),
-        "order_item_status": orderItemStatus,
-        "cancelledAt": cancelledAt,
-        "shippedAt": shippedAt,
-        "deliveredAt": deliveredAt,
-        "returedAt": returedAt,
-      };
+    "order_id": orderId,
+    "product_id": productId,
+    "order_item_count": orderItemCount,
+    "order_item_price": orderItemPrice,
+    "service_charge_type": serviceChargeType,
+    "service_charge_value": serviceChargeValue,
+    "total_service_charged": totalServiceCharged,
+    "discount_name": discountName,
+    "discount_type": discountType,
+    "discount_value": discountValue,
+    "total_discount": totalDiscount,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "order_item_id": orderItemId,
+    "product": product?.toJson(),
+    "return_order_items": returnOrderItems == null ? [] : List<dynamic>.from(returnOrderItems!.map((x) => x.toJson())),
+    "order_item_status": orderItemStatus,
+    "cancelledAt": cancelledAt,
+    "shippedAt": shippedAt,
+    "deliveredAt": deliveredAt,
+    "returedAt": returedAt,
+    "enable_return_button": enableReturnButton,
+  };
 }
 
 class Product {

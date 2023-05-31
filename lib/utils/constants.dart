@@ -67,6 +67,7 @@ class StringConstants {
       "amount will be deducted from your wallet. Do you want to proceed?";
   static String autoReloadText = "Auto Reload";
   static String applePayText = "Apple Pay";
+  static String approvedText = "Approved";
   static String activeMembershipText = "Active Membership";
   static String availableBalanceText = "Available Balance";
 
@@ -108,6 +109,7 @@ class StringConstants {
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";
   static String cancelText = "Cancel";
+  static String canceReturnlText = "Cancel Return";
   static String cancelledText = "Cancelled";
   static String createYourText = "Create your";
   static String checkOutText = "Check Out";
@@ -128,11 +130,13 @@ class StringConstants {
 
   //D
   static String deliveryText = "Delivery";
+  static String drivingLicenceText = "Driving Licence";
   static String deleteAccountText = "Delete Account";
   static String discountsOrOffersText = "Discounts or Offers";
   static String deliveryBoyText = "Delivery Boy";
   static String daysText = "Days";
   static String deliveryMethodsText = "Delivery Methods";
+  static String deliveryServicesText = "Delivery Services";
   static String discountText = "Discount:";
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
@@ -220,6 +224,7 @@ class StringConstants {
   static String loginYourAccountText = "Login your account";
   static String loginText = "Login";
   static String lastNameText = "Last Name";
+  static String lastUpdateDateText = "Last Update Date";
   static String logoutText = "Logout";
   static String lengthText = "Length";
   static String lowToHighText = "Low to high";
@@ -303,6 +308,7 @@ class StringConstants {
   static String orderidText = "order-Id";
   static String orderReadyText = "Order Ready";
   static String orderedDateText = "Ordered Date";
+  static String orderDateText = "Order Date";
   static String orderAmountText = "Order Amount";
   static String orderTransactionText = "Order Transaction";
   static String offerProductDetailText = "Offer Product Detail";
@@ -369,6 +375,8 @@ class StringConstants {
   static String returnOrderText = "Return Order";
   static String returnRequestSentText = "Return Request Sent";
   static String returnRequestText = "Return Request";
+  static String returnRequestAmountText = "Return Request Amount";
+  static String returnRequestDateText = "Return Request Date";
   static String returnConfirmText = "Return Confirm";
   static String rejectText = "Reject";
   static String refundIdText = "Refund ID";
@@ -494,6 +502,7 @@ class StringConstants {
   static String verificationCodeSentText =
       "We have sent the code verification to your mobile number ";
   static String viewAndUpdateItemsText = "View & Update Items";
+  static String viewText = "View";
 
   //W
   static String websiteText = "Website";
@@ -545,6 +554,8 @@ class AlertStringConstants {
       "Closing time cannot be same as opening time";
   static String cancelOrderAlertText =
       "Do you really want to cancel ths order?";
+  static String cancelReturnRequestAlertText =
+      "Do you really want to cancel ths return request?";
   //E
   static String endTimeAlertText =
       "Closing time cannot be same as opening time";

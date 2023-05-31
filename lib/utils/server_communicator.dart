@@ -88,6 +88,7 @@ class ServerCommunicator {
 //Q
 //R
   String returnOrder = 'order/item/return/create';
+  String cancelReturnOrder = 'order/return/cancel';
   String roleList = 'store/role/list';
   String removeFavouriteStore = 'user/store/favourite/remove';
   String removeFavouriteProduct = 'user/product/favourite/delete';

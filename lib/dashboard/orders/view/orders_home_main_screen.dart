@@ -407,7 +407,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                       fontSize: 16)),
                                             ],
                                           ),
-                                          height6SizedBox,
+                                          height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -420,29 +420,51 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 14)),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                      Utility.parseDateTime(
-                                                        DateTime.parse(
-                                                            ordersHomeMainController
-                                                                .ownerOrderHistoryList![
-                                                                    index]
-                                                                .estimateDeliveryDate
-                                                                .toString()),
-                                                        secFormat: '',
-                                                      ).toString(),
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 14)),
-                                                ],
-                                              )
+                                              Text(
+                                                  Utility.parseDateTime(
+                                                    DateTime.parse(
+                                                        ordersHomeMainController
+                                                            .ownerOrderHistoryList![
+                                                                index]
+                                                            .estimateDeliveryDate
+                                                            .toString()),
+                                                    secFormat: '',
+                                                  ).toString(),
+                                                  style: const TextStyle(
+                                                      color:
+                                                          AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14))
                                             ],
                                           ),
-                                          height6SizedBox,
+                                          height5SizedBox,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  "${StringConstants.orderType}: ",
+                                                  style: TextStyle(
+                                                      color: AppColors.blacklight,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 14)),
+                                              Text(
+                                                  ordersHomeMainController
+                                                      .ownerOrderHistoryList?[index].deliveryService
+                                                      .toString()=="1"
+                                                      ? StringConstants.inStoreText
+                                                      :ordersHomeMainController.
+                                                  ownerOrderHistoryList?[index].
+                                                  deliveryServiceId.toString()=="2"
+                                                      ? StringConstants.deliveryText
+                                                      : StringConstants.curbSideText,
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 14))
+                                            ],
+                                          ),
+                                          height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -482,7 +504,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                               )
                                             ],
                                           ),
-                                          height6SizedBox,
+                                          height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

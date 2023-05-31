@@ -12,9 +12,9 @@ class GetStoreOrderDetailModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -24,22 +24,165 @@ class GetStoreOrderDetailModel {
 
 class Data {
   Order? order;
-
-  Data({this.order});
+  UserProof? userProof;
+  Data({this.order,this.userProof});
 
   Data.fromJson(Map<String, dynamic> json) {
-    order = json['order'] != null ? Order.fromJson(json['order']) : null;
+    order = json['order'] != null ?  Order.fromJson(json['order']) : null;
+    userProof = json['user_proof'] != null ?  UserProof.fromJson(json['user_proof']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (order != null) {
-      data['order'] = order!.toJson();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    if (this.order != null) {
+      data['order'] = this.order!.toJson();
+    } if (this.userProof != null) {
+      data['user_proof'] = this.userProof!.toJson();
     }
     return data;
   }
 }
 
+class UserProof {
+  Image? image;
+  String? userId;
+  String? proofTypeId;
+  String? proofValue;
+  bool? isVerified;
+  dynamic expiredAt;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? userProofId;
+  ProofType? proofType;
+
+  UserProof({
+    this.image,
+    this.userId,
+    this.proofTypeId,
+    this.proofValue,
+    this.isVerified,
+    this.expiredAt,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.userProofId,
+    this.proofType,
+  });
+
+  UserProof copyWith({
+    Image? image,
+    String? userId,
+    String? proofTypeId,
+    String? proofValue,
+    bool? isVerified,
+    dynamic expiredAt,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? userProofId,
+    ProofType? proofType,
+  }) =>
+      UserProof(
+        image: image ?? this.image,
+        userId: userId ?? this.userId,
+        proofTypeId: proofTypeId ?? this.proofTypeId,
+        proofValue: proofValue ?? this.proofValue,
+        isVerified: isVerified ?? this.isVerified,
+        expiredAt: expiredAt ?? this.expiredAt,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        userProofId: userProofId ?? this.userProofId,
+        proofType: proofType ?? this.proofType,
+      );
+
+  factory UserProof.fromJson(Map<String, dynamic> json) => UserProof(
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+    userId: json["user_id"],
+    proofTypeId: json["proof_type_id"],
+    proofValue: json["proof_value"],
+    isVerified: json["is_verified"],
+    expiredAt: json["expiredAt"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    userProofId: json["user_proof_id"],
+    proofType: json["proof_type"] == null ? null : ProofType.fromJson(json["proof_type"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "image": image?.toJson(),
+    "user_id": userId,
+    "proof_type_id": proofTypeId,
+    "proof_value": proofValue,
+    "is_verified": isVerified,
+    "expiredAt": expiredAt,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "user_proof_id": userProofId,
+    "proof_type": proofType?.toJson(),
+  };
+}
+class ProofType {
+  String? id;
+  String? proofName;
+  bool? hasExpiration;
+  bool? isEnabled;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  ProofType({
+    this.id,
+    this.proofName,
+    this.hasExpiration,
+    this.isEnabled,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  ProofType copyWith({
+    String? id,
+    String? proofName,
+    bool? hasExpiration,
+    bool? isEnabled,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      ProofType(
+        id: id ?? this.id,
+        proofName: proofName ?? this.proofName,
+        hasExpiration: hasExpiration ?? this.hasExpiration,
+        isEnabled: isEnabled ?? this.isEnabled,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory ProofType.fromJson(Map<String, dynamic> json) => ProofType(
+    id: json["id"],
+    proofName: json["proof_name"],
+    hasExpiration: json["has_expiration"],
+    isEnabled: json["is_enabled"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "proof_name": proofName,
+    "has_expiration": hasExpiration,
+    "is_enabled": isEnabled,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
 class Order {
   String? userId;
   String? storeId;
@@ -131,27 +274,27 @@ class Order {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['user_id'] = userId;
-    data['store_id'] = storeId;
-    data['delivery_service_id'] = deliveryServiceId;
-    data['delivery_charge'] = deliveryCharge;
-    data['tax_type'] = taxType;
-    data['tax_value'] = taxValue;
-    data['total_tax_charged'] = totalTaxCharged;
-    data['total_amount'] = totalAmount;
-    data['customer_name'] = customerName;
-    data['customer_email'] = customerEmail;
-    data['customer_phone'] = customerPhone;
-    data['customer_phone_code'] = customerPhoneCode;
-    data['estimate_delivery_date'] = estimateDeliveryDate;
-    data['order_date'] = orderDate;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['order_id'] = orderId;
-    if (deliveryService != null) {
-      data['delivery_service'] = deliveryService!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['user_id'] = this.userId;
+    data['store_id'] = this.storeId;
+    data['delivery_service_id'] = this.deliveryServiceId;
+    data['delivery_charge'] = this.deliveryCharge;
+    data['tax_type'] = this.taxType;
+    data['tax_value'] = this.taxValue;
+    data['total_tax_charged'] = this.totalTaxCharged;
+    data['total_amount'] = this.totalAmount;
+    data['customer_name'] = this.customerName;
+    data['customer_email'] = this.customerEmail;
+    data['customer_phone'] = this.customerPhone;
+    data['customer_phone_code'] = this.customerPhoneCode;
+    data['estimate_delivery_date'] = this.estimateDeliveryDate;
+    data['order_date'] = this.orderDate;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['order_id'] = this.orderId;
+    if (this.deliveryService != null) {
+      data['delivery_service'] = this.deliveryService!.toJson();
     }
     if (orderHistories != null) {
       data['order_histories'] = orderHistories!.map((v) => v.toJson()).toList();
@@ -179,9 +322,9 @@ class DeliveryService {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['delivery_service_name'] = deliveryServiceName;
-    data['delivery_service_id'] = deliveryServiceId;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['delivery_service_name'] = this.deliveryServiceName;
+    data['delivery_service_id'] = this.deliveryServiceId;
     return data;
   }
 }
@@ -214,14 +357,14 @@ class OrderHistories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_history_id'] = orderHistoryId;
-    data['order_status_id'] = orderStatusId;
-    data['is_current_status'] = isCurrentStatus;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    if (orderStatus != null) {
-      data['order_status'] = orderStatus!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['order_history_id'] = this.orderHistoryId;
+    data['order_status_id'] = this.orderStatusId;
+    data['is_current_status'] = this.isCurrentStatus;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    if (this.orderStatus != null) {
+      data['order_status'] = this.orderStatus!.toJson();
     }
     return data;
   }
@@ -239,9 +382,9 @@ class OrderStatus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_status_id'] = orderStatusId;
-    data['order_status_name'] = orderStatusName;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['order_status_id'] = this.orderStatusId;
+    data['order_status_name'] = this.orderStatusName;
     return data;
   }
 }
@@ -281,17 +424,17 @@ class OrderDeliveryAddresses {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_id'] = orderId;
-    data['state_id'] = stateId;
-    data['address_line_1'] = addressLine1;
-    data['address_line_2'] = addressLine2;
-    data['landmark'] = landmark;
-    data['city'] = city;
-    data['postal_code'] = postalCode;
-    data['order_delivery_address_id'] = orderDeliveryAddressId;
-    if (state != null) {
-      data['state'] = state!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['order_id'] = this.orderId;
+    data['state_id'] = this.stateId;
+    data['address_line_1'] = this.addressLine1;
+    data['address_line_2'] = this.addressLine2;
+    data['landmark'] = this.landmark;
+    data['city'] = this.city;
+    data['postal_code'] = this.postalCode;
+    data['order_delivery_address_id'] = this.orderDeliveryAddressId;
+    if (this.state != null) {
+      data['state'] = this.state!.toJson();
     }
     return data;
   }
@@ -312,11 +455,11 @@ class State {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['state_id'] = stateId;
-    data['state_name'] = stateName;
-    if (country != null) {
-      data['country'] = country!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['state_id'] = this.stateId;
+    data['state_name'] = this.stateName;
+    if (this.country != null) {
+      data['country'] = this.country!.toJson();
     }
     return data;
   }
@@ -334,9 +477,9 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['country_id'] = countryId;
-    data['country_name'] = countryName;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['country_id'] = this.countryId;
+    data['country_name'] = this.countryName;
     return data;
   }
 }
@@ -408,38 +551,34 @@ class OrderItems {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderItemId = json['order_item_id'];
-    product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
-    returnOrderItems = json["return_order_items"] == null
-        ? []
-        : List<ReturnOrderItem>.from(json["return_order_items"]!
-            .map((x) => ReturnOrderItem.fromJson(x)));
-    orderItemStatus = json["order_item_status"];
-    cancelledAt = json["cancelledAt"];
-    shippedAt = json["shippedAt"];
-    deliveredAt = json["deliveredAt"];
-    returedAt = json["returedAt"];
+    product = json['product'] != null ? Product.fromJson(json['product']) : null;
+    returnOrderItems= json["return_order_items"] == null ? [] : List<ReturnOrderItem>.from(json["return_order_items"]!.map((x) => ReturnOrderItem.fromJson(x)));
+    orderItemStatus= json["order_item_status"];
+    cancelledAt= json["cancelledAt"];
+    shippedAt= json["shippedAt"];
+    deliveredAt= json["deliveredAt"];
+    returedAt= json["returedAt"];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_id'] = orderId;
-    data['product_id'] = productId;
-    data['order_item_count'] = orderItemCount;
-    data['order_item_price'] = orderItemPrice;
-    data['service_charge_type'] = serviceChargeType;
-    data['service_charge_value'] = serviceChargeValue;
-    data['total_service_charged'] = totalServiceCharged;
-    data['discount_name'] = discountName;
-    data['discount_type'] = discountType;
-    data['discount_value'] = discountValue;
-    data['total_discount'] = totalDiscount;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['order_item_id'] = orderItemId;
-    if (product != null) {
-      data['product'] = product!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['order_id'] = this.orderId;
+    data['product_id'] = this.productId;
+    data['order_item_count'] = this.orderItemCount;
+    data['order_item_price'] = this.orderItemPrice;
+    data['service_charge_type'] = this.serviceChargeType;
+    data['service_charge_value'] = this.serviceChargeValue;
+    data['total_service_charged'] = this.totalServiceCharged;
+    data['discount_name'] = this.discountName;
+    data['discount_type'] = this.discountType;
+    data['discount_value'] = this.discountValue;
+    data['total_discount'] = this.totalDiscount;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['order_item_id'] = this.orderItemId;
+    if (this.product != null) {
+      data['product'] = this.product!.toJson();
     }
     if (returnOrderItems != null) {
       data['return_order_items'] =
@@ -543,29 +682,30 @@ class Product {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['store_id'] = storeId;
-    data['quantity_type_id'] = quantityTypeId;
-    data['quantity'] = quantity;
-    data['is_featured_product'] = isFeaturedProduct;
-    data['product_name'] = productName;
-    data['description'] = description;
-    data['product_price'] = productPrice;
-    data['selling_price'] = sellingPrice;
-    data['discount_type'] = discountType;
-    data['discount_value'] = discountValue;
-    data['is_product_returnable'] = isProductReturnable;
-    data['return_days_count'] = returnDaysCount;
-    data['length'] = length;
-    data['width'] = width;
-    data['height'] = height;
-    data['weight'] = weight;
-    data['is_enabled'] = isEnabled;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['product_id'] = productId;
-    if (productReviews != null) {
-      data['product_reviews'] = productReviews!.map((v) => v.toJson()).toList();
+    data['store_id'] = this.storeId;
+    data['quantity_type_id'] = this.quantityTypeId;
+    data['quantity'] = this.quantity;
+    data['is_featured_product'] = this.isFeaturedProduct;
+    data['product_name'] = this.productName;
+    data['description'] = this.description;
+    data['product_price'] = this.productPrice;
+    data['selling_price'] = this.sellingPrice;
+    data['discount_type'] = this.discountType;
+    data['discount_value'] = this.discountValue;
+    data['is_product_returnable'] = this.isProductReturnable;
+    data['return_days_count'] = this.returnDaysCount;
+    data['length'] = this.length;
+    data['width'] = this.width;
+    data['height'] = this.height;
+    data['weight'] = this.weight;
+    data['is_enabled'] = this.isEnabled;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['product_id'] = this.productId;
+    if (this.productReviews != null) {
+      data['product_reviews'] =
+          this.productReviews!.map((v) => v.toJson()).toList();
     }
     if (productImages != null) {
       data['product_images'] = productImages!.map((v) => v.toJson()).toList();
@@ -685,16 +825,16 @@ class ProductReviews {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_id'] = productId;
-    data['user_id'] = userId;
-    data['order_id'] = orderId;
-    data['rating'] = rating;
-    data['review'] = review;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['product_review_id'] = productReviewId;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = this.productId;
+    data['user_id'] = this.userId;
+    data['order_id'] = this.orderId;
+    data['rating'] = this.rating;
+    data['review'] = this.review;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['product_review_id'] = this.productReviewId;
     return data;
   }
 }
@@ -709,9 +849,9 @@ class ProductImages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (image != null) {
-      data['image'] = image!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (this.image != null) {
+      data['image'] = this.image!.toJson();
     }
     return data;
   }
@@ -729,9 +869,9 @@ class Image {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['orignal_url'] = this.orignalUrl;
+    data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
 }

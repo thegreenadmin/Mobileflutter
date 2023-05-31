@@ -210,16 +210,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        StringConstants.newText,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value ==
-                                  OrderStatus.cancelled.statusName
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                      Expanded(
+                        child: Text(
+                          StringConstants.newText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w400,
+                            color: ordersController.orderStatusName.value ==
+                                    OrderStatus.cancelled.statusName
+                                ? AppColors.primary
+                                : AppColors.blacklight,
+                          ),
                         ),
                       ),
                     ],
@@ -248,18 +250,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      Expanded(child: Text(
                         StringConstants.pendingText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16,overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value ==
-                                  OrderStatus.pending.statusName
+                              OrderStatus.pending.statusName
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
-                      ),
+                      ),)
+
                     ],
                   ),
                 ),
@@ -286,18 +289,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      Expanded(child:  Text(
                         StringConstants.receivedText,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16,overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value ==
-                                  OrderStatus.delivered.statusName
+                              OrderStatus.delivered.statusName
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
-                      ),
+                      ),)
+
                     ],
                   ),
                 ),
@@ -324,16 +328,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        StringConstants.cancelledText,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value ==
-                                  OrderStatus.cancelled.statusName
-                              ? AppColors.primary
-                              : AppColors.blacklight,
+                      Expanded(
+                        child: Text(
+                          StringConstants.cancelledText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: ordersController.orderStatusName.value ==
+                                    OrderStatus.cancelled.statusName
+                                ? AppColors.primary
+                                : AppColors.blacklight,
+                          ),
                         ),
                       ),
                     ],
@@ -589,7 +596,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           CrossAxisAlignment
                                               .end,
                                           children: [
-                                            Text.rich(
+                                            Expanded(child:   Text.rich(
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
@@ -600,7 +607,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               .blacklight,
                                                           fontWeight:
                                                           FontWeight
-                                                              .w400,
+                                                              .w400, overflow: TextOverflow.ellipsis,
                                                           fontSize:
                                                           14)),
                                                   TextSpan(
@@ -609,17 +616,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                         FontWeight
-                                                            .w600,
+                                                            .w600, overflow: TextOverflow.ellipsis,
                                                         fontSize:
                                                         14,
                                                         color: AppColors
                                                             .blacklight),
                                                   ),
                                                 ],
+                                                style: const TextStyle(
+                                                   overflow: TextOverflow.ellipsis),
                                               ),
-                                            ),
-                                            width20SizedBox,
-                                            Text.rich(
+                                              style: const TextStyle(
+                                                  overflow: TextOverflow.ellipsis),
+                                            ),),
+                                            Expanded(child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
@@ -634,7 +644,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               .blacklight,
                                                           fontWeight:
                                                           FontWeight
-                                                              .w400,
+                                                              .w400, overflow: TextOverflow.ellipsis,
                                                           fontSize:
                                                           14)),
                                                   TextSpan(
@@ -645,13 +655,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                             .blacklight,
                                                         fontWeight:
                                                         FontWeight
-                                                            .w400,
+                                                            .w400, overflow: TextOverflow.ellipsis,
                                                         fontSize:
                                                         14),
                                                   ),
                                                 ],
+                                                style: const TextStyle(
+                                                    overflow: TextOverflow.ellipsis),
                                               ),
+                                              style: const TextStyle(
+                                                  overflow: TextOverflow.ellipsis),
                                             ),
+
+                                            )
+
                                           ],
                                         ),
                                         height8SizedBox,
@@ -660,24 +677,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           MainAxisAlignment
                                               .spaceBetween,
                                           children: [
-                                            SizedBox(
-                                              width: 180,
-                                              child: Text(
-                                                  ordersController
-                                                      .orderList[
-                                                  i]
-                                                      .store
-                                                      ?.storeName ??
-                                                      "",
-                                                  style: const TextStyle(
-                                                      color: AppColors
-                                                          .black,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w500,
-                                                      fontSize:
-                                                      16)),
-                                            ),
+                                            Text(
+                                                ordersController
+                                                    .orderList[
+                                                i]
+                                                    .store
+                                                    ?.storeName ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    color: AppColors
+                                                        .black,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    fontSize:
+                                                    16)),
                                             Text(
                                               "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
                                               style: const TextStyle(
@@ -1044,7 +1058,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                 ],
                                               ),
                                             ),
-                                            width20SizedBox,
+                                            // width20SizedBox,
                                             Text.rich(
                                               TextSpan(
                                                 children: [
