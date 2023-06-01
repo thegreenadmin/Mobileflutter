@@ -450,7 +450,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                       fontSize: 14)),
                                               Text(
                                                   ordersHomeMainController
-                                                      .ownerOrderHistoryList?[index].deliveryService
+                                                      .ownerOrderHistoryList?[index].deliveryServiceId
                                                       .toString()=="1"
                                                       ? StringConstants.inStoreText
                                                       :ordersHomeMainController.

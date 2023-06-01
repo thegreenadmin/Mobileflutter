@@ -131,9 +131,13 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
+        debugPrint("ACTIVE CART cartCount*******${activeCartModel.data!.cartItems!.isEmpty}");
+        debugPrint("ACTIVE CART storeId*******${int.parse(activeCartModel.data!.storeId.toString()) == 0 }");
+        debugPrint("ACTIVE CART storeId* check******${int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
+            activeCartModel.data!.cartItems!.isEmpty}");
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
-          cartCount.value = 0;
+          cartCount.value =  0;
         } else {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
