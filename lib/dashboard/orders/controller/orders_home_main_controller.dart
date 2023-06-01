@@ -253,6 +253,31 @@ class OrdersHomeMainController extends GetxController {
             "0";
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
+        for (var element in getOrderItems) {
+          element.isSelected =
+          selectedIndex.value == 0
+              && element.orderItemStatus == OrderStatus.pending.statusName
+              ? false
+              : selectedIndex.value == 1
+              && element.orderItemStatus == OrderStatus.confirmed.statusName ||
+              selectedIndex.value == 1
+                  && element.orderItemStatus == OrderStatus.pending.statusName
+              ? false
+              : selectedIndex.value == 2
+              && element.orderItemStatus == OrderStatus.shipped.statusName ||
+              selectedIndex.value == 2
+              && element.orderItemStatus == OrderStatus.readyPickup.statusName ||
+              selectedIndex.value == 2
+                  && element.orderItemStatus == OrderStatus.confirmed.statusName ||
+              selectedIndex.value == 2
+                  && element.orderItemStatus == OrderStatus.pending.statusName
+              ? false
+              : selectedIndex.value == 3
+              && element.orderItemStatus == OrderStatus.delivered.statusName
+              ? false : true;
+        }
+        // selectedIndex.value = 0 ?
+
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -469,7 +494,7 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true) {
+       if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -519,7 +544,8 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true) {
+      if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName ||
+          element.isSelected == true && element.orderItemStatus == OrderStatus.confirmed.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -568,7 +594,8 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true) {
+      if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName ||
+          element.isSelected == true && element.orderItemStatus == OrderStatus.confirmed.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -616,8 +643,10 @@ class OrdersHomeMainController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     List<dynamic> orderItems = [];
+
     for (var element in getOrderItems) {
-      if (element.isSelected == true) {
+      if (element.isSelected == true && element.orderItemStatus == OrderStatus.shipped.statusName ||
+          element.isSelected == true && element.orderItemStatus == OrderStatus.readyPickup.statusName ) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }

@@ -134,13 +134,14 @@ class StringConstants {
   //D
   static String deliveryText = "Delivery";
   static String drivingLicenceText = "Driving Licence";
+  static String deliveryChargeText = "Delivery Charge";
   static String deleteAccountText = "Delete Account";
   static String discountsOrOffersText = "Discounts or Offers";
   static String deliveryBoyText = "Delivery Boy";
   static String daysText = "Days";
   static String deliveryMethodsText = "Delivery Methods";
   static String deliveryServicesText = "Delivery Services";
-  static String discountText = "Discount:";
+  static String discountText = "Discount";
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
@@ -367,6 +368,7 @@ class StringConstants {
   static String rolesText = "Roles";
   static String roleNameText = "Role Name";
   static String returnAvailableText = "Return Available";
+  static String returnReasonText = "Return reason";
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
   static String reviewsText = "Reviews";
@@ -391,6 +393,7 @@ class StringConstants {
   //S
   static String signUpText = "Sign up";
   static String orderShippedText = "Order shipped";
+  static String orderDeliveredText = "Order delivered";
   static String orderPickedText = "Order picked";
   static String shareYourFeedbackText = "Share your feedback";
   static String skipText = "Skip";
