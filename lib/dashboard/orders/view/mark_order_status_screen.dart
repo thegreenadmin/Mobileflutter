@@ -954,22 +954,22 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                       if (ordersHomeMainController.getOrderItems
                           .any((element) => element.isSelected == true)) {
                         ordersHomeMainController.selectedIndex.value == 0
-                            ? ordersHomeMainController.apiMarkOrderReady()
+                            ? ordersHomeMainController.apiMarkOrderReady(context)
                             : ordersHomeMainController.selectedIndex.value == 1
                             ? ordersHomeMainController
                             .getStoreOrderDetailModel
                             .value.data?.order?.deliveryService
                             ?.deliveryServiceId != "2"
-                            ? ordersHomeMainController.apiMarkReadyForPickUp()
-                            : ordersHomeMainController.apiMarkReadyForShipping()
+                            ? ordersHomeMainController.apiMarkReadyForPickUp(context)
+                            : ordersHomeMainController.apiMarkReadyForShipping(context)
                             : ordersHomeMainController
                             .selectedIndex.value == 2
                             ? ordersHomeMainController
-                            .apiMarkDelivered()
+                            .apiMarkDelivered(context)
                             : ordersHomeMainController
                             .selectedIndex.value == 3
-                            ? ordersHomeMainController.apiMarkOrderReady()
-                            : ordersHomeMainController.apiMarkOrderReady();
+                            ? ordersHomeMainController.apiMarkOrderReady(context)
+                            : ordersHomeMainController.apiMarkOrderReady(context);
                       } else {
                         Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);

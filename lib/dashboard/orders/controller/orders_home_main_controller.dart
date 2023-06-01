@@ -472,7 +472,6 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         Navigator.of(ctx).pop();
-        // Get.back();
         update();
       } else {
        if (value.body['message']!=null) {
@@ -483,7 +482,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Mark store order ready
-  apiMarkOrderReady() async {
+  apiMarkOrderReady(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
@@ -523,6 +522,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        await apiGetOwnerOrderHistory();
+        Navigator.pop(ctx);
         update();
       } else {
        if (value.body['message']!=null) {
@@ -533,7 +534,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order ready for Shipped
-  apiMarkReadyForShipping() async {
+  apiMarkReadyForShipping(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
@@ -573,6 +574,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        await apiGetOwnerOrderHistory();
+        Navigator.pop(ctx);
         update();
       } else {
        if (value.body['message']!=null) {
@@ -583,7 +586,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order ready for Pick
-  apiMarkReadyForPickUp() async {
+  apiMarkReadyForPickUp(BuildContext ctx ) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
@@ -623,6 +626,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        await apiGetOwnerOrderHistory();
+        Navigator.pop(ctx);
         update();
       } else {
        if (value.body['message']!=null) {
@@ -633,7 +638,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order delivered
-  apiMarkDelivered() async {
+  apiMarkDelivered(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");
@@ -674,6 +679,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        await apiGetOwnerOrderHistory();
+        Navigator.pop(ctx);
         update();
       } else {
        if (value.body['message']!=null) {
