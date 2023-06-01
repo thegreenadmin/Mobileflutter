@@ -826,9 +826,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                                   height8SizedBox,
                                   Visibility(
-                                    visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
-                                        && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
-                                        && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
+                                    visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
+                                        || ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
+                                        || (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
                                     child: RatingBar.builder(
                                       initialRating: ordersController
                                           .orderItems[i]
@@ -878,9 +878,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               child: Column(
                                 children: [
                                   Visibility(
-                                    visible: ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                                        || ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
-                                        || ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
+                                    visible: ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
+                                        || ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
+                                        || ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
 
                                     child: Row(
                                       crossAxisAlignment:
@@ -924,7 +924,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   Visibility(
                                     visible: ordersController
                                         .activeStep.value ==
-                                        3,
+                                        3 ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
+                                        ||  ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
+                                        ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
                                     child: CustomButton(
                                       gradient: const LinearGradient(
                                         begin: Alignment.topCenter,
@@ -1028,7 +1030,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   ),
                                   height6SizedBox,
                                   Visibility(
-                                    visible: ordersController.activeStep.value == 3 ,
+                                    visible: ordersController.activeStep.value == 3
+                                        ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
+                                        ||  ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
+                                        ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
                                     child: InkWell(
                                       onTap: () {
                                         Utility.showConfirmAlertMessage(
@@ -1061,9 +1066,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                         height4SizedBox,
                         Visibility(
-                          visible: ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                              || ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
-                              || ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
+                          visible: ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
+                              || ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
+                              || ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
 
                           child: Column(
                             crossAxisAlignment:

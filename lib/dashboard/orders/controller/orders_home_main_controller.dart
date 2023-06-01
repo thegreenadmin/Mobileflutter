@@ -643,6 +643,7 @@ class OrdersHomeMainController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     List<dynamic> orderItems = [];
+
     for (var element in getOrderItems) {
       if (element.isSelected == true && element.orderItemStatus == OrderStatus.shipped.statusName ||
           element.isSelected == true && element.orderItemStatus == OrderStatus.readyPickup.statusName ) {
