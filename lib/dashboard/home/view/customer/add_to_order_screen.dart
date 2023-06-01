@@ -641,8 +641,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                   ?.offer
                                                   ?.offerValue !=
                                               null
-                                          ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}"
-                                          : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}",
+                                          ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
+                                          : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:",
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w400,

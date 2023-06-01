@@ -73,7 +73,7 @@ class OrdersController extends GetxController {
   RxBool isFavouriteStore = false.obs;
   RxList<Categories> stepInd = [
     Categories(id: 0, name: "Received", isSelected: false),
-    Categories(id: 1, name: "InProgress", isSelected: false),
+    Categories(id: 1, name: "In Progress", isSelected: false),
     Categories(id: 2, name: "Shipped", isSelected: false),
     Categories(id: 3, name: "Complete", isSelected: false),
   ].obs;
@@ -947,7 +947,7 @@ class OrdersController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}",
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       log("ORDER Details*******${value?.body}");

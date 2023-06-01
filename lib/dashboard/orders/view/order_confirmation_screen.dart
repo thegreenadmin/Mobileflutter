@@ -407,7 +407,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 height30SizedBox,
-                Visibility(
+                Obx(() =>  Visibility(
                   visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
                       && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
                       && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
@@ -438,8 +438,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ),
                     ],
                   ),
-                ),
-
+                ),),
                 height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -482,7 +481,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),)
 
                   ],
-                ),height12SizedBox,
+                ),
+                height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -494,7 +494,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                      Text(
-                      "\$${ordersController.orderDetailResponse.data?.order?.totalAmount?.toStringAsFixed(2)}",
+                      "\$${ordersController.orderDetailResponse.data?.order?.totalAmount?.toStringAsFixed(2)??"0.0"}",
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -502,7 +502,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
 
                   ],
-                ),height12SizedBox,
+                ),
+                height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -535,57 +536,55 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   color: AppColors.grey,
                 ),
                 height30SizedBox,
-                Visibility(
+                Obx(() =>   Visibility(
                   visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
                       && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
                       && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
                   child: Column(
                     children: [
-                      Obx(
-                        () => EasyStepper(
-                          activeStep: ordersController.activeStep.value,
-                          lineLength: WidgetConstants.screenWidth * 0.063,
-                          stepShape: StepShape.circle,
-                          borderThickness: 0,
-                          stepRadius: WidgetConstants.screenWidth * 0.075,
-                          lineColor: AppColors.grey,
-                          lineType: LineType.normal,
-                          activeStepBorderType: BorderType.normal,
-                          unreachedStepBorderType: BorderType.normal,
-                          finishedStepBorderColor: AppColors.white,
-                          finishedStepTextColor: AppColors.primary,
-                          finishedStepBackgroundColor: AppColors.white,
-                          activeStepIconColor: AppColors.white,
-                          showLoadingAnimation: false,
-                          showStepBorder: false,
-                          disableScroll: true,
-                          unreachedStepIconColor: AppColors.black,
-                          unreachedStepTextColor: AppColors.black,
-                          steps: List<EasyStep>.generate(
-                            ordersController.stepInd.length,
-                            (index) => EasyStep(
-                              customStep:
-                                  ordersController.stepInd[index].isSelected == true
-                                      ? Image.asset(
-                                          ImageConstants.blueTick,
-                                          scale: 3.5,
-                                        )
-                                      : Image.asset(
-                                          ImageConstants.blackTick,
-                                          scale: 3.5,
-                                        ),
-                              customTitle: Text(
-                                ordersController.stepInd[index].name ?? "",
-                                style: const TextStyle(
-                                    overflow: TextOverflow.visible,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                    color: AppColors.black),
-                              ),
+                      EasyStepper(
+                        activeStep: ordersController.activeStep.value,
+                        lineLength: WidgetConstants.screenWidth * 0.063,
+                        stepShape: StepShape.circle,
+                        borderThickness: 0,
+                        stepRadius: WidgetConstants.screenWidth * 0.075,
+                        lineColor: AppColors.grey,
+                        lineType: LineType.normal,
+                        activeStepBorderType: BorderType.normal,
+                        unreachedStepBorderType: BorderType.normal,
+                        finishedStepBorderColor: AppColors.white,
+                        finishedStepTextColor: AppColors.primary,
+                        finishedStepBackgroundColor: AppColors.white,
+                        activeStepIconColor: AppColors.white,
+                        showLoadingAnimation: false,
+                        showStepBorder: false,
+                        disableScroll: true,
+                        unreachedStepIconColor: AppColors.black,
+                        unreachedStepTextColor: AppColors.black,
+                        steps: List<EasyStep>.generate(
+                          ordersController.stepInd.length,
+                              (index) => EasyStep(
+                            customStep:
+                            ordersController.stepInd[index].isSelected == true
+                                ? Image.asset(
+                              ImageConstants.blueTick,
+                              scale: 3.5,
+                            )
+                                : Image.asset(
+                              ImageConstants.blackTick,
+                              scale: 3.5,
+                            ),
+                            customTitle: Text(
+                              ordersController.stepInd[index].name ?? "",
+                              style: const TextStyle(
+                                  overflow: TextOverflow.visible,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: AppColors.black),
                             ),
                           ),
-                          onStepReached: (index) {},
                         ),
+                        onStepReached: (index) {},
                       ),
                       height30SizedBox,
                       CustomButton(
@@ -620,8 +619,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       height20SizedBox,
                     ],
                   ),
-                ),
-
+                ),),
                 buildOrderItems()
               ],
             ),
@@ -1061,159 +1059,190 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             ),
                           ],
                         ),
+                        height4SizedBox,
                         Visibility(
                           visible: ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
                               || ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
                               || ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
 
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                          child: Column(
                             crossAxisAlignment:
                             CrossAxisAlignment.start,
                             children: [
-                              // width50SizedBox,
-                              Expanded(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  // width50SizedBox,
+                                  Expanded(
+                                    child: Text.rich(
                                       TextSpan(
-                                          text:
-                                          "${StringConstants.returnRequestDateText}: ",
-                                          style: TextStyle(
-                                              color: AppColors
-                                                  .blacklight,
-                                              fontWeight:
-                                              FontWeight.w400,
-                                              fontSize: 12)),
-                                      TextSpan(
-                                        text:
-                                        ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
-                                        Utility.formatDateTime(
-                                            '${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(11, 23)}',
-                                            firstFormat:
-                                            "yyyy-MM-dd HH:mm:ss",
-                                            secFormat:
-                                            "dd MMM yyyy"):"",
-                                        style: TextStyle(
-                                            fontWeight:
-                                            FontWeight.w600,
-                                            fontSize: 14,
-                                            color: AppColors
-                                                .blacklight),
+                                        children: [
+                                          TextSpan(
+                                              text:
+                                              "${StringConstants.returnRequestDateText}: ",
+                                              style: TextStyle(
+                                                  color: AppColors
+                                                      .blacklight,
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                  fontSize: 14)),
+                                          TextSpan(
+                                            text:
+                                            ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
+                                            Utility.formatDateTime(
+                                                '${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(11, 23)}',
+                                                firstFormat:
+                                                "yyyy-MM-dd HH:mm:ss",
+                                                secFormat:
+                                                "dd MMM yyyy"):"",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                fontSize: 14,
+                                                color: AppColors
+                                                    .blacklight),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                      overflow: TextOverflow.visible,
+                                    ),
                                   ),
-                                  overflow: TextOverflow.visible,
-                                ),
+                                  width50SizedBox,
+                                  width50SizedBox,
+                                  width50SizedBox,
+                                  width30SizedBox,
+                                 /* Expanded(
+                                    child: Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text:
+                                              "${StringConstants.statusText}: ",
+                                              style: TextStyle(
+                                                  color: AppColors
+                                                      .blacklight,
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                  fontSize: 12)),
+                                          TextSpan(
+                                            text:
+                                            ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
+                                                ? StringConstants.inProgress
+                                                : ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName?
+                                            StringConstants.approvedText:StringConstants.completedText,
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                fontSize: 14,
+                                                color: AppColors
+                                                    .blacklight),
+                                          ),
+                                        ],
+                                      ),
+                                      overflow: TextOverflow.visible,
+                                      textAlign: TextAlign.end,
+                                    ),
+                                  ),*/
+                                ],
                               ),
-                              width50SizedBox,
-                              width50SizedBox,
-                              width50SizedBox,
-                             /* Expanded(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
+                              height4SizedBox,
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  // width50SizedBox,
+                                  Expanded(
+                                    child:  Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text:
+                                            "${StringConstants.returnRequestAmountText}: ",
+                                            style: TextStyle(
+                                                color: AppColors
+                                                    .blacklight,
+                                                fontWeight:
+                                                FontWeight.w400,
+                                                fontSize: 14)),
+                                        TextSpan(
                                           text:
-                                          "${StringConstants.statusText}: ",
+                                          ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
+                                          "\$${ordersController.orderItems[i].returnOrderItems?.first.totalTaxReversed?.toStringAsFixed(2) ?? ""}":"",
                                           style: TextStyle(
-                                              color: AppColors
-                                                  .blacklight,
                                               fontWeight:
-                                              FontWeight.w400,
-                                              fontSize: 12)),
-                                      TextSpan(
-                                        text:
-                                        ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                                            ? StringConstants.inProgress
-                                            : ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName?
-                                        StringConstants.approvedText:StringConstants.completedText,
-                                        style: TextStyle(
-                                            fontWeight:
-                                            FontWeight.w600,
-                                            fontSize: 14,
-                                            color: AppColors
-                                                .blacklight),
-                                      ),
-                                    ],
-                                  ),
-                                  overflow: TextOverflow.visible,
-                                  textAlign: TextAlign.end,
-                                ),
-                              ),*/
-                            ],
-                          ),
-                        ),
-                        Visibility(
-                          visible: ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                              || ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
-                              || ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              // width50SizedBox,
-                              Expanded(child:  Text.rich(
+                                              FontWeight.w600,
+                                              fontSize: 14,
+                                              color: AppColors
+                                                  .blacklight),
+                                        ),
+                                      ],
+                                    ),
+                                    overflow: TextOverflow.visible,
+                                  ),),
+                                  Expanded(child:  Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text:
+                                            "${StringConstants.lastUpdateDateText}:",
+                                            style: TextStyle(
+                                                color: AppColors
+                                                    .blacklight,
+                                                fontWeight:
+                                                FontWeight.w400,
+                                                fontSize: 14)),
+                                        TextSpan(
+                                          text:
+                                          ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
+                                          Utility.formatDateTime(
+                                              '${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.updatedAt.toString().substring(11, 23)}',
+                                              firstFormat: "yyyy-MM-dd HH:mm:ss",
+                                              secFormat: "dd MMM yyyy"):"",
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.w600,
+                                              fontSize: 14,
+                                              color: AppColors
+                                                  .blacklight),
+                                        ),
+                                      ],
+                                    ),
+                                    overflow: TextOverflow.visible,
+                                    textAlign: TextAlign.end,
+                                  ),)
+
+                                ],
+                              ),
+                              height4SizedBox,
+                              Text.rich(
                                 TextSpan(
                                   children: [
                                     TextSpan(
                                         text:
-                                        "${StringConstants.returnRequestAmountText}: ",
+                                        "${StringConstants.returnReasonText}: ",
                                         style: TextStyle(
-                                            color: AppColors
-                                                .blacklight,
-                                            fontWeight:
-                                            FontWeight.w400,
-                                            fontSize: 12)),
+                                            color: AppColors.blacklight,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14)),
                                     TextSpan(
                                       text:
                                       ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
-                                      "\$${ordersController.orderItems[i].returnOrderItems?.first.totalTaxReversed?.toStringAsFixed(2) ?? ""}":"",
+                                      ordersController.orderItems[i].returnOrderItems?.first.remarks.toString() ?? "":"",
                                       style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.w600,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 14,
-                                          color: AppColors
-                                              .blacklight),
+                                          color: AppColors.blacklight),
                                     ),
                                   ],
                                 ),
                                 overflow: TextOverflow.visible,
-                              ),),
-                              Expanded(child:  Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                        "${StringConstants.lastUpdateDateText}:",
-                                        style: TextStyle(
-                                            color: AppColors
-                                                .blacklight,
-                                            fontWeight:
-                                            FontWeight.w400,
-                                            fontSize: 12)),
-                                    TextSpan(
-                                      text:
-                                      ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
-                                      Utility.formatDateTime(
-                                          '${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.updatedAt.toString().substring(11, 23)}',
-                                          firstFormat: "yyyy-MM-dd HH:mm:ss",
-                                          secFormat: "dd MMM yyyy"):"",
-                                      style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.w600,
-                                          fontSize: 14,
-                                          color: AppColors
-                                              .blacklight),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.visible,
-                                textAlign: TextAlign.end,
-                              ),)
+                                textAlign: TextAlign.start,
+                              ),
 
                             ],
                           ),

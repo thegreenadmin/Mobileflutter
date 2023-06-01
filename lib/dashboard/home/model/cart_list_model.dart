@@ -50,6 +50,10 @@ class Data {
     this.cartTotalDiscount,
     this.cartTotalTax,
     this.cartDeliveryServiceCharge,
+    this.storeId,
+    this.cartTotalServiceCharged,
+    this.isValidAddress,
+    this.isOrderDeliverable,
     this.cartItems,
   });
 
@@ -58,6 +62,10 @@ class Data {
   double? cartTotalDiscount;
   double? cartTotalTax;
   dynamic cartDeliveryServiceCharge;
+  String? storeId;
+  dynamic cartTotalServiceCharged;
+  bool? isValidAddress;
+  bool? isOrderDeliverable;
   List<CartItem>? cartItems;
 
   Data copyWith({
@@ -66,32 +74,48 @@ class Data {
     double? cartTotalDiscount,
     double? cartTotalTax,
     dynamic cartDeliveryServiceCharge,
+    String? storeId,
+    dynamic cartTotalServiceCharged,
+    bool? isValidAddress,
+    bool? isOrderDeliverable,
     List<CartItem>? cartItems,
   }) =>
       Data(
+        storeId: storeId ?? this.storeId,
         cartTotalPrice: cartTotalPrice ?? this.cartTotalPrice,
         cartSubTotal: cartSubTotal ?? this.cartSubTotal,
         cartTotalDiscount: cartTotalDiscount ?? this.cartTotalDiscount,
+        cartTotalServiceCharged: cartTotalServiceCharged ?? this.cartTotalServiceCharged,
         cartTotalTax: cartTotalTax ?? this.cartTotalTax,
         cartDeliveryServiceCharge: cartDeliveryServiceCharge ?? this.cartDeliveryServiceCharge,
+        isValidAddress: isValidAddress ?? this.isValidAddress,
+        isOrderDeliverable: isOrderDeliverable ?? this.isOrderDeliverable,
         cartItems: cartItems ?? this.cartItems,
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+    storeId: json["store_id"],
     cartTotalPrice: json["cart_total_price"]?.toDouble(),
     cartSubTotal: json["cart_sub_total"],
     cartTotalDiscount: json["cart_total_discount"]?.toDouble(),
+    cartTotalServiceCharged: json["cart_total_service_charged"]?.toDouble(),
     cartTotalTax: json["cart_total_tax"]?.toDouble(),
     cartDeliveryServiceCharge: json["cart_delivery_service_charge"],
+    isValidAddress: json["is_valid_address"],
+    isOrderDeliverable: json["is_order_deliverable"],
     cartItems: json["cart_items"] == null ? [] : List<CartItem>.from(json["cart_items"]!.map((x) => CartItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
+    "store_id": storeId,
     "cart_total_price": cartTotalPrice,
     "cart_sub_total": cartSubTotal,
     "cart_total_discount": cartTotalDiscount,
+    "cart_total_service_charged": cartTotalServiceCharged,
     "cart_total_tax": cartTotalTax,
     "cart_delivery_service_charge": cartDeliveryServiceCharge,
+    "is_valid_address": isValidAddress,
+    "is_order_deliverable": isOrderDeliverable,
     "cart_items": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
   };
 }
