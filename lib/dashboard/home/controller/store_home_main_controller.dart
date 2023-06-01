@@ -664,7 +664,7 @@ class StoreHomeMainController extends GetxController {
             isFromHome.value == false) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -847,7 +847,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Delete Cart Api
-  Future apiDeleteCart(context, {int cartItemId = 0}) async {
+  Future apiDeleteCart(BuildContext ctxx, {int cartItemId = 0}) async {
     isLoading.value = true;
     debugPrint("DELETE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");
@@ -875,7 +875,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
-        apiGetCartListApi(context);
+        apiGetCartListApi(ctxx);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

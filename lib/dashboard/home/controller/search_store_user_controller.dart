@@ -131,9 +131,9 @@ class SearchStoreUserController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 ||
+        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
-          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+          cartCount.value = 0;
         } else {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
@@ -369,7 +369,7 @@ class SearchStoreUserController extends GetxController {
   }) async {
     debugPrint("GET GET NEARBY STORES isSearch********** $isSearch");
 
-    if (isFilter || isSearch ) {
+    if (isFilter || isSearch) {
       page.value = 1;
       storeAddresses.clear();
       // favStoreAddresses.clear();
@@ -456,7 +456,7 @@ class SearchStoreUserController extends GetxController {
           // Get.back();
           Navigator.of(context).pop();
         }
-        if(isSearch){
+        if (isSearch) {
           zipCodeTextController.clear();
           openingTimeTextController.clear();
           closingTimeTextController.clear();
@@ -476,7 +476,6 @@ class SearchStoreUserController extends GetxController {
       }
     });
   }
-
 
   //Get Previous Stores Api
   Future apiGetPreviousStores(
@@ -625,7 +624,6 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
-
         } else if (type.value == 0) {
           debugPrint("Create Favourite Store *******${type.value}");
           debugPrint("Create Favourite Store *******${type.value}");
@@ -698,7 +696,6 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores(Get.context!);
-
         } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
@@ -755,6 +752,7 @@ class SearchStoreUserController extends GetxController {
       autoValidate.value = true;
     }
   }
+
   apiClaimStore({
     String storeId = "",
   }) {

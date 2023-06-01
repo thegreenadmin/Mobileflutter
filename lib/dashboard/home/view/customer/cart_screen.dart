@@ -187,7 +187,6 @@ class _CartScreenState extends State<CartScreen> {
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           child: Container(
-
                                             width: 80,
                                             height: 90,
                                             decoration: BoxDecoration(
@@ -196,11 +195,21 @@ class _CartScreenState extends State<CartScreen> {
                                                     color: AppColors.primary,
                                                     width: 0)),
                                             child: storeHomeMainController
+                                                            .cartItems[i]
+                                                            .product !=
+                                                        null &&
+                                                    storeHomeMainController
                                                         .cartItems[i]
                                                         .product
-                                                        ?.image
-                                                        ?.dynamicUrl !=
-                                                    null
+                                                        ?.image!
+                                                        .dynamicUrl
+                                                        .isNotEmpty &&
+                                                    storeHomeMainController
+                                                            .cartItems[i]
+                                                            .product
+                                                            ?.image
+                                                            ?.dynamicUrl !=
+                                                        null
                                                 ? Image.network(
                                                     storeHomeMainController
                                                             .cartItems[i]
@@ -400,207 +409,207 @@ class _CartScreenState extends State<CartScreen> {
                               fontWeight: FontWeight.w600),
                         ),
                         height10SizedBox,
-                        GridView.builder(
-                          itemCount: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data
-                              ?.store
-                              ?.storeDeliveryServices
-                              ?.length ??
-                              0,
-                          shrinkWrap: true,
-                          gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: (WidgetConstants
-                                .screenWidth * 0.8) /
-                                WidgetConstants.screenHeight * 8.5,
-                            mainAxisSpacing: 8.0,
-                            crossAxisSpacing: 8.0,
-                            crossAxisCount: 2,
-                          ),
-                          itemBuilder:
-                              (BuildContext context, int i) {
+                        Obx(() => GridView.builder(
+                              itemCount: storeHomeMainController
+                                      .storeDetailsResponse
+                                      .value
+                                      .data
+                                      ?.store
+                                      ?.storeDeliveryServices
+                                      ?.length ??
+                                  0,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio:
+                                    (WidgetConstants.screenWidth * 0.8) /
+                                        WidgetConstants.screenHeight *
+                                        8.5,
+                                mainAxisSpacing: 8.0,
+                                crossAxisSpacing: 8.0,
+                                crossAxisCount: 2,
+                              ),
+                              itemBuilder: (BuildContext context, int i) {
                                 return Obx(() => CustomButton(
-                                  width: WidgetConstants.screenWidth * 0.3,
-                                  border:
-                                  Border.all(color: AppColors.primary),
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: storeHomeMainController
-                                        .storeDeliveryServiceId
-                                        .value ==
+                                      width: WidgetConstants.screenWidth * 0.3,
+                                      border:
+                                          Border.all(color: AppColors.primary),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: storeHomeMainController
+                                                    .storeDeliveryServiceId
+                                                    .value ==
+                                                storeHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data
+                                                    ?.store
+                                                    ?.storeDeliveryServices?[i]
+                                                    .storeDeliveryServiceId
+                                                    .toString()
+                                            ? [
+                                                AppColors.primary,
+                                                AppColors.primary
+                                              ]
+                                            : [
+                                                AppColors.white,
+                                                AppColors.white
+                                              ],
+                                      ),
+                                      onTap: () async {
                                         storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data
-                                            ?.store
-                                            ?.storeDeliveryServices?[i]
                                             .storeDeliveryServiceId
-                                            .toString()
-                                        ? [
-                                      AppColors.primary,
-                                      AppColors.primary
-                                    ]
-                                        : [
-                                      AppColors.white,
-                                      AppColors.white
-                                    ],
-                                  ),
-                                  onTap: () async {
-                                    storeHomeMainController
-                                        .storeDeliveryServiceId
-                                        .value = storeHomeMainController
-                                        .storeDetailsResponse
-                                        .value
-                                        .data
-                                        ?.store
-                                        ?.storeDeliveryServices?[i]
-                                        .storeDeliveryServiceId
-                                        .toString() ??
-                                        "0";
-                                    storeHomeMainController
-                                        .selectedDeliveryService.value =
+                                            .value = storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data
+                                                ?.store
+                                                ?.storeDeliveryServices?[i]
+                                                .storeDeliveryServiceId
+                                                .toString() ??
+                                            "0";
                                         storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data!
-                                            .store!
-                                            .storeDeliveryServices![i]
-                                            .deliveryServiceId!
-                                            .toString();
+                                                .selectedDeliveryService.value =
+                                            storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data!
+                                                .store!
+                                                .storeDeliveryServices![i]
+                                                .deliveryServiceId!
+                                                .toString();
 
-                                    storeHomeMainController
-                                        .storeAddressId.value =
                                         storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data!
-                                            .store!
-                                            .storeAddresses!
-                                            .first
-                                            .storeAddressId
-                                            .toString();
+                                                .storeAddressId.value =
+                                            storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data!
+                                                .store!
+                                                .storeAddresses!
+                                                .first
+                                                .storeAddressId
+                                                .toString();
 
-                                    await storeHomeMainController
-                                        .apiGetUserWalletBalance();
-                                    await storeHomeMainController
-                                        .apiGetCartListApi(context);
-                                  },
-                                  height: 40,
-                                  text: storeHomeMainController
-                                      .storeDetailsResponse
-                                      .value
-                                      .data
-                                      ?.store
-                                      ?.storeDeliveryServices?[i]
-                                      .deliveryServiceId ==
-                                      "1"
-                                      ? StringConstants.inStoreText
-                                      : storeHomeMainController
-                                      .storeDetailsResponse
-                                      .value
-                                      .data
-                                      ?.store
-                                      ?.storeDeliveryServices?[
-                                  i]
-                                      .deliveryServiceId ==
-                                      "2"
-                                      ? StringConstants.deliveryText
-                                      : StringConstants.curbSideText,
-                                  textColor: storeHomeMainController
-                                      .storeDeliveryServiceId
-                                      .value ==
-                                      storeHomeMainController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data
-                                          ?.store
-                                          ?.storeDeliveryServices?[i]
-                                          .storeDeliveryServiceId
-                                          .toString()
-                                      ? AppColors.white
-                                      : AppColors.primary,
-                                  borderRadius: 12,
-                                  fontWeight: FontWeight.w500,
-                                  iconL: true,
-                                  fontSize: 16,
-                                  imageL: storeHomeMainController
-                                      .storeDetailsResponse
-                                      .value
-                                      .data
-                                      ?.store
-                                      ?.storeDeliveryServices?[i]
-                                      .deliveryServiceId ==
-                                      "1"
-                                      ? Image.asset(
-                                    ImageConstants.instore,
-                                    scale: 2.5,
-                                    color: storeHomeMainController
-                                        .storeDeliveryServiceId
-                                        .value ==
-                                        storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data
-                                            ?.store
-                                            ?.storeDeliveryServices?[
-                                        i]
-                                            .storeDeliveryServiceId
-                                            .toString()
-                                        ? AppColors.white
-                                        : AppColors.primary,
-                                  )
-                                      : storeHomeMainController
-                                      .storeDetailsResponse
-                                      .value
-                                      .data
-                                      ?.store
-                                      ?.storeDeliveryServices?[
-                                  i]
-                                      .deliveryServiceId ==
-                                      "2"
-                                      ? Image.asset(
-                                    ImageConstants.delivery,
-                                    scale: 2.5,
-                                    color: storeHomeMainController
-                                        .storeDeliveryServiceId
-                                        .value ==
-                                        storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data
-                                            ?.store
-                                            ?.storeDeliveryServices?[
-                                        i]
-                                            .storeDeliveryServiceId
-                                            .toString()
-                                        ? AppColors.white
-                                        : AppColors.primary,
-                                  )
-                                      : Image.asset(
-                                    ImageConstants.curb,
-                                    scale: 2.2,
-                                    color: storeHomeMainController
-                                        .storeDeliveryServiceId
-                                        .value ==
-                                        storeHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data
-                                            ?.store
-                                            ?.storeDeliveryServices?[
-                                        i]
-                                            .storeDeliveryServiceId
-                                            .toString()
-                                        ? AppColors.white
-                                        : AppColors.primary,
-                                  ),
-                                ));
-                          },
-                        ),
-                      /*  SizedBox(
+                                        await storeHomeMainController
+                                            .apiGetUserWalletBalance();
+                                        await storeHomeMainController
+                                            .apiGetCartListApi(context);
+                                      },
+                                      height: 40,
+                                      text: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data
+                                                  ?.store
+                                                  ?.storeDeliveryServices?[i]
+                                                  .deliveryServiceId ==
+                                              "1"
+                                          ? StringConstants.inStoreText
+                                          : storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data
+                                                      ?.store
+                                                      ?.storeDeliveryServices?[
+                                                          i]
+                                                      .deliveryServiceId ==
+                                                  "2"
+                                              ? StringConstants.deliveryText
+                                              : StringConstants.curbSideText,
+                                      textColor: storeHomeMainController
+                                                  .storeDeliveryServiceId
+                                                  .value ==
+                                              storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data
+                                                  ?.store
+                                                  ?.storeDeliveryServices?[i]
+                                                  .storeDeliveryServiceId
+                                                  .toString()
+                                          ? AppColors.white
+                                          : AppColors.primary,
+                                      borderRadius: 12,
+                                      fontWeight: FontWeight.w500,
+                                      iconL: true,
+                                      fontSize: 16,
+                                      imageL: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data
+                                                  ?.store
+                                                  ?.storeDeliveryServices?[i]
+                                                  .deliveryServiceId ==
+                                              "1"
+                                          ? Image.asset(
+                                              ImageConstants.instore,
+                                              scale: 2.5,
+                                              color: storeHomeMainController
+                                                          .storeDeliveryServiceId
+                                                          .value ==
+                                                      storeHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data
+                                                          ?.store
+                                                          ?.storeDeliveryServices?[
+                                                              i]
+                                                          .storeDeliveryServiceId
+                                                          .toString()
+                                                  ? AppColors.white
+                                                  : AppColors.primary,
+                                            )
+                                          : storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data
+                                                      ?.store
+                                                      ?.storeDeliveryServices?[
+                                                          i]
+                                                      .deliveryServiceId ==
+                                                  "2"
+                                              ? Image.asset(
+                                                  ImageConstants.delivery,
+                                                  scale: 2.5,
+                                                  color: storeHomeMainController
+                                                              .storeDeliveryServiceId
+                                                              .value ==
+                                                          storeHomeMainController
+                                                              .storeDetailsResponse
+                                                              .value
+                                                              .data
+                                                              ?.store
+                                                              ?.storeDeliveryServices?[
+                                                                  i]
+                                                              .storeDeliveryServiceId
+                                                              .toString()
+                                                      ? AppColors.white
+                                                      : AppColors.primary,
+                                                )
+                                              : Image.asset(
+                                                  ImageConstants.curb,
+                                                  scale: 2.2,
+                                                  color: storeHomeMainController
+                                                              .storeDeliveryServiceId
+                                                              .value ==
+                                                          storeHomeMainController
+                                                              .storeDetailsResponse
+                                                              .value
+                                                              .data
+                                                              ?.store
+                                                              ?.storeDeliveryServices?[
+                                                                  i]
+                                                              .storeDeliveryServiceId
+                                                              .toString()
+                                                      ? AppColors.white
+                                                      : AppColors.primary,
+                                                ),
+                                    ));
+                              },
+                            )),
+                        /*  SizedBox(
                           height: 40,
                           width: WidgetConstants.screenWidth,
                           child: Obx(() => ListView.separated(
@@ -1112,13 +1121,15 @@ class _CartScreenState extends State<CartScreen> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                           ],
-                                        ),height10SizedBox,
+                                        ),
+                                        height10SizedBox,
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              StringConstants.deliveryChargeText,
+                                              StringConstants
+                                                  .deliveryChargeText,
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
@@ -1153,8 +1164,7 @@ class _CartScreenState extends State<CartScreen> {
                           visible: storeHomeMainController
                                           .cartData.value.cartTotalPrice !=
                                       null &&
-                                  storeHomeMainController
-                                          .walletBalance.value <
+                                  storeHomeMainController.walletBalance.value <
                                       storeHomeMainController
                                           .cartData.value.cartTotalPrice! ||
                               storeHomeMainController
@@ -1171,11 +1181,10 @@ class _CartScreenState extends State<CartScreen> {
                             color: AppColors.redlight,
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Obx(() => Text(
-                                      "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.cartTotalPrice.value.toStringAsFixed(2)})",
+                                      "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.walletBalance.value.toStringAsFixed(2)})",
                                       style: const TextStyle(
                                           color: AppColors.red,
                                           fontSize: 14,
@@ -1187,16 +1196,14 @@ class _CartScreenState extends State<CartScreen> {
                                         "context", context);
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (_) =>
-                                          const AddMoneyToWallet(),
+                                      builder: (_) => const AddMoneyToWallet(),
                                     ))
                                         .then((value) {
                                       storeHomeMainController
                                           .apiGetUserWalletBalance();
                                     });
 
-                                    Get.parameters["isFromCartScreen"] =
-                                        "true";
+                                    Get.parameters["isFromCartScreen"] = "true";
                                     // Get.to(const WalletScreen(),
                                     //     arguments: {"isFromCartScreen": true});
                                   },
@@ -1250,8 +1257,7 @@ class _CartScreenState extends State<CartScreen> {
                                             storeHomeMainController
                                                 .cartTotalPrice.value &&
                                         storeHomeMainController
-                                                .isInsufficientBalance!
-                                                .value ==
+                                                .isInsufficientBalance!.value ==
                                             true
                                     // storeHomeMainController.cartData.value
                                     //                     .cartTotalPrice !=
@@ -1273,22 +1279,20 @@ class _CartScreenState extends State<CartScreen> {
                                 if (storeHomeMainController
                                         .storeDeliveryServiceId.value !=
                                     "0") {
-                                 /* if (storeHomeMainController
+                                  /* if (storeHomeMainController
                                               .walletBalance.value <
                                           storeHomeMainController
                                               .cartTotalPrice.value &&
                                       storeHomeMainController
                                               .isInsufficientBalance!.value ==
                                           true) {*/
-                                    storeHomeMainController
-                                        .moneydeductFromCartDailogue(context,
-                                            amount: storeHomeMainController
-                                                    .cartData
-                                                    .value
-                                                    .cartTotalPrice
-                                                    ?.toStringAsFixed(2) ??
-                                                "0");
-                               /*   } else {
+                                  storeHomeMainController
+                                      .moneydeductFromCartDailogue(context,
+                                          amount: storeHomeMainController
+                                                  .cartData.value.cartTotalPrice
+                                                  ?.toStringAsFixed(2) ??
+                                              "0");
+                                  /*   } else {
                                     Utility.showConfirmAlertMessage(
                                         StringConstants.inSufficientFundText,
                                         okay: StringConstants.addFundsText,
@@ -1310,23 +1314,23 @@ class _CartScreenState extends State<CartScreen> {
                                     });
                                   }*/
                                 } else {
-                                  Utility.showAlertMessage(
-                                      AlertStringConstants
-                                          .pleaseSelectOrderTypeText);
+                                  Utility.showAlertMessage(AlertStringConstants
+                                      .pleaseSelectOrderTypeText);
                                 }
                               },
                               height: 45,
                               width: 120,
                               text: StringConstants.payNowText,
-                              textColor: storeHomeMainController
-                                              .walletBalance.value <
+                              textColor:
+                                  storeHomeMainController.walletBalance.value <
+                                              storeHomeMainController
+                                                  .cartTotalPrice.value &&
                                           storeHomeMainController
-                                              .cartTotalPrice.value &&
-                                      storeHomeMainController
-                                              .isInsufficientBalance!.value ==
-                                          true
-                                  ? AppColors.black
-                                  : AppColors.white,
+                                                  .isInsufficientBalance!
+                                                  .value ==
+                                              true
+                                      ? AppColors.black
+                                      : AppColors.white,
                               borderRadius: 12,
                               fontWeight: FontWeight.w500,
                               iconL: false,
