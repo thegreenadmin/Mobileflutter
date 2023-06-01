@@ -716,6 +716,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   separatorBuilder: (BuildContext context, int index) {
                     return height8SizedBox;
                   },
+                  padding: EdgeInsets.only(bottom: WidgetConstants.screenHeight*0.1),
                   // physics: NeverScrollableScrollPhysics(),
                   itemCount: ordersController.orderItems.length,
                   itemBuilder: (BuildContext context, int i) {
@@ -922,10 +923,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
 
                                   Visibility(
-                                    visible: ordersController
-                                        .activeStep.value ==
-                                        3 ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
-                                        ||  ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
+                                    visible: ordersController.activeStep.value == 3
+                                        ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
+                                        ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
                                         ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
                                     child: CustomButton(
                                       gradient: const LinearGradient(
@@ -984,8 +984,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   ),
                                   Visibility(
                                     visible: ordersController
-                                        .activeStep.value != 3 &&
-                                        ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
+                                        .activeStep.value != 3 && ordersController
+                                        .activeStep.value != 2
+                                        && ordersController.orderStatusTypeName.value != OrderStatus.cancellationRequest.statusName
+                                        && ordersController.orderStatusTypeName.value != OrderStatus.cancelRequest.statusName
+                                        && ordersController.orderStatusTypeName.value != OrderStatus.cancelled.statusName
+                                        && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
                                         && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
                                         && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName ,
                                     child: CustomButton(
@@ -1018,10 +1022,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       ),
                                       textColor: AppColors.red,
                                       width:
-                                      WidgetConstants.screenWidth *
-                                          0.3,
-                                      text: StringConstants
-                                          .cancelOrderText,
+                                      WidgetConstants.screenWidth * 0.3,
+                                      text: StringConstants.cancelOrderText,
                                       borderRadius: 12,
                                       fontWeight: FontWeight.w500,
                                       iconL: false,

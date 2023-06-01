@@ -159,7 +159,7 @@ class OrdersHomeMainController extends GetxController {
       "order_type": "DESC",
       "from_date": null,
       "to_date": null,
-      "only_active_orders": null,
+      "only_active_orders":selectedIndex.value == 0?true: null,
       "order_statuses": selectedIndex.value == 0
           ? []
           : selectedIndex.value == 1

@@ -964,16 +964,22 @@ class OrdersController extends GetxController {
                         OrderStatus.pending.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                            OrderStatus.shipped.statusName
+                            OrderStatus.shipped.statusName ||
+                        element.orderStatus?.orderStatusName ==
+                        OrderStatus.readyPickup.statusName
                         ? 2
                         : element.orderStatus?.orderStatusName ==
-                                OrderStatus.delivered.statusName
+                                OrderStatus.delivered.statusName ||
+                             element.orderStatus?.orderStatusName ==
+                                 OrderStatus.cancelled.statusName
                             ? 3
                             : 0;
           }
         });
 
-        if (orderDetailResponse.data?.order?.deliveryServiceId != "2") {
+        if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
+          stepInd.firstWhere((element) => element.id == 2).name = "Shipped";
+        }else{
           stepInd.firstWhere((element) => element.id == 2).name = "Picked";
         }
 

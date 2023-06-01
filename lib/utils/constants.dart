@@ -209,7 +209,7 @@ class StringConstants {
 
   //I
   static String inboxText = "Inbox";
-  static String inStoreText = "In store";
+  static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";
   static String inProgress = "In-progress";
