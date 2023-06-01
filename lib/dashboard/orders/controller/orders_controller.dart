@@ -90,17 +90,13 @@ class OrdersController extends GetxController {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }
-    if ( Get.parameters['storeId'] != "" &&
-            Get.parameters['storeId'] != null) {
+    if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
       storeId.value = Get.parameters["storeId"] ?? "";
-      if ( Get.parameters['isFromTransaction'] == "true"
-          ? true
-          : false) {
+      if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
         storeId.value = Get.parameters["storeId"] ?? "";
         apiGetStoreDetailsApi();
       }
     }
-
 
     if (Get.parameters["orderStatus"] != null) {
       orderStatus.value = Get.parameters["orderStatus"] ?? "";
@@ -131,22 +127,23 @@ class OrdersController extends GetxController {
 
   setupScrollController() {
     scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent -10) {
-          if (role!.value == Role.customerRoleText) {
-            orderListResponse = order_list.OrderListResponse();
-            if (orderList.length < totalCount.value ) {
-              page.value++;
-              apiGetOrderListApi().then((_) => preventCall.value = false);
-              preventCall.value = true;
-            }
-          } else {
-            storeOrderListResponse = store_order.StoreOrderListResponse();
-            if (storeOrderList.length < totalCount.value ) {
-              page.value++;
-              apiGetStoreOrderListApi().then((_) => preventCall.value = false);
-              preventCall.value = true;
-            }
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (role!.value == Role.customerRoleText) {
+          orderListResponse = order_list.OrderListResponse();
+          if (orderList.length < totalCount.value) {
+            page.value++;
+            apiGetOrderListApi().then((_) => preventCall.value = false);
+            preventCall.value = true;
           }
+        } else {
+          storeOrderListResponse = store_order.StoreOrderListResponse();
+          if (storeOrderList.length < totalCount.value) {
+            page.value++;
+            apiGetStoreOrderListApi().then((_) => preventCall.value = false);
+            preventCall.value = true;
+          }
+        }
       }
     });
   }
@@ -574,7 +571,7 @@ class OrdersController extends GetxController {
               height: 15,
             ),
             Text(
-              "Please continue shopping with thegreenmall",
+              StringConstants.continueShoppingWithGreenMallText,
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,
@@ -695,7 +692,6 @@ class OrdersController extends GetxController {
         apiGetOrderDetailsApi();
         Navigator.of(ctx).pop();
         Navigator.of(ctx).pop();
-
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -748,8 +744,8 @@ class OrdersController extends GetxController {
     if (page.value == 1) {
       orderList.clear();
     }
-    orderListResponse =order_list.OrderListResponse();
-    isDataLoading.value =  orderList.isNotEmpty ? true : false;
+    orderListResponse = order_list.OrderListResponse();
+    isDataLoading.value = orderList.isNotEmpty ? true : false;
     // orderListResponse = order_list.OrderListResponse();
     isLoading.value = orderList.isNotEmpty ? true : false;
     debugPrint("role List URL**********${role!.value}");
@@ -826,7 +822,7 @@ class OrdersController extends GetxController {
       storeOrderList.value = [];
     }
     storeOrderListResponse = store_order.StoreOrderListResponse();
-    isDataLoading.value =  storeOrderList.isNotEmpty ? true : false;
+    isDataLoading.value = storeOrderList.isNotEmpty ? true : false;
     isLoading.value = storeOrderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
@@ -958,7 +954,8 @@ class OrdersController extends GetxController {
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
-            orderStatusTypeName.value = element.orderStatus?.orderStatusName??"";
+            orderStatusTypeName.value =
+                element.orderStatus?.orderStatusName ?? "";
 
             activeStep.value = element.orderStatus?.orderStatusName ==
                     OrderStatus.newOrder.statusName
@@ -1076,7 +1073,8 @@ class OrdersController extends GetxController {
     UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().cancelReturnOrder,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().cancelReturnOrder,
             headers,
             showLoading: false)
         .then((value) async {
@@ -1085,9 +1083,8 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        orderStatusName.value =
-            OrderStatus.newOrder.statusName;
-        isActiveOrders.value =true;
+        orderStatusName.value = OrderStatus.newOrder.statusName;
+        isActiveOrders.value = true;
         page.value = 1;
         orderList.clear();
         apiGetOrderListApi();

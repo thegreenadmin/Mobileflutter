@@ -335,18 +335,18 @@ class StoreHomeMainController extends GetxController {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             height10SizedBox,
-            const Text(
-              "Replace cart item?",
-              style: TextStyle(
+            Text(
+              StringConstants.replaceCartItemsText,
+              style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
-            const Text(
-              "Your cart contains items. Do you want to discard the selection and add new items?",
-              style: TextStyle(
+            Text(
+              StringConstants.cartItemReplaceText,
+              style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
                   height: 1.6,
@@ -916,7 +916,7 @@ class StoreHomeMainController extends GetxController {
             ),
             height15SizedBox,
             Text(
-              "Please continue shopping with thegreenmall",
+              StringConstants.continueShoppingWithGreenMallText,
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,

@@ -201,13 +201,13 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width40SizedBox;
+              return width38SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -251,7 +251,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                         i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
-                                size: 22,
+                                size: 24,
                               ),
                               onSelected: (String value) async {
                                 FocusScope.of(context)

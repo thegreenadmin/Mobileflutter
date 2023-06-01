@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/create_owner_bankaccount_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -175,14 +177,24 @@ class PayOutScreenState extends State<PayOutScreen> {
                               fontWeight: FontWeight.w400),
                         ),
                       ),
-                      Obx(() => Expanded(
-                          flex: 6,
-                          child: Text(
-                              "\$${addCardController.ownerWalletBalance!.value}",
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500)))),
+                      Obx(() => addCardController.isLoading.value
+                          ? Expanded(
+                              flex: 6,
+                              child: Center(
+                                child: LoadingAnimationWidget.twistingDots(
+                                  leftDotColor: AppColors.primarydark,
+                                  rightDotColor: AppColors.primary,
+                                  size: 50,
+                                ),
+                              ))
+                          : Expanded(
+                              flex: 6,
+                              child: Text(
+                                  "\$${addCardController.ownerWalletBalance!.value}",
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500)))),
                     ],
                   ),
                   height25SizedBox,
@@ -341,7 +353,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                       height4SizedBox,
                                       Center(
                                         child: Text(
-                                          "${StringConstants.noBankDetailsFoundText}\n${StringConstants.pleaseAddBankDetailFirstText}!",
+                                          "${StringConstants.noBankDetailsFoundText}\n${StringConstants.pleaseConnectBankAccountFirstText}!",
                                           style: const TextStyle(
                                               fontStyle: FontStyle.italic,
                                               fontSize: 16),
@@ -364,12 +376,30 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                 "context", context);
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const CreateOwnerBankAccount(),
-                                                ))
-                                                // Get.to(() => const CreateOwnerBankAccount())!
-                                                .then((value) => addCardController
-                                                    .apiGetBankAccountList());
+                                                    builder: (_) => WebviewPageScreen(
+                                                        isFrom:
+                                                            "connectAccount",
+                                                        url: Uri.parse(
+                                                                addCardController
+                                                                    .accountLink
+                                                                    .value)
+                                                            .toString())))
+                                                .then((value) {
+                                              addCardController
+                                                  .apiGetAccountDetails();
+                                              addCardController
+                                                  .apiGetBankAccountList();
+                                            });
+                                            // SharedPreferenceStorage.setData(
+                                            //     "context", context);
+                                            // Navigator.of(context)
+                                            //     .push(MaterialPageRoute(
+                                            //       builder: (_) =>
+                                            //           const CreateOwnerBankAccount(),
+                                            //     ))
+                                            //     // Get.to(() => const CreateOwnerBankAccount())!
+                                            //     .then((value) => addCardController
+                                            //         .apiGetBankAccountList());
                                           },
                                           height: 50,
                                           width:

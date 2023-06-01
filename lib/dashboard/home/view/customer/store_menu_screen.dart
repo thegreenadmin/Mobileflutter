@@ -35,10 +35,9 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                 fontWeight: FontWeight.w600),
           ),
           height5SizedBox,
-
           Expanded(
-              child: Obx(() =>
-              storeHomeMainController.categoriesList.isEmpty
+              child: Obx(
+            () => storeHomeMainController.categoriesList.isEmpty
                 ? storeHomeMainController.isLoading.value == true
                     ? height0SizedBox
                     : Column(
@@ -73,8 +72,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                           SharedPreferenceStorage.setData("context", context);
-                            Navigator.of(context).push(MaterialPageRoute(
+                          SharedPreferenceStorage.setData("context", context);
+                          Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const UserProductListScreen(),
                           ));
                           // Get.to(const UserProductListScreen());

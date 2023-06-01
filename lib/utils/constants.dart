@@ -127,7 +127,10 @@ class StringConstants {
   static String claimStoreText = "Claim Store";
   static String cardText = "Card";
   static String createMembershipText = "Create Membership";
-
+  static String cartItemReplaceText =
+      "Your cart already contains items from a different store. If you proceed ahead your previously added cart items from that store would be removed. Do you really want to proceed ahead?";
+  static String continueShoppingWithGreenMallText =
+      "Please continue shopping with The Green Mall";
   //D
   static String deliveryText = "Delivery";
   static String drivingLicenceText = "Driving Licence";
@@ -345,7 +348,8 @@ class StringConstants {
   static String paymentText = "Payment";
   static String paymentTypeText = "Payment Type";
   static String pleaseAddCardFirstText = "Please add card first";
-  static String pleaseAddBankDetailFirstText = "Please add bank detail first";
+  static String pleaseConnectBankAccountFirstText =
+      "Please connect bank account first";
   static String payoutText = "Payout";
   static String proceedText = "Proceed";
   static String paymentConfirmatinText = "Payment Confirmation";
@@ -382,6 +386,8 @@ class StringConstants {
   static String refundIdText = "Refund ID";
   static String refundTransactionText = "Refund Transaction";
   static String routingNumberText = "Routing Number";
+  static String replaceCartItemsText = "Replace cart items?";
+
   //S
   static String signUpText = "Sign up";
   static String orderShippedText = "Order shipped";

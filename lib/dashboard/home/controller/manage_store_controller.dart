@@ -76,7 +76,7 @@ class ManageStoreController extends GetxController {
 
   RxList<dynamic> productContent = <dynamic>[].obs;
   RxList<dynamic> productLinks = <dynamic>[].obs;
-
+  List<ProductImagesList> imagesList = <ProductImagesList>[];
   final ImagePicker imagePicker = ImagePicker();
   RxList<XFile>? imageFileList = <XFile>[].obs;
   RxList<ProductImagesList> imageUrlList = <ProductImagesList>[].obs;
@@ -105,9 +105,9 @@ class ManageStoreController extends GetxController {
   void onInit() {
     super.onInit();
     isFeaturedTypeSelected.value = false;
-    debugPrint("storeName:------>>>>>>" );
-    debugPrint(Get.parameters["storeName"] );
-    debugPrint( Get.parameters["storeId"] );
+    debugPrint("storeName:------>>>>>>");
+    debugPrint(Get.parameters["storeName"]);
+    debugPrint(Get.parameters["storeId"]);
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     storeLocation.value = Get.parameters["storeLocation"] ?? "";
@@ -138,10 +138,11 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit(BuildContext bCntx) async {
     if (validateAndSave()) {
       try {
-        if (imageFileList!.length < 1) {
-          Utility.showAlertMessage(
-              AlertStringConstants.pleaseUploadAtLeastOneImageText);
-        } else if (selectedCategories.isEmpty) {
+        // if (imageFileList!.length < 1) {
+        //   Utility.showAlertMessage(
+        //       AlertStringConstants.pleaseUploadAtLeastOneImageText);
+        // } else
+        if (selectedCategories.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectCategoriesText);
         } else {
@@ -189,34 +190,33 @@ class ManageStoreController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
-    if (imageFileList!.isNotEmpty) {
-      for (var i = 0; i < imageFileList!.length; i++) {
-        request.files.add(http.MultipartFile(
-            'files',
-            File(imageFileList![i].path).readAsBytes().asStream(),
-            File(imageFileList![i].path).lengthSync(),
-            filename: basename(imageFileList![i].path.split("/").last)));
-        request.headers.addAll(headers);
-      }
-      var response = await request.send();
-      response.stream.transform(utf8.decoder).listen((value) {
-        debugPrint(value);
-        List<ProductImagesList> imagesList = <ProductImagesList>[];
-        for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
-          var imageData = jsonDecode(value)['data']['files'][i];
-          imagesList.add(ProductImagesList(
-              imageUrl: imageData['orignal_url'],
-              order: length + 1 + i,
-              status: 'active',
-              dynamicImageUrl: imageData['dynamic_url']));
-        }
-        imageUrlList.addAll(imagesList);
-        inputData.productImages = imagesList;
-        imageUrlList.refresh();
-      });
-    } else {
-      Utility.showAlertMessage("Please Select atleast one image");
+    //if (imageFileList!.isNotEmpty) {
+    for (var i = 0; i < imageFileList!.length; i++) {
+      request.files.add(http.MultipartFile(
+          'files',
+          File(imageFileList![i].path).readAsBytes().asStream(),
+          File(imageFileList![i].path).lengthSync(),
+          filename: basename(imageFileList![i].path.split("/").last)));
+      request.headers.addAll(headers);
     }
+    var response = await request.send();
+    response.stream.transform(utf8.decoder).listen((value) {
+      debugPrint(value);
+      for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
+        var imageData = jsonDecode(value)['data']['files'][i];
+        imagesList.add(ProductImagesList(
+            imageUrl: imageData['orignal_url'],
+            order: length + 1 + i,
+            status: 'active',
+            dynamicImageUrl: imageData['dynamic_url']));
+      }
+      imageUrlList.addAll(imagesList);
+      inputData.productImages = imagesList.isEmpty ? [] : imagesList;
+      imageUrlList.refresh();
+    });
+    //} else {
+    // Utility.showAlertMessage("Please Select atleast one image");
+    // }
     return null;
   }
 
@@ -250,10 +250,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -323,10 +323,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -357,6 +357,7 @@ class ManageStoreController extends GetxController {
     product.height = double.parse(heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
+
     inputData.product = product;
     List<ProductCategory> listProductCategory = <ProductCategory>[];
     for (int i = 0; i < selectedCategories.length; i++) {
@@ -376,7 +377,7 @@ class ManageStoreController extends GetxController {
           paragraph: contentsAndStrainsTextController.text.trim(),
           order: 1)
     ];
-
+    inputData.productImages ??= [];
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -478,10 +479,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -598,10 +599,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -726,10 +727,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -769,10 +770,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -810,10 +811,10 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

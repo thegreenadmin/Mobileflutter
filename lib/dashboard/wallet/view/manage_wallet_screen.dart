@@ -512,9 +512,14 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                   : InkWell(
                       onTap: () {
                         SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
                           builder: (_) => const PayOutScreen(),
-                        ));
+                        ))
+                            .then((value) {
+                          walletController.apiGetBankAccountList();
+                          walletController.apiGetAccountDetails();
+                        });
                         // Get.to(const PayOutScreen());
                       },
                       child: Padding(

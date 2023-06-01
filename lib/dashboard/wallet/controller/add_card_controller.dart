@@ -85,6 +85,10 @@ class AddCardController extends GetxController {
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
   RxString countryId = "".obs;
+  RxString capability = "".obs;
+  RxBool payouts = false.obs;
+  RxString accountLink = "".obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -98,6 +102,7 @@ class AddCardController extends GetxController {
     await apiGetStoreList();
     await apiGetUserDetailApi(Get.context);
     await apiGetCountries();
+    await apiGetAccountDetails();
   }
 
   //Get User Detail Info Api
@@ -859,6 +864,44 @@ class AddCardController extends GetxController {
             Utility.showAlertMessage(value.body['message']);
           }
         }
+      }
+    });
+  }
+
+  apiGetAccountDetails() {
+    isLoading.value = true;
+    debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint(
+          "GET STRIPE CONNECTED ACCOUNT DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        capability.value =
+            value.body["data"]['account']['capabilities']['transfers'];
+        payouts.value = value.body["data"]['account']['payouts_enabled'];
+        accountLink.value = value.body["data"]['accountLink']['url'];
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value.body['message']);
       }
     });
   }

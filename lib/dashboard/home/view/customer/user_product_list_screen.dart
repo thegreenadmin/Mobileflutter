@@ -264,7 +264,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
- 
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -468,7 +467,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                       },
                                       itemBuilder: (context) =>
                                           productFilterCreateOptionsPopUpList(
-                                              Get.context)!,
+                                              context)!,
                                     ),
                                   ],
                                 ),
@@ -724,7 +723,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         ));
   }
 
-  List<PopupMenuEntry<String>>? productFilterCreateOptionsPopUpList(context) {
+  List<PopupMenuEntry<String>>? productFilterCreateOptionsPopUpList(
+      BuildContext contx) {
     return List.generate(2, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
@@ -741,7 +741,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 "0",
                         orderBy: "2",
                         orderType: "2");
-                    Navigator.of(context).pop();
+                    Navigator.of(contx).pop();
                     // Get.back();
                   },
                   child: Row(
@@ -773,7 +773,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     storeHomeMainController.category.value.categoryId ?? "0",
                 orderBy: "2",
               );
-              Navigator.of(context).pop();
+              Navigator.of(contx).pop();
               // Get.back();
             },
             child: Row(

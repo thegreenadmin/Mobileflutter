@@ -679,13 +679,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ],
                       ),
                     ),
@@ -704,13 +697,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller: manageStoreController
                             .shortDescriptionTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterShortDescriptionText;
-                          }
-                          return null;
-                        },
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.shortDescriptionText,
@@ -756,13 +742,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ],
                       ),
                     ),
@@ -781,13 +760,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller: manageStoreController
                             .contentsAndStrainsTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterContentAndStrainText;
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return AlertStringConstants
+                        //         .pleaseEnterContentAndStrainText;
+                        //   }
+                        //   return null;
+                        // },
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.contentsAndStrainsText,
@@ -834,13 +813,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // const TextSpan(
+                          //   text: "*",
+                          //   style: TextStyle(
+                          //       fontSize: 16,
+                          //       color: AppColors.red,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                     ),
@@ -861,17 +840,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         controller:
                             manageStoreController.additionalLinkTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLinkText;
-                          } else if (!GetUtils.isURL(manageStoreController
-                              .additionalLinkTextController.text
-                              .trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidLinkText;
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return AlertStringConstants.pleaseEnterLinkText;
+                        //   } else if (!GetUtils.isURL(manageStoreController
+                        //       .additionalLinkTextController.text
+                        //       .trim())) {
+                        //     return AlertStringConstants
+                        //         .pleaseEnterValidLinkText;
+                        //   }
+                        //   return null;
+                        // },
                         decoration: InputDecoration(
                           hintText:
                               StringConstants.additionalLinksToResearchText,
@@ -917,13 +896,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // const TextSpan(
+                          //   text: "*",
+                          //   style: TextStyle(
+                          //       fontSize: 16,
+                          //       color: AppColors.red,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                     ),
@@ -1015,17 +994,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   fontWeight: FontWeight.w500),
                               controller: manageStoreController
                                   .discountOrOfferTextController,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterAmountText;
-                                } else if (value == ".") {
-                                  return AlertStringConstants.invalidInputText;
-                                } else if (double.parse(value) == 0.0) {
-                                  return AlertStringConstants.invalidAmountText;
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value!.trim().isEmpty) {
+                              //     return AlertStringConstants
+                              //         .pleaseEnterAmountText;
+                              //   } else if (value == ".") {
+                              //     return AlertStringConstants.invalidInputText;
+                              //   } else if (double.parse(value) == 0.0) {
+                              //     return AlertStringConstants.invalidAmountText;
+                              //   }
+                              //   return null;
+                              // },
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -1635,12 +1614,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      StringConstants.daysText,
-                                      style: TextStyle(
-                                          color: AppColors.blacklight,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text: StringConstants.daysText,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400)),
+                                          const TextSpan(
+                                            text: "*",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: AppColors.red,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     TextFormField(
                                         autovalidateMode:
@@ -1663,6 +1654,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                           if (value!.trim().isEmpty) {
                                             return AlertStringConstants
                                                 .pleaseEnterValidDaysText;
+                                          } else if (value.trim() == "0" || value.trim() == "00") {
+                                            return AlertStringConstants
+                                                .invalidInputText;
                                           }
                                           return null;
                                         },

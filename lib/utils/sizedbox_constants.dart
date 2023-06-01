@@ -41,6 +41,7 @@ SizedBox width18SizedBox = const SizedBox(width: 18);
 SizedBox width20SizedBox = const SizedBox(width: 20);
 SizedBox width25SizedBox = const SizedBox(width: 25);
 SizedBox width30SizedBox = const SizedBox(width: 30);
+SizedBox width38SizedBox = const SizedBox(width: 38);
 SizedBox width40SizedBox = const SizedBox(width: 40);
 SizedBox width50SizedBox = const SizedBox(width: 50);
 //Shrink SIZED-BOX

@@ -235,12 +235,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               ),
                       ),
                       height20SizedBox,
-                      Text(
-                        StringConstants.productNameText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.productNameText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            const TextSpan(
+                              text: "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       height4SizedBox,
                       TextFormField(
@@ -300,12 +312,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             ),
                           )),
                       height20SizedBox,
-                      Text(
-                        StringConstants.categoriesText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.categoriesText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            const TextSpan(
+                              text: "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       height10SizedBox,
                       Obx(() => manageStoreController.categoriesList.isEmpty
@@ -409,91 +433,106 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               ),
                             )),
                       height20SizedBox,
-                      Text(
-                        StringConstants.quantityUnitText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.quantityUnitText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            const TextSpan(
+                              text: "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       height4SizedBox,
                       Row(
                         children: [
                           Flexible(
                             flex: 5,
-                            child: DropdownButtonFormField<String>(
-                              validator: (v) {
-                                if (v == null || v.trim() == '') {
-                                  return AlertStringConstants
-                                      .pleaseSelectQuantityUnitText;
-                                }
-                                return null;
-                              },
-                              value: manageStoreController
-                                          .quantityValue.value !=
-                                      ""
-                                  ? manageStoreController.quantityTypeList
-                                      .firstWhere((element) =>
-                                          element.quantityTypeId ==
+                            child: Obx(() => DropdownButtonFormField<String>(
+                                  validator: (v) {
+                                    if (v == null || v.trim() == '') {
+                                      return AlertStringConstants
+                                          .pleaseSelectQuantityUnitText;
+                                    }
+                                    return null;
+                                  },
+                                  value: manageStoreController
+                                                  .quantityValue.value !=
+                                              "" &&
                                           manageStoreController
-                                              .quantityValue.value)
-                                      .quantityTypeId
-                                  : null,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                errorMaxLines: 3,
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
+                                                  .quantityValue.value !=
+                                              null
+                                      ? manageStoreController.quantityTypeList
+                                          .firstWhere((element) =>
+                                              element.quantityTypeId ==
+                                              manageStoreController
+                                                  .quantityValue.value)
+                                          .quantityTypeId
+                                      : null,
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    errorMaxLines: 3,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    border: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    errorBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 1.0,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              hint: Text(
-                                StringConstants.selectTypeText,
-                                style: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                              ),
-                              items: manageStoreController.quantityTypeList
-                                  .map((dynamic value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.quantityTypeId,
-                                  child: Text(
-                                    value.quantityTypeName,
+                                  hint: Text(
+                                    StringConstants.selectTypeText,
                                     style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                        color: AppColors.grey, fontSize: 14),
                                   ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                manageStoreController.quantityValue.value =
-                                    value.toString();
-                              },
-                            ),
+                                  items: manageStoreController.quantityTypeList
+                                      .map((dynamic value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.quantityTypeId,
+                                      child: Text(
+                                        value.quantityTypeName,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    manageStoreController.quantityValue.value =
+                                        value.toString();
+                                  },
+                                )),
                           ),
                           width15SizedBox,
                           Flexible(
@@ -558,12 +597,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ],
                       ),
                       height20SizedBox,
-                      Text(
-                        StringConstants.pricePerUnitText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.pricePerUnitText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            const TextSpan(
+                              text: "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       height4SizedBox,
                       TextFormField(
@@ -643,13 +694,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           controller: manageStoreController
                               .shortDescriptionTextController,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants
-                                  .pleaseEnterShortDescriptionText;
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.trim().isEmpty) {
+                          //     return AlertStringConstants
+                          //         .pleaseEnterShortDescriptionText;
+                          //   }
+                          //   return null;
+                          // },
                           textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.shortDescriptionText,
@@ -708,13 +759,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           controller: manageStoreController
                               .contentsAndStrainsTextController,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants
-                                  .pleaseEnterContentAndStrainText;
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.trim().isEmpty) {
+                          //     return AlertStringConstants
+                          //         .pleaseEnterContentAndStrainText;
+                          //   }
+                          //   return null;
+                          // },
                           textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: StringConstants.contentsAndStrainsText,
@@ -776,15 +827,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               .additionalLinkTextController,
                           keyboardType: TextInputType.text,
                           validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants.pleaseEnterLinkText;
-                            } else if (!GetUtils.isURL(manageStoreController
-                                .additionalLinkTextController.text
-                                .trim())) {
-                              return AlertStringConstants
-                                  .pleaseEnterValidLinkText;
-                            }
-                            return null;
+                            // if (value!.trim().isEmpty) {
+                            //   return AlertStringConstants.pleaseEnterLinkText;
+                            // } else
+                            //  if (!GetUtils.isURL(manageStoreController
+                            //     .additionalLinkTextController.text
+                            //     .trim())) {
+                            //   return AlertStringConstants
+                            //       .pleaseEnterValidLinkText;
+                            // }
+                            // return null;
                           },
                           decoration: InputDecoration(
                             hintText:
@@ -921,11 +973,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     .discountOrOfferTextController,
                                 keyboardType: TextInputType.phone,
                                 validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterDiscountOrOfferText;
-                                  }
-                                  return null;
+                                  // if (value!.trim().isEmpty) {
+                                  //   return AlertStringConstants
+                                  //       .pleaseEnterDiscountOrOfferText;
+                                  // }
+                                  // return null;
                                 },
                                 decoration: InputDecoration(
                                   errorMaxLines: 5,
@@ -967,12 +1019,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ],
                       ),
                       height20SizedBox,
-                      Text(
-                        StringConstants.featuredProductText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.featuredProductText,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            const TextSpan(
+                              text: "*",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       height4SizedBox,
                       Obx(() => manageStoreController
@@ -1058,12 +1122,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${StringConstants.lengthText}(in)",
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "${StringConstants.lengthText}(in)",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 TextFormField(
                                     keyboardType: TextInputType.phone,
@@ -1134,12 +1211,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${StringConstants.breadthText}(in)",
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "${StringConstants.breadthText}(in)",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 TextFormField(
                                     keyboardType: TextInputType.phone,
@@ -1214,12 +1304,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${StringConstants.heightText}(in)",
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "${StringConstants.heightText}(in)",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 TextFormField(
                                     keyboardType: TextInputType.phone,
@@ -1290,12 +1393,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${StringConstants.weightText}(gm)",
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "${StringConstants.weightText}(oz)",
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 TextFormField(
                                     keyboardType: TextInputType.phone,
@@ -1370,12 +1486,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  StringConstants.returnAvailableText,
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text: StringConstants
+                                              .returnAvailableText,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Obx(
                                   () => manageStoreController
@@ -1482,12 +1611,27 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          StringConstants.daysText,
-                                          style: TextStyle(
-                                              color: AppColors.blacklight,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                  text:
+                                                      StringConstants.daysText,
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              const TextSpan(
+                                                text: "*",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: AppColors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         TextFormField(
                                             autovalidateMode: AutovalidateMode

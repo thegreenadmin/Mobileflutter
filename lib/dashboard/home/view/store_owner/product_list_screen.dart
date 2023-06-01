@@ -250,46 +250,62 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     children: [
                                       Flexible(
                                         flex: 3,
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
-                                                    width: 1)),
-                                            child: manageStoreController
+                                        child: manageStoreController
+                                                .storeProductList[index]
+                                                .productImages!
+                                                .isEmpty
+                                            ? Image.asset(
+                                                ImageConstants.nopicfound,
+                                                fit: BoxFit.fill,
+                                                height: 100,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.3,
+                                              )
+                                            : Container(
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    border: Border.all(
+                                                        color: AppColors.white,
+                                                        width: 1)),
+                                                child: manageStoreController
+                                                                .storeProductList[
+                                                                    index]
+                                                                .productImages![
+                                                                    0]
+                                                                .image!
+                                                                .dynamicUrl ==
+                                                            null ||
+                                                        manageStoreController
                                                             .storeProductList[
                                                                 index]
                                                             .productImages![0]
                                                             .image!
-                                                            .dynamicUrl ==
-                                                        null ||
-                                                    manageStoreController
-                                                        .storeProductList[index]
-                                                        .productImages![0]
-                                                        .image!
-                                                        .dynamicUrl!
-                                                        .isEmpty
-                                                ? Image.asset(
-                                                    ImageConstants.nopicfound,
-                                                    fit: BoxFit.fill,
-                                                    height: 100,
-                                                    width: WidgetConstants
-                                                            .screenWidth *
-                                                        0.3,
-                                                  )
-                                                : Image.network(
-                                                    manageStoreController
-                                                        .storeProductList[index]
-                                                        .productImages![0]
-                                                        .image!
-                                                        .dynamicUrl
-                                                        .toString(),
-                                                    fit: BoxFit.fill,
-                                                    height: 100,
-                                                    width: WidgetConstants
-                                                            .screenWidth *
-                                                        0.3,
-                                                  )),
+                                                            .dynamicUrl!
+                                                            .isEmpty
+                                                    ? Image.asset(
+                                                        ImageConstants
+                                                            .nopicfound,
+                                                        fit: BoxFit.fill,
+                                                        height: 100,
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.3,
+                                                      )
+                                                    : Image.network(
+                                                        manageStoreController
+                                                            .storeProductList[
+                                                                index]
+                                                            .productImages![0]
+                                                            .image!
+                                                            .dynamicUrl
+                                                            .toString(),
+                                                        fit: BoxFit.fill,
+                                                        height: 100,
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.3,
+                                                      )),
                                       ),
                                       width12SizedBox,
                                       Flexible(
@@ -312,7 +328,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         FontWeight.w600),
                                               ),
                                             ),
-                                            height8SizedBox,
+                                            manageStoreController
+                                                    .storeProductList[index]
+                                                    .description!
+                                                    .isEmpty
+                                                ? height0SizedBox
+                                                : height8SizedBox,
                                             SizedBox(
                                               width: 190,
                                               child: Text(
@@ -327,7 +348,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         FontWeight.w400),
                                               ),
                                             ),
-                                            height8SizedBox,
+                                            manageStoreController
+                                                    .storeProductList[index]
+                                                    .description!
+                                                    .isEmpty
+                                                ? height0SizedBox
+                                                : height8SizedBox,
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
