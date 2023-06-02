@@ -656,6 +656,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     .pleaseEnterCountryText;
                               }
                               return null;
+
                             },
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
