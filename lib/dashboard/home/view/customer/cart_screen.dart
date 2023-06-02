@@ -197,19 +197,18 @@ class _CartScreenState extends State<CartScreen> {
                                             child: storeHomeMainController
                                                             .cartItems[i]
                                                             .product !=
-                                                        null &&
+                                                        null && storeHomeMainController
+                                                    .cartItems[i]
+                                                    .product
+                                                    ?.image
+                                                    ?.dynamicUrl !=
+                                                    null  &&
                                                     storeHomeMainController
                                                         .cartItems[i]
                                                         .product
                                                         ?.image!
                                                         .dynamicUrl
-                                                        .isNotEmpty &&
-                                                    storeHomeMainController
-                                                            .cartItems[i]
-                                                            .product
-                                                            ?.image
-                                                            ?.dynamicUrl !=
-                                                        null
+                                                        .isNotEmpty
                                                 ? Image.network(
                                                     storeHomeMainController
                                                             .cartItems[i]

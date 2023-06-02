@@ -728,6 +728,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
+        Get.parameters["isHome"] = "true";
 
         Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => const OrderConfirmationScreen(),

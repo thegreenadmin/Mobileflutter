@@ -58,6 +58,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
         ordersController.orderStatus.value =
             Get.parameters["orderStatus"] ?? "";
       }
+      if (Get.parameters["isHome"] != null) {
+        ordersController.isHome.value = Get.parameters["isHome"] == "true" ? true : false;
+      }
       ordersController.isActiveOrders.value = true;
       ordersController.orderStatusId.value = 2;
       // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
@@ -85,12 +88,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        // Get.back();
-        // Get.back();
-        // Get.back();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        if( ordersController.isHome.value){
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }else{
+          Navigator.of(context).pop();
+        }
 
         return Future.value(true);
       },
@@ -139,14 +142,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    IconButton(
+                                    ordersController.isHome.value
+                                        ? height0SizedBox
+                                        : IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Navigator.of(context).pop();
-                                        //Get.back();
-                                        //   Get.back();
-                                        //   Get.back();
+                                          Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -493,13 +495,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           fontSize: 16,
                           color: AppColors.black),
                     ),
-                     Text(
-                      "\$${ordersController.orderDetailResponse.data?.order?.totalAmount?.toStringAsFixed(2)??"0.0"}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: AppColors.primary),
-                    ),
+                     Obx(() => Text(
+                       "\$${ordersController.totalAmount.value.toStringAsFixed(2)??"0.0"}",
+                       style: const TextStyle(
+                           fontWeight: FontWeight.w500,
+                           fontSize: 16,
+                           color: AppColors.primary),
+                     ),)
+
 
                   ],
                 ),
@@ -514,19 +517,20 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           fontSize: 16,
                           color: AppColors.black),
                     ),
-                     Text(
-                         ordersController.orderDetailResponse.data?.order?.createdAt!=null?
-                      Utility.formatDateTime(
-                          '${ordersController.orderDetailResponse.data?.order?.createdAt.toString().substring(0, 10)} ${ordersController.orderDetailResponse.data?.order?.createdAt.toString().substring(11, 23)}',
-                          firstFormat:
-                          "yyyy-MM-dd HH:mm:ss",
-                          secFormat:
-                          "dd MMM yyyy"):"",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: AppColors.primary),
-                    ),
+                     Obx(() => Text(
+                       ordersController.orderDate.value!=null?
+                       Utility.formatDateTime(
+                           '${ordersController.orderDate.value.toString().substring(0, 10)} ${ordersController.orderDate.value.toString().substring(11, 23)}',
+                           firstFormat:
+                           "yyyy-MM-dd HH:mm:ss",
+                           secFormat:
+                           "dd MMM yyyy"):"",
+                       style: const TextStyle(
+                           fontWeight: FontWeight.w500,
+                           fontSize: 16,
+                           color: AppColors.primary),
+                     ),)
+
 
                   ],
                 ),
@@ -982,7 +986,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       fontSize: 12,
                                     ),
                                   ),
-                                  Visibility(
+                                 /* Visibility(
                                     visible: ordersController
                                         .activeStep.value != 3 && ordersController
                                         .activeStep.value != 2
@@ -1029,7 +1033,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       iconL: false,
                                       fontSize: 12,
                                     ),
-                                  ),
+                                  ),*/
                                   height6SizedBox,
                                   Visibility(
                                     visible: ordersController.activeStep.value == 3

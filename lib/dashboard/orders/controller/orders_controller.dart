@@ -34,6 +34,7 @@ class OrdersController extends GetxController {
 
   RxBool isActiveOrders = false.obs;
   RxBool isFromNotification = false.obs;
+  RxBool isHome = false.obs;
   RxBool isLoading = false.obs;
   RxBool preventCall = false.obs;
   RxBool isDataLoading = false.obs;
@@ -46,6 +47,8 @@ class OrdersController extends GetxController {
   RxString orderStatus = "".obs;
   RxString storeId = "0".obs;
   RxString productId = "".obs;
+  RxDouble totalAmount = 0.0.obs;
+  RxString orderDate = "".obs;
   RxInt page = 1.obs;
   RxInt totalCount = 1.obs;
   RxInt pageStore = 1.obs;
@@ -100,6 +103,9 @@ class OrdersController extends GetxController {
 
     if (Get.parameters["orderStatus"] != null) {
       orderStatus.value = Get.parameters["orderStatus"] ?? "";
+    }
+    if (Get.parameters["isHome"] != null) {
+      isHome.value = Get.parameters["isHome"] == "true" ? true : false;
     }
 
     isActiveOrders.value = true;
@@ -952,6 +958,8 @@ class OrdersController extends GetxController {
         orderDetailResponse =
             order_detail.OrderDetailResponse.fromJson(value?.body);
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
+        totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
+        orderDate.value = orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
             orderStatusTypeName.value =
@@ -961,7 +969,9 @@ class OrdersController extends GetxController {
                     OrderStatus.newOrder.statusName
                 ? 0
                 : element.orderStatus?.orderStatusName ==
-                        OrderStatus.pending.statusName
+                        OrderStatus.pending.statusName ||
+                element.orderStatus?.orderStatusName ==
+                    OrderStatus.confirmed.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
                             OrderStatus.shipped.statusName ||
@@ -981,6 +991,10 @@ class OrdersController extends GetxController {
           stepInd.firstWhere((element) => element.id == 2).name = "Shipped";
         }else{
           stepInd.firstWhere((element) => element.id == 2).name = "Picked";
+        }
+        if(orderStatusTypeName.value ==
+            OrderStatus.confirmed.statusName){
+          stepInd.firstWhere((element) => element.id == 1).name = OrderStatus.confirmed.statusName.toTitleCase();
         }
 
         for (var element in stepInd) {

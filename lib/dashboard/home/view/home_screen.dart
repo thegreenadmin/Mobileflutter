@@ -889,17 +889,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .productImages ==
                                                       null ||
                                                   homeController
+                                                      .ownerFeatureProductList[
+                                                          index]
+                                                      .productImages!
+                                                      .isEmpty ||
+                                                  homeController
                                                           .ownerFeatureProductList[
                                                               index]
                                                           .productImages![0]
                                                           .image!
                                                           .dynamicUrl ==
-                                                      null ||
-                                                  homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty
+                                                      null
                                               ? Image.asset(
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
@@ -909,12 +909,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                               : Image.network(
                                                   homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productImages![0]
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString(),
+                                                          .ownerFeatureProductList[
+                                                              index]
+                                                          .productImages?[0]
+                                                          .image
+                                                          ?.dynamicUrl
+                                                          .toString() ??
+                                                      "",
                                                   fit: BoxFit.fill,
                                                   width: WidgetConstants
                                                           .screenWidth *
