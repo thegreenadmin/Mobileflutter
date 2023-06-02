@@ -975,7 +975,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
-                                .pleaseEnterTownOrCityText;
+                                .pleaseEnterCountryText;
                           }
                           return null;
                         },
