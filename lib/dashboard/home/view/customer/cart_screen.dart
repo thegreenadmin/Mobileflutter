@@ -199,17 +199,17 @@ class _CartScreenState extends State<CartScreen> {
                                                             .product !=
                                                         null &&
                                                     storeHomeMainController
-                                                        .cartItems[i]
-                                                        .product
-                                                        ?.image!
-                                                        .dynamicUrl
-                                                        .isNotEmpty &&
-                                                    storeHomeMainController
                                                             .cartItems[i]
                                                             .product
                                                             ?.image
                                                             ?.dynamicUrl !=
-                                                        null
+                                                        null &&
+                                                    storeHomeMainController
+                                                        .cartItems[i]
+                                                        .product
+                                                        ?.image!
+                                                        .dynamicUrl
+                                                        .isNotEmpty
                                                 ? Image.network(
                                                     storeHomeMainController
                                                             .cartItems[i]
@@ -1101,14 +1101,14 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ],
                                         ),
-
                                         height10SizedBox,
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              StringConstants.deliveryChargeText,
+                                              StringConstants
+                                                  .deliveryChargeText,
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
@@ -1126,7 +1126,7 @@ class _CartScreenState extends State<CartScreen> {
                                         height10SizedBox,
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               StringConstants.totalText,

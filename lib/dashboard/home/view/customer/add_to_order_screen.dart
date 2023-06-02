@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,8 @@ class AddToOrderScreen extends StatefulWidget {
 class _AddToOrderScreenState extends State<AddToOrderScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
-
+  final CarouselController _controller = CarouselController();
+  int _current = 0;
   @override
   initState() {
     super.initState();
@@ -478,7 +480,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     return Stack(
       children: [
         SizedBox(
-          height: WidgetConstants.screenHeight * 0.5,
+          height: WidgetConstants.screenHeight * 0.8,
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -498,40 +500,144 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     children: [
                       Flexible(
                         flex: 4,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.productImages ==
-                                      null ||
-                                  storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data!
-                                      .product!
-                                      .productImages!
-                                      .isEmpty
-                              ? Image.asset(
-                                  ImageConstants.nopicfound,
-                                  fit: BoxFit.fill,
-                                  height: 120,
-                                  width: 120,
-                                )
-                              : Image.network(
-                                  storeHomeMainController
+                        child: storeHomeMainController.productDetailResponse
+                                        .value.data?.product?.productImages ==
+                                    null ||
+                                storeHomeMainController.productDetailResponse
+                                    .value.data!.product!.productImages!.isEmpty
+                            ? Image.asset(
+                                ImageConstants.nopicfound,
+                                fit: BoxFit.fill,
+                                height: 120,
+                                width: 120,
+                              )
+                            : Column(
+                                children: [
+                                  CarouselSlider(
+                                    items: storeHomeMainController.productIm!
+                                        .map((item) => InkWell(
+                                              onTap: () {},
+                                              child: Center(
+                                                  child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                child: Image.network(
+                                                    item.image?.dynamicUrl
+                                                            .toString() ??
+                                                        "",
+                                                    fit: BoxFit.fill,
+                                                    height: WidgetConstants
+                                                            .screenHeight *
+                                                        0.6,
+                                                    width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.4),
+                                              )),
+                                            ))
+                                        .toList(),
+                                    carouselController: _controller,
+                                    options: CarouselOptions(
+                                        enlargeStrategy:
+                                            CenterPageEnlargeStrategy.scale,
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        viewportFraction: 1.0,
+                                        enlargeCenterPage: false,
+                                        autoPlay: true,
+                                        aspectRatio: 1.1,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _current = index;
+                                          });
+                                        }),
+                                  ),
+                                  Obx(() => storeHomeMainController
                                           .productDetailResponse
                                           .value
-                                          .data
-                                          ?.product
-                                          ?.productImages
-                                          ?.first
-                                          .image
-                                          ?.dynamicUrl
-                                          .toString() ??
-                                      "",
-                                  fit: BoxFit.fill,
-                                  height: 120,
-                                ),
-                        ),
+                                          .data!
+                                          .product!
+                                          .productImages!
+                                          .isEmpty
+                                      ? height0SizedBox
+                                      : SizedBox(
+                                         width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.4,
+                                        child: InkWell(
+                                            highlightColor: Colors.transparent,
+                                            splashColor: Colors.transparent,
+                                            onTap: () {},
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: storeHomeMainController
+                                                  .productIm!
+                                                  .asMap()
+                                                  .entries
+                                                  .map((entry) {
+                                                return GestureDetector(
+                                                  onTap: () => _controller
+                                                      .animateToPage(entry.key),
+                                                  child: Container(
+                                                    width: _current == entry.key
+                                                        ? 25
+                                                        : 10,
+                                                    height: 5.0,
+                                                    margin: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 8.0,
+                                                        horizontal: 4.0),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                8.0),
+                                                        shape: BoxShape.rectangle,
+                                                        color: _current ==
+                                                                entry.key
+                                                            ? AppColors.primary
+                                                            : AppColors.grey),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                      ))
+                                ],
+                              ),
+
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.circular(10.0),
+                        //   child: storeHomeMainController.productDetailResponse
+                        //                   .value.data?.product?.productImages ==
+                        //               null ||
+                        //           storeHomeMainController
+                        //               .productDetailResponse
+                        //               .value
+                        //               .data!
+                        //               .product!
+                        //               .productImages!
+                        //               .isEmpty
+                        //       ? Image.asset(
+                        //           ImageConstants.nopicfound,
+                        //           fit: BoxFit.fill,
+                        //           height: 120,
+                        //           width: 120,
+                        //         )
+                        //       : Image.network(
+                        //           storeHomeMainController
+                        //                   .productDetailResponse
+                        //                   .value
+                        //                   .data
+                        //                   ?.product
+                        //                   ?.productImages
+                        //                   ?.first
+                        //                   .image
+                        //                   ?.dynamicUrl
+                        //                   .toString() ??
+                        //               "",
+                        //           fit: BoxFit.fill,
+                        //           height: 120,
+                        //         ),
+                        // ),
                       ),
                       width10SizedBox,
                       Flexible(
@@ -553,7 +659,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               ?.productName ??
                                           "",
                                       style: const TextStyle(
-                                        overflow: TextOverflow.visible,
+                                          overflow: TextOverflow.visible,
                                           fontSize: 18,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w600)),

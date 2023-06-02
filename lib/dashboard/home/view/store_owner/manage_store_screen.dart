@@ -178,79 +178,6 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                SharedPreferenceStorage.setData("context", context);
-                Get.parameters["storeId"] = ownerStoresController.storeId.value;
-                Get.parameters["storeName"] = ownerStoresController.storeName.value;
-
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const WorkerListScreen(),
-                ));
-                // Get.to(const WorkerListScreen(), arguments: {
-                //   "storeId": ownerStoresController.storeId.value,
-                //   "storeName": ownerStoresController.storeName.value,
-                // });
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                decoration: const BoxDecoration(
-                    color: AppColors.greylight,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    )),
-                child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 1)),
-                                child: const CircleAvatar(
-                                  radius: 28.0,
-                                  backgroundImage: AssetImage(
-                                    ImageConstants.blackcircle,
-                                  ),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              Image.asset(
-                                ImageConstants.worker,
-                                scale: 3,
-                              ),
-                            ],
-                          ),
-                          width10SizedBox,
-                          Text(
-                            StringConstants.manageWorkersText,
-                            style: const TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      Icon(
-                        Icons.chevron_right,
-                        color: AppColors.blacklight,
-                        size: 24.0,
-                      ),
-                    ],
-                  ),
-                ]),
-              ),
-            ),
-            InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
                 Get.parameters["storeId"] = ownerStoresController.storeId.value;
                 Get.parameters["storeName"] =
                     ownerStoresController.storeName.value;
@@ -303,6 +230,80 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                           width10SizedBox,
                           Text(
                             StringConstants.roleAndPermissionText,
+                            style: const TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: AppColors.blacklight,
+                        size: 24.0,
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+            ),
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                SharedPreferenceStorage.setData("context", context);
+                Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["storeName"] =
+                    ownerStoresController.storeName.value;
+
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const WorkerListScreen(),
+                ));
+                // Get.to(const WorkerListScreen(), arguments: {
+                //   "storeId": ownerStoresController.storeId.value,
+                //   "storeName": ownerStoresController.storeName.value,
+                // });
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: const BoxDecoration(
+                    color: AppColors.greylight,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    )),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: AppColors.white, width: 1)),
+                                child: const CircleAvatar(
+                                  radius: 28.0,
+                                  backgroundImage: AssetImage(
+                                    ImageConstants.blackcircle,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                              Image.asset(
+                                ImageConstants.worker,
+                                scale: 3,
+                              ),
+                            ],
+                          ),
+                          width10SizedBox,
+                          Text(
+                            StringConstants.manageWorkersText,
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,

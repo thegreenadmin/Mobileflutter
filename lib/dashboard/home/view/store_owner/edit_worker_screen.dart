@@ -712,6 +712,15 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                     height20SizedBox,
                     addNewWorkerController.storeRoleList.isEmpty
                         ? height0SizedBox
+                        : Text(
+                            StringConstants.roleText,
+                            style: TextStyle(
+                                color: AppColors.blacklight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                    addNewWorkerController.storeRoleList.isEmpty
+                        ? height0SizedBox
                         : Obx(
                             () => DropdownButtonFormField<String>(
                               validator: (value) {

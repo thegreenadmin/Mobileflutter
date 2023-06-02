@@ -93,7 +93,7 @@ class StoreHomeMainController extends GetxController {
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
-
+  RxList<product.ProductImage>? productIm = <product.ProductImage>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -1139,6 +1139,25 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
+ productIm!.clear();
+        if (productDetailResponse
+            .value.data!.product!.productImages!.isNotEmpty) {
+          for (int i = 0;
+              i <
+                  productDetailResponse
+                      .value.data!.product!.productImages!.length;
+              i++) {
+            if (i >= 5) {
+              break;
+            }
+           
+            productIm!.add(product.ProductImage(
+                image: product.Image(
+                    dynamicUrl: productDetailResponse.value.data!.product!
+                        .productImages![i].image!.dynamicUrl!)));
+          }
+        }
+        update();
         isFavouriteProduct.value =
             productDetailResponse.value.data?.product?.isFavouriteProduct ??
                 false;

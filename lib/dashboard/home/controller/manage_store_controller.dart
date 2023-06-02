@@ -191,6 +191,7 @@ class ManageStoreController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     //if (imageFileList!.isNotEmpty) {
+
     for (var i = 0; i < imageFileList!.length; i++) {
       request.files.add(http.MultipartFile(
           'files',
@@ -202,6 +203,7 @@ class ManageStoreController extends GetxController {
     var response = await request.send();
     response.stream.transform(utf8.decoder).listen((value) {
       debugPrint(value);
+
       for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
         var imageData = jsonDecode(value)['data']['files'][i];
         imagesList.add(ProductImagesList(
@@ -210,7 +212,9 @@ class ManageStoreController extends GetxController {
             status: 'active',
             dynamicImageUrl: imageData['dynamic_url']));
       }
+
       imageUrlList.addAll(imagesList);
+      print("IMAGE URL--" + imageUrlList.toString());
       inputData.productImages = imagesList.isEmpty ? [] : imagesList;
       imageUrlList.refresh();
     });

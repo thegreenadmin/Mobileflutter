@@ -218,20 +218,19 @@ class PayOutScreenState extends State<PayOutScreen> {
                             keyboardType: TextInputType.phone,
                             onChanged: (value) {
                               setState(() {});
-                              // addCardController.totalWithdrawAmount.value =
-                              //     double.parse(addCardController
-                              //             .payoutAmountTextController.text) +
-                              //         addCardController.storeServiceCharge.value
-                              //             .toPrecision(2);
+
                               addCardController.totalWithdrawAmount.value =
-                                  double.parse(addCardController
-                                          .payoutAmountTextController.text) -
-                                      (double.parse(addCardController
+                                  double.parse((double.parse(addCardController
+                                              .payoutAmountTextController
+                                              .text) +
+                                          double.parse(addCardController
                                                   .payoutAmountTextController
-                                                  .text) /
-                                              addCardController
-                                                  .storeServiceCharge.value)
-                                          .toPrecision(2);
+                                                  .text) *
+                                              (double.parse(addCardController
+                                                      .storeServiceCharge.value
+                                                      .toString()) /
+                                                  100))
+                                      .toStringAsFixed(2));
                             },
                             textInputAction: TextInputAction.next,
                             autofocus: false,
@@ -298,14 +297,14 @@ class PayOutScreenState extends State<PayOutScreen> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Store service charges are \$${addCardController.storeServiceCharge}",
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            height10SizedBox,
+                            // Text(
+                            //   "Service charges are ${addCardController.storeServiceCharge}%",
+                            //   style: const TextStyle(
+                            //       color: AppColors.black,
+                            //       fontSize: 16,
+                            //       fontWeight: FontWeight.w500),
+                            // ),
+                            // height10SizedBox,
                             Row(
                               children: [
                                 Image.asset(

@@ -315,6 +315,13 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        if (storeList.length == 1) {
+          ownerSelectedStore.value = storeList[0].storeId.toString();
+          apiGetOwnerWalletBalance();
+        } else {
+          storeNameValue!.value = storeList[0].storeName.toString();
+          ownerSelectedStore.value = storeList[0].storeId.toString();
+        }
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

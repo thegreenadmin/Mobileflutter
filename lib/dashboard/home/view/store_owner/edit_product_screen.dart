@@ -134,6 +134,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                       manageStoreController
                                                           .imageUrlList[index]
                                                           .status = "deleted";
+                                                    
                                                       setState(() {});
                                                     },
                                                     child: const Padding(

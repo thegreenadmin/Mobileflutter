@@ -1,4 +1,3 @@
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -690,9 +689,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           if (locations.isNotEmpty) {
                             addNewStoreController.lng =
-                                locations.first.longitude.toString() ;
+                                locations.first.longitude.toString();
                             addNewStoreController.lat =
-                                locations.first.latitude.toString() ;
+                                locations.first.latitude.toString();
                           }
 
                           ///--------------------------------------
@@ -1514,6 +1513,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                               addNewStoreController
                                                       .closingTime.value =
                                                   "${date.hour}:${date.minute}:00";
+                                              debugPrint(
+                                                  "${date.hour}:${date.minute}:00");
                                             }
                                           },
                                           decoration: InputDecoration(
@@ -1584,6 +1585,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ? MultiCustomDropDown(
                               onChanged: (v) {
                                 addNewStoreController.storeTimmingList.clear();
+
                                 for (int i = 0;
                                     i <
                                         addNewStoreController
@@ -1600,7 +1602,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           .openingTime.value,
                                       "closing_time": addNewStoreController
                                           .closingTime.value,
-                                    });
+                                    });  
                                   }
                                 }
                               },

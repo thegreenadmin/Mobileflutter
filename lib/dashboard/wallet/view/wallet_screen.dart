@@ -136,72 +136,107 @@ class _WalletScreenState extends State<WalletScreen> {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                StringConstants.selectStoreText,
+                                walletController.storeList.length == 1
+                                    ? StringConstants.storeNameText
+                                    : StringConstants.selectStoreText,
                                 style: TextStyle(
                                     color: AppColors.blacklight, fontSize: 18),
                               ),
                             ),
                             Expanded(
                               flex: 6,
-                              child: DropdownButtonFormField<String>(
-                                isExpanded: true,
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.grey,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  border: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                hint: Text(
-                                  StringConstants.selectStoreText,
-                                  style: const TextStyle(
-                                      color: AppColors.grey, fontSize: 14),
-                                ),
-                                items: walletController.storeList
-                                    .map((dynamic value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.storeId,
-                                    child: Text(
-                                      value.storeName,
+                              child: walletController.storeList.length == 1
+                                  ? Text(
+                                      walletController.storeList[0].storeName
+                                          .toString(),
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500),
+                                          fontWeight: FontWeight.w500))
+                                  : DropdownButtonFormField<String>(
+                                      value: walletController
+                                                      .storeNameValue!.value !=
+                                                  "" &&
+                                              walletController
+                                                      .ownerSelectedStore
+                                                      .value !=
+                                                  null &&
+                                              walletController
+                                                      .ownerSelectedStore
+                                                      .value !=
+                                                  ""
+                                          ? walletController.storeList
+                                              .firstWhere((element) =>
+                                                  element.storeId.toString() ==
+                                                  walletController
+                                                      .ownerSelectedStore.value)
+                                              .storeId
+                                          : null,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.grey,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        border: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.primary,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.primary,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        errorBorder: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.primary,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                      ),
+                                      hint: Text(
+                                        StringConstants.selectStoreText,
+                                        style: const TextStyle(
+                                            color: AppColors.grey,
+                                            fontSize: 14),
+                                      ),
+                                      items: walletController.storeList
+                                          .map((dynamic value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value.storeId,
+                                          child: Text(
+                                            value.storeName,
+                                            style: const TextStyle(
+                                                color: AppColors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        walletController.storeNameValue!.value =
+                                            value.toString();
+                                        walletController.ownerSelectedStore
+                                            .value = value.toString();
+                                        walletController
+                                            .apiGetOwnerWalletBalance();
+                                        walletController
+                                            .apiGetStoreDetailsApi();
+                                      },
                                     ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  walletController.storeNameValue!.value =
-                                      value.toString();
-                                  walletController.ownerSelectedStore.value =
-                                      value.toString();
-                                  walletController.apiGetOwnerWalletBalance();
-                                  walletController.apiGetStoreDetailsApi();
-                                },
-                              ),
                             ),
                           ],
                         ),
