@@ -653,7 +653,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             validator: (value) {
                               if (value!.trim().isEmpty) {
                                 return AlertStringConstants
-                                    .pleaseEnterTownOrCityText;
+                                    .pleaseEnterCountryText;
                               }
                               return null;
                             },

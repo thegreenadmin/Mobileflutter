@@ -1062,7 +1062,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
-                                .pleaseEnterTownOrCityText;
+                                .pleaseEnterCountryText;
                           }
                           return null;
                         },

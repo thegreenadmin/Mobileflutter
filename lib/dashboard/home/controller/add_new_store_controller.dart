@@ -448,7 +448,9 @@ class AddNewStoreController extends GetxController {
         for (var element in deliveryServices) {
           element.isSelected = false;
         }
-        weekDaysList.clear();
+        for (var element in weekDaysList) {
+          element.isSelected = false;
+        }
         privacyTextController.clear();
         storeTimmingList.clear();
         termsTextController.clear();
