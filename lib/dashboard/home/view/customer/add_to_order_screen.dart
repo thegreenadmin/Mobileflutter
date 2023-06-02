@@ -559,10 +559,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           .isEmpty
                                       ? height0SizedBox
                                       : SizedBox(
-                                         width: WidgetConstants
-                                                            .screenWidth *
-                                                        0.4,
-                                        child: InkWell(
+                                          width:
+                                              WidgetConstants.screenWidth * 0.4,
+                                          child: InkWell(
                                             highlightColor: Colors.transparent,
                                             splashColor: Colors.transparent,
                                             onTap: () {},
@@ -588,9 +587,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                         horizontal: 4.0),
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                8.0),
-                                                        shape: BoxShape.rectangle,
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                        shape:
+                                                            BoxShape.rectangle,
                                                         color: _current ==
                                                                 entry.key
                                                             ? AppColors.primary
@@ -600,7 +600,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               }).toList(),
                                             ),
                                           ),
-                                      ))
+                                        ))
                                 ],
                               ),
 
