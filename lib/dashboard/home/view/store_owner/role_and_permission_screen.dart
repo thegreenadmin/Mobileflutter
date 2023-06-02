@@ -51,7 +51,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.roleAndPermissionText,
+                            StringConstants.rolesAndPermissionText,
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: AppColors.black,
@@ -180,20 +180,17 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        Utility.showConfirmAlertMessage( AlertStringConstants
-                                            .areYouSureText,okay:  StringConstants
-                                            .deleteText,okayTap: (){
+                                        Utility.showConfirmAlertMessage(
+                                            AlertStringConstants.areYouSureText,
+                                            okay: StringConstants.deleteText,
+                                            okayTap: () {
                                           // Navigator.pop(Get.context!);
-                                          addNewRoleController
-                                              .roleId.value =
+                                          addNewRoleController.roleId.value =
                                               addNewRoleController
-                                                  .storeRoleList[
-                                              index]
-                                                  .roleId
+                                                  .storeRoleList[index].roleId
                                                   .toString();
                                           addNewRoleController
-                                              .apiDeleteRole(
-                                              context);
+                                              .apiDeleteRole(context);
                                         });
 
                                         // addNewRoleController.roleId.value =

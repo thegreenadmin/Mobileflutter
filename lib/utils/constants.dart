@@ -162,7 +162,7 @@ class StringConstants {
   static String enterNameText = "Enter Name";
   static String einBusinessId = "EIN/Business ID";
   static String editStoreText = "Edit Store";
-  static String editStoreDetailText = "Edit Store Detail";
+  static String editStoreDetailsText = "Edit Store Details";
   static String employeeNameText = "Employee Name";
   static String enterMobileText = "Enter mobile";
   static String enterEmailIdText = "Enter email id";
@@ -184,7 +184,7 @@ class StringConstants {
   static String fromWherePhotoText =
       "From where do you want to take the photo?";
   static String faqText = "FAQ";
-  static String featuredProductText = "Featured product";
+  static String featuredProductText = "Featured products";
   static String featuredText = "Featured";
   static String filterOptionsText = "Filter Options";
   static String enterRoleText = "Enter Role";
@@ -240,7 +240,7 @@ class StringConstants {
   static String mobileText = "Mobile";
   static String myStoreText = "My Store";
   static String manageStoreText = "Manage Store";
-  static String manageProdcutText = "Manage Product";
+  static String manageProductsText = "Manage Products";
   static String manageWorkersText = "Manage Workers";
   static String mobileNoText = "Mobile No";
   static String membersText = "Members";
@@ -340,7 +340,7 @@ class StringConstants {
   static String primaryStoreText = "Primary Store";
   static String pickupOptionsText = "Pick-up Options";
   static String permissionText = "Permission";
-  static String productText = " Product";
+  static String productText = "Product";
   static String payNowText = "Pay Now";
   static String priceText = "Price";
   static String pendingText = "Pending";
@@ -364,7 +364,7 @@ class StringConstants {
   static String registerHereText = " Register Here!!";
   static String receivedOrderText = "Received Order";
   static String removeText = "Remove";
-  static String roleAndPermissionText = "Role & Permission";
+  static String rolesAndPermissionText = "Roles & Permission";
   static String rolesText = "Roles";
   static String roleNameText = "Role Name";
   static String returnAvailableText = "Return Available";

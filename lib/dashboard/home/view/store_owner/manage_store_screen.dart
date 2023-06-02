@@ -80,7 +80,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.editStoreDetailText,
+                            StringConstants.editStoreDetailsText,
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,
@@ -156,7 +156,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.manageProdcutText,
+                            StringConstants.manageProductsText,
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,
@@ -229,7 +229,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                           ),
                           width10SizedBox,
                           Text(
-                            StringConstants.roleAndPermissionText,
+                            StringConstants.rolesAndPermissionText,
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,

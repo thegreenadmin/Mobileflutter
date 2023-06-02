@@ -1100,34 +1100,53 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           MainAxisAlignment
                                               .spaceBetween,
                                           children: [
-                                            SizedBox(
-                                              width: 180,
-                                              child: Text(
-                                                  ordersController
-                                                      .storeOrderList[
-                                                  i]
-                                                      .store
-                                                      ?.storeName ??
-                                                      "",
-                                                  style: const TextStyle(
-                                                      color: AppColors
-                                                          .black,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w500,
-                                                      fontSize:
-                                                      16)),
+                                            Expanded(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                        text: StringConstants
+                                                            .storeNameText,
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .blacklight,
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w400,
+                                                            fontSize:
+                                                            14)),
+                                                    TextSpan(
+                                                      text:
+                                                      ': ${ ordersController
+                                                          .storeOrderList[
+                                                      i]
+                                                          .store
+                                                          ?.storeName ??
+                                                          ""}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w600,
+                                                          fontSize:
+                                                          16,
+                                                          color: AppColors
+                                                              .blacklight),
+                                                    ),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.visible,
+                                              ),
                                             ),
-                                            Text(
+                                            Expanded(child: Text(
                                               "\$${ordersController.storeOrderList[i].totalAmount?.toStringAsFixed(2)}",
+                                              textAlign:TextAlign.end,
                                               style: const TextStyle(
-                                                  color: AppColors
-                                                      .primary,
+                                                  color: AppColors.primary,
                                                   fontWeight:
-                                                  FontWeight
-                                                      .w600,
+                                                  FontWeight.w600,
                                                   fontSize: 16),
-                                            ),
+                                            ),)
+
                                           ],
                                         ),
                                       ],

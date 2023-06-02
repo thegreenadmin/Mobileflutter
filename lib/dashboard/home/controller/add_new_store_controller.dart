@@ -537,7 +537,9 @@ class AddNewStoreController extends GetxController {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
-            deliveryServicesResponse.data!.deliveryServices!;
+            deliveryServicesResponse.data?.deliveryServices??[];
+        deliveryServices.firstWhere((element) =>  element.name!.toLowerCase().contains("in")).isSelected = true;
+
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
