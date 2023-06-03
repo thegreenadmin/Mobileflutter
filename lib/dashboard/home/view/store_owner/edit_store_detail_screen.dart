@@ -15,7 +15,9 @@ import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
+
+import "package:google_maps_webservice/geocoding.dart";
+// import 'package:geocoding/geocoding.dart' as geocoding;
 
 class EditStoreDetailScreen extends StatefulWidget {
   const EditStoreDetailScreen({super.key});
@@ -657,9 +659,24 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               parts[0].toString();
 
 
-                          ///ADDRESSES BY GEOCODING
+                          ///ADDRESSES BY GoogleMapsGeocoding
 
-                          List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
+                          final geocoding = GoogleMapsGeocoding(apiKey: ownerStoreController.kGoogleApiKey);
+
+                          GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                          // log("GeocodingResponse web services:------------");
+                          // log(jsonEncode(response.results));
+
+                          final result = response.results.first;
+                          ownerStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
+                          ownerStoreController.countryTextController.text = Utility.extractLocality(result,"country");
+                          ownerStoreController.postalCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                          ownerStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
+                          ownerStoreController.lng = response.results.first.geometry.location.lng;
+                          ownerStoreController.lat = response.results.first.geometry.location.lat;
+
+
+                          /*List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
 
                           List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
                           String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
@@ -686,7 +703,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             ownerStoreController.lat =
                                 locations.first.latitude.toString();
                           }
-
+*/
 
                           ///--------------------------------------
                        /*   GeoData addresses =

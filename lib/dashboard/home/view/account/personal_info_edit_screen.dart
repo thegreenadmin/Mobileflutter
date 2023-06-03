@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +14,11 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
+import "package:google_maps_webservice/geocoding.dart";
+
+import '../../../../utils/utility.dart';
+
+// import 'package:geocoding/geocoding.dart' as geocodingPack;
 
 class PersonalInfoEditScreen extends StatefulWidget {
   const PersonalInfoEditScreen({super.key});
@@ -22,6 +29,8 @@ class PersonalInfoEditScreen extends StatefulWidget {
 
 class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
   final AccountController accountController = Get.put(AccountController());
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -331,15 +340,43 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             accountController.addressLine1TextController.text =
                                 parts[0].toString();
 
+                            ///ADDRESSES BY google_maps_webservice: ^0.0.19 COZ GEOCODING ios issues
+                            final geocoding = GoogleMapsGeocoding(apiKey: accountController.kGoogleApiKey);
+
+                            GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                            // log("GeocodingResponse web services:------------");
+                            // log(jsonEncode(response.results));
+
+                            final result = response.results.first;
+                            accountController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
+                            accountController.countryTextController.text = Utility.extractLocality(result,"country");
+                            accountController.postalCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                            accountController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
+
+
+                            // accountController.townOrCityTextController.text =
+                            //     response.results[0].addressComponents.firstWhere((element) => element.types.);
+
+                            // accountController.countryTextController.text =
+                            //     placeMark.first.country ?? "";
+                            //
+                            // accountController.postalCodeTextController.text =
+                            //     placeMark.first.postalCode ?? "";
+
+                            // accountController.stateTextController.text =
+                            //     placeMark.first.administrativeArea ?? "";
+
+                            // PlacesDetailsResponse response = await places.getDetailsByPlaceId("PLACE_ID");
+
                             ///ADDRESSES BY GEOCODING COZ Geocodr2 RETURNS
                             ///subAdministrativeArea INSTEAD OF CITY
-
-                            List<geocoding.Location> locations =
-                                await geocoding.locationFromAddress(
+/*
+                            List<geocodingPack.Location> locations =
+                                await geocodingPack.locationFromAddress(
                                     p?.description.toString() ?? "");
 
-                            List<geocoding.Placemark> placeMark =
-                                await geocoding.placemarkFromCoordinates(
+                            List<geocodingPack.Placemark> placeMark =
+                                await geocodingPack.placemarkFromCoordinates(
                                     locations.first.latitude,
                                     locations.first.longitude);
                             String address =
@@ -359,7 +396,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
 
                               // accountController.stateTextController.text =
                               //     placeMark.first.administrativeArea ?? "";
-                            }
+                            }*/
 
                             /// state BY Geocodr2  COZ GEOCODING RETURNS abbreviation
                             /// of administrativeArea instead of full name
@@ -370,11 +407,9 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     googleMapApiKey:
                                         accountController.kGoogleApiKey);
 
-                            if (addresses.address != null) {
-                              if (addresses.state.isNotEmpty) {
-                                accountController.stateTextController.text =
-                                    addresses.state;
-                              }
+                            if (addresses.state.isNotEmpty) {
+                              // accountController.stateTextController.text =
+                              //     addresses.state;
                             }
 
                           },

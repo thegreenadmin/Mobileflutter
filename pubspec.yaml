@@ -48,6 +48,7 @@ dependencies:
   path_provider: ^2.0.13
   flutter_google_places: ^0.3.0
   google_maps_flutter: ^2.2.5
+  google_maps_webservice: ^0.0.19
   geolocator: ^9.0.2
   geocoding: ^2.1.0
   geocoder2: ^1.4.0
