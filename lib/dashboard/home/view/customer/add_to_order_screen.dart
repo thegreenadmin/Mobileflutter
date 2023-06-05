@@ -1057,9 +1057,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ),
                         ],
                       )),
-                  //height10SizedBox,
+                  height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data!
-                          .product!.description!.isEmpty
+                                  .product!.description ==
+                              null ||
+                          storeHomeMainController.productDetailResponse.value
+                              .data!.product!.description!.isEmpty
                       ? height0SizedBox
                       : Text(
                           StringConstants.aboutProductText,

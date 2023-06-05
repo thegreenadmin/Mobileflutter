@@ -118,7 +118,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
@@ -600,7 +600,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET USER WALLET BALANCE RESPONSE *******${value!.body}");
@@ -681,7 +681,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value!.body}");
@@ -882,7 +882,7 @@ class AddCardController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint(
