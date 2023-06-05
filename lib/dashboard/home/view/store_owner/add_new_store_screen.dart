@@ -223,7 +223,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
-                    height20SizedBox,
+                    height15SizedBox,
                     Obx(
                       () => addNewStoreController
                               .storeImageDynamicLinkfromServer.value.isEmpty
@@ -256,7 +256,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             ),
                                             height6SizedBox,
                                             Text(StringConstants
-                                                .uploadStoreImageText)
+                                                .tapTouploadStoreImageText)
                                           ]),
                                     ),
                                   ),
@@ -664,19 +664,28 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                           ///ADDRESSES BY GoogleMapsGeocoding
 
-                          final geocoding = GoogleMapsGeocoding(apiKey: addNewStoreController.kGoogleApiKey);
+                          final geocoding = GoogleMapsGeocoding(
+                              apiKey: addNewStoreController.kGoogleApiKey);
 
-                          GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                          GeocodingResponse response = await geocoding
+                              .searchByAddress(p?.description.toString() ?? "");
                           // log("GeocodingResponse web services:------------");
                           // log(jsonEncode(response.results));
 
                           final result = response.results.first;
-                          addNewStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
-                          addNewStoreController.countryTextController.text = Utility.extractLocality(result,"country");
-                          addNewStoreController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                          addNewStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
-                          addNewStoreController.lng = response.results.first.geometry.location.lng;
-                          addNewStoreController.lat = response.results.first.geometry.location.lat;
+                          addNewStoreController.townOrCityTextController.text =
+                              Utility.extractLocality(result, "locality");
+                          addNewStoreController.countryTextController.text =
+                              Utility.extractLocality(result, "country");
+                          addNewStoreController.zipCodeTextController.text =
+                              Utility.extractLocality(result, "postal_code");
+                          addNewStoreController.stateTextController.text =
+                              Utility.extractLocality(
+                                  result, "administrative_area_level_1");
+                          addNewStoreController.lng =
+                              response.results.first.geometry.location.lng;
+                          addNewStoreController.lat =
+                              response.results.first.geometry.location.lat;
 
                           /*List<geocoding.Location> locations =
                               await geocoding.locationFromAddress(
@@ -712,7 +721,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }*/
 
                           ///--------------------------------------
-                         /* GeoData addresses =
+                          /* GeoData addresses =
                               await Geocoder2.getDataFromAddress(
                                   address: p?.description.toString() ?? "",
                                   googleMapApiKey:
@@ -905,7 +914,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         )),
                     height20SizedBox,
                     Text(
-                      StringConstants.zipCodeText,
+                      StringConstants.postalCodeText,
                       style: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 16,
@@ -933,7 +942,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: StringConstants.zipCodeText,
+                          hintText: StringConstants.postalCodeText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -968,123 +977,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         )),
                     height20SizedBox,
 
-                    Text(
-                      StringConstants.countryText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewStoreController.countryTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterCountryText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.townOrCityText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                    // Obx(() => addNewStoreController.countriesList.isEmpty
-                    //     ? height0SizedBox
-                    //     : DropdownButtonFormField<CountriesList>(
-                    //         isExpanded: true,
-                    //         value: addNewStoreController.countriesList.last,
-                    //         decoration: InputDecoration(
-                    //           enabledBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.grey,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           border: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           focusedBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           errorBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           hintText: StringConstants.organisationTypeText,
-                    //           errorStyle: const TextStyle(color: Colors.yellow),
-                    //         ),
-                    //         items: addNewStoreController.countriesList
-                    //             .map<DropdownMenuItem<CountriesList>>(
-                    //                 (CountriesList value) {
-                    //           return DropdownMenuItem<CountriesList>(
-                    //             value: value,
-                    //             child: Text(value.countryName.toString()),
-                    //           );
-                    //         }).toList(),
-                    //         onChanged: (CountriesList? newValue) {
-                    //           addNewStoreController.countryDropdownValue.value =
-                    //               newValue!.countryName.toString();
-                    //           addNewStoreController.countryId!.value =
-                    //               newValue.countryId.toString();
-                    //           addNewStoreController.apiGetStates();
-                    //         },
-                    //       )),
-                    height20SizedBox,
                     Text(
                       StringConstants.zoneText,
                       style: TextStyle(
@@ -1201,6 +1093,123 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             ),
                           ),
                         )),
+                    height20SizedBox,
+                    Text(
+                      StringConstants.countryText,
+                      style: TextStyle(
+                          color: AppColors.blacklight,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    height4SizedBox,
+                    TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(500),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        controller: addNewStoreController.countryTextController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterCountryText;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: StringConstants.countryText,
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                    // Obx(() => addNewStoreController.countriesList.isEmpty
+                    //     ? height0SizedBox
+                    //     : DropdownButtonFormField<CountriesList>(
+                    //         isExpanded: true,
+                    //         value: addNewStoreController.countriesList.last,
+                    //         decoration: InputDecoration(
+                    //           enabledBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.grey,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           border: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           focusedBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           errorBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           hintText: StringConstants.organisationTypeText,
+                    //           errorStyle: const TextStyle(color: Colors.yellow),
+                    //         ),
+                    //         items: addNewStoreController.countriesList
+                    //             .map<DropdownMenuItem<CountriesList>>(
+                    //                 (CountriesList value) {
+                    //           return DropdownMenuItem<CountriesList>(
+                    //             value: value,
+                    //             child: Text(value.countryName.toString()),
+                    //           );
+                    //         }).toList(),
+                    //         onChanged: (CountriesList? newValue) {
+                    //           addNewStoreController.countryDropdownValue.value =
+                    //               newValue!.countryName.toString();
+                    //           addNewStoreController.countryId!.value =
+                    //               newValue.countryId.toString();
+                    //           addNewStoreController.apiGetStates();
+                    //         },
+                    //       )),
+
                     height20SizedBox,
                     Text(
                       StringConstants.storeTimingText,
@@ -1619,7 +1628,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           .openingTime.value,
                                       "closing_time": addNewStoreController
                                           .closingTime.value,
-                                    });  
+                                    });
                                   }
                                 }
                               },

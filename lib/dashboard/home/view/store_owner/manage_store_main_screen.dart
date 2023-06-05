@@ -62,7 +62,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                           fontSize: 16,
                           fontWeight:
                               ownerStoresController.selectedIndex.value == i
-                                  ? FontWeight.w500
+                                  ? FontWeight.w600
                                   : FontWeight.w400,
                           color: ownerStoresController.selectedIndex.value == i
                               ? AppColors.primary
@@ -76,7 +76,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
     );
   }
 
- /* @override
+  /* @override
   initState() {
     super.initState();
     ownerStoresController.selectedIndex.value = 0;

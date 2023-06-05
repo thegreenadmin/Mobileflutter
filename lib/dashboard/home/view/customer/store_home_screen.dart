@@ -180,7 +180,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                       storeHomeMainController.featureProductList.isNotEmpty &&
                           storeHomeMainController.isLoading.value == false,
                   child: Text(
-                    StringConstants.featuredProductText,
+                    StringConstants.featuredProductsText,
                     style: const TextStyle(
                         color: AppColors.black,
                         fontWeight: FontWeight.w600,
@@ -355,8 +355,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                      height4SizedBox,
-                                      Text(
+                                   storeHomeMainController
+                                                .featureProductList[index]
+                                                .description!.isEmpty? 
+                                                height0SizedBox: 
+                                                 height4SizedBox,
+                                 storeHomeMainController
+                                                .featureProductList[index]
+                                                .description!.isEmpty? 
+                                                height0SizedBox:     Text(
                                         storeHomeMainController
                                                 .featureProductList[index]
                                                 .description ??

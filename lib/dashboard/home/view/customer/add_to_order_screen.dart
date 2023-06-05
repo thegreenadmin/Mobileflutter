@@ -20,6 +20,7 @@ import 'package:thegreenmall/utils/tool_tip.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
     as nearby;
+import 'package:url_launcher/url_launcher.dart';
 
 class AddToOrderScreen extends StatefulWidget {
   const AddToOrderScreen({super.key});
@@ -96,7 +97,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   void contactAlertDialog(context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -133,7 +134,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
-            Text(
+            SelectableText(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storePhone ??
                   "",
@@ -145,7 +146,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
-            Text(
+            SelectableText(
               "${StringConstants.emailText} " "at:",
               style: const TextStyle(
                   color: AppColors.black,
@@ -851,25 +852,239 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       )
                     ],
                   ),
-                  height20SizedBox,
-                  Text(
-                    StringConstants.aboutProductText,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: AppColors.black),
-                  ),
+                  Obx(() => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product
+                                          ?.productContents!
+                                          .first
+                                          .paragraph ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productContents!
+                                      .first
+                                      .paragraph!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : height20SizedBox,
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product
+                                          ?.productContents!
+                                          .first
+                                          .paragraph ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productContents!
+                                      .first
+                                      .paragraph!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : Text(
+                                  StringConstants.contentsAndStrainsText,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                      color: AppColors.blacklight),
+                                ),
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product
+                                          ?.productContents!
+                                          .first
+                                          .paragraph ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productContents!
+                                      .first
+                                      .paragraph!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : height8SizedBox,
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product
+                                          ?.productContents!
+                                          .first
+                                          .paragraph ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productContents!
+                                      .first
+                                      .paragraph!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : Text(
+                                  storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product
+                                          ?.productContents!
+                                          .first
+                                          .paragraph ??
+                                      "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: AppColors.blacklight),
+                                ),
+                          height20SizedBox,
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product!
+                                          .productLinks!
+                                          .first
+                                          .link ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productLinks!
+                                      .first
+                                      .link!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : Text(
+                                  StringConstants.additionalLinksToResearchText,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                      color: AppColors.blacklight),
+                                ),
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product!
+                                          .productLinks!
+                                          .first
+                                          .link ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productLinks!
+                                      .first
+                                      .link!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : height8SizedBox,
+                          storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product!
+                                          .productLinks!
+                                          .first
+                                          .link ==
+                                      null ||
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productLinks!
+                                      .first
+                                      .link!
+                                      .isEmpty
+                              ? height0SizedBox
+                              : InkWell(
+                                  onTap: () async {
+                                    String url = storeHomeMainController
+                                            .productDetailResponse
+                                            .value
+                                            .data
+                                            ?.product
+                                            ?.productLinks!
+                                            .first
+                                            .link! ??
+                                        "";
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+                                  },
+                                  child: Text(
+                                    storeHomeMainController
+                                            .productDetailResponse
+                                            .value
+                                            .data
+                                            ?.product
+                                            ?.productLinks!
+                                            .first
+                                            .link ??
+                                        "",
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        color: AppColors.primary),
+                                  ),
+                                ),
+                        ],
+                      )),
+                  //height10SizedBox,
+                  storeHomeMainController.productDetailResponse.value.data!
+                          .product!.description!.isEmpty
+                      ? height0SizedBox
+                      : Text(
+                          StringConstants.aboutProductText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: AppColors.black),
+                        ),
                   height10SizedBox,
-                  Text(
-                    storeHomeMainController.productDetailResponse.value.data
-                            ?.product?.description ??
-                        "",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: AppColors.black),
-                  ),
-                  height20SizedBox,
+                  storeHomeMainController.productDetailResponse.value.data!
+                          .product!.description!.isEmpty
+                      ? height0SizedBox
+                      : Text(
+                          storeHomeMainController.productDetailResponse.value
+                                  .data?.product?.description ??
+                              "",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: AppColors.blacklight),
+                        ),
+                  storeHomeMainController.productDetailResponse.value.data!
+                          .product!.description!.isEmpty
+                      ? height0SizedBox
+                      : height20SizedBox,
                   Text(
                     StringConstants.otherDetailsText,
                     style: const TextStyle(

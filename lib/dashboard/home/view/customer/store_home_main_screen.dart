@@ -78,7 +78,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   ) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -115,7 +115,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
-            Text(
+            SelectableText(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storePhone ??
                   "",
@@ -136,7 +136,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
-            Text(
+            SelectableText(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storeEmail ??
                   "",
@@ -229,7 +229,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                           fontSize: 16,
                           fontWeight:
                               storeHomeMainController.selectedIndex.value == i
-                                  ? FontWeight.w500
+                                  ? FontWeight.w600
                                   : FontWeight.w400,
                           color:
                               storeHomeMainController.selectedIndex.value == i

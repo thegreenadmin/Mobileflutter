@@ -125,14 +125,6 @@ class WalletController extends GetxController {
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     role?.value = SharedPreferenceStorage.getData(Role.role.value);
-    print("SharedPreferenceStorage:-------------->");
-
-    print(SharedPreferenceStorage.getData(StringConstants.firstNameText));
-    print(SharedPreferenceStorage.getData(StringConstants.lastNameText));
-    print(SharedPreferenceStorage.getData(Role.role.value));
-    print(firstName?.value);
-    print(lastName?.value);
-    print(role?.value);
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
       if (Get.parameters == null
@@ -150,17 +142,17 @@ class WalletController extends GetxController {
     }
   }
 
+  getApiData() async {
+    await apiGetCardList(Get.context!);
+    await apiGetUserWalletBalance();
+    await apiGetAutoRechargeDetail();
+  }
+
   monthDays() {
     monthDayList.clear();
     for (int i = 1; i <= 31; i++) {
       monthDayList.add(i.toString());
     }
-  }
-
-  getApiData() async {
-    await apiGetCardList(Get.context!);
-    await apiGetUserWalletBalance();
-    await apiGetAutoRechargeDetail();
   }
 
   bool validateAndSave() {
@@ -730,7 +722,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value!.body}");
@@ -880,7 +872,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeGet}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       log("GET AUTO RECHARGE DETAIL RESPONSE *******${value?.body}");
@@ -1073,7 +1065,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint(

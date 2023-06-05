@@ -111,7 +111,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
-            Text(
+            SelectableText(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storePhone ??
                   "",
@@ -132,7 +132,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.start,
             ),
-            Text(
+            SelectableText(
               storeHomeMainController
                       .storeDetailsResponse.value.data!.store!.storeEmail ??
                   "",

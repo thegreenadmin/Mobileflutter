@@ -6,6 +6,7 @@ class AppColors {
 
   //B
   static const black = Color(0xff111413);
+  static final blackmedium = const Color(0xff26292F).withOpacity(0.8);
   static final blacklight = const Color(0xff26292F).withOpacity(0.8);
   //C
 
@@ -52,7 +53,7 @@ class AppColors {
   //S
 
   //T
-
+  static const transparent = Colors.transparent;
   //U
 
   //V

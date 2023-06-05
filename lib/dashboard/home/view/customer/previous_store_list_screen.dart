@@ -239,7 +239,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                                                   ?.first
                                                                   .is24HoursActive ==
                                                               false
-                                                          ? "${Utility.formatDateTime(searchStoreUserController.previousStore[index].storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                          ? "${StringConstants.storeHourText}: ${Utility.formatDateTime(searchStoreUserController.previousStore[index].storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                               "${Utility.formatDateTime(searchStoreUserController.previousStore[index].storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                                           : StringConstants
                                                               .storeHoursText

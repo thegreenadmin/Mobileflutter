@@ -23,8 +23,17 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          height15SizedBox,
+          Text(
+            StringConstants.favoritesText,
+            style: const TextStyle(
+                color: AppColors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+          ),
+          height15SizedBox,
           Expanded(
               child: Obx(
             () => storeHomeMainController.featureProductList.isEmpty
@@ -79,7 +88,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                             builder: (_) => const AddToOrderScreen(),
                           ));
                           // Get.to(const AddToOrderScreen());
-                          await storeHomeMainController.apiGetCartListApi(context);
+                          await storeHomeMainController
+                              .apiGetCartListApi(context);
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

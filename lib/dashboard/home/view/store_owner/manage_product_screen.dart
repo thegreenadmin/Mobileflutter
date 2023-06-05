@@ -26,9 +26,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
   initState() {
     super.initState();
     manageStoreController.isFeaturedTypeSelected.value = false;
-    print("storeName:------>>>>>>" );
-    print(Get.parameters["storeName"] );
-    print( Get.parameters["storeId"] );
     manageStoreController.storeId.value = Get.parameters["storeId"] ?? "";
     manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
     manageStoreController.storeLocation.value =
@@ -304,20 +301,15 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           confirmDismiss: (DismissDirection direction) async {
                             Utility.showConfirmAlertMessage(
                                 AlertStringConstants.areYouSureText,
-                                 okay:  StringConstants
-                                .deleteText,okayTap: (){
+                                okay: StringConstants.deleteText, okayTap: () {
                               // Navigator.pop(Get.context!);
 
-                              manageStoreController
-                                  .categoryId.value =
+                              manageStoreController.categoryId.value =
                                   manageStoreController
-                                      .categoriesList[index]
-                                      .categoryId
+                                      .categoriesList[index].categoryId
                                       .toString();
-                              manageStoreController
-                                  .apiDeleteCategory();
+                              manageStoreController.apiDeleteCategory();
                             });
-
                           },
                           child: InkWell(
                             onTap: () {
@@ -394,7 +386,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                             ),
                                             height4SizedBox,
                                             SizedBox(
-                                              width: 150,
+                                              width: 180,
                                               child: Obx(() => Text(
                                                     manageStoreController
                                                                 .categoriesList[
@@ -452,12 +444,42 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
+                                        padding: const EdgeInsets.only(left: 4),
                                         child: Image.asset(
                                           ImageConstants.circleedit,
-                                          scale: 2.5,
+                                          scale: 3,
                                         ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        manageStoreController.categoryName
+                                            .value = manageStoreController
+                                                .categoriesList[index]
+                                                .categoryName ??
+                                            "";
+                                        manageStoreController.categoryId.value =
+                                            manageStoreController
+                                                    .categoriesList[index]
+                                                    .categoryId ??
+                                                "";
+                                        manageStoreController
+                                            .apiGetStoreProducts();
+                                        SharedPreferenceStorage.setData(
+                                            "context", context);
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (_) =>
+                                              const ProductListScreen(),
+                                        ));
+                                        // Get.to(const ProductListScreen());
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: AppColors.blackmedium,
+                                        size: 14.0,
                                       ),
                                     ),
                                   ],

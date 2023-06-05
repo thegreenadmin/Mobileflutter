@@ -26,7 +26,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       searchStoreUserController.searchController.clear();
       searchStoreUserController.firstName?.value =
           SharedPreferenceStorage.getData(StringConstants.firstNameText);
@@ -35,7 +35,6 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
       searchStoreUserController.setupScrollController(Get.context);
       searchStoreUserController.apiActiveCartApi(Get.context);
     });
-
   }
 
   @override
@@ -87,6 +86,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                         if (index <
                             searchStoreUserController.storeAddresses.length) {
                           return InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
                             onTap: () {
                               SharedPreferenceStorage.setData(
                                   "context", context);
@@ -245,8 +246,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                                   ?.first
                                                                   .is24HoursActive ==
                                                               false
-                                                          ? "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                              "${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                          ? "${StringConstants.storeHourText}: ${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - ${Utility.formatDateTime(searchStoreUserController.storeAddresses[index].store?.storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                                           : StringConstants
                                                               .storeHoursText
                                                       : StringConstants

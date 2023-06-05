@@ -301,19 +301,26 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
-                      final geocoding = GoogleMapsGeocoding(apiKey: searchStoreUserController.kGoogleApiKey);
+                      final geocoding = GoogleMapsGeocoding(
+                          apiKey: searchStoreUserController.kGoogleApiKey);
 
-                      GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                      GeocodingResponse response = await geocoding
+                          .searchByAddress(p?.description.toString() ?? "");
                       // log("GeocodingResponse web services:------------");
                       // log(jsonEncode(response.results));
 
                       final result = response.results.first;
-                      searchStoreUserController.city.value= Utility.extractLocality(result,"locality");
-                      searchStoreUserController.country.value  = Utility.extractLocality(result,"country");
-                      searchStoreUserController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                      searchStoreUserController.state.value = Utility.extractLocality(result,"administrative_area_level_1");
-                      updateMap(response.results.first.geometry.location.lat, response.results.first.geometry.location.lng);
-
+                      searchStoreUserController.city.value =
+                          Utility.extractLocality(result, "locality");
+                      searchStoreUserController.country.value =
+                          Utility.extractLocality(result, "country");
+                      searchStoreUserController.zipCodeTextController.text =
+                          Utility.extractLocality(result, "postal_code");
+                      searchStoreUserController.state.value =
+                          Utility.extractLocality(
+                              result, "administrative_area_level_1");
+                      updateMap(response.results.first.geometry.location.lat,
+                          response.results.first.geometry.location.lng);
 
                       /*  List<geocoding.Location> locations = await geocoding
                           .locationFromAddress(p?.description.toString() ?? "");
@@ -411,13 +418,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
           TabBar(
             unselectedLabelColor: AppColors.blacklight,
             labelColor: AppColors.primary,
+            indicatorColor: AppColors.primary,
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+            labelStyle: const TextStyle(fontWeight: FontWeight.w600),
             isScrollable: false,
             onTap: (i) {
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.previousStore.clear();
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.page.value = 1;
-
               searchStoreUserController.type.value = i;
               if (i == 0) {
                 searchStoreUserController.apiGetNearByStores(context);
@@ -427,7 +436,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 searchStoreUserController.apiGetFavoriteStores(context);
               }
             },
-
             tabs: [
               Tab(
                 child: Text(
@@ -468,7 +476,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   }
 
   void updateMap(lat, lng) async {
-
     CameraPosition kLake = CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(lat, lng),
@@ -480,11 +487,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // WidgetsBinding.instance.addPostFrameCallback((_)async{
-      await searchStoreUserController.apiGetNearByStores(context,isSearch:true);
-      updateMarker(lat, lng);
+    await searchStoreUserController.apiGetNearByStores(context, isSearch: true);
+    updateMarker(lat, lng);
     // });
-
-
   }
 
   void updateMarker(latitude, longitude) async {

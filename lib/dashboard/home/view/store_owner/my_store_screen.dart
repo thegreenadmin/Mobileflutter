@@ -183,7 +183,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                         style: const TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,
-                            fontSize: 22),
+                            fontSize: 18),
                       ),
               ),
               height15SizedBox,
@@ -243,22 +243,32 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  height4SizedBox,
-                                  SizedBox(
-                                    width: 130,
-                                    child: Text(
-                                      ownerStoresController.storeProductList[i]
-                                              .description ??
-                                          "",
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          color: AppColors.blacklight,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  height4SizedBox,
+                                  ownerStoresController.storeProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : height4SizedBox,
+                                  ownerStoresController.storeProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : SizedBox(
+                                          width: 130,
+                                          child: Text(
+                                            ownerStoresController
+                                                    .storeProductList[i]
+                                                    .description ??
+                                                "",
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: AppColors.blacklight,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                  ownerStoresController.storeProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : height4SizedBox,
                                   Text(
                                     "\$${ownerStoresController.storeProductList[i].productPrice!.toStringAsFixed(2)}",
                                     style: const TextStyle(

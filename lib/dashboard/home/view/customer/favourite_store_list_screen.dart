@@ -1,12 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
-
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -235,7 +231,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                                   ?.first
                                                                   .is24HoursActive ==
                                                               false
-                                                          ? "${Utility.formatDateTime(searchStoreUserController.favouriteStore[index].storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                          ? "${StringConstants.storeHourText}: ${Utility.formatDateTime(searchStoreUserController.favouriteStore[index].storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                               "${Utility.formatDateTime(searchStoreUserController.favouriteStore[index].storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                                           : StringConstants
                                                               .storeHoursText

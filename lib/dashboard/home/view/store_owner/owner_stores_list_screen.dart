@@ -154,18 +154,16 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                      Utility.showConfirmAlertMessage( AlertStringConstants
-                                          .areYouSureText,okay:  StringConstants
-                                          .deleteText,okayTap: (){
-                                        // Navigator.pop(Get.context!);
-                                        ownerStoresController
-                                            .apiDeleteStore(
-                                            storeId: ownerStoresController
-                                                .storeList[index]
-                                                .storeId
-                                                .toString());
-                                      });
-
+                                  Utility.showConfirmAlertMessage(
+                                      AlertStringConstants.areYouSureText,
+                                      okay: StringConstants.deleteText,
+                                      okayTap: () {
+                                    // Navigator.pop(Get.context!);
+                                    ownerStoresController.apiDeleteStore(
+                                        storeId: ownerStoresController
+                                            .storeList[index].storeId
+                                            .toString());
+                                  });
                                 },
                                 child: InkWell(
                                   onTap: () async {
@@ -178,7 +176,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     //     .apiGetDeliveryServices();
                                     await ownerStoresController
                                         .apiGetParticularStore();
-
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
@@ -197,7 +194,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     decoration: const BoxDecoration(
-                                        color: AppColors.greylight,
+                                        color: AppColors.primarylight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
                                         )),
@@ -205,6 +202,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                       Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Flexible(
                                             flex: 2,
@@ -212,10 +211,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   border: Border.all(
-                                                      color: AppColors.white,
+                                                      color:
+                                                          AppColors.transparent,
                                                       width: 1)),
                                               child: CircleAvatar(
-                                                radius: 24.0,
+                                                radius: 26.0,
                                                 backgroundImage:
                                                     ownerStoresController
                                                                 .storeList[
@@ -298,10 +298,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                       .start,
                                                               children: [
                                                                 Image.asset(
-                                                                  ImageConstants
-                                                                      .loc,
-                                                                  scale: 3,
-                                                                ),
+                                                                    ImageConstants
+                                                                        .loc,
+                                                                    scale: 2.7,
+                                                                    color: AppColors
+                                                                        .blackmedium),
                                                                 width3SizedBox,
                                                                 Expanded(
                                                                   child: Text(
@@ -310,14 +311,14 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                             .storeAddresses![i]
                                                                             .addressLine1 ??
                                                                         "",
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w400,
                                                                         fontSize:
                                                                             12.0,
                                                                         color: AppColors
-                                                                            .black),
+                                                                            .blackmedium),
                                                                   ),
                                                                 ),
                                                               ]),
@@ -344,7 +345,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                         "${StringConstants.cityText}: ",
                                                                         style: TextStyle(
                                                                             color:
-                                                                                AppColors.blacklight,
+                                                                                AppColors.blackmedium,
                                                                             fontWeight: FontWeight.w400,
                                                                             fontSize: 12)),
                                                                     Expanded(
@@ -377,7 +378,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                         "${StringConstants.stateText}: ",
                                                                         style: TextStyle(
                                                                             color:
-                                                                                AppColors.blacklight,
+                                                                                AppColors.blackmedium,
                                                                             fontWeight: FontWeight.w400,
                                                                             fontSize: 12)),
                                                                     Expanded(
@@ -409,7 +410,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                 top: 20.0, left: 10),
                                             child: Image.asset(
                                               ImageConstants.edit,
-                                              scale: 2.8,
+                                              scale: 3,
                                             ),
                                           ),
                                         ],
@@ -448,7 +449,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
               text: StringConstants.addANewStoreText,
               textColor: AppColors.primary,
               borderRadius: 14,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               iconL: false,
               iconR: false,
               fontSize: 16,

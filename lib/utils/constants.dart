@@ -153,7 +153,7 @@ class StringConstants {
 
   static String emailText = "Email";
   static String endTimeText = "End Time";
-  static String emailIdText = "Email Id";
+  static String emailIdText = "Email ID";
   static String emailUsText = "Email us";
   static String editText = "Edit";
   static String enterMobileNumberText =
@@ -181,6 +181,7 @@ class StringConstants {
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";
   static String favoriteText = "Favorite";
+  static String favoritesText = "Favorites";
   static String fromWherePhotoText =
       "From where do you want to take the photo?";
   static String faqText = "FAQ";
@@ -457,6 +458,7 @@ class StringConstants {
   static String selectStateText = "Select State Text";
 
   //T
+  static String tapTouploadStoreImageText = "Tap to upload Store Image";
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
   static String termsAndConditionsText = "Terms & Conditions";

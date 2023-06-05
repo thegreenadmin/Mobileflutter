@@ -356,9 +356,15 @@ class ManageStoreController extends GetxController {
     product.returnDaysCount = daysTextController.text.trim().isEmpty
         ? 0
         : int.parse(daysTextController.text.trim());
-    product.length = double.parse(lengthTextController.text.trim());
-    product.width = double.parse(breadthTextController.text.trim());
-    product.height = double.parse(heightTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim().isEmpty
+        ? "0.0"
+        : lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim().isEmpty
+        ? "0.0"
+        : breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim().isEmpty
+        ? "0.0"
+        : heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
 
@@ -641,9 +647,15 @@ class ManageStoreController extends GetxController {
     product.returnDaysCount = daysTextController.text.trim().isEmpty
         ? 0
         : int.parse(daysTextController.text.trim());
-    product.length = double.parse(lengthTextController.text.trim());
-    product.width = double.parse(breadthTextController.text.trim());
-    product.height = double.parse(heightTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim().isEmpty
+        ? "0.0"
+        : lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim().isEmpty
+        ? "0.0"
+        : breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim().isEmpty
+        ? "0.0"
+        : heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;

@@ -334,20 +334,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     .isEmpty
                                                 ? height0SizedBox
                                                 : height8SizedBox,
-                                            SizedBox(
-                                              width: 190,
-                                              child: Text(
-                                                manageStoreController
-                                                        .storeProductList[index]
-                                                        .description ??
-                                                    "",
-                                                style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ),
+                                            manageStoreController
+                                                    .storeProductList[index]
+                                                    .description!
+                                                    .isEmpty
+                                                ? height0SizedBox
+                                                : SizedBox(
+                                                    width: 190,
+                                                    child: Text(
+                                                      manageStoreController
+                                                              .storeProductList[
+                                                                  index]
+                                                              .description ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: AppColors
+                                                              .blacklight,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
                                             manageStoreController
                                                     .storeProductList[index]
                                                     .description!
@@ -383,7 +390,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                           color:
                                                               AppColors.black,
                                                           fontWeight:
-                                                              FontWeight.w500),
+                                                              FontWeight.w600),
                                                     )
                                                   ],
                                                 ),
@@ -393,7 +400,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                           left: 10),
                                                   child: Image.asset(
                                                     ImageConstants.circleedit,
-                                                    scale: 2.5,
+                                                    scale: 2.8,
                                                   ),
                                                 ),
                                               ],
