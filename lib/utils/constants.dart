@@ -207,6 +207,7 @@ class StringConstants {
   static String helpText = "Help";
   static String historyText = "History";
   static String heightText = "Height";
+  static String hereForPickupText = "I am here for pickup";
   static String highToLowText = "High to low";
 
   //I

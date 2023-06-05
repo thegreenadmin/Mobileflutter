@@ -518,7 +518,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                      Obx(() => Text(
-                       ordersController.orderDate.value!=null?
+                       ordersController.orderDate.value!=null && ordersController.orderDate.value!="" ?
                        Utility.formatDateTime(
                            '${ordersController.orderDate.value.toString().substring(0, 10)} ${ordersController.orderDate.value.toString().substring(11, 23)}',
                            firstFormat:
@@ -624,6 +624,40 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ],
                   ),
                 ),),
+                Obx(() =>   Visibility(
+                  visible: ordersController.orderStatusTypeName.value == OrderStatus.pending.statusName
+                      || ordersController.orderStatusTypeName.value == OrderStatus.confirmed.statusName,
+                  child: Column(
+                    children: [
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {
+
+                          // // print(rContext);
+                          // Get.parameters["storeId"] = ordersController.storeId.value;
+                          // print(Get.parameters["storeId"]);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const StoreHomeMainScreen(),
+                          // ));
+
+                        },
+                        height: 50,
+                        width: WidgetConstants.screenWidth * 0.5,
+                        text: StringConstants.hereForPickupText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
+                      ),
+                      height20SizedBox,
+                    ],
+                  ),
+                ),),
+
                 buildOrderItems()
               ],
             ),
