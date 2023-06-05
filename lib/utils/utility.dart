@@ -8,6 +8,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import "package:google_maps_webservice/geocoding.dart";
 
 class Utility {
   static void showMessage(String title, String message) {
@@ -421,6 +422,17 @@ class Utility {
                 ),
               ));
         });
+  }
+
+  static String extractLocality(GeocodingResult result,String typeData) {
+    for (final component in result.addressComponents) {
+      for (final type in component.types) {
+        if (type == typeData) {
+          return component.longName;
+        }
+      }
+    }
+    return '';
   }
 }
 

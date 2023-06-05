@@ -21,7 +21,9 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
+// import 'package:geocoding/geocoding.dart' as geocoding;
+
+import "package:google_maps_webservice/geocoding.dart";
 
 class SearchStoreUserScreen extends StatefulWidget {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
@@ -299,7 +301,21 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
-                      List<geocoding.Location> locations = await geocoding
+                      final geocoding = GoogleMapsGeocoding(apiKey: searchStoreUserController.kGoogleApiKey);
+
+                      GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                      // log("GeocodingResponse web services:------------");
+                      // log(jsonEncode(response.results));
+
+                      final result = response.results.first;
+                      searchStoreUserController.city.value= Utility.extractLocality(result,"locality");
+                      searchStoreUserController.country.value  = Utility.extractLocality(result,"country");
+                      searchStoreUserController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                      searchStoreUserController.state.value = Utility.extractLocality(result,"administrative_area_level_1");
+                      updateMap(response.results.first.geometry.location.lat, response.results.first.geometry.location.lng);
+
+
+                      /*  List<geocoding.Location> locations = await geocoding
                           .locationFromAddress(p?.description.toString() ?? "");
 
                       List<geocoding.Placemark> placeMark =
@@ -323,7 +339,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       }
                       if(locations.isNotEmpty){
                         updateMap(locations.first.latitude, locations.first.longitude);
-                      }
+                      }*/
 
                       ///--------------------------------
                       /* GeoData addresses = await Geocoder2.getDataFromAddress(

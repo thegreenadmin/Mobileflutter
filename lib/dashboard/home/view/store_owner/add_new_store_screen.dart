@@ -14,7 +14,10 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
+// import 'package:geocoding/geocoding.dart' as geocoding;
+import "package:google_maps_webservice/geocoding.dart";
+
+import '../../../../utils/utility.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
   const AddNewStoreScreen({super.key});
@@ -659,9 +662,23 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           addNewStoreController.addressLine1TextController
                               .text = parts[0].toString();
 
-                          ///ADDRESSES BY GEOCODING
+                          ///ADDRESSES BY GoogleMapsGeocoding
 
-                          List<geocoding.Location> locations =
+                          final geocoding = GoogleMapsGeocoding(apiKey: addNewStoreController.kGoogleApiKey);
+
+                          GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                          // log("GeocodingResponse web services:------------");
+                          // log(jsonEncode(response.results));
+
+                          final result = response.results.first;
+                          addNewStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
+                          addNewStoreController.countryTextController.text = Utility.extractLocality(result,"country");
+                          addNewStoreController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                          addNewStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
+                          addNewStoreController.lng = response.results.first.geometry.location.lng;
+                          addNewStoreController.lat = response.results.first.geometry.location.lat;
+
+                          /*List<geocoding.Location> locations =
                               await geocoding.locationFromAddress(
                                   p?.description.toString() ?? "");
 
@@ -692,10 +709,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 locations.first.longitude.toString();
                             addNewStoreController.lat =
                                 locations.first.latitude.toString();
-                          }
+                          }*/
 
                           ///--------------------------------------
-                          GeoData addresses =
+                         /* GeoData addresses =
                               await Geocoder2.getDataFromAddress(
                                   address: p?.description.toString() ?? "",
                                   googleMapApiKey:
@@ -704,7 +721,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           if (addresses.state.isNotEmpty) {
                             addNewStoreController.stateTextController.text =
                                 addresses.state;
-                          }
+                          }*/
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         minLines: 1,
