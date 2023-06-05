@@ -1070,7 +1070,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         ),
                   height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data!
-                          .product!.description!.isEmpty
+                                  .product!.description ==
+                              null ||
+                          storeHomeMainController.productDetailResponse.value
+                              .data!.product!.description!.isEmpty
                       ? height0SizedBox
                       : Text(
                           storeHomeMainController.productDetailResponse.value
@@ -1082,7 +1085,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               color: AppColors.blacklight),
                         ),
                   storeHomeMainController.productDetailResponse.value.data!
-                          .product!.description!.isEmpty
+                                  .product!.description ==
+                              null ||
+                          storeHomeMainController.productDetailResponse.value
+                              .data!.product!.description!.isEmpty
                       ? height0SizedBox
                       : height20SizedBox,
                   Text(
