@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -301,18 +303,19 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
-                      final geocoding = GoogleMapsGeocoding(apiKey: searchStoreUserController.kGoogleApiKey);
-
+                      final geocoding = GoogleMapsGeocoding(apiKey: kGoogleApiKey);
                       GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
                       // log("GeocodingResponse web services:------------");
                       // log(jsonEncode(response.results));
 
-                      final result = response.results.first;
-                      searchStoreUserController.city.value= Utility.extractLocality(result,"locality");
-                      searchStoreUserController.country.value  = Utility.extractLocality(result,"country");
-                      searchStoreUserController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                      searchStoreUserController.state.value = Utility.extractLocality(result,"administrative_area_level_1");
-                      updateMap(response.results.first.geometry.location.lat, response.results.first.geometry.location.lng);
+                      final result = response.results.isNotEmpty?response.results.first:null;
+                     if(result!=null){
+                       searchStoreUserController.city.value= Utility.extractLocality(result,"locality");
+                       searchStoreUserController.country.value  = Utility.extractLocality(result,"country");
+                       searchStoreUserController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                       searchStoreUserController.state.value = Utility.extractLocality(result,"administrative_area_level_1");
+                       updateMap(response.results.first.geometry.location.lat, response.results.first.geometry.location.lng);
+                     }
 
 
                       /*  List<geocoding.Location> locations = await geocoding

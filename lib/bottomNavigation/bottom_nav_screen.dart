@@ -11,6 +11,9 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../dashboard/orders/view/order_store_list_screen.dart';
+import '../utils/shared_prefrences.dart';
+
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
 
@@ -19,7 +22,7 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  final BottomNavController _bottomNavigationPageController =
+  final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
 
   /* Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
@@ -30,19 +33,28 @@ class _BottomNavigationState extends State<BottomNavigation> {
     4: GlobalKey<NavigatorState>(),
   };*/
 
+
   GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
   GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
+  // RxString roleInApp = "".obs;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
+    // roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+
+  }
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
-          int id = _bottomNavigationPageController.selectedIndex.toInt();
+          int id = bottomNavigationPageController.selectedIndex.toInt();
           Get.back(id: id);
           return false;
         },
@@ -56,7 +68,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           //       scale: 4,
           //     ),
           //     onPressed: () {
-          //       _bottomNavigationPageController.onItemTapped(2);
+          //       bottomNavigationPageController.onItemTapped(2);
           //       // OrdersController controller = Get.find<OrdersController>();
           //       // controller.onInit();
           //     }),
@@ -85,20 +97,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       showUnselectedLabels: false,
                       backgroundColor: AppColors.white,
                       currentIndex:
-                          _bottomNavigationPageController.selectedIndex.value,
+                          bottomNavigationPageController.selectedIndex.value,
                       onTap: (i) async {
-                        await _bottomNavigationPageController.onItemTapped(i);
+                        await bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
-                              _bottomNavigationPageController
+                              bottomNavigationPageController
                                           .selectedIndex.value ==
                                       0
                                   ? ImageConstants.homefill
                                   : ImageConstants.home,
-                              color: _bottomNavigationPageController
+                              color: bottomNavigationPageController
                                           .selectedIndex.value ==
                                       0
                                   ? AppColors.primary
@@ -109,7 +121,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             Text(
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
-                                  color: _bottomNavigationPageController
+                                  color: bottomNavigationPageController
                                               .selectedIndex.value ==
                                           0
                                       ? AppColors.primary
@@ -123,12 +135,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
-                              _bottomNavigationPageController
+                              bottomNavigationPageController
                                           .selectedIndex.value ==
                                       1
                                   ? ImageConstants.walletfill
                                   : ImageConstants.wallet,
-                              color: _bottomNavigationPageController
+                              color: bottomNavigationPageController
                                           .selectedIndex.value ==
                                       1
                                   ? AppColors.primary
@@ -139,7 +151,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             Text(
                               BottomNavStringConstants.walletText,
                               style: TextStyle(
-                                  color: _bottomNavigationPageController
+                                  color: bottomNavigationPageController
                                               .selectedIndex.value ==
                                           1
                                       ? AppColors.primary
@@ -153,12 +165,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
-                              _bottomNavigationPageController
+                              bottomNavigationPageController
                                           .selectedIndex.value ==
                                       2
                                   ? ImageConstants.orderfillIcon
                                   : ImageConstants.orderIcon,
-                              color: _bottomNavigationPageController
+                              color: bottomNavigationPageController
                                           .selectedIndex.value ==
                                       2
                                   ? AppColors.primary
@@ -169,7 +181,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             Text(
                               BottomNavStringConstants.ordersText,
                               style: TextStyle(
-                                  color: _bottomNavigationPageController
+                                  color: bottomNavigationPageController
                                               .selectedIndex.value ==
                                           2
                                       ? AppColors.primary
@@ -183,12 +195,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
-                              _bottomNavigationPageController
+                              bottomNavigationPageController
                                           .selectedIndex.value ==
                                       3
                                   ? ImageConstants.offersfill
                                   : ImageConstants.offers,
-                              color: _bottomNavigationPageController
+                              color: bottomNavigationPageController
                                           .selectedIndex.value ==
                                       3
                                   ? AppColors.primary
@@ -199,7 +211,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             Text(
                               BottomNavStringConstants.offersText,
                               style: TextStyle(
-                                  color: _bottomNavigationPageController
+                                  color: bottomNavigationPageController
                                               .selectedIndex.value ==
                                           3
                                       ? AppColors.primary
@@ -213,12 +225,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
-                              _bottomNavigationPageController
+                              bottomNavigationPageController
                                           .selectedIndex.value ==
                                       4
                                   ? ImageConstants.morefill
                                   : ImageConstants.more,
-                              color: _bottomNavigationPageController
+                              color: bottomNavigationPageController
                                           .selectedIndex.value ==
                                       4
                                   ? AppColors.primary
@@ -229,7 +241,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             Text(
                               BottomNavStringConstants.moreText,
                               style: TextStyle(
-                                  color: _bottomNavigationPageController
+                                  color: bottomNavigationPageController
                                               .selectedIndex.value ==
                                           4
                                       ? AppColors.primary
@@ -252,22 +264,24 @@ class _BottomNavigationState extends State<BottomNavigation> {
             tabs: <TabItem>[
               TabItem(tab1, const HomeScreen()),
               TabItem(tab2, const WalletScreen()),
-              TabItem(tab3, const OrdersScreen()),
+              SharedPreferenceStorage.getData(Role.role.value) == Role.customerRoleText ?
+              TabItem(tab3, const OrdersScreen()) :
+              TabItem(tab3, const OrderStoresListScreen()),
               TabItem(tab4, const OffersScreen()),
               TabItem(tab5, const MoreScreen()),
             ],
-            selectedIndex: _bottomNavigationPageController.selectedIndex.value,
+            selectedIndex: bottomNavigationPageController.selectedIndex.value,
             popStack: true,
           ),
 
           // body: buildNavigator(),
           // body: Obx(
           //       () => IndexedStack(
-          //     children:_bottomNavigationPageController.tabs,
-          //     index: _bottomNavigationPageController.selectedIndex.toInt()??0,
+          //     children:bottomNavigationPageController.tabs,
+          //     index: bottomNavigationPageController.selectedIndex.toInt()??0,
           //   ),
           // ),
-          // body: _bottomNavigationPageController.selectedTab,
+          // body: bottomNavigationPageController.selectedTab,
         ),
       ),
     );
@@ -275,9 +289,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
 /*  Widget  buildNavigator() {
     return Navigator(
-      key: navigatorKeysAll[_bottomNavigationPageController.selectedIndex.value],
+      key: navigatorKeysAll[bottomNavigationPageController.selectedIndex.value],
       onGenerateRoute: (RouteSettings settings){
-        return MaterialPageRoute(builder: (_) => _bottomNavigationPageController.tabs.elementAt(_bottomNavigationPageController.selectedIndex.value));
+        return MaterialPageRoute(builder: (_) => bottomNavigationPageController.tabs.elementAt(bottomNavigationPageController.selectedIndex.value));
       },
     );
   }*/

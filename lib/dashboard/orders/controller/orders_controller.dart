@@ -26,6 +26,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import '../../../utils/constants.dart';
+import '../../home/model/get_store_list_model.dart' as stores;
 import '../view/component/order_status_enum.dart';
 
 class OrdersController extends GetxController {
@@ -52,6 +53,7 @@ class OrdersController extends GetxController {
   RxInt page = 1.obs;
   RxInt totalCount = 1.obs;
   RxInt pageStore = 1.obs;
+  RxInt? addressListIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt orderStatusId = 2.obs;
   RxString orderStatusName = OrderStatus.newOrder.statusName.obs;
@@ -67,6 +69,9 @@ class OrdersController extends GetxController {
       OrderStatusListResponse();
   late order_detail.OrderDetailResponse orderDetailResponse =
       order_detail.OrderDetailResponse();
+
+  late stores.GetStoreListModel getStoreListModel = stores.GetStoreListModel();
+  RxList<stores.Stores> storeList = <stores.Stores>[].obs;
   Rx<order_detail.OrderItem> orderItemObj = order_detail.OrderItem().obs;
   RxList<order_detail.OrderItem> orderItems = <order_detail.OrderItem>[].obs;
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
@@ -77,7 +82,7 @@ class OrdersController extends GetxController {
   RxList<Categories> stepInd = [
     Categories(id: 0, name: "Received", isSelected: false),
     Categories(id: 1, name: "In Progress", isSelected: false),
-    Categories(id: 2, name: "Shipped", isSelected: false),
+    Categories(id: 2, name: "In-transit", isSelected: false),
     Categories(id: 3, name: "Complete", isSelected: false),
   ].obs;
 
@@ -119,6 +124,7 @@ class OrdersController extends GetxController {
         apiGetOrderDetailsApi();
       }
     } else {
+      apiGetStoreList();
       page.value = 1;
       apiGetStoreOrderListApi();
     }
@@ -937,6 +943,44 @@ class OrdersController extends GetxController {
     });
   }
 
+  //Get Store List Api
+  Future apiGetStoreList() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+        headers,
+        showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = stores.GetStoreListModel.fromJson(value.body);
+        storeList.clear();
+        storeList.addAll(getStoreListModel.data!.stores as Iterable<stores.Stores>);
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value.body['message']!=null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
   //Get Order Details Api
   Future apiGetOrderDetailsApi() async {
     isLoading.value = true;
@@ -990,14 +1034,14 @@ class OrdersController extends GetxController {
         });
 
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
-          stepInd.firstWhere((element) => element.id == 2).name = "Shipped";
+          stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
         }else{
-          stepInd.firstWhere((element) => element.id == 2).name = "Picked";
+          stepInd.firstWhere((element) => element.id == 2).name = "Ready to pickup";
         }
-        if(orderStatusTypeName.value ==
+        /*if(orderStatusTypeName.value ==
             OrderStatus.confirmed.statusName){
           stepInd.firstWhere((element) => element.id == 1).name = OrderStatus.confirmed.statusName.toTitleCase();
-        }
+        }*/
 
         for (var element in stepInd) {
           if (element.id! <= activeStep.value) {

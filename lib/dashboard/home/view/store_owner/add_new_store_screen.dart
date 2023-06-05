@@ -670,14 +670,19 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           // log("GeocodingResponse web services:------------");
                           // log(jsonEncode(response.results));
 
-                          final result = response.results.first;
-                          addNewStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
-                          addNewStoreController.countryTextController.text = Utility.extractLocality(result,"country");
-                          addNewStoreController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                          addNewStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
-                          addNewStoreController.lng = response.results.first.geometry.location.lng;
-                          addNewStoreController.lat = response.results.first.geometry.location.lat;
-
+                          final result = response.results.isNotEmpty?response.results.first:null;
+                          if(result!=null) {
+                            addNewStoreController.townOrCityTextController.text =
+                                Utility.extractLocality(result, "locality");
+                            addNewStoreController.countryTextController.text =
+                                Utility.extractLocality(result, "country");
+                            addNewStoreController.zipCodeTextController.text =
+                                Utility.extractLocality(result, "postal_code");
+                            addNewStoreController.stateTextController.text =
+                                Utility.extractLocality(result, "administrative_area_level_1");
+                            addNewStoreController.lng = response.results.first.geometry.location.lng;
+                            addNewStoreController.lat = response.results.first.geometry.location.lat;
+                          }
                           /*List<geocoding.Location> locations =
                               await geocoding.locationFromAddress(
                                   p?.description.toString() ?? "");

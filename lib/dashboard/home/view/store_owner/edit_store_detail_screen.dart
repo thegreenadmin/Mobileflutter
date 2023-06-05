@@ -667,13 +667,15 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           // log("GeocodingResponse web services:------------");
                           // log(jsonEncode(response.results));
 
-                          final result = response.results.first;
-                          ownerStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
-                          ownerStoreController.countryTextController.text = Utility.extractLocality(result,"country");
-                          ownerStoreController.postalCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                          ownerStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
-                          ownerStoreController.lng = response.results.first.geometry.location.lng;
-                          ownerStoreController.lat = response.results.first.geometry.location.lat;
+                          final result = response.results.isNotEmpty?response.results.first:null;
+                          if(result!=null){
+                            ownerStoreController.townOrCityTextController.text = Utility.extractLocality(result,"locality");
+                            ownerStoreController.countryTextController.text = Utility.extractLocality(result,"country");
+                            ownerStoreController.postalCodeTextController.text = Utility.extractLocality(result,"postal_code");
+                            ownerStoreController.stateTextController.text = Utility.extractLocality(result,"administrative_area_level_1");
+                            ownerStoreController.lng = response.results.first.geometry.location.lng;
+                            ownerStoreController.lat = response.results.first.geometry.location.lat;
+                          }
 
 
                           /*List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");

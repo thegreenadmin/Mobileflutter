@@ -17,10 +17,11 @@ import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 
-import 'bottom_nav_screen.dart';
+import '../utils/constants.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
+  RxString roleInApp = "".obs;
 
   @override
   void onReady() {
@@ -38,6 +39,9 @@ class BottomNavController extends GetxController {
     selectedIndex.value = Get.parameters["currentIndex"] != null
         ? int.parse(Get.parameters["currentIndex"].toString())
         : 0;
+    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+    debugPrint("roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
+
     // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
 
