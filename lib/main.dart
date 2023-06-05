@@ -10,7 +10,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 
-
 RemoteMessage? initialRemoteMessage;
 
 Future<void> main() async {
@@ -119,8 +118,8 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: Routers.route,
-      //initialRoute: '/welcomeView',
-      home: const SplashScreen(),
+      initialRoute: '/splashView',
+      // home: const SplashScreen(),
     );
   }
 }

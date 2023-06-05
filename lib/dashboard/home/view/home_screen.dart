@@ -699,7 +699,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? homeController.featuredUserProductList.isEmpty
                         ? height0SizedBox
                         : Text(
-                            StringConstants.featuredProductText,
+                            StringConstants.featuredProductsText,
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600,
@@ -708,7 +708,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : homeController.ownerFeatureProductList.isEmpty
                         ? height0SizedBox
                         : Text(
-                            StringConstants.featuredProductText,
+                            StringConstants.featuredProductsText,
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600,

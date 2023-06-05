@@ -179,7 +179,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                 () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox
                     : Text(
-                        StringConstants.featuredProductText,
+                        StringConstants.featuredProductsText,
                         style: const TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,

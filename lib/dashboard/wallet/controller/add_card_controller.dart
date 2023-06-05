@@ -715,7 +715,7 @@ class AddCardController extends GetxController {
     Map body = {
       "store_id": int.parse(storeId!.value),
       "user_stripe_bank_id": int.parse(userStripeBankId!.value),
-      "amount": payoutAmountTextController.text.trim()
+      "amount": double.parse(payoutAmountTextController.text.trim())
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',

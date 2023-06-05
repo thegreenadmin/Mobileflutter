@@ -21,6 +21,13 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
       Get.put(AddOffersController());
 
   @override
+  initState() {
+    addOffersController.offerNameTextController.clear();
+    addOffersController.discountOrOfferTextController.clear();
+    addOffersController.offerImageDynamicLinkfromServer.value = "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(

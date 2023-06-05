@@ -33,6 +33,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       Get.put(StoreHomeMainController());
   final CarouselController _controller = CarouselController();
   int _current = 0;
+
   @override
   initState() {
     super.initState();
@@ -41,7 +42,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
       }
-
       if (Get.parameters['isFromHome'] != "false") {
         storeHomeMainController.productId.value =
             Get.parameters["productId"] == null
@@ -483,7 +483,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           height: WidgetConstants.screenHeight * 0.8,
           child: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -491,7 +491,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     StringConstants.orderText,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize: 22,
                         color: AppColors.black),
                   ),
                   height20SizedBox,
@@ -856,7 +856,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     StringConstants.aboutProductText,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize: 18,
                         color: AppColors.black),
                   ),
                   height10SizedBox,
@@ -871,10 +871,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   ),
                   height20SizedBox,
                   Text(
-                    StringConstants.otherDetailText,
+                    StringConstants.otherDetailsText,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize: 18,
                         color: AppColors.black),
                   ),
                   height20SizedBox,
@@ -933,15 +933,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           : "No"),
                   height20SizedBox,
                   _buildRowOtherDetail(
-                      title: StringConstants.daysText,
-                      textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.returnDaysCount.toString() ?? "0"} Days"),
+                      title: StringConstants.returnDaysText,
+                      textData: storeHomeMainController.productDetailResponse
+                              .value.data?.product?.returnDaysCount
+                              .toString() ??
+                          "0"),
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize: 18,
                         color: AppColors.black),
                   ),
                   height20SizedBox,

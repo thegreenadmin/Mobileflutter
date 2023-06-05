@@ -327,7 +327,7 @@ class StoreHomeMainController extends GetxController {
   void discardCartItems(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -916,14 +916,16 @@ class StoreHomeMainController extends GetxController {
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
-            Text(
-              StringConstants.continueShoppingWithGreenMallText,
-              style: TextStyle(
-                  color: AppColors.blacklight,
-                  fontSize: 16,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
+            Center(
+              child: Text(
+                StringConstants.continueShoppingWithGreenMallText,
+                style: TextStyle(
+                    color: AppColors.blacklight,
+                    fontSize: 16,
+                    height: 1.6,
+                    fontWeight: FontWeight.w400),
+                textAlign: TextAlign.start,
+              ),
             ),
             height25SizedBox,
             Row(
@@ -1140,7 +1142,7 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             product.ShopProductDetailResponse.fromJson(value?.body);
- productIm!.clear();
+        productIm!.clear();
         if (productDetailResponse
             .value.data!.product!.productImages!.isNotEmpty) {
           for (int i = 0;
@@ -1151,7 +1153,7 @@ class StoreHomeMainController extends GetxController {
             if (i >= 5) {
               break;
             }
-           
+
             productIm!.add(product.ProductImage(
                 image: product.Image(
                     dynamicUrl: productDetailResponse.value.data!.product!

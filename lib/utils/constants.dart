@@ -184,7 +184,8 @@ class StringConstants {
   static String fromWherePhotoText =
       "From where do you want to take the photo?";
   static String faqText = "FAQ";
-  static String featuredProductText = "Featured products";
+  static String featuredProductsText = "Featured products";
+  static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
   static String filterOptionsText = "Filter Options";
   static String enterRoleText = "Enter Role";
@@ -290,7 +291,7 @@ class StringConstants {
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
   static String offersText = "Offers";
-  static String otherDetailText = "Other Detail";
+  static String otherDetailsText = "Other Details";
   static String ordersText = "Orders";
   static String orderStatusText = "Order Status";
   static String ordersConfirmationNumberText = "Order Confirmation Number";
@@ -364,10 +365,10 @@ class StringConstants {
   static String registerHereText = " Register Here!!";
   static String receivedOrderText = "Received Order";
   static String removeText = "Remove";
-  static String rolesAndPermissionText = "Roles & Permission";
+  static String rolesAndPermissionText = "Roles & Permissions";
   static String rolesText = "Roles";
   static String roleNameText = "Role Name";
-  static String returnAvailableText = "Return Available";
+  static String returnAvailableText = "Return available";
   static String returnReasonText = "Return reason";
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
@@ -389,6 +390,7 @@ class StringConstants {
   static String refundTransactionText = "Refund Transaction";
   static String routingNumberText = "Routing Number";
   static String replaceCartItemsText = "Replace cart items?";
+  static String returnDaysText = "Return days";
 
   //S
   static String signUpText = "Sign up";

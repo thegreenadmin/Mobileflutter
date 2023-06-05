@@ -147,7 +147,7 @@ class _CartScreenState extends State<CartScreen> {
                 // height: WidgetConstants.screenHeight,
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -155,7 +155,7 @@ class _CartScreenState extends State<CartScreen> {
                           StringConstants.itemsText,
                           style: const TextStyle(
                               color: AppColors.black,
-                              fontSize: 20,
+                              fontSize: 22,
                               fontWeight: FontWeight.w600),
                         ),
                         height8SizedBox,
@@ -172,9 +172,9 @@ class _CartScreenState extends State<CartScreen> {
                               itemBuilder: (BuildContext context, int i) {
                                 return Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 5),
+                                      horizontal: 10, vertical: 15),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.greylight,
+                                      color: AppColors.primarylight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(8.0),
                                       )),
@@ -821,7 +821,7 @@ class _CartScreenState extends State<CartScreen> {
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         height15SizedBox,
@@ -1002,7 +1002,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: const TextStyle(
                               color: AppColors.black,
                               fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w600),
                         ),
                         height10SizedBox,
                         Center(
@@ -1027,7 +1027,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartSubTotal?.toStringAsFixed(2) ?? "0"}",
@@ -1048,7 +1048,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0"}",
@@ -1069,7 +1069,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartTotalDiscount?.toStringAsFixed(2) ?? "0.00"}",
@@ -1090,7 +1090,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartTotalServiceCharged?.toStringAsFixed(2) ?? "0.00"}",
@@ -1112,7 +1112,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}",
@@ -1133,14 +1133,14 @@ class _CartScreenState extends State<CartScreen> {
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             Text(
                                               "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                           ],
                                         ),

@@ -14,7 +14,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+
 import 'dart:async';
 import 'package:flutter/services.dart';
 

@@ -576,14 +576,16 @@ class OrdersController extends GetxController {
             const SizedBox(
               height: 15,
             ),
-            Text(
-              StringConstants.continueShoppingWithGreenMallText,
-              style: TextStyle(
-                  color: AppColors.blacklight,
-                  fontSize: 16,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
+            Center(
+              child: Text(
+                StringConstants.continueShoppingWithGreenMallText,
+                style: TextStyle(
+                    color: AppColors.blacklight,
+                    fontSize: 16,
+                    height: 1.6,
+                    fontWeight: FontWeight.w400),
+                textAlign: TextAlign.start,
+              ),
             ),
             height25SizedBox,
             CustomButton(
