@@ -1177,16 +1177,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     fontWeight: FontWeight.w500),
                                 controller:
                                     manageStoreController.lengthTextController,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterLengthText;
-                                  } else if (double.parse(value) == 0.0) {
-                                    return AlertStringConstants
-                                        .invalidInputText;
-                                  }
-                                  return null;
-                                },
+                                // validator: (value) {
+                                // if (value!.trim().isEmpty) {
+                                //   return AlertStringConstants
+                                //       .pleaseEnterLengthText;
+                                // } else if (double.parse(value) == 0.0) {
+                                //   return AlertStringConstants
+                                //       .invalidInputText;
+                                // }
+                                // return null;
+                                //  },
                                 decoration: InputDecoration(
                                   hintText: StringConstants.lengthText,
                                   hintStyle: const TextStyle(
@@ -1268,16 +1268,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .breadthTextController,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterBreadthText;
-                                    } else if (double.parse(value) == 0.0) {
-                                      return AlertStringConstants
-                                          .invalidInputText;
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value!.trim().isEmpty) {
+                                  //     return AlertStringConstants
+                                  //         .pleaseEnterBreadthText;
+                                  //   } else if (double.parse(value) == 0.0) {
+                                  //     return AlertStringConstants
+                                  //         .invalidInputText;
+                                  //   }
+                                  //   return null;
+                                  // },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.breadthText,
                                     hintStyle: const TextStyle(
@@ -1362,16 +1362,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       fontWeight: FontWeight.w500),
                                   controller: manageStoreController
                                       .heightTextController,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterHeightText;
-                                    } else if (double.parse(value) == 0.0) {
-                                      return AlertStringConstants
-                                          .invalidInputText;
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value!.trim().isEmpty) {
+                                  //     return AlertStringConstants
+                                  //         .pleaseEnterHeightText;
+                                  //   } else if (double.parse(value) == 0.0) {
+                                  //     return AlertStringConstants
+                                  //         .invalidInputText;
+                                  //   }
+                                  //   return null;
+                                  // },
                                   decoration: InputDecoration(
                                     hintText: StringConstants.heightText,
                                     hintStyle: const TextStyle(
@@ -1654,7 +1654,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                           if (value!.trim().isEmpty) {
                                             return AlertStringConstants
                                                 .pleaseEnterValidDaysText;
-                                          } else if (value.trim() == "0" || value.trim() == "00") {
+                                          } else if (value.trim() == "0" ||
+                                              value.trim() == "00") {
                                             return AlertStringConstants
                                                 .invalidInputText;
                                           }

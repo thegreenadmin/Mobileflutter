@@ -43,7 +43,8 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    orderId.value = Get.parameters == null ? "" : Get.parameters["orderId"] ?? "";
+    orderId.value =
+        Get.parameters == null ? "" : Get.parameters["orderId"] ?? "";
     storeId.value = Get.parameters["storeId"] ?? "";
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;
@@ -96,7 +97,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   RxList horizontalTabList = [
-    StringConstants.activeText,
+    StringConstants.receivedText,
     StringConstants.inProgress,
     StringConstants.pickupText,
     StringConstants.completedText,
@@ -127,8 +128,8 @@ class OrdersHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
@@ -159,7 +160,7 @@ class OrdersHomeMainController extends GetxController {
       "order_type": "DESC",
       "from_date": null,
       "to_date": null,
-      "only_active_orders":selectedIndex.value == 0?true: null,
+      "only_active_orders": selectedIndex.value == 0 ? true : null,
       "order_statuses": selectedIndex.value == 0
           ? []
           : selectedIndex.value == 1
@@ -206,10 +207,10 @@ class OrdersHomeMainController extends GetxController {
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -254,42 +255,48 @@ class OrdersHomeMainController extends GetxController {
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
         for (var element in getOrderItems) {
-          element.isSelected =
-          selectedIndex.value == 0
-              && element.orderItemStatus == OrderStatus.pending.statusName
+          element.isSelected = selectedIndex.value == 0 &&
+                  element.orderItemStatus == OrderStatus.pending.statusName
               ? false
-              : selectedIndex.value == 1
-              && element.orderItemStatus == OrderStatus.confirmed.statusName ||
-              selectedIndex.value == 1
-                  && element.orderItemStatus == OrderStatus.pending.statusName
-              ? false
-              : selectedIndex.value == 2
-              && element.orderItemStatus == OrderStatus.shipped.statusName ||
-              selectedIndex.value == 2
-              && element.orderItemStatus == OrderStatus.readyPickup.statusName ||
-              selectedIndex.value == 2
-                  && element.orderItemStatus == OrderStatus.confirmed.statusName ||
-              selectedIndex.value == 2
-                  && element.orderItemStatus == OrderStatus.pending.statusName
-              ? false
-              : selectedIndex.value == 3
-              && element.orderItemStatus == OrderStatus.delivered.statusName
-              ? false : true;
+              : selectedIndex.value == 1 &&
+                          element.orderItemStatus ==
+                              OrderStatus.confirmed.statusName ||
+                      selectedIndex.value == 1 &&
+                          element.orderItemStatus ==
+                              OrderStatus.pending.statusName
+                  ? false
+                  : selectedIndex.value == 2 &&
+                              element.orderItemStatus ==
+                                  OrderStatus.shipped.statusName ||
+                          selectedIndex.value == 2 &&
+                              element.orderItemStatus ==
+                                  OrderStatus.readyPickup.statusName ||
+                          selectedIndex.value == 2 &&
+                              element.orderItemStatus ==
+                                  OrderStatus.confirmed.statusName ||
+                          selectedIndex.value == 2 &&
+                              element.orderItemStatus ==
+                                  OrderStatus.pending.statusName
+                      ? false
+                      : selectedIndex.value == 3 &&
+                              element.orderItemStatus ==
+                                  OrderStatus.delivered.statusName
+                          ? false
+                          : true;
         }
         // selectedIndex.value = 0 ?
-
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
+        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -332,10 +339,10 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -379,7 +386,8 @@ class OrdersHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
-        } Navigator.of(Get.context!).pop();
+        }
+        Navigator.of(Get.context!).pop();
         // Get.back();
         update();
       } else {
@@ -423,10 +431,10 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -474,10 +482,10 @@ class OrdersHomeMainController extends GetxController {
         Navigator.of(ctx).pop();
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -493,7 +501,8 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-       if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName) {
+      if (element.isSelected == true &&
+          element.orderItemStatus == OrderStatus.pending.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -526,10 +535,10 @@ class OrdersHomeMainController extends GetxController {
         Navigator.pop(ctx);
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -545,8 +554,10 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName ||
-          element.isSelected == true && element.orderItemStatus == OrderStatus.confirmed.statusName) {
+      if (element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.pending.statusName ||
+          element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.confirmed.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -578,15 +589,15 @@ class OrdersHomeMainController extends GetxController {
         Navigator.pop(ctx);
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
   //Mark store order ready for Pick
-  apiMarkReadyForPickUp(BuildContext ctx ) async {
+  apiMarkReadyForPickUp(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
@@ -597,8 +608,10 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true && element.orderItemStatus == OrderStatus.pending.statusName ||
-          element.isSelected == true && element.orderItemStatus == OrderStatus.confirmed.statusName) {
+      if (element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.pending.statusName ||
+          element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.confirmed.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -630,10 +643,10 @@ class OrdersHomeMainController extends GetxController {
         Navigator.pop(ctx);
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -650,8 +663,10 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
 
     for (var element in getOrderItems) {
-      if (element.isSelected == true && element.orderItemStatus == OrderStatus.shipped.statusName ||
-          element.isSelected == true && element.orderItemStatus == OrderStatus.readyPickup.statusName ) {
+      if (element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.shipped.statusName ||
+          element.isSelected == true &&
+              element.orderItemStatus == OrderStatus.readyPickup.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -683,10 +698,10 @@ class OrdersHomeMainController extends GetxController {
         Navigator.pop(ctx);
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

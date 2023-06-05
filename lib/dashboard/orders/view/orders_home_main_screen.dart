@@ -431,8 +431,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                     secFormat: '',
                                                   ).toString(),
                                                   style: const TextStyle(
-                                                      color:
-                                                          AppColors.black,
+                                                      color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 14))
@@ -440,27 +439,40 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           ),
                                           height5SizedBox,
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                   "${StringConstants.orderType}: ",
                                                   style: TextStyle(
-                                                      color: AppColors.blacklight,
-                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 14)),
                                               Text(
                                                   ordersHomeMainController
-                                                      .ownerOrderHistoryList?[index].deliveryServiceId
-                                                      .toString()=="1"
-                                                      ? StringConstants.inStoreText
-                                                      :ordersHomeMainController.
-                                                  ownerOrderHistoryList?[index].
-                                                  deliveryServiceId.toString()=="2"
-                                                      ? StringConstants.deliveryText
-                                                      : StringConstants.curbSideText,
+                                                              .ownerOrderHistoryList?[
+                                                                  index]
+                                                              .deliveryServiceId
+                                                              .toString() ==
+                                                          "1"
+                                                      ? StringConstants
+                                                          .inStoreText
+                                                      : ordersHomeMainController
+                                                                  .ownerOrderHistoryList?[
+                                                                      index]
+                                                                  .deliveryServiceId
+                                                                  .toString() ==
+                                                              "2"
+                                                          ? StringConstants
+                                                              .deliveryText
+                                                          : StringConstants
+                                                              .curbSideText,
                                                   style: const TextStyle(
                                                       color: AppColors.black,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 14))
                                             ],
                                           ),

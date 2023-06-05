@@ -1158,13 +1158,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .lengthTextController,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterLengthText;
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value!.trim().isEmpty) {
+                                    //     return AlertStringConstants
+                                    //         .pleaseEnterLengthText;
+                                    //   }
+                                    //   return null;
+                                    // },
                                     decoration: InputDecoration(
                                       hintText: StringConstants.lengthText,
                                       hintStyle: const TextStyle(
@@ -1247,13 +1247,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .breadthTextController,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterBreadthText;
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value!.trim().isEmpty) {
+                                    //     return AlertStringConstants
+                                    //         .pleaseEnterBreadthText;
+                                    //   }
+                                    //   return null;
+                                    // },
                                     decoration: InputDecoration(
                                       hintText: StringConstants.breadthText,
                                       hintStyle: const TextStyle(
@@ -1340,13 +1340,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         fontWeight: FontWeight.w500),
                                     controller: manageStoreController
                                         .heightTextController,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterHeightText;
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value!.trim().isEmpty) {
+                                    //     return AlertStringConstants
+                                    //         .pleaseEnterHeightText;
+                                    //   }
+                                    //   return null;
+                                    // },
                                     decoration: InputDecoration(
                                       hintText: StringConstants.heightText,
                                       hintStyle: const TextStyle(
