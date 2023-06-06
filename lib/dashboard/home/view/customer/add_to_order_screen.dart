@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
@@ -852,7 +851,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       )
                     ],
                   ),
-                  Obx(() => Column(
+                 Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           storeHomeMainController
@@ -1056,7 +1055,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ),
                                 ),
                         ],
-                      )),
+                      ),
                   height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data!
                                   .product!.description ==

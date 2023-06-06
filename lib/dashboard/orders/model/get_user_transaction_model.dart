@@ -135,33 +135,85 @@ class Transactionss {
 }
 
 class OrderTransaction {
-  String? orderTransactionId;
+  String? id;
   String? transactionId;
   String? orderId;
+  String? orderTransactionType;
+  String? storeServiceChargeType;
+  double? storeServiceChargeValue;
+  double? storeTotalServiceCharged;
+  String? orderServiceChargeType;
+  double? orderServiceChargeValue;
+  double? orderTotalServiceCharged;
+  double? storeReceivedAmount;
+  double? totalAmount;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? orderTransactionId;
   Transaction? transaction;
 
   OrderTransaction(
-      {this.orderTransactionId,
+      {this.id,
       this.transactionId,
       this.orderId,
+      this.orderTransactionType,
+      this.storeServiceChargeType,
+      this.storeServiceChargeValue,
+      this.storeTotalServiceCharged,
+      this.orderServiceChargeType,
+      this.orderServiceChargeValue,
+      this.orderTotalServiceCharged,
+      this.storeReceivedAmount,
+      this.totalAmount,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.orderTransactionId,
       this.transaction});
 
   OrderTransaction.fromJson(Map<String, dynamic> json) {
-    orderTransactionId = json['order_transaction_id'];
+    id = json['id'];
     transactionId = json['transaction_id'];
     orderId = json['order_id'];
+    orderTransactionType = json['order_transaction_type'];
+    storeServiceChargeType = json['store_service_charge_type'];
+    storeServiceChargeValue = json['store_service_charge_value'];
+    storeTotalServiceCharged = json['store_total_service_charged'];
+    orderServiceChargeType = json['order_service_charge_type'];
+    orderServiceChargeValue = json['order_service_charge_value'];
+    orderTotalServiceCharged = json['order_total_service_charged'];
+    storeReceivedAmount = json['store_received_amount'];
+    totalAmount = json['total_amount'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    orderTransactionId = json['order_transaction_id'];
     transaction = json['transaction'] != null
         ? Transaction.fromJson(json['transaction'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['order_transaction_id'] = this.orderTransactionId;
-    data['transaction_id'] = this.transactionId;
-    data['order_id'] = this.orderId;
-    if (this.transaction != null) {
-      data['transaction'] = this.transaction!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['transaction_id'] = transactionId;
+    data['order_id'] = orderId;
+    data['order_transaction_type'] = orderTransactionType;
+    data['store_service_charge_type'] = storeServiceChargeType;
+    data['store_service_charge_value'] = storeServiceChargeValue;
+    data['store_total_service_charged'] = storeTotalServiceCharged;
+    data['order_service_charge_type'] = orderServiceChargeType;
+    data['order_service_charge_value'] = orderServiceChargeValue;
+    data['order_total_service_charged'] = orderTotalServiceCharged;
+    data['store_received_amount'] = storeReceivedAmount;
+    data['total_amount'] = totalAmount;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['order_transaction_id'] = orderTransactionId;
+    if (transaction != null) {
+      data['transaction'] = transaction!.toJson();
     }
     return data;
   }

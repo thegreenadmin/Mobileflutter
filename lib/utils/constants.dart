@@ -131,7 +131,9 @@ class StringConstants {
       "Your cart already contains items from a different store. If you proceed ahead your previously added cart items from that store would be removed. Do you really want to proceed ahead?";
   static String continueShoppingWithGreenMallText =
       "Please continue shopping with The Green Mall";
+  static String creditAmountText = "Credit Amount";
   //D
+  static String debitAmountText = "Debit Amount";
   static String deliveryText = "Delivery";
   static String drivingLicenceText = "Driving Licence";
   static String deliveryChargeText = "Delivery Charge";
@@ -468,6 +470,7 @@ class StringConstants {
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
   static String transactionTypeText = "Transaction Type";
+  static String transactionText = "Transaction";
   static String taxText = "Tax";
   static String theImageMustBeAtLeastText =
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";

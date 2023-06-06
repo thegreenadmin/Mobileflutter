@@ -124,14 +124,14 @@ class AddCardScreenState extends State<AddCardScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Image.asset(
-                                          ImageConstants.mastercard,
-                                          fit: BoxFit.cover,
-                                          scale: 5),
-                                    ),
-                                    width15SizedBox,
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(top: 8.0),
+                                    //   child: Image.asset(
+                                    //       ImageConstants.mastercard,
+                                    //       fit: BoxFit.cover,
+                                    //       scale: 5),
+                                    // ),
+                                    //  width15SizedBox,
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -139,7 +139,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                         Text(
                                           addCardController
                                               .cardList[index].card!.funding
-                                              .toString(),
+                                              .toString()
+                                              .toUpperCase(),
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 15,

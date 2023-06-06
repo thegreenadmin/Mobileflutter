@@ -219,18 +219,18 @@ class PayOutScreenState extends State<PayOutScreen> {
                             onChanged: (value) {
                               setState(() {});
 
-                              addCardController.totalWithdrawAmount.value =
-                                  double.parse((double.parse(addCardController
-                                              .payoutAmountTextController
-                                              .text) +
-                                          double.parse(addCardController
-                                                  .payoutAmountTextController
-                                                  .text) *
-                                              (double.parse(addCardController
-                                                      .storeServiceCharge.value
-                                                      .toString()) /
-                                                  100))
-                                      .toStringAsFixed(2));
+                              // addCardController.totalWithdrawAmount.value =
+                              //     double.parse((double.parse(addCardController
+                              //                 .payoutAmountTextController
+                              //                 .text) +
+                              //             double.parse(addCardController
+                              //                     .payoutAmountTextController
+                              //                     .text) *
+                              //                 (double.parse(addCardController
+                              //                         .storeServiceCharge.value
+                              //                         .toString()) /
+                              //                     100))
+                              //         .toStringAsFixed(2));
                             },
                             textInputAction: TextInputAction.next,
                             autofocus: false,
@@ -311,8 +311,10 @@ class PayOutScreenState extends State<PayOutScreen> {
                                   ImageConstants.greencheck,
                                   scale: 22,
                                 ),
+                                width10SizedBox,
                                 Text(
-                                  " Withdraw all \$${addCardController.totalWithdrawAmount.value}",
+                                  "Withdraw all \$${addCardController.payoutAmountTextController.text}",
+                                  // " Withdraw all \$${addCardController.totalWithdrawAmount.value}",
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,

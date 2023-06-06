@@ -130,9 +130,7 @@ class _WalletScreenState extends State<WalletScreen> {
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ? walletController.isLoading.value
-                          ? height0SizedBox
-                          : Text(StringConstants.toKnowBalanceYouDontHaveText)
+                      ? Text(StringConstants.toKnowBalanceYouDontHaveText)
                       : Row(
                           children: [
                             Expanded(
