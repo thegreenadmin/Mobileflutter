@@ -921,33 +921,21 @@ class _CartScreenState extends State<CartScreen> {
                                         width10SizedBox,
                                         Visibility(
                                           visible: storeHomeMainController
-                                                      .selectedUserAddress
-                                                      .value
-                                                      .addressLine1 ==
-                                                  null &&
+                                                      .selectedUserAddress.value.addressLine1 == null &&
                                               storeHomeMainController
-                                                      .selectedUserAddress
-                                                      .value
-                                                      .city ==
-                                                  null,
+                                                      .selectedUserAddress.value.city == null,
                                           child: Expanded(
                                             flex: 2,
                                             child: InkWell(
                                               onTap: () {
-                                                SharedPreferenceStorage.setData(
-                                                    "context", context);
-                                                Get.parameters["isFromCart"] =
-                                                    "true";
+                                                SharedPreferenceStorage.setData("context", context);
+                                                Get.parameters["isFromCart"] = "true";
                                                 storeHomeMainController
-                                                                .selectedUserAddress
-                                                                .value
-                                                                .addressLine1 ==
-                                                            null &&
+                                                                .selectedUserAddress.value
+                                                                .addressLine1 == null &&
                                                         storeHomeMainController
                                                                 .selectedUserAddress
-                                                                .value
-                                                                .city ==
-                                                            null
+                                                                .value.city == null
                                                     ? Navigator.of(context)
                                                         .push(MaterialPageRoute(
                                                           builder: (_) =>
@@ -1041,28 +1029,7 @@ class _CartScreenState extends State<CartScreen> {
                                         height10SizedBox,
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.taxText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               StringConstants.discountText,
@@ -1083,7 +1050,29 @@ class _CartScreenState extends State<CartScreen> {
                                         height10SizedBox,
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              StringConstants
+                                                  .deliveryChargeText,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            Text(
+                                              "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        height10SizedBox,
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               StringConstants.serviceFeesText,
@@ -1107,15 +1096,14 @@ class _CartScreenState extends State<CartScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              StringConstants
-                                                  .deliveryChargeText,
+                                              StringConstants.taxText,
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}",
+                                              "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0"}",
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,

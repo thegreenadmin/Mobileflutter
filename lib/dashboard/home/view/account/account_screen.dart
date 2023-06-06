@@ -544,8 +544,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     _authenticateWithBiometrics();
                                   } else {
                                     SharedPreferenceStorage.setData(
-                                        StringConstants.authenticatedText
-                                            .toLowerCase(),
+                                        StringConstants.authenticatedText,
                                         false);
                                     BioMetricAuthentication
                                         .isBioMetricAuthenticated.value = false;

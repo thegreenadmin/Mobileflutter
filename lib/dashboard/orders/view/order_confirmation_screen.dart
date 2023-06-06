@@ -626,7 +626,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),),
                 Obx(() =>   Visibility(
                   visible: ordersController.orderStatusTypeName.value == OrderStatus.pending.statusName
-                      || ordersController.orderStatusTypeName.value == OrderStatus.confirmed.statusName,
+                      || ordersController.orderStatusTypeName.value == OrderStatus.confirmed.statusName
+                      || ordersController.orderStatusTypeName.value == OrderStatus.readyPickup.statusName,
                   child: Column(
                     children: [
                       CustomButton(
@@ -636,13 +637,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-
-                          // // print(rContext);
-                          // Get.parameters["storeId"] = ordersController.storeId.value;
-                          // print(Get.parameters["storeId"]);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const StoreHomeMainScreen(),
-                          // ));
+                        ordersController.apiReadyPickupOrder(context);
 
                         },
                         height: 50,

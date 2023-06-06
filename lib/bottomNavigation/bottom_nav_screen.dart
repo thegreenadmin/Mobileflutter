@@ -264,9 +264,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
             tabs: <TabItem>[
               TabItem(tab1, const HomeScreen()),
               TabItem(tab2, const WalletScreen()),
-              SharedPreferenceStorage.getData(Role.role.value) == Role.customerRoleText ?
-              TabItem(tab3, const OrdersScreen()) :
-              TabItem(tab3, const OrderStoresListScreen()),
+              SharedPreferenceStorage.getData(Role.role.value) == Role.storeOwnerRoleText
+                  && bottomNavigationPageController.storeList.length > 1
+                  ? TabItem(tab3, const OrderStoresListScreen()):
+              TabItem(tab3, const OrdersScreen()),
               TabItem(tab4, const OffersScreen()),
               TabItem(tab5, const MoreScreen()),
             ],

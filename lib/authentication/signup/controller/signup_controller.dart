@@ -171,9 +171,9 @@ class SignupController extends GetxController {
 // Fields Validation Method
   void validateAndSubmit({bool isFromOwner = false}) async {
     if (validateAndSave()) {
-      SharedPreferenceStorage.setData("firstName", firstName.value.trim());
-      SharedPreferenceStorage.setData("lastName", lastName.value.trim());
-      SharedPreferenceStorage.setData("email", email.value.trim());
+      SharedPreferenceStorage.setData(StringConstants.firstNameText, firstName.value.trim());
+      SharedPreferenceStorage.setData(StringConstants.lastNameText, lastName.value.trim());
+      SharedPreferenceStorage.setData(StringConstants.emailText, email.value.trim());
       try {
         if (dateTextController.text.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectAge);

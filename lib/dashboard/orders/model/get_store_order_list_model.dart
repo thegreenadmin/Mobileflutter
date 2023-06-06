@@ -96,6 +96,9 @@ class StoreOrder {
     this.orderHistories,
     this.orderItems,
     this.orderDeliveryAddresses,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
   });
 
   String? userId;
@@ -120,6 +123,11 @@ class StoreOrder {
   List<OrderHistory>? orderHistories;
   List<OrderItem>? orderItems;
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
+  String? serviceChargeType;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
+
+
 
   StoreOrder copyWith({
     String? userId,
@@ -144,6 +152,9 @@ class StoreOrder {
     List<OrderHistory>? orderHistories,
     List<OrderItem>? orderItems,
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
+    String? serviceChargeType,
+    dynamic serviceChargeValue,
+    dynamic totalServiceCharged,
   }) =>
       StoreOrder(
         userId: userId ?? this.userId,
@@ -168,6 +179,9 @@ class StoreOrder {
         orderHistories: orderHistories ?? this.orderHistories,
         orderItems: orderItems ?? this.orderItems,
         orderDeliveryAddresses: orderDeliveryAddresses ?? this.orderDeliveryAddresses,
+        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
+        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
+        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
       );
 
   factory StoreOrder.fromJson(Map<String, dynamic> json) => StoreOrder(
@@ -193,6 +207,10 @@ class StoreOrder {
     orderHistories: json["order_histories"] == null ? [] : List<OrderHistory>.from(json["order_histories"]!.map((x) => OrderHistory.fromJson(x))),
     orderItems: json["order_items"] == null ? [] : List<OrderItem>.from(json["order_items"]!.map((x) => OrderItem.fromJson(x))),
     orderDeliveryAddresses: json["order_delivery_addresses"] == null ? [] : List<OrderDeliveryAddress>.from(json["order_delivery_addresses"]!.map((x) => OrderDeliveryAddress.fromJson(x))),
+    serviceChargeType: json["service_charge_type"],
+    serviceChargeValue: json["service_charge_value"]?.toDouble(),
+    totalServiceCharged: json["total_service_charged"]?.toDouble(),
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -218,6 +236,10 @@ class StoreOrder {
     "order_histories": orderHistories == null ? [] : List<dynamic>.from(orderHistories!.map((x) => x.toJson())),
     "order_items": orderItems == null ? [] : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
     "order_delivery_addresses": orderDeliveryAddresses == null ? [] : List<dynamic>.from(orderDeliveryAddresses!.map((x) => x.toJson())),
+    "service_charge_type": serviceChargeType,
+    "service_charge_value": serviceChargeValue,
+    "total_service_charged": totalServiceCharged,
+
   };
 }
 
@@ -368,47 +390,54 @@ class OrderItem {
     this.productId,
     this.orderItemCount,
     this.orderItemPrice,
-    this.serviceChargeType,
-    this.serviceChargeValue,
-    this.totalServiceCharged,
     this.discountName,
     this.discountType,
     this.discountValue,
     this.totalDiscount,
+    this.orderItemStatus,
+    this.cancelledAt,
+    this.shippedAt,
+    this.deliveredAt,
+    this.returedAt,
     this.status,
     this.createdAt,
     this.updatedAt,
     this.orderItemId,
   });
-
   String? orderId;
   String? productId;
   dynamic orderItemCount;
   dynamic orderItemPrice;
-  String? serviceChargeType;
-  dynamic serviceChargeValue;
-  dynamic totalServiceCharged;
   String? discountName;
   String? discountType;
   dynamic discountValue;
   dynamic totalDiscount;
+  String? orderItemStatus;
+  dynamic cancelledAt;
+  dynamic shippedAt;
+  dynamic deliveredAt;
+  dynamic returedAt;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? orderItemId;
+
+
 
   OrderItem copyWith({
     String? orderId,
     String? productId,
     dynamic orderItemCount,
     dynamic orderItemPrice,
-    String? serviceChargeType,
-    dynamic serviceChargeValue,
-    dynamic totalServiceCharged,
     String? discountName,
     String? discountType,
     dynamic discountValue,
     dynamic totalDiscount,
+    String? orderItemStatus,
+    dynamic cancelledAt,
+    dynamic shippedAt,
+    dynamic deliveredAt,
+    dynamic returedAt,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -419,17 +448,20 @@ class OrderItem {
         productId: productId ?? this.productId,
         orderItemCount: orderItemCount ?? this.orderItemCount,
         orderItemPrice: orderItemPrice ?? this.orderItemPrice,
-        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
-        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
-        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
         discountName: discountName ?? this.discountName,
         discountType: discountType ?? this.discountType,
         discountValue: discountValue ?? this.discountValue,
         totalDiscount: totalDiscount ?? this.totalDiscount,
+        orderItemStatus: orderItemStatus ?? this.orderItemStatus,
+        cancelledAt: cancelledAt ?? this.cancelledAt,
+        shippedAt: shippedAt ?? this.shippedAt,
+        deliveredAt: deliveredAt ?? this.deliveredAt,
+        returedAt: returedAt ?? this.returedAt,
         status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         orderItemId: orderItemId ?? this.orderItemId,
+
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -437,13 +469,15 @@ class OrderItem {
     productId: json["product_id"],
     orderItemCount: json["order_item_count"],
     orderItemPrice: json["order_item_price"],
-    serviceChargeType: json["service_charge_type"],
-    serviceChargeValue: json["service_charge_value"]?.toDouble(),
-    totalServiceCharged: json["total_service_charged"]?.toDouble(),
     discountName: json["discount_name"],
     discountType: json["discount_type"],
     discountValue: json["discount_value"],
     totalDiscount: json["total_discount"]?.toDouble(),
+    orderItemStatus: json["order_item_status"],
+    cancelledAt: json["cancelledAt"],
+    shippedAt: json["shippedAt"],
+    deliveredAt: json["deliveredAt"],
+    returedAt: json["returedAt"],
     status: json["status"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -455,13 +489,15 @@ class OrderItem {
     "product_id": productId,
     "order_item_count": orderItemCount,
     "order_item_price": orderItemPrice,
-    "service_charge_type": serviceChargeType,
-    "service_charge_value": serviceChargeValue,
-    "total_service_charged": totalServiceCharged,
     "discount_name": discountName,
     "discount_type": discountType,
     "discount_value": discountValue,
     "total_discount": totalDiscount,
+    "order_item_status": orderItemStatus,
+    "cancelledAt": cancelledAt,
+    "shippedAt": shippedAt,
+    "deliveredAt": deliveredAt,
+    "returedAt": returedAt,
     "status": status,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),

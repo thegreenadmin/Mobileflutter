@@ -1058,6 +1058,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         ],
                       )),
                   //height10SizedBox,
+                  storeHomeMainController.productDetailResponse.value.data!=null
+                  &&
                   storeHomeMainController.productDetailResponse.value.data!
                           .product!.description!.isEmpty
                       ? height0SizedBox
@@ -1069,8 +1071,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               color: AppColors.black),
                         ),
                   height10SizedBox,
-                  storeHomeMainController.productDetailResponse.value.data!
-                                  .product!.description ==
+                  storeHomeMainController.productDetailResponse.value.data?.product?.description ==
                               null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
@@ -1084,8 +1085,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               fontSize: 14,
                               color: AppColors.blacklight),
                         ),
-                  storeHomeMainController.productDetailResponse.value.data!
-                                  .product!.description ==
+
+                  storeHomeMainController.productDetailResponse.value.data?.product?.description ==
                               null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty

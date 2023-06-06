@@ -1074,6 +1074,17 @@ class AccountController extends GetxController {
   }
 
   clearData() async {
+    SharedPreferenceStorage.removeData("firstName");
+    SharedPreferenceStorage.removeData(StringConstants.firstNameText);
+    SharedPreferenceStorage.removeData(StringConstants.lastNameText);
+    SharedPreferenceStorage.removeData(StringConstants.emailText);
+    SharedPreferenceStorage.removeData(StringConstants.authenticatedText);
+    SharedPreferenceStorage.removeData(StringConstants.currentUserIdText);
+    SharedPreferenceStorage.removeData(Role.role.value);
+    SharedPreferenceStorage.removeData("lastName");
+    SharedPreferenceStorage.removeData("email");
+    SharedPreferenceStorage.removeData("token");
+    SharedPreferenceStorage.removeData("context");
     SharedPreferenceStorage.clearData();
     await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
       builder: (_) => const StartJourneyScreen(),

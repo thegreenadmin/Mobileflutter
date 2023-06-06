@@ -11,7 +11,7 @@ String storeDetailsResponseToJson(StoreDetailsResponse data) =>
     json.encode(data.toJson());
 
 class StoreDetailsResponse {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -22,7 +22,7 @@ class StoreDetailsResponse {
   });
 
   StoreDetailsResponse copyWith({
-    int? status,
+    dynamic status,
     String? message,
     Data? data,
   }) =>
@@ -247,8 +247,8 @@ class Image {
 class StoreAddress {
   String? storeAddressId;
   String? addressName;
-  double? longitude;
-  double? latitude;
+  dynamic longitude;
+  dynamic latitude;
   String? addressLine1;
   String? addressLine2;
   String? landmark;
@@ -272,8 +272,8 @@ class StoreAddress {
   StoreAddress copyWith({
     String? storeAddressId,
     String? addressName,
-    double? longitude,
-    double? latitude,
+    dynamic longitude,
+    dynamic latitude,
     String? addressLine1,
     String? addressLine2,
     String? landmark,
@@ -497,7 +497,7 @@ class StorePage {
 class StoreTiming {
   String? storeTimingId;
   bool? is24HoursActive;
-  int? dayOfWeek;
+  dynamic dayOfWeek;
   String? openingTime;
   String? closingTime;
   String? status;
@@ -514,7 +514,7 @@ class StoreTiming {
   StoreTiming copyWith({
     String? storeTimingId,
     bool? is24HoursActive,
-    int? dayOfWeek,
+    dynamic dayOfWeek,
     String? openingTime,
     String? closingTime,
     String? status,

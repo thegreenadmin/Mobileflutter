@@ -710,16 +710,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 .apiGetStoreDetailsApi();
                             ordersController
                                 .apiGetOrderDetailsApi();
+                            Get.parameters["orderStatus"] =ordersController
+                                .orderList[i].orderId ?? "";
+                            Get.parameters["isFromTransaction"] = "false";
+                            Get.parameters["isHome"] = "false";
+                            Get.parameters["isFromNotification"] = "false";
+                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
+
                             SharedPreferenceStorage.setData("context", context);
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const OrderConfirmationScreen(),
-                            ));
-                            Get.parameters["orderStatus"] =ordersController
-                                .orderList[i].orderId ??
-                                "";
-                            Get.parameters["isFromTransaction"] = "false";
-                            Get.parameters["isFromNotification"] = "false";
-                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
+                            )).then((value) {
+                              ordersController.page.value = 1;
+                              ordersController.orderList.clear();
+                              ordersController.apiGetOrderListApi();
+                            });
 
                             /* Get.to(
                                     () =>
@@ -977,8 +982,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                     14)),
                                             TextSpan(
                                               text: ordersController
-                                                  .orderList[
-                                              i]
+                                                  .orderList[i]
                                                   .orderItems
                                                   ?.length
                                                   .toString() ??
