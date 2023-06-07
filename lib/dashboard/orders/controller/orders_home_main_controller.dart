@@ -38,6 +38,7 @@ class OrdersHomeMainController extends GetxController {
   Rx<orderdetail.GetStoreOrderDetailModel> getStoreOrderDetailModel =
       orderdetail.GetStoreOrderDetailModel().obs;
   RxList<orderdetail.OrderItems> getOrderItems = <orderdetail.OrderItems>[].obs;
+  RxList<orderdetail.OrderHistories> orderHistories = <orderdetail.OrderHistories>[].obs;
 
   @override
   void onInit() {
@@ -83,9 +84,7 @@ class OrdersHomeMainController extends GetxController {
       case 3: //Completed Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory(orderStatus: {
-            "order_status_name": OrderStatus.completed.statusName
-          });
+          apiGetOwnerOrderHistory();
         }
         break;
       default:
@@ -97,7 +96,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   RxList horizontalTabList = [
-    StringConstants.activeText,
+    StringConstants.receivedText,
     StringConstants.inProgress,
     StringConstants.pickupText,
     StringConstants.completedText,
@@ -161,22 +160,11 @@ class OrdersHomeMainController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": selectedIndex.value == 0 ? true : null,
-      "order_statuses": selectedIndex.value == 0
-          ? []
-          : selectedIndex.value == 1
+      "order_statuses":  selectedIndex.value == 1
               ? [
                   {
                     "order_status_name": OrderStatus.inProgress.statusName
                   }, //"confirmed"
-                  {
-                    "order_status_name": OrderStatus.inTransit.statusName
-                  }, //"shipped"
-                  {
-                    "order_status_name": OrderStatus.readyForPickup.statusName
-                  }, //"pickup request"
-                  {
-                    "order_status_name": OrderStatus.cancelRequest.statusName
-                  } //"cancel request"
                 ]
               : selectedIndex.value == 2
                   ? [
@@ -188,7 +176,33 @@ class OrdersHomeMainController extends GetxController {
                       }, //ready pickup
 
                     ]
-                  : [orderStatus]
+                  : selectedIndex.value == 3
+                  ? [
+                      {
+                        "order_status_name": OrderStatus.completed.statusName
+                      }, //"shipped"
+                      {
+                        "order_status_name": OrderStatus.cancelled.statusName
+                      }, // cancelled
+                      {
+                        "order_status_name": OrderStatus.returnCancelled.statusName
+                      }, // return Cancelled
+                      {
+                        "order_status_name": OrderStatus.returned.statusName
+                      }, // return Completed
+                      {
+                        "order_status_name": OrderStatus.cancelRequest.statusName
+                      }, // cancel Request
+                    ]
+                  : [
+                      {
+                        "order_status_name": OrderStatus.receivedOrder.statusName
+                      }, // received
+                      {
+                        "order_status_name": OrderStatus.returnRequest.statusName
+                      }, // return Request
+
+                    ]
     };
     debugPrint("OWNER ORDER HISTORY BODY********** $body");
     debugPrint("TOKEN ********** $headers");
@@ -253,6 +267,8 @@ class OrdersHomeMainController extends GetxController {
         orderStatusId.value = getStoreOrderDetailModel
                 .value.data?.order?.orderHistories?.last.orderStatusId ??
             "0";
+        orderHistories.value =
+            getStoreOrderDetailModel.value.data!.order!.orderHistories!;
         getOrderItems.value =
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
         for (var element in getOrderItems) {
@@ -260,32 +276,18 @@ class OrdersHomeMainController extends GetxController {
                   element.orderItemStatus == OrderStatus.receivedOrder.statusName
               ? false
               : selectedIndex.value == 1 &&
-                          element.orderItemStatus ==
-                              OrderStatus.inProgress.statusName ||
-                      selectedIndex.value == 1 &&
-                          element.orderItemStatus ==
-                              OrderStatus.receivedOrder.statusName
+                          element.orderItemStatus !=
+                              OrderStatus.inProgress.statusName
                   ? false
                   : selectedIndex.value == 2 &&
-                              element.orderItemStatus ==
+                              element.orderItemStatus !=
                                   OrderStatus.inTransit.statusName ||
                           selectedIndex.value == 2 &&
-                              element.orderItemStatus ==
-                                  OrderStatus.readyForPickup.statusName ||
-                          selectedIndex.value == 2 &&
-                              element.orderItemStatus ==
-                                  OrderStatus.inProgress.statusName ||
-                          selectedIndex.value == 2 &&
-                              element.orderItemStatus ==
-                                  OrderStatus.receivedOrder.statusName
-                      ? false
-                      : selectedIndex.value == 3 &&
-                              element.orderItemStatus ==
-                                  OrderStatus.completed.statusName
-                          ? false
-                          : true;
+                              element.orderItemStatus !=
+                                  OrderStatus.readyForPickup.statusName
+                      ? false: element.orderItemStatus == OrderStatus.cancelled.statusName?
+                       false : true;
         }
-        // selectedIndex.value = 0 ?
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -348,7 +350,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Complete Return Request
-  apiCompleteReturnRequest() async {
+  apiCompleteReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
@@ -359,7 +361,7 @@ class OrdersHomeMainController extends GetxController {
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
-      if (element.isSelected == true) {
+      if (element.isSelected == true && element.orderItemStatus == OrderStatus.returnRequest.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -388,7 +390,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-        Navigator.of(Get.context!).pop();
+        Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {

@@ -380,7 +380,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 // ordersController
                                 //     .apiGetStoreOrderListApi();
                               })
-                                  : ordersHomeMainController
+                                  /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
                                   .first
@@ -391,7 +391,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       .statusName
                                   ? Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const ReturnConfirmOrderScreen(),
-                              )) : ordersHomeMainController
+                              ))*/ : ordersHomeMainController
                                   .ownerOrderHistoryList![index].orderHistories!
                                   .first
                                   .orderStatus!
@@ -540,12 +540,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                           FontWeight.w600,
                                                       fontSize: 14)),
                                               Text(
-                                                  ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="User Ready"?
-                                                      "Return Request"
-                                                      : ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="Pending"
-                                                      ? "Return Confirm" :ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="Confirmed"
-                                                      ? "Received" :ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="New"
-                                                      ? "Received" :
                                                   ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()??"",
                                                   style: const TextStyle(
                                                       color: AppColors.green,

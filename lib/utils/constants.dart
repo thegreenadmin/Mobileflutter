@@ -180,6 +180,8 @@ class StringConstants {
   static String enterEinNumberText = "Enter EIN Number";
   static String editAutoReloadIntoWalletText = "Edit Auto Reload Into Wallet";
   static String endDateText = "End Date";
+  //I
+  static String identityProofText = "Identity Proof";
   //F
   static String firstNameText = "First Name";
   static String faceIdText = "Face ID";

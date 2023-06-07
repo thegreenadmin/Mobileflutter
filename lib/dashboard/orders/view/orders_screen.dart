@@ -356,11 +356,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: ordersController.role!.value == Role.customerRoleText
-            ? const Size.fromHeight(90.0)
-            : Size.fromHeight(WidgetConstants.screenHeight * 0.18),
-        child: ordersController.role!.value == Role.customerRoleText
-            ? Container(
+        preferredSize:  const Size.fromHeight(90.0),
+        child:  Container(
                 color: AppColors.primarylight,
                 child: Padding(
                     padding:
@@ -449,213 +446,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             ]),
                       ],
                     )),
-              )
-            : Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Obx(() => ordersController.storeDetailsResponse.value.data !=
-                              null &&
-                          ordersController
-                                  .storeDetailsResponse.value.data!.store !=
-                              null
-                      ? Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xff7c94b6),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              colorFilter: const ColorFilter.mode(
-                                  Colors.black45, BlendMode.darken),
-                              image: ordersController.storeDetailsResponse.value
-                                              .data!.store!.image!.dynamicUrl ==
-                                          null ||
-                                      ordersController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data!
-                                          .store!
-                                          .image!
-                                          .dynamicUrl!
-                                          .isEmpty
-                                  ? const AssetImage(ImageConstants.storeicon)
-                                      as ImageProvider
-                                  : NetworkImage(ordersController
-                                      .storeDetailsResponse
-                                      .value
-                                      .data!
-                                      .store!
-                                      .image!
-                                      .dynamicUrl!),
-                            ),
-                          ),
-                          child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, right: 20, bottom: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            // Get.back();
-                                          },
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.white,
-                                            size: 24.0,
-                                          ),
-                                        ),
-                                      ]),
-                                  height10SizedBox,
-                                  Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: AppColors.white,
-                                                width: 1)),
-                                        child: CircleAvatar(
-                                          radius: 28.0,
-                                          backgroundImage: ordersController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data!
-                                                          .store!
-                                                          .logo!
-                                                          .dynamicUrl ==
-                                                      null ||
-                                                  ordersController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .logo!
-                                                      .dynamicUrl!
-                                                      .isEmpty
-                                              ? const AssetImage(
-                                                      ImageConstants.storeicon)
-                                                  as ImageProvider
-                                              : NetworkImage(ordersController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .logo!
-                                                      .dynamicUrl ??
-                                                  ""),
-                                          backgroundColor: Colors.transparent,
-                                        ),
-                                      ),
-                                      width10SizedBox,
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ordersController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!
-                                                    .store!
-                                                    .storeName ??
-                                                "",
-                                            style: const TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          height8SizedBox,
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                ImageConstants.loc,
-                                                color: AppColors.white,
-                                                scale: 2,
-                                              ),
-                                              width4SizedBox,
-                                              SizedBox(
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.6,
-                                                child: Text(
-                                                    ordersController
-                                                            .storeDetailsResponse
-                                                            .value
-                                                            .data!
-                                                            .store!
-                                                            .storeAddresses!
-                                                            .first
-                                                            .addressLine1 ??
-                                                        "",
-                                                    style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .visible,
-                                                        color: AppColors.white,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                              ),
-                                            ],
-                                          ),
-                                          height8SizedBox,
-                                          SizedBox(
-                                            height: 20,
-                                            width: WidgetConstants.screenWidth *
-                                                0.7,
-                                            child: Row(
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                    ordersController
-                                                            .storeDetailsResponse
-                                                            .value
-                                                            .data!
-                                                            .store!
-                                                            .storeTimings!
-                                                            .isNotEmpty
-                                                        ? ordersController
-                                                                    .storeDetailsResponse
-                                                                    .value
-                                                                    .data!
-                                                                    .store!
-                                                                    .storeTimings!
-                                                                    .first
-                                                                    .is24HoursActive ==
-                                                                false
-                                                            ? "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                                "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                            : StringConstants
-                                                                .storeHoursText
-                                                        : StringConstants
-                                                            .storeHoursText,
-                                                    style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .visible,
-                                                        color: AppColors.white,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )),
-                        )
-                      : height0SizedBox)
-                ],
               ),
       ),
       body: Container(
@@ -737,20 +527,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderList[i].store?.storeId
                                                   .toString() ??
                                               "";
-
-                                      /* Get.to(
-                                    () =>
-                                const OrderConfirmationScreen(),
-                                arguments: {
-                                  "isFromTransaction": false,
-                                  "isFromNotification": false,
-                                  "storeId": ordersController
-                                      .orderList[i]
-                                      .store
-                                      ?.storeId
-                                      .toString() ??
-                                      "",
-                                });*/
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (_) => const OrderConfirmationScreen(),
+                                      )).then((value) {
+                                        ordersController.apiGetOrderListApi();
+                                      });
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
