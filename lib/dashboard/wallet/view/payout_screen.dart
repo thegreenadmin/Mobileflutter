@@ -406,7 +406,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                           width:
                                               WidgetConstants.screenWidth * 0.4,
                                           text: StringConstants
-                                              .addBankDetailsText,
+                                              .connectAccountText,
                                           borderRadius: 10,
                                           fontWeight: FontWeight.w400,
                                           iconL: false,

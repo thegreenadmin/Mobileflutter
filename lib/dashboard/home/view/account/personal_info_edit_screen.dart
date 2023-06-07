@@ -30,8 +30,6 @@ class PersonalInfoEditScreen extends StatefulWidget {
 class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
   final AccountController accountController = Get.put(AccountController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -332,9 +330,9 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 mode: Mode.overlay,
                                 language: "en",
                                 components: []);
-                            int idx = p?.description?.indexOf(",")??0;
+                            int idx = p?.description?.indexOf(",") ?? 0;
                             List parts = [
-                              p?.description?.substring(0, idx).trim()??'',
+                              p?.description?.substring(0, idx).trim() ?? '',
                               p?.description?.substring(idx + 1).trim()
                             ];
                             accountController.addressLine1TextController.text =
@@ -342,22 +340,29 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
 
                             ///ADDRESSES BY google_maps_webservice: ^0.0.19 COZ GEOCODING ios issues
 
-                            final geocoding = GoogleMapsGeocoding(apiKey: accountController.kGoogleApiKey);
+                            final geocoding = GoogleMapsGeocoding(
+                                apiKey: accountController.kGoogleApiKey);
 
-                            GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                            GeocodingResponse response =
+                                await geocoding.searchByAddress(
+                                    p?.description.toString() ?? "");
                             // log("GeocodingResponse web services:------------");
                             // log(jsonEncode(response.results));
 
-                            final result = response.results.isNotEmpty?response.results.first:null;
-                            if(result!=null) {
-                              accountController.townOrCityTextController.text = Utility.extractLocality(
-                                  result, "locality");
-                              accountController.countryTextController.text = Utility.extractLocality(
-                                  result, "country");
-                              accountController.postalCodeTextController.text = Utility.extractLocality(
-                                  result, "postal_code");
-                              accountController.stateTextController.text = Utility.extractLocality(
-                                  result, "administrative_area_level_1");
+                            final result = response.results.isNotEmpty
+                                ? response.results.first
+                                : null;
+                            if (result != null) {
+                              accountController.townOrCityTextController.text =
+                                  Utility.extractLocality(result, "locality");
+                              accountController.countryTextController.text =
+                                  Utility.extractLocality(result, "country");
+                              accountController.postalCodeTextController.text =
+                                  Utility.extractLocality(
+                                      result, "postal_code");
+                              accountController.stateTextController.text =
+                                  Utility.extractLocality(
+                                      result, "administrative_area_level_1");
                             }
 
                             // accountController.townOrCityTextController.text =
@@ -409,7 +414,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
 
                             GeoData addresses =
                                 await Geocoder2.getDataFromAddress(
-                                    address: p?.description.toString()??"",
+                                    address: p?.description.toString() ?? "",
                                     googleMapApiKey:
                                         accountController.kGoogleApiKey);
 
@@ -417,7 +422,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               // accountController.stateTextController.text =
                               //     addresses.state;
                             }
-
                           },
                           child: TextFormField(
                               autovalidateMode:
@@ -697,7 +701,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     .pleaseEnterCountryText;
                               }
                               return null;
-
                             },
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
@@ -1007,7 +1010,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                           height8SizedBox,
                                           Text(
                                             StringConstants
-                                                .uploadLicenseStateIdPasswordText,
+                                                .uploadIdentityProofText,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: AppColors.blacklight),

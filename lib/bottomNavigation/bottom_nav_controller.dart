@@ -49,7 +49,8 @@ class BottomNavController extends GetxController {
         ? int.parse(Get.parameters["currentIndex"].toString())
         : 0;
     roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
-    debugPrint("roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
+    debugPrint(
+        "roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
 
     // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
@@ -62,14 +63,14 @@ class BottomNavController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-        headers,
-        showLoading: false)
+            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            headers,
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
@@ -79,10 +80,10 @@ class BottomNavController extends GetxController {
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         debugPrint("GET STORE storeList.length *******${storeList.length}");
-        if(storeList.length==1){
-
+        if (storeList.length == 1) {
           Get.parameters["storeId"] = storeList.first.storeId;
-          debugPrint("GET STORE storeList.first.storeIdh *******${storeList.first.storeId}");
+          debugPrint(
+              "GET STORE storeList.first.storeIdh *******${storeList.first.storeId}");
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -92,7 +93,7 @@ class BottomNavController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message']!=null) {
+        if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -112,7 +113,6 @@ class BottomNavController extends GetxController {
   onItemTapped(int index) async {
     selectedIndex.value = index;
     if (selectedIndex.value == 0) {
-
       try {
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
@@ -126,23 +126,20 @@ class BottomNavController extends GetxController {
       }
     } else if (selectedIndex.value == 1) {
       try {
-
         WalletController controller = Get.put(WalletController());
         controller.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
         Navigator.of(context).popUntil((route) => route.isFirst);
-
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 2) {
-
       try {
-        if (roleInApp.value == Role.customerRoleText) {}
-        else {
-        await  apiGetStoreList();
+        if (roleInApp.value == Role.customerRoleText) {
+        } else {
+          await apiGetStoreList();
         }
         OrdersController controller = Get.put(OrdersController());
         controller.onInit();
@@ -150,26 +147,22 @@ class BottomNavController extends GetxController {
           "context",
         );
         Navigator.of(context).popUntil((route) => route.isFirst);
-
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 3) {
       try {
-
         OffersController controller = Get.put(OffersController());
         controller.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
           "context",
         );
         Navigator.of(context).popUntil((route) => route.isFirst);
-
       } catch (e) {
         //Pass
       }
     } else if (selectedIndex.value == 4) {
       try {
-
         MoreController controller = Get.put(MoreController());
         controller.onInit();
         BuildContext context = SharedPreferenceStorage.getData(
