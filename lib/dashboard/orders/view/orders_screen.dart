@@ -517,6 +517,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           ordersController
                                                   .orderList[i].orderId ??
                                               "";
+
                                       Get.parameters["isFromTransaction"] =
                                           "false";
                                       Get.parameters["isHome"] = "false";
