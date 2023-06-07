@@ -527,6 +527,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderList[i].store?.storeId
                                                   .toString() ??
                                               "";
+                                      SharedPreferenceStorage.setData(
+                                          "context", context);
                                       Navigator.of(context).push(MaterialPageRoute(
                                         builder: (_) => const OrderConfirmationScreen(),
                                       )).then((value) {
