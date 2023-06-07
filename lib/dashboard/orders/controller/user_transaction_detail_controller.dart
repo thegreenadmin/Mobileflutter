@@ -100,10 +100,10 @@ class UserTransactionDetailController extends GetxController {
           ).toString();
         }
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

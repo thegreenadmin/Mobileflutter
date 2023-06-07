@@ -104,6 +104,7 @@ class OrdersController extends GetxController {
         storeId.value = Get.parameters["storeId"] ?? "";
         apiGetStoreDetailsApi();
       }
+      apiGetStoreDetailsApi();
     }
 
     if (Get.parameters["orderStatus"] != null) {
@@ -847,7 +848,7 @@ class OrdersController extends GetxController {
     };
 
     Map<String, dynamic> data = {
-      "store_id": null,
+      "store_id": storeId.value,
       "page": page.value,
       "page_size": 10,
       "order_by": "order_id",
@@ -981,6 +982,7 @@ class OrdersController extends GetxController {
       }
     });
   }
+
   //Get Order Details Api
   Future apiGetOrderDetailsApi() async {
     isLoading.value = true;
@@ -1022,7 +1024,9 @@ class OrdersController extends GetxController {
                     : element.orderStatus?.orderStatusName ==
                             OrderStatus.shipped.statusName ||
                         element.orderStatus?.orderStatusName ==
-                        OrderStatus.readyPickup.statusName
+                        OrderStatus.readyPickup.statusName||
+                        element.orderStatus?.orderStatusName ==
+                        OrderStatus.userReady.statusName
                         ? 2
                         : element.orderStatus?.orderStatusName ==
                                 OrderStatus.delivered.statusName ||
@@ -1164,6 +1168,52 @@ class OrdersController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        Utility.showAlertMessage(value?.body['message']);
+      }
+    });
+  }
+
+  //Cancel Order Api
+  Future apiReadyPickupOrder(BuildContext ctx) async {
+    isLoading.value = true;
+    debugPrint("Ready Pickup URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().readyPickup}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+
+    Map<String, dynamic> data = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderStatus.value),
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().readyPickup,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("Ready Pickup Response *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        apiGetOrderDetailsApi();
+        // Get.back();
+        // Get.offAll(BottomNavigation());
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());

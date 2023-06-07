@@ -93,16 +93,19 @@ class Order {
     this.orderHistories,
     this.orderDeliveryAddresses,
     this.orderItems,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
   });
 
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  double? deliveryCharge;
+  dynamic deliveryCharge;
   String? taxType;
-  double? taxValue;
-  double? totalTaxCharged;
-  double? totalAmount;
+  dynamic taxValue;
+  dynamic totalTaxCharged;
+  dynamic totalAmount;
   String? customerName;
   String? customerEmail;
   String? customerPhone;
@@ -117,16 +120,20 @@ class Order {
   List<OrderHistory>? orderHistories;
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
   List<OrderItem>? orderItems;
+  String? serviceChargeType;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
+
 
   Order copyWith({
     String? userId,
     String? storeId,
     String? deliveryServiceId,
-    double? deliveryCharge,
+    dynamic deliveryCharge,
     String? taxType,
-    double? taxValue,
-    double? totalTaxCharged,
-    double? totalAmount,
+    dynamic taxValue,
+    dynamic totalTaxCharged,
+    dynamic totalAmount,
     String? customerName,
     String? customerEmail,
     String? customerPhone,
@@ -141,6 +148,9 @@ class Order {
     List<OrderHistory>? orderHistories,
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
     List<OrderItem>? orderItems,
+    String? serviceChargeType,
+    dynamic serviceChargeValue,
+    dynamic totalServiceCharged,
   }) =>
       Order(
         userId: userId ?? this.userId,
@@ -166,6 +176,10 @@ class Order {
         orderDeliveryAddresses:
             orderDeliveryAddresses ?? this.orderDeliveryAddresses,
         orderItems: orderItems ?? this.orderItems,
+        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
+        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
+        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
+
       );
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -210,7 +224,11 @@ class Order {
             ? []
             : List<OrderItem>.from(
                 json["order_items"]!.map((x) => OrderItem.fromJson(x))),
-      );
+        serviceChargeType: json["service_charge_type"],
+        serviceChargeValue: json["service_charge_value"]?.toDouble(),
+        totalServiceCharged: json["total_service_charged"]?.toDouble(),
+
+  );
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
@@ -242,7 +260,11 @@ class Order {
         "order_items": orderItems == null
             ? []
             : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
-      };
+        "service_charge_type": serviceChargeType,
+        "service_charge_value": serviceChargeValue,
+        "total_service_charged": totalServiceCharged,
+
+  };
 }
 
 class DeliveryService {
@@ -507,9 +529,6 @@ class OrderItem {
     this.productId,
     this.orderItemCount,
     this.orderItemPrice,
-    this.serviceChargeType,
-    this.serviceChargeValue,
-    this.totalServiceCharged,
     this.discountName,
     this.discountType,
     this.discountValue,
@@ -528,17 +547,16 @@ class OrderItem {
     this.enableReturnButton,
   });
 
+
+
   String? orderId;
   String? productId;
   dynamic orderItemCount;
   dynamic orderItemPrice;
-  String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
   String? discountName;
   String? discountType;
   dynamic discountValue;
-  double? totalDiscount;
+  dynamic totalDiscount;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -552,18 +570,17 @@ class OrderItem {
   dynamic returedAt;
   bool? enableReturnButton;
 
+
+
   OrderItem copyWith({
     String? orderId,
     String? productId,
     dynamic orderItemCount,
     dynamic orderItemPrice,
-    String? serviceChargeType,
-    double? serviceChargeValue,
-    double? totalServiceCharged,
     String? discountName,
     String? discountType,
     dynamic discountValue,
-    double? totalDiscount,
+    dynamic totalDiscount,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -582,9 +599,6 @@ class OrderItem {
         productId: productId ?? this.productId,
         orderItemCount: orderItemCount ?? this.orderItemCount,
         orderItemPrice: orderItemPrice ?? this.orderItemPrice,
-        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
-        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
-        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
         discountName: discountName ?? this.discountName,
         discountType: discountType ?? this.discountType,
         discountValue: discountValue ?? this.discountValue,
@@ -608,9 +622,6 @@ class OrderItem {
     productId: json["product_id"],
     orderItemCount: json["order_item_count"],
     orderItemPrice: json["order_item_price"],
-    serviceChargeType: json["service_charge_type"],
-    serviceChargeValue: json["service_charge_value"]?.toDouble(),
-    totalServiceCharged: json["total_service_charged"]?.toDouble(),
     discountName: json["discount_name"],
     discountType: json["discount_type"],
     discountValue: json["discount_value"],
@@ -634,9 +645,6 @@ class OrderItem {
     "product_id": productId,
     "order_item_count": orderItemCount,
     "order_item_price": orderItemPrice,
-    "service_charge_type": serviceChargeType,
-    "service_charge_value": serviceChargeValue,
-    "total_service_charged": totalServiceCharged,
     "discount_name": discountName,
     "discount_type": discountType,
     "discount_value": discountValue,
@@ -706,6 +714,7 @@ class Product {
   List<ProductReview>? productReviews;
   List<ProductImage>? productImages;
   String? productId;
+
 
   Product copyWith({
     String? storeId,
@@ -1014,8 +1023,8 @@ class ReturnOrderItem {
   String? orderItemId;
   dynamic returnItemsCount;
   String? remarks;
-  double? totalTaxReversed;
-  double? totalAmountReversed;
+  dynamic totalTaxReversed;
+  dynamic totalAmountReversed;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -1025,8 +1034,8 @@ class ReturnOrderItem {
     String? orderItemId,
     dynamic returnItemsCount,
     String? remarks,
-    double? totalTaxReversed,
-    double? totalAmountReversed,
+    dynamic totalTaxReversed,
+    dynamic totalAmountReversed,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,

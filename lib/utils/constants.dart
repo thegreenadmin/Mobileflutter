@@ -131,9 +131,9 @@ class StringConstants {
       "Your cart already contains items from a different store. If you proceed ahead your previously added cart items from that store would be removed. Do you really want to proceed ahead?";
   static String continueShoppingWithGreenMallText =
       "Please continue shopping with The Green Mall";
-  static String creditAmountText = "Credit Amount";
+  static String creditedAmountText = "Credited Amount";
   //D
-  static String debitAmountText = "Debit Amount";
+  static String debitedAmountText = "Debited Amount";
   static String deliveryText = "Delivery";
   static String drivingLicenceText = "Driving Licence";
   static String deliveryChargeText = "Delivery Charge";

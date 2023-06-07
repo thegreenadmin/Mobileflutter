@@ -185,6 +185,9 @@ class OrdersHomeMainController extends GetxController {
                       }, //"shipped"
                       {
                         "order_status_name": OrderStatus.readyPickup.statusName
+                      }, //ready pickup
+                      {
+                        "order_status_name": OrderStatus.userReady.statusName
                       } //ready pickup
                     ]
                   : [orderStatus]

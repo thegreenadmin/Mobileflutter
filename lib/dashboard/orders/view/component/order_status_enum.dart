@@ -1,5 +1,6 @@
 enum OrderStatus {
   readyPickup,
+  userReady,
   cancelRequest,
   created,
   newOrder,
@@ -22,6 +23,8 @@ extension StatusExtension on OrderStatus {
     switch (this) {
       case OrderStatus.readyPickup:
         return 'ready pickup';
+      case OrderStatus.userReady:
+        return 'user ready';
       case OrderStatus.cancelRequest:
         return 'cancel request';
       case OrderStatus.created:

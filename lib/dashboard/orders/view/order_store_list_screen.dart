@@ -40,40 +40,14 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                Obx(
-                                  () => ordersController
-                                              .isFromNotification.value ==
-                                          true
-                                      ? InkWell(
-                                          onTap: () {
-                                            Navigator.of(Get.context!).popUntil(
-                                                (route) => route.isFirst);
-                                            // Get.offAll(BottomNavigation());
-                                          },
-                                          child: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.black,
-                                            size: 24.0,
-                                          ),
-                                        )
-                                      : height0SizedBox,
-                                ),
-                                ordersController.isFromNotification.value ==
-                                        true
-                                    ? width10SizedBox
-                                    : height0SizedBox,
-                                Obx(
-                                  () => Text(
-                                    'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
+                            Obx(
+                              () => Text(
+                                'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                             height4SizedBox,
                             Text(

@@ -103,6 +103,9 @@ class Order {
     this.orderHistories,
     this.orderItems,
     this.orderDeliveryAddresses,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
   });
 
   String? userId;
@@ -127,6 +130,9 @@ class Order {
   List<OrderHistory>? orderHistories;
   List<OrderItem>? orderItems;
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
+  String? serviceChargeType;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
 
   Order copyWith({
     String? userId,
@@ -151,6 +157,9 @@ class Order {
     List<OrderHistory>? orderHistories,
     List<OrderItem>? orderItems,
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
+    String? serviceChargeType,
+    dynamic serviceChargeValue,
+    dynamic totalServiceCharged,
   }) =>
       Order(
         userId: userId ?? this.userId,
@@ -176,6 +185,9 @@ class Order {
         orderItems: orderItems ?? this.orderItems,
         orderDeliveryAddresses:
             orderDeliveryAddresses ?? this.orderDeliveryAddresses,
+        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
+        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
+        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
       );
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -218,7 +230,11 @@ class Order {
             ? []
             : List<OrderDeliveryAddress>.from(json["order_delivery_addresses"]!
                 .map((x) => OrderDeliveryAddress.fromJson(x))),
-      );
+        serviceChargeType: json["service_charge_type"],
+        serviceChargeValue: json["service_charge_value"]?.toDouble(),
+        totalServiceCharged: json["total_service_charged"]?.toDouble(),
+
+  );
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
@@ -250,7 +266,11 @@ class Order {
             ? []
             : List<dynamic>.from(
                 orderDeliveryAddresses!.map((x) => x.toJson())),
-      };
+        "service_charge_type": serviceChargeType,
+        "service_charge_value": serviceChargeValue,
+        "total_service_charged": totalServiceCharged,
+
+  };
 }
 
 class OrderDeliveryAddress {
@@ -419,6 +439,11 @@ class OrderItem {
     this.createdAt,
     this.updatedAt,
     this.orderItemId,
+    this.orderItemStatus,
+    this.cancelledAt,
+    this.shippedAt,
+    this.deliveredAt,
+    this.returedAt,
   });
 
   String? orderId;
@@ -436,6 +461,11 @@ class OrderItem {
   DateTime? createdAt;
   DateTime? updatedAt;
   String? orderItemId;
+  String? orderItemStatus;
+  dynamic cancelledAt;
+  dynamic shippedAt;
+  dynamic deliveredAt;
+  dynamic returedAt;
 
   OrderItem copyWith({
     String? orderId,
@@ -453,6 +483,12 @@ class OrderItem {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? orderItemId,
+    String? orderItemStatus,
+    dynamic cancelledAt,
+    dynamic shippedAt,
+    dynamic deliveredAt,
+    dynamic returedAt,
+
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -470,6 +506,11 @@ class OrderItem {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         orderItemId: orderItemId ?? this.orderItemId,
+        orderItemStatus: orderItemStatus ?? this.orderItemStatus,
+        cancelledAt: cancelledAt ?? this.cancelledAt,
+        shippedAt: shippedAt ?? this.shippedAt,
+        deliveredAt: deliveredAt ?? this.deliveredAt,
+        returedAt: returedAt ?? this.returedAt,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -492,6 +533,11 @@ class OrderItem {
             ? null
             : DateTime.parse(json["updatedAt"]),
         orderItemId: json["order_item_id"],
+        orderItemStatus: json["order_item_status"],
+        cancelledAt: json["cancelledAt"],
+        shippedAt: json["shippedAt"],
+        deliveredAt: json["deliveredAt"],
+        returedAt: json["returedAt"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -510,7 +556,12 @@ class OrderItem {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "order_item_id": orderItemId,
-      };
+        "order_item_status": orderItemStatus,
+        "cancelledAt": cancelledAt,
+        "shippedAt": shippedAt,
+        "deliveredAt": deliveredAt,
+        "returedAt": returedAt,
+  };
 }
 
 class Store {

@@ -851,214 +851,198 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       )
                     ],
                   ),
-                 Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productContents!
-                                          .first
-                                          .paragraph ==
-                                      null ||
-                                  storeHomeMainController
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data!
-                                      .product!
-                                      .productContents!
+                                      .data
+                                      ?.product
+                                      ?.productContents!
                                       .first
-                                      .paragraph!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : height20SizedBox,
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productContents!
-                                          .first
-                                          .paragraph ==
-                                      null ||
-                                  storeHomeMainController
+                                      .paragraph ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productContents!
+                                  .first
+                                  .paragraph!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : height20SizedBox,
+                      storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data!
-                                      .product!
-                                      .productContents!
+                                      .data
+                                      ?.product
+                                      ?.productContents!
                                       .first
-                                      .paragraph!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : Text(
-                                  StringConstants.contentsAndStrainsText,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16,
-                                      color: AppColors.blacklight),
-                                ),
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productContents!
-                                          .first
-                                          .paragraph ==
-                                      null ||
-                                  storeHomeMainController
+                                      .paragraph ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productContents!
+                                  .first
+                                  .paragraph!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : Text(
+                              StringConstants.contentsAndStrainsText,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: AppColors.blacklight),
+                            ),
+                      storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data!
-                                      .product!
-                                      .productContents!
+                                      .data
+                                      ?.product
+                                      ?.productContents!
                                       .first
-                                      .paragraph!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : height8SizedBox,
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productContents!
-                                          .first
-                                          .paragraph ==
-                                      null ||
-                                  storeHomeMainController
+                                      .paragraph ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productContents!
+                                  .first
+                                  .paragraph!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : height8SizedBox,
+                      storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data!
-                                      .product!
-                                      .productContents!
+                                      .data
+                                      ?.product
+                                      ?.productContents!
                                       .first
-                                      .paragraph!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : Text(
-                                  storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productContents!
-                                          .first
-                                          .paragraph ??
-                                      "",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      color: AppColors.blacklight),
-                                ),
-                          height20SizedBox,
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product!
-                                          .productLinks!
-                                          .first
-                                          .link ==
-                                      null ||
-                                  storeHomeMainController
+                                      .paragraph ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productContents!
+                                  .first
+                                  .paragraph!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : Text(
+                              storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data!
-                                      .product!
-                                      .productLinks!
+                                      .data
+                                      ?.product
+                                      ?.productContents!
                                       .first
-                                      .link!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : Text(
-                                  StringConstants.additionalLinksToResearchText,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16,
-                                      color: AppColors.blacklight),
-                                ),
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product!
-                                          .productLinks!
-                                          .first
-                                          .link ==
-                                      null ||
-                                  storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data!
-                                      .product!
-                                      .productLinks!
-                                      .first
-                                      .link!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : height8SizedBox,
-                          storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product!
-                                          .productLinks!
-                                          .first
-                                          .link ==
-                                      null ||
-                                  storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data!
-                                      .product!
-                                      .productLinks!
-                                      .first
-                                      .link!
-                                      .isEmpty
-                              ? height0SizedBox
-                              : InkWell(
-                                  onTap: () async {
-                                    String url = storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productLinks!
-                                            .first
-                                            .link! ??
-                                        "";
-                                    if (await canLaunch(url)) {
-                                      await launch(url);
-                                    } else {
-                                      throw 'Could not launch $url';
-                                    }
-                                  },
-                                  child: Text(
-                                    storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data
-                                            ?.product
-                                            ?.productLinks!
-                                            .first
-                                            .link ??
-                                        "",
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                        color: AppColors.primary),
-                                  ),
-                                ),
-                        ],
-                      ),
-                  height10SizedBox,
-                  storeHomeMainController.productDetailResponse.value.data!
-                                  .product!.description ==
+                                      .paragraph ??
+                                  "",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: AppColors.blacklight),
+                            ),
+                      height20SizedBox,
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product!.productLinks!.first.link ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productLinks!
+                                  .first
+                                  .link!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : Text(
+                              StringConstants.additionalLinksToResearchText,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: AppColors.blacklight),
+                            ),
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product!.productLinks!.first.link ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productLinks!
+                                  .first
+                                  .link!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : height8SizedBox,
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product!.productLinks!.first.link ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productLinks!
+                                  .first
+                                  .link!
+                                  .isEmpty
+                          ? height0SizedBox
+                          : InkWell(
+                              onTap: () async {
+                                String url = storeHomeMainController
+                                        .productDetailResponse
+                                        .value
+                                        .data
+                                        ?.product
+                                        ?.productLinks!
+                                        .first
+                                        .link! ??
+                                    "";
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                              child: Text(
+                                storeHomeMainController
+                                        .productDetailResponse
+                                        .value
+                                        .data
+                                        ?.product
+                                        ?.productLinks!
+                                        .first
+                                        .link ??
+                                    "",
+                                style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: AppColors.primary),
+                              ),
+                            ),
+                    ],
+                  ),
+                  //height10SizedBox,
+                  storeHomeMainController.productDetailResponse.value.data !=
+                              null ||
+                          storeHomeMainController.productDetailResponse.value
+                                  .data!.product!.description ==
                               null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
@@ -1071,8 +1055,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               color: AppColors.black),
                         ),
                   height10SizedBox,
-                  storeHomeMainController.productDetailResponse.value.data!
-                                  .product!.description ==
+                  storeHomeMainController.productDetailResponse.value.data
+                                  ?.product?.description ==
                               null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
@@ -1086,8 +1070,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               fontSize: 14,
                               color: AppColors.blacklight),
                         ),
-                  storeHomeMainController.productDetailResponse.value.data!
-                                  .product!.description ==
+
+                  storeHomeMainController.productDetailResponse.value.data
+                                  ?.product?.description ==
                               null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty

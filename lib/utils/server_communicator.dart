@@ -87,6 +87,7 @@ class ServerCommunicator {
 
 //Q
 //R
+  String readyPickup = 'order/ready/pickup';
   String returnOrder = 'order/item/return/create';
   String cancelReturnOrder = 'order/return/cancel';
   String roleList = 'store/role/list';
