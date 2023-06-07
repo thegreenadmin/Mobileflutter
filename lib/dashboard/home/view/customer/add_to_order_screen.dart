@@ -1040,20 +1040,21 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   ),
                   //height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data !=
-                              null ||
-                          storeHomeMainController.productDetailResponse.value
-                                  .data!.product!.description ==
-                              null ||
-                          storeHomeMainController.productDetailResponse.value
-                              .data!.product!.description!.isEmpty
-                      ? height0SizedBox
-                      : Text(
-                          StringConstants.aboutProductText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: AppColors.black),
-                        ),
+                          null
+                      ? storeHomeMainController.productDetailResponse.value
+                                      .data!.product!.description ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.description!.isEmpty
+                          ? height0SizedBox
+                          : Text(
+                              StringConstants.aboutProductText,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: AppColors.black),
+                            )
+                      : height0SizedBox,
                   height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data
                                   ?.product?.description ==

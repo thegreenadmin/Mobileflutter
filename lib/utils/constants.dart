@@ -81,6 +81,7 @@ class StringConstants {
   static String billingAddressText = "Billing Address";
 
   //C
+  static String connectAccountText = "Connect Account";
   static String cardNumberText = "Card Number";
   static String createYourAccountText = "Create your Account";
   static String createStripeAccountText = "Create Stripe Account";
@@ -496,8 +497,7 @@ class StringConstants {
       "Use our digital platform to manage and sell your products.";
   static String usingOurToolsToCreateText =
       "Use our tools to create your online digital store for our member community to shop.";
-  static String uploadLicenseStateIdPasswordText =
-      "Upload License, State ID, Passport";
+  static String uploadIdentityProofText = "Upload identity proof";
   static String uploadText = "Upload";
   static String uploadImageText = "Upload Image";
   static String uploadPhotoHereText = "Upload photo here";

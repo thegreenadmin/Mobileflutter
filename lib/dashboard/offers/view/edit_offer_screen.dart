@@ -489,7 +489,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         Flexible(
                           flex: 5,
                           child: Obx(() => addOffersController.discountType ==
-                                      null &&
+                                      null ||
                                   addOffersController.discountType.value.isEmpty
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
