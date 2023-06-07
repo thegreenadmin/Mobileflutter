@@ -149,7 +149,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
                                       Navigator.of(context).pop();
-                                      // Get.back();
+                                      Get.delete<OrdersHomeMainController>();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,

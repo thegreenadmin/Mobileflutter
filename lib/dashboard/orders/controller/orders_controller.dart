@@ -57,8 +57,8 @@ class OrdersController extends GetxController {
   RxInt? addressListIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt orderStatusId = 2.obs;
-  RxString orderStatusName = OrderStatus.newOrder.statusName.obs;
-  RxString orderStatusTypeName = OrderStatus.newOrder.statusName.obs;
+  RxString orderStatusName = OrderStatus.receivedOrder.statusName.obs;
+  RxString orderStatusTypeName = OrderStatus.receivedOrder.statusName.obs;
   RxDouble ratingValue = 0.0.obs;
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
@@ -117,7 +117,7 @@ class OrdersController extends GetxController {
 
     isActiveOrders.value = true;
     orderStatusId.value = 2;
-    orderStatusName.value = OrderStatus.newOrder.statusName;
+    orderStatusName.value = OrderStatus.receivedOrder.statusName;
     role!.value = SharedPreferenceStorage.getData(Role.role.value);
     if (role!.value == Role.customerRoleText) {
       page.value = 1;
@@ -857,9 +857,9 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses": orderStatusName.value == OrderStatus.newOrder.statusName
+      "order_statuses": orderStatusName.value == OrderStatus.receivedOrder.statusName
           ? [
-              {"order_status_name": OrderStatus.newOrder.statusName},
+              {"order_status_name": OrderStatus.receivedOrder.statusName},
               {"order_status_name": OrderStatus.returnRequest.statusName},
               {"order_status_name": OrderStatus.returnConfirmed.statusName},
             ]
@@ -1016,22 +1016,19 @@ class OrdersController extends GetxController {
                 element.orderStatus?.orderStatusName ?? "";
 
             activeStep.value = element.orderStatus?.orderStatusName ==
-                    OrderStatus.newOrder.statusName
+                    OrderStatus.receivedOrder.statusName
                 ? 0
-                : element.orderStatus?.orderStatusName ==
-                        OrderStatus.pending.statusName ||
+                :
                 element.orderStatus?.orderStatusName ==
-                    OrderStatus.confirmed.statusName
+                    OrderStatus.inProgress.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                            OrderStatus.shipped.statusName ||
+                            OrderStatus.inTransit.statusName ||
                         element.orderStatus?.orderStatusName ==
-                        OrderStatus.readyPickup.statusName||
-                        element.orderStatus?.orderStatusName ==
-                        OrderStatus.userReady.statusName
+                        OrderStatus.readyForPickup.statusName
                         ? 2
                         : element.orderStatus?.orderStatusName ==
-                                OrderStatus.delivered.statusName ||
+                                OrderStatus.completed.statusName ||
                              element.orderStatus?.orderStatusName ==
                                  OrderStatus.cancelled.statusName
                             ? 3
@@ -1044,10 +1041,6 @@ class OrdersController extends GetxController {
         }else{
           stepInd.firstWhere((element) => element.id == 2).name = "Ready for pickup";
         }
-        /*if(orderStatusTypeName.value ==
-            OrderStatus.confirmed.statusName){
-          stepInd.firstWhere((element) => element.id == 1).name = OrderStatus.confirmed.statusName.toTitleCase();
-        }*/
 
         for (var element in stepInd) {
           if (element.id! <= activeStep.value) {
@@ -1155,7 +1148,7 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        orderStatusName.value = OrderStatus.newOrder.statusName;
+        orderStatusName.value = OrderStatus.receivedOrder.statusName;
         isActiveOrders.value = true;
         page.value = 1;
         orderList.clear();

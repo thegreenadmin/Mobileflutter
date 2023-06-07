@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
@@ -106,14 +105,11 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: () async {
-
                               ordersController.storeId.value =
-                                  ordersController
-                                      .storeList[index].storeId ??
-                                      "";
+                                  ordersController.storeList[index].storeId ?? "";
                               Get.parameters["storeId"]=ordersController
-                                  .storeList[index].storeId ??
-                                  "";
+                                  .storeList[index].storeId ?? "";
+
                               SharedPreferenceStorage.setData("context", context);
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const OrdersHomeMainScreen(),
@@ -143,15 +139,11 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                         child: CircleAvatar(
                                           radius: 24.0,
                                           backgroundImage: ordersController
-                                                      .storeList[index]
-                                                      .logo!
-                                                      .dynamicUrl !=
-                                                  null
+                                                      .storeList[index].logo!
+                                                      .dynamicUrl != null
                                               ? NetworkImage(ordersController
                                                   .storeList[index]
-                                                  .logo!
-                                                  .dynamicUrl
-                                                  .toString())
+                                                  .logo!.dynamicUrl.toString())
                                               : const AssetImage(
                                                   ImageConstants.nopicfound,
                                                 ) as ImageProvider,
@@ -170,8 +162,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                             width: 190,
                                             child: Text(
                                               ordersController.storeList[index]
-                                                      .storeName ??
-                                                  "",
+                                                      .storeName ?? "",
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,

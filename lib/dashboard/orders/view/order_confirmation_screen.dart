@@ -595,9 +595,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),),
 
                 Obx(() =>   Visibility(
-                  visible: ordersController.orderStatusTypeName.value == OrderStatus.pending.statusName
+                  visible: ordersController.orderStatusTypeName.value == OrderStatus.receivedOrder.statusName
                   && (ordersController.orderType.value =="1" || ordersController.orderType.value =="2")
-                      || ordersController.orderStatusTypeName.value == OrderStatus.confirmed.statusName
+                      || ordersController.orderStatusTypeName.value == OrderStatus.inProgress.statusName
                           && (ordersController.orderType.value =="1" || ordersController.orderType.value =="2"),
                   child: Column(
                     children: [
