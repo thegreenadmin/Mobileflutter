@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/return_confirm_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import '../view/component/order_status_enum.dart';
+import 'mark_return_order_screen.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
   const OrdersHomeMainScreen({super.key});
@@ -348,12 +351,60 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
 
                               SharedPreferenceStorage.setData(
                                   "context", context);
+
+
+
+                              /// ====================================
+
+
+                              Get.parameters["storeId"] =  ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .storeId ??
+                                  "";
+
+                              Get.parameters["orderId"] =  ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .orderId ??
+                                  "";
+                              ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .orderHistories!
+                                  .first
+                                  .orderStatus!
+                                  .orderStatusName == //"11"
+                                  OrderStatus
+                                      .returnRequest.statusName
+                                  ? Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const MarkReturnOrderScreen(),
+                              )).then((value) {
+                                // ordersController
+                                //     .apiGetStoreOrderListApi();
+                              })
+                                  : ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .orderHistories!
+                                  .first
+                                  .orderStatus!
+                                  .orderStatusName == //"12"
+                                  OrderStatus
+                                      .returnConfirmed
+                                      .statusName
+                                  ? Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const ReturnConfirmOrderScreen(),
+                              )) : ordersHomeMainController
+                                  .ownerOrderHistoryList![index].orderHistories!
+                                  .first
+                                  .orderStatus!
+                                  .orderStatusName == //7
+                                  OrderStatus.cancelled
+                                      .statusName
+                                  ? null:
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const MarkOrderStatusScreen(),
                               ));
-                              // Get.to(
-                              //   () => const MarkOrderStatusScreen(),
-                              // );
+
+
+                              /// ====================================
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -475,8 +526,35 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                           FontWeight.w600,
                                                       fontSize: 14))
                                             ],
+                                          ), height5SizedBox,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  "${StringConstants.statusText}: ",
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14)),
+                                              Text(
+                                                  ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="User Ready"?
+                                                      "Return Request"
+                                                      : ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="Pending"
+                                                      ? "Return Confirm" :ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="Confirmed"
+                                                      ? "Received" :ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()=="New"
+                                                      ? "Received" :
+                                                  ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()??"",
+                                                  style: const TextStyle(
+                                                      color: AppColors.green,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14))
+                                            ],
                                           ),
-                                          height5SizedBox,
+                                         /* height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -515,7 +593,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                 ],
                                               )
                                             ],
-                                          ),
+                                          ),*/
                                           height5SizedBox,
                                           Row(
                                             mainAxisAlignment:

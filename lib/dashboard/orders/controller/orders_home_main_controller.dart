@@ -45,7 +45,9 @@ class OrdersHomeMainController extends GetxController {
     selectedIndex.value = 0;
     orderId.value =
         Get.parameters == null ? "" : Get.parameters["orderId"] ?? "";
-    storeId.value = Get.parameters["storeId"] ?? "";
+    if(Get.parameters["storeId"]!=""){
+      storeId.value = Get.parameters["storeId"] ?? "";
+    }
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;
     apiGetOwnerOrderHistory();
@@ -97,7 +99,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   RxList horizontalTabList = [
-    StringConstants.receivedText,
+    StringConstants.activeText,
     StringConstants.inProgress,
     StringConstants.pickupText,
     StringConstants.completedText,
@@ -186,9 +188,7 @@ class OrdersHomeMainController extends GetxController {
                       {
                         "order_status_name": OrderStatus.readyPickup.statusName
                       }, //ready pickup
-                      {
-                        "order_status_name": OrderStatus.userReady.statusName
-                      } //ready pickup
+
                     ]
                   : [orderStatus]
     };

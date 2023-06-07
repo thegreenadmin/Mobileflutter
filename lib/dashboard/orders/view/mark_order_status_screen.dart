@@ -950,10 +950,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                         ? StringConstants.orderReadyText
                         : ordersHomeMainController.selectedIndex.value == 1 &&
                                 ordersHomeMainController
-                                        .getStoreOrderDetailModel
-                                        .value
-                                        .data
-                                        ?.order
+                                        .getStoreOrderDetailModel.value
+                                        .data?.order
                                         ?.deliveryService
                                         ?.deliveryServiceId !=
                                     "2"
@@ -961,13 +959,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             : ordersHomeMainController.selectedIndex.value == 1 &&
                                     ordersHomeMainController
                                             .getStoreOrderDetailModel
-                                            .value
-                                            .data
-                                            ?.order
-                                            ?.deliveryService
-                                            ?.deliveryServiceId ==
-                                        "2"
-                                ? StringConstants.readyForShippedText
+                                            .value.data
+                                            ?.order?.deliveryService
+                                            ?.deliveryServiceId == "2"
+                                ? StringConstants.orderShippedText
                                 : ordersHomeMainController.selectedIndex.value == 2 &&
                                         ordersHomeMainController
                                                 .getStoreOrderDetailModel
@@ -977,7 +972,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                 ?.deliveryService
                                                 ?.deliveryServiceId !=
                                             "2"
-                                    ? StringConstants.orderPickedText
+                                    ? StringConstants.pickedUpText
                                     : ordersHomeMainController
                                                     .selectedIndex.value ==
                                                 2 &&
@@ -989,7 +984,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     ?.deliveryService
                                                     ?.deliveryServiceId ==
                                                 "2"
-                                        ? StringConstants.orderDeliveredText
+                                        ? StringConstants.deliveredText
                                         : ordersHomeMainController
                                                     .selectedIndex.value ==
                                                 3

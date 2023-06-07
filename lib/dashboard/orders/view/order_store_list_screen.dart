@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import '../../../utils/shared_prefrences.dart';
-import '../controller/orders_home_main_controller.dart';
-import 'orders_screen.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
   const OrderStoresListScreen({super.key});
@@ -112,25 +111,14 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                   ordersController
                                       .storeList[index].storeId ??
                                       "";
-
-                              // await ordersController
-                              //     .apiGetDeliveryServices();
-                              // await ordersController
-                              //     .apiGetParticularStore();
-                              //
-                              //
-                              await ordersController
-                                  .apiGetStoreDetailsApi();
-                              // ordersController.onInit();
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-                              await Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                builder: (_) =>
-                                const OrdersScreen(),
+                              Get.parameters["storeId"]=ordersController
+                                  .storeList[index].storeId ??
+                                  "";
+                              SharedPreferenceStorage.setData("context", context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const OrdersHomeMainScreen(),
                               ));
-                              // await Get.to(
-                              //     () => const ManageStoreMainScreen());
+
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

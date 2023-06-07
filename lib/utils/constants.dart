@@ -133,6 +133,7 @@ class StringConstants {
       "Please continue shopping with The Green Mall";
   //D
   static String deliveryText = "Delivery";
+  static String deliveredText = "Delivered";
   static String drivingLicenceText = "Driving Licence";
   static String deliveryChargeText = "Delivery Charge";
   static String deleteAccountText = "Delete Account";
@@ -333,6 +334,7 @@ class StringConstants {
   static String pastOfferText = "Past Offer";
   static String pastMessagesText = "Past Messages";
   static String pickupText = "Pickup";
+  static String pickedUpText = "Picked Up";
   static String postalCodeText = "Postal Code";
   static String privacyStatementText = "Privacy Statement";
   static String privacyPolicyText = "Privacy Policy";
@@ -378,7 +380,7 @@ class StringConstants {
   static String receivedText = "Received";
   static String roleText = "Role";
   static String readyForPickUpText = "Ready for Pick Up";
-  static String readyForShippedText = "Ready for Shipped";
+  static String readyForDeliveryText = "Ready for Delivery";
   static String rateNowText = "Rate Now";
   static String ratingText = "Rating";
   static String returnOrderText = "Return Order";
@@ -396,7 +398,7 @@ class StringConstants {
 
   //S
   static String signUpText = "Sign up";
-  static String orderShippedText = "Order shipped";
+  static String orderShippedText = "Shipped";
   static String orderDeliveredText = "Order delivered";
   static String orderPickedText = "Order picked";
   static String shareYourFeedbackText = "Share your feedback";

@@ -48,6 +48,7 @@ class OrdersController extends GetxController {
   RxString orderStatus = "".obs;
   RxString storeId = "0".obs;
   RxString productId = "".obs;
+  RxString orderType = "".obs;
   RxDouble totalAmount = 0.0.obs;
   RxString orderDate = "".obs;
   RxInt page = 1.obs;
@@ -1007,6 +1008,7 @@ class OrdersController extends GetxController {
             order_detail.OrderDetailResponse.fromJson(value?.body);
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
+        orderType.value = orderDetailResponse.data?.order?.deliveryService?.deliveryServiceId ?? "1";
         orderDate.value = orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
@@ -1040,7 +1042,7 @@ class OrdersController extends GetxController {
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
           stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
         }else{
-          stepInd.firstWhere((element) => element.id == 2).name = "Ready to pickup";
+          stepInd.firstWhere((element) => element.id == 2).name = "Ready for pickup";
         }
         /*if(orderStatusTypeName.value ==
             OrderStatus.confirmed.statusName){
