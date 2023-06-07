@@ -733,7 +733,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               .getOrderItems[
                                                                   index]
                                                               .orderItemStatus ==
-                                                          OrderStatus.delivered
+                                                          OrderStatus.completed
                                                               .statusName ||
                                                   ordersHomeMainController
                                                               .selectedIndex
@@ -743,7 +743,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               .getOrderItems[
                                                                   index]
                                                               .orderItemStatus ==
-                                                          OrderStatus.pending
+                                                          OrderStatus.receivedOrder
                                                               .statusName ||
                                                   ordersHomeMainController
                                                               .selectedIndex
@@ -752,7 +752,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       ordersHomeMainController
                                                               .getOrderItems[index]
                                                               .orderItemStatus ==
-                                                          OrderStatus.confirmed.statusName
+                                                          OrderStatus.inProgress.statusName
                                               ? height0SizedBox
                                               : SizedBox(
                                                   height: 20,
@@ -801,7 +801,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       if (ordersHomeMainController.selectedIndex.value == 0 &&
                                                           ordersHomeMainController.getOrderItems[index].orderItemStatus ==
                                                               OrderStatus
-                                                                  .pending
+                                                                  .receivedOrder
                                                                   .statusName) {
                                                         setState(() {
                                                           ordersHomeMainController
@@ -812,12 +812,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       } else if (ordersHomeMainController.selectedIndex.value == 1 &&
                                                               ordersHomeMainController.getOrderItems[index].orderItemStatus ==
                                                                   OrderStatus
-                                                                      .confirmed
+                                                                      .inProgress
                                                                       .statusName ||
                                                           ordersHomeMainController.selectedIndex.value == 1 &&
                                                               ordersHomeMainController.getOrderItems[index].orderItemStatus ==
                                                                   OrderStatus
-                                                                      .pending
+                                                                      .receivedOrder
                                                                       .statusName) {
                                                         setState(() {
                                                           ordersHomeMainController
@@ -828,10 +828,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       } else if (ordersHomeMainController.selectedIndex.value == 2 &&
                                                           (ordersHomeMainController.getOrderItems[index].orderItemStatus ==
                                                                   OrderStatus
-                                                                      .shipped
+                                                                      .inTransit
                                                                       .statusName ||
                                                               ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                  OrderStatus.readyPickup.statusName)) {
+                                                                  OrderStatus.readyForPickup.statusName)) {
                                                         setState(() {
                                                           ordersHomeMainController
                                                               .getOrderItems
@@ -950,10 +950,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                         ? StringConstants.orderReadyText
                         : ordersHomeMainController.selectedIndex.value == 1 &&
                                 ordersHomeMainController
-                                        .getStoreOrderDetailModel
-                                        .value
-                                        .data
-                                        ?.order
+                                        .getStoreOrderDetailModel.value
+                                        .data?.order
                                         ?.deliveryService
                                         ?.deliveryServiceId !=
                                     "2"
@@ -961,13 +959,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             : ordersHomeMainController.selectedIndex.value == 1 &&
                                     ordersHomeMainController
                                             .getStoreOrderDetailModel
-                                            .value
-                                            .data
-                                            ?.order
-                                            ?.deliveryService
-                                            ?.deliveryServiceId ==
-                                        "2"
-                                ? StringConstants.readyForShippedText
+                                            .value.data
+                                            ?.order?.deliveryService
+                                            ?.deliveryServiceId == "2"
+                                ? StringConstants.orderShippedText
                                 : ordersHomeMainController.selectedIndex.value == 2 &&
                                         ordersHomeMainController
                                                 .getStoreOrderDetailModel
@@ -977,7 +972,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                 ?.deliveryService
                                                 ?.deliveryServiceId !=
                                             "2"
-                                    ? StringConstants.orderPickedText
+                                    ? StringConstants.pickedUpText
                                     : ordersHomeMainController
                                                     .selectedIndex.value ==
                                                 2 &&
@@ -989,7 +984,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     ?.deliveryService
                                                     ?.deliveryServiceId ==
                                                 "2"
-                                        ? StringConstants.orderDeliveredText
+                                        ? StringConstants.deliveredText
                                         : ordersHomeMainController
                                                     .selectedIndex.value ==
                                                 3

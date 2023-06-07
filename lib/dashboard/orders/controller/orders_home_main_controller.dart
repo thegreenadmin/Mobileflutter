@@ -43,13 +43,13 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    orderId.value =
-        Get.parameters == null ? "" : Get.parameters["orderId"] ?? "";
-    storeId.value = Get.parameters["storeId"] ?? "";
+    orderId.value = Get.parameters["orderId"] ?? "";
+    if(Get.parameters["storeId"]!=""){
+      storeId.value = Get.parameters["storeId"] ?? "";
+    }
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;
     apiGetOwnerOrderHistory();
-    apiGetStoreOrderDetail();
   }
 
   int daysInMonth(DateTime date) {
@@ -84,7 +84,7 @@ class OrdersHomeMainController extends GetxController {
         {
           debugPrint(selectedIndex.value.toString());
           apiGetOwnerOrderHistory(orderStatus: {
-            "order_status_name": OrderStatus.delivered.statusName
+            "order_status_name": OrderStatus.completed.statusName
           });
         }
         break;
@@ -97,7 +97,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   RxList horizontalTabList = [
-    StringConstants.receivedText,
+    StringConstants.activeText,
     StringConstants.inProgress,
     StringConstants.pickupText,
     StringConstants.completedText,
@@ -166,13 +166,13 @@ class OrdersHomeMainController extends GetxController {
           : selectedIndex.value == 1
               ? [
                   {
-                    "order_status_name": OrderStatus.confirmed.statusName
+                    "order_status_name": OrderStatus.inProgress.statusName
                   }, //"confirmed"
                   {
-                    "order_status_name": OrderStatus.shipped.statusName
+                    "order_status_name": OrderStatus.inTransit.statusName
                   }, //"shipped"
                   {
-                    "order_status_name": OrderStatus.pickupRequest.statusName
+                    "order_status_name": OrderStatus.readyForPickup.statusName
                   }, //"pickup request"
                   {
                     "order_status_name": OrderStatus.cancelRequest.statusName
@@ -181,14 +181,12 @@ class OrdersHomeMainController extends GetxController {
               : selectedIndex.value == 2
                   ? [
                       {
-                        "order_status_name": OrderStatus.shipped.statusName
+                        "order_status_name": OrderStatus.inTransit.statusName
                       }, //"shipped"
                       {
-                        "order_status_name": OrderStatus.readyPickup.statusName
+                        "order_status_name": OrderStatus.readyForPickup.statusName
                       }, //ready pickup
-                      {
-                        "order_status_name": OrderStatus.userReady.statusName
-                      } //ready pickup
+
                     ]
                   : [orderStatus]
     };
@@ -259,31 +257,31 @@ class OrdersHomeMainController extends GetxController {
             getStoreOrderDetailModel.value.data!.order!.orderItems!;
         for (var element in getOrderItems) {
           element.isSelected = selectedIndex.value == 0 &&
-                  element.orderItemStatus == OrderStatus.pending.statusName
+                  element.orderItemStatus == OrderStatus.receivedOrder.statusName
               ? false
               : selectedIndex.value == 1 &&
                           element.orderItemStatus ==
-                              OrderStatus.confirmed.statusName ||
+                              OrderStatus.inProgress.statusName ||
                       selectedIndex.value == 1 &&
                           element.orderItemStatus ==
-                              OrderStatus.pending.statusName
+                              OrderStatus.receivedOrder.statusName
                   ? false
                   : selectedIndex.value == 2 &&
                               element.orderItemStatus ==
-                                  OrderStatus.shipped.statusName ||
+                                  OrderStatus.inTransit.statusName ||
                           selectedIndex.value == 2 &&
                               element.orderItemStatus ==
-                                  OrderStatus.readyPickup.statusName ||
+                                  OrderStatus.readyForPickup.statusName ||
                           selectedIndex.value == 2 &&
                               element.orderItemStatus ==
-                                  OrderStatus.confirmed.statusName ||
+                                  OrderStatus.inProgress.statusName ||
                           selectedIndex.value == 2 &&
                               element.orderItemStatus ==
-                                  OrderStatus.pending.statusName
+                                  OrderStatus.receivedOrder.statusName
                       ? false
                       : selectedIndex.value == 3 &&
                               element.orderItemStatus ==
-                                  OrderStatus.delivered.statusName
+                                  OrderStatus.completed.statusName
                           ? false
                           : true;
         }
@@ -505,7 +503,7 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-          element.orderItemStatus == OrderStatus.pending.statusName) {
+          element.orderItemStatus == OrderStatus.receivedOrder.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -558,9 +556,9 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.pending.statusName ||
+              element.orderItemStatus == OrderStatus.receivedOrder.statusName ||
           element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.confirmed.statusName) {
+              element.orderItemStatus == OrderStatus.inProgress.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -612,9 +610,9 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.pending.statusName ||
+              element.orderItemStatus == OrderStatus.receivedOrder.statusName ||
           element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.confirmed.statusName) {
+              element.orderItemStatus == OrderStatus.inProgress.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -667,9 +665,9 @@ class OrdersHomeMainController extends GetxController {
 
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.shipped.statusName ||
+              element.orderItemStatus == OrderStatus.inTransit.statusName ||
           element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.readyPickup.statusName) {
+              element.orderItemStatus == OrderStatus.readyForPickup.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }

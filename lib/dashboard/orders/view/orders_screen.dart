@@ -46,7 +46,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onTap: () {
                   if (ordersController.isActiveOrders.value == true) {
                     ordersController.orderStatusName.value =
-                        OrderStatus.newOrder.statusName;
+                        OrderStatus.receivedOrder.statusName;
                     // ordersController.orderStatusId.value = 2;
                     ordersController.page.value = 1;
                     ordersController.orderList.clear();
@@ -54,7 +54,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   } else {
                     // ordersController.orderStatusId.value = 2;
                     ordersController.orderStatusName.value =
-                        OrderStatus.newOrder.statusName;
+                        OrderStatus.receivedOrder.statusName;
                     ordersController.isActiveOrders.value =
                         !ordersController.isActiveOrders.value;
                     ordersController.page.value = 1;
@@ -92,7 +92,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onTap: () {
                   ordersController.isActiveOrders.value = false;
                   ordersController.orderStatusName.value =
-                      OrderStatus.delivered.statusName;
+                      OrderStatus.completed.statusName;
                   // ordersController.orderStatusId.value = 5;
                   ordersController.page.value = 1;
                   ordersController.orderList.clear();
@@ -103,7 +103,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.delivered.statusName
+                          OrderStatus.completed.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -117,7 +117,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value ==
-                                  OrderStatus.delivered.statusName
+                                  OrderStatus.completed.statusName
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -188,7 +188,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.orderStatusName.value =
-                      OrderStatus.newOrder.statusName;
+                      OrderStatus.receivedOrder.statusName;
                   // ordersController.orderStatusId.value = 2;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
@@ -200,7 +200,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.16,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.newOrder.statusName
+                          OrderStatus.receivedOrder.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -216,7 +216,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w400,
                             color: ordersController.orderStatusName.value ==
-                                    OrderStatus.newOrder.statusName
+                                    OrderStatus.receivedOrder.statusName
                                 ? AppColors.primary
                                 : AppColors.blacklight,
                           ),
@@ -230,7 +230,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onTap: () {
                   // ordersController.orderStatusId.value = 3;
                   ordersController.orderStatusName.value =
-                      OrderStatus.pending.statusName;
+                      OrderStatus.receivedOrder.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -241,7 +241,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.18,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.pending.statusName
+                          OrderStatus.receivedOrder.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -249,20 +249,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Text(
-                          StringConstants.pendingText,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w400,
-                            color: ordersController.orderStatusName.value ==
-                                    OrderStatus.pending.statusName
-                                ? AppColors.primary
-                                : AppColors.blacklight,
-                          ),
+                          child: Text(
+                        StringConstants.pendingText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w400,
+                          color: ordersController.orderStatusName.value ==
+                                  OrderStatus.receivedOrder.statusName
+                              ? AppColors.primary
+                              : AppColors.blacklight,
                         ),
-                      )
+                      ))
                     ],
                   ),
                 ),
@@ -271,7 +270,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onTap: () {
                   // ordersController.orderStatusId.value = 5;
                   ordersController.orderStatusName.value =
-                      OrderStatus.delivered.statusName;
+                      OrderStatus.completed.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -282,7 +281,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.20,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.delivered.statusName
+                          OrderStatus.completed.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -290,20 +289,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Text(
-                          StringConstants.receivedText,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w400,
-                            color: ordersController.orderStatusName.value ==
-                                    OrderStatus.delivered.statusName
-                                ? AppColors.primary
-                                : AppColors.blacklight,
-                          ),
+                          child: Text(
+                        StringConstants.receivedText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w400,
+                          color: ordersController.orderStatusName.value ==
+                                  OrderStatus.completed.statusName
+                              ? AppColors.primary
+                              : AppColors.blacklight,
                         ),
-                      )
+                      ))
                     ],
                   ),
                 ),
@@ -676,68 +674,71 @@ class _OrdersScreenState extends State<OrdersScreen> {
               height25SizedBox,
               Obx(() => ordersController.role!.value == Role.customerRoleText
                   ? ordersController.orderList.isEmpty
-                  ? ordersController.isDataLoading.value == true
-                  ? height0SizedBox
-                  : Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Image.asset(
-                        ImageConstants.nodata,
-                        scale: 8,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    height4SizedBox,
-                    Center(
-                      child: Text(
-                        StringConstants.noOrdersFoundText,
-                        style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-                  : Expanded(
-                child: ListView.separated(
-                    controller: ordersController.scrollController,
-                    separatorBuilder:
-                        (BuildContext context, int index) {
-                      return height12SizedBox;
-                    },
-                    itemCount: ordersController.orderList.length +
-                        (ordersController.isLoading.value
-                            ? 1
-                            : 0),
-                    itemBuilder: (BuildContext context, int i) {
-                      if (i < ordersController.orderList.length) {
-                        return InkWell(
-                          onTap: () {
-                            ordersController.storeId.value =
-                                ordersController
-                                    .orderList[i].storeId ??
-                                    "";
-                            ordersController.orderStatus.value =
-                                ordersController
-                                    .orderList[i].orderId ??
-                                    "";
-                            ordersController
-                                .apiGetStoreDetailsApi();
-                            ordersController
-                                .apiGetOrderDetailsApi();
-                            Get.parameters["orderStatus"] =ordersController
-                                .orderList[i].orderId ?? "";
-                            Get.parameters["isFromTransaction"] = "false";
-                            Get.parameters["isHome"] = "false";
-                            Get.parameters["isFromNotification"] = "false";
-                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
+                      ? ordersController.isDataLoading.value == true
+                          ? height0SizedBox
+                          : Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      ImageConstants.nodata,
+                                      scale: 8,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  height4SizedBox,
+                                  Center(
+                                    child: Text(
+                                      StringConstants.noOrdersFoundText,
+                                      style: const TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                      : Expanded(
+                          child: ListView.separated(
+                              controller: ordersController.scrollController,
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return height12SizedBox;
+                              },
+                              itemCount: ordersController.orderList.length +
+                                  (ordersController.isLoading.value ? 1 : 0),
+                              itemBuilder: (BuildContext context, int i) {
+                                if (i < ordersController.orderList.length) {
+                                  return InkWell(
+                                    onTap: () {
+                                      ordersController.storeId.value =
+                                          ordersController
+                                                  .orderList[i].storeId ??
+                                              "";
+                                      ordersController.orderStatus.value =
+                                          ordersController
+                                                  .orderList[i].orderId ??
+                                              "";
+                                      ordersController.apiGetStoreDetailsApi();
+                                      ordersController.apiGetOrderDetailsApi();
+                                      Get.parameters["orderStatus"] =
+                                          ordersController
+                                                  .orderList[i].orderId ??
+                                              "";
+                                      Get.parameters["isFromTransaction"] =
+                                          "false";
+                                      Get.parameters["isHome"] = "false";
+                                      Get.parameters["isFromNotification"] =
+                                          "false";
+                                      Get.parameters["storeId"] =
+                                          ordersController
+                                                  .orderList[i].store?.storeId
+                                                  .toString() ??
+                                              "";
 
-                            /* Get.to(
+                                      /* Get.to(
                                     () =>
                                 const OrderConfirmationScreen(),
                                 arguments: {
@@ -750,342 +751,339 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       .toString() ??
                                       "",
                                 });*/
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: const BoxDecoration(
-                                color: AppColors.primarylight,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                )),
-                            child: Column(children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      decoration: const BoxDecoration(
+                                          color: AppColors.primarylight,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          )),
+                                      child: Column(children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                      color: AppColors.white,
+                                                      width: 1)),
+                                              child: CircleAvatar(
+                                                radius: 22.0,
+                                                backgroundImage: ordersController
+                                                                .orderList[i]
+                                                                .store
+                                                                ?.logo
+                                                                ?.dynamicUrl ==
+                                                            null ||
+                                                        ordersController
+                                                            .orderList[i]
+                                                            .store!
+                                                            .logo!
+                                                            .dynamicUrl!
+                                                            .isEmpty
+                                                    ? const AssetImage(
+                                                        ImageConstants
+                                                            .nopicfound,
+                                                      ) as ImageProvider
+                                                    : NetworkImage(
+                                                        ordersController
+                                                                .orderList[i]
+                                                                .store
+                                                                ?.logo
+                                                                ?.dynamicUrl
+                                                                .toString() ??
+                                                            ""),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                              ),
+                                            ),
+                                            width5SizedBox,
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text.rich(
+                                                          TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                  text: StringConstants
+                                                                      .orderIDText,
+                                                                  style: TextStyle(
+                                                                      color: AppColors
+                                                                          .blacklight,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      fontSize:
+                                                                          14)),
+                                                              TextSpan(
+                                                                text:
+                                                                    ': ${ordersController.orderList[i].orderId ?? "0"}',
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: AppColors
+                                                                        .blacklight),
+                                                              ),
+                                                            ],
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                          ),
+                                                          style: const TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Text.rich(
+                                                          TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                  text: Utility.formatDateTime(
+                                                                      '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
+                                                                      firstFormat:
+                                                                          "yyyy-MM-dd HH:mm:ss",
+                                                                      secFormat:
+                                                                          "dd MMM yyyy"), //"14 Feb",
+                                                                  style: TextStyle(
+                                                                      color: AppColors
+                                                                          .blacklight,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      fontSize:
+                                                                          14)),
+                                                              TextSpan(
+                                                                text:
+                                                                    "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
+                                                                style: TextStyle(
+                                                                    color: AppColors
+                                                                        .blacklight,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ],
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                          ),
+                                                          style: const TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  height8SizedBox,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          ordersController
+                                                                  .orderList[i]
+                                                                  .store
+                                                                  ?.storeName ??
+                                                              "",
+                                                          style: const TextStyle(
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 16)),
+                                                      Text(
+                                                        "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        height6SizedBox,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text.rich(
+                                              softWrap: true,
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                      text:
+                                                          "${StringConstants.statusText} : ",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 14)),
+                                                  TextSpan(
+                                                    text: ordersController
+                                                            .orderList[i]
+                                                            .orderHistories
+                                                            ?.first
+                                                            .orderStatus
+                                                            ?.orderStatusName
+                                                            ?.toTitleCase() ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        color: AppColors.yellow,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                          text:
+                                                              "${StringConstants.productText}: ",
+                                                          style: const TextStyle(
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 14)),
+                                                      TextSpan(
+                                                        text: ordersController
+                                                                .orderList[i]
+                                                                .orderItems
+                                                                ?.length
+                                                                .toString() ??
+                                                            "0",
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.chevron_right,
+                                                  color: AppColors.blacklight,
+                                                  size: 22.0,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ]),
+                                    ),
+                                  );
+                                } else if (ordersController.isLoading.value) {
+                                  Timer(const Duration(milliseconds: 10), () {
+                                    ordersController.scrollController.jumpTo(
+                                        ordersController.scrollController
+                                            .position.maxScrollExtent);
+                                  });
+                                  return _loadingIndicator();
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }),
+                        )
+                  : ordersController.storeOrderList.isEmpty
+                      ? ordersController.isDataLoading.value == true
+                          ? height0SizedBox
+                          : Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color:
-                                            AppColors.white,
-                                            width: 1)),
-                                    child: CircleAvatar(
-                                      radius: 22.0,
-                                      backgroundImage: ordersController
-                                          .orderList[
-                                      i]
-                                          .store
-                                          ?.logo
-                                          ?.dynamicUrl ==
-                                          null ||
-                                          ordersController
-                                              .orderList[i]
-                                              .store!
-                                              .logo!
-                                              .dynamicUrl!
-                                              .isEmpty
-                                          ? const AssetImage(
-                                        ImageConstants
-                                            .nopicfound,
-                                      ) as ImageProvider
-                                          : NetworkImage(
-                                          ordersController
-                                              .orderList[
-                                          i]
-                                              .store
-                                              ?.logo
-                                              ?.dynamicUrl
-                                              .toString() ??
-                                              ""),
-                                      backgroundColor:
-                                      Colors.transparent,
+                                  Center(
+                                    child: Image.asset(
+                                      ImageConstants.nodata,
+                                      scale: 8,
+                                      color: AppColors.primary,
                                     ),
                                   ),
-                                  width5SizedBox,
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize:
-                                      MainAxisSize.max,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .end,
-                                          children: [
-                                            Expanded(child:   Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: StringConstants
-                                                          .orderIDText,
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .w400, overflow: TextOverflow.ellipsis,
-                                                          fontSize:
-                                                          14)),
-                                                  TextSpan(
-                                                    text:
-                                                    ': ${ordersController.orderList[i].orderId ?? "0"}',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w600, overflow: TextOverflow.ellipsis,
-                                                        fontSize:
-                                                        14,
-                                                        color: AppColors
-                                                            .blacklight),
-                                                  ),
-                                                ],
-                                                style: const TextStyle(
-                                                   overflow: TextOverflow.ellipsis),
-                                              ),
-                                              style: const TextStyle(
-                                                  overflow: TextOverflow.ellipsis),
-                                            ),),
-                                            Expanded(child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: Utility.formatDateTime(
-                                                          '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
-                                                          firstFormat:
-                                                          "yyyy-MM-dd HH:mm:ss",
-                                                          secFormat:
-                                                          "dd MMM yyyy"), //"14 Feb",
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .w400, overflow: TextOverflow.ellipsis,
-                                                          fontSize:
-                                                          14)),
-                                                  TextSpan(
-                                                    text:
-                                                    "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}", //'2023-03:30 AM',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w400, overflow: TextOverflow.ellipsis,
-                                                        fontSize:
-                                                        14),
-                                                  ),
-                                                ],
-                                                style: const TextStyle(
-                                                    overflow: TextOverflow.ellipsis),
-                                              ),
-                                              style: const TextStyle(
-                                                  overflow: TextOverflow.ellipsis),
-                                            ),
-
-                                            )
-
-                                          ],
-                                        ),
-                                        height8SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            Text(
-                                                ordersController
-                                                    .orderList[
-                                                i]
-                                                    .store
-                                                    ?.storeName ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    color: AppColors
-                                                        .black,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w500,
-                                                    fontSize:
-                                                    16)),
-                                            Text(
-                                              "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
-                                              style: const TextStyle(
-                                                  color: AppColors
-                                                      .primary,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600,
-                                                  fontSize: 16),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                  height4SizedBox,
+                                  Center(
+                                    child: Text(
+                                      StringConstants.noOrdersFoundText,
+                                      style: const TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 16),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                              height6SizedBox,
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Text.rich(
-                                    softWrap: true,
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text:
-                                            "${StringConstants.statusText} : ",
-                                            style: const TextStyle(
-                                                color: AppColors
-                                                    .black,
-                                                fontWeight:
-                                                FontWeight
-                                                    .w400,
-                                                fontSize: 14)),
-                                        TextSpan(
-                                          text: ordersController
-                                              .orderList[i]
-                                              .orderHistories
-                                              ?.first
-                                              .orderStatus
-                                              ?.orderStatusName
-                                              ?.toTitleCase() ??
-                                              "",
-                                          style: const TextStyle(
-                                              color: AppColors
-                                                  .yellow,
-                                              fontWeight:
-                                              FontWeight.w600,
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                "${StringConstants.productText}: ",
-                                                style: const TextStyle(
-                                                    color:
-                                                    AppColors
-                                                        .black,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w400,
-                                                    fontSize:
-                                                    14)),
-                                            TextSpan(
-                                              text: ordersController
-                                                  .orderList[
-                                              i]
-                                                  .orderItems
-                                                  ?.length
-                                                  .toString() ??
-                                                  "0",
-                                              style: const TextStyle(
-                                                  color: AppColors
-                                                      .primary,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.chevron_right,
-                                        color:
-                                        AppColors.blacklight,
-                                        size: 22.0,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ]),
-                          ),
-                        );
-                      } else if (ordersController
-                          .isLoading.value) {
-                        Timer(const Duration(milliseconds: 10),
-                                () {
-                              ordersController.scrollController
-                                  .jumpTo(ordersController
-                                  .scrollController
-                                  .position
-                                  .maxScrollExtent);
-                            });
-                        return _loadingIndicator();
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
-              )
-                  :  ordersController.storeOrderList.isEmpty
-                  ? ordersController.isDataLoading.value == true
-                  ? height0SizedBox
-                  : Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Image.asset(
-                        ImageConstants.nodata,
-                        scale: 8,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    height4SizedBox,
-                    Center(
-                      child: Text(
-                        StringConstants.noOrdersFoundText,
-                        style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-                  : Expanded(
-                child: ListView.separated(
-                    controller: ordersController.scrollController,
-                    separatorBuilder:
-                        (BuildContext context, int index) {
-                      return height12SizedBox;
-                    },
-                    itemCount:
-                    ordersController.storeOrderList.length +
-                        (ordersController.isLoading.value
-                            ? 1
-                            : 0),
-                    itemBuilder: (BuildContext context, int i) {
-                      if (i <
-                          ordersController
-                              .storeOrderList.length) {
-                        return InkWell(
-                          onTap: () {
-                            SharedPreferenceStorage.setData("context", context);
+                            )
+                      : Expanded(
+                          child: ListView.separated(
+                              controller: ordersController.scrollController,
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return height12SizedBox;
+                              },
+                              itemCount: ordersController
+                                      .storeOrderList.length +
+                                  (ordersController.isLoading.value ? 1 : 0),
+                              itemBuilder: (BuildContext context, int i) {
+                                if (i <
+                                    ordersController.storeOrderList.length) {
+                                  return InkWell(
+                                    onTap: () {
+                                      SharedPreferenceStorage.setData(
+                                          "context", context);
 
                                       Get.parameters["storeId"] =
                                           ordersController.storeOrderList[i]

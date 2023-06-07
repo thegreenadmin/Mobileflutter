@@ -1,7 +1,6 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -475,7 +474,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                     Obx(() =>  Text(
-                      ordersController.orderStatusTypeName.value.toTitleCase()??"",
+                      ordersController.orderStatusTypeName.value.toTitleCase(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -496,7 +495,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                      Obx(() => Text(
-                       "\$${ordersController.totalAmount.value.toStringAsFixed(2)??"0.0"}",
+                       "\$${ordersController.totalAmount.value.toStringAsFixed(2)}",
                        style: const TextStyle(
                            fontWeight: FontWeight.w500,
                            fontSize: 16,
@@ -590,44 +589,16 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                         onStepReached: (index) {},
                       ),
-                      height30SizedBox,
-                      CustomButton(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [AppColors.primary, AppColors.primary],
-                        ),
-                        onTap: () {
-                          BuildContext rContext =
-                          SharedPreferenceStorage.getData(
-                            "context",
-                          );
-                          // print(rContext);
-                          Get.parameters["storeId"] = ordersController.storeId.value;
-                          print(Get.parameters["storeId"]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const StoreHomeMainScreen(),
-                          ));
-                          // Navigator.of(rContext)
-                          //     .popUntil((route) => route.isFirst);
-                          // Get.offAll(BottomNavigation());
-                        },
-                        height: 50,
-                        width: WidgetConstants.screenWidth * 0.5,
-                        text: StringConstants.continueShoppingText,
-                        borderRadius: 12,
-                        fontWeight: FontWeight.w500,
-                        iconL: false,
-                        fontSize: 16,
-                      ),
                       height20SizedBox,
                     ],
                   ),
                 ),),
+
                 Obx(() =>   Visibility(
-                  visible: ordersController.orderStatusTypeName.value == OrderStatus.pending.statusName
-                      || ordersController.orderStatusTypeName.value == OrderStatus.confirmed.statusName
-                      || ordersController.orderStatusTypeName.value == OrderStatus.readyPickup.statusName,
+                  visible: ordersController.orderStatusTypeName.value == OrderStatus.receivedOrder.statusName
+                  && (ordersController.orderType.value =="1" || ordersController.orderType.value =="2")
+                      || ordersController.orderStatusTypeName.value == OrderStatus.inProgress.statusName
+                          && (ordersController.orderType.value =="1" || ordersController.orderType.value =="2"),
                   child: Column(
                     children: [
                       CustomButton(
@@ -648,11 +619,45 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         iconL: false,
                         fontSize: 16,
                       ),
+                      height30SizedBox,
+                    ],
+                  ),
+                ),),
+                Obx(() =>   Visibility(
+                  visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
+                  child: Column(
+                    children: [
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [AppColors.primary, AppColors.primary],
+                        ),
+                        onTap: () {
+
+                          Get.parameters["storeId"] = ordersController.storeId.value;
+
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const StoreHomeMainScreen(),
+                          ));
+                          // Navigator.of(rContext)
+                          //     .popUntil((route) => route.isFirst);
+                          // Get.offAll(BottomNavigation());
+                        },
+                        height: 50,
+                        width: WidgetConstants.screenWidth * 0.5,
+                        text: StringConstants.continueShoppingText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w500,
+                        iconL: false,
+                        fontSize: 16,
+                      ),
                       height20SizedBox,
                     ],
                   ),
                 ),),
-
                 buildOrderItems()
               ],
             ),
@@ -1133,7 +1138,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             text:
                                             ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
                                             Utility.formatDateTime(
-                                                '${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.createdAt.toString().substring(11, 23)}',
+                                                '${ordersController.orderItems[i].returnOrderItems?.first.createdAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first.createdAt.toString().substring(11, 23)}',
                                                 firstFormat:
                                                 "yyyy-MM-dd HH:mm:ss",
                                                 secFormat:
@@ -1240,7 +1245,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           text:
                                           ordersController.orderItems[i].returnOrderItems!=null && ordersController.orderItems[i].returnOrderItems!.isNotEmpty ?
                                           Utility.formatDateTime(
-                                              '${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first?.updatedAt.toString().substring(11, 23)}',
+                                              '${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(0, 10)} ${ordersController.orderItems[i].returnOrderItems?.first.updatedAt.toString().substring(11, 23)}',
                                               firstFormat: "yyyy-MM-dd HH:mm:ss",
                                               secFormat: "dd MMM yyyy"):"",
                                           style: TextStyle(

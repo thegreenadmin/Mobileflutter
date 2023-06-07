@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import '../../../utils/shared_prefrences.dart';
-import '../controller/orders_home_main_controller.dart';
-import 'orders_screen.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
   const OrderStoresListScreen({super.key});
@@ -107,30 +105,16 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: () async {
-
                               ordersController.storeId.value =
-                                  ordersController
-                                      .storeList[index].storeId ??
-                                      "";
+                                  ordersController.storeList[index].storeId ?? "";
+                              Get.parameters["storeId"]=ordersController
+                                  .storeList[index].storeId ?? "";
 
-                              // await ordersController
-                              //     .apiGetDeliveryServices();
-                              // await ordersController
-                              //     .apiGetParticularStore();
-                              //
-                              //
-                              await ordersController
-                                  .apiGetStoreDetailsApi();
-                              // ordersController.onInit();
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-                              await Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                builder: (_) =>
-                                const OrdersScreen(),
+                              SharedPreferenceStorage.setData("context", context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const OrdersHomeMainScreen(),
                               ));
-                              // await Get.to(
-                              //     () => const ManageStoreMainScreen());
+
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -155,15 +139,11 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                         child: CircleAvatar(
                                           radius: 24.0,
                                           backgroundImage: ordersController
-                                                      .storeList[index]
-                                                      .logo!
-                                                      .dynamicUrl !=
-                                                  null
+                                                      .storeList[index].logo!
+                                                      .dynamicUrl != null
                                               ? NetworkImage(ordersController
                                                   .storeList[index]
-                                                  .logo!
-                                                  .dynamicUrl
-                                                  .toString())
+                                                  .logo!.dynamicUrl.toString())
                                               : const AssetImage(
                                                   ImageConstants.nopicfound,
                                                 ) as ImageProvider,
@@ -182,8 +162,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                             width: 190,
                                             child: Text(
                                               ordersController.storeList[index]
-                                                      .storeName ??
-                                                  "",
+                                                      .storeName ?? "",
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
