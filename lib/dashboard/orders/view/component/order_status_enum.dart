@@ -12,7 +12,7 @@ enum OrderStatus {
   failed,
   returnRequest,
   returnConfirmed,
-  returnCompleted,
+  returned,
   returnCancelled,
 }
 
@@ -37,8 +37,8 @@ extension StatusExtension on OrderStatus {
         return 'return confirmed';
       case OrderStatus.returnCancelled:
         return 'return cancelled';
-     case OrderStatus.returnCompleted:
-        return 'return completed';
+     case OrderStatus.returned:
+        return 'returned';
       case OrderStatus.cancelled:
         return 'cancelled';
       case OrderStatus.failed:

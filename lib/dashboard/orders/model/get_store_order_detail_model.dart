@@ -336,11 +336,13 @@ class OrderHistories {
   String? createdAt;
   String? updatedAt;
   OrderStatus? orderStatus;
+  bool? isCreatedByStore;
 
   OrderHistories(
       {this.orderHistoryId,
       this.orderStatusId,
       this.isCurrentStatus,
+      this.isCreatedByStore,
       this.createdAt,
       this.updatedAt,
       this.orderStatus});
@@ -348,6 +350,7 @@ class OrderHistories {
   OrderHistories.fromJson(Map<String, dynamic> json) {
     orderHistoryId = json['order_history_id'];
     orderStatusId = json['order_status_id'];
+    isCreatedByStore= json['is_created_by_store'];
     isCurrentStatus = json['is_current_status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -360,6 +363,7 @@ class OrderHistories {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['order_history_id'] = this.orderHistoryId;
     data['order_status_id'] = this.orderStatusId;
+    data['is_created_by_store'] = this.isCreatedByStore;
     data['is_current_status'] = this.isCurrentStatus;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;

@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import '../view/component/order_status_enum.dart';
 
 class MarkReturnOrderScreen extends StatefulWidget {
   const MarkReturnOrderScreen({super.key});
@@ -214,7 +215,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                       ),
                                       width8SizedBox,
                                       Text(
-                                          StringConstants.drivingLicenceText,
+                                          StringConstants.identityProofText,
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600,
@@ -344,132 +345,162 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                           itemCount:
                               ordersHomeMainController.getOrderItems.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    )),
-                                child: Column(children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Flexible(
-                                        flex: 2,
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(color: AppColors.white,
-                                                    width: 1)),
-                                            child: ordersHomeMainController
-                                                .getOrderItems[index].product!
-                                                .productImages!.first.image!.dynamicUrl == null ||
-                                                ordersHomeMainController.getOrderItems[index].product!.productImages!.first
-                                                    .image!.dynamicUrl!.isEmpty
-                                                ? Image.asset(ImageConstants.nopicfound,)
-                                                :  Image.network(
-                                                ordersHomeMainController
-                                                    .getOrderItems[index]
-                                                    .product!.productImages!
-                                                    .first.image!.dynamicUrl.toString()),),),
-                                      width10SizedBox,
-                                      Flexible(
-                                        flex: 8,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .productName ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16)),
-                                            height5SizedBox,
-                                            Text(
-                                                ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .description ??
-                                                    "",
-                                                style: TextStyle(
-                                                    color: AppColors.blacklight,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 14)),
-                                            height12SizedBox,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        "${StringConstants.qtyText.toUpperCase()}: ",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                    Text(
-                                                        ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .quantity
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        "${StringConstants.unitPriceText}: ",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                    Text(
-                                                        ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .productPrice
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blacklight,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14)),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            height6SizedBox,
-                                          ],
+                            return Visibility(
+                              visible: ordersHomeMainController
+                                  .getOrderItems[index].orderItemStatus == OrderStatus.returnRequest.statusName,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.greylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      )),
+                                  child: Column(children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          flex: 2,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(color: AppColors.white,
+                                                      width: 1)),
+                                              child: ordersHomeMainController
+                                                  .getOrderItems[index].product!
+                                                  .productImages!.first.image!.dynamicUrl == null ||
+                                                  ordersHomeMainController.getOrderItems[index].product!.productImages!.first
+                                                      .image!.dynamicUrl!.isEmpty
+                                                  ? Image.asset(ImageConstants.nopicfound,)
+                                                  :  Image.network(
+                                                  ordersHomeMainController
+                                                      .getOrderItems[index]
+                                                      .product!.productImages!
+                                                      .first.image!.dynamicUrl.toString()),),),
+                                        width10SizedBox,
+                                        Flexible(
+                                          flex: 8,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  ordersHomeMainController
+                                                          .getOrderItems[index]
+                                                          .product!
+                                                          .productName ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 16)),
+                                              height5SizedBox,
+                                              Text(
+                                                  ordersHomeMainController
+                                                          .getOrderItems[index]
+                                                          .product!
+                                                          .description ??
+                                                      "",
+                                                  style: TextStyle(
+                                                      color: AppColors.blacklight,
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 14)),
+                                              height12SizedBox,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                          "${StringConstants.qtyText.toUpperCase()}: ",
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontSize: 14)),
+                                                      Text(
+                                                          ordersHomeMainController
+                                                              .getOrderItems[
+                                                                  index]
+                                                              .product!
+                                                              .quantity
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontSize: 14)),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                          "${StringConstants.unitPriceText}: ",
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontSize: 14)),
+                                                      Text(
+                                                          ordersHomeMainController
+                                                              .getOrderItems[
+                                                                  index]
+                                                              .product!
+                                                              .productPrice
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontSize: 14)),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                              height6SizedBox,
+                                            ],
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ]),
+                                        width10SizedBox,
+                                        Flexible(
+                                          flex: 1,
+                                          child: Obx(
+                                                () => SizedBox(
+                                                height: 20,
+                                                width: 30,
+                                                child: Checkbox(
+                                                  side: MaterialStateBorderSide.resolveWith(
+                                                        (states) => BorderSide(
+                                                        width: 1.0, color:
+                                                    AppColors.primary.withOpacity(0.5)),
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(6.0)),
+                                                  activeColor: AppColors.primary,
+                                                  value:
+                                                  ordersHomeMainController.getOrderItems[index].isSelected??false ,
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                    });
+                                                  },
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                                ),
                               ),
                             );
                           })))
@@ -524,7 +555,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                         AlertStringConstants.areYouSureToConfirmReturnText,
                         okay: StringConstants.yesText,cancelText:  StringConstants.noText,
                         okayTap: (){
-                          ordersHomeMainController.apiConfirmReturnRequest(context);
+                          ordersHomeMainController.apiCompleteReturnRequest(context);
                         });
 
                   },
