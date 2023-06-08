@@ -185,7 +185,7 @@ class HomeController extends GetxController {
             StringConstants.currentUserIdText, currentUserId!.value);
         await getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -228,7 +228,7 @@ class HomeController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -289,7 +289,7 @@ class HomeController extends GetxController {
         featuredUserProductList.value =
             userFeaturedProductModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -405,7 +405,7 @@ class HomeController extends GetxController {
         ownerFeatureProductList.value =
             ownerFeaturedProductModel.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),

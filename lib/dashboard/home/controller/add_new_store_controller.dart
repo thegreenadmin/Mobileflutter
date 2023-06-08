@@ -506,7 +506,7 @@ class AddNewStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.pop(Get.context!);
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(

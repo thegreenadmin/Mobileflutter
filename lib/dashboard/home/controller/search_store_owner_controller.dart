@@ -369,14 +369,18 @@ class OwnerStoresController extends GetxController {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -735,7 +739,9 @@ class OwnerStoresController extends GetxController {
         }
         update();
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -828,14 +834,17 @@ class OwnerStoresController extends GetxController {
           countryCode.value = "";
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(ctx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
