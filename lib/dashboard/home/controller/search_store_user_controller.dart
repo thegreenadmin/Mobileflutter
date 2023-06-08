@@ -404,6 +404,7 @@ class SearchStoreUserController extends GetxController {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
+
     Map data = {
       "q": "",
       "page": page.value,
