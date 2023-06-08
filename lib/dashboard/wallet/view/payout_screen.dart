@@ -84,7 +84,21 @@ class PayOutScreenState extends State<PayOutScreen> {
                   Obx(() => addCardController.storeList.isEmpty
                       ? Column(
                           children: [
-                            Text(StringConstants.toKnowBalanceYouDontHaveText),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.warning_amber,
+                                  color: AppColors.grey,
+                                  size: 24.0,
+                                ),
+                                width4SizedBox,
+                                Flexible(
+                                    child: Text(StringConstants
+                                        .toKnowBalanceYouDontHaveText)),
+                              ],
+                            )
                           ],
                         )
                       : Row(

@@ -303,20 +303,29 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
-                      final geocoding = GoogleMapsGeocoding(apiKey: kGoogleApiKey);
-                      GeocodingResponse response = await geocoding.searchByAddress(p?.description.toString()??"");
+                      final geocoding =
+                          GoogleMapsGeocoding(apiKey: kGoogleApiKey);
+                      GeocodingResponse response = await geocoding
+                          .searchByAddress(p?.description.toString() ?? "");
                       // log("GeocodingResponse web services:------------");
                       // log(jsonEncode(response.results));
 
-                      final result = response.results.isNotEmpty?response.results.first:null;
-                     if(result!=null){
-                       searchStoreUserController.city.value= Utility.extractLocality(result,"locality");
-                       searchStoreUserController.country.value  = Utility.extractLocality(result,"country");
-                       searchStoreUserController.zipCodeTextController.text = Utility.extractLocality(result,"postal_code");
-                       searchStoreUserController.state.value = Utility.extractLocality(result,"administrative_area_level_1");
-                       updateMap(response.results.first.geometry.location.lat, response.results.first.geometry.location.lng);
-                     }
-
+                      final result = response.results.isNotEmpty
+                          ? response.results.first
+                          : null;
+                      if (result != null) {
+                        searchStoreUserController.city.value =
+                            Utility.extractLocality(result, "locality");
+                        searchStoreUserController.country.value =
+                            Utility.extractLocality(result, "country");
+                        searchStoreUserController.zipCodeTextController.text =
+                            Utility.extractLocality(result, "postal_code");
+                        searchStoreUserController.state.value =
+                            Utility.extractLocality(
+                                result, "administrative_area_level_1");
+                        updateMap(response.results.first.geometry.location.lat,
+                            response.results.first.geometry.location.lng);
+                      }
 
                       /*  List<geocoding.Location> locations = await geocoding
                           .locationFromAddress(p?.description.toString() ?? "");

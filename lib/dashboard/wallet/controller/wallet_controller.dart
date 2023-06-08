@@ -173,7 +173,7 @@ class WalletController extends GetxController {
       try {
         if (isFromautorecharge == true) {
           if (autoChargeType.value.isEmpty) {
-            Utility.showAlertMessage("Please select autoreload type");
+            Utility.showAlertMessage("Please select auto-reload type");
           } else {
             apiCreateAutoRecharge(mcontext);
           }
@@ -314,8 +314,10 @@ class WalletController extends GetxController {
           ownerSelectedStore.value = storeList[0].storeId.toString();
           apiGetOwnerWalletBalance();
         } else {
-          storeNameValue!.value = storeList[0].storeName.toString();
-          ownerSelectedStore.value = storeList[0].storeId.toString();
+          if (storeList.isNotEmpty) {
+            storeNameValue!.value = storeList[0].storeName.toString();
+            ownerSelectedStore.value = storeList[0].storeId.toString();
+          }
         }
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
