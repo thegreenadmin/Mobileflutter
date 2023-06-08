@@ -130,7 +130,21 @@ class _WalletScreenState extends State<WalletScreen> {
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ? Text(StringConstants.toKnowBalanceYouDontHaveText)
+                      ?Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.warning_amber,
+                              color: AppColors.grey,
+                              size: 24.0,
+                            ),
+                            width4SizedBox,
+                            Flexible(
+                                child: Text(StringConstants
+                                    .toKnowBalanceYouDontHaveText)),
+                          ],
+                        )
                       : Row(
                           children: [
                             Expanded(
