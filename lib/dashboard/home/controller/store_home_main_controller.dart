@@ -380,7 +380,7 @@ class StoreHomeMainController extends GetxController {
                     ),
                   ),
                 ),
-                height25SizedBox,
+                height40SizedBox,
                 InkWell(
                   onTap: () {
                     // Get.back();

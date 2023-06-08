@@ -496,7 +496,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         fontSize: 22,
                         color: AppColors.black),
                   ),
-                  height20SizedBox,
+                  height15SizedBox,
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -703,19 +703,32 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       ),
                               ],
                             ),
-                            height4SizedBox,
-                            SizedBox(
-                              width: 200,
-                              child: Text(
-                                  storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.blacklight,
-                                      fontWeight: FontWeight.w400)),
-                            ),
-                            height10SizedBox,
+                            storeHomeMainController.productDetailResponse.value
+                                    .data!.product!.description!.isEmpty
+                                ? height0SizedBox
+                                : height4SizedBox,
+                            storeHomeMainController.productDetailResponse.value
+                                    .data!.product!.description!.isEmpty
+                                ? height0SizedBox
+                                : SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                        storeHomeMainController
+                                                .productDetailResponse
+                                                .value
+                                                .data
+                                                ?.product
+                                                ?.description ??
+                                            "",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.blacklight,
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                            storeHomeMainController.productDetailResponse.value
+                                    .data!.product!.description!.isEmpty
+                                ? height0SizedBox
+                                : height10SizedBox,
                             Text.rich(
                               TextSpan(
                                 children: [
@@ -815,7 +828,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                     },
                                     child: Image.asset(
                                       ImageConstants.subtract,
-                                      scale: 2.5,
+                                      scale: 2.8,
                                     )),
                                 width10SizedBox,
                                 Text(
@@ -843,7 +856,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   },
                                   child: Image.asset(
                                     ImageConstants.add,
-                                    scale: 2.5,
+                                    scale: 2.8,
                                   ),
                                 )
                               ],

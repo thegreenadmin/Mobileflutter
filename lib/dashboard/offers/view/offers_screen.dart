@@ -501,104 +501,111 @@ class _OffersScreenState extends State<OffersScreen> {
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: [
-                                        width10SizedBox,
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                      color: AppColors.white,
-                                                      width: 1)),
-                                              child: CircleAvatar(
-                                                radius: 24.0,
-                                                backgroundImage: offersController
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          color:
+                                                              AppColors.white,
+                                                          width: 1)),
+                                                  child: CircleAvatar(
+                                                    radius: 24.0,
+                                                    backgroundImage: offersController
+                                                                    .getOwnerOfferlist[
+                                                                        index]
+                                                                    .store!
+                                                                    .logo!
+                                                                    .dynamicUrl ==
+                                                                null ||
+                                                            offersController
                                                                 .getOwnerOfferlist[
                                                                     index]
                                                                 .store!
                                                                 .logo!
-                                                                .dynamicUrl ==
-                                                            null ||
-                                                        offersController
-                                                            .getOwnerOfferlist[
-                                                                index]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        offersController
-                                                            .getOwnerOfferlist[
-                                                                index]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!),
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                              ),
-                                            ),
-                                            width10SizedBox,
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 230,
-                                                  child: Text(
-                                                    offersController
-                                                            .getOwnerOfferlist[
-                                                                index]
-                                                            .store!
-                                                            .storeName ??
-                                                        "",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w600),
+                                                                .dynamicUrl!
+                                                                .isEmpty
+                                                        ? const AssetImage(
+                                                            ImageConstants
+                                                                .nopicfound,
+                                                          ) as ImageProvider
+                                                        : NetworkImage(
+                                                            offersController
+                                                                .getOwnerOfferlist[
+                                                                    index]
+                                                                .store!
+                                                                .logo!
+                                                                .dynamicUrl!),
+                                                    backgroundColor:
+                                                        Colors.transparent,
                                                   ),
                                                 ),
-                                                height8SizedBox,
-                                                SizedBox(
-                                                  width: 230,
-                                                  child: Row(
-                                                    children: [
-                                                      Image.asset(
-                                                        ImageConstants.loc,
-                                                        scale: 3,
-                                                      ),
-                                                      width6SizedBox,
-                                                      Text(
+                                                width10SizedBox,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Text(
                                                         offersController
                                                                 .getOwnerOfferlist[
                                                                     index]
                                                                 .store!
-                                                                .storeAddresses![
-                                                                    0]
-                                                                .city ??
+                                                                .storeName ??
                                                             "",
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        style: TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: AppColors
-                                                                .blacklight,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 2,
+                                                        style: const TextStyle(
+                                                            fontSize: 16.0,
+                                                            color:
+                                                                AppColors.black,
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .w400),
+                                                                    .w600),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    height8SizedBox,
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Row(
+                                                        children: [
+                                                          Image.asset(
+                                                            ImageConstants.loc,
+                                                            scale: 3,
+                                                          ),
+                                                          width6SizedBox,
+                                                          Text(
+                                                            offersController
+                                                                    .getOwnerOfferlist[
+                                                                        index]
+                                                                    .store!
+                                                                    .storeAddresses![
+                                                                        0]
+                                                                    .city ??
+                                                                "",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            style: TextStyle(
+                                                                fontSize: 14.0,
+                                                                color: AppColors
+                                                                    .blacklight,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
@@ -630,12 +637,12 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         const EditOfferScreen(),
                                                   ))
                                                       /*Get.to(const EditOfferScreen(),
-                                                          arguments: {
-                                                        "isFrom":StringConstants.editOfferText,
-                                                        "storeId": offersController.getOwnerOfferlist[
-                                                                    index].store!.storeId ??"",
-                                                        "offerId": offersController.getOwnerOfferlist[index].offerId ??""
-                                                      })!*/
+                                                              arguments: {
+                                                            "isFrom":StringConstants.editOfferText,
+                                                            "storeId": offersController.getOwnerOfferlist[
+                                                                        index].store!.storeId ??"",
+                                                            "offerId": offersController.getOwnerOfferlist[index].offerId ??""
+                                                          })!*/
                                                       .then((value) {
                                                     offersController
                                                                 .role!.value ==
