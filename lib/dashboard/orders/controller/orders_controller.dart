@@ -52,6 +52,7 @@ class OrdersController extends GetxController {
   RxDouble totalAmount = 0.0.obs;
   RxString orderDate = "".obs;
   RxInt page = 1.obs;
+  RxInt uerSelectedTab = 0.obs;
   RxInt totalCount = 1.obs;
   RxInt pageStore = 1.obs;
   RxInt? addressListIndex = 0.obs;
@@ -162,16 +163,16 @@ class OrdersController extends GetxController {
     });
   }
 
-  bottomSheetRateNow(context) {
+  bottomSheetRateNow(BuildContext ctx) {
     return showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
-        context: context,
-        builder: (BuildContext context) {
+        context: ctx,
+        builder: (BuildContext _ ) {
           return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+              builder: (BuildContext ctxX, StateSetter setState) {
             return ListView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -317,7 +318,8 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          apiCreateReview();
+                          Navigator.pop(ctxX);
+                          apiCreateReview(ctx);
                         },
                         height: 50,
                         text: StringConstants.submitText,
@@ -618,7 +620,7 @@ class OrdersController extends GetxController {
   }
 
   //CREATE ITEM REVIEW
-  Future apiCreateReview() async {
+  Future apiCreateReview(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint("CREATE ITEM REVIEW URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
@@ -651,13 +653,13 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
-        Navigator.of(Get.context!).pop();
+        // Navigator.of(ctx).pop();
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
@@ -780,15 +782,44 @@ class OrdersController extends GetxController {
       "order_type": "DESC",
       "from_date": null,
       "to_date": null,
-      "only_active_orders":
-          isActiveOrders.value == true ? isActiveOrders.value : null,
-      "order_statuses": isActiveOrders.value == false
-          ? [
-              {
-                "order_status_name": orderStatusName.value,
-              }
-            ]
-          : []
+      "only_active_orders": null,
+      "order_statuses": uerSelectedTab.value ==0 ?
+      [
+          {
+          "order_status_name": OrderStatus.receivedOrder.statusName,
+          },
+          {
+          "order_status_name": OrderStatus.inProgress.statusName,
+          },
+          {
+          "order_status_name": OrderStatus.readyForPickup.statusName,
+          },
+          {
+          "order_status_name": OrderStatus.inTransit.statusName,
+          },
+          {
+          "order_status_name": OrderStatus.returnRequest.statusName,
+          },
+        ]
+          : uerSelectedTab.value ==1 ?
+      [
+        {
+        "order_status_name": OrderStatus.completed.statusName,
+        },
+        {
+        "order_status_name": OrderStatus.returned.statusName,
+        },
+        {
+        "order_status_name": OrderStatus.returnCancelled.statusName,
+        },
+      ]
+          : uerSelectedTab.value ==2 ?
+      [
+        {
+        "order_status_name": OrderStatus.cancelled.statusName,
+        },
+
+      ]: []
     };
 
     log("Order List data ********** ${jsonEncode(data)}");
@@ -1010,10 +1041,10 @@ class OrdersController extends GetxController {
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
         orderType.value = orderDetailResponse.data?.order?.deliveryService?.deliveryServiceId ?? "1";
         orderDate.value = orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
+
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
-            orderStatusTypeName.value =
-                element.orderStatus?.orderStatusName ?? "";
+            orderStatusTypeName.value = element.orderStatus?.orderStatusName ?? "";
 
             activeStep.value = element.orderStatus?.orderStatusName ==
                     OrderStatus.receivedOrder.statusName

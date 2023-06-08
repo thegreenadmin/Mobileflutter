@@ -766,7 +766,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.0),
                             )),
-                        child: Column(children: [
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -865,9 +867,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                                     height8SizedBox,
                                     Visibility(
-                                      visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
-                                          || ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
-                                          || (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
+                                      visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                          && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
+                                          || ( ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                              && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
+                                          || (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                              && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
                                       child: RatingBar.builder(
                                         initialRating: ordersController
                                             .orderItems[i]
@@ -1070,10 +1075,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     ),*/
                                     height6SizedBox,
                                     Visibility(
-                                      visible: ordersController.activeStep.value == 3
-                                          ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
-                                          ||  ( ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
-                                          ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
+                                      visible: ordersController.activeStep.value == 3 && ordersController.orderItems[i].enableReturnButton==true
+                                          &&  (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                              && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
+                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatus.cancelled.statusName)
+                                         &&  ( ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
+                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
                                       child: InkWell(
                                         onTap: () {
                                           Utility.showConfirmAlertMessage(
@@ -1104,6 +1111,59 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               ),
                             ],
                           ),
+                          Visibility(
+                            visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
+                                || ( ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                    && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
+                                || (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                    && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                height8SizedBox,
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                          "${StringConstants.reviewText}: ",
+                                          style: TextStyle(
+                                              color: AppColors.blacklight,
+                                              fontWeight:
+                                              FontWeight.w400,
+                                              fontSize: 14)),
+                                      TextSpan(
+                                        text:
+                                        ordersController
+                                            .orderItems[i]
+                                            .product != null
+                                            && ordersController.orderItems[i].product
+                                            ?.productReviews!=null
+                                            && ordersController
+                                            .orderItems[i].product!
+                                            .productReviews!.isNotEmpty
+                                            ? ordersController
+                                            .orderItems[i].product?.productReviews
+                                            ?.first.review.toString() ?? "":"",
+                                        style: TextStyle(
+                                            fontWeight:
+                                            FontWeight.w500,
+                                            fontSize: 14,
+                                            color: AppColors
+                                                .blacklight),
+                                      ),
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.visible,
+                                  textAlign: TextAlign.start,
+                                ),
+
+                                height4SizedBox,
+                              ],
+                            ),
+                          ),
+
                           height4SizedBox,
                           Visibility(
                             visible: ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName

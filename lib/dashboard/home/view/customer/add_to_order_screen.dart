@@ -443,7 +443,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const UserStoreOrderAppBar(),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
+            child: UserStoreOrderAppBar()),
         body: Obx(
           () => Column(
             children: [

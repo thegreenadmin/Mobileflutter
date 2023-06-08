@@ -45,19 +45,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   if (ordersController.isActiveOrders.value == true) {
-                    ordersController.orderStatusName.value =
-                        OrderStatus.receivedOrder.statusName;
                     // ordersController.orderStatusId.value = 2;
                     ordersController.page.value = 1;
+                    ordersController.uerSelectedTab.value = 0;
                     ordersController.orderList.clear();
                     ordersController.apiGetOrderListApi();
                   } else {
-                    // ordersController.orderStatusId.value = 2;
-                    ordersController.orderStatusName.value =
-                        OrderStatus.receivedOrder.statusName;
                     ordersController.isActiveOrders.value =
                         !ordersController.isActiveOrders.value;
                     ordersController.page.value = 1;
+                    ordersController.uerSelectedTab.value = 0;
                     ordersController.orderList.clear();
                     ordersController.apiGetOrderListApi();
                   }
@@ -66,7 +63,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.isActiveOrders.value
+                  color: ordersController.uerSelectedTab.value == 0
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -79,7 +76,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.isActiveOrders.value
+                          color: ordersController.uerSelectedTab.value == 0
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -91,10 +88,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.isActiveOrders.value = false;
-                  ordersController.orderStatusName.value =
-                      OrderStatus.completed.statusName;
-                  // ordersController.orderStatusId.value = 5;
                   ordersController.page.value = 1;
+                  ordersController.uerSelectedTab.value = 1;
                   ordersController.orderList.clear();
                   ordersController.apiGetOrderListApi();
                 },
@@ -102,8 +97,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.orderStatusName.value ==
-                          OrderStatus.completed.statusName
+                  color: ordersController.uerSelectedTab.value == 1
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -116,8 +110,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value ==
-                                  OrderStatus.completed.statusName
+                          color: ordersController.uerSelectedTab.value == 1
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -129,10 +122,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.isActiveOrders.value = false;
-                  // ordersController.orderStatusId.value = 7;
-                  ordersController.orderStatusName.value =
-                      OrderStatus.cancelled.statusName;
                   ordersController.page.value = 1;
+                  ordersController.uerSelectedTab.value = 2;
                   ordersController.orderList.clear();
                   ordersController.apiGetOrderListApi();
                 },
@@ -140,8 +131,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.orderStatusName.value ==
-                          OrderStatus.cancelled.statusName
+                  color: ordersController.uerSelectedTab.value == 2
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -154,8 +144,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value ==
-                                  OrderStatus.cancelled.statusName
+                          color: ordersController.uerSelectedTab.value == 2
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -395,26 +384,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         true
                                     ? width10SizedBox
                                     : height0SizedBox,
-                                ordersController.role!.value ==
-                                        Role.customerRoleText
-                                    ? Obx(
-                                        () => Text(
-                                          'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      )
-                                    : Obx(
-                                        () => Text(
-                                          'Hi, ${ordersController.role!.value}',
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
+                                Obx(
+                                  () => Text(
+                                    'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                )
                               ],
                             ),
                             height4SizedBox,

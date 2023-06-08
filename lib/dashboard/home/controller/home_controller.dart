@@ -169,14 +169,14 @@ class HomeController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
-        firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
-        lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";
-        email!.value = getUserDetailModel.data!.user!.email ?? "";
-        currentUserId!.value = getUserDetailModel.data!.user!.userId ?? "";
+        firstName!.value = getUserDetailModel.data?.user?.firstName ?? "";
+        lastName!.value = getUserDetailModel.data?.user?.lastName ?? "";
+        email!.value = getUserDetailModel.data?.user?.email ?? "";
+        currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
         hasStoreAccess!.value =
-            getUserDetailModel.data!.user!.hasStoreAccess ?? false;
+            getUserDetailModel.data?.user?.hasStoreAccess ?? false;
         SharedPreferenceStorage.setData(
-            StringConstants.firstNameText, firstName!.value);
+            StringConstants.firstNameText, getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
             StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(

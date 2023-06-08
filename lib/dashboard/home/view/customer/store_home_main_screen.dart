@@ -425,7 +425,9 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const UserStoreOrderAppBar(),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
+            child: const UserStoreOrderAppBar()),
         body: Obx(
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.center,

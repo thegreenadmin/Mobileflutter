@@ -383,6 +383,7 @@ class StringConstants {
   static String ratingReviewText = "Rating & Review";
   static String resendText = "Resend";
   static String reviewsText = "Reviews";
+  static String reviewText = "Review";
   static String receivedText = "Received";
   static String roleText = "Role";
   static String readyForPickUpText = "Ready for Pick Up";
