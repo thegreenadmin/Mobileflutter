@@ -164,18 +164,28 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                height4SizedBox,
-                                Text(
-                                  storeHomeMainController
-                                          .featureProductList[i].description ??
-                                      "",
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                height4SizedBox,
+                                storeHomeMainController.featureProductList[i]
+                                        .description!.isEmpty
+                                    ? height0SizedBox
+                                    : height4SizedBox,
+                                storeHomeMainController.featureProductList[i]
+                                        .description!.isEmpty
+                                    ? height0SizedBox
+                                    : Text(
+                                        storeHomeMainController
+                                                .featureProductList[i]
+                                                .description ??
+                                            "",
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            color: AppColors.blacklight,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                storeHomeMainController.featureProductList[i]
+                                        .description!.isEmpty
+                                    ? height0SizedBox
+                                    : height4SizedBox,
                                 Text(
                                   "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
                                   style: const TextStyle(

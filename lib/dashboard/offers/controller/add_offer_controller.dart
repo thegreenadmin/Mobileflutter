@@ -228,10 +228,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -271,10 +271,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -314,9 +314,10 @@ class AddOffersController extends GetxController {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
         if (isFrom.value == StringConstants.editOfferText) {
+          productMergedList.clear();
+          offerProducts.clear();
           offerProducts.addAll(getOfferDetailModel.data!.offerProducts!);
           productMergedList.addAll(offerProducts);
-
           for (int i = 0; i < storeProductList.length; i++) {
             productMergedList.add(OfferProduct(
               offerProductId: storeProductList[i].productId,
@@ -357,10 +358,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -411,10 +412,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -470,10 +471,10 @@ class AddOffersController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }
