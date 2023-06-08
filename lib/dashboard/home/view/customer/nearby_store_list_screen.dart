@@ -198,9 +198,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 visible:
                                                     searchStoreUserController
                                                         .storeAddresses[index]
-                                                        .store!
-                                                        .storeTimings!
-                                                        .isNotEmpty,
+                                                        .addressLine1!=null && searchStoreUserController
+                                                        .storeAddresses[index]
+                                                        .addressLine1!="",
                                                 child: Row(
                                                   children: [
                                                     Image.asset(

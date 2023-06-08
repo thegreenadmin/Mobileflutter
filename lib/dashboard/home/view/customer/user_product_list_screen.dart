@@ -421,7 +421,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const UserStoreOrderAppBar(),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
+            child: const UserStoreOrderAppBar()),
         body: Obx(
           () => Column(
             children: [
