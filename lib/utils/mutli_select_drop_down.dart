@@ -8,6 +8,7 @@ class MultiCustomDropDown extends StatefulWidget {
   final String? title;
   final String? hintText;
   final String? label;
+  final InputDecoration? inputDecoration;
   final Function(String?)? validator;
   final Function(List<dynamic>)? onChanged;
 
@@ -19,7 +20,7 @@ class MultiCustomDropDown extends StatefulWidget {
       this.list,
       this.label,
       this.validator,
-      this.onChanged})
+      this.onChanged, this.inputDecoration})
       : super(key: key);
 
   @override
@@ -50,7 +51,12 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: widget.controller,
         validator: (val) {
-          return widget.validator!(val);
+          if(widget.validator!=null){
+            return widget.validator!(val);
+          }else{
+            return null;
+          }
+
         },
         readOnly: true,
         style: const TextStyle(
@@ -64,12 +70,12 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           widget.controller!.text = value.toString();
         },
         maxLength: 50,
-        decoration: InputDecoration(
+        decoration: widget.inputDecoration ?? InputDecoration(
           counterText: '',
           suffixIcon: InkWell(
             child: Icon(
               Icons.arrow_drop_down,
-              color: Theme.of(context).primaryColorDark,
+              color: AppColors.blacklight,
             ),
           ),
           hintText: widget.hintText,

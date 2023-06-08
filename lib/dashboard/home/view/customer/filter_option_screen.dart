@@ -9,6 +9,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../../utils/mutli_select_drop_down.dart';
+
 class FilterOptionScreen extends StatefulWidget {
   const FilterOptionScreen({super.key});
 
@@ -190,6 +192,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   )),
               height15SizedBox,
               DropdownButtonFormField<String>(
+                value: "Open Now",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -444,26 +447,30 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 ],
               ),
               height15SizedBox,
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
+              MultiCustomDropDown(
+                inputDecoration:  InputDecoration(
+                  counterText: '',
+                  suffixIcon: InkWell(
+                    child: Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.blacklight,
                     ),
                   ),
+                  hintText: StringConstants.pickupOptionsText,
+                  hintStyle: TextStyle(color: AppColors.blacklight, fontSize: 16),
+                  fillColor: Colors.white,
+                  filled: false,
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                     borderSide: const BorderSide(
-                      color: AppColors.primary,
+                      color: AppColors.grey,
                       width: 1.0,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                     borderSide: const BorderSide(
-                      color: AppColors.primary,
+                      color: AppColors.grey,
                       width: 1.0,
                     ),
                   ),
@@ -475,31 +482,26 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     ),
                   ),
                 ),
-                isExpanded: true,
-                hint: Text(
-                  StringConstants.pickupOptionsText,
-                  style: TextStyle(
-                    color: AppColors.blacklight,
-                  ),
-                ),
-                items: <String>["In Store", "Delivery", "Curb Side"]
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (v) {
-                  if (v == "Yes") {
-                  } else {}
-                },
-              ),
+                  onChanged: (v) {
+                    searchStoreUserController.deliveryServicesList.clear();
+                    for (int i = 0;
+                    i <
+                        searchStoreUserController
+                            .deliveryServices.length;
+                    i++) {
+                      if (searchStoreUserController
+                          .deliveryServices[i].isSelected ==
+                          true) {
+                        searchStoreUserController.deliveryServicesList.add(
+                          searchStoreUserController
+                              .deliveryServices[i].name);
+                      }
+                    }
+                  },
+                  controller: searchStoreUserController.deliveryServicesController,
+                  hintText: StringConstants.pickupOptionsText,
+                  title: StringConstants.pickupOptionsText,
+                  list: searchStoreUserController.deliveryServices),
               height20SizedBox,
               CustomButton(
                 gradient: const LinearGradient(
@@ -516,7 +518,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                           "" &&
                       searchStoreUserController
                               .closingTimeTextController.text ==
-                          "") {
+                          "" && searchStoreUserController.isOpenNow.value == null
+                      && searchStoreUserController.deliveryServicesList.isEmpty) {
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {

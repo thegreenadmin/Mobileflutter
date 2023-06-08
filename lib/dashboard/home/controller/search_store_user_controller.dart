@@ -21,6 +21,8 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
     as nearby;
 
+import '../model/categories_model.dart';
+
 class SearchStoreUserController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController zipCodeTextController = TextEditingController();
@@ -29,6 +31,7 @@ class SearchStoreUserController extends GetxController {
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  TextEditingController deliveryServicesController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
   late NearbyStoreListResponse nearbyStoreListResponse =
       NearbyStoreListResponse();
@@ -40,7 +43,6 @@ class SearchStoreUserController extends GetxController {
   RxList<FavouriteStore> favouriteStore = <FavouriteStore>[].obs;
   RxList<PreviousStore> previousStore = <PreviousStore>[].obs;
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
-  // RxList<StoreAddress> favStoreAddresses = <StoreAddress>[].obs;
 
   late cart.CartListResponse cartListResponse = cart.CartListResponse();
   RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
@@ -83,6 +85,13 @@ class SearchStoreUserController extends GetxController {
   RxBool isOrderDeliverable = false.obs;
   RxString storeIdValue = "".obs;
   Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
+  RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
+  RxList<Categories> deliveryServices = [
+    Categories(id: 1, name: "In store", isSelected: false),
+    Categories(id: 2, name: "Delivery", isSelected: false),
+    Categories(id: 3, name: "Curb side", isSelected: false),
+  ].obs;
+
   void setupScrollController(context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
@@ -148,11 +157,13 @@ class SearchStoreUserController extends GetxController {
               storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -195,11 +206,13 @@ class SearchStoreUserController extends GetxController {
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -235,11 +248,13 @@ class SearchStoreUserController extends GetxController {
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -378,7 +393,6 @@ class SearchStoreUserController extends GetxController {
     if (isFilter || isSearch) {
       page.value = 1;
       storeAddresses.clear();
-      // favStoreAddresses.clear();
     }
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
@@ -415,11 +429,12 @@ class SearchStoreUserController extends GetxController {
               firstFormat: "hh:mm a", secFormat: "hh:mm:ss")
           : "24:00:00",
       "is_favourite_store": type.value == 2 ? true : null,
-      "show_previous_stores": type.value == 1 ? true : null
+      "show_previous_stores": type.value == 1 ? true : null,
+      "delivery_services": deliveryServicesList
     };
 
     debugPrint("TOKEN ********** $headers");
-    debugPrint("GET NEARBY STORES BOSY*******$data");
+    debugPrint("GET NEARBY STORES BODY*******$data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -456,10 +471,14 @@ class SearchStoreUserController extends GetxController {
           openingTimeTextController.clear();
           closingTimeTextController.clear();
           mileageTextController.clear();
-          isOpenNow.value = false;
+          deliveryServicesController.clear();
+          isOpenNow.value = true;
+          deliveryServicesList.clear();
           initialIndex.value = 0;
+          for (var element in deliveryServices) {
+            element.isSelected= false;
+          }
 
-          // Get.back();
           Navigator.of(context).pop();
         }
         if (isSearch) {
@@ -471,14 +490,17 @@ class SearchStoreUserController extends GetxController {
           initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+        if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
+       
       }
     });
   }
@@ -528,14 +550,16 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -587,14 +611,16 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -658,14 +684,17 @@ class SearchStoreUserController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -724,14 +753,16 @@ class SearchStoreUserController extends GetxController {
           // }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -791,14 +822,16 @@ class SearchStoreUserController extends GetxController {
         Utility.showToast(value?.body['message']);
         einNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }

@@ -132,7 +132,9 @@ class OrdersHomeMainController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -394,7 +396,9 @@ class OrdersHomeMainController extends GetxController {
         // Get.back();
         update();
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }

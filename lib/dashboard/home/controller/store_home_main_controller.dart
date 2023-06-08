@@ -479,11 +479,14 @@ class StoreHomeMainController extends GetxController {
           //     storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -520,11 +523,13 @@ class StoreHomeMainController extends GetxController {
           builder: (_) => const UserInboxDetailScreen(),
         ));
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -556,11 +561,13 @@ class StoreHomeMainController extends GetxController {
             categories.StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -593,11 +600,13 @@ class StoreHomeMainController extends GetxController {
         }
         getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -667,11 +676,14 @@ class StoreHomeMainController extends GetxController {
           //Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -744,7 +756,9 @@ class StoreHomeMainController extends GetxController {
         isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isPlaceOrder.value = true;
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
@@ -753,7 +767,9 @@ class StoreHomeMainController extends GetxController {
           isInsufficientBalance!.value = true;
         } else {
           isInsufficientBalance!.value = false;
+
           Utility.showAlertMessage(value?.body['message']);
+
         }
       } else if (value?.body == null) {
         isPlaceOrder.value = true;
@@ -798,11 +814,15 @@ class StoreHomeMainController extends GetxController {
         itemsCount.value = 1;
         addToCartDialog(context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -838,11 +858,15 @@ class StoreHomeMainController extends GetxController {
         isDeleteCartItem.value = true;
         apiGetCartListApi(Get.context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -878,11 +902,15 @@ class StoreHomeMainController extends GetxController {
         isDeleteCartItem.value = true;
         apiGetCartListApi(ctxx);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
+
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1024,11 +1052,14 @@ class StoreHomeMainController extends GetxController {
             offers.StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1065,11 +1096,14 @@ class StoreHomeMainController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+
+          Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1110,11 +1144,15 @@ class StoreHomeMainController extends GetxController {
 
         debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1170,12 +1208,16 @@ class StoreHomeMainController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1237,11 +1279,15 @@ class StoreHomeMainController extends GetxController {
         featureProductList.value =
             featureProductListResponse.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1405,11 +1451,15 @@ class StoreHomeMainController extends GetxController {
         isFavouriteStore.value = true;
         // storeAddress.value.store?.isFavouriteStore = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1445,11 +1495,15 @@ class StoreHomeMainController extends GetxController {
         isFavouriteStore.value = false;
         // storeAddress.value.store?.isFavouriteStore = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1485,11 +1539,15 @@ class StoreHomeMainController extends GetxController {
         apiFeatureProductListApi();
         isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1526,11 +1584,15 @@ class StoreHomeMainController extends GetxController {
         apiFeatureProductListApi();
         isFavouriteProduct.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
@@ -1582,11 +1644,15 @@ class StoreHomeMainController extends GetxController {
         previousOrdersModel = PreviousOrdersModel.fromJson(value?.body);
         previousOrderList.value = previousOrdersModel.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value?.body['message']);
+       if(value?.body['message']!=null){
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
