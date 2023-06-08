@@ -62,233 +62,236 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                       )
                     ])),
           )),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-            child: Form(
-              key: addNewRoleController.formKey,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    height20SizedBox,
-                    Text(
-                      StringConstants.roleNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    height4SizedBox,
-                     TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(200),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+              child: Form(
+                key: addNewRoleController.formKey,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      height20SizedBox,
+                      Text(
+                        StringConstants.roleNameText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewRoleController.roleNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterRoleText;
-                          }
-                          return null;
-                        },textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          hintText: StringConstants.enterRoleText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      height4SizedBox,
+                       TextFormField(autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(200),
+                          ],
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          controller: addNewRoleController.roleNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseEnterRoleText;
+                            }
+                            return null;
+                          },textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            errorMaxLines: 3,
+                            hintText: StringConstants.enterRoleText,
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 14),
+                            fillColor: Colors.white,
+                            border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            errorBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                        )),
-                    height20SizedBox,
-                    Text(
-                      StringConstants.permissionText,
-                      style: const TextStyle(
-                          fontSize: 22,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Expanded(
-                        child: Obx(
-                      () => addNewRoleController.moduleList.isEmpty
-                          ? addNewRoleController.isLoading.value == true
-                              ? height0SizedBox
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Center(
-                                      child: Image.asset(
-                                        ImageConstants.nodata,
-                                        scale: 8,
-                                        color: AppColors.primary,
+                          )),
+                      height20SizedBox,
+                      Text(
+                        StringConstants.permissionText,
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Expanded(
+                          child: Obx(
+                        () => addNewRoleController.moduleList.isEmpty
+                            ? addNewRoleController.isLoading.value == true
+                                ? height0SizedBox
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image.asset(
+                                          ImageConstants.nodata,
+                                          scale: 8,
+                                          color: AppColors.primary,
+                                        ),
                                       ),
-                                    ),
-                                    height4SizedBox,
-                                    Center(
-                                      child: Text(
-                                        StringConstants.noPermissionsFoundText,
-                                        style: const TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 16),
+                                      height4SizedBox,
+                                      Center(
+                                        child: Text(
+                                          StringConstants.noPermissionsFoundText,
+                                          style: const TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 16),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                          : ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 60),
-                              itemCount: addNewRoleController.moduleList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int i) {
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: addNewRoleController
-                                        .moduleList[i].controllers!.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(children: [
-                                          Obx(
-                                            () => SizedBox(
-                                              height: 20,
-                                              width: 30,
-                                              child: Checkbox(
-                                                side: MaterialStateBorderSide
-                                                    .resolveWith(
-                                                  (states) => BorderSide(
-                                                      width: 1.0,
-                                                      color: AppColors.primary
-                                                          .withOpacity(0.5)),
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.0)),
-                                                activeColor: AppColors.primary,
-                                                value: addNewRoleController
-                                                    .moduleList[i]
-                                                    .controllers![index]
-                                                    .isSelected,
-                                                onChanged: (bool? value) {
-                                                  if (addNewRoleController
-                                                          .moduleList[i]
-                                                          .controllers![index]
-                                                          .isSelected ==
-                                                      false) {
-                                                    addNewRoleController
-                                                        .controllerIdsList
-                                                        .add({
-                                                      "controller_id":
-                                                          addNewRoleController
-                                                              .moduleList[i]
-                                                              .controllers![
-                                                                  index]
-                                                              .controllerId
-                                                              .toString()
-                                                    });
-                                                    addNewRoleController
-                                                        .moduleList[i]
-                                                        .controllers![index]
-                                                        .isSelected = true;
-                                                  } else {
-                                                    addNewRoleController
-                                                        .controllerIdsList
-                                                        .removeWhere((item) =>
-                                                            item[
-                                                                'controller_id'] ==
+                                    ],
+                                  )
+                            : ListView.builder(
+                                padding: const EdgeInsets.only(bottom: 60),
+                                itemCount: addNewRoleController.moduleList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int i) {
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: addNewRoleController
+                                          .moduleList[i].controllers!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(children: [
+                                            Obx(
+                                              () => SizedBox(
+                                                height: 20,
+                                                width: 30,
+                                                child: Checkbox(
+                                                  side: MaterialStateBorderSide
+                                                      .resolveWith(
+                                                    (states) => BorderSide(
+                                                        width: 1.0,
+                                                        color: AppColors.primary
+                                                            .withOpacity(0.5)),
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6.0)),
+                                                  activeColor: AppColors.primary,
+                                                  value: addNewRoleController
+                                                      .moduleList[i]
+                                                      .controllers![index]
+                                                      .isSelected,
+                                                  onChanged: (bool? value) {
+                                                    if (addNewRoleController
+                                                            .moduleList[i]
+                                                            .controllers![index]
+                                                            .isSelected ==
+                                                        false) {
+                                                      addNewRoleController
+                                                          .controllerIdsList
+                                                          .add({
+                                                        "controller_id":
                                                             addNewRoleController
                                                                 .moduleList[i]
                                                                 .controllers![
                                                                     index]
-                                                                .controllerId);
+                                                                .controllerId
+                                                                .toString()
+                                                      });
+                                                      addNewRoleController
+                                                          .moduleList[i]
+                                                          .controllers![index]
+                                                          .isSelected = true;
+                                                    } else {
+                                                      addNewRoleController
+                                                          .controllerIdsList
+                                                          .removeWhere((item) =>
+                                                              item[
+                                                                  'controller_id'] ==
+                                                              addNewRoleController
+                                                                  .moduleList[i]
+                                                                  .controllers![
+                                                                      index]
+                                                                  .controllerId);
 
-                                                    addNewRoleController
-                                                        .moduleList[i]
-                                                        .controllers![index]
-                                                        .isSelected = false;
-                                                  }
-                                                  setState(() {});
-                                                },
+                                                      addNewRoleController
+                                                          .moduleList[i]
+                                                          .controllers![index]
+                                                          .isSelected = false;
+                                                    }
+                                                    setState(() {});
+                                                  },
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          width10SizedBox,
-                                          Text(addNewRoleController
-                                              .moduleList[i]
-                                              .controllers![index]
-                                              .controllerName
-                                              .toString())
-                                        ]),
-                                      );
-                                    });
-                              }),
-                    )),
-                  ]),
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 60,
-            right: 60,
-            child: CustomButton(
-              border: Border.all(
-                color: AppColors.primary,
+                                            width10SizedBox,
+                                            Text(addNewRoleController
+                                                .moduleList[i]
+                                                .controllers![index]
+                                                .controllerName
+                                                .toString())
+                                          ]),
+                                        );
+                                      });
+                                }),
+                      )),
+                    ]),
               ),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.primary, AppColors.primary],
-              ),
-              onTap: () {
-                addNewRoleController.validateAndSubmit(context);
-              },
-              height: 50,
-              text: StringConstants.saveText,
-              textColor: AppColors.white,
-              borderRadius: 14,
-              fontWeight: FontWeight.w500,
-              iconL: false,
-              iconR: false,
-              fontSize: 16,
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 20,
+              left: 60,
+              right: 60,
+              child: CustomButton(
+                border: Border.all(
+                  color: AppColors.primary,
+                ),
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.primary, AppColors.primary],
+                ),
+                onTap: () {
+                  addNewRoleController.validateAndSubmit(context);
+                },
+                height: 50,
+                text: StringConstants.saveText,
+                textColor: AppColors.white,
+                borderRadius: 14,
+                fontWeight: FontWeight.w500,
+                iconL: false,
+                iconR: false,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
