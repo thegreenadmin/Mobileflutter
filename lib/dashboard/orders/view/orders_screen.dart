@@ -356,97 +356,92 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:  const Size.fromHeight(90.0),
-        child:  Container(
-                color: AppColors.primarylight,
-                child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                    child: Column(
+        preferredSize: const Size.fromHeight(90.0),
+        child: Container(
+          color: AppColors.primarylight,
+          child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Obx(
-                                        () => ordersController
-                                                    .isFromNotification.value ==
-                                                true
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.of(Get.context!)
-                                                      .popUntil((route) =>
-                                                          route.isFirst);
-                                                  // Get.offAll(BottomNavigation());
-                                                },
-                                                child: const Icon(
-                                                  Icons.arrow_back,
-                                                  color: AppColors.black,
-                                                  size: 24.0,
-                                                ),
-                                              )
-                                            : height0SizedBox,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Obx(
+                                  () => ordersController
+                                              .isFromNotification.value ==
+                                          true
+                                      ? InkWell(
+                                          onTap: () {
+                                            Navigator.of(Get.context!).popUntil(
+                                                (route) => route.isFirst);
+                                            // Get.offAll(BottomNavigation());
+                                          },
+                                          child: const Icon(
+                                            Icons.arrow_back,
+                                            color: AppColors.black,
+                                            size: 24.0,
+                                          ),
+                                        )
+                                      : height0SizedBox,
+                                ),
+                                ordersController.isFromNotification.value ==
+                                        true
+                                    ? width10SizedBox
+                                    : height0SizedBox,
+                                ordersController.role!.value ==
+                                        Role.customerRoleText
+                                    ? Obx(
+                                        () => Text(
+                                          'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      )
+                                    : Obx(
+                                        () => Text(
+                                          'Hi, ${ordersController.role!.value}',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
-                                      ordersController
-                                                  .isFromNotification.value ==
-                                              true
-                                          ? width10SizedBox
-                                          : height0SizedBox,
-                                      ordersController.role!.value ==
-                                              Role.customerRoleText
-                                          ? Obx(
-                                              () => Text(
-                                                'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: AppColors.black,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            )
-                                          : Obx(
-                                              () => Text(
-                                                'Hi, ${ordersController.role!.value}',
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: AppColors.black,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                  height4SizedBox,
-                                  Text(
-                                    StringConstants.ordersText,
-                                    style: const TextStyle(
-                                        fontSize: 22,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  // Obx(() => Text(
-                                  //   ordersController.role!.value,
-                                  //   style: const TextStyle(
-                                  //       fontSize: 22,
-                                  //       color: AppColors.black,
-                                  //       fontWeight: FontWeight.w600),
-                                  // ))
-                                ],
-                              ),
-                              Image.asset(
-                                ImageConstants.homeMall,
-                                scale: 4,
-                              )
-                            ]),
-                      ],
-                    )),
-              ),
+                              ],
+                            ),
+                            height4SizedBox,
+                            Text(
+                              StringConstants.ordersText,
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            // Obx(() => Text(
+                            //   ordersController.role!.value,
+                            //   style: const TextStyle(
+                            //       fontSize: 22,
+                            //       color: AppColors.black,
+                            //       fontWeight: FontWeight.w600),
+                            // ))
+                          ],
+                        ),
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        )
+                      ]),
+                ],
+              )),
+        ),
       ),
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -530,9 +525,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               "";
                                       SharedPreferenceStorage.setData(
                                           "context", context);
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (_) => const OrderConfirmationScreen(),
-                                      )).then((value) {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (_) =>
+                                            const OrderConfirmationScreen(),
+                                      ))
+                                          .then((value) {
                                         ordersController.apiGetOrderListApi();
                                       });
                                     },

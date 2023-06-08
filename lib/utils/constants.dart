@@ -81,6 +81,7 @@ class StringConstants {
   static String billingAddressText = "Billing Address";
 
   //C
+  static String customerInStoreForPickupText = "Customer is in the store for pickup";
   static String connectAccountText = "Connect Account";
   static String cardNumberText = "Card Number";
   static String createYourAccountText = "Create your Account";

@@ -834,11 +834,11 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                               );
                             }else if(ordersHomeMainController.orderHistories.isNotEmpty && ordersHomeMainController.orderHistories.last.orderStatus?.orderStatusName
                                 == OrderStatus.readyForPickup.statusName && ordersHomeMainController.orderHistories.last.isCreatedByStore==false){
-                              return  const Padding(
-                                padding: EdgeInsets.symmetric(
+                              return  Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5.0),
-                                child: Text("Customer is in the store for pickup",
-                                    style: TextStyle(
+                                child: Text(StringConstants.customerInStoreForPickupText,
+                                    style: const TextStyle(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16)),
