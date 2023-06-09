@@ -326,6 +326,7 @@ class AddNewStoreController extends GetxController {
       debugPrint(
           "PDF UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("PDF UPLOAD URL RESPONSE *******$responseData");
+
       if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isTermsSelected.value) {
