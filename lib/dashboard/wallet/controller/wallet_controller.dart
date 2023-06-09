@@ -801,7 +801,6 @@ class WalletController extends GetxController {
   }
 
   apiCreateAutoRecharge(BuildContext ctxx) {
-    var date = DateTime.now();
     isLoading.value = true;
     debugPrint(
         "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutocharge}");

@@ -136,7 +136,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       textColor: Colors.black,
                       cardNumberDecoration: InputDecoration(
                         labelText: StringConstants.cardNumberText, // 'Number',
-                        hintText: StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
+                        hintText:
+                            StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
                         hintStyle: const TextStyle(color: Colors.black),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
@@ -198,8 +199,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.addressLine1TextController,
+                                controller: addCardController
+                                    .addressLine1TextController,
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
@@ -255,8 +256,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.addressLine2TextController,
+                                controller: addCardController
+                                    .addressLine2TextController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   labelText: StringConstants.addressLine2Text,
@@ -305,7 +306,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                controller: addCardController.cityTextController,
+                                controller:
+                                    addCardController.cityTextController,
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
@@ -419,7 +421,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                controller: addCardController.stateTextController,
+                                controller:
+                                    addCardController.stateTextController,
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
@@ -466,10 +469,11 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                             height20SizedBox,
                             Obx(
                               () => DropdownButtonFormField<String>(
-                                value: addCardController.selectedCountry.value !=
-                                            "" &&
-                                        addCardController.countryId.value !=
+                                value: addCardController.countryId.value !=
                                             null &&
+                                        addCardController
+                                                .selectedCountry.value !=
+                                            "" &&
                                         addCardController.countryId.value != ""
                                     ? addCardController.countryList
                                         .firstWhere((element) =>

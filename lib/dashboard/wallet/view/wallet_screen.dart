@@ -130,7 +130,7 @@ class _WalletScreenState extends State<WalletScreen> {
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ?Row(
+                      ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -168,13 +168,12 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500))
                                   : DropdownButtonFormField<String>(
-                                      value: walletController
-                                                      .storeNameValue!.value !=
-                                                  "" &&
-                                              walletController
-                                                      .ownerSelectedStore
+                                      value: walletController.ownerSelectedStore
                                                       .value !=
                                                   null &&
+                                              walletController
+                                                      .storeNameValue!.value !=
+                                                  "" &&
                                               walletController
                                                       .ownerSelectedStore
                                                       .value !=

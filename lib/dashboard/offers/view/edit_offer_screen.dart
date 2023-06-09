@@ -488,7 +488,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: Obx(() => addOffersController.discountType ==
+                          child: Obx(() => addOffersController
+                                          .discountType.value ==
                                       null ||
                                   addOffersController.discountType.value.isEmpty
                               ? height0SizedBox

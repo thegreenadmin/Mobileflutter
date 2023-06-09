@@ -1149,13 +1149,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -1241,13 +1234,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -1335,13 +1321,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
                                   ],
                                 ),
                               ),

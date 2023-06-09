@@ -448,57 +448,56 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
               ),
               height15SizedBox,
               MultiCustomDropDown(
-                inputDecoration:  InputDecoration(
-                  counterText: '',
-                  suffixIcon: InkWell(
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      color: AppColors.blacklight,
+                  inputDecoration: InputDecoration(
+                    counterText: '',
+                    suffixIcon: InkWell(
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.blacklight,
+                      ),
+                    ),
+                    hintText: StringConstants.pickupOptionsText,
+                    hintStyle:
+                        TextStyle(color: AppColors.blacklight, fontSize: 16),
+                    fillColor: Colors.white,
+                    filled: false,
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
                     ),
                   ),
-                  hintText: StringConstants.pickupOptionsText,
-                  hintStyle: TextStyle(color: AppColors.blacklight, fontSize: 16),
-                  fillColor: Colors.white,
-                  filled: false,
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
                   onChanged: (v) {
                     searchStoreUserController.deliveryServicesList.clear();
                     for (int i = 0;
-                    i <
-                        searchStoreUserController
-                            .deliveryServices.length;
-                    i++) {
+                        i < searchStoreUserController.deliveryServices.length;
+                        i++) {
                       if (searchStoreUserController
-                          .deliveryServices[i].isSelected ==
+                              .deliveryServices[i].isSelected ==
                           true) {
                         searchStoreUserController.deliveryServicesList.add(
-                          searchStoreUserController
-                              .deliveryServices[i].name);
+                            searchStoreUserController.deliveryServices[i].name);
                       }
                     }
                   },
-                  controller: searchStoreUserController.deliveryServicesController,
+                  controller:
+                      searchStoreUserController.deliveryServicesController,
                   hintText: StringConstants.pickupOptionsText,
                   title: StringConstants.pickupOptionsText,
                   list: searchStoreUserController.deliveryServices),
@@ -518,8 +517,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                           "" &&
                       searchStoreUserController
                               .closingTimeTextController.text ==
-                          "" && searchStoreUserController.isOpenNow.value == null
-                      && searchStoreUserController.deliveryServicesList.isEmpty) {
+                          "" &&
+                      searchStoreUserController.isOpenNow.value == null &&
+                      searchStoreUserController.deliveryServicesList.isEmpty) {
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
