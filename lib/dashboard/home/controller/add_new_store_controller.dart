@@ -179,11 +179,14 @@ class AddNewStoreController extends GetxController {
   void validateAndSubmit(BuildContext ctx) async {
     if (validateAndSave()) {
       try {
+
         if (storeLogoDynamicLinkfromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectLogoText);
         } else if (storeImageDynamicLinkfromServer.isEmpty) {
+
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
+
           apiCreateStore(ctx);
         }
       } catch (_) {}
@@ -506,7 +509,7 @@ class AddNewStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.pop(Get.context!);
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(

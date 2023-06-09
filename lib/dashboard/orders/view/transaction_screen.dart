@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/owner_transaction_detail_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/user_transaction_detail.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';

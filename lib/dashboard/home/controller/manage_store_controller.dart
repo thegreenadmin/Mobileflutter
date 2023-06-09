@@ -63,7 +63,6 @@ class ManageStoreController extends GetxController {
   RxString lastProductLink = "".obs;
   RxString quantityValue = "".obs;
   InputAddProduct inputData = InputAddProduct();
-  List<XFile> selectedImages = <XFile>[];
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
   late quantity_model.QuantityListResponse quantityListResponse =
@@ -78,6 +77,7 @@ class ManageStoreController extends GetxController {
   RxList<dynamic> productLinks = <dynamic>[].obs;
   List<ProductImagesList> imagesList = <ProductImagesList>[];
   final ImagePicker imagePicker = ImagePicker();
+  List<XFile> selectedImages = <XFile>[];
   RxList<XFile>? imageFileList = <XFile>[].obs;
   RxList<ProductImagesList> imageUrlList = <ProductImagesList>[].obs;
 
@@ -203,7 +203,7 @@ class ManageStoreController extends GetxController {
     var response = await request.send();
     response.stream.transform(utf8.decoder).listen((value) {
       debugPrint(value);
-
+      imagesList.clear();
       for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
         var imageData = jsonDecode(value)['data']['files'][i];
         imagesList.add(ProductImagesList(
@@ -212,7 +212,7 @@ class ManageStoreController extends GetxController {
             status: 'active',
             dynamicImageUrl: imageData['dynamic_url']));
       }
-
+      imageUrlList.clear();
       imageUrlList.addAll(imagesList);
       print("IMAGE URL--" + imageUrlList.toString());
       inputData.productImages = imagesList.isEmpty ? [] : imagesList;
@@ -285,14 +285,14 @@ class ManageStoreController extends GetxController {
             quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -430,8 +430,7 @@ class ManageStoreController extends GetxController {
         isFeatured.value = false;
         selectedCategories.value = [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -439,7 +438,7 @@ class ManageStoreController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
