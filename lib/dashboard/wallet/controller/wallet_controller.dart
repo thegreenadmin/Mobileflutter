@@ -310,6 +310,7 @@ class WalletController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {
           ownerSelectedStore.value = storeList[0].storeId.toString();
           apiGetOwnerWalletBalance();

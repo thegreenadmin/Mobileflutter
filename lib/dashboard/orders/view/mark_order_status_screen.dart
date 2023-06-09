@@ -892,7 +892,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                     fontSize: 16,
                   ),
                 ),
-                Visibility(
+                Obx(() => Visibility(
                   visible: ordersHomeMainController.selectedIndex.value != 3,
                   child: CustomButton(
                     width: ordersHomeMainController.selectedIndex.value == 0
@@ -911,32 +911,32 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                           .any((element) => element.isSelected == true)) {
                         ordersHomeMainController.selectedIndex.value == 0
                             ? ordersHomeMainController
-                                .apiMarkOrderReady(context)
+                            .apiMarkOrderReady(context)
                             : ordersHomeMainController.selectedIndex.value == 1
-                                ? ordersHomeMainController
-                                            .getStoreOrderDetailModel
-                                            .value
-                                            .data
-                                            ?.order
-                                            ?.deliveryService
-                                            ?.deliveryServiceId !=
-                                        "2"
-                                    ? ordersHomeMainController
-                                        .apiMarkReadyForPickUp(context)
-                                    : ordersHomeMainController
-                                        .apiMarkReadyForShipping(context)
-                                : ordersHomeMainController
-                                            .selectedIndex.value ==
-                                        2
-                                    ? ordersHomeMainController
-                                        .apiMarkDelivered(context)
-                                    : ordersHomeMainController
-                                                .selectedIndex.value ==
-                                            3
-                                        ? ordersHomeMainController
-                                            .apiMarkOrderReady(context)
-                                        : ordersHomeMainController
-                                            .apiMarkOrderReady(context);
+                            ? ordersHomeMainController
+                            .getStoreOrderDetailModel
+                            .value
+                            .data
+                            ?.order
+                            ?.deliveryService
+                            ?.deliveryServiceId !=
+                            "2"
+                            ? ordersHomeMainController
+                            .apiMarkReadyForPickUp(context)
+                            : ordersHomeMainController
+                            .apiMarkReadyForShipping(context)
+                            : ordersHomeMainController
+                            .selectedIndex.value ==
+                            2
+                            ? ordersHomeMainController
+                            .apiMarkDelivered(context)
+                            : ordersHomeMainController
+                            .selectedIndex.value ==
+                            3
+                            ? ordersHomeMainController
+                            .apiMarkOrderReady(context)
+                            : ordersHomeMainController
+                            .apiMarkOrderReady(context);
                       } else {
                         Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);
@@ -946,47 +946,47 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                     text: ordersHomeMainController.selectedIndex.value == 0
                         ? StringConstants.orderReadyText
                         : ordersHomeMainController.selectedIndex.value == 1 &&
-                                ordersHomeMainController
-                                        .getStoreOrderDetailModel.value
-                                        .data?.order
-                                        ?.deliveryService
-                                        ?.deliveryServiceId !=
-                                    "2"
-                            ? StringConstants.readyForPickUpText
-                            : ordersHomeMainController.selectedIndex.value == 1 &&
-                                    ordersHomeMainController
-                                            .getStoreOrderDetailModel
-                                            .value.data
-                                            ?.order?.deliveryService
-                                            ?.deliveryServiceId == "2"
-                                ? StringConstants.orderShippedText
-                                : ordersHomeMainController.selectedIndex.value == 2 &&
-                                        ordersHomeMainController
-                                                .getStoreOrderDetailModel
-                                                .value
-                                                .data
-                                                ?.order
-                                                ?.deliveryService
-                                                ?.deliveryServiceId !=
-                                            "2"
-                                    ? StringConstants.pickedUpText
-                                    : ordersHomeMainController
-                                                    .selectedIndex.value ==
-                                                2 &&
-                                            ordersHomeMainController
-                                                    .getStoreOrderDetailModel
-                                                    .value
-                                                    .data
-                                                    ?.order
-                                                    ?.deliveryService
-                                                    ?.deliveryServiceId ==
-                                                "2"
-                                        ? StringConstants.deliveredText
-                                        : ordersHomeMainController
-                                                    .selectedIndex.value ==
-                                                3
-                                            ? StringConstants.completeText
-                                            : "",
+                        ordersHomeMainController
+                            .getStoreOrderDetailModel.value
+                            .data?.order
+                            ?.deliveryService
+                            ?.deliveryServiceId !=
+                            "2"
+                        ? StringConstants.readyForPickUpText
+                        : ordersHomeMainController.selectedIndex.value == 1 &&
+                        ordersHomeMainController
+                            .getStoreOrderDetailModel
+                            .value.data
+                            ?.order?.deliveryService
+                            ?.deliveryServiceId == "2"
+                        ? StringConstants.orderShippedText
+                        : ordersHomeMainController.selectedIndex.value == 2 &&
+                        ordersHomeMainController
+                            .getStoreOrderDetailModel
+                            .value
+                            .data
+                            ?.order
+                            ?.deliveryService
+                            ?.deliveryServiceId !=
+                            "2"
+                        ? StringConstants.pickedUpText
+                        : ordersHomeMainController
+                        .selectedIndex.value ==
+                        2 &&
+                        ordersHomeMainController
+                            .getStoreOrderDetailModel
+                            .value
+                            .data
+                            ?.order
+                            ?.deliveryService
+                            ?.deliveryServiceId ==
+                            "2"
+                        ? StringConstants.deliveredText
+                        : ordersHomeMainController
+                        .selectedIndex.value ==
+                        3
+                        ? StringConstants.completeText
+                        : "",
                     textColor: AppColors.white,
                     borderRadius: 14,
                     fontWeight: FontWeight.w500,
@@ -994,7 +994,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                     iconR: false,
                     fontSize: 16,
                   ),
-                ),
+                ),)
+
               ],
             ),
           ),

@@ -82,8 +82,7 @@ class BottomNavController extends GetxController {
         debugPrint("GET STORE storeList.length *******${storeList.length}");
         if (storeList.length == 1) {
           Get.parameters["storeId"] = storeList.first.storeId;
-          debugPrint(
-              "GET STORE storeList.first.storeIdh *******${storeList.first.storeId}");
+          Get.parameters["storeCount"] = storeList.length.toString();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

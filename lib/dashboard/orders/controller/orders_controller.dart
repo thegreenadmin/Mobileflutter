@@ -1019,6 +1019,7 @@ class OrdersController extends GetxController {
         getStoreListModel = stores.GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<stores.Stores>);
+        Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

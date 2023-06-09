@@ -133,8 +133,7 @@ class AddNewStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getGkey();
-    apiGetDeliveryServices();
+    getGKey();
     getCurrentLocation();
   }
 
@@ -143,6 +142,7 @@ class AddNewStoreController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
+    await apiGetDeliveryServices();
   }
 
   Future<void> createDynamicLink() async {
@@ -160,7 +160,7 @@ class AddNewStoreController extends GetxController {
     debugPrint("PARAMETERS **************${shortLink!.shortUrl}");
   }
 
-  getGkey() async {
+  getGKey() async {
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
@@ -541,7 +541,22 @@ class AddNewStoreController extends GetxController {
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices??[];
         deliveryServices.firstWhere((element) =>  element.name!.toLowerCase().contains("in")).isSelected = true;
+        var concatenate = StringBuffer();
+        for (int i = 0; i < deliveryServices.length; i++) {
+          if (deliveryServices[i].isSelected == true) {
 
+            concatenate.write(deliveryServices[i].name);
+            concatenate.write(', ');
+
+            deliveryServicesList.add({
+              "delivery_service_id": deliveryServices[i].id,
+              "is_enabled": true,
+              "status": "active"
+            });
+          }
+        }
+        deliveryServicesTextController.text = concatenate.toString();
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

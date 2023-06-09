@@ -144,17 +144,20 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      Get.delete<OrdersHomeMainController>();
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_back,
-                                      color: AppColors.white,
-                                      size: 24.0,
+                                  Visibility(
+                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Get.delete<OrdersHomeMainController>();
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: AppColors.white,
+                                        size: 24.0,
+                                      ),
                                     ),
                                   ),
                                 ]),

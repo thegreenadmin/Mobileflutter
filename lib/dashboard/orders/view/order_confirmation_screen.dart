@@ -867,11 +867,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                                     height8SizedBox,
                                     Visibility(
-                                      visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                      visible: ordersController.orderItems[i].product != null
+                                          && ordersController.orderItems[i].product?.productReviews!=null
+                                          && ordersController.orderItems[i].product!.productReviews!.isNotEmpty && (ordersController.orderItems[i].returnOrderItems!.isEmpty
                                           && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
-                                          || ( ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                          &&  ( ordersController.orderItems[i].returnOrderItems!.isEmpty
                                               && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
-                                          || (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                          &&  (ordersController.orderItems[i].returnOrderItems!.isEmpty
                                               && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
                                       child: RatingBar.builder(
                                         initialRating: ordersController
@@ -966,7 +968,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
 
                                     Visibility(
-                                      visible: ordersController.activeStep.value == 3
+                                      visible:   ordersController.activeStep.value == 3
                                           ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName)
                                           ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName)
                                           ||  (ordersController.orderItems[i].returnOrderItems!.isEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName),
@@ -1112,11 +1114,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             ],
                           ),
                           Visibility(
-                            visible: (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                            visible: ordersController.orderItems[i].product != null
+                                && ordersController.orderItems[i].product?.productReviews!=null
+                                && ordersController.orderItems[i].product!.productReviews!.isNotEmpty
+                                && (ordersController.orderItems[i].returnOrderItems!.isEmpty
                                 && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
-                                || ( ordersController.orderItems[i].returnOrderItems!.isEmpty
+                                && ( ordersController.orderItems[i].returnOrderItems!.isEmpty
                                     && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
-                                || (ordersController.orderItems[i].returnOrderItems!.isEmpty
+                               && (ordersController.orderItems[i].returnOrderItems!.isEmpty
                                     && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -50,7 +50,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              // Get.back();
+                              Get.delete<AddNewStoreController>();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -1653,6 +1653,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
+
                     MultiCustomDropDown(
                         onChanged: (v) {
                           addNewStoreController.deliveryServicesList.clear();
@@ -1679,8 +1680,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           return null;
                         },
-                        controller: addNewStoreController
-                            .deliveryServicesTextController,
+                        controller: addNewStoreController.deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: addNewStoreController.deliveryServices),

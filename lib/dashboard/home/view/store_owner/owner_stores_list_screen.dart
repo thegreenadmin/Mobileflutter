@@ -169,17 +169,18 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                   onTap: () async {
                                     ownerStoresController.storeId.value =
                                         ownerStoresController
-                                                .storeList[index].storeId ??
-                                            "";
+                                                .storeList[index].storeId ?? "";
 
-                                    // await ownerStoresController
-                                    //     .apiGetDeliveryServices();
+                                    await ownerStoresController
+                                        .apiGetDeliveryServices();
+                                    Get.parameters['storeId'] =  ownerStoresController
+                                        .storeList[index].storeId ??
+                                        "";
                                     await ownerStoresController
                                         .apiGetParticularStore();
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
-                                    ownerStoresController.onInit();
                                     SharedPreferenceStorage.setData(
                                         "context", context);
                                     await Navigator.of(context)

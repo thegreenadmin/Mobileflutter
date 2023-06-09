@@ -27,6 +27,7 @@ class OrdersHomeMainController extends GetxController {
   RxString customerName = "".obs;
   RxString orderDate = "".obs;
   RxString orderAmount = "".obs;
+  RxString storeCount = "".obs;
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
@@ -47,6 +48,8 @@ class OrdersHomeMainController extends GetxController {
     orderId.value = Get.parameters["orderId"] ?? "";
     if(Get.parameters["storeId"]!=""){
       storeId.value = Get.parameters["storeId"] ?? "";
+    } if(Get.parameters["storeCount"]!=""){
+      storeCount.value = Get.parameters["storeCount"] ?? "";
     }
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;

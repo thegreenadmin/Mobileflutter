@@ -155,10 +155,7 @@ class OwnerStoresController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     getCurrentLocation();
     getGkey();
-    if (Get.parameters['isFromHome'] == "true") {
-      storeId.value = Get.parameters['storeId'] ?? "";
-      apiGetParticularStore();
-    }
+
   }
 
   filePicker() async {
@@ -259,7 +256,6 @@ class OwnerStoresController extends GetxController {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
     getApiData();
   }
 
@@ -267,6 +263,10 @@ class OwnerStoresController extends GetxController {
     await apiGetStoreList();
     await apiGetDeliveryServices();
     await apiGetOwnerOffersList();
+    if (Get.parameters['isFromHome'] == "true") {
+      storeId.value = Get.parameters['storeId'] ?? "";
+      await  apiGetParticularStore();
+    }
   }
 
   bool validateAndSave() {
@@ -522,6 +522,7 @@ class OwnerStoresController extends GetxController {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -561,6 +562,7 @@ class OwnerStoresController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
+        debugPrint("GET DELIVERY LIST  isNotEmpty *******${deliveryServices.isNotEmpty}");
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -690,17 +692,19 @@ class OwnerStoresController extends GetxController {
         debugPrint("deliveryServices : ===== ${deliveryServices.isNotEmpty}");
         debugPrint(
             "deliveryServices isNotEmpty: ===== ${jsonEncode(deliveryServices.toString())}");
-        // List<DeliveryService> deliveryServicesData = deliveryServices ?? [];
-
+        var concatenate = StringBuffer();
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {
             for (var element in deliveryServices) {
               if (element.id == sData["delivery_service_id"]) {
+                concatenate.write(element.name);
+                concatenate.write(', ');
                 element.isSelected = sData["is_enabled"];
               }
             }
           }
         }
+        deliveryServicesTextController.text = concatenate.toString();
         // deliveryServices.value = deliveryServicesData;
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 

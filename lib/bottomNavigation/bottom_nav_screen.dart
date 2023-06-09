@@ -4,6 +4,7 @@ import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -264,9 +265,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
               TabItem(tab1, const HomeScreen()),
               TabItem(tab2, const WalletScreen()),
               SharedPreferenceStorage.getData(Role.role.value) ==
-                          Role.storeOwnerRoleText &&
+                          Role.storeOwnerRoleText ?
                       bottomNavigationPageController.storeList.length > 1
                   ? TabItem(tab3, const OrderStoresListScreen())
+                      : TabItem(tab3, const OrdersHomeMainScreen())
                   : TabItem(tab3, const OrdersScreen()),
               TabItem(tab4, const OffersScreen()),
               TabItem(tab5, const MoreScreen()),

@@ -28,6 +28,13 @@ class MultiCustomDropDown extends StatefulWidget {
 }
 
 class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
@@ -35,17 +42,12 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
       if (widget.list != null) {
 
         for (var item in widget.list ?? []) {
-          // print("MultiCustomDropDown item ------->>>>>");
-          // print(item.toString());
-          // print(item.name);
-          // print(item.isSelected);
-          // print(item.id);
           if (item.isSelected == true) {
             concatenate.write(item.name);
             concatenate.write(', ');
           }
         }
-        widget.controller!.text = concatenate.toString();
+          widget.controller!.text = concatenate.toString();
       }
       return TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,

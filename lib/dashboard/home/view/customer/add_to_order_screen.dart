@@ -704,11 +704,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ],
                             ),
                             storeHomeMainController.productDetailResponse.value
-                                    .data!.product!.description!.isEmpty
+                                    .data?.product?.description!=""
                                 ? height0SizedBox
                                 : height4SizedBox,
                             storeHomeMainController.productDetailResponse.value
-                                    .data!.product!.description!.isEmpty
+                                .data?.product?.description!=""
                                 ? height0SizedBox
                                 : SizedBox(
                                     width: 200,
@@ -726,7 +726,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             fontWeight: FontWeight.w400)),
                                   ),
                             storeHomeMainController.productDetailResponse.value
-                                    .data!.product!.description!.isEmpty
+                                .data?.product?.description!=""
                                 ? height0SizedBox
                                 : height10SizedBox,
                             Text.rich(
