@@ -22,7 +22,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
-  @override
+  /*@override
   initState() {
     super.initState();
     walletController.autoChargeType.value = "threshold";
@@ -46,7 +46,7 @@ class _WalletScreenState extends State<WalletScreen> {
       walletController.apiGetStoreList();
       walletController.apiGetCountries();
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

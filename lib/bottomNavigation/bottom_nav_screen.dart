@@ -266,7 +266,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
               TabItem(tab2, const WalletScreen()),
               SharedPreferenceStorage.getData(Role.role.value) ==
                           Role.storeOwnerRoleText ?
-                      bottomNavigationPageController.storeList.length > 1
+                      bottomNavigationPageController.storeList.length > 1 ||
+                          bottomNavigationPageController.storeList.isEmpty
                   ? TabItem(tab3, const OrderStoresListScreen())
                       : TabItem(tab3, const OrdersHomeMainScreen())
                   : TabItem(tab3, const OrdersScreen()),

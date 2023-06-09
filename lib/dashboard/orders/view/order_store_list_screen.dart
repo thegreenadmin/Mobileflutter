@@ -88,7 +88,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               height4SizedBox,
                               Center(
                                 child: Text(
-                                  StringConstants.noStoresFoundText,
+                                  StringConstants.noOrdersFoundText,
                                   style: const TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontSize: 16),
