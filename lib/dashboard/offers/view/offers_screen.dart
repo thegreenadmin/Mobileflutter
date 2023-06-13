@@ -447,11 +447,11 @@ class _OffersScreenState extends State<OffersScreen> {
                               return Dismissible(
                                 background: Container(
                                   color: AppColors.redlight,
-                                  child: Align(
+                                  child: const Align(
                                     alignment: Alignment.centerRight,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const <Widget>[
+                                      children: <Widget>[
                                         Icon(
                                           Icons.delete,
                                           color: AppColors.red,
@@ -489,6 +489,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                     await offersController
                                         .apiDeleteOffer(context);
                                   });
+                                  return null;
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

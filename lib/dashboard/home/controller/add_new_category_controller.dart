@@ -10,7 +10,7 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:dio/dio.dart' as mdio;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddNewCategoryController extends GetxController {
@@ -209,9 +209,7 @@ class AddNewCategoryController extends GetxController {
             body,
             ServerCommunicator().baseUrl +
                 ServerCommunicator().createStoreCategory,
-            headers,
-            showLoading: true)
-        .then((value) async {
+            headers, showLoading: true).then((value) async {
       debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -234,14 +232,14 @@ class AddNewCategoryController extends GetxController {
   //Get Category Detail Api
   Future apiGetCategoryDetail() async {
     debugPrint(
-        "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDeatil}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
+        "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDeatil}?store_id=${storeId.value}&category_id=${categoryId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}",
             headers,
             showLoading: true)
         .then((value) async {

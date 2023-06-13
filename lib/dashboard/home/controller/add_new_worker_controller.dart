@@ -13,7 +13,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:dio/dio.dart' as mdio;
-import 'package:http_parser/http_parser.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 import '../model/add_worker_request_model.dart' as add_worker;
 import '../model/categories_model.dart';
 import '../model/edit_worker_request_model.dart';

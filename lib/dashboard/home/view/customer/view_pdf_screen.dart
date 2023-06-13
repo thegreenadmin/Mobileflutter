@@ -6,9 +6,9 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PdfViewScreen extends StatefulWidget {
-  bool isShowPrivacy = false;
-  String url = "";
-  PdfViewScreen({Key? key, this.url = "", this.isShowPrivacy = false})
+ final bool isShowPrivacy ;
+ final String url;
+  const PdfViewScreen({Key? key, this.url = "", this.isShowPrivacy = false})
       : super(key: key);
 
   @override

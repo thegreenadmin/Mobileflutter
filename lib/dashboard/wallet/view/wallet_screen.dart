@@ -168,10 +168,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500))
                                   : DropdownButtonFormField<String>(
-                                      value: walletController.ownerSelectedStore
-                                                      .value !=
-                                                  null &&
-                                              walletController
+                                      value:  walletController
                                                       .storeNameValue!.value !=
                                                   "" &&
                                               walletController

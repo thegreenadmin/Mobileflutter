@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' show Position;
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
@@ -115,7 +115,7 @@ class HomeController extends GetxController {
           ),
         );
       }
-      if (index == 1) {
+      else {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
@@ -145,7 +145,6 @@ class HomeController extends GetxController {
         );
       }
 
-      return null!;
     });
   }
 

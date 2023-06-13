@@ -22,6 +22,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
 
   @override
   initState() {
+    super.initState();
     addOffersController.offerNameTextController.clear();
     addOffersController.discountOrOfferTextController.clear();
     addOffersController.offerImageDynamicLinkfromServer.value = "";

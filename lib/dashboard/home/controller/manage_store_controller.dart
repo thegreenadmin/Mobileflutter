@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' show basename;
 import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/input_add_product.dart';
@@ -213,7 +213,7 @@ class ManageStoreController extends GetxController {
       }
       imageUrlList.clear();
       imageUrlList.addAll(imagesList);
-      print("IMAGE URL--" + imageUrlList.toString());
+      print("IMAGE URL--$imageUrlList");
       inputData.productImages = imagesList.isEmpty ? [] : imagesList;
       imageUrlList.refresh();
     });

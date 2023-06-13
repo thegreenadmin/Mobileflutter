@@ -126,7 +126,7 @@ class OffersController extends GetxController {
     debugPrint(
       "GET USER OFFERS LIST URL********** " +
           ServerCommunicator().baseUrl +
-          ServerCommunicator().shopeOffersList +
+          ServerCommunicator().shopOffersList +
           "?longitude=" +
           lng.toString() +
           "&latitude=" +
@@ -144,7 +144,7 @@ class OffersController extends GetxController {
     UserProvider()
         .getWithHeadersApi(
             ServerCommunicator().baseUrl +
-                ServerCommunicator().shopeOffersList +
+                ServerCommunicator().shopOffersList +
                 "?longitude=" +
                 lng.toString() +
                 "&latitude=" +

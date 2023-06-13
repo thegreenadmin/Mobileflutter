@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
-import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
@@ -31,9 +30,7 @@ class _CartScreenState extends State<CartScreen> {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
       }
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromHome'] != "false") {
+      if ( Get.parameters['isFromHome'] != "false") {
         storeHomeMainController.productId.value =
             Get.parameters["productId"] == null
                 ? ""
@@ -47,13 +44,8 @@ class _CartScreenState extends State<CartScreen> {
       storeHomeMainController.isFromFav.value =
           Get.parameters["isFromFav"] == "true" ? true : false;
 
-      print("PRODUCT ID--------${Get.parameters["productId"]}");
-
       storeHomeMainController.apiGetUserDetailsApi();
-      print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
-      print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
-      print("is from homeee--${storeHomeMainController.isFromHome.value}");
-      if (storeHomeMainController.isFromMenu.value) {
+       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
       }
       if (storeHomeMainController.isFromFav.value) {
@@ -61,28 +53,17 @@ class _CartScreenState extends State<CartScreen> {
       }
 
       if (storeHomeMainController.isFromHome.value) {
-        // nearby.Store store = nearby.Store();
-        // store.storeId = storeHomeMainController.storeId.value;
-        // storeHomeMainController.storeAddress.value.store = store;
-        // storeHomeMainController.isFavouriteStore.value =
-        //     store.isFavouriteStore ?? false;
+
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetCartListApi(Get.context);
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
-        // nearby.Store store = nearby.Store();
 
-        // store.storeId = storeHomeMainController.storeId.value;
-        // storeHomeMainController.storeAddress.value.store = store;
-        // storeAddress.value = Get.arguments["storeAddress"] ?? {};
         if (storeHomeMainController.isFromMenu.value) {
           storeHomeMainController.selectedIndex.value = 1;
         } else if (storeHomeMainController.isFromFav.value) {
           storeHomeMainController.selectedIndex.value = 2;
         }
-        // storeHomeMainController.isFavouriteStore.value =
-        //     storeHomeMainController.storeAddress.value.store?.isFavouriteStore ?? false;
-        // storeHomeMainController.onIndexChange(0);
       }
       storeHomeMainController.apiGetUserWalletBalance();
       storeHomeMainController.apiGetCartListApi(Get.context);

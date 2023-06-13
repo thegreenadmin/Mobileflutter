@@ -69,6 +69,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     }
     storeHomeMainController.apiGetUserWalletBalance();
   }*/
+
   void contactAlertDailogue(
     context,
   ) {
@@ -300,7 +301,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ],
           ),
         );
-      }
+      }else
       if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
@@ -325,7 +326,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ),
           ),
         );
-      }
+      }else
       if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
@@ -369,8 +370,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ),
           ),
         );
-      }
-      if (index == 3) {
+      }else
+     {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -414,7 +415,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           ),
         );
       }
-      return null!;
     });
   }
 

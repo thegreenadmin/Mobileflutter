@@ -266,7 +266,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                                         .previousStore[index]
                                                         .storeId,
                                                   );
-                                                },
+                                                },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
                                                   scale: 3.2,
@@ -280,7 +280,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                                         .previousStore[index]
                                                         .storeId,
                                                   );
-                                                },
+                                                },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
                                                   scale: 3.2,

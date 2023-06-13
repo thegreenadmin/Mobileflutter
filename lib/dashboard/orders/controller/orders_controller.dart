@@ -94,9 +94,7 @@ class OrdersController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromNotification'] != "false") {
+    if ( Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }

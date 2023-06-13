@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart';
 import 'package:thegreenmall/dashboard/orders/model/get_owner_transaction_model.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_user_order_history_model.dart';
 
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';

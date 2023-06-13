@@ -469,9 +469,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                             height20SizedBox,
                             Obx(
                               () => DropdownButtonFormField<String>(
-                                value: addCardController.countryId.value !=
-                                            null &&
-                                        addCardController
+                                value: addCardController
                                                 .selectedCountry.value !=
                                             "" &&
                                         addCardController.countryId.value != ""

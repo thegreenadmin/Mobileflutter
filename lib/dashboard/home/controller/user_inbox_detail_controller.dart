@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:dio/dio.dart' as mdio;
 import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 
 class UserInboxDetailController extends GetxController {
   RxBool isloading = false.obs;

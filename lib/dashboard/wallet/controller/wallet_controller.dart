@@ -804,7 +804,7 @@ class WalletController extends GetxController {
   apiCreateAutoRecharge(BuildContext ctxx) {
     isLoading.value = true;
     debugPrint(
-        "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutocharge}");
+        "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -830,7 +830,7 @@ class WalletController extends GetxController {
         .postWithHeadersApi(
             body,
             ServerCommunicator().baseUrl +
-                ServerCommunicator().userWalletAutocharge,
+                ServerCommunicator().userWalletAutoCharge,
             headers,
             showLoading: true)
         .then((value) async {
@@ -870,7 +870,7 @@ class WalletController extends GetxController {
   Future apiGetAutoRechargeDetail() async {
     isLoading.value = true;
     debugPrint("GET AUTO RECHARGE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeGet}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeGet}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -879,7 +879,7 @@ class WalletController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeGet}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeGet}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -952,7 +952,7 @@ class WalletController extends GetxController {
     var date = DateTime.now();
     isLoading.value = true;
     debugPrint(
-        "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeUpdate}");
+        "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -980,7 +980,7 @@ class WalletController extends GetxController {
         .putWithHeadersApi(
             body,
             ServerCommunicator().baseUrl +
-                ServerCommunicator().userWalletAutochargeUpdate,
+                ServerCommunicator().userWalletAutoChargeUpdate,
             headers,
             showLoading: false)
         .then((value) async {
@@ -1020,7 +1020,7 @@ class WalletController extends GetxController {
 //Delete autocahrge api
   Future apiDisableAutoRecharge() async {
     debugPrint(
-        "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeDelete}");
+        "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -1035,7 +1035,7 @@ class WalletController extends GetxController {
     UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutochargeDelete}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}",
             headers,
             showLoading: false)
         .then((value) async {

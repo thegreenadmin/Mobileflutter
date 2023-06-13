@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/user_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
@@ -13,9 +12,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
-import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
-    as nearby;
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -304,7 +300,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ],
           ),
         );
-      }
+      }else
       if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
@@ -329,7 +325,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
         );
-      }
+      }else
       if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
@@ -373,8 +369,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
         );
-      }
-      if (index == 3) {
+      }else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -418,7 +413,6 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           ),
         );
       }
-      return null!;
     });
   }
 

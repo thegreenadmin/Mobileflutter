@@ -545,7 +545,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                           separatorBuilder: (BuildContext context, int index) {
                             return width40SizedBox;
                           },
-                      padding: EdgeInsets.only(bottom: WidgetConstants.screenHeight*0.2),
+                          padding: EdgeInsets.only(bottom: WidgetConstants.screenHeight*0.2),
                           itemCount:
                               ordersHomeMainController.getOrderItems.length + 1,
                           itemBuilder: (BuildContext context, int index) {
@@ -844,6 +844,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         fontSize: 16)),
                               );
                             }
+                            return height0SizedBox;
 
                           }))),
             ]),

@@ -17,8 +17,6 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
-    as nearby;
 import 'package:url_launcher/url_launcher.dart';
 
 class AddToOrderScreen extends StatefulWidget {
@@ -56,12 +54,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.isFromFav.value =
           Get.parameters["isFromFav"] == "true" ? true : false;
 
-      print("PRODUCT ID--------${Get.parameters["productId"]}");
+
 
       storeHomeMainController.apiGetUserDetailsApi();
-      print("is from isFromFav--${storeHomeMainController.isFromFav.value}");
-      print("is from isFromMenu--${storeHomeMainController.isFromMenu.value}");
-      print("is from homeee--${storeHomeMainController.isFromHome.value}");
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
       }
@@ -322,7 +317,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ],
           ),
         );
-      }
+      }else
       if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
@@ -347,7 +342,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
           ),
         );
-      }
+      }else
       if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
@@ -392,7 +387,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           ),
         );
       }
-      if (index == 3) {
+      else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -436,7 +431,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           ),
         );
       }
-      return null!;
     });
   }
 
@@ -445,7 +439,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
-            child: UserStoreOrderAppBar()),
+            child: const UserStoreOrderAppBar()),
         body: Obx(
           () => Column(
             children: [
@@ -1028,8 +1022,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         .first
                                         .link! ??
                                     "";
-                                if (await canLaunch(url)) {
-                                  await launch(url);
+                                Uri uri = Uri.parse(url);
+                                if (await canLaunchUrl(uri)) {
+                                  await launchUrl(uri);
                                 } else {
                                   throw 'Could not launch $url';
                                 }
@@ -1347,13 +1342,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         );
                       }),
                   height20SizedBox,
-                  storeHomeMainController
-                                  .productDetailResponse.value.data?.product !=
-                              null &&
+                  storeHomeMainController.productDetailResponse
+                      .value.data?.product != null &&
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.cartItems!.isNotEmpty
                       ? height80SizedBox
                       : height15SizedBox,
+                  height20SizedBox,
                 ],
               ),
             ),
@@ -1382,10 +1377,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 if ((int.parse(
                         storeHomeMainController.storeIdValue.toString()) !=
                     int.parse(storeHomeMainController.storeId.toString()))) {
-                  print(
-                      "ACTIVE CART--${int.parse(storeHomeMainController.storeIdValue.toString())}");
-                  print(
-                      "STORE CART--${int.parse(storeHomeMainController.storeId.toString())}");
                   storeHomeMainController.discardCartItems(context);
                 } else {
                   if (storeHomeMainController.itemsCount.value != 0) {

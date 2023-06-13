@@ -31,25 +31,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
           SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
       ordersController.lastName?.value =
           SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromNotification'] != "false") {
+      if ( Get.parameters['isFromNotification'] != "false") {
         ordersController.isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
       }
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['storeId'] != "" &&
+      if ( Get.parameters['storeId'] != "" &&
               Get.parameters['storeId'] != null) {
         ordersController.storeId.value = Get.parameters["storeId"] ?? "";
         ordersController.apiGetStoreDetailsApi();
       }
 
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromTransaction'] == "true"
-              ? true
-              : false) {
+      if ( Get.parameters['isFromTransaction'] == "true") {
         ordersController.storeId.value = Get.parameters["storeId"] ?? "";
         ordersController.apiGetStoreDetailsApi();
       }
@@ -517,7 +509,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           color: AppColors.black),
                     ),
                      Obx(() => Text(
-                       ordersController.orderDate.value!=null && ordersController.orderDate.value!="" ?
+                       ordersController.orderDate.value!="" ?
                        Utility.formatDateTime(
                            '${ordersController.orderDate.value.toString().substring(0, 10)} ${ordersController.orderDate.value.toString().substring(11, 23)}',
                            firstFormat:

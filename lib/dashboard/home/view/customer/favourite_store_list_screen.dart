@@ -258,7 +258,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                         .favouriteStore[index]
                                                         .storeId,
                                                   );
-                                                },
+                                                },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
                                                   scale: 3.2,
@@ -272,7 +272,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                         .favouriteStore[index]
                                                         .storeId,
                                                   );
-                                                },
+                                                },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
                                                   scale: 3.2,

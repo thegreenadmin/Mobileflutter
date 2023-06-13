@@ -76,7 +76,6 @@ class ServerCommunicator {
   String orderDetail = 'order/details';
 
 //P
-
   String productDetails = 'store/product/details';
   String placeOrder = 'order/create';
   String pageTerms = 'page/terms';
@@ -106,7 +105,7 @@ class ServerCommunicator {
   String storeCategoryDelete = 'store/category/delete';
   String storeControllerList = 'store/controller/list';
   String storeRoleList = 'store/role/list';
-  String storeCategoryDeatil = 'store/category/details';
+  String storeCategoryDetail = 'store/category/details';
   String storeCategoryEdit = 'store/category/edit';
   String storeRoleCreate = 'store/role/create';
   String storeRoleDelete = 'store/role/delete';
@@ -116,7 +115,7 @@ class ServerCommunicator {
   String storeOfferCreate = 'store/offer/create';
   String storeOfferEdit = 'store/offer/edit';
   String storeOfferList = 'store/offer/list';
-  String shopeOffersList = 'shop/offers/list';
+  String shopOffersList = 'shop/offers/list';
   String storeOffersDetails = 'store/offer/details';
   String storeCategoryList = 'shop/store/category/list';
   String storeOffersList = 'shop/store/offers/list';
@@ -171,10 +170,10 @@ class ServerCommunicator {
   String utilsQueryCreate = '/utils/query/create';
   String userStripeBankCreate = 'user/stripe/bank/create';
   String userStripeBankList = 'user/stripe/bank/list';
-  String userWalletAutocharge = 'user/wallet/autocharge/create';
-  String userWalletAutochargeGet = 'user/wallet/autocharge/details';
-  String userWalletAutochargeDelete = 'user/wallet/autocharge/delete';
-  String userWalletAutochargeUpdate = 'user/wallet/autocharge/update';
+  String userWalletAutoCharge = 'user/wallet/autocharge/create';
+  String userWalletAutoChargeGet = 'user/wallet/autocharge/details';
+  String userWalletAutoChargeDelete = 'user/wallet/autocharge/delete';
+  String userWalletAutoChargeUpdate = 'user/wallet/autocharge/update';
   String userStoreAccessCreate = 'user/store/access/create';
   String utilMembershipPlans = 'utils/membership/plans';
   String userMembershipCreate = 'user/membership/create';
