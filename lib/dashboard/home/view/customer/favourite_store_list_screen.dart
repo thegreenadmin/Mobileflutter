@@ -73,11 +73,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                   searchStoreUserController
                                           .favouriteStore[index].storeId ??
                                       "";
-                              print(
-                                  "nearby store is data : ---------------------------------------------");
-                              print(searchStoreUserController
-                                  .favouriteStore[index].storeId);
-                              print(Get.parameters["storeId"]);
+
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));

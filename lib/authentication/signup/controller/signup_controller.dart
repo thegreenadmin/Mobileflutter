@@ -171,14 +171,18 @@ class SignupController extends GetxController {
 // Fields Validation Method
   void validateAndSubmit({bool isFromOwner = false}) async {
     if (validateAndSave()) {
-      SharedPreferenceStorage.setData(StringConstants.firstNameText, firstName.value.trim());
-      SharedPreferenceStorage.setData(StringConstants.lastNameText, lastName.value.trim());
-      SharedPreferenceStorage.setData(StringConstants.emailText, email.value.trim());
+      SharedPreferenceStorage.setData(
+          StringConstants.firstNameText, firstName.value.trim());
+      SharedPreferenceStorage.setData(
+          StringConstants.lastNameText, lastName.value.trim());
+      SharedPreferenceStorage.setData(
+          StringConstants.emailText, email.value.trim());
       try {
         if (dateTextController.text.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectAge);
         } else if (isTermsAccepted.value == false) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseEnterTermsAndConditions);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
           apiCreateUser(isFromOwner: isFromOwner);
         }
@@ -218,10 +222,10 @@ class SignupController extends GetxController {
         //email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -237,7 +241,8 @@ class SignupController extends GetxController {
             showLoading: false)
         .then((value) async {
       debugPrint("LOGIN RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         phoneNumberTextController.clear();
         Utility.showToast(value.body['message']);
         Get.to(() => const OtpVerificationScreen(), arguments: {
@@ -258,10 +263,10 @@ class SignupController extends GetxController {
         //Phone Number is not valid
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

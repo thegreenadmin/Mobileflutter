@@ -28,7 +28,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
         Get.parameters["categoryId"] ?? "";
     addNewCategoryController.isFeaturedTypeSelected.value =
         Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    print(Get.parameters["isFeaturedSelectedType"]);
+
     if (addNewCategoryController.categoryId.value.isNotEmpty) {
       addNewCategoryController.apiGetCategoryDetail();
     }

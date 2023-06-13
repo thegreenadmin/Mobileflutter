@@ -15,11 +15,6 @@ class ContactUsController extends GetxController {
 
   RxBool autoValidate = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -77,10 +72,10 @@ class ContactUsController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

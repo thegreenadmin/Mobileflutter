@@ -222,11 +222,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                           ),
                                           height4SizedBox,
                                           Text(
-                                              "\$" +
-                                                  accountController
-                                                      .membershipList[index]
-                                                      .planCharge
-                                                      .toString(),
+                                              "\$${accountController.membershipList[index].planCharge}",
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 15,

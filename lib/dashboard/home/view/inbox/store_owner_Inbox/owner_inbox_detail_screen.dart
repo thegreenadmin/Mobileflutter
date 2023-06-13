@@ -21,10 +21,10 @@ class OwnerInboxDetailScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OwnerInboxDetailScreenState createState() => _OwnerInboxDetailScreenState();
+  OwnerInboxDetailScreenState createState() => OwnerInboxDetailScreenState();
 }
 
-class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
+class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
   final OwnerInboxDetailController ownerInboxDetailController =
       Get.put(OwnerInboxDetailController());
 
@@ -70,8 +70,8 @@ class _OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
   //       ));
   // }
 
-  Container buildPhotoLibraryGridView() {
-    return Container(
+  SizedBox buildPhotoLibraryGridView() {
+    return SizedBox(
         height: 120,
         child:
 

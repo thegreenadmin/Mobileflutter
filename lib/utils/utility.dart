@@ -49,10 +49,12 @@ class Utility {
     return ServerCommunicator().baseUrlWithoutV1 + url;
   }
 
-
-  static  void showConfirmAlertMessage(title, {
-    String description = "", String? cancelText , String? okay ,
-    Function()? okayTap, Function()? cancelTap }) {
+  static void showConfirmAlertMessage(title,
+      {String description = "",
+      String? cancelText,
+      String? okay,
+      Function()? okayTap,
+      Function()? cancelTap}) {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -69,10 +71,10 @@ class Utility {
                 child: Image.asset(
                   ImageConstants.alert48,
                   color: AppColors.red,
-                  // scale: 1.5, 
+                  // scale: 1.5,
                 ),
               ),
-             /* height12SizedBox,
+              /* height12SizedBox,
               Text(
                 title,
                 style: const TextStyle(
@@ -96,11 +98,11 @@ class Utility {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: ()  {
-                      cancelTap ??  Navigator.pop(_);
+                    onTap: () {
+                      cancelTap ?? Navigator.pop(_);
                     },
                     child: Container(
-                      height: WidgetConstants.screenHeight*0.08,
+                      height: WidgetConstants.screenHeight * 0.08,
                       width: WidgetConstants.screenWidth * 0.28,
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -120,13 +122,13 @@ class Utility {
                   ),
                   InkWell(
                     onTap: () {
-                     okayTap!() ??  Navigator.pop(_);
+                      okayTap!() ?? Navigator.pop(_);
                       // Get.back();
                       // await apiPlaceOrder(context);
                     },
                     child: Container(
-                      height: WidgetConstants.screenHeight*0.08,
-                      width:WidgetConstants.screenWidth * 0.28,
+                      height: WidgetConstants.screenHeight * 0.08,
+                      width: WidgetConstants.screenWidth * 0.28,
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(10.0),
@@ -152,9 +154,12 @@ class Utility {
     );
   }
 
-
-  static  void showAlertMessage(description, {
-    String? title, String? cancelText , String? okay ,void Function()? okayTap,void Function()? cancelTap }) {
+  static void showAlertMessage(description,
+      {String? title,
+      String? cancelText,
+      String? okay,
+      void Function()? okayTap,
+      void Function()? cancelTap}) {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -166,15 +171,15 @@ class Utility {
           children: [
             height10SizedBox,
             Image.asset(
-             ImageConstants.alert48,
+              ImageConstants.alert48,
               color: AppColors.red,
               // scale: 1.5,
             ),
             height12SizedBox,
             Visibility(
-              visible: title!=null,
+              visible: title != null,
               child: Text(
-                title ??"",
+                title ?? "",
                 style: const TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
@@ -182,10 +187,9 @@ class Utility {
                 textAlign: TextAlign.start,
               ),
             ),
-            title!=null?
-            height15SizedBox:height0SizedBox,
+            title != null ? height15SizedBox : height0SizedBox,
             Text(
-              description??"",
+              description ?? "",
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,
@@ -196,7 +200,7 @@ class Utility {
             height25SizedBox,
             InkWell(
               onTap: () {
-               okayTap ??  Navigator.pop(_);
+                okayTap ?? Navigator.pop(_);
                 // Get.back();
                 // await apiPlaceOrder(context);
               },
@@ -354,13 +358,13 @@ class Utility {
       {void Function()? onGalleryClick, void Function()? onCameraClick}) {
     return showDialog(
         context: context,
-        builder: (BuildContext _context) {
+        builder: (BuildContext contextt) {
           return AlertDialog(
               icon: Align(
                 alignment: Alignment.topRight,
                 child: InkWell(
                   onTap: () {
-                    Navigator.pop(_context);
+                    Navigator.pop(contextt);
                   },
                   child: const Icon(
                     Icons.clear,
@@ -394,7 +398,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                        Navigator.pop(_context);
+                        Navigator.pop(contextt);
                         onGalleryClick!();
                       },
                     ),
@@ -414,7 +418,7 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                        Navigator.pop(_context);
+                        Navigator.pop(contextt);
                         onCameraClick!();
                       },
                     )
@@ -424,7 +428,7 @@ class Utility {
         });
   }
 
-  static String extractLocality(GeocodingResult result,String typeData) {
+  static String extractLocality(GeocodingResult result, String typeData) {
     for (final component in result.addressComponents) {
       for (final type in component.types) {
         if (type == typeData) {

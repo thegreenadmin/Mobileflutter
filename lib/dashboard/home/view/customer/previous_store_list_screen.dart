@@ -81,11 +81,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                   searchStoreUserController
                                           .previousStore[index].storeId ??
                                       "";
-                              print(
-                                  "nearby store is data : ---------------------------------------------");
-                              print(searchStoreUserController
-                                  .previousStore[index].storeId);
-                              print(Get.parameters["storeId"]);
+
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const StoreHomeMainScreen(),
                               ));

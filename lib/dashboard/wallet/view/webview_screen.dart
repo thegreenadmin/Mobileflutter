@@ -26,15 +26,10 @@ class _WebViewExampleState extends State<WebViewExample> {
           onProgress: (int progress) {
             // Update loading bar.
           },
-          onPageStarted: (String url) {
-            print("onPageStarted" + url);
-          },
-          onPageFinished: (String url) {
-            print("onPageFinished" + url);
-          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            print("NavigationRequest" + request.url);
             // if (request.url.startsWith('https://www.youtube.com/')) {
             //   return NavigationDecision.prevent;
             // }

@@ -199,7 +199,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                 SharedPreferenceStorage.setData("context", context);
                 Navigator.of(context)
                     .push(MaterialPageRoute(
-                      builder: (_) => AddCardDetailScreen(),
+                      builder: (_) => const AddCardDetailScreen(),
                     ))
                     // Get.to(AddCardDetailScreen())!
                     .then((value) => addCardController.apiGetCardList(context));

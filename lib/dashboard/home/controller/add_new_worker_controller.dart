@@ -312,17 +312,18 @@ class AddNewWorkerController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
   // Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
     debugPrint("storeId ***${storeId.value}*");
-    debugPrint("deleteWithHeadersApi WORKER***${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
+    debugPrint(
+        "deleteWithHeadersApi WORKER***${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -357,10 +358,10 @@ class AddNewWorkerController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         await apiGetWorkerList();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -512,7 +513,7 @@ class AddNewWorkerController extends GetxController {
         }
         update();
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -546,10 +547,10 @@ class AddNewWorkerController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -576,14 +577,14 @@ class AddNewWorkerController extends GetxController {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -604,7 +605,7 @@ class AddNewWorkerController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}?store_id=${int.parse(storeId.value)}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("API GET ROLE LIST RESPONSE *******${value?.body}");
@@ -613,14 +614,14 @@ class AddNewWorkerController extends GetxController {
         storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -698,14 +699,14 @@ class AddNewWorkerController extends GetxController {
         }
         workingDaysTextController.text = concatenate.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }

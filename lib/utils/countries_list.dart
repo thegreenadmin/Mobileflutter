@@ -2258,7 +2258,7 @@ class Country {
 
   String get displayCC {
     if (regionCode != "") {
-      return "${dialCode} ${regionCode}";
+      return "$dialCode $regionCode";
     }
     return dialCode;
   }

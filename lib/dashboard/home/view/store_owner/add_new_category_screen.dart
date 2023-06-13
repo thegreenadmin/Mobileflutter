@@ -23,9 +23,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   @override
   initState() {
     super.initState();
-    print("storeName:------>>>>>>" );
-    print(Get.parameters["storeName"] );
-    print( Get.parameters["storeId"] );
+
     addNewCategoryController.categoryNameTextController.clear();
     addNewCategoryController.categoryNameTextController.clear();
     addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
@@ -33,10 +31,11 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
     addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
 
     addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
-    addNewCategoryController.categoryId.value = Get.parameters["categoryId"] ?? "";
+    addNewCategoryController.categoryId.value =
+        Get.parameters["categoryId"] ?? "";
     addNewCategoryController.isFeaturedTypeSelected.value =
-    Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    print(Get.parameters["isFeaturedSelectedType"]);
+        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+
     if (addNewCategoryController.categoryId.value.isNotEmpty) {
       addNewCategoryController.apiGetCategoryDetail();
     }
@@ -62,7 +61,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Navigator.of(context).pop();
-
                             },
                             icon: const Icon(
                               Icons.arrow_back,

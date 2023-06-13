@@ -27,7 +27,7 @@ class LoginController extends GetxController {
     getCountryCodes();
   }
 
-  getCountryCodes(){
+  getCountryCodes() {
     for (var element in countriesList) {
       countryCodes.add(element.code);
     }
@@ -85,10 +85,10 @@ class LoginController extends GetxController {
         //Phone Number is not valid
         Utility.showAlertMessage(value.body['message']);
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

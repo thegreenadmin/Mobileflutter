@@ -105,7 +105,6 @@ class ManageStoreController extends GetxController {
   void onInit() {
     super.onInit();
     isFeaturedTypeSelected.value = false;
-    debugPrint("storeName:------>>>>>>");
     debugPrint(Get.parameters["storeName"]);
     debugPrint(Get.parameters["storeId"]);
     storeId.value = Get.parameters["storeId"] ?? "";
@@ -275,7 +274,7 @@ class ManageStoreController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");

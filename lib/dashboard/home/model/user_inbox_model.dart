@@ -8,13 +8,13 @@ class UserInboxModel {
   UserInboxModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,17 +33,16 @@ class Data {
     if (json['message_heads'] != null) {
       messageHeads = <MessageHeads>[];
       json['message_heads'].forEach((v) {
-        messageHeads!.add(new MessageHeads.fromJson(v));
+        messageHeads!.add(MessageHeads.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.messageHeads != null) {
-      data['message_heads'] =
-          this.messageHeads!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (messageHeads != null) {
+      data['message_heads'] = messageHeads!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -91,28 +90,28 @@ class MessageHeads {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     messageHeadId = json['message_head_id'];
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
-    offer = json['offer'] != null ? new Offer.fromJson(json['offer']) : null;
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
+    offer = json['offer'] != null ? Offer.fromJson(json['offer']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['offer_id'] = this.offerId;
-    data['order_id'] = this.orderId;
-    data['user_id'] = this.userId;
-    data['is_available_for_store'] = this.isAvailableForStore;
-    data['is_available_for_user'] = this.isAvailableForUser;
-    data['is_completed'] = this.isCompleted;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['message_head_id'] = this.messageHeadId;
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    data['offer_id'] = offerId;
+    data['order_id'] = orderId;
+    data['user_id'] = userId;
+    data['is_available_for_store'] = isAvailableForStore;
+    data['is_available_for_user'] = isAvailableForUser;
+    data['is_completed'] = isCompleted;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['message_head_id'] = messageHeadId;
+    if (store != null) {
+      data['store'] = store!.toJson();
     }
-    if (this.offer != null) {
-      data['offer'] = this.offer!.toJson();
+    if (offer != null) {
+      data['offer'] = offer!.toJson();
     }
     return data;
   }
@@ -164,26 +163,26 @@ class Store {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     storeId = json['store_id'];
-    logo = json['logo'] != null ? new Logo.fromJson(json['logo']) : null;
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_name'] = this.storeName;
-    data['store_ein'] = this.storeEin;
-    data['store_nick_name'] = this.storeNickName;
-    data['store_email'] = this.storeEmail;
-    data['store_phone'] = this.storePhone;
-    data['store_phone_code'] = this.storePhoneCode;
-    data['is_verified'] = this.isVerified;
-    data['verified_by'] = this.verifiedBy;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['store_id'] = this.storeId;
-    if (this.logo != null) {
-      data['logo'] = this.logo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_name'] = storeName;
+    data['store_ein'] = storeEin;
+    data['store_nick_name'] = storeNickName;
+    data['store_email'] = storeEmail;
+    data['store_phone'] = storePhone;
+    data['store_phone_code'] = storePhoneCode;
+    data['is_verified'] = isVerified;
+    data['verified_by'] = verifiedBy;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['store_id'] = storeId;
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
     }
     return data;
   }
@@ -201,9 +200,9 @@ class Logo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -252,19 +251,19 @@ class Offer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['is_offer_for_store'] = this.isOfferForStore;
-    data['offer_name'] = this.offerName;
-    data['image_url'] = this.imageUrl;
-    data['offer_type'] = this.offerType;
-    data['offer_value'] = this.offerValue;
-    data['is_expired'] = this.isExpired;
-    data['expiredAt'] = this.expiredAt;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['offer_id'] = this.offerId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    data['is_offer_for_store'] = isOfferForStore;
+    data['offer_name'] = offerName;
+    data['image_url'] = imageUrl;
+    data['offer_type'] = offerType;
+    data['offer_value'] = offerValue;
+    data['is_expired'] = isExpired;
+    data['expiredAt'] = expiredAt;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['offer_id'] = offerId;
     return data;
   }
 }

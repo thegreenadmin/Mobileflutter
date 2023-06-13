@@ -26,26 +26,29 @@ class Data {
   dynamic totalCount;
   List<Orders>? orders;
   dynamic userProof;
-  Data({this.totalCount, this.orders,this.userProof,});
+  Data({
+    this.totalCount,
+    this.orders,
+    this.userProof,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
-    userProof= json["user_proof"];
+    userProof = json["user_proof"];
     if (json['orders'] != null) {
       orders = <Orders>[];
       json['orders'].forEach((v) {
         orders!.add(Orders.fromJson(v));
       });
     }
-
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    data['user_proof'] = this.userProof;
-    if (this.orders != null) {
-      data['orders'] = this.orders!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    data['user_proof'] = userProof;
+    if (orders != null) {
+      data['orders'] = orders!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -96,7 +99,7 @@ class Orders {
       this.updatedAt,
       this.orderId,
       this.store,
-        this.deliveryService,
+      this.deliveryService,
       this.orderHistories,
       this.orderItems,
       this.orderDeliveryAddresses});
@@ -121,7 +124,9 @@ class Orders {
     updatedAt = json['updatedAt'];
     orderId = json['order_id'];
     store = json['store'] != null ? Store.fromJson(json['store']) : null;
-    deliveryService = json['delivery_service'] != null ? DeliveryService.fromJson(json['delivery_service']) : null;
+    deliveryService = json['delivery_service'] != null
+        ? DeliveryService.fromJson(json['delivery_service'])
+        : null;
     if (json['order_histories'] != null) {
       orderHistories = <OrderHistories>[];
       json['order_histories'].forEach((v) {
@@ -165,13 +170,12 @@ class Orders {
     if (store != null) {
       data['store'] = store!.toJson();
     }
-    if (this.deliveryService != null) {
-      data['delivery_service'] = this.deliveryService!.toJson();
+    if (deliveryService != null) {
+      data['delivery_service'] = deliveryService!.toJson();
     }
 
-    if (this.orderHistories != null) {
-      data['order_histories'] =
-          this.orderHistories!.map((v) => v.toJson()).toList();
+    if (orderHistories != null) {
+      data['order_histories'] = orderHistories!.map((v) => v.toJson()).toList();
     }
     if (orderItems != null) {
       data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
@@ -183,6 +187,7 @@ class Orders {
     return data;
   }
 }
+
 class DeliveryService {
   String? deliveryServiceName;
   String? deliveryServiceId;
@@ -201,15 +206,16 @@ class DeliveryService {
         deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
       );
 
-  factory DeliveryService.fromJson(Map<String, dynamic> json) => DeliveryService(
-    deliveryServiceName: json["delivery_service_name"],
-    deliveryServiceId: json["delivery_service_id"],
-  );
+  factory DeliveryService.fromJson(Map<String, dynamic> json) =>
+      DeliveryService(
+        deliveryServiceName: json["delivery_service_name"],
+        deliveryServiceId: json["delivery_service_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "delivery_service_name": deliveryServiceName,
-    "delivery_service_id": deliveryServiceId,
-  };
+        "delivery_service_name": deliveryServiceName,
+        "delivery_service_id": deliveryServiceId,
+      };
 }
 
 class Store {

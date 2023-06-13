@@ -8,13 +8,13 @@ class UserMessageListModel {
   UserMessageListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,16 +33,16 @@ class Data {
     if (json['messages'] != null) {
       messages = <Messages>[];
       json['messages'].forEach((v) {
-        messages!.add(new Messages.fromJson(v));
+        messages!.add(Messages.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.messages != null) {
-      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (messages != null) {
+      data['messages'] = messages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -85,23 +85,23 @@ class Messages {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     messageId = json['message_id'];
-    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message_head_id'] = this.messageHeadId;
-    data['sender_type'] = this.senderType;
-    data['message'] = this.message;
-    data['is_user_read'] = this.isUserRead;
-    data['is_store_read'] = this.isStoreRead;
-    data['is_current_message'] = this.isCurrentMessage;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['message_id'] = this.messageId;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message_head_id'] = messageHeadId;
+    data['sender_type'] = senderType;
+    data['message'] = message;
+    data['is_user_read'] = isUserRead;
+    data['is_store_read'] = isStoreRead;
+    data['is_current_message'] = isCurrentMessage;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['message_id'] = messageId;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
     return data;
   }
@@ -111,7 +111,7 @@ class Images {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Images({this.orignalUrl, this.dynamicUrl});
+  Images({orignalUrl, dynamicUrl});
 
   Images.fromJson(Map<String, dynamic> json) {
     orignalUrl = json['orignal_url'];
@@ -119,9 +119,9 @@ class Images {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
