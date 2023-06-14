@@ -596,7 +596,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     .isEmpty
                                                 ? Image.asset(
                                               ImageConstants.nopicfound,
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.fill,   color: AppColors.grey.withOpacity(0.4),
                                               height: 70,
                                             )
                                                 : Image.network(

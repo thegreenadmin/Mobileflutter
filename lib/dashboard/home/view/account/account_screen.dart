@@ -202,24 +202,27 @@ class _AccountScreenState extends State<AccountScreen> {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
-                              Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
+                              Get.parameters[Role.role.value] =
+                                  Role.storeOwnerRoleText;
 
-                              Future.delayed(const Duration(milliseconds: 200), () {
-                                Navigator.of(context).popUntil((route) => route.isFirst);
-                              });
-
-                            } else {
-                              SharedPreferenceStorage.setData(Role.role.value,
-                                  Role.customerRoleText);
-
-                              Get.parameters[Role.role.value] =  Role.customerRoleText;
-
-                              setState(() {});
-                              Future.delayed(const Duration(milliseconds: 200), () {
+                              Future.delayed(const Duration(milliseconds: 200),
+                                  () {
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);
                               });
+                            } else {
+                              SharedPreferenceStorage.setData(
+                                  Role.role.value, Role.customerRoleText);
 
+                              Get.parameters[Role.role.value] =
+                                  Role.customerRoleText;
+
+                              setState(() {});
+                              Future.delayed(const Duration(milliseconds: 200),
+                                  () {
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              });
                             }
                           },
                           child: Padding(
@@ -381,7 +384,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   scale: 3.5,
                                 ),
                                 width15SizedBox,
-                                Text(StringConstants.transactionHistoryText,
+                                Text(StringConstants.transactionsHistoryText,
                                     style: const TextStyle(
                                         fontSize: 16,
                                         color: AppColors.black,
@@ -478,7 +481,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         width15SizedBox,
                                         Text(
                                             StringConstants
-                                                .activeMembershipText,
+                                                .activeMembershipsText,
                                             style: const TextStyle(
                                                 fontSize: 16,
                                                 color: AppColors.black,

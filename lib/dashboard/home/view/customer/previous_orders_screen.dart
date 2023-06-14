@@ -77,7 +77,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                 child: Image.asset(
                                   ImageConstants.nopicfound,
                                   scale: 8,
-                                  color: AppColors.primary,
+                           color: AppColors.grey.withOpacity(0.4),
                                 ),
                               ),
                               height4SizedBox,
@@ -148,7 +148,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
                                                   height: 148,
-                                                  width: 148,
+                                                  width: 148,   color: AppColors.grey.withOpacity(0.4),
                                                 ),
                                         ],
                                       ),

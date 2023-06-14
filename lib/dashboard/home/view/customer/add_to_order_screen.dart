@@ -505,7 +505,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ImageConstants.nopicfound,
                                 fit: BoxFit.fill,
                                 height: 120,
-                                width: 120,
+                                width: 120,   color: AppColors.grey.withOpacity(0.4),
                               )
                             : Column(
                                 children: [

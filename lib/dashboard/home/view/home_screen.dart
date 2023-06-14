@@ -806,6 +806,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   width: WidgetConstants
                                                           .screenWidth *
                                                       0.4,
+                                                  color: AppColors.grey
+                                                      .withOpacity(0.4),
                                                 )
                                               : Image.network(
                                                   homeController
@@ -906,6 +908,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   width: WidgetConstants
                                                           .screenWidth *
                                                       0.4,
+                                                  color: AppColors.grey
+                                                      .withOpacity(0.4),
                                                 )
                                               : Image.network(
                                                   homeController
