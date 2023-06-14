@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
@@ -115,8 +116,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    // Get.back();
-                                    Navigator.of(context).pop();
+                                    Get.back(id:accountController.pageId.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -203,9 +204,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
                               Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
-
+                              // Get.offAll(const BottomNavigation());
+                              Get.until((route) => route.isFirst,id:accountController.pageId.value);
                               Future.delayed(const Duration(milliseconds: 200), () {
-                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                // Navigator.of(context).popUntil((route) => route.isFirst);
                               });
 
                             } else {
@@ -213,11 +215,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                   Role.customerRoleText);
 
                               Get.parameters[Role.role.value] =  Role.customerRoleText;
-
+                              Get.until((route) => route.isFirst,id:accountController.pageId.value);
                               setState(() {});
                               Future.delayed(const Duration(milliseconds: 200), () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
+                                // Navigator.of(context)
+                                //     .popUntil((route) => route.isFirst);
                               });
 
                             }
@@ -274,11 +276,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const PersonalInfoScreen(),
-                          ));
-                          // Get.to(const PersonalInfoScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const PersonalInfoScreen(),
+                          // ));
+                          Get.to(const PersonalInfoScreen(),id:accountController.pageId.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,12 +319,12 @@ class _AccountScreenState extends State<AccountScreen> {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const AddCardScreen(),
-                                ));
-                                // Get.to(const AddCardScreen());
+                                // SharedPreferenceStorage.setData(
+                                //     "context", context);
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const AddCardScreen(),
+                                // ));
+                                Get.to(const AddCardScreen(),id: accountController.pageId.value);
                               },
                               child: Row(
                                 mainAxisAlignment:
@@ -364,11 +366,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const TransactionScreen(),
-                          ));
-                          // Get.to(const TransactionScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const TransactionScreen(),
+                          // ));
+                          Get.to(const TransactionScreen(),id:accountController.pageId.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -404,11 +406,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const AccountIdScreen(),
-                          ));
-                          //Get.to(const AccountIdScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const AccountIdScreen(),
+                          // ));
+                          Get.to(const AccountIdScreen(),id:accountController.pageId.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -455,14 +457,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        const ActiveMembershipScreen(),
-                                  ));
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) =>
+                                  //       const ActiveMembershipScreen(),
+                                  // ));
 
-                                  // Get.to(const ActiveMembershipScreen());
+                                  Get.to(const ActiveMembershipScreen(),id:accountController.pageId.value);
                                 },
                                 child: Row(
                                   mainAxisAlignment:

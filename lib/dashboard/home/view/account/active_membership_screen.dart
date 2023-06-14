@@ -41,8 +41,8 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                            Get.back(id: accountController.pageId.value);
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -200,12 +200,12 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () async {
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => const SelectMembershipPlan(),
-                    ))
-                    // Get.to(const SelectMembershipPlan())!
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(
+                //       builder: (_) => const SelectMembershipPlan(),
+                //     ))
+                    Get.to(const SelectMembershipPlan(),id:accountController.pageId.value)!
                     .then((value) =>
                         accountController.apiGetActiveMembershipList());
               },

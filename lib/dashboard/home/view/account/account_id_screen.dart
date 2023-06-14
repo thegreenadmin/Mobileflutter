@@ -42,8 +42,8 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    // Get.back();
-                                    Navigator.of(context).pop();
+                                    Get.back(id:accountController.pageId.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

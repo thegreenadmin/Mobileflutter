@@ -392,7 +392,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                SharedPreferenceStorage.setData(
+                               /* SharedPreferenceStorage.setData(
                                     "context", context);
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(
@@ -402,9 +402,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   homeController.apiGetUserDetail();
                                 });
                                 Get.parameters["isFromCart"] = "false";
-                                // Get.arguments["isFromCart"]=false;
-                                // Get.to(const AccountScreen(),
-                                //     arguments: {"isFromCart": false});
+                                Get.arguments["isFromCart"]=false;*/
+
+                                Get.to(const AccountScreen(),id: 0,
+                                    arguments: {"isFromCart": false});
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),

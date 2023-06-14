@@ -22,6 +22,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../bottomnavigation/bottom_nav_screen.dart';
 import '../dashboard/home/model/get_store_list_model.dart';
 import '../utils/constants.dart';
 
@@ -31,7 +32,9 @@ class BottomNavController extends GetxController {
   RxBool isLoading = false.obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
-
+  void changePage(int index) {
+    selectedIndex.value = index;
+  }
   @override
   void onReady() {
     super.onReady();
@@ -110,14 +113,12 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
+
     selectedIndex.value = index;
+    SharedPreferenceStorage.setData("pageId", selectedIndex.value);
+    Get.until((route) => route.isFirst,id:selectedIndex.value);
     if (selectedIndex.value == 0) {
       try {
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
-
         HomeController controller = Get.put(HomeController());
         controller.onInit();
       } catch (e) {
@@ -127,10 +128,6 @@ class BottomNavController extends GetxController {
       try {
         WalletController controller = Get.put(WalletController());
         controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
       } catch (e) {
         //Pass
       }
@@ -142,10 +139,6 @@ class BottomNavController extends GetxController {
         }
         OrdersController controller = Get.put(OrdersController());
         controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
       } catch (e) {
         //Pass
       }
@@ -153,10 +146,6 @@ class BottomNavController extends GetxController {
       try {
         OffersController controller = Get.put(OffersController());
         controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
       } catch (e) {
         //Pass
       }
@@ -164,10 +153,6 @@ class BottomNavController extends GetxController {
       try {
         MoreController controller = Get.put(MoreController());
         controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
       } catch (e) {
         //Pass
       }

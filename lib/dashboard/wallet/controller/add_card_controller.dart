@@ -26,6 +26,7 @@ class AddCardController extends GetxController {
   RxString email = "".obs;
   RxString phone = "".obs;
   RxInt amount = 0.obs;
+  RxInt pageId = 0.obs;
   RxString userName = "".obs;
   RxString phoneNumber = "".obs;
   RxString withoutCodeNumber = "".obs;
@@ -102,6 +103,7 @@ class AddCardController extends GetxController {
     await apiGetUserDetailApi(Get.context);
     await apiGetCountries();
     await apiGetAccountDetails();
+    pageId.value = SharedPreferenceStorage.getData("pageId");
   }
 
   //Get User Detail Info Api

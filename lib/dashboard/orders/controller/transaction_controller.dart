@@ -22,6 +22,7 @@ class TransactionController extends GetxController {
   RxString? role = "".obs;
   RxString? storeId = "".obs;
   RxInt selectedIndex = 0.obs;
+  RxInt pageId = 0.obs;
 
   @override
   void onInit() {
@@ -35,6 +36,7 @@ class TransactionController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderTransactionHistory();
     }
+    pageId.value = SharedPreferenceStorage.getData("pageId");
   }
 
   int daysInMonth(DateTime date) {

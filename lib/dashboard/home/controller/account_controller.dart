@@ -64,6 +64,7 @@ class AccountController extends GetxController {
   RxString country = "".obs;
   RxString state = "".obs;
   int? selectedIndex;
+  RxInt pageId = 0.obs;
   RxString selectedMembershipPlanId = "".obs;
 
   RxString countryDropdownValue = "".obs;
@@ -111,6 +112,8 @@ class AccountController extends GetxController {
     debugPrint(isFromCart.value.toString());
     apiGetUserDetailApi(Get.context!);
     getGkey(Get.context!);
+    pageId.value = SharedPreferenceStorage.getData("pageId");
+
   }
 
   getGkey(context) async {

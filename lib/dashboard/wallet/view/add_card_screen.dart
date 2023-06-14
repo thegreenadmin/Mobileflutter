@@ -50,8 +50,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                            Get.back(id:addCardController.pageId.value);
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -196,12 +196,12 @@ class AddCardScreenState extends State<AddCardScreen> {
               ),
               onTap: () {
                 addCardController.apiGetUserDetailApi(Get.context!);
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => const AddCardDetailScreen(),
-                    ))
-                    // Get.to(AddCardDetailScreen())!
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(
+                //       builder: (_) => const AddCardDetailScreen(),
+                //     ))
+                    Get.to(AddCardDetailScreen(),id:addCardController.pageId.value)!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

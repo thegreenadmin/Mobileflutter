@@ -45,8 +45,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    // Get.back();
-                                    Navigator.of(context).pop();
+                                    Get.back(id:0);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -92,11 +92,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const PersonalInfoEditScreen(),
-                        ));
-                        // Get.to(const PersonalInfoEditScreen());
+                        // SharedPreferenceStorage.setData("context", context);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (_) => const PersonalInfoEditScreen(),
+                        // ));
+                        Get.to(const PersonalInfoEditScreen(),id:accountController.pageId.value);
                       },
                       child: Text(StringConstants.editText,
                           style: const TextStyle(

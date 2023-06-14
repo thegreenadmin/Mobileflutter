@@ -205,8 +205,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                  // Navigator.of(context).pop();
+                                  Get.back(id:transactionController.pageId.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
