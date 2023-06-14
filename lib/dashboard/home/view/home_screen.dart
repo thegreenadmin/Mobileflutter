@@ -5,15 +5,14 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/home_offers_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/store_offers_detail.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -446,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: AppColors.primary)),
                                 ) //
                               :*/
-                          homeController.userCrouselImgList.isEmpty
+                          homeController.userCarouselImgList.isEmpty
                               ? SizedBox(
                                   height: homeController
                                           .featuredUserProductList.isEmpty
@@ -474,12 +473,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     ),
                                   ),
-                                )
-                              :
+                                ) :
 
                               /// USER CAROUSEL
                               CarouselSlider(
-                                  items: homeController.userCrouselImgList
+                                  items: homeController.userCarouselImgList
                                       .map((item) => InkWell(
                                             onTap: () {
                                               SharedPreferenceStorage.setData(
@@ -529,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }),
                                 ),
                           height5SizedBox,
-                          Obx(() => homeController.userCrouselImgList.isEmpty
+                          Obx(() => homeController.userCarouselImgList.isEmpty
                               ? height0SizedBox
                               : InkWell(
                                   highlightColor: Colors.transparent,
@@ -537,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: homeController.userCrouselImgList
+                                    children: homeController.userCarouselImgList
                                         .asMap()
                                         .entries
                                         .map((entry) {
@@ -565,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ])
                   : Column(
                       children: [
-                        homeController.getOwnerOfferlist.isEmpty
+                        homeController.getOwnerOfferList.isEmpty
                             ? /*homeController.isLoading!.value == true
                                 ? SizedBox(
                                     height: WidgetConstants.screenHeight * 0.20,
@@ -603,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ///OWNER CAROUSEL
                             : CarouselSlider(
-                                items: homeController.getOwnerOfferlist
+                                items: homeController.getOwnerOfferList
                                     .map((item) => InkWell(
                                           onTap: () {
                                             // Get.parameters["offerId"] =
@@ -664,11 +662,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }),
                               ),
                         height5SizedBox,
-                        homeController.getOwnerOfferlist.isEmpty
+                        homeController.getOwnerOfferList.isEmpty
                             ? height0SizedBox
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.getOwnerOfferlist
+                                children: homeController.getOwnerOfferList
                                     .asMap()
                                     .entries
                                     .map((entry) {
@@ -858,13 +856,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   SharedPreferenceStorage.setData(
                                       "context", context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        const EditStoreDetailScreen(),
-                                  ));
                                   Get.parameters["isFromHome"] = "true";
                                   Get.parameters["storeId"] = homeController
                                       .ownerFeatureProductList[index].storeId;
+                                  Get.parameters["productId"] = homeController
+                                      .ownerFeatureProductList[index].productId;
+                                  Get.parameters["categoryName"] = homeController
+                                      .ownerFeatureProductList[index].productCategories?.first.category?.categoryName??"";
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) =>
+                                        const EditProductScreen(),
+                                  ));
 
                                   /* Get.to(const EditStoreDetailScreen(),
                                       arguments: {

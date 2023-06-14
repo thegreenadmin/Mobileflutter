@@ -49,8 +49,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
+                                if(Get.parameters['isFromHome']=='true'){
+                                  Get.delete<ManageStoreController>();
+                                }
                                 Navigator.of(context).pop();
-                                // Get.back();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -467,11 +469,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     return null;
                                   },
                                   value: manageStoreController
-                                                  .quantityValue.value !=
-                                              "" &&
-                                          manageStoreController
-                                                  .quantityValue.value !=
-                                              null
+                                                  .quantityValue.value != ""
                                       ? manageStoreController.quantityTypeList
                                           .firstWhere((element) =>
                                               element.quantityTypeId ==
@@ -827,7 +825,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           controller: manageStoreController
                               .additionalLinkTextController,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
+                          // validator: (value) {
                             // if (value!.trim().isEmpty) {
                             //   return AlertStringConstants.pleaseEnterLinkText;
                             // } else
@@ -838,7 +836,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             //       .pleaseEnterValidLinkText;
                             // }
                             // return null;
-                          },
+                          // },
                           decoration: InputDecoration(
                             hintText:
                                 StringConstants.additionalLinksToResearchText,
@@ -973,13 +971,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 controller: manageStoreController
                                     .discountOrOfferTextController,
                                 keyboardType: TextInputType.phone,
-                                validator: (value) {
+                                // validator: (value) {
                                   // if (value!.trim().isEmpty) {
                                   //   return AlertStringConstants
                                   //       .pleaseEnterDiscountOrOfferText;
                                   // }
                                   // return null;
-                                },
+                                // },
                                 decoration: InputDecoration(
                                   errorMaxLines: 5,
                                   hintText:

@@ -227,10 +227,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   manageStoreController.productId.value =
                                       manageStoreController
                                               .storeProductList[index]
-                                              .productId ??
-                                          "";
-                                  await manageStoreController
-                                      .apiGetProductDetails();
+                                              .productId ?? "";
+                                  await manageStoreController.apiGetProductDetails();
                                   SharedPreferenceStorage.setData(
                                       "context", context);
                                   await Navigator.of(context)
