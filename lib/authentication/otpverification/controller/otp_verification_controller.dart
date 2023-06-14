@@ -83,6 +83,7 @@ class OtpVerificationController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
+        SharedPreferenceStorage.removeData("token");
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
@@ -94,8 +95,6 @@ class OtpVerificationController extends GetxController {
         }
 
         Get.offAll(() => const BottomNavigation());
-        // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
-        // Get.offAll(() => BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);

@@ -41,14 +41,14 @@ class HomeController extends GetxController {
 
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
-  RxList<Offers> userCrouselImgList = <Offers>[].obs;
-  RxList<String> ownerCrouselImgList = <String>[].obs;
+  RxList<Offers> userCarouselImgList = <Offers>[].obs;
+  RxList<String> ownerCarouselImgList = <String>[].obs;
 
   RxString? role = "".obs;
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
-  RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
+  RxList<OffersList> getOwnerOfferList = <OffersList>[].obs;
 
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
@@ -196,7 +196,7 @@ class HomeController extends GetxController {
 
   //Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
-    userCrouselImgList.clear();
+    userCarouselImgList.clear();
     debugPrint(
       "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
     );
@@ -223,7 +223,7 @@ class HomeController extends GetxController {
           if (i >= 5) {
             return;
           }
-          userCrouselImgList.add(userOfferList[i]);
+          userCarouselImgList.add(userOfferList[i]);
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -304,7 +304,7 @@ class HomeController extends GetxController {
 
   //Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
-    ownerCrouselImgList.clear();
+    ownerCarouselImgList.clear();
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
@@ -335,13 +335,13 @@ class HomeController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
-        getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
-        if (getOwnerOfferlist.isNotEmpty) {
-          for (int i = 0; i < getOwnerOfferlist.length; i++) {
+        getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
+        if (getOwnerOfferList.isNotEmpty) {
+          for (int i = 0; i < getOwnerOfferList.length; i++) {
             if (i >= 5) {
               break;
             }
-            ownerCrouselImgList.add(getOwnerOfferlist[i].image!.dynamicUrl!);
+            ownerCarouselImgList.add(getOwnerOfferList[i].image!.dynamicUrl!);
           }
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {

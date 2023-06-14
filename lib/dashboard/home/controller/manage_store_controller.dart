@@ -106,10 +106,26 @@ class ManageStoreController extends GetxController {
     super.onInit();
     isFeaturedTypeSelected.value = false;
     debugPrint(Get.parameters["storeName"]);
+    debugPrint(Get.parameters["productId"]);
+    debugPrint(Get.parameters["categoryName"]);
     debugPrint(Get.parameters["storeId"]);
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    storeLocation.value = Get.parameters["storeLocation"] ?? "";
+    if(Get.parameters["productId"]!="" && Get.parameters["storeId"]!="" ){
+      storeId.value = Get.parameters["storeId"] ?? "";
+      productId.value = Get.parameters["productId"] ?? "";
+      apiGetProductDetails();
+    }
+    if(Get.parameters["storeId"]!=""){
+      storeId.value = Get.parameters["storeId"] ?? "";
+    }
+    if(Get.parameters["categoryName"]!=""){
+      categoryName.value = Get.parameters["categoryName"] ?? "";
+    }
+    if(Get.parameters["storeName"]!=""){
+      storeName.value = Get.parameters["storeName"] ?? "";
+    }
+    if(Get.parameters["storeLocation"]!=""){
+      storeLocation.value = Get.parameters["storeLocation"] ?? "";
+    }
     apiGetCategoriesList();
     apiGetQuantityList();
   }

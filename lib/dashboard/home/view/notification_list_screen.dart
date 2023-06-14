@@ -1,10 +1,8 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
-import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
