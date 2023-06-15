@@ -738,7 +738,7 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-        Navigator.of(ctxx).pop();
+
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -755,6 +755,10 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
+        if(Get.parameters['isFromHome']=="true"){
+          Get.delete<ManageStoreController>();
+        }
+        Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

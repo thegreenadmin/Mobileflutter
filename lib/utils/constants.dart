@@ -134,6 +134,7 @@ class StringConstants {
       "Your cart already contains items from a different store. If you proceed ahead your previously added cart items from that store would be removed. Do you really want to proceed ahead?";
   static String continueShoppingWithGreenMallText =
       "Please continue shopping with The Green Mall";
+
   static String creditedAmountText = "Credited Amount";
   //D
   static String debitedAmountText = "Debited Amount";
@@ -209,6 +210,7 @@ class StringConstants {
   static String genderText = "Gender";
   static String galleryText = "Gallery";
   static String gPayText = "G-Pay";
+  static String goToCartText = "Go to Cart";
 
   //H
   static String helpAndPolicyText = "Help & Policies";
@@ -540,7 +542,7 @@ class StringConstants {
   static String whenBalanceBelowText = "When Balance is below";
   static String welcomeToGreenMallText = "Welcome to the green mall";
   static String walletTransactionText = "Wallet Transaction";
-
+  static String whatWouldLikeNowText = "What would like to do now?";
   //X
   static String x1Text = "XXX";
   static String x2Text = "XX/XX";
@@ -672,6 +674,7 @@ class AlertStringConstants {
   static String pleaseUploadAtLeastOneImageText =
       "Please upload at least one image";
   static String pleaseSelectDiscountType = "Please select discount type";
+  static String pleaseEnterChargeAmountText = "Please enter charge amount";
   static String pleaseEnterAmountText = "Please enter amount";
   static String pleaseSelectProductToProceedText =
       "Please select product to proceed";

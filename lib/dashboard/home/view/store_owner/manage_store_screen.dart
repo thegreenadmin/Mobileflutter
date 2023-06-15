@@ -103,6 +103,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               splashColor: Colors.transparent,
               onTap: () {
                 Get.parameters["storeId"] = ownerStoresController.storeId.value;
+                Get.parameters["productId"] ="";
                 Get.parameters["storeName"] =
                     ownerStoresController.storeName.value;
                 Get.parameters["storeLocation"] =

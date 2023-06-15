@@ -40,13 +40,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
   GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
-  // RxString roleInApp = "".obs;
+  RxString roleInApp = "".obs;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    // roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
   }
 
   @override
@@ -278,13 +276,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
             popStack: true,
           ),
 
-          // body: buildNavigator(),
-          // body: Obx(
-          //       () => IndexedStack(
-          //     children:bottomNavigationPageController.tabs,
-          //     index: bottomNavigationPageController.selectedIndex.toInt()??0,
-          //   ),
-          // ),
           // body: bottomNavigationPageController.selectedTab,
         ),
       ),

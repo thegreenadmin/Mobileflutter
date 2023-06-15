@@ -1,5 +1,5 @@
 class GetAutoRechargeModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
@@ -46,13 +46,13 @@ class UserWalletAutoCharge {
   String? userId;
   String? userStripeCardId;
   String? autoChargeType;
-  int? thresholdAmount;
-  int? chargeAmount;
+  dynamic thresholdAmount;
+  dynamic chargeAmount;
   String? startDate;
   String? endDate;
-  int? frequency;
+  dynamic frequency;
   String? status;
-  int? day;
+  dynamic day;
   String? createdAt;
   String? updatedAt;
   String? userWalletAutoChargeId;

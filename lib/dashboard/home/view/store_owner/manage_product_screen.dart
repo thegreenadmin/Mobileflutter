@@ -153,6 +153,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
+                                    Get.delete<ManageStoreController>();
                                     Navigator.of(context).pop();
                                     // Get.back();
                                   },
