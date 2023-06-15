@@ -253,7 +253,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                 .productImages!
                                                 .isEmpty
                                             ? Image.asset(
-                                                ImageConstants.nopicfound,
+                                                ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
                                                 fit: BoxFit.fill,
                                                 height: 100,
                                                 width: WidgetConstants

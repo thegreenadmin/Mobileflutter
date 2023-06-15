@@ -132,7 +132,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           ),
                                         )
                                       : Image.asset(
-                                          ImageConstants.nopicfound,
+                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
                                         ),
                                   SizedBox(
                                     height: 55,
@@ -216,7 +216,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           .productImages!
                                           .isEmpty
                                       ? Image.asset(
-                                          ImageConstants.nopicfound,
+                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
                                           fit: BoxFit.fill,
                                         )
                                       : Image.network(

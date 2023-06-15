@@ -202,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   )
                                                 : Image.asset(
                                                     ImageConstants.nopicfound,
-                                                    fit: BoxFit.cover,
+                                                    fit: BoxFit.cover,   color: AppColors.grey.withOpacity(0.4),
                                                   ),
                                           ),
                                         ),

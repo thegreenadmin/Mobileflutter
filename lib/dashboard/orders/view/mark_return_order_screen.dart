@@ -270,7 +270,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                           !.userProof!.image!.dynamicUrl!.isEmpty
                                                           ? Image.asset(
                                                         ImageConstants.nopicfound,
-                                                        fit: BoxFit.fill,
+                                                        fit: BoxFit.fill,   color: AppColors.grey.withOpacity(0.4),
                                                         height: 200,
                                                       )
                                                           : Image.network(
@@ -375,7 +375,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                   .productImages!.first.image!.dynamicUrl == null ||
                                                   ordersHomeMainController.getOrderItems[index].product!.productImages!.first
                                                       .image!.dynamicUrl!.isEmpty
-                                                  ? Image.asset(ImageConstants.nopicfound,)
+                                                  ? Image.asset(ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),)
                                                   :  Image.network(
                                                   ordersHomeMainController
                                                       .getOrderItems[index]

@@ -131,7 +131,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                           ),
                                         )
                                       : Image.asset(
-                                          ImageConstants.nopicfound,
+                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
                                         ),
                                   SizedBox(
                                     height: 55,
@@ -295,7 +295,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
                                                   height: 180,
-                                                  width: 180,
+                                                  width: 180,   color: AppColors.grey.withOpacity(0.4),
                                                 ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),

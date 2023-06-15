@@ -69,6 +69,7 @@ class StringConstants {
   static String applePayText = "Apple Pay";
   static String approvedText = "Approved";
   static String activeMembershipText = "Active Membership";
+  static String activeMembershipsText = "Active Memberships";
   static String availableBalanceText = "Available Balance";
 
   //B
@@ -473,6 +474,7 @@ class StringConstants {
   static String termsOfServiceText = "Terms of service";
   static String termsAndConditionsText = "Terms & Conditions";
   static String transactionHistoryText = "Transaction History";
+   static String transactionsHistoryText = "Transactions History";
   static String townOrCityText = "Town or City";
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
