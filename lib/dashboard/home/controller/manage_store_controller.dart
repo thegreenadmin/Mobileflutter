@@ -109,21 +109,21 @@ class ManageStoreController extends GetxController {
     debugPrint(Get.parameters["productId"]);
     debugPrint(Get.parameters["categoryName"]);
     debugPrint(Get.parameters["storeId"]);
-    if(Get.parameters["productId"]!="" && Get.parameters["storeId"]!="" ){
+    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
       apiGetProductDetails();
     }
-    if(Get.parameters["storeId"]!=""){
+    if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
     }
-    if(Get.parameters["categoryName"]!=""){
+    if (Get.parameters["categoryName"] != "") {
       categoryName.value = Get.parameters["categoryName"] ?? "";
     }
-    if(Get.parameters["storeName"]!=""){
+    if (Get.parameters["storeName"] != "") {
       storeName.value = Get.parameters["storeName"] ?? "";
     }
-    if(Get.parameters["storeLocation"]!=""){
+    if (Get.parameters["storeLocation"] != "") {
       storeLocation.value = Get.parameters["storeLocation"] ?? "";
     }
     apiGetCategoriesList();
@@ -387,10 +387,10 @@ class ManageStoreController extends GetxController {
 
     inputData.product = product;
     List<ProductCategory> listProductCategory = <ProductCategory>[];
-    for (int i = 0; i < selectedCategories.length; i++) {
-      listProductCategory.add(ProductCategory(
-          categoryId: int.parse(selectedCategories[i]["category_id"])));
-    }
+    //for (int i = 0; i < selectedCategories.length; i++) {
+    listProductCategory
+        .add(ProductCategory(categoryId: int.parse(categoryId.value)));
+    //}
     inputData.productCategories = listProductCategory;
     inputData.productLinks = <ProductLink>[
       ProductLink(
@@ -681,6 +681,12 @@ class ManageStoreController extends GetxController {
     inputData.product = product;
     List<ProductCategory> listProductCategory = <ProductCategory>[];
     for (int i = 0; i < selectedCategories.length; i++) {
+      // ProductCategory productCategory = ProductCategory();
+      // productCategory.status = "active";
+      // productCategory.productCategoryId = categoryId.value;
+      // productCategory.category =
+      //     Categorys(categoryId: int.parse(categoryId.value));
+      // listProductCategory.add(productCategory);
       ProductCategory productCategory = ProductCategory();
       productCategory.status = selectedCategories[i]['status'];
       productCategory.productCategoryId =

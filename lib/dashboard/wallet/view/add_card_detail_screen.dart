@@ -423,7 +423,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     fontWeight: FontWeight.w500),
                                 controller:
                                     addCardController.stateTextController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
                                     return AlertStringConstants

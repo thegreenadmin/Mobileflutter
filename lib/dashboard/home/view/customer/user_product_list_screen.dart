@@ -14,6 +14,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class UserProductListScreen extends StatefulWidget {
   const UserProductListScreen({super.key});
@@ -147,17 +148,24 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
-                // Navigator.pop(context);
                 storeHomeMainController.apiContactStore(context);
               },
-              child: const Text(
-                "Have issue/question?",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: AppColors.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
+              child: Container(
+                height: 50.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Have issue/question?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0,
+                        color: Colors.white),
+                  ),
+                ),
               ),
             ),
             height15SizedBox,
@@ -178,7 +186,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        StringConstants.okayText,
+                        StringConstants.closeText,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
@@ -198,13 +206,13 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width40SizedBox;
+              return width38SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -219,43 +227,66 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        horizontalTabList[i],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? FontWeight.w500
-                                  : FontWeight.w400,
-                          color:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
-                        ),
-                      ),
                       i != 3
-                          ? height0SizedBox
-                          : PopupMenuButton(
-                              offset: const Offset(0, 25),
-                              shape: const TooltipShape(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: Icon(
-                                Icons.arrow_drop_down,
+                          ? Text(
+                              horizontalTabList[i],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: storeHomeMainController
+                                            .selectedIndex.value ==
+                                        i
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
                                 color: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
-                                size: 22,
                               ),
+                            )
+                          : PopupMenuButton(
+                              onOpened: () {
+                                storeHomeMainController.selectedIndex.value = 3;
+                              },
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
                               onSelected: (String value) async {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                               },
                               itemBuilder: (context) =>
                                   createOptionsPopUpList(context)!,
+                              child: Row(children: [
+                                Text(
+                                  horizontalTabList[i],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    color: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? AppColors.primary
+                                        : AppColors.blacklight,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: storeHomeMainController
+                                              .selectedIndex.value ==
+                                          i
+                                      ? AppColors.primary
+                                      : AppColors.blacklight,
+                                  size: 24,
+                                )
+                              ]),
                             )
                     ],
                   ));
@@ -301,8 +332,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ],
           ),
         );
-      }else
-      if (index == 1) {
+      } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
@@ -326,8 +356,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ),
           ),
         );
-      }else
-      if (index == 2) {
+      } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
@@ -336,25 +365,30 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "privacy" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "privacy") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: true,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noPrivacyFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "privacy" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "privacy") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: true,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(
@@ -370,8 +404,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             ),
           ),
         );
-      }else
-     {
+      } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -380,25 +413,30 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "terms" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "terms") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: false,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noTermsFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "terms" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "terms") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: false,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(
