@@ -455,7 +455,6 @@ class SearchStoreUserController extends GetxController {
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             storeAddresses.value = [];
-            // favStoreAddresses.value = [];
           }
           storeAddresses.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
