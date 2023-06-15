@@ -49,7 +49,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                if(Get.parameters['isFromHome']=='true'){
+                                if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
                                 Navigator.of(context).pop();
@@ -319,7 +319,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         TextSpan(
                           children: [
                             TextSpan(
-                                text: StringConstants.categoriesText,
+                                text: StringConstants.categoryNameText,
                                 style: const TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
@@ -335,6 +335,28 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                       ),
                       height10SizedBox,
+                      // Container(
+                      //     padding: const EdgeInsets.only(
+                      //         left: 15, right: 15, top: 10, bottom: 10),
+                      //     margin: const EdgeInsets.all(3),
+                      //     decoration: BoxDecoration(
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           color: Colors.grey.withOpacity(0.1),
+                      //           spreadRadius: 5,
+                      //           blurRadius: 7,
+                      //           offset: const Offset(0, 2),
+                      //         ),
+                      //       ],
+                      //       color: AppColors.primary,
+                      //       borderRadius: const BorderRadius.all(
+                      //         Radius.circular(100),
+                      //       ),
+                      //     ),
+                      //     child: Text(
+                      //       manageStoreController.categoryName.value,
+                      //       style: const TextStyle(color: AppColors.white),
+                      //     )),
                       Obx(() => manageStoreController.categoriesList.isEmpty
                           ? height0SizedBox
                           : SizedBox(
@@ -469,7 +491,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     return null;
                                   },
                                   value: manageStoreController
-                                                  .quantityValue.value != ""
+                                              .quantityValue.value !=
+                                          ""
                                       ? manageStoreController.quantityTypeList
                                           .firstWhere((element) =>
                                               element.quantityTypeId ==
@@ -826,16 +849,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               .additionalLinkTextController,
                           keyboardType: TextInputType.text,
                           // validator: (value) {
-                            // if (value!.trim().isEmpty) {
-                            //   return AlertStringConstants.pleaseEnterLinkText;
-                            // } else
-                            //  if (!GetUtils.isURL(manageStoreController
-                            //     .additionalLinkTextController.text
-                            //     .trim())) {
-                            //   return AlertStringConstants
-                            //       .pleaseEnterValidLinkText;
-                            // }
-                            // return null;
+                          // if (value!.trim().isEmpty) {
+                          //   return AlertStringConstants.pleaseEnterLinkText;
+                          // } else
+                          //  if (!GetUtils.isURL(manageStoreController
+                          //     .additionalLinkTextController.text
+                          //     .trim())) {
+                          //   return AlertStringConstants
+                          //       .pleaseEnterValidLinkText;
+                          // }
+                          // return null;
                           // },
                           decoration: InputDecoration(
                             hintText:
@@ -972,11 +995,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     .discountOrOfferTextController,
                                 keyboardType: TextInputType.phone,
                                 // validator: (value) {
-                                  // if (value!.trim().isEmpty) {
-                                  //   return AlertStringConstants
-                                  //       .pleaseEnterDiscountOrOfferText;
-                                  // }
-                                  // return null;
+                                // if (value!.trim().isEmpty) {
+                                //   return AlertStringConstants
+                                //       .pleaseEnterDiscountOrOfferText;
+                                // }
+                                // return null;
                                 // },
                                 decoration: InputDecoration(
                                   errorMaxLines: 5,

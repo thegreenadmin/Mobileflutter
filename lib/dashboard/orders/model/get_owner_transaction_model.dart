@@ -227,8 +227,8 @@
 //   String? orderId;
 //   String? orderTransactionType;
 //   String? storeServiceChargeType;
-//   double? storeServiceChargeValue;
-//   double? storeTotalServiceCharged;
+//   dynamic storeServiceChargeValue;
+//   dynamic storeTotalServiceCharged;
 //   String? orderServiceChargeType;
 //   double? orderServiceChargeValue;
 //   double? orderTotalServiceCharged;
@@ -841,10 +841,10 @@ class OrderTransaction {
   double? storeServiceChargeValue;
   double? storeTotalServiceCharged;
   String? orderServiceChargeType;
-  double? orderServiceChargeValue;
-  double? orderTotalServiceCharged;
-  double? storeReceivedAmount;
-  double? totalAmount;
+  dynamic orderServiceChargeValue;
+  dynamic orderTotalServiceCharged;
+  dynamic storeReceivedAmount;
+  dynamic totalAmount;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -927,14 +927,14 @@ class Order {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
-  double? deliveryCharge;
+  dynamic deliveryCharge;
   String? taxType;
-  double? taxValue;
-  double? totalTaxCharged;
+  dynamic taxValue;
+  dynamic totalTaxCharged;
   String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
-  double? totalAmount;
+  dynamic serviceChargeValue;
+  dynamic totalServiceCharged;
+  dynamic totalAmount;
   String? customerName;
   String? customerEmail;
   String? customerPhone;
@@ -1024,7 +1024,7 @@ class Transaction {
   String? paymentServiceId;
   String? stripePayoutTransactionId;
   String? transactionType;
-  double? transactionAmount;
+  dynamic transactionAmount;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -1123,7 +1123,7 @@ class OrderItem {
   String? orderId;
   String? productId;
   int? orderItemCount;
-  double? orderItemPrice;
+  dynamic orderItemPrice;
   String? discountName;
   String? discountType;
   int? discountValue;
@@ -1203,7 +1203,7 @@ class OrderItem {
 class Transactionn {
   String? paymentServiceId;
   String? transactionType;
-  double? transactionAmount;
+  dynamic transactionAmount;
   String? status;
   String? createdAt;
   String? updatedAt;

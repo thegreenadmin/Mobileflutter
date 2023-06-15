@@ -54,8 +54,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.isFromFav.value =
           Get.parameters["isFromFav"] == "true" ? true : false;
 
-
-
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
@@ -163,17 +161,24 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
-                // Navigator.pop(context);
                 storeHomeMainController.apiContactStore(context);
               },
-              child: const Text(
-                "Have issue/question?",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: AppColors.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
+              child: Container(
+                height: 50.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Have issue/question?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0,
+                        color: Colors.white),
+                  ),
+                ),
               ),
             ),
             height15SizedBox,
@@ -194,7 +199,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        StringConstants.okayText,
+                        StringConstants.closeText,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
@@ -214,13 +219,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width40SizedBox;
+              return width38SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -235,43 +240,66 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        horizontalTabList[i],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? FontWeight.w500
-                                  : FontWeight.w400,
-                          color:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
-                        ),
-                      ),
                       i != 3
-                          ? height0SizedBox
-                          : PopupMenuButton(
-                              offset: const Offset(0, 25),
-                              shape: const TooltipShape(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: Icon(
-                                Icons.arrow_drop_down,
+                          ? Text(
+                              horizontalTabList[i],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: storeHomeMainController
+                                            .selectedIndex.value ==
+                                        i
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
                                 color: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
-                                size: 22,
                               ),
+                            )
+                          : PopupMenuButton(
+                              onOpened: () {
+                                storeHomeMainController.selectedIndex.value = 3;
+                              },
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
                               onSelected: (String value) async {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                               },
                               itemBuilder: (context) =>
                                   createOptionsPopUpList(context)!,
+                              child: Row(children: [
+                                Text(
+                                  horizontalTabList[i],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    color: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? AppColors.primary
+                                        : AppColors.blacklight,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: storeHomeMainController
+                                              .selectedIndex.value ==
+                                          i
+                                      ? AppColors.primary
+                                      : AppColors.blacklight,
+                                  size: 24,
+                                )
+                              ]),
                             )
                     ],
                   ));
@@ -317,8 +345,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ],
           ),
         );
-      }else
-      if (index == 1) {
+      } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
@@ -342,8 +369,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
           ),
         );
-      }else
-      if (index == 2) {
+      } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
@@ -352,25 +378,30 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "privacy" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "privacy") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: true,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noPrivacyFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "privacy" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "privacy") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: true,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(
@@ -386,8 +417,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
           ),
         );
-      }
-      else {
+      } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -396,25 +426,30 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "terms" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "terms") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: false,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noTermsFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "terms" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "terms") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: false,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(
@@ -505,7 +540,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ImageConstants.nopicfound,
                                 fit: BoxFit.fill,
                                 height: 120,
-                                width: 120,   color: AppColors.grey.withOpacity(0.4),
+                                width: 120,
+                                color: AppColors.grey.withOpacity(0.4),
                               )
                             : Column(
                                 children: [
@@ -698,11 +734,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ],
                             ),
                             storeHomeMainController.productDetailResponse.value
-                                    .data?.product?.description!=""
+                                        .data?.product?.description !=
+                                    ""
                                 ? height0SizedBox
                                 : height4SizedBox,
                             storeHomeMainController.productDetailResponse.value
-                                .data?.product?.description!=""
+                                        .data?.product?.description !=
+                                    ""
                                 ? height0SizedBox
                                 : SizedBox(
                                     width: 200,
@@ -720,7 +758,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             fontWeight: FontWeight.w400)),
                                   ),
                             storeHomeMainController.productDetailResponse.value
-                                .data?.product?.description!=""
+                                        .data?.product?.description !=
+                                    ""
                                 ? height0SizedBox
                                 : height10SizedBox,
                             Text.rich(
@@ -1342,8 +1381,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         );
                       }),
                   height20SizedBox,
-                  storeHomeMainController.productDetailResponse
-                      .value.data?.product != null &&
+                  storeHomeMainController
+                                  .productDetailResponse.value.data?.product !=
+                              null &&
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.cartItems!.isNotEmpty
                       ? height80SizedBox

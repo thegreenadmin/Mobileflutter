@@ -82,7 +82,8 @@ class StringConstants {
   static String billingAddressText = "Billing Address";
 
   //C
-  static String customerInStoreForPickupText = "Customer is in the store for pickup";
+  static String customerInStoreForPickupText =
+      "Customer is in the store for pickup";
   static String connectAccountText = "Connect Account";
   static String cardNumberText = "Card Number";
   static String createYourAccountText = "Create your Account";
@@ -97,6 +98,7 @@ class StringConstants {
   static String countryText = "Country";
   static String closingTimeText = "Closing Time";
   static String cityText = "City";
+  static String closeText = "Close";
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";
@@ -294,6 +296,9 @@ class StringConstants {
   static String noNotificationFoundYetText = "No Notifications Yet";
   static String noBankDetailsFoundText = "No Bank details found";
   static String numberOfDaysText = "Number of days";
+  static String noPrivacyFoundText = "No Privacy policy found";
+  static String noTermsFoundText = "No Terms of service found";
+
   //O
   static String okText = "Ok";
   static String oKText = "OK";
@@ -474,7 +479,7 @@ class StringConstants {
   static String termsOfServiceText = "Terms of service";
   static String termsAndConditionsText = "Terms & Conditions";
   static String transactionHistoryText = "Transaction History";
-   static String transactionsHistoryText = "Transactions History";
+  static String transactionsHistoryText = "Transactions History";
   static String townOrCityText = "Town or City";
   static String tippingReceiptsAndOrdersText = "Tipping, Receipts and orders";
   static String totalText = "Total";
