@@ -432,11 +432,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.favouriteStore.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
-              if (i == 0) {
+              if (i == 0 && searchStoreUserController.isClicked.value ==false) {
                 await searchStoreUserController.apiGetNearByStores(context);
-              } else if (i == 1) {
+              } else if (i == 1 && searchStoreUserController.isClicked.value ==false) {
                 await searchStoreUserController.apiGetPreviousStores(context);
-              } else if (i == 2) {
+              } else if (i == 2 && searchStoreUserController.isClicked.value ==false) {
                 await  searchStoreUserController.apiGetFavoriteStores(context);
               }
             },

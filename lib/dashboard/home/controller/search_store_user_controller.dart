@@ -74,6 +74,7 @@ class SearchStoreUserController extends GetxController {
   RxBool isOpenNow = false.obs;
 
   RxBool isDataLoading = false.obs;
+  RxBool isClicked = false.obs;
   RxInt type = 0.obs;
   final scrollController = ScrollController();
   dynamic lat = 0.0;
@@ -388,6 +389,7 @@ class SearchStoreUserController extends GetxController {
     bool isFilter = false,
     bool isSearch = false,
   }) async {
+    isClicked.value= true;
     debugPrint("GET GET NEARBY STORES isSearch********** $isSearch");
 
     if (isFilter || isSearch) {
@@ -449,6 +451,7 @@ class SearchStoreUserController extends GetxController {
       log("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        isClicked.value=false;
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         List<StoreAddress>? storeAddressesNewList = [];
         storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses;
@@ -490,6 +493,7 @@ class SearchStoreUserController extends GetxController {
           initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isClicked.value=false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -497,6 +501,7 @@ class SearchStoreUserController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+        isClicked.value=false;
         if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -510,6 +515,7 @@ class SearchStoreUserController extends GetxController {
     context, {
     bool isFilter = false,
   }) async {
+    isClicked.value= true;
     isDataLoading.value = true;
     previousStoreListResponse = PreviousStoreResponse();
     isLoading.value = previousStore.isNotEmpty ? true : false;
@@ -534,6 +540,7 @@ class SearchStoreUserController extends GetxController {
       debugPrint("GET PREVIOUS STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        isClicked.value= false;
         previousStoreListResponse = PreviousStoreResponse.fromJson(value?.body);
         List<PreviousStore>? storeAddressesNewList = [];
         storeAddressesNewList = previousStoreListResponse.data!.previousStores;
@@ -550,6 +557,7 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -557,6 +565,7 @@ class SearchStoreUserController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+        isClicked.value= false;
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -569,6 +578,7 @@ class SearchStoreUserController extends GetxController {
     context, {
     bool isFilter = false,
   }) async {
+    isClicked.value= true;
     isDataLoading.value = true;
     favouriteStoreListResponse = FavouriteStoreResponse();
     isLoading.value = favouriteStore.isNotEmpty ? true : false;
@@ -593,6 +603,7 @@ class SearchStoreUserController extends GetxController {
       debugPrint("GET FAVOURITE STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        isClicked.value= false;
         favouriteStoreListResponse =
             FavouriteStoreResponse.fromJson(value?.body);
         List<FavouriteStore>? storeAddressesNewList = [];
@@ -611,6 +622,7 @@ class SearchStoreUserController extends GetxController {
         page.value++;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -618,6 +630,7 @@ class SearchStoreUserController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
+        isClicked.value= false;
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
         }
