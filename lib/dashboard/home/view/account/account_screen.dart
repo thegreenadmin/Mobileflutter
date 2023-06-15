@@ -203,13 +203,11 @@ class _AccountScreenState extends State<AccountScreen> {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.storeOwnerRoleText);
                               setState(() {});
-<<<<<<< HEAD
                               Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
                               // Get.offAll(const BottomNavigation());
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
-                              Future.delayed(const Duration(milliseconds: 200), () {
-                                // Navigator.of(context).popUntil((route) => route.isFirst);
-=======
+                               // Navigator.of(context).popUntil((route) => route.isFirst);
+
                               Get.parameters[Role.role.value] =
                                   Role.storeOwnerRoleText;
 
@@ -217,20 +215,17 @@ class _AccountScreenState extends State<AccountScreen> {
                                   () {
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);
->>>>>>> 46a59e101239a247d287b6e8a7399c9c5b3f3e1c
+
                               });
                             } else {
                               SharedPreferenceStorage.setData(
                                   Role.role.value, Role.customerRoleText);
-
-<<<<<<< HEAD
                               Get.parameters[Role.role.value] =  Role.customerRoleText;
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
                               setState(() {});
-                              Future.delayed(const Duration(milliseconds: 200), () {
-                                // Navigator.of(context)
+                               // Navigator.of(context)
                                 //     .popUntil((route) => route.isFirst);
-=======
+
                               Get.parameters[Role.role.value] =
                                   Role.customerRoleText;
 
@@ -239,10 +234,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                   () {
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);
->>>>>>> 46a59e101239a247d287b6e8a7399c9c5b3f3e1c
                               });
                             }
-                          },
+                            },
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(left: 14.0, right: 14.0),
