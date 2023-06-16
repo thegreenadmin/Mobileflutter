@@ -289,7 +289,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             maxLines: 4,
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
                               LengthLimitingTextInputFormatter(800),
@@ -300,7 +301,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 fontWeight: FontWeight.w400),
                             controller:
                                 contactUsController.messageTextController,
-                            keyboardType: TextInputType.text,
+                          
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return AlertStringConstants

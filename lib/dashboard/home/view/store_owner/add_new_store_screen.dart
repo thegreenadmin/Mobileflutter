@@ -578,7 +578,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ImageConstants.calling,
                         ),
                         alignLabelWithHint: true,
-                        hintText: StringConstants.mobileText,
+                        hintText: StringConstants.phoneNumberText,
                         hintStyle: TextStyle(
                             color: AppColors.blacklight, fontSize: 15),
                         border: UnderlineInputBorder(
@@ -1686,7 +1686,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           }
                           return null;
                         },
-                        controller: addNewStoreController.deliveryServicesTextController,
+                        controller: addNewStoreController
+                            .deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: addNewStoreController.deliveryServices),

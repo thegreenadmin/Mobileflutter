@@ -15,7 +15,6 @@ import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:google_maps_webservice/places.dart';
-
 import "package:google_maps_webservice/geocoding.dart";
 // import 'package:geocoding/geocoding.dart' as geocoding;
 
@@ -377,7 +376,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: ownerStoreController.einTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEinText;
@@ -574,7 +573,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ImageConstants.calling,
                         ),
                         alignLabelWithHint: true,
-                        hintText: StringConstants.mobileText,
+                        hintText: StringConstants.phoneNumberText,
                         hintStyle: TextStyle(
                             color: AppColors.blacklight, fontSize: 15),
                         border: UnderlineInputBorder(
@@ -1086,7 +1085,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
-                                .pleaseEnterTownOrCityText;
+                                .pleaseEnterStateText;
                           }
                           return null;
                         },
@@ -1213,7 +1212,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.townOrCityText,
+                          hintText: StringConstants.countryText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,

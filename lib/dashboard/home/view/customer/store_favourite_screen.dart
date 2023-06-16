@@ -84,9 +84,14 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
-                          await Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const AddToOrderScreen(),
-                          ));
+                          await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                builder: (_) => const AddToOrderScreen(),
+                              ))
+                              .then((value) => {
+                                    storeHomeMainController
+                                        .apiFeatureProductListApi()
+                                  });
                           // Get.to(const AddToOrderScreen());
                           await storeHomeMainController
                               .apiGetCartListApi(context);
@@ -130,7 +135,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                             ImageConstants.nopicfound,
                                             fit: BoxFit.fill,
                                             height: 148,
-                                            width: 148,   color: AppColors.grey.withOpacity(0.4),
+                                            width: 148,
+                                            color:
+                                                AppColors.grey.withOpacity(0.4),
                                           ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),

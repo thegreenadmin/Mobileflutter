@@ -154,6 +154,7 @@ class StringConstants {
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
+   static String dobText = "Date of Birth";
   static String detailText = "Detail";
   static String debitMoneyFromWalletText = "Debit money from my wallet";
   static String descriptionOftheIssueText = "Description of the issue/question";
@@ -179,6 +180,8 @@ class StringConstants {
   static String enterQuantityText = "Enter quantity";
   static String enterPriceText = "Enter Price";
   static String enabledText = "Enabled ";
+  static String enabledProductText = "Enabled Product ";
+  static String enableProductText = "Enable Product ";
   static String employeeTimingText = "Employee Timing";
   static String editOfferText = "Edit Offer";
   static String expiryDateText = "Expiry Date";
@@ -186,6 +189,9 @@ class StringConstants {
   static String enterEinNumberText = "Enter EIN Number";
   static String editAutoReloadIntoWalletText = "Edit Auto Reload Into Wallet";
   static String endDateText = "End Date";
+  static String enterValueText = "Enter value";
+  static String enterOfferNameText = "Enter Offer Name";
+
   //I
   static String identityProofText = "Identity Proof";
   //F
@@ -550,7 +556,7 @@ class StringConstants {
   static String whatWouldLikeNowText = "What would like to do now?";
   //X
   static String x1Text = "XXX";
-  static String x2Text = "XX/XX";
+  static String x2Text = "MM/YY";
   static String x4Text = "XXXX XXXX XXXX XXXX";
 
   //Y

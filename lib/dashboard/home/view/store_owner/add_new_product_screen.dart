@@ -312,7 +312,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       TextSpan(
                         children: [
                           TextSpan(
-                              text: StringConstants.categoryNameText,
+                              text: StringConstants.categoriesText,
                               style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
@@ -704,8 +704,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -715,7 +713,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             fontWeight: FontWeight.w500),
                         controller: manageStoreController
                             .shortDescriptionTextController,
-                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.newline,
+                        keyboardType: TextInputType.multiline,
+                        autofocus: false,
+                        maxLines: null,
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.shortDescriptionText,
@@ -766,9 +767,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.newline,
+                        keyboardType: TextInputType.multiline,
                         autofocus: false,
+                        maxLines: null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -778,7 +781,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             fontWeight: FontWeight.w500),
                         controller: manageStoreController
                             .contentsAndStrainsTextController,
-                        keyboardType: TextInputType.text,
+
                         // validator: (value) {
                         //   if (value!.trim().isEmpty) {
                         //     return AlertStringConstants
@@ -1028,7 +1031,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
                               decoration: InputDecoration(
-                                hintText: StringConstants.discountsOrOffersText,
+                                hintText: StringConstants.enterValueText,
                                 hintStyle: const TextStyle(
                                     color: AppColors.grey, fontSize: 14),
                                 fillColor: Colors.white,
@@ -1711,8 +1714,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         Row(
                           children: [
                             Text(
-                              StringConstants.enabledText +
-                                  StringConstants.productText,
+                              StringConstants.enableProductText,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,

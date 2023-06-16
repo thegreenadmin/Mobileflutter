@@ -165,6 +165,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
                         enabledBorder: border,
+                        hintText: StringConstants.enterNameText,
                         labelText:
                             StringConstants.cardHolderNameText, //'Card Holder',
                       ),
@@ -427,7 +428,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                 validator: (value) {
                                   if (value!.trim().isEmpty) {
                                     return AlertStringConstants
-                                        .pleaseEnterZipCodeText;
+                                        .pleaseEnterStateText;
                                   }
                                   return null;
                                 },

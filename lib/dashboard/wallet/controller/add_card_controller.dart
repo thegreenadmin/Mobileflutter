@@ -453,6 +453,7 @@ class AddCardController extends GetxController {
         //             value.body['status'] == ApiConstants.statusCode200) {
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
+          Utility.showToast(value.body['message']);
           await apiGetCardList(context);
           cardNumber.value = "";
           expiryDate.value = "";
@@ -794,15 +795,14 @@ class AddCardController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         if (value?.body['data']['service_charge_value'] is int ||
             value?.body['data']['service_charge_value'] is String) {
-          storeServiceCharge.value =
-              double.parse(value?.body['data']['service_charge_value']);
+          storeServiceCharge.value = double.parse(
+              value!.body['data']['service_charge_value'].toString());
         } else {
           storeServiceCharge.value =
               value?.body['data']['service_charge_value'];
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -851,8 +851,7 @@ class AddCardController extends GetxController {
 
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),

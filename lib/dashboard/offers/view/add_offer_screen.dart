@@ -188,7 +188,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterNameText,
+                          hintText: StringConstants.enterOfferNameText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -580,7 +580,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                               },
                               decoration: InputDecoration(
                                 errorMaxLines: 3,
-                                hintText: StringConstants.discountsOrOffersText,
+                                hintText: StringConstants.enterValueText,
                                 hintStyle: const TextStyle(
                                     color: AppColors.grey, fontSize: 14),
                                 fillColor: Colors.white,

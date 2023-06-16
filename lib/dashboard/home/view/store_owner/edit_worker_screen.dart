@@ -177,9 +177,11 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.newline,
+                        keyboardType: TextInputType.multiline,
                         autofocus: false,
+                        maxLines: null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         readOnly: true,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
@@ -190,7 +192,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                             fontWeight: FontWeight.w500),
                         controller:
                             addNewWorkerController.employeeNameTextController,
-                        keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
