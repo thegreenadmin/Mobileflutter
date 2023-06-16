@@ -29,12 +29,12 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
   bottomSheetToAddMoney(context, {isFromEdit = false}) {
-    walletController.isautoRechargeEnable.value = false;
-    walletController.chargeAmountTextController.clear();
-    walletController.thresholdAmountTextController.clear();
-    walletController.thresholdAmountTextController.clear();
-    walletController.autoChargeType.value = "";
-    walletController.selectedFrequency.value = "";
+    // walletController.isautoRechargeEnable.value = false;
+    // walletController.chargeAmountTextController.clear();
+    // walletController.thresholdAmountTextController.clear();
+    // walletController.thresholdAmountTextController.clear();
+    // walletController.autoChargeType.value = "";
+    // walletController.selectedFrequency.value = "";
 
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -417,13 +417,15 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 ),
                                 activeColor: AppColors.greymediumlight,
                                 inactiveColor: AppColors.greymediumlight,
-                                onToggle: (val) {
+                                onToggle: (val) async{
                                   walletController.isautoRechargeEnable.value =
                                       val;
                                   if (walletController
                                       .isautoRechargeEnable.value) {
                                     walletController
                                         .isautoRechargeEnable.value = true;
+                                    await walletController
+                                        .apiGetAutoRechargeDetail();
                                     bottomSheetToAddMoney(context);
                                   } else {
                                     walletController

@@ -66,7 +66,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: walletController.formKey,
+            key: walletController.formKeyCreateOwnerBankBalance,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 25),

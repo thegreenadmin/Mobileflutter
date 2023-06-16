@@ -12,6 +12,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});
@@ -146,17 +147,24 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
-                // Navigator.pop(context);
                 storeHomeMainController.apiContactStore(context);
               },
-              child: const Text(
-                "Have issue/question?",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: AppColors.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
+              child: Container(
+                height: 50.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Have issue/question?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0,
+                        color: Colors.white),
+                  ),
+                ),
               ),
             ),
             height15SizedBox,
@@ -177,7 +185,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        StringConstants.okayText,
+                        StringConstants.closeText,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
@@ -218,43 +226,66 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        horizontalTabList[i],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? FontWeight.w600
-                                  : FontWeight.w400,
-                          color:
-                              storeHomeMainController.selectedIndex.value == i
-                                  ? AppColors.primary
-                                  : AppColors.blacklight,
-                        ),
-                      ),
                       i != 3
-                          ? height0SizedBox
-                          : PopupMenuButton(
-                              offset: const Offset(0, 25),
-                              shape: const TooltipShape(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: Icon(
-                                Icons.arrow_drop_down,
+                          ? Text(
+                              horizontalTabList[i],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: storeHomeMainController
+                                            .selectedIndex.value ==
+                                        i
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
                                 color: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
-                                size: 24,
                               ),
+                            )
+                          : PopupMenuButton(
+                              onOpened: () {
+                                storeHomeMainController.selectedIndex.value = 3;
+                              },
+                              offset: const Offset(0, 25),
+                              shape: const TooltipShape(),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
                               onSelected: (String value) async {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                               },
                               itemBuilder: (context) =>
                                   createOptionsPopUpList(context)!,
+                              child: Row(children: [
+                                Text(
+                                  horizontalTabList[i],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    color: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? AppColors.primary
+                                        : AppColors.blacklight,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: storeHomeMainController
+                                              .selectedIndex.value ==
+                                          i
+                                      ? AppColors.primary
+                                      : AppColors.blacklight,
+                                  size: 24,
+                                )
+                              ]),
                             )
                     ],
                   ));
@@ -300,8 +331,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ],
           ),
         );
-      }else
-      if (index == 1) {
+      } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
@@ -325,8 +355,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
         );
-      }else
-      if (index == 2) {
+      } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
@@ -335,25 +364,30 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "privacy" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "privacy") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: true,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noPrivacyFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "privacy" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "privacy") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: true,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(
@@ -369,7 +403,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
         );
-      }else {
+      } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
@@ -378,25 +412,30 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               onTap: () {
                 Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![0].storePageType ==
-                        "terms" ||
-                    storeHomeMainController.storeDetailsResponse.value.data!
-                            .store!.storePages![1].storePageType ==
-                        "terms") {
-                  SharedPreferenceStorage.setData("context", context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PdfViewScreen(
-                          isShowPrivacy: false,
-                          url: storeHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .storePages!
-                              .first
-                              .storePageContent!
-                              .dynamicUrl
-                              .toString())));
+                    .store!.storePages!.isEmpty) {
+                  Utility.showToast(StringConstants.noTermsFoundText);
+                } else {
+                  if (storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![0].storePageType ==
+                          "terms" ||
+                      storeHomeMainController.storeDetailsResponse.value.data!
+                              .store!.storePages![1].storePageType ==
+                          "terms") {
+                    SharedPreferenceStorage.setData("context", context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PdfViewScreen(
+                            isShowPrivacy: false,
+                            url: storeHomeMainController
+                                .storeDetailsResponse
+                                .value
+                                .data!
+                                .store!
+                                .storePages!
+                                .first
+                                .storePageContent!
+                                .dynamicUrl
+                                .toString())));
+                  }
                 }
               },
               child: Row(

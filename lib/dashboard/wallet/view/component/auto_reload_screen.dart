@@ -40,7 +40,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: SingleChildScrollView(
           child: Form(
-            key: walletController.formKey,
+            key: walletController.formKeyAutoCharge,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,6 +196,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height4SizedBox,
+                    Obx(() => walletController.autoChargeType.value == "threshold" ?
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.phone,
@@ -208,10 +209,12 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
-                        controller: walletController.chargeAmountTextController,
+                        controller:  walletController.chargeAmountTextController,
                         validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterAmountText;
+                          if (walletController.autoChargeType.value == "threshold"
+                              &&( value == null ||
+                              value!.trim().isEmpty)) {
+                            return AlertStringConstants.pleaseEnterChargeAmountText;
                           }
                           return null;
                         },
@@ -249,7 +252,63 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               width: 1.0,
                             ),
                           ),
-                        )),
+                        ))
+                        : TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.phone,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(100),
+                        ],
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                        controller:  walletController.periodChargeAmountTextController,
+                        validator: (value) {
+                          if (walletController.autoChargeType.value == "cyclic"
+                              && (value == null || value.trim()=="")) {
+                            return AlertStringConstants.pleaseEnterChargeAmountText;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: "eg \$10",
+                          hintStyle: const TextStyle(color: AppColors.grey),
+                          fillColor: Colors.white,
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),),
+
                     height20SizedBox,
                     Obx(
                       () => walletController.autoChargeType.value == "threshold"
@@ -277,8 +336,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
-                                    controller: walletController
-                                        .thresholdAmountTextController,
+                                    controller: walletController.thresholdAmountTextController,
                                     validator: (value) {
                                       if (value == null ||
                                           value.trim().isEmpty) {
@@ -422,7 +480,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     ),
                     Obx(()=>
                     walletController.autoChargeType.value != "threshold" &&
-                        walletController.selectedFrequency.value !=""  &&
                     walletController.selectedFrequency.value == "30" ?
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -505,7 +562,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     Obx(
                       () =>
                       walletController.autoChargeType.value != "threshold" &&
-                          walletController.selectedFrequency.value !="" &&
                       walletController.selectedFrequency.value == "7"?
                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1124,7 +1180,9 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                       ),
                       onTap: () {
                         widget.isFromEdit == true
-                            ? walletController.apiUpdateAutoRecharge(context)
+                            ? walletController.validateAndSubmit(context,
+                            isFromautorecharge: true,updateAutoData:true)
+                        //walletController.apiUpdateAutoRecharge(context)
                             : walletController.validateAndSubmit(context,
                                 isFromautorecharge: true);
                       },

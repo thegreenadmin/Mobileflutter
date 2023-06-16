@@ -196,6 +196,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   () => accountController.hasStoreAccess.value == false
                       ? height0SizedBox
                       : InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
                           onTap: () async {
                             if (SharedPreferenceStorage.getData(Role.role.value)
                                     .toString() ==

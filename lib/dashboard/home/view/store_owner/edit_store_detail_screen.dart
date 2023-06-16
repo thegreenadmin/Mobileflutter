@@ -370,7 +370,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
+                          LengthLimitingTextInputFormatter(20),
                         ],
                         style: const TextStyle(
                             color: AppColors.black,

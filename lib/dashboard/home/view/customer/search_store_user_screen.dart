@@ -86,6 +86,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               onPressed: () {
                                 // Get.back();
                                 Navigator.of(context).pop();
+                                Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -425,18 +426,18 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
             unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
             labelStyle: const TextStyle(fontWeight: FontWeight.w600),
             isScrollable: false,
-            onTap: (i) {
+            onTap: (i) async{
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.previousStore.clear();
-              searchStoreUserController.storeAddresses.clear();
+              searchStoreUserController.favouriteStore.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
-              if (i == 0) {
-                searchStoreUserController.apiGetNearByStores(context);
-              } else if (i == 1) {
-                searchStoreUserController.apiGetPreviousStores(context);
-              } else if (i == 2) {
-                searchStoreUserController.apiGetFavoriteStores(context);
+              if (i == 0 && searchStoreUserController.isClicked.value ==false) {
+                await searchStoreUserController.apiGetNearByStores(context);
+              } else if (i == 1 && searchStoreUserController.isClicked.value ==false) {
+                await searchStoreUserController.apiGetPreviousStores(context);
+              } else if (i == 2 && searchStoreUserController.isClicked.value ==false) {
+                await  searchStoreUserController.apiGetFavoriteStores(context);
               }
             },
             tabs: [

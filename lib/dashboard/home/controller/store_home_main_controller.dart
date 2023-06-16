@@ -18,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -98,11 +99,11 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (storeId.value != Get.parameters["storeId"]) {
+      if ( Get.parameters["storeId"]!="") {
         storeId.value = Get.parameters["storeId"] ?? "";
         getCurrentLocation();
       }
-      if (Get.parameters['isFromHome'] != false) {
+      if (Get.parameters['isFromHome'] != "false") {
         isFromHome.value =
             Get.parameters["isFromHome"] == "true" ? true : false;
 
@@ -114,7 +115,7 @@ class StoreHomeMainController extends GetxController {
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
       debugPrint("isFromMenu--------${isFromFav.value}");
-      debugPrint("isFromFav-------${isFromMenu.value}");
+      debugPrint("storeId-------${storeId.value}");
       debugPrint("PRODUCT ID--------${Get.parameters["productId"]}");
 
       apiGetUserDetailsApi();
@@ -538,7 +539,7 @@ class StoreHomeMainController extends GetxController {
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
     debugPrint("GET STORE CATEGORIES URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}?store_id=${storeId.value}&is_featured_category=false");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -548,7 +549,7 @@ class StoreHomeMainController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}?store_id=${storeId.value}&is_featured_category=false",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}?store_id=${storeId.value}",
             headers,
             showLoading: true)
         .then((value) async {
@@ -665,14 +666,19 @@ class StoreHomeMainController extends GetxController {
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
           isDeleteCartItem.value = false;
-          // Navigator.of(Get.context!).popUntil((route) => route.isFirst);
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          // Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         } else if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == false) {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          Get.parameters["storeId"] = storeId.value;
+
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => const StoreHomeMainScreen(),
+          ));
+          // Navigator.of(context).pop();
+          // Navigator.of(context).pop();
           //Navigator.of(context).pop();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -920,7 +926,7 @@ class StoreHomeMainController extends GetxController {
   ) {
     showDialog(
       context: ctx,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -946,7 +952,7 @@ class StoreHomeMainController extends GetxController {
             height15SizedBox,
             Center(
               child: Text(
-                StringConstants.continueShoppingWithGreenMallText,
+                StringConstants.whatWouldLikeNowText,
                 style: TextStyle(
                     color: AppColors.blacklight,
                     fontSize: 16,
@@ -957,30 +963,28 @@ class StoreHomeMainController extends GetxController {
             ),
             height25SizedBox,
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () {
-                    if (isFromHome.value) {
-                      Navigator.of(_).pop();
-                      Navigator.of(ctx).pop();
-                    } else {
-                      Navigator.of(_).pop();
-                      Navigator.of(ctx).pop();
-                      Navigator.of(ctx).pop();
-                    }
+                    Navigator.of(_).pop();
+                    Get.parameters["storeId"] = storeId.value;
+
+                    Navigator.of(ctx).push(MaterialPageRoute(
+                      builder: (_) => const StoreHomeMainScreen(),
+                    ));
                   },
                   child: Container(
                     height: 50.0,
-                    width: WidgetConstants.screenWidth * 0.3,
+                    width: WidgetConstants.screenWidth * 0.35,
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: const Center(
+                    child:  Center(
                       child: Text(
-                        'More Product',
-                        style: TextStyle(
+                        StringConstants.continueShoppingText,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: Colors.white),
@@ -988,6 +992,7 @@ class StoreHomeMainController extends GetxController {
                     ),
                   ),
                 ),
+                width8SizedBox,
                 InkWell(
                   onTap: () {
                     Navigator.of(_).pop();
@@ -1001,16 +1006,16 @@ class StoreHomeMainController extends GetxController {
                   },
                   child: Container(
                     height: 50.0,
-                    width: WidgetConstants.screenWidth * 0.3,
+                    width: WidgetConstants.screenWidth * 0.25,
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       border: Border.all(color: AppColors.primary),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'Go to Cart',
-                        style: TextStyle(
+                        StringConstants.goToCartText,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: AppColors.primary),

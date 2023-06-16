@@ -70,12 +70,12 @@ class WalletController extends GetxController {
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeyAutoCharge = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeyCreateOwnerBankBalance = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
   TextEditingController startTimeTextController = TextEditingController();
   TextEditingController endTimeTextController = TextEditingController();
-  TextEditingController accountHolderNameTextController =
-      TextEditingController();
+  TextEditingController accountHolderNameTextController = TextEditingController();
 
   TextEditingController rountingTextController = TextEditingController();
   TextEditingController accountNumberTextController = TextEditingController();
@@ -83,6 +83,7 @@ class WalletController extends GetxController {
 
   TextEditingController thresholdAmountTextController = TextEditingController();
   TextEditingController chargeAmountTextController = TextEditingController();
+  TextEditingController periodChargeAmountTextController = TextEditingController();
   TextEditingController startDateTextController = TextEditingController();
   TextEditingController endDateTextController = TextEditingController();
   TextEditingController frequencyTextController = TextEditingController();
@@ -127,11 +128,8 @@ class WalletController extends GetxController {
     role?.value = SharedPreferenceStorage.getData(Role.role.value);
     if (SharedPreferenceStorage.getData(Role.role.value) ==
         Role.customerRoleText) {
-      if (Get.parameters == null
-          ? false
-          : Get.parameters['isFromCartScreen'] != "false") {
-        isFromCartScreen.value =
-            Get.parameters["isFromCartScreen"] == "true" ? true : false;
+      if ( Get.parameters['isFromCartScreen'] != "false") {
+        isFromCartScreen.value = Get.parameters["isFromCartScreen"] == "true" ? true : false;
       }
       getApiData();
     } else {
@@ -155,8 +153,17 @@ class WalletController extends GetxController {
     }
   }
 
-  bool validateAndSave() {
-    final form = formKey.currentState;
+  bool validateAndSaveAutoCharge() {
+    final form = formKeyAutoCharge.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+  bool validateAndSaveCreateOwnerBankBalance() {
+    final form = formKeyCreateOwnerBankBalance.currentState;
     if (form!.validate()) {
       form.save();
       return true;
@@ -167,9 +174,60 @@ class WalletController extends GetxController {
 
 // Fields Validation Method
   void validateAndSubmit(BuildContext mcontext,
-      {bool isFromCreateOwnerBankBalance = false,
+      {bool isFromCreateOwnerBankBalance = false,bool updateAutoData = false,
       isFromautorecharge = false}) async {
-    if (validateAndSave()) {
+    if(isFromautorecharge == true){
+      if (validateAndSaveAutoCharge()) {
+        try {
+
+            if (autoChargeType.value.isEmpty) {
+              Utility.showAlertMessage("Please select auto-reload type");
+            } else if (autoChargeType.value=="threshold"
+                && chargeAmountTextController.text.isEmpty) {
+              Utility.showAlertMessage("Please enter charge amount");
+            }else if (autoChargeType.value=="threshold"
+                && thresholdAmountTextController.text.isEmpty) {
+              Utility.showAlertMessage("Please enter amount");
+            }else if (autoChargeType.value!="threshold"
+                && selectedFrequency.value.isEmpty) {
+              Utility.showAlertMessage("Please select payment type");
+            }else if (autoChargeType.value!="threshold"
+                && day.value.isEmpty) {
+              Utility.showAlertMessage("Please select day");
+            }else if ( userStripeCardId!.value.isEmpty) {
+              Utility.showAlertMessage("Please add card");
+            } else if(updateAutoData==true){
+              apiUpdateAutoRecharge(mcontext);
+            }else{
+              apiCreateAutoRecharge(mcontext);
+            }
+        } catch (_) {}
+      } else {
+        autoValidate.value = true;
+      }
+    }
+    else if(isFromCreateOwnerBankBalance == false){
+      if (validateAndSaveCreateOwnerBankBalance()) {
+        if (selectPaymentType.isEmpty) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectPaymentTypeText);
+        } else if (selectPaymentType.value == "Cards" &&
+            userStripeCardId!.value.isEmpty) {
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+        } else {
+          await apiAddMoneyToWallet(mcontext);
+        }
+      } else {
+        autoValidate.value = true;
+      }
+    }else{
+      if (accountHolderTypeText.isEmpty) {
+        Utility.showAlertMessage("Please select account holder type");
+      } else {
+        apiCreateBankToken(mcontext);
+      }
+    }
+   /* if (validateAndSaveAutoCharge()) {
       try {
         if (isFromautorecharge == true) {
           if (autoChargeType.value.isEmpty) {
@@ -197,7 +255,7 @@ class WalletController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
-    }
+    }*/
   }
 
   void onCreditCardModelChange(CreditCardModel? creditCardModel) {
@@ -814,7 +872,8 @@ class WalletController extends GetxController {
       "auto_charge_type": autoChargeType.value,
       "user_stripe_card_id": userStripeCardId!.value,
       "threshold_amount": thresholdAmountTextController.text.trim(),
-      "charge_amount": chargeAmountTextController.text.trim(),
+      "charge_amount": autoChargeType.value == "threshold" ? chargeAmountTextController.text.trim()
+          :periodChargeAmountTextController.text.trim() ,
       "start_date": DateTime.now().toString(),
 
       // "end_date": autoChargeType.value == "threshold"
@@ -840,10 +899,14 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
+        selectedFrequency.value = "";
+        rountingTextController.clear();
+        startDateTextController.clear();
+        endDateTextController.clear();
         thresholdAmountTextController.clear();
         chargeAmountTextController.clear();
+        periodChargeAmountTextController.clear();
         accountHolderNameTextController.clear();
-        autoChargeType.value = "";
         rountingTextController.clear();
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
@@ -903,19 +966,34 @@ class WalletController extends GetxController {
                 : getAutoRechargeModel
                     .data!.userWalletAutoCharge!.thresholdAmount
                     .toString();
-
-            chargeAmountTextController.text = getAutoRechargeModel
-                        .data!.userWalletAutoCharge!.chargeAmount ==
-                    null
-                ? ""
-                : getAutoRechargeModel.data!.userWalletAutoCharge!.chargeAmount
-                    .toString();
-
-            if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
-                1) {
-              frequencyTextController.text = "7";
+            if(getAutoRechargeModel
+                .data!.userWalletAutoCharge!.thresholdAmount == null){
+              periodChargeAmountTextController.text =
+                  getAutoRechargeModel.data?.userWalletAutoCharge?.chargeAmount.toString()??"";
+            }else{
+              chargeAmountTextController.text = getAutoRechargeModel.data?.userWalletAutoCharge?.chargeAmount.toString()??"";
             }
-            selectedFrequency.value = frequencyTextController.text =
+
+            if(getAutoRechargeModel
+                .data!.userWalletAutoCharge!.thresholdAmount == null){
+              if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
+                  7) {
+                frequencyTextController.text = "7";
+                selectedFrequency.value ="7";
+              }else{
+                selectedFrequency.value ="30";
+                frequencyTextController.text = "30";
+
+              }
+            }
+
+
+            if(getAutoRechargeModel.data!.userWalletAutoCharge!.thresholdAmount ==null){
+              autoChargeType.value = "cyclic";
+            }else{
+              autoChargeType.value = "threshold";
+            }
+             frequencyTextController.text =
                 getAutoRechargeModel.data!.userWalletAutoCharge!.frequency
                     .toString();
 
@@ -963,7 +1041,8 @@ class WalletController extends GetxController {
       "auto_charge_type": autoChargeType.value,
       "user_stripe_card_id": userStripeCardId!.value,
       "threshold_amount": thresholdAmountTextController.text.trim(),
-      "charge_amount": chargeAmountTextController.text.trim(),
+      "charge_amount":autoChargeType.value == "threshold" ? chargeAmountTextController.text.trim()
+          :periodChargeAmountTextController.text.trim() ,
       "start_date": DateTime.now().toString(),
       // "end_date": autoChargeType.value == "threshold"
       //     ? DateTime(date.year + 1, date.month, date.day).toString()
@@ -990,8 +1069,10 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
+       selectedFrequency.value = "";
         thresholdAmountTextController.clear();
         chargeAmountTextController.clear();
+        periodChargeAmountTextController.clear();
         accountHolderNameTextController.clear();
         autoChargeType.value = "";
         rountingTextController.clear();
