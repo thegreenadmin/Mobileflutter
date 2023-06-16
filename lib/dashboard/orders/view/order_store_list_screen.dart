@@ -110,10 +110,12 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               Get.parameters["storeId"]=ordersController
                                   .storeList[index].storeId ?? "";
 
-                              SharedPreferenceStorage.setData("context", context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const OrdersHomeMainScreen(),
-                              ));
+                              // SharedPreferenceStorage.setData("context", context);
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const OrdersHomeMainScreen(),
+                              // ));
+                              await Get.to(const OrdersHomeMainScreen(),
+                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
 
                             },
                             child: Container(

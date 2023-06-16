@@ -136,8 +136,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
-                                    // Get.back();
+                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -307,36 +307,37 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          const OwnerInboxDetailScreen()));
-                                              // Get.to(
-                                              //     const OwnerInboxDetailScreen(),
-                                              //     arguments: {
-                                              //       "storeName":
-                                              //           ownerInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .store!
-                                              //                   .storeName ??
-                                              //               "",
-                                              //       "storeId":
-                                              //           ownerInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .store!
-                                              //                   .storeId ??
-                                              //               "",
-                                              //       "messageHeadId":
-                                              //           ownerInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .messageHeadId ??
-                                              //               ""
-                                              //     });
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context).push(
+                                              //     MaterialPageRoute(
+                                              //         builder: (_) =>
+                                              //             const OwnerInboxDetailScreen()));
+
+                                              Get.to(const OwnerInboxDetailScreen(),
+                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                  arguments: {
+                                                    "storeName":
+                                                        ownerInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .store!
+                                                                .storeName ??
+                                                            "",
+                                                    "storeId":
+                                                        ownerInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .store!
+                                                                .storeId ??
+                                                            "",
+                                                    "messageHeadId":
+                                                        ownerInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .messageHeadId ??
+                                                            ""
+                                                  });
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

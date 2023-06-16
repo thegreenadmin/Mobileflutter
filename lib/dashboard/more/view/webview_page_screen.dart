@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class WebviewPageScreen extends StatefulWidget {
   final String url;
@@ -65,8 +67,8 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  // Get.back();
-                                  Navigator.of(context).pop();
+                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

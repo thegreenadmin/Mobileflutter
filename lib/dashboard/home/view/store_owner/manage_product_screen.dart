@@ -154,8 +154,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
-                                    Navigator.of(context).pop();
-                                    // Get.back();
+                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -211,17 +211,19 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   true
                               ? "true"
                               : "false";
-                      SharedPreferenceStorage.setData("context", context);
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                        builder: (_) => const AddNewCategoryScreen(),
-                      ))
+                      // SharedPreferenceStorage.setData("context", context);
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(
+                      //   builder: (_) => const AddNewCategoryScreen(),
+                      // ))
 
-                          // Get.to(() => const AddNewCategoryScreen(), arguments: {
-                          //   "storeId": manageStoreController.storeId.value,
-                          //   "isFeaturedSelectedType":
-                          //       manageStoreController.isFeaturedTypeSelected.value,
-                          // })!
+                          Get.to(() => const AddNewCategoryScreen(),
+                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                              arguments: {
+                            "storeId": manageStoreController.storeId.value,
+                            "isFeaturedSelectedType":
+                                manageStoreController.isFeaturedTypeSelected.value,
+                          })!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
                       });
@@ -323,12 +325,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           .categoriesList[index].categoryId ??
                                       "";
                               manageStoreController.apiGetStoreProducts();
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const ProductListScreen(),
-                              ));
-                              // Get.to(const ProductListScreen());
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const ProductListScreen(),
+                              // ));
+                              Get.to(const ProductListScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -422,23 +424,24 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .categoriesList[index]
                                                     .categoryId ??
                                                 "";
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) =>
-                                              const EditCategoryScreen(),
-                                        ))
-                                            // Get.to(const EditCategoryScreen(),
-                                            //        arguments: {
-                                            //      "storeId": manageStoreController
-                                            //          .storeId.value,
-                                            //      "categoryId":
-                                            //          manageStoreController
-                                            //                  .categoriesList[index]
-                                            //                  .categoryId ??
-                                            //              ""
-                                            //    })!
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const EditCategoryScreen(),
+                                        // ))
+                                            Get.to(const EditCategoryScreen(),
+                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) ,
+                                                   arguments: {
+                                                 "storeId": manageStoreController
+                                                     .storeId.value,
+                                                 "categoryId":
+                                                     manageStoreController
+                                                             .categoriesList[index]
+                                                             .categoryId ??
+                                                         ""
+                                               })!
                                             .then((value) {
                                           manageStoreController
                                               .apiGetCategoriesList();
@@ -468,14 +471,15 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                 "";
                                         manageStoreController
                                             .apiGetStoreProducts();
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) =>
-                                              const ProductListScreen(),
-                                        ));
-                                        // Get.to(const ProductListScreen());
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const ProductListScreen(),
+                                        // ));
+                                        Get.to(const ProductListScreen(),
+                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
                                       },
                                       icon: Icon(
                                         Icons.arrow_forward_ios_rounded,

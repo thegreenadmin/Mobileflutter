@@ -26,26 +26,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
 
-  /* Map<int, GlobalKey<NavigatorState>>  navigatorKeysAll = {
-    0: GlobalKey<NavigatorState>(),
-    1: GlobalKey<NavigatorState>(),
-    2: GlobalKey<NavigatorState>(),
-    3: GlobalKey<NavigatorState>(),
-    4: GlobalKey<NavigatorState>(),
-  };*/
 
-  GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
+ /* GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
   GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();*/
+
   RxString roleInApp = "".obs;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value).toString();
   }
 
   @override
@@ -57,19 +51,19 @@ class _BottomNavigationState extends State<BottomNavigation> {
         return false;
       },
       child: Scaffold(
-        // extendBody: true,
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: FloatingActionButton(
-        //     backgroundColor: AppColors.primary,
-        //     child: Image.asset(
-        //       "assets/orders.png",
-        //       scale: 4,
-        //     ),
-        //     onPressed: () {
-        //       bottomNavigationPageController.onItemTapped(2);
-        //       // OrdersController controller = Get.find<OrdersController>();
-        //       // controller.onInit();
-        //     }),
+       /* extendBody: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColors.primary,
+            child: Image.asset(
+              "assets/orders.png",
+              scale: 4,
+            ),
+            onPressed: () {
+              bottomNavigationPageController.onItemTapped(2);
+              // OrdersController controller = Get.find<OrdersController>();
+              // controller.onInit();
+            }),*/
         backgroundColor: AppColors.white,
         bottomNavigationBar: BottomAppBar(
           notchMargin: 5,
@@ -257,50 +251,50 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
           ),
         ),
-        body: Obx(
-              () => IndexedStack(
+        body: Obx(() =>
+            IndexedStack(
             index: bottomNavigationPageController.selectedIndex.value,
-            // children: controller.menuPages,
-            children: [ _TabNav(0, const HomeScreen()),
-              _TabNav(1, const WalletScreen()),
-              SharedPreferenceStorage.getData(Role.role.value) ==
-                  Role.storeOwnerRoleText ?
-              bottomNavigationPageController.storeList.length > 1 ||
-                  bottomNavigationPageController.storeList.isEmpty
-                  ? _TabNav(2, const OrderStoresListScreen())
-                  : _TabNav(2, const OrdersHomeMainScreen())
-                  : _TabNav(2, const OrdersScreen()),
-              _TabNav(3, const OffersScreen()),
-              _TabNav(4, const MoreScreen()),],
+            children: [
+                _TabNav(0, const HomeScreen()),
+                _TabNav(1, const WalletScreen()),
+              bottomNavigationPageController.roleInApp.value ==
+                    Role.storeOwnerRoleText?
+                bottomNavigationPageController.storeList.length > 1 ||
+                    bottomNavigationPageController.storeList.isEmpty
+                    ? _TabNav(2, const OrderStoresListScreen())
+                    : _TabNav(2, const OrdersHomeMainScreen())
+                    : _TabNav(2, const OrdersScreen()),
+                _TabNav(3, const OffersScreen()),
+                _TabNav(4, const MoreScreen()),],
           ),
         ),
-        // body: TabNavigator(
-        //   key: tabNavigator,
-        //   tabs: <TabItem>[
-        //     TabItem(tab1, const HomeScreen()),
-        //     TabItem(tab2, const WalletScreen()),
-        //     SharedPreferenceStorage.getData(Role.role.value) ==
-        //                 Role.storeOwnerRoleText ?
-        //             bottomNavigationPageController.storeList.length > 1 ||
-        //                 bottomNavigationPageController.storeList.isEmpty
-        //         ? TabItem(tab3, const OrderStoresListScreen())
-        //             : TabItem(tab3, const OrdersHomeMainScreen())
-        //         : TabItem(tab3, const OrdersScreen()),
-        //     TabItem(tab4, const OffersScreen()),
-        //     TabItem(tab5, const MoreScreen()),
-        //   ],
-        //   selectedIndex: bottomNavigationPageController.selectedIndex.value,
-        //   popStack: true,
-        // ),
 
-        // body: buildNavigator(),
-        // body: Obx(
-        //       () => IndexedStack(
-        //     children:bottomNavigationPageController.tabs,
-        //     index: bottomNavigationPageController.selectedIndex.toInt()??0,
-        //   ),
-        // ),
-        // body: bottomNavigationPageController.selectedTab,
+       /* body: TabNavigator(
+          key: tabNavigator,
+          tabs: <TabItem>[
+            TabItem(tab1, const HomeScreen()),
+            TabItem(tab2, const WalletScreen()),
+            SharedPreferenceStorage.getData(Role.role.value) ==
+                        Role.storeOwnerRoleText ?
+                    bottomNavigationPageController.storeList.length > 1 ||
+                        bottomNavigationPageController.storeList.isEmpty
+                ? TabItem(tab3, const OrderStoresListScreen())
+                    : TabItem(tab3, const OrdersHomeMainScreen())
+                : TabItem(tab3, const OrdersScreen()),
+            TabItem(tab4, const OffersScreen()),
+            TabItem(tab5, const MoreScreen()),
+          ],
+          selectedIndex: bottomNavigationPageController.selectedIndex.value,
+          popStack: true,
+        ),*/
+        /*body: buildNavigator(),*/
+       /* body: Obx(
+              () => IndexedStack(
+            children:bottomNavigationPageController.tabs,
+            index: bottomNavigationPageController.selectedIndex.toInt()??0,
+          ),
+        ),*/
+       /* body: bottomNavigationPageController.selectedTab,*/
       ),
     );
   }
@@ -315,7 +309,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }*/
 }
 
-class TabItem {
+/*class TabItem {
   final GlobalKey<NavigatorState> key;
   final Widget tab;
 
@@ -377,86 +371,8 @@ class TabNavigatorState extends State<TabNavigator> {
       ),
     );
   }
-}
+}*/
 
-/*
-
-
-/// screen model
-class ScreenModel {
-  final String? name;
-  final int? navKey;
-  final MaterialColor? colors;
-  static const _shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
-  get shades => _shades;
-  ScreenModel({this.name, this.colors, this.navKey});
-  Color? getColorByShade(shade) => colors?[shade];
-}
-
-/// screens models list
-final screensData = <ScreenModel>[
-  ScreenModel(name: 'red', colors: Colors.red, navKey: 1),
-  ScreenModel(name: 'green', colors: Colors.green, navKey: 2),
-  ScreenModel(name: 'blue', colors: Colors.blue, navKey: 3),
-];
-
-/// main controller
-class _RootController extends GetxController {
-  final navMenuIndex = 0.obs;
-
-  ScreenModel get currentScreenModel => screensData[navMenuIndex()];
-  MaterialColor? get navMenuItemColor => currentScreenModel.colors;
-
-  // store the pages stack.
-  List<Widget>? _pages;
-
-  // get navigators.
-  // List<Widget> get menuPages =>
-  //     _pages ??= screensData.map((e) => _TabNav(e)).toList();
-
-  // widget stuffs.
-  List<BottomNavigationBarItem> get navMenuItems => screensData
-      .map((e) =>
-      BottomNavigationBarItem(icon: Icon(Icons.widgets), label: e.name))
-      .toList();
-
-  void openDetails(int shade) {
-    final model = currentScreenModel;
-    Get.to(
-      PageColorDetails(
-        title: model.name ??"",
-        color: model.colors ?? Colors.grey,
-        shade: shade,
-      ),
-      transition: Transition.fade,
-      id: model.navKey,
-    );
-  }
-}
-
-/// entry page (persistent)
-class _Root extends GetView<_RootController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(
-            () => IndexedStack(
-          index: controller.navMenuIndex(),
-          children: controller.menuPages,
-        ),
-      ),
-      bottomNavigationBar: Obx(
-            () => BottomNavigationBar(
-          currentIndex: controller.navMenuIndex(),
-          items: controller.navMenuItems,
-          onTap: controller.navMenuIndex,
-          selectedItemColor: controller.navMenuItemColor,
-        ),
-      ),
-    );
-  }
-}
-*/
 
 /// sub navigators.
 class _TabNav extends GetView<BottomNavController> {
@@ -472,65 +388,4 @@ class _TabNav extends GetView<BottomNavController> {
     );
   }
 }
-/*
 
-/// home of each subnavigator
-class PageColorList extends StatelessWidget {
-  final ScreenModel? model;
-  const PageColorList({Key? key, this.model}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(model?.name??""), backgroundColor: model?.colors?? Colors.grey),
-      body: ListView.builder(
-        itemBuilder: (_, idx) {
-          final shade = model?.shades[idx];
-          return Container(
-            color: model?.colors?[shade],
-            child: ListTile(
-              title: Text(
-                'shade [$shade]',
-                style: Get.textTheme.bodyText2?.copyWith(
-                    color: Colors.white, backgroundColor: Colors.black26),
-              ),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () => Get.find<_RootController>().openDetails(shade),
-            ),
-          );
-        },
-        itemCount: model?.shades.length??0,
-      ),
-    );
-  }
-}
-
-/// details of colors.
-class PageColorDetails extends StatelessWidget {
-  final String? title;
-  final int? shade;
-  final MaterialColor? color;
-
-  const PageColorDetails({Key? key, this.title, this.shade, this.color})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title??""),
-        backgroundColor: color,
-      ),
-      backgroundColor: color?[shade??0],
-      body: Center(
-        child: Text(
-          '$title [$shade]',
-          style: Get.textTheme.headline3?.copyWith(
-            color: Colors.white,
-            backgroundColor: Colors.black45,
-          ),
-        ),
-      ),
-    );
-  }
-}*/

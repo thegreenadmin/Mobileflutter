@@ -45,8 +45,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                // Get.back();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -181,15 +181,16 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
-                                    await Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) =>
-                                          const ManageStoreMainScreen(),
-                                    ));
-                                    // await Get.to(
-                                    //     () => const ManageStoreMainScreen());
+                                    // SharedPreferenceStorage.setData(
+                                    //     "context", context);
+                                    // await Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (_) =>
+                                    //       const ManageStoreMainScreen(),
+                                    // ));
+                                    await Get.to(
+                                        () => const ManageStoreMainScreen(),
+                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -438,12 +439,13 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => const AddNewStoreScreen(),
-                    ))
-                    // Get.to(const AddNewStoreScreen())!
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(
+                //       builder: (_) => const AddNewStoreScreen(),
+                //     ))
+                    Get.to(const AddNewStoreScreen(),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

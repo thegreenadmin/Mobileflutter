@@ -29,9 +29,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       searchStoreUserController.searchController.clear();
       searchStoreUserController.firstName?.value =
-          SharedPreferenceStorage.getData(StringConstants.firstNameText);
+          SharedPreferenceStorage.getData(StringConstants.firstNameText).toString();
       searchStoreUserController.lastName?.value =
-          SharedPreferenceStorage.getData(StringConstants.lastNameText);
+          SharedPreferenceStorage.getData(StringConstants.lastNameText).toString();
       searchStoreUserController.setupScrollController(Get.context);
       searchStoreUserController.apiActiveCartApi(Get.context);
     });
@@ -88,7 +88,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                           return InkWell(
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            onTap: () {
+                            onTap: () async{
                               SharedPreferenceStorage.setData(
                                   "context", context);
                               Get.parameters["storeId"] =
@@ -97,14 +97,12 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           .store
                                           ?.storeId ??
                                       "";
+                              await Get.to(const StoreHomeMainScreen(),
+                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const StoreHomeMainScreen(),
+                              // ));
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const StoreHomeMainScreen(),
-                              ));
-                              // Get.to(const StoreHomeMainScreen(), arguments: {
-                              //   "storeAddress": searchStoreUserController
-                              //       .storeAddresses[index]
-                              // });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

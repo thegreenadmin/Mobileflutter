@@ -66,21 +66,19 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                         if (index <
                             searchStoreUserController.favouriteStore.length) {
                           return InkWell(
-                            onTap: () {
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
+                            onTap: () async{
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
                               Get.parameters["storeId"] =
                                   searchStoreUserController
                                           .favouriteStore[index].storeId ??
                                       "";
+                              await Get.to(const StoreHomeMainScreen(),
+                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const StoreHomeMainScreen(),
+                              // ));
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const StoreHomeMainScreen(),
-                              ));
-                              // Get.to(const StoreHomeMainScreen(), arguments: {
-                              //   "storeAddress": searchStoreUserController
-                              //       .storeAddresses[index]
-                              // });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

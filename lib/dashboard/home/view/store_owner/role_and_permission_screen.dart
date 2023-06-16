@@ -40,8 +40,8 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              // Get.back();
+                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -97,12 +97,13 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                 .isSelected = false;
                           }
                         }
-                        SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                              builder: (_) => const AddNewRoleScreen(),
-                            ))
-                            // Get.to(const AddNewRoleScreen())!
+                        // SharedPreferenceStorage.setData("context", context);
+                        // Navigator.of(context)
+                        //     .push(MaterialPageRoute(
+                        //       builder: (_) => const AddNewRoleScreen(),
+                        //     ))
+                            Get.to(const AddNewRoleScreen(),
+                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) )!
                             .then((value) =>
                                 addNewRoleController.apiGetStoreRole());
                       },
@@ -217,14 +218,15 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                 .toString();
                                         await addNewRoleController
                                             .apiGetStoreRoleDetail();
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        await Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                              builder: (_) =>
-                                                  const EditRoleScreen(),
-                                            ))
-                                            // Get.to(const EditRoleScreen())!
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // await Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //       builder: (_) =>
+                                        //           const EditRoleScreen(),
+                                        //     ))
+                                            Get.to(const EditRoleScreen(),
+                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) )!
                                             .then((value) =>
                                                 addNewRoleController
                                                     .apiGetStoreRole());

@@ -71,18 +71,21 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                       return InkWell(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
-                        onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const UserProductListScreen(),
-                          ));
-                          // Get.to(const UserProductListScreen());
+                        onTap: () async{
                           storeHomeMainController.apiFeatureProductListApi(
                               categoryId: storeHomeMainController
-                                      .categoriesList[index].categoryId ??
+                                  .categoriesList[index].categoryId ??
                                   "0");
                           storeHomeMainController.category.value =
-                              storeHomeMainController.categoriesList[index];
+                          storeHomeMainController.categoriesList[index];
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const UserProductListScreen(),
+                          // ));
+                          await Get.to(const UserProductListScreen(),
+                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
+
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),

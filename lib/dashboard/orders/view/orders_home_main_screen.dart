@@ -149,7 +149,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Navigator.of(context).pop();
+                                       Get.back(id:ordersHomeMainController.pageId.value);
+                                  // Navigator.of(context).pop();
                                         Get.delete<OrdersHomeMainController>();
                                       },
                                       icon: const Icon(
@@ -376,12 +377,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   .orderStatusName == //"11"
                                   OrderStatus
                                       .returnRequest.statusName
-                                  ? Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MarkReturnOrderScreen(),
-                              )).then((value) {
-                                // ordersController
-                                //     .apiGetStoreOrderListApi();
-                              })
+                                  ?
+                              Get.to(const MarkReturnOrderScreen(),
+                                  id:ordersHomeMainController.pageId.value)
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const MarkReturnOrderScreen(),
+                              // )).then((value) {
+                              //   // ordersController
+                              //   //     .apiGetStoreOrderListApi();
+                              // })
                                   /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
@@ -401,9 +405,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   OrderStatus.cancelled
                                       .statusName
                                   ? null:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MarkOrderStatusScreen(),
-                              ));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const MarkOrderStatusScreen(),
+                              // ));
+                               Get.to(const MarkOrderStatusScreen(),
+                                  id:ordersHomeMainController.pageId.value);
 
 
                               /// ====================================

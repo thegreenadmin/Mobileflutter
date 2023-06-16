@@ -84,8 +84,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                // Get.back();
-                                Navigator.of(context).pop();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                 Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(
@@ -143,31 +143,23 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       Row(
                                         children: [
                                           InkWell(
-                                            onTap: () {
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const CartScreen(),
-                                                  ))
-                                                  .then((value) =>
+                                            onTap: () async{
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //       builder: (_) =>
+                                              //           const CartScreen(),
+                                              //     ))
+                                              await Get.to(const CartScreen(),
+                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))
+                                                  ?.then((value) =>
                                                       searchStoreUserController
                                                           .apiActiveCartApi(
                                                               context));
                                               Get.parameters["storeId"] =
                                                   searchStoreUserController
                                                       .storeIdValue.value;
-                                              // searchStoreUserController
-                                              //     .apiGetUserWalletBalance();
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context)
-                                              //     .push(MaterialPageRoute(
-                                              //   builder: (_) =>
-                                              //       const CartScreen(),
-                                              // ));
-                                              // Get.to(() => const CartScreen());
                                             },
                                             child: Stack(
                                               children: [
@@ -265,13 +257,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         top: 170,
                         right: 10,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async{
                             searchStoreUserController.searchController.clear();
-                            SharedPreferenceStorage.setData("context", context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const FilterOptionScreen(),
-                            ));
-                            // Get.to(const FilterOptionScreen());
+                            // SharedPreferenceStorage.setData("context", context);
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (_) => const FilterOptionScreen(),
+                            // ));
+                            await Get.to(const FilterOptionScreen(),
+                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,

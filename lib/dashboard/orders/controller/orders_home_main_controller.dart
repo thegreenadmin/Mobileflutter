@@ -21,6 +21,7 @@ class OrdersHomeMainController extends GetxController {
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
   RxInt selectedIndex = 0.obs;
+  RxInt pageId = 0.obs;
   RxString storeId = "".obs;
   RxString orderStatusId = "".obs;
   RxString orderId = "".obs;
@@ -56,8 +57,11 @@ class OrdersHomeMainController extends GetxController {
     apiGetStoreDetails();
     role!.value = Role.storeOwnerRoleText;
     apiGetOwnerOrderHistory();
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
     var firstDayNextMonth = DateTime(firstDayThisMonth.year,
@@ -132,9 +136,7 @@ class OrdersHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -152,10 +154,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map body = {
@@ -304,9 +307,7 @@ class OrdersHomeMainController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -321,10 +322,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -351,7 +353,8 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Navigator.of(ctx).pop();
+         Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {
@@ -367,10 +370,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -404,7 +408,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-        Navigator.of(ctx).pop();
+         Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {
@@ -420,10 +425,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map body = {
@@ -446,7 +452,8 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Navigator.of(ctx).pop();
+         Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
         // Get.back();
         update();
       } else {
@@ -462,10 +469,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -498,7 +506,8 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-        Navigator.of(ctx).pop();
+         Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
         update();
       } else {
         if (value.body['message'] != null) {
@@ -509,14 +518,15 @@ class OrdersHomeMainController extends GetxController {
   }
 
 //Mark store order ready
-  apiMarkOrderReady(BuildContext ctx) async {
+  apiMarkOrderReady() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -551,7 +561,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-        Navigator.pop(ctx);
+         Get.back(id:pageId.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -562,14 +572,15 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order ready for Shipped
-  apiMarkReadyForShipping(BuildContext ctx) async {
+  apiMarkReadyForShipping() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -605,7 +616,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-        Navigator.pop(ctx);
+         Get.back(id:pageId.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -616,14 +627,15 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order ready for Pick
-  apiMarkReadyForPickUp(BuildContext ctx) async {
+  apiMarkReadyForPickUp() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -659,7 +671,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-        Navigator.pop(ctx);
+         Get.back(id:pageId.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -670,14 +682,15 @@ class OrdersHomeMainController extends GetxController {
   }
 
   //Mark store order delivered
-  apiMarkDelivered(BuildContext ctx) async {
+  apiMarkDelivered() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     List<dynamic> orderItems = [];
 
@@ -715,7 +728,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-        Navigator.pop(ctx);
+         Get.back(id:pageId.value );
         update();
       } else {
         if (value.body['message'] != null) {

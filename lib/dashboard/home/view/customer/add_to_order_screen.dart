@@ -64,7 +64,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
-        storeHomeMainController.apiGetCartListApi(Get.context);
+        storeHomeMainController.apiGetCartListApi();
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
         if (storeHomeMainController.isFromMenu.value) {
@@ -74,8 +74,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         }
       }
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiGetCartListApi(Get.context);
-      storeHomeMainController.apiActiveCartApi(Get.context);
+      storeHomeMainController.apiGetCartListApi();
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -187,8 +187,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -319,14 +319,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Navigator.of(ctx).pop();
+                    Get.back();
+                                  // Navigator.of(ctx).pop();
                     // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
-                    SharedPreferenceStorage.setData("context", ctx);
-                    Navigator.of(ctx).push(MaterialPageRoute(
-                      builder: (_) => const PreviousOrdersScreen(),
-                    ));
-                    // Get.to(const PreviousOrdersScreen());
+                    // SharedPreferenceStorage.setData("context", ctx);
+                    // Navigator.of(ctx).push(MaterialPageRoute(
+                    //   builder: (_) => const PreviousOrdersScreen(),
+                    // ));
+                    Get.to(id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),const PreviousOrdersScreen());
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,8 +353,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Navigator.of(ctx).pop();
-                // Get.back();
+                Get.back();
+                                  // Navigator.of(ctx).pop();
                 contactAlertDialog(ctx);
               },
               child: Row(
@@ -375,8 +376,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           child: SizedBox(
             width: 150,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(ctx).pop();
+              onTap: () async{
+                Get.back();
+                                  // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
                   Utility.showToast(StringConstants.noPrivacyFoundText);
@@ -387,20 +389,20 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       storeHomeMainController.storeDetailsResponse.value.data!
                               .store!.storePages![1].storePageType ==
                           "privacy") {
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => PdfViewScreen(
-                            isShowPrivacy: true,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString())));
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (_) => PdfViewScreen(
+                    //         isShowPrivacy: true,
+                    //         url: storeHomeMainController
+                    //             .storeDetailsResponse.value.data!
+                    //             .store!.storePages!
+                    //             .first.storePageContent!.dynamicUrl.toString())));
+                    await Get.to(PdfViewScreen(
+                        isShowPrivacy: true,
+                        url: storeHomeMainController
+                            .storeDetailsResponse.value.data?.store?.storePages?.first.storePageContent?.dynamicUrl.toString()??""),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
                   }
                 }
               },
@@ -423,8 +425,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           child: SizedBox(
             width: 150,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(ctx).pop();
+              onTap: () async{
+                Get.back();
+                                  // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
                   Utility.showToast(StringConstants.noTermsFoundText);
@@ -435,20 +438,34 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       storeHomeMainController.storeDetailsResponse.value.data!
                               .store!.storePages![1].storePageType ==
                           "terms") {
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => PdfViewScreen(
-                            isShowPrivacy: false,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString())));
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (_) => PdfViewScreen(
+                    //         isShowPrivacy: false,
+                    //         url: storeHomeMainController
+                    //             .storeDetailsResponse
+                    //             .value
+                    //             .data!
+                    //             .store!
+                    //             .storePages!
+                    //             .first
+                    //             .storePageContent!
+                    //             .dynamicUrl
+                    //             .toString())));
+                    await Get.to(PdfViewScreen(
+                        isShowPrivacy: false,
+                        url: storeHomeMainController
+                            .storeDetailsResponse
+                            .value
+                            .data!
+                            .store!
+                            .storePages!
+                            .first
+                            .storePageContent!
+                            .dynamicUrl
+                            .toString()),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
                   }
                 }
               },

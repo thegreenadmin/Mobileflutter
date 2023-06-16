@@ -35,11 +35,11 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const EditStoreDetailScreen(),
-                ));
-                // Get.to(const EditStoreDetailScreen());
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => const EditStoreDetailScreen(),
+                // ));
+                Get.to(const EditStoreDetailScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -108,15 +108,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                     ownerStoresController.storeName.value;
                 Get.parameters["storeLocation"] =
                     ownerStoresController.storeLocation.value;
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const MangeProductScreen(),
-                ));
-                // Get.to(const MangeProductScreen(), arguments: {
-                //   "storeId": ownerStoresController.storeId.value,
-                //   "storeName": ownerStoresController.storeName.value,
-                //   "storeLocation": ownerStoresController.storeLocation.value,
-                // });
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => const MangeProductScreen(),
+                // ));
+                Get.to(const MangeProductScreen(),
+                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    arguments: {
+                  "storeId": ownerStoresController.storeId.value,
+                  "storeName": ownerStoresController.storeName.value,
+                  "storeLocation": ownerStoresController.storeLocation.value,
+                });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -182,14 +184,16 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 Get.parameters["storeId"] = ownerStoresController.storeId.value;
                 Get.parameters["storeName"] =
                     ownerStoresController.storeName.value;
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const RoleAndPermissionScreen(),
-                ));
-                // Get.to(const RoleAndPermissionScreen(), arguments: {
-                //   "storeId": ownerStoresController.storeId.value,
-                //   "storeName": ownerStoresController.storeName.value,
-                // });
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => const RoleAndPermissionScreen(),
+                // ));
+                Get.to(const RoleAndPermissionScreen(),
+                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    arguments: {
+                  "storeId": ownerStoresController.storeId.value,
+                  "storeName": ownerStoresController.storeName.value,
+                });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -252,18 +256,20 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                SharedPreferenceStorage.setData("context", context);
+                // SharedPreferenceStorage.setData("context", context);
                 Get.parameters["storeId"] = ownerStoresController.storeId.value;
                 Get.parameters["storeName"] =
                     ownerStoresController.storeName.value;
 
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const WorkerListScreen(),
-                ));
-                // Get.to(const WorkerListScreen(), arguments: {
-                //   "storeId": ownerStoresController.storeId.value,
-                //   "storeName": ownerStoresController.storeName.value,
-                // });
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => const WorkerListScreen(),
+                // ));
+                Get.to(const WorkerListScreen(),
+                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    arguments: {
+                  "storeId": ownerStoresController.storeId.value,
+                  "storeName": ownerStoresController.storeName.value,
+                });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),

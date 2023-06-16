@@ -174,8 +174,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -306,14 +306,16 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Navigator.of(ctx).pop();
+                    Get.back( );
+                                  // Navigator.of(ctx).pop();
                     // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
-                    SharedPreferenceStorage.setData("context", ctx);
-                    Navigator.of(ctx).push(MaterialPageRoute(
-                      builder: (_) => const PreviousOrdersScreen(),
-                    ));
-                    // Get.to(const PreviousOrdersScreen());
+                    // SharedPreferenceStorage.setData("context", ctx);
+                    // Navigator.of(ctx).push(MaterialPageRoute(
+                    //   builder: (_) => const PreviousOrdersScreen(),
+                    // ));
+                    await Get.to(const PreviousOrdersScreen(),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +341,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Navigator.of(ctx).pop();
+                Get.back( );
+                                  // Navigator.of(ctx).pop();
                 // Get.back();
                 contactAlertDailogue(ctx);
               },
@@ -362,8 +365,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           child: SizedBox(
             width: 150,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(ctx).pop();
+              onTap: () async{
+                Get.back( );
+                                  // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
                   Utility.showToast(StringConstants.noPrivacyFoundText);
@@ -374,20 +378,34 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                       storeHomeMainController.storeDetailsResponse.value.data!
                               .store!.storePages![1].storePageType ==
                           "privacy") {
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => PdfViewScreen(
-                            isShowPrivacy: true,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString())));
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (_) => PdfViewScreen(
+                    //         isShowPrivacy: true,
+                    //         url: storeHomeMainController
+                    //             .storeDetailsResponse
+                    //             .value
+                    //             .data!
+                    //             .store!
+                    //             .storePages!
+                    //             .first
+                    //             .storePageContent!
+                    //             .dynamicUrl
+                    //             .toString())));
+                    await Get.to(PdfViewScreen(
+                        isShowPrivacy: true,
+                        url: storeHomeMainController
+                            .storeDetailsResponse
+                            .value
+                            .data!
+                            .store!
+                            .storePages!
+                            .first
+                            .storePageContent!
+                            .dynamicUrl
+                            .toString()),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
                   }
                 }
               },
@@ -410,8 +428,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           child: SizedBox(
             width: 150,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(ctx).pop();
+              onTap: () async{
+                Get.back( );
+                                  // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
                   Utility.showToast(StringConstants.noTermsFoundText);
@@ -422,20 +441,34 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                       storeHomeMainController.storeDetailsResponse.value.data!
                               .store!.storePages![1].storePageType ==
                           "terms") {
-                    SharedPreferenceStorage.setData("context", context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => PdfViewScreen(
-                            isShowPrivacy: false,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString())));
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (_) => PdfViewScreen(
+                    //         isShowPrivacy: false,
+                    //         url: storeHomeMainController
+                    //             .storeDetailsResponse
+                    //             .value
+                    //             .data!
+                    //             .store!
+                    //             .storePages!
+                    //             .first
+                    //             .storePageContent!
+                    //             .dynamicUrl
+                    //             .toString())));
+                    await Get.to(PdfViewScreen(
+                        isShowPrivacy: false,
+                        url: storeHomeMainController
+                            .storeDetailsResponse
+                            .value
+                            .data!
+                            .store!
+                            .storePages!
+                            .first
+                            .storePageContent!
+                            .dynamicUrl
+                            .toString()),
+                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
                   }
                 }
               },
@@ -573,23 +606,23 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                   await storeHomeMainController
                                                       .apiGetShopProductDetailApi();
                                                   await storeHomeMainController
-                                                      .apiGetCartListApi(
-                                                          context);
-                                                  SharedPreferenceStorage
-                                                      .setData(
-                                                          "context", context);
+                                                      .apiGetCartListApi();
+                                                  // SharedPreferenceStorage
+                                                  //     .setData(
+                                                  //         "context", context);
                                                   Get.parameters['isFromFav'] =
                                                       "false";
                                                   Get.parameters["isFromHome"] =
                                                       "false";
                                                   Get.parameters['isFromMenu'] =
                                                       "true";
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const AddToOrderScreen(),
-                                                  ));
-                                                  // Get.to(const AddToOrderScreen());
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //   builder: (_) =>
+                                                  //       const AddToOrderScreen(),
+                                                  // ));
+                                                  await Get.to(const AddToOrderScreen(),
+                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                                 },
                                                 child: Column(
                                                   crossAxisAlignment:
@@ -800,8 +833,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 "0",
                         orderBy: "2",
                         orderType: "2");
-                    Navigator.of(contx).pop();
-                    // Get.back();
+                    // Navigator.of(contx).pop();
+                    Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -832,8 +865,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     storeHomeMainController.category.value.categoryId ?? "0",
                 orderBy: "2",
               );
-              Navigator.of(contx).pop();
-              // Get.back();
+              // Navigator.of(contx).pop();
+              Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

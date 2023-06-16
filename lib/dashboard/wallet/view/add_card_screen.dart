@@ -164,7 +164,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
                                           okayTap: () async {
-                                        Navigator.pop(Get.context!);
+                                            Get.back(id:addCardController.pageId.value);
+                                        // Navigator.pop(Get.context!);
                                         addCardController.apiDeleteCard(
                                             userStripeCardId: addCardController
                                                     .cardList[index]
@@ -201,7 +202,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddCardDetailScreen(),
                 //     ))
-                    Get.to(AddCardDetailScreen(),id:addCardController.pageId.value)!
+                    Get.to(const AddCardDetailScreen(),id:addCardController.pageId.value)!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

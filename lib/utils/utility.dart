@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import "package:google_maps_webservice/geocoding.dart";
 
@@ -99,7 +100,8 @@ class Utility {
                 children: [
                   InkWell(
                     onTap: () {
-                      cancelTap ?? Navigator.pop(_);
+                      // cancelTap ?? Navigator.pop(_);
+                      cancelTap ??Get.back();
                     },
                     child: Container(
                       height: WidgetConstants.screenHeight * 0.08,
@@ -122,9 +124,9 @@ class Utility {
                   ),
                   InkWell(
                     onTap: () {
-                      okayTap!() ?? Navigator.pop(_);
-                      // Get.back();
-                      // await apiPlaceOrder(context);
+                      // okayTap!() ?? Navigator.pop(_);
+                      okayTap!() ?? Get.back();
+
                     },
                     child: Container(
                       height: WidgetConstants.screenHeight * 0.08,
@@ -200,9 +202,9 @@ class Utility {
             height25SizedBox,
             InkWell(
               onTap: () {
-                okayTap ?? Navigator.pop(_);
-                // Get.back();
-                // await apiPlaceOrder(context);
+                okayTap ??Get.back();
+                // okayTap ?? Navigator.pop(_);
+
               },
               child: Container(
                 height: 50.0,
@@ -364,7 +366,8 @@ class Utility {
                 alignment: Alignment.topRight,
                 child: InkWell(
                   onTap: () {
-                    Navigator.pop(contextt);
+                    Get.back();
+                    // Navigator.pop(contextt);
                   },
                   child: const Icon(
                     Icons.clear,
@@ -398,7 +401,8 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                        Navigator.pop(contextt);
+                        Get.back();
+                        // Navigator.pop(contextt);
                         onGalleryClick!();
                       },
                     ),
@@ -418,7 +422,8 @@ class Utility {
                         ],
                       ),
                       onTap: () async {
-                        Navigator.pop(contextt);
+                        Get.back();
+                        // Navigator.pop(contextt);
                         onCameraClick!();
                       },
                     )

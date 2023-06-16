@@ -295,23 +295,24 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () {
-                                          SharedPreferenceStorage.setData(
-                                              "context", context);
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (_) => ImagePreviewScreen(
-                                              image: messageList[index]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
-                                            ),
-                                          ));
-                                          // Get.to(ImagePreviewScreen(
-                                          //   image: messageList[index]
-                                          //       .image!
-                                          //       .dynamicUrl
-                                          //       .toString(),
+                                          // SharedPreferenceStorage.setData(
+                                          //     "context", context);
+                                          // Navigator.of(context)
+                                          //     .push(MaterialPageRoute(
+                                          //   builder: (_) => ImagePreviewScreen(
+                                          //     image: messageList[index]
+                                          //         .image!
+                                          //         .dynamicUrl
+                                          //         .toString(),
+                                          //   ),
                                           // ));
+                                          Get.to(ImagePreviewScreen(
+                                            image: messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                          ),
+                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -437,23 +438,23 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () {
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) => ImagePreviewScreen(
-                                            image: messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
-                                          ),
-                                        ));
-                                        // Get.to(ImagePreviewScreen(
-                                        //   image: messageList[index]
-                                        //       .image!
-                                        //       .dynamicUrl
-                                        //       .toString(),
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) => ImagePreviewScreen(
+                                        //     image: messageList[index]
+                                        //         .image!
+                                        //         .dynamicUrl
+                                        //         .toString(),
+                                        //   ),
                                         // ));
+                                        Get.to(ImagePreviewScreen(
+                                          image: messageList[index]
+                                              .image!
+                                              .dynamicUrl
+                                              .toString(),
+                                        ),id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ));
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -625,8 +626,8 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

@@ -77,7 +77,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                           ? InkWell(
                                               onTap: () {
                                                 // Get.back();
-                                                Navigator.of(context).pop();
+                                               Get.back(id:walletController.pageId.value);
+                                  // Navigator.of(context).pop();
                                               },
                                               child: const Icon(
                                                 Icons.arrow_back,
@@ -297,14 +298,15 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
+                                 /* SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
                                         builder: (_) =>
                                             const AddMoneyToWallet(),
-                                      ))
-                                      // Get.to(const AddMoneyToWallet())!
+                                      ))*/
+                                      Get.to(const AddMoneyToWallet(),
+                                        id:walletController.pageId.value ,)!
                                       .then((value) => walletController
                                           .apiGetUserWalletBalance());
                                 },
@@ -354,11 +356,12 @@ class _WalletScreenState extends State<WalletScreen> {
                   flex: 3,
                   child: InkWell(
                     onTap: () {
-                      SharedPreferenceStorage.setData("context", context);
+                      /*SharedPreferenceStorage.setData("context", context);
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const ManageWalletScreen(),
-                      ));
-                      // Get.to(const ManageWalletScreen());
+                      ));*/
+                      Get.to(const ManageWalletScreen(),
+                        id:walletController.pageId.value,);
                     },
                     child: Column(
                       children: [

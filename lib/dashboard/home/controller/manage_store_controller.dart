@@ -62,6 +62,7 @@ class ManageStoreController extends GetxController {
   RxString lastProductContent = "".obs;
   RxString lastProductLink = "".obs;
   RxString quantityValue = "".obs;
+  RxInt pageId = 0.obs;
   InputAddProduct inputData = InputAddProduct();
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<Categories> categoriesList = <Categories>[].obs;
@@ -128,8 +129,11 @@ class ManageStoreController extends GetxController {
     }
     apiGetCategoriesList();
     apiGetQuantityList();
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
     {"isSelected": false, "day": "Monday"},
     {"isSelected": false, "day": "Tuesday"},
@@ -264,9 +268,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -302,9 +304,7 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -339,9 +339,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -405,10 +403,11 @@ class ManageStoreController extends GetxController {
           order: 1)
     ];
     inputData.productImages ??= [];
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
     debugPrint(
@@ -424,8 +423,10 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Navigator.of(cntx).pop();
-        Navigator.of(cntx).pop();
+         Get.back(id:pageId.value );
+         Get.back(id:pageId.value );
+        // Navigator.of(cntx).pop();
+        // Navigator.of(cntx).pop();
         await apiGetCategoriesList();
         update();
         productNameTextController.clear();
@@ -448,9 +449,7 @@ class ManageStoreController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -466,10 +465,11 @@ class ManageStoreController extends GetxController {
     debugPrint(
       "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map body = {
       "q": "",
@@ -504,9 +504,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -522,10 +520,11 @@ class ManageStoreController extends GetxController {
     debugPrint(
       "GET PRODUCTS DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -624,9 +623,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -640,10 +637,11 @@ class ManageStoreController extends GetxController {
   Future apiUpdateStoreProductDetail(BuildContext ctxx) async {
     debugPrint(
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     inputData.storeId = int.parse(storeId.value);
@@ -764,13 +762,12 @@ class ManageStoreController extends GetxController {
         if(Get.parameters['isFromHome']=="true"){
           Get.delete<ManageStoreController>();
         }
-        Navigator.of(ctxx).pop();
+         Get.back(id:pageId.value );
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(ctxx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -784,10 +781,11 @@ class ManageStoreController extends GetxController {
   Future apiDeleteProduct(BuildContext buildCtxt) async {
     debugPrint(
         "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
     debugPrint("DELETE PRODUCT BODY ************* $data");
@@ -811,9 +809,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -827,10 +823,11 @@ class ManageStoreController extends GetxController {
   Future apiDeleteCategory() async {
     debugPrint(
         "DELETE CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
     debugPrint("DELETE CATEGORY BODY ************* $data");
@@ -852,9 +849,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

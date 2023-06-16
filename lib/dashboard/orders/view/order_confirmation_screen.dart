@@ -28,9 +28,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ordersController.firstName?.value =
-          SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+          SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
       ordersController.lastName?.value =
-          SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+          SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
       if ( Get.parameters['isFromNotification'] != "false") {
         ordersController.isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
@@ -80,10 +80,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     return WillPopScope(
       onWillPop: () {
         if( ordersController.isHome.value){
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
+         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
         }else{
-          Navigator.of(context).pop();
+         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
         }
 
         return Future.value(true);
@@ -139,7 +142,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                          Navigator.of(context).pop();
+                                         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -625,16 +629,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
                         ),
-                        onTap: () {
+                        onTap: ()async {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
+                          await Get.to(const StoreHomeMainScreen(),
+                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const StoreHomeMainScreen(),
+                          // ));
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const StoreHomeMainScreen(),
-                          ));
-                          // Navigator.of(rContext)
-                          //     .popUntil((route) => route.isFirst);
-                          // Get.offAll(BottomNavigation());
                         },
                         height: 50,
                         width: WidgetConstants.screenWidth * 0.5,

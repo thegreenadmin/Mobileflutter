@@ -10,7 +10,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class EditWorkerScreen extends StatefulWidget {
   const EditWorkerScreen({super.key});
 
@@ -46,8 +46,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   addNewWorkerController.formKey.currentState
                                       ?.reset();
                                   addNewWorkerController.resetForm();
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

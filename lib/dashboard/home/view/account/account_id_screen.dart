@@ -20,7 +20,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        Get.back(id:accountController.pageId.value);
         return false;
       },
       child: Scaffold(
@@ -43,7 +43,8 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id:accountController.pageId.value);
-                                    // Navigator.of(context).pop();
+                                    //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

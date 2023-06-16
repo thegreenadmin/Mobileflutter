@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class AddCardDetailScreen extends StatefulWidget {
   const AddCardDetailScreen({
@@ -60,8 +61,8 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                           Get.back(id:addCardController.pageId.value);
+                                  // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

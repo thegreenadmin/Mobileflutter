@@ -25,7 +25,7 @@ class OffersController extends GetxController {
 
   RxBool? isLoading = false.obs;
   RxString? role = "".obs;
-
+  RxInt pageId = 0.obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
@@ -50,13 +50,14 @@ class OffersController extends GetxController {
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }
     firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+        SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
     lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+        SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
     getCurrentLocation();
   }
 
   getCurrentLocation() async {
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
@@ -77,10 +78,11 @@ class OffersController extends GetxController {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -108,9 +110,7 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -135,10 +135,11 @@ class OffersController extends GetxController {
           "1000" +
           "&page=1&page_size=20",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -164,9 +165,7 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -180,10 +179,11 @@ class OffersController extends GetxController {
   Future apiDeleteOffer(BuildContext context) async {
     debugPrint(
         "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     deleteOfferRequestModel.storeId = int.parse(storeId!.value);
     deleteOfferRequestModel.offerId = int.parse(offerId!.value);
@@ -210,9 +210,7 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

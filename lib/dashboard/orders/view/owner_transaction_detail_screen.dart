@@ -59,8 +59,8 @@ class _OwnerTransactionDetailScreenState
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:transactionDetailController.pageId.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

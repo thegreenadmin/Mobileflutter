@@ -5,6 +5,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class SelectMembershipPlan extends StatefulWidget {
@@ -40,7 +41,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               // Get.back();
-                              Navigator.of(context).pop();
+                             Get.back(id:accountController.pageId.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

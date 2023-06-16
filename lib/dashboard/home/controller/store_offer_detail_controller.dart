@@ -14,7 +14,7 @@ class StoreOfferDetailController extends GetxController {
   RxString storeId = "".obs;
   RxString offerId = "".obs;
   RxBool isLoading = false.obs;
-
+  RxInt pageId = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -25,13 +25,15 @@ class StoreOfferDetailController extends GetxController {
 
   //Get store offer detail
   Future apiGetStoreOffersDetail() async {
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
     isLoading.value = true;
     debugPrint("STORE FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {
       "q": "",
@@ -72,9 +74,7 @@ class StoreOfferDetailController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){

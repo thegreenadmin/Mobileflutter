@@ -9,7 +9,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import '../../../../utils/sizedbox_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({super.key});
 
@@ -52,7 +52,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
-                                Navigator.of(context).pop();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,

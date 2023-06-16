@@ -64,7 +64,7 @@ class AddNewWorkerController extends GetxController {
   RxString phoneNumber = "".obs;
   RxString storeOpeningTime = "".obs;
   RxString storeClosingTime = "".obs;
-
+  RxInt pageId = 0.obs;
   Rx<XFile> categoryImage = XFile("").obs;
   late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
@@ -87,8 +87,11 @@ class AddNewWorkerController extends GetxController {
     apiGetWorkerList();
     apiGetRoleList();
     apiGetParticularStore();
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -115,10 +118,11 @@ class AddNewWorkerController extends GetxController {
 
   // Add Worker Api
   Future<dynamic> apiAddWorker(BuildContext contextt) async {
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     add_worker.AddWorkerRequest addWorkerRequest =
         add_worker.AddWorkerRequest();
@@ -175,13 +179,11 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-        Navigator.of(contextt).pop();
+         Get.back(id:pageId.value );
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
-        Navigator.of(contextt).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+         Get.to(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value?.body['message'] ?? "");
@@ -195,10 +197,11 @@ class AddNewWorkerController extends GetxController {
     debugPrint(
         "EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
 
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
     editWorkerRequest.storeId = int.parse(storeId.value);
@@ -303,13 +306,11 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-        Navigator.of(contx).pop();
+         Get.back(id:pageId.value );
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(contx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -325,10 +326,11 @@ class AddNewWorkerController extends GetxController {
     debugPrint(
         "deleteWithHeadersApi WORKER***${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
 
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value),
@@ -350,9 +352,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
@@ -368,7 +368,8 @@ class AddNewWorkerController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back();
-      // Navigator.of(context).pop();
+      // Get.back(id:pageId.value );
+                                  // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -542,9 +543,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -579,9 +578,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -616,9 +613,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -701,9 +696,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {

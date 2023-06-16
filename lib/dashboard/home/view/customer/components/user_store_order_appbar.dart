@@ -75,7 +75,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                 // Get.back();
                               },
                               icon: const Icon(
@@ -115,20 +116,21 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                           Row(
                                             children: [
                                               InkWell(
-                                                onTap: () {
+                                                onTap: () async{
                                                   storeHomeMainController
                                                       .apiGetUserWalletBalance();
-                                                  SharedPreferenceStorage
-                                                      .setData(
-                                                          "context", context);
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const CartScreen(),
-                                                  )).then((value) =>
+                                                  // SharedPreferenceStorage
+                                                  //     .setData(
+                                                  //         "context", context);
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //   builder: (_) =>
+                                                  //       const CartScreen(),
+                                                  // ))
+                                                  await Get.to(const CartScreen(),
+                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))?.then((value) =>
                                                       storeHomeMainController
-                                                          .apiActiveCartApi(
-                                                          context));
+                                                          .apiActiveCartApi());
                                                 },
                                                 child: Stack(
                                                   children: [

@@ -124,8 +124,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              // Get.back();
-                              Navigator.of(context).pop();
+                             Get.back(id:addCardController.pageId.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -492,21 +492,24 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                   AppColors.primary
                                 ],
                               ),
-                              onTap: () {
-                                SharedPreferenceStorage
-                                    .setData("context",
-                                    context);
-                                Navigator.of(context)
-                                    .push(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                      const AddCardDetailScreen(),
-                                    ))
-                                    .then((value) {
+                              onTap: () async{
+                                // SharedPreferenceStorage
+                                //     .setData("context",
+                                //     context);
+                                // Navigator.of(context)
+                                //     .push(
+                                //     MaterialPageRoute(
+                                //       builder: (_) =>
+                                //       const AddCardDetailScreen(),
+                                //     ))
+                                await Get.to(const AddCardDetailScreen(),
+                                    id:addCardController.pageId.value)
+                                     ?.then((value) {
                                   addCardController
                                       .apiGetCardList(
                                       context);
                                 });
+
                               },
                               height: 50,
                               width: WidgetConstants

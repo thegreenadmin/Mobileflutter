@@ -42,8 +42,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                // Get.back();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -101,11 +101,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      SharedPreferenceStorage.setData("context", context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const AddNewProductScreen(),
-                      ));
-                      // Get.to(const AddNewProductScreen());
+                      // SharedPreferenceStorage.setData("context", context);
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //   builder: (_) => const AddNewProductScreen(),
+                      // ));
+                      Get.to(const AddNewProductScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -229,13 +229,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               .storeProductList[index]
                                               .productId ?? "";
                                   await manageStoreController.apiGetProductDetails();
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  await Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                    builder: (_) => const EditProductScreen(),
-                                  ))
-                                      // Get.to(() => const EditProductScreen())!
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // await Navigator.of(context)
+                                  //     .push(MaterialPageRoute(
+                                  //   builder: (_) => const EditProductScreen(),
+                                  // ))
+                                      Get.to(() => const EditProductScreen(),
+                                          id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();

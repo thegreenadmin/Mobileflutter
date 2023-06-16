@@ -4,6 +4,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class ImagePreviewScreen extends StatefulWidget {
   final String image;
@@ -38,7 +39,8 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                     // Get.back();
                                   },
                                   icon: const Icon(

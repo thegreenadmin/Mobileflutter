@@ -15,7 +15,7 @@ class NotificationListController extends GetxController {
   late NotificationListModel notificationListModel = NotificationListModel();
   RxList<Notifications> notificationList = <Notifications>[].obs;
   RxString? role = "".obs;
-
+  RxInt pageId = 0.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
 
@@ -30,17 +30,21 @@ class NotificationListController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetNotificationList(true);
     }
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   //Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {
     isLoading.value = true;
     debugPrint("GET NOTIFICATION LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=20");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -61,9 +65,7 @@ class NotificationListController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {

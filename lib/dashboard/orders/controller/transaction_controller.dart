@@ -36,9 +36,11 @@ class TransactionController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderTransactionHistory();
     }
-    pageId.value = SharedPreferenceStorage.getData("pageId");
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
     var firstDayNextMonth = DateTime(firstDayThisMonth.year,
@@ -273,10 +275,11 @@ class TransactionController extends GetxController {
           ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
           : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -318,10 +321,11 @@ class TransactionController extends GetxController {
           ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}-$currentMonth-01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
           : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

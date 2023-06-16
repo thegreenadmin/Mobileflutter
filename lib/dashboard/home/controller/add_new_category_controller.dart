@@ -29,10 +29,11 @@ class AddNewCategoryController extends GetxController {
   String? imageData;
   bool dataLoaded = false;
   RxBool isFeaturedTypeSelected = false.obs;
-
+  RxInt pageId = 0.obs;
   @override
   void onInit() {
     super.onInit();
+
     debugPrint("storeName:------>>>>>>");
     debugPrint(Get.parameters["storeName"]);
     debugPrint(Get.parameters["storeId"]);
@@ -44,6 +45,10 @@ class AddNewCategoryController extends GetxController {
     if (categoryId.value.isNotEmpty) {
       apiGetCategoryDetail();
     }
+    getPage();
+  }
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
   }
 
   bool validateAndSave() {
@@ -99,7 +104,8 @@ class AddNewCategoryController extends GetxController {
   Future<void> showSelectionDialog(BuildContext ncontext) {
     return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
       // Get.back();
-      // Navigator.of(context).pop();
+      // Get.back(id:pageId.value );
+                                  // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -114,7 +120,8 @@ class AddNewCategoryController extends GetxController {
       }
     }, onCameraClick: () async {
       // Get.back();
-      // Navigator.of(context).pop();
+      // Get.back(id:pageId.value );
+                                  // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -181,10 +188,11 @@ class AddNewCategoryController extends GetxController {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("ADD CATEGORY headers********** $headers");
     debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
@@ -219,7 +227,8 @@ class AddNewCategoryController extends GetxController {
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkfromServer.value = "";
         // Get.back();
-        Navigator.of(nContext).pop();
+        // Navigator.of(nContext).pop();
+         Get.back(id:pageId.value );
         // Navigator.of(Get.context!).pop();
       } else {
         if (value.body['message'] != null) {
@@ -257,9 +266,8 @@ class AddNewCategoryController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
+
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -273,10 +281,11 @@ class AddNewCategoryController extends GetxController {
   Future apiUpdateCategory(BuildContext contextt) async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),
@@ -300,15 +309,14 @@ class AddNewCategoryController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-        Navigator.of(contextt).pop();
+         Get.back(id:pageId.value );
+        // Navigator.of(contextt).pop();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(contextt).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

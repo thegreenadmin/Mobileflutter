@@ -21,6 +21,7 @@ class TransactionDetailController extends GetxController {
   RxString? storeId = "".obs;
   RxString? storeWalletTransactionId = "".obs;
   RxInt selectedIndex = 0.obs;
+  RxInt pageId = 0.obs;
   RxString? orderId = "".obs;
   RxString? customerName = "".obs;
   RxString? orderDate = "".obs;
@@ -41,8 +42,11 @@ class TransactionDetailController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerTransactionDetail();
     }
+    getPage();
   }
-
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
     var firstDayNextMonth = DateTime(firstDayThisMonth.year,
@@ -123,10 +127,11 @@ class TransactionDetailController extends GetxController {
     debugPrint("OWNER TRANSACTION DETAIL URL **********");
     debugPrint(
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

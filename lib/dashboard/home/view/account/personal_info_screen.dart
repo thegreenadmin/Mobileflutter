@@ -22,7 +22,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        Get.back(id:accountController.pageId.value);
         return false;
       },
       child: Scaffold(
@@ -45,8 +45,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(id:0);
-                                    // Navigator.of(context).pop();
+                                  Get.back(id:accountController.pageId.value);
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

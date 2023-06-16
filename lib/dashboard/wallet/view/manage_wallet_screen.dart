@@ -81,8 +81,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                           Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -459,18 +459,20 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       SharedPreferenceStorage.setData("context", context);
 
                       walletController.role!.value == Role.customerRoleText
-                          ? Navigator.of(context)
+                          ? /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const AddCardScreen(),
-                              ))
-                              // Get.to(const AddCardScreen())!
+                              ))*/
+                              Get.to(const AddCardScreen(),
+                               id:walletController.pageId.value,)!
                               .then((value) =>
                                   walletController.apiGetCardList(context))
-                          : Navigator.of(context)
+                          : /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const CreateOwnerBankAccount(),
-                              ))
-                              // Get.to(const CreateOwnerBankAccount())!
+                              ))*/
+                              Get.to(const CreateOwnerBankAccount(),
+                               id:walletController.pageId.value,)!
                               .then((value) =>
                                   walletController.apiGetBankAccountList());
                     },
@@ -509,7 +511,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                             //   )
                             : InkWell(
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
+                                 /* SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
@@ -517,8 +519,14 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                               isFrom: "connectAccount",
                                               url: Uri.parse(walletController
                                                       .accountLink.value)
-                                                  .toString())))
-                                      .then((value) {
+                                                  .toString())))*/
+                                  Get.to(WebviewPageScreen(
+                                      isFrom: "connectAccount",
+                                      url: Uri.parse(walletController
+                                          .accountLink.value)
+                                          .toString()),
+                                     id:walletController.pageId.value)
+                                      ?.then((value) {
                                     walletController.apiGetAccountDetails();
                                     walletController.apiGetBankAccountList();
                                   });
@@ -559,16 +567,17 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                   ? height0SizedBox
                   : InkWell(
                       onTap: () {
-                        SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                          builder: (_) => const PayOutScreen(),
-                        ))
-                            .then((value) {
+                        // SharedPreferenceStorage.setData("context", context);
+                        // Navigator.of(context)
+                        //     .push(MaterialPageRoute(
+                        //   builder: (_) => const PayOutScreen(),
+                        // ))
+                        Get.to(const PayOutScreen(),
+                           id:walletController.pageId.value)
+                            ?.then((value) {
                           walletController.apiGetBankAccountList();
                           walletController.apiGetAccountDetails();
                         });
-                        // Get.to(const PayOutScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -697,7 +706,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okay:
                                                     StringConstants.deleteText,
                                                 okayTap: () async {
-                                              Navigator.pop(Get.context!);
+                                                  Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:

@@ -243,17 +243,18 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     await storeHomeMainController
                                         .apiGetShopProductDetailApi();
                                     await storeHomeMainController
-                                        .apiGetCartListApi(context);
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
+                                        .apiGetCartListApi();
+                                    // SharedPreferenceStorage.setData(
+                                    //     "context", context);
                                     Get.parameters['isFromFav'] = "false";
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["isFromMenu"] = "false";
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) => const AddToOrderScreen(),
-                                    ));
-                                    // Get.to(const AddToOrderScreen());
+                                    // Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (_) => const AddToOrderScreen(),
+                                    // ));
+                                    await Get.to(const AddToOrderScreen(),
+                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                   },
                                   child: Container(
                                     height: 150,

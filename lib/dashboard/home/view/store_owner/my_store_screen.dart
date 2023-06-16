@@ -68,16 +68,17 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     onTap: () {
                                       Get.parameters["isFrom"] =
                                           StringConstants.addOfferText;
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) => const AddOfferScreen(),
-                                      ))
-                                          // Get.to(const AddOfferScreen(), arguments: {
-                                          //   "isFrom": StringConstants.addOfferText,
-                                          // })?
-                                          .then((v) {
+                                      // SharedPreferenceStorage.setData(
+                                      //     "context", context);
+                                      // Navigator.of(context)
+                                      //     .push(MaterialPageRoute(
+                                      //   builder: (_) => const AddOfferScreen(),
+                                      // ))
+                                          Get.to(const AddOfferScreen(),
+                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                                              arguments: {
+                                            "isFrom": StringConstants.addOfferText,
+                                          })?.then((v) {
                                         ownerStoresController.getApiData();
                                       });
                                     },

@@ -85,6 +85,11 @@ class OtpVerificationController extends GetxController {
         otpTextController.clear();
         SharedPreferenceStorage.removeData("token");
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
+        debugPrint("SharedPreferenceStorage: token: ------ ");
+        var token = await SharedPreferenceStorage.getData("token");
+        debugPrint(token.toString());
+
+
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(

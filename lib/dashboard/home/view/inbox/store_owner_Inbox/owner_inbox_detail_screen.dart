@@ -406,24 +406,26 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                             null
                                     ? height0SizedBox
                                     : InkWell(
-                                        onTap: () {
-                                          SharedPreferenceStorage.setData(
-                                              "context", context);
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (_) => ImagePreviewScreen(
-                                              image: messageList[index]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
-                                            ),
-                                          ));
-                                          // Get.to(ImagePreviewScreen(
-                                          //   image: messageList[index]
-                                          //       .image!
-                                          //       .dynamicUrl
-                                          //       .toString(),
+                                        onTap: () async{
+                                          // SharedPreferenceStorage.setData(
+                                          //     "context", context);
+                                          // Navigator.of(context)
+                                          //     .push(MaterialPageRoute(
+                                          //   builder: (_) => ImagePreviewScreen(
+                                          //     image: messageList[index]
+                                          //         .image!
+                                          //         .dynamicUrl
+                                          //         .toString(),
+                                          //   ),
                                           // ));
+                                          await Get.to(ImagePreviewScreen(
+                                            image: messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                          ),
+                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -547,24 +549,25 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           null
                                   ? height0SizedBox
                                   : InkWell(
-                                      onTap: () {
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) => ImagePreviewScreen(
-                                            image: messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
-                                          ),
-                                        ));
-                                        // Get.to(ImagePreviewScreen(
-                                        //   image: messageList[index]
-                                        //       .image!
-                                        //       .dynamicUrl
-                                        //       .toString(),
+                                      onTap: () async{
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) => ImagePreviewScreen(
+                                        //     image: messageList[index]
+                                        //         .image!
+                                        //         .dynamicUrl
+                                        //         .toString(),
+                                        //   ),
                                         // ));
+                                        await Get.to(ImagePreviewScreen(
+                                          image: messageList[index]
+                                              .image!
+                                              .dynamicUrl
+                                              .toString(),
+                                        ),
+                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -736,7 +739,8 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   // Get.back();
                                 },
                                 icon: const Icon(

@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -39,8 +40,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  // Get.back();
-                                  Navigator.of(context).pop();
+                                  Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

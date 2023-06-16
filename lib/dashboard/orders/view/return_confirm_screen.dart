@@ -7,7 +7,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class ReturnConfirmOrderScreen extends StatefulWidget {
   const ReturnConfirmOrderScreen({super.key});
 
@@ -40,8 +40,8 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:ordersHomeMainController.pageId.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -218,7 +218,8 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                           alignment: Alignment.topRight,
                                           child: InkWell(
                                             onTap: () {
-                                              Navigator.pop(_);
+                                              Get.back();
+                                              // Navigator.pop(_);
                                             },
                                             child: const Icon(
                                               Icons.clear,

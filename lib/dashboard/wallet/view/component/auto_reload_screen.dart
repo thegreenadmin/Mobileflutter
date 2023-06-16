@@ -63,8 +63,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          // Get.back();
-                          Navigator.of(context).pop();
+                         Get.back(id:addCardController.pageId.value);
+                                  // Navigator.of(context).pop();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -1020,15 +1020,15 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                               ],
                                             ),
                                             onTap: () {
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const AddCardDetailScreen(),
-                                              ));
-                                              // Get.to(
-                                              //     () => AddCardDetailScreen());
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (_) =>
+                                              //       const AddCardDetailScreen(),
+                                              // ));
+                                              Get.to(
+                                                  () => const AddCardDetailScreen(),id:addCardController.pageId.value,);
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *

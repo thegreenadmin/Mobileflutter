@@ -14,7 +14,17 @@ class ContactUsController extends GetxController {
   TextEditingController messageTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
+  RxInt pageId = 0.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getPage();
+  }
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -67,8 +77,8 @@ class ContactUsController extends GetxController {
         emailTextController.clear();
         subjectTextController.clear();
         messageTextController.clear();
-        // Get.back();
-        Navigator.of(ctx).pop();
+        Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {

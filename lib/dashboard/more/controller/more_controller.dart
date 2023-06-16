@@ -9,12 +9,16 @@ class MoreController extends GetxController {
   RxString? role = "".obs;
   RxString email = "".obs;
   RxString phone = "".obs;
-
+  RxInt pageId = 0.obs;
   @override
   void onInit() {
     super.onInit();
-    firstName?.value = SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
-    lastName?.value = SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
-    role?.value = SharedPreferenceStorage.getData(Role.role.value)??"";
+    getData();
+  }
+  getData()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText).toString()??"";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText).toString()??"";
+    role?.value =await SharedPreferenceStorage.getData(Role.role.value).toString()??"";
   }
 }

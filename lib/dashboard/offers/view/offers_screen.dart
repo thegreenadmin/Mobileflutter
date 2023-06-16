@@ -47,12 +47,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () async {
-                                            // await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-                                            //   builder: (_) =>  BottomNavigation(),
-                                            // ));
-                                            Navigator.of(Get.context!).popUntil(
-                                                (route) => route.isFirst);
-                                            // Get.offAll(BottomNavigation());
+                                            Get.until((route) => route.isFirst,id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                            // Navigator.of(Get.context!).popUntil(
+                                            //     (route) => route.isFirst);
                                           },
                                           child: const Icon(
                                             Icons.arrow_back,
@@ -124,15 +121,17 @@ class _OffersScreenState extends State<OffersScreen> {
                             onTap: () {
                               Get.parameters["isFrom"] =
                                   StringConstants.addOfferText;
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                builder: (_) => const AddOfferScreen(),
-                              ))
-                                  // Get.to(const AddOfferScreen(), arguments: {
-                                  //   "isFrom": StringConstants.addOfferText,
-                                  // })!
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(
+                              //   builder: (_) => const AddOfferScreen(),
+                              // ))
+                                  Get.to(const AddOfferScreen(),
+                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                      arguments: {
+                                    "isFrom": StringConstants.addOfferText,
+                                  })!
                                   .then((value) {
                                 offersController.role!.value ==
                                         Role.customerRoleText
@@ -473,7 +472,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                       AlertStringConstants.areYouSureText,
                                       okay: StringConstants.deleteText,
                                       okayTap: () async {
-                                    Navigator.pop(Get.context!);
+                                        Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                    // Navigator.pop(Get.context!);
                                     offersController.storeId!.value =
                                         offersController
                                                 .getOwnerOfferlist[index]
@@ -629,21 +629,22 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                   index]
                                                               .offerId ??
                                                           "";
-                                                  SharedPreferenceStorage
-                                                      .setData(
-                                                          "context", context);
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const EditOfferScreen(),
-                                                  ))
-                                                      /*Get.to(const EditOfferScreen(),
+                                                  // SharedPreferenceStorage
+                                                  //     .setData(
+                                                  //         "context", context);
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //   builder: (_) =>
+                                                  //       const EditOfferScreen(),
+                                                  // ))
+                                                      Get.to(const EditOfferScreen(),
+                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
                                                               arguments: {
                                                             "isFrom":StringConstants.editOfferText,
                                                             "storeId": offersController.getOwnerOfferlist[
                                                                         index].store!.storeId ??"",
                                                             "offerId": offersController.getOwnerOfferlist[index].offerId ??""
-                                                          })!*/
+                                                          })!
                                                       .then((value) {
                                                     offersController
                                                                 .role!.value ==

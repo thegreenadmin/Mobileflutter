@@ -7,7 +7,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class CreateOwnerBankAccount extends StatefulWidget {
   const CreateOwnerBankAccount({super.key});
 
@@ -36,8 +36,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                           Get.back(id:walletController.pageId.value);
+                                  // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

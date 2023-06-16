@@ -87,7 +87,7 @@ class OwnerStoresController extends GetxController {
   RxInt countryIndex = 0.obs;
   RxInt selectedIndex = 0.obs;
   RxInt radioGroupValue = 0.obs;
-
+  RxInt pageId = 0.obs;
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
 
@@ -150,9 +150,9 @@ class OwnerStoresController extends GetxController {
     super.onInit();
     selectedIndex.value = 0;
     firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+        SharedPreferenceStorage.getData(StringConstants.firstNameText) as String??"";
     lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
+        SharedPreferenceStorage.getData(StringConstants.lastNameText) as String??"";
     getCurrentLocation();
     getGkey();
 
@@ -247,6 +247,7 @@ class OwnerStoresController extends GetxController {
   }
 
   getGkey() async {
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
@@ -340,10 +341,11 @@ class OwnerStoresController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -373,9 +375,7 @@ class OwnerStoresController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -391,10 +391,11 @@ class OwnerStoresController extends GetxController {
     debugPrint(
       "GET FEATURED PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
     );
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map body = {
       "q": "",
@@ -429,9 +430,7 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -503,10 +502,11 @@ class OwnerStoresController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -526,9 +526,7 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -566,9 +564,7 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -754,10 +750,11 @@ class OwnerStoresController extends GetxController {
   Future apiUpdateStoreDetail(BuildContext ctx) async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),
@@ -819,10 +816,13 @@ class OwnerStoresController extends GetxController {
         Utility.showToast(value?.body['message']);
         // Get.back();
         if (Get.parameters['isFromHome'] == "true") {
-          Navigator.of(ctx).pop();
+          Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
         } else {
-          Navigator.of(ctx).pop();
-          Navigator.of(ctx).pop();
+          Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
+          Get.back(id:pageId.value );
+                                  // Navigator.of(ctx).pop();
           await apiGetStoreList();
           storeNameTextController.clear();
           einTextController.clear();
@@ -841,9 +841,8 @@ class OwnerStoresController extends GetxController {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+          await Get.offAll(const StartJourneyScreen(),
+              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -939,10 +938,11 @@ class OwnerStoresController extends GetxController {
   Future apiDeleteStore({String storeId = ""}) async {
     debugPrint(
         "DELETE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map body = {"store_id": storeId};
 
@@ -965,9 +965,7 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {

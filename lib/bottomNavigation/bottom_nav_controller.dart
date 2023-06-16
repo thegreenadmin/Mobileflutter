@@ -32,9 +32,7 @@ class BottomNavController extends GetxController {
   RxBool isLoading = false.obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
-  void changePage(int index) {
-    selectedIndex.value = index;
-  }
+
   @override
   void onReady() {
     super.onReady();
@@ -51,22 +49,26 @@ class BottomNavController extends GetxController {
     selectedIndex.value = Get.parameters["currentIndex"] != null
         ? int.parse(Get.parameters["currentIndex"].toString())
         : 0;
-    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+    SharedPreferenceStorage.setData("pageId", selectedIndex.value);
+
     debugPrint(
         "roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
-
+   getRole();
     // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
   }
-
+    getRole()async{
+      roleInApp!.value = await SharedPreferenceStorage.getData(Role.role.value);
+    }
   //Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -90,10 +92,7 @@ class BottomNavController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -113,7 +112,7 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
-
+    roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
     selectedIndex.value = index;
     SharedPreferenceStorage.setData("pageId", selectedIndex.value);
     Get.until((route) => route.isFirst,id:selectedIndex.value);

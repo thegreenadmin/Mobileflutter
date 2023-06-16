@@ -22,6 +22,7 @@ class UserInboxDetailController extends GetxController {
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString messageHeadId = "".obs;
+  RxInt pageId = 0.obs;
 
   UserMessageListModel messageListModel = UserMessageListModel();
   RxList<Messages> messageList = <Messages>[].obs;
@@ -45,7 +46,8 @@ class UserInboxDetailController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      //  Navigator.of(context).pop();
+      // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -60,7 +62,8 @@ class UserInboxDetailController extends GetxController {
         // api();
       }
     }, onCameraClick: () async {
-      //  Navigator.of(context).pop();
+      // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -126,13 +129,15 @@ class UserInboxDetailController extends GetxController {
 
   //Get Messages List Api
   Future apiGetMessagesList() async {
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
     isloading.value = true;
     debugPrint(
         "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -150,9 +155,7 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -166,10 +169,11 @@ class UserInboxDetailController extends GetxController {
   Future apiSendMessage() async {
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -202,9 +206,7 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {

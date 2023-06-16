@@ -8,7 +8,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class MarkOrderStatusScreen extends StatefulWidget {
   const MarkOrderStatusScreen({super.key});
 
@@ -79,8 +79,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                      Navigator.of(context).pop();
-                                      // Get.back();
+                                     Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -421,7 +421,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                 alignment: Alignment.topRight,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    Navigator.pop(_);
+                                                    Get.back(); // Navigator.pop(_);
                                                   },
                                                   child: const Icon(
                                                     Icons.clear,
@@ -912,7 +912,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                           .any((element) => element.isSelected == true)) {
                         ordersHomeMainController.selectedIndex.value == 0
                             ? ordersHomeMainController
-                            .apiMarkOrderReady(context)
+                            .apiMarkOrderReady()
                             : ordersHomeMainController.selectedIndex.value == 1
                             ? ordersHomeMainController
                             .getStoreOrderDetailModel
@@ -923,21 +923,21 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             ?.deliveryServiceId !=
                             "2"
                             ? ordersHomeMainController
-                            .apiMarkReadyForPickUp(context)
+                            .apiMarkReadyForPickUp()
                             : ordersHomeMainController
-                            .apiMarkReadyForShipping(context)
+                            .apiMarkReadyForShipping()
                             : ordersHomeMainController
                             .selectedIndex.value ==
                             2
                             ? ordersHomeMainController
-                            .apiMarkDelivered(context)
+                            .apiMarkDelivered()
                             : ordersHomeMainController
                             .selectedIndex.value ==
                             3
                             ? ordersHomeMainController
-                            .apiMarkOrderReady(context)
+                            .apiMarkOrderReady()
                             : ordersHomeMainController
-                            .apiMarkOrderReady(context);
+                            .apiMarkOrderReady();
                       } else {
                         Utility.showAlertMessage(AlertStringConstants
                             .pleaseSelectProductToProceedText);

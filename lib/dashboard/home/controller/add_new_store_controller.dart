@@ -52,7 +52,7 @@ class AddNewStoreController extends GetxController {
   RxBool isStoreLogoSelected = false.obs;
   RxBool isTermsSelected = false.obs;
   RxBool is247Time = false.obs;
-
+  RxInt pageId = 0.obs;
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
 
@@ -161,6 +161,7 @@ class AddNewStoreController extends GetxController {
   }
 
   getGKey() async {
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
@@ -198,7 +199,8 @@ class AddNewStoreController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back();
-      // Navigator.of(context).pop();
+      // Get.back(id:pageId.value );
+                                  // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -219,7 +221,8 @@ class AddNewStoreController extends GetxController {
       }
     }, onCameraClick: () async {
       // Get.back();
-      // Navigator.of(context).pop();
+      // Get.back(id:pageId.value );
+                                  // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -407,10 +410,11 @@ class AddNewStoreController extends GetxController {
         }
       ]
     };
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
@@ -464,16 +468,14 @@ class AddNewStoreController extends GetxController {
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
-        Navigator.of(contextt).pop();
+         Get.back(id:pageId.value );
         await createDynamicLink();
         await apiDynamicLink();
         // await apiGetDeliveryServices();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(contextt).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -487,10 +489,11 @@ class AddNewStoreController extends GetxController {
   Future apiDynamicLink() async {
     debugPrint(
         "DYNAMIC URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {
@@ -512,7 +515,7 @@ class AddNewStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.pop(Get.context!);
+         Get.back(id:pageId.value );
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
         //   builder: (_) => const StartJourneyScreen(),
         // ));
@@ -564,9 +567,7 @@ class AddNewStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -604,9 +605,7 @@ class AddNewStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -649,9 +648,7 @@ class AddNewStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

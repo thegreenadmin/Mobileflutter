@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -44,8 +45,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
-                                    // Get.back();
+                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -124,25 +125,28 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                             notificationListController
                                         .notificationList[index].orderId !=
                                     null
-                                ? Navigator.of(context).push(MaterialPageRoute(
+                                ? /*Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => const OrdersScreen(),
-                                  ))
-                                // Get.to(const OrdersScreen(), arguments: {
-                                //         "isFromNotification": true,
-                                //         "storeId": notificationListController
-                                //                 .notificationList[index].storeId ??
-                                //             ""
-                                //       })
+                                  ))*/
+                                Get.to(const OrdersScreen(),
+                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                    arguments: {
+                                        "isFromNotification": true,
+                                        "storeId": notificationListController
+                                                .notificationList[index].storeId ??
+                                            ""
+                                      })
                                 : notificationListController
                                             .notificationList[index].offerId !=
                                         null
-                                    ? Navigator.of(context)
+                                    ? /*Navigator.of(context)
                                         .push(MaterialPageRoute(
                                         builder: (_) => const OrdersScreen(),
-                                      ))
-                                    // Get.to(const OffersScreen(), arguments: {
-                                    //             "isFromNotification": true,
-                                    //           })
+                                      ))*/
+                                    Get.to(const OffersScreen(),
+                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),arguments: {
+                                                "isFromNotification": true,
+                                              })
                                     : notificationListController
                                                 .notificationList[index]
                                                 .messageHeadId !=
@@ -150,56 +154,57 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         ? notificationListController
                                                     .role!.value ==
                                                 Role.customerRoleText
-                                            ? Navigator.of(context)
+                                            ? /*Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                 builder: (_) =>
                                                     const OwnerInboxDetailScreen(),
-                                              ))
-                                            // Get.to(
-                                            //                     const OwnerInboxDetailScreen(),
-                                            //                     arguments: {
-                                            //                         "storeId":
-                                            //                             notificationListController
-                                            //                                 .notificationList[
-                                            //                                     index]
-                                            //                                 .storeId,
-                                            //                         "storeName":
-                                            //                             notificationListController
-                                            //                                 .notificationList[
-                                            //                                     index]
-                                            //                                 .store!
-                                            //                                 .storeName,
-                                            //                         "messageHeadId":
-                                            //                             notificationListController
-                                            //                                 .notificationList[
-                                            //                                     index]
-                                            //                                 .messageHeadId,
-                                            //                       })
-                                            : Navigator.of(context)
+                                              ))*/
+                                            Get.to(const OwnerInboxDetailScreen(),
+                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                                arguments: {
+                                                                    "storeId":
+                                                                        notificationListController
+                                                                            .notificationList[
+                                                                                index]
+                                                                            .storeId,
+                                                                    "storeName":
+                                                                        notificationListController
+                                                                            .notificationList[
+                                                                                index]
+                                                                            .store!
+                                                                            .storeName,
+                                                                    "messageHeadId":
+                                                                        notificationListController
+                                                                            .notificationList[
+                                                                                index]
+                                                                            .messageHeadId,
+                                                                  })
+                                            : /*Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                 builder: (_) =>
                                                     const UserInboxDetailScreen(),
-                                              ))
-                                        // Get.to(
-                                        //                     const UserInboxDetailScreen(),
-                                        //                     arguments: {
-                                        //                         "storeId":
-                                        //                             notificationListController
-                                        //                                 .notificationList[
-                                        //                                     index]
-                                        //                                 .storeId,
-                                        //                         "storeName":
-                                        //                             notificationListController
-                                        //                                 .notificationList[
-                                        //                                     index]
-                                        //                                 .store!
-                                        //                                 .storeName,
-                                        //                         "messageHeadId":
-                                        //                             notificationListController
-                                        //                                 .notificationList[
-                                        //                                     index]
-                                        //                                 .messageHeadId,
-                                        //                       })
+                                              ))*/
+                                        Get.to(
+                                                            const UserInboxDetailScreen(),
+                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                            arguments: {
+                                                                "storeId":
+                                                                    notificationListController
+                                                                        .notificationList[
+                                                                            index]
+                                                                        .storeId,
+                                                                "storeName":
+                                                                    notificationListController
+                                                                        .notificationList[
+                                                                            index]
+                                                                        .store!
+                                                                        .storeName,
+                                                                "messageHeadId":
+                                                                    notificationListController
+                                                                        .notificationList[
+                                                                            index]
+                                                                        .messageHeadId,
+                                                              })
                                         : null;
                           },
                           child: Container(

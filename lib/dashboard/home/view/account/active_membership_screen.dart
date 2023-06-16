@@ -42,7 +42,8 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.back(id: accountController.pageId.value);
-                            // Navigator.of(context).pop();
+                            //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

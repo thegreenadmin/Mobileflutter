@@ -55,8 +55,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                // Get.back();
+                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -111,11 +111,12 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      SharedPreferenceStorage.setData("context", context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const AddNewWorkerScreen(),
-                      ));
-                      // Get.to(const AddNewWorkerScreen());
+                      // SharedPreferenceStorage.setData("context", context);
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //   builder: (_) => const AddNewWorkerScreen(),
+                      // ));
+                      Get.to(const AddNewWorkerScreen(),
+                          id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
                     },
                     child: Row(
                       children: [
@@ -222,12 +223,13 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const EditWorkerScreen(),
-                                ));
-                                // Get.to(() => const EditWorkerScreen());
+                                // SharedPreferenceStorage.setData(
+                                //     "context", context);
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const EditWorkerScreen(),
+                                // ));
+                                Get.to(() => const EditWorkerScreen(),
+                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },
