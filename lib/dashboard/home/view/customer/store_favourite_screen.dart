@@ -88,7 +88,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           //   builder: (_) => const AddToOrderScreen(),
                           // ));
                           await Get.to(const AddToOrderScreen(),
-                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              id:storeHomeMainController.pageId.value);
                           // Get.to(const AddToOrderScreen());
                           await storeHomeMainController
                               .apiGetCartListApi();

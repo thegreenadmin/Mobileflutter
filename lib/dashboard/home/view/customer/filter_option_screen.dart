@@ -44,7 +44,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 Get.back(id:searchStoreUserController.pageId.value);
                                   // Navigator.of(context).pop();
                                   // Get.back();
                                 },
@@ -526,7 +526,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
                     searchStoreUserController.apiGetNearByStores(
-                      context,
                       isFilter: true,
                     );
                   }

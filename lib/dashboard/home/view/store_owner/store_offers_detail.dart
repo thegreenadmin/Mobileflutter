@@ -46,7 +46,7 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:storeOfferDetailController.pageId.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(

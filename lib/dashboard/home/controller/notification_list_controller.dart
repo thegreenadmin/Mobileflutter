@@ -15,6 +15,8 @@ class NotificationListController extends GetxController {
   late NotificationListModel notificationListModel = NotificationListModel();
   RxList<Notifications> notificationList = <Notifications>[].obs;
   RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxInt pageId = 0.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
@@ -22,18 +24,22 @@ class NotificationListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
+
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
+    if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetNotificationList(false);
     } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetNotificationList(true);
     }
-    getPage();
-  }
-  getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
   }
   //Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {

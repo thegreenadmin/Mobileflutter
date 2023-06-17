@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -15,6 +16,10 @@ class ContactUsController extends GetxController {
 
   RxBool autoValidate = false.obs;
   RxInt pageId = 0.obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+
 
   @override
   void onInit() {
@@ -23,7 +28,11 @@ class ContactUsController extends GetxController {
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -53,10 +62,11 @@ class ContactUsController extends GetxController {
       "subject": subjectTextController.text.trim(),
       "message": messageTextController.text.trim(),
     };
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
+      'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-      "Content-Type": "application/json"
+      "Bearer ${token.toString()}",
     };
     debugPrint("CREATE USER BODY********** $data");
     debugPrint(

@@ -20,6 +20,8 @@ class TransactionController extends GetxController {
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxString? storeId = "".obs;
   RxInt selectedIndex = 0.obs;
   RxInt pageId = 0.obs;
@@ -27,19 +29,23 @@ class TransactionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     isCurrentMonthSelected.value = true;
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
+    if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerOrderTransactionHistory();
     }
-    getPage();
-  }
-  getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
   }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);

@@ -57,7 +57,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:addOffersController.pageId.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(

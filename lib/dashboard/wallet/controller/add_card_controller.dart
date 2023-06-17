@@ -56,6 +56,7 @@ class AddCardController extends GetxController {
   RxString selectedStore = "".obs;
   RxString? ownerWalletBalance = "0.00".obs;
   RxString stateId = "".obs;
+  RxString role = "".obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> formKey1 = GlobalKey<FormState>();
@@ -96,7 +97,11 @@ class AddCardController extends GetxController {
   }
 
   getApiData() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     await apiGetUserWalletBalance();
     await apiGetCardList(Get.context!);
     await apiGetBankAccountList();
@@ -111,10 +116,11 @@ class AddCardController extends GetxController {
   Future apiGetUserDetailApi(context) async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -257,10 +263,11 @@ class AddCardController extends GetxController {
     countryList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -290,10 +297,11 @@ class AddCardController extends GetxController {
     statesList.clear();
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(

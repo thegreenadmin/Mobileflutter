@@ -154,7 +154,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
-                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                   Get.back(id:manageStoreController.pageId.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
@@ -218,7 +218,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       // ))
 
                           Get.to(() => const AddNewCategoryScreen(),
-                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                              id:manageStoreController.pageId.value,
                               arguments: {
                             "storeId": manageStoreController.storeId.value,
                             "isFeaturedSelectedType":
@@ -330,7 +330,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const ProductListScreen(),
                               // ));
-                              Get.to(const ProductListScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              Get.to(const ProductListScreen(),id:manageStoreController.pageId.value);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -432,7 +432,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //       const EditCategoryScreen(),
                                         // ))
                                             Get.to(const EditCategoryScreen(),
-                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) ,
+                                                id:manageStoreController.pageId.value ,
                                                    arguments: {
                                                  "storeId": manageStoreController
                                                      .storeId.value,
@@ -479,7 +479,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //       const ProductListScreen(),
                                         // ));
                                         Get.to(const ProductListScreen(),
-                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                                            id:manageStoreController.pageId.value );
                                       },
                                       icon: Icon(
                                         Icons.arrow_forward_ios_rounded,

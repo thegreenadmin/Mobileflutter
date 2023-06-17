@@ -40,7 +40,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:addNewRoleController.pageId.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(
@@ -103,7 +103,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         //       builder: (_) => const AddNewRoleScreen(),
                         //     ))
                             Get.to(const AddNewRoleScreen(),
-                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) )!
+                                id:addNewRoleController.pageId.value )!
                             .then((value) =>
                                 addNewRoleController.apiGetStoreRole());
                       },
@@ -226,7 +226,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         //           const EditRoleScreen(),
                                         //     ))
                                             Get.to(const EditRoleScreen(),
-                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) )!
+                                                id:addNewRoleController.pageId.value )!
                                             .then((value) =>
                                                 addNewRoleController
                                                     .apiGetStoreRole());

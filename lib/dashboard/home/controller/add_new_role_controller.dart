@@ -7,7 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/constants.dart' as strings;
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -46,18 +46,27 @@ class AddNewRoleController extends GetxController {
   late DeleteRoleRequestModel deleteRoleRequestModel = DeleteRoleRequestModel();
   late CreateRoleRequestModel createRoleRequestModel = CreateRoleRequestModel();
 
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    apiGetControllers();
-    apiGetStoreRole();
+
     getPage();
   }
 
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(strings.Role.role.value);
+    role?.value = roleVal;
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
+    await apiGetControllers();
+    await  apiGetStoreRole();
   }
 
   bool validateAndSave() {
@@ -75,7 +84,7 @@ class AddNewRoleController extends GetxController {
       try {
         if (controllerIdsList.isEmpty) {
           Utility.showAlertMessage(
-              AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+              strings.AlertStringConstants.pleaseSelectAtleastOnePermissionText);
           // Utility.showToast(
           //     AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
@@ -112,9 +121,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -194,9 +204,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -280,9 +291,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

@@ -18,6 +18,16 @@ class PdfViewScreen extends StatefulWidget {
 }
 
 class _PdfViewScreenState extends State<PdfViewScreen> {
+  var pageId = 0;
+  @override
+  void initState() {
+
+    super.initState();
+    getData();
+  }
+  getData()async{
+    pageId = await SharedPreferenceStorage.getData("pageId");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +47,8 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              // Get.back();
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+                             Get.back(id:pageId);
+                             // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

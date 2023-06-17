@@ -81,7 +81,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                           Get.back(id:walletController.pageId.value);
                                   // Navigator.of(context).pop();
                           },
                           icon: const Icon(
@@ -706,7 +706,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okay:
                                                     StringConstants.deleteText,
                                                 okayTap: () async {
-                                                  Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                                  Get.back(id:walletController.pageId.value);
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:

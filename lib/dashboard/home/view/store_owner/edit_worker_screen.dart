@@ -46,7 +46,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   addNewWorkerController.formKey.currentState
                                       ?.reset();
                                   addNewWorkerController.resetForm();
-                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 Get.back(id:addNewWorkerController.pageId.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

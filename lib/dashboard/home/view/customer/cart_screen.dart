@@ -93,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                   Get.back(id:storeHomeMainController.pageId.value);
                                   // Navigator.of(context).pop();
                                     // Get.back();
                                     // Get.back(result: true );
@@ -924,7 +924,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     //       builder: (_) =>
                                                     //           const PersonalInfoEditScreen(),
                                                     //     ))
-                                                        Get.to(const PersonalInfoEditScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                        Get.to(const PersonalInfoEditScreen(),id:storeHomeMainController.pageId.value,
                                                                     arguments: ({
                                                                       "isFromCart": true
                                                                     }))?.then((value) =>
@@ -1158,7 +1158,7 @@ class _CartScreenState extends State<CartScreen> {
                                     //   builder: (_) => const AddMoneyToWallet(),
                                     // ))
                                     await Get.to(const AddMoneyToWallet(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))
+                                        id:storeHomeMainController.pageId.value)
                                         ?.then((value) {
                                       storeHomeMainController
                                           .apiGetUserWalletBalance();
@@ -1247,7 +1247,7 @@ class _CartScreenState extends State<CartScreen> {
                                           //   const AddMoneyToWallet(),
                                           // ))
                                           await Get.to(const AddMoneyToWallet(),
-                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))
+                                              id:storeHomeMainController.pageId.value)
                                               ?.then((value) {
                                             storeHomeMainController
                                                 .apiGetUserWalletBalance();

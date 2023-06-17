@@ -32,8 +32,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
           SharedPreferenceStorage.getData(StringConstants.firstNameText).toString();
       searchStoreUserController.lastName?.value =
           SharedPreferenceStorage.getData(StringConstants.lastNameText).toString();
-      searchStoreUserController.setupScrollController(Get.context);
-      searchStoreUserController.apiActiveCartApi(Get.context);
+      searchStoreUserController.setupScrollController();
+      searchStoreUserController.apiActiveCartApi();
     });
   }
 
@@ -98,7 +98,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           ?.storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  id:searchStoreUserController.pageId.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),
                               // ));

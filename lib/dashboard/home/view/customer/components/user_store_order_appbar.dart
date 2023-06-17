@@ -75,9 +75,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
-                                // Get.back();
+                               Get.back(id:storeHomeMainController.pageId.value);
+                               Get.delete<StoreHomeMainController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -128,7 +127,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                   //       const CartScreen(),
                                                   // ))
                                                   await Get.to(const CartScreen(),
-                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))?.then((value) =>
+                                                      id:storeHomeMainController.pageId.value)?.then((value) =>
                                                       storeHomeMainController
                                                           .apiActiveCartApi());
                                                 },

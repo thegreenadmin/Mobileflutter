@@ -52,7 +52,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                               Get.back(id:manageStoreController.pageId.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(

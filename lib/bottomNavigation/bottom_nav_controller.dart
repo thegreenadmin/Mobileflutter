@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -21,8 +20,6 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
-import '../bottomnavigation/bottom_nav_screen.dart';
 import '../dashboard/home/model/get_store_list_model.dart';
 import '../utils/constants.dart';
 
@@ -37,8 +34,6 @@ class BottomNavController extends GetxController {
   void onReady() {
     super.onReady();
     if (initialRemoteMessage != null) {
-      debugPrint("initMessageReceived");
-      // selectNotification(json.encode(initialRemoteMessage?.data));
       selectNotification(NotificationResponse(
         notificationResponseType:
             NotificationResponseType.selectedNotificationAction,
@@ -49,21 +44,20 @@ class BottomNavController extends GetxController {
     selectedIndex.value = Get.parameters["currentIndex"] != null
         ? int.parse(Get.parameters["currentIndex"].toString())
         : 0;
-    SharedPreferenceStorage.setData("pageId", selectedIndex.value);
 
-    debugPrint(
-        "roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
-   getRole();
-    // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
+    getRole();
   }
-    getRole()async{
-      roleInApp!.value = await SharedPreferenceStorage.getData(Role.role.value);
-    }
+
+  getRole() async {
+    SharedPreferenceStorage.setData("pageId", 0);
+    roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
+  }
+
   //Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+        "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -71,20 +65,16 @@ class BottomNavController extends GetxController {
           "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
+    UserProvider().getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-            headers,
-            showLoading: false)
-        .then((value) async {
+            headers, showLoading: false).then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value!.body}");
+      debugPrint("GET BottomNav STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
-        debugPrint("GET STORE storeList.length *******${storeList.length}");
         if (storeList.length == 1) {
           Get.parameters["storeId"] = storeList.first.storeId;
           Get.parameters["storeCount"] = storeList.length.toString();
@@ -112,9 +102,10 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
+
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
     selectedIndex.value = index;
-    SharedPreferenceStorage.setData("pageId", selectedIndex.value);
+    SharedPreferenceStorage.setData("pageId", index);
     Get.until((route) => route.isFirst,id:selectedIndex.value);
     if (selectedIndex.value == 0) {
       try {
@@ -123,16 +114,19 @@ class BottomNavController extends GetxController {
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 1) {
+    }
+    else if (selectedIndex.value == 1) {
       try {
         WalletController controller = Get.put(WalletController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 2) {
+    }
+    else if (selectedIndex.value == 2) {
       try {
         if (roleInApp.value == Role.customerRoleText) {
+          storeList.clear();
         } else {
           await apiGetStoreList();
         }
@@ -141,14 +135,16 @@ class BottomNavController extends GetxController {
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 3) {
+    }
+    else if (selectedIndex.value == 3) {
       try {
         OffersController controller = Get.put(OffersController());
         controller.onInit();
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 4) {
+    }
+    else if (selectedIndex.value == 4) {
       try {
         MoreController controller = Get.put(MoreController());
         controller.onInit();

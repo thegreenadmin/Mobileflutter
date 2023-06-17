@@ -33,7 +33,6 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class StoreHomeMainController extends GetxController {
-  // Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
@@ -89,6 +88,9 @@ class StoreHomeMainController extends GetxController {
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxDouble cartTotalPrice = 0.0.obs;
 
   final scrollController = ScrollController();
@@ -105,7 +107,11 @@ class StoreHomeMainController extends GetxController {
   }
 
   getApiData()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     if ( Get.parameters["storeId"]!="") {
       storeId.value = Get.parameters["storeId"] ?? "";
       getCurrentLocation();
@@ -136,7 +142,7 @@ class StoreHomeMainController extends GetxController {
     }
     if (isFromHome.value) {
       selectedIndex.value = 0;
-      apiGetShopProductDetailApi();
+      await apiGetShopProductDetailApi();
     } else {
       onIndexChange(0);
     }
@@ -535,7 +541,7 @@ class StoreHomeMainController extends GetxController {
             value.body["data"]["message_head_id"] ?? "";
         SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() =>const UserInboxDetailScreen(),
-            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+            id:pageId.value);
         // Navigator.of(ctx).push(MaterialPageRoute(
         //   builder: (_) => const UserInboxDetailScreen(),
         // ));
@@ -595,10 +601,11 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -687,16 +694,16 @@ class StoreHomeMainController extends GetxController {
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
           isDeleteCartItem.value = false;
-          Get.until((route) => route.isFirst,id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+          Get.until((route) => route.isFirst,id:pageId.value);
           // Navigator.of(context).popUntil((route) => route.isFirst);
 
         } else if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
-            isFromMenu.value == false) {
+            isFromHome.value == false) {
           Get.parameters["storeId"] = storeId.value;
           isDeleteCartItem.value = false;
           await Get.to(() =>const StoreHomeMainScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
 
@@ -766,7 +773,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
         await Get.to(() =>const OrderConfirmationScreen(),
-            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+            id:pageId.value);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (_) => const OrderConfirmationScreen(),
         // ));
@@ -993,7 +1000,7 @@ class StoreHomeMainController extends GetxController {
                     Get.parameters["storeId"] = storeId.value;
 
                     await Get.to(() =>const StoreHomeMainScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:pageId.value);
                   },
                   child: Container(
                     height: 50.0,
@@ -1020,7 +1027,7 @@ class StoreHomeMainController extends GetxController {
                     apiGetCartListApi();
                     apiGetUserWalletBalance();
                     await Get.to(() =>const CartScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:pageId.value);
                     // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                     //   builder: (_) => const CartScreen(),
                     // ));
@@ -1058,10 +1065,11 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("Store Offers URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1095,10 +1103,11 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1139,10 +1148,11 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$lat&longitude=$lng");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -1188,10 +1198,11 @@ class StoreHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()

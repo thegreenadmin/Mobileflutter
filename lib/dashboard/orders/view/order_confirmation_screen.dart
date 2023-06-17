@@ -80,12 +80,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     return WillPopScope(
       onWillPop: () {
         if( ordersController.isHome.value){
-         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+         Get.back(id:ordersController.pageId.value);
                                   // Navigator.of(context).pop();
-         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+         Get.back(id:ordersController.pageId.value);
                                   // Navigator.of(context).pop();
         }else{
-         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+         Get.back(id:ordersController.pageId.value);
                                   // Navigator.of(context).pop();
         }
 
@@ -142,7 +142,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                         Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                         Get.back(id:ordersController.pageId.value);
                                   // Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
@@ -633,7 +633,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
                           await Get.to(const StoreHomeMainScreen(),
-                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              id:ordersController.pageId.value);
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const StoreHomeMainScreen(),
                           // ));

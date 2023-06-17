@@ -75,7 +75,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                       //   builder: (_) => const AddOfferScreen(),
                                       // ))
                                           Get.to(const AddOfferScreen(),
-                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                                              id:ownerStoresController.pageId.value,
                                               arguments: {
                                             "isFrom": StringConstants.addOfferText,
                                           })?.then((v) {

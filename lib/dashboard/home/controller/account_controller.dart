@@ -4,11 +4,9 @@ import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/model/active_membership_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
@@ -72,6 +70,7 @@ class AccountController extends GetxController {
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
   RxString? userId = "".obs;
+  RxString? role = "".obs;
 
   RxString stateDropdownValue = "".obs;
   RxString stateId = "".obs;
@@ -119,7 +118,11 @@ class AccountController extends GetxController {
   }
 
   getGkey(context) async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];

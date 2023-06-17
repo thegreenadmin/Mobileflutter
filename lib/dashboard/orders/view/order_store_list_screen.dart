@@ -115,7 +115,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
                               await Get.to(const OrdersHomeMainScreen(),
-                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  id:ordersController.pageId.value);
 
                             },
                             child: Container(

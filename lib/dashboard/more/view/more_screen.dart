@@ -89,7 +89,7 @@ class _MoreScreenState extends State<MoreScreen> {
               url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                       ServerCommunicator().pageAbout)
                   .toString()),
-                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ));
+                  id:moreController.pageId.value);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -140,7 +140,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageFaq)
                       .toString()),
-                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                  id:moreController.pageId.value );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +180,7 @@ class _MoreScreenState extends State<MoreScreen> {
               // Navigator.of(context).push(MaterialPageRoute(
               //   builder: (_) => const ContactUsScreen(),
               // ));
-              Get.to(const ContactUsScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              Get.to(const ContactUsScreen(),id:moreController.pageId.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,7 +227,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   isFrom: "terms",
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageTerms)
-                      .toString()),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                      .toString()),id:moreController.pageId.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,7 +275,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pagePolicy)
                       .toString()),
-                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                  id:moreController.pageId.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

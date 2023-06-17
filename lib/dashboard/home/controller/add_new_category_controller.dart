@@ -30,25 +30,31 @@ class AddNewCategoryController extends GetxController {
   bool dataLoaded = false;
   RxBool isFeaturedTypeSelected = false.obs;
   RxInt pageId = 0.obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+
   @override
   void onInit() {
     super.onInit();
 
-    debugPrint("storeName:------>>>>>>");
-    debugPrint(Get.parameters["storeName"]);
-    debugPrint(Get.parameters["storeId"]);
-    storeId.value = Get.parameters["storeId"] ?? "";
-    categoryId.value = Get.parameters["categoryId"] ?? "";
-    isFeaturedTypeSelected.value =
-        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    debugPrint(Get.parameters["isFeaturedSelectedType"]);
-    if (categoryId.value.isNotEmpty) {
-      apiGetCategoryDetail();
-    }
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
+
+    storeId.value = Get.parameters["storeId"] ?? "";
+    categoryId.value = Get.parameters["categoryId"] ?? "";
+    isFeaturedTypeSelected.value =
+    Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+    debugPrint(Get.parameters["isFeaturedSelectedType"]);
+    if (categoryId.value.isNotEmpty) {
+      await apiGetCategoryDetail();
+    }
   }
 
   bool validateAndSave() {
@@ -142,9 +148,10 @@ class AddNewCategoryController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -242,9 +249,10 @@ class AddNewCategoryController extends GetxController {
   Future apiGetCategoryDetail() async {
     debugPrint(
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(

@@ -19,7 +19,9 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class OrdersHomeMainController extends GetxController {
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
+  RxString? firstName = "".obs;
   RxString? role = "".obs;
+  RxString? lastName = "".obs;
   RxInt selectedIndex = 0.obs;
   RxInt pageId = 0.obs;
   RxString storeId = "".obs;
@@ -60,7 +62,11 @@ class OrdersHomeMainController extends GetxController {
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
@@ -116,10 +122,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}",
@@ -246,10 +253,11 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(

@@ -312,7 +312,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                 .dynamicUrl
                                                 .toString(),
                                           ),
-                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                              id:userInboxDetailController.pageId.value);
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -454,7 +454,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                               .image!
                                               .dynamicUrl
                                               .toString(),
-                                        ),id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ));
+                                        ),id:userInboxDetailController.pageId.value);
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -626,7 +626,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 Get.back(id:userInboxDetailController.pageId.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

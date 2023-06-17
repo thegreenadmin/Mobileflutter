@@ -254,7 +254,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     //   builder: (_) => const AddToOrderScreen(),
                                     // ));
                                     await Get.to(const AddToOrderScreen(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                        id:storeHomeMainController.pageId.value);
                                   },
                                   child: Container(
                                     height: 150,

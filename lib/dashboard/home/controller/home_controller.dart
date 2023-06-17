@@ -64,7 +64,11 @@ class HomeController extends GetxController {
 
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
@@ -72,8 +76,8 @@ class HomeController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();

@@ -14,6 +14,7 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:dio/dio.dart' as mdio;
 import 'package:http_parser/http_parser.dart' show MediaType;
+import '../../../utils/constants.dart';
 import '../model/add_worker_request_model.dart' as add_worker;
 import '../model/categories_model.dart';
 import '../model/edit_worker_request_model.dart';
@@ -77,6 +78,9 @@ class AddNewWorkerController extends GetxController {
   RxInt radioGroupValue = 0.obs;
   RxList<dynamic> storeTimings = <dynamic>[].obs;
   RxList<dynamic> storeDeliveryServices = <dynamic>[].obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -90,7 +94,11 @@ class AddNewWorkerController extends GetxController {
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -405,9 +413,10 @@ class AddNewWorkerController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
 
       formData.files.add(MapEntry(
@@ -452,10 +461,11 @@ class AddNewWorkerController extends GetxController {
   Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
@@ -525,10 +535,11 @@ class AddNewWorkerController extends GetxController {
   Future apiGetUserStoreList() async {
     debugPrint(
         "GET USER STORE LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().userStore,
@@ -559,10 +570,11 @@ class AddNewWorkerController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}",
@@ -594,10 +606,11 @@ class AddNewWorkerController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "API ROLE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}?store_id=${int.parse(storeId.value)}",
@@ -629,10 +642,11 @@ class AddNewWorkerController extends GetxController {
     selectedWeekDaysList.clear();
     debugPrint(
         "GET STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}",

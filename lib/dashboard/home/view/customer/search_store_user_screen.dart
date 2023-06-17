@@ -58,7 +58,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         length: 3,
         vsync: this);
     updateCurrentLocation();
-    searchStoreUserController.apiActiveCartApi(Get.context);
+    searchStoreUserController.apiActiveCartApi();
   }
 
   @override
@@ -84,7 +84,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                               Get.back(id:searchStoreUserController.pageId.value);
                                   // Navigator.of(context).pop();
                                 Get.delete<SearchStoreUserController>();
                               },
@@ -152,11 +152,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                               //           const CartScreen(),
                                               //     ))
                                               await Get.to(const CartScreen(),
-                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))
+                                                  id:searchStoreUserController.pageId.value)
                                                   ?.then((value) =>
                                                       searchStoreUserController
-                                                          .apiActiveCartApi(
-                                                              context));
+                                                          .apiActiveCartApi());
                                               Get.parameters["storeId"] =
                                                   searchStoreUserController
                                                       .storeIdValue.value;
@@ -264,7 +263,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             //   builder: (_) => const FilterOptionScreen(),
                             // ));
                             await Get.to(const FilterOptionScreen(),
-                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                id:searchStoreUserController.pageId.value);
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,
@@ -426,7 +425,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
               if (i == 0 && searchStoreUserController.isClicked.value ==false) {
-                await searchStoreUserController.apiGetNearByStores(context);
+                await searchStoreUserController.apiGetNearByStores();
               } else if (i == 1 && searchStoreUserController.isClicked.value ==false) {
                 await searchStoreUserController.apiGetPreviousStores(context);
               } else if (i == 2 && searchStoreUserController.isClicked.value ==false) {
@@ -484,7 +483,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // WidgetsBinding.instance.addPostFrameCallback((_)async{
-    await searchStoreUserController.apiGetNearByStores(context, isSearch: true);
+    await searchStoreUserController.apiGetNearByStores( isSearch: true);
     updateMarker(lat, lng);
     // });
   }

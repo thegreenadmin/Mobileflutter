@@ -19,7 +19,7 @@ class WebviewPageScreen extends StatefulWidget {
 
 class _WebviewPageScreenState extends State<WebviewPageScreen> {
   late final WebViewController controller;
-
+  var pageId = 0;
   @override
   void initState() {
     super.initState();
@@ -43,8 +43,11 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
       )
       ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
+    getData();
   }
-
+    getData()async{
+      pageId = await SharedPreferenceStorage.getData("pageId");
+    }
   // #docregion webview_widget
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,7 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 Get.back(id:pageId);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

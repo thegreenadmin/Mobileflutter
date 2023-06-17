@@ -23,7 +23,6 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
 import '../model/categories_model.dart';
 
 class OwnerStoresController extends GetxController {
@@ -62,6 +61,7 @@ class OwnerStoresController extends GetxController {
   RxBool isStoreLogoSelected = false.obs;
 
   RxString? firstName = "".obs;
+  RxString? role = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
   RxString email = "".obs;
@@ -149,10 +149,6 @@ class OwnerStoresController extends GetxController {
   void onInit() {
     super.onInit();
     selectedIndex.value = 0;
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText) as String??"";
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText) as String??"";
     getCurrentLocation();
     getGkey();
 
@@ -183,9 +179,10 @@ class OwnerStoresController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -247,7 +244,11 @@ class OwnerStoresController extends GetxController {
   }
 
   getGkey() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
@@ -445,9 +446,10 @@ class OwnerStoresController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -541,10 +543,11 @@ class OwnerStoresController extends GetxController {
     deliveryServices.clear();
     debugPrint(
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -578,10 +581,11 @@ class OwnerStoresController extends GetxController {
   Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
@@ -857,10 +861,11 @@ class OwnerStoresController extends GetxController {
     countriesList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -898,10 +903,11 @@ class OwnerStoresController extends GetxController {
   Future apiGetState() async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(

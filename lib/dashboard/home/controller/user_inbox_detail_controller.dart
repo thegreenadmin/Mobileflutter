@@ -13,6 +13,8 @@ import 'package:dio/dio.dart' as mdio;
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart' show MediaType;
 
+import '../../../utils/constants.dart';
+
 class UserInboxDetailController extends GetxController {
   RxBool isloading = false.obs;
 
@@ -27,7 +29,9 @@ class UserInboxDetailController extends GetxController {
   UserMessageListModel messageListModel = UserMessageListModel();
   RxList<Messages> messageList = <Messages>[].obs;
   RxList<Messages> pastMessagesList = <Messages>[].obs;
-
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   Rx<XFile> userSelectedImage = XFile("").obs;
   RxString userSelectedImageOrigionalLinkfromServer = "".obs;
   RxString userSelectedImageDynamicLinkfromServer = "".obs;
@@ -38,10 +42,17 @@ class UserInboxDetailController extends GetxController {
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
-    print("store name--->" + storeName.value);
-    print("store storeId--->" + storeId.value);
-    print("store messageHeadId--->" + messageHeadId.value);
+
     apiGetMessagesList();
+    getPage();
+
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -85,9 +96,10 @@ class UserInboxDetailController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -129,7 +141,6 @@ class UserInboxDetailController extends GetxController {
 
   //Get Messages List Api
   Future apiGetMessagesList() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
     isloading.value = true;
     debugPrint(
         "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");

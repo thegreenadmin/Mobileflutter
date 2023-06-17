@@ -56,6 +56,7 @@ class SearchStoreUserController extends GetxController {
   var kGoogleApiKey = "";
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
+  RxString? role = "".obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
   RxString placeId = "".obs;
@@ -95,11 +96,11 @@ class SearchStoreUserController extends GetxController {
     Categories(id: 3, name: "Curb side", isSelected: false),
   ].obs;
 
-  void setupScrollController(context) {
+  void setupScrollController() {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
         }
       }
     });
@@ -108,24 +109,22 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchController.clear();
-    page.value = 1;
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText) as String;
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText) as String;
-    // nearby.Store store = nearby.Store();
-    // store.storeId = storeId.value;
-    // storeAddress.value.store = store;
-    setupScrollController(Get.context);
-    apiActiveCartApi(Get.context);
+
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
+    searchController.clear();
+    page.value = 1;
+    setupScrollController();
+    apiActiveCartApi();
   }
   //Get Active Cart Api
-  Future apiActiveCartApi(context) async {
+  Future apiActiveCartApi() async {
     isLoading.value = true;
     debugPrint(
         "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
@@ -160,8 +159,7 @@ class SearchStoreUserController extends GetxController {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi(context,
-              storeId: activeCartModel.data!.storeId.toString());
+          await apiGetCartListApi(storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
@@ -176,7 +174,7 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Cart List Api
-  Future apiGetCartListApi(context, {String storeId = ""}) async {
+  Future apiGetCartListApi( {String storeId = ""}) async {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
@@ -230,10 +228,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -392,8 +391,7 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Nearby Stores Api
-  Future apiGetNearByStores(
-    context, {
+  Future apiGetNearByStores({
     bool isFilter = false,
     bool isSearch = false,
   }) async {
@@ -681,7 +679,7 @@ class SearchStoreUserController extends GetxController {
           debugPrint("Create Favourite Store *******${type.value}");
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
           // for (var element in storeAddresses) {
           //   if (element.store?.storeId == id) {
           //     debugPrint("Create before isFavouriteStore*******${element.store?.isFavouriteStore}");
@@ -753,7 +751,7 @@ class SearchStoreUserController extends GetxController {
         } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
           // for (var element in storeAddresses) {
           //   if (element.store?.storeId == id) {
           //     element.store?.isFavouriteStore = false;

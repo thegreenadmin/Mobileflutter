@@ -26,7 +26,9 @@ class AddOffersController extends GetxController {
   RxString discountType = "".obs;
   RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
-  //RxBool isStoreOffer = false.obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxString radioValue = "store".obs;
   RxBool autoValidate = true.obs;
   Rx<XFile> categoryImage = XFile("").obs;
@@ -87,9 +89,10 @@ class AddOffersController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -146,7 +149,11 @@ class AddOffersController extends GetxController {
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   bool validateAndSave() {
     final form = formKey.currentState;

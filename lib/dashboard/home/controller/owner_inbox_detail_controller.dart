@@ -13,6 +13,8 @@ import 'package:dio/dio.dart' as mdio;
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart' show MediaType;
 
+import '../../../utils/constants.dart';
+
 class OwnerInboxDetailController extends GetxController {
   RxBool isloading = false.obs;
 
@@ -22,6 +24,9 @@ class OwnerInboxDetailController extends GetxController {
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString messageHeadId = "".obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxInt pageId = 0.obs;
   OwnerMessageListModel messageListModel = OwnerMessageListModel();
   RxList<Message> messageList = <Message>[].obs;
@@ -33,14 +38,19 @@ class OwnerInboxDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
-    apiGetMessagesList();
+
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
+    storeId.value = Get.parameters["storeId"] ?? "";
+    storeName.value = Get.parameters["storeName"] ?? "";
+    messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
+    await apiGetMessagesList();
   }
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
@@ -83,9 +93,10 @@ class OwnerInboxDetailController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
+       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-            "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+        "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",

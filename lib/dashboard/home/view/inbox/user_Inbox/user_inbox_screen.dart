@@ -135,7 +135,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                   Get.back(id:userInboxController.pageId.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
@@ -351,7 +351,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               // ));
                                               Get.to(
                                                   const UserInboxDetailScreen(),
-                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                  id:userInboxController.pageId.value,
                                                   arguments: {
                                                     "storeName":
                                                         userInboxController

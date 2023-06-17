@@ -55,7 +55,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                               Get.back(id:addNewWorkerController.pageId.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -116,7 +116,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       //   builder: (_) => const AddNewWorkerScreen(),
                       // ));
                       Get.to(const AddNewWorkerScreen(),
-                          id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                          id:addNewWorkerController.pageId.value );
                     },
                     child: Row(
                       children: [
@@ -229,7 +229,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 Get.to(() => const EditWorkerScreen(),
-                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                                    id:addNewWorkerController.pageId.value );
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

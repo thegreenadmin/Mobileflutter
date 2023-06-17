@@ -16,9 +16,10 @@ class MoreController extends GetxController {
     getData();
   }
   getData()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText).toString()??"";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText).toString()??"";
-    role?.value =await SharedPreferenceStorage.getData(Role.role.value).toString()??"";
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
 }

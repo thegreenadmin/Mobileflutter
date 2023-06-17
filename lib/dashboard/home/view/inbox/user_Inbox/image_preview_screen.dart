@@ -16,6 +16,16 @@ class ImagePreviewScreen extends StatefulWidget {
 }
 
 class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
+  RxInt pageId = 0.obs;
+  @override
+  void initState() {
+    super.initState();
+    getPage();
+  }
+
+  getPage()async{
+    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +49,8 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                   Get.back(id:pageId.value);
                                   // Navigator.of(context).pop();
-                                    // Get.back();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

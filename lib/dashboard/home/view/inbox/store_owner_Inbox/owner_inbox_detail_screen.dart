@@ -424,7 +424,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                 .dynamicUrl
                                                 .toString(),
                                           ),
-                                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                              id:ownerInboxDetailController.pageId.value);
 
                                         },
                                         child: Container(
@@ -567,7 +567,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               .dynamicUrl
                                               .toString(),
                                         ),
-                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                            id:ownerInboxDetailController.pageId.value);
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -739,7 +739,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                 Get.back(id:ownerInboxDetailController.pageId.value);
                                   // Navigator.of(context).pop();
                                   // Get.back();
                                 },

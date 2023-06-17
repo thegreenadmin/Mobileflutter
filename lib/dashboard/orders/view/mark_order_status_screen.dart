@@ -79,7 +79,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                     Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                     Get.back(id:ordersHomeMainController.pageId.value);
                                   // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(

@@ -204,8 +204,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                SharedPreferenceStorage.setData(Role.role.value, Role.storeOwnerRoleText);
                                accountController.roleId?.value = Role.storeOwnerRoleText;
                               Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
-                              Get.parameters[Role.role.value] =
-                                  Role.storeOwnerRoleText;
+
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
 
                             } else {
@@ -214,11 +213,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                accountController.roleId?.value = Role.customerRoleText;
                               Get.parameters[Role.role.value] =  Role.customerRoleText;
 
-                               // Navigator.of(context)
-                                //     .popUntil((route) => route.isFirst);
-
-                              Get.parameters[Role.role.value] =
-                                  Role.customerRoleText;
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
 
                             }

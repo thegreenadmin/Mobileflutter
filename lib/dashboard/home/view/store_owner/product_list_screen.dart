@@ -42,7 +42,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                               Get.back(id:manageStoreController.pageId.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -105,7 +105,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewProductScreen(),
                       // ));
-                      Get.to(const AddNewProductScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                      Get.to(const AddNewProductScreen(),id:manageStoreController.pageId.value);
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -236,7 +236,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
                                       Get.to(() => const EditProductScreen(),
-                                          id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))!
+                                          id:manageStoreController.pageId.value)!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();

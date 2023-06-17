@@ -47,7 +47,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:addOffersController.pageId.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(

@@ -62,6 +62,11 @@ class ManageStoreController extends GetxController {
   RxString lastProductContent = "".obs;
   RxString lastProductLink = "".obs;
   RxString quantityValue = "".obs;
+
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+
   RxInt pageId = 0.obs;
   InputAddProduct inputData = InputAddProduct();
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
@@ -105,15 +110,21 @@ class ManageStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     isFeaturedTypeSelected.value = false;
-    debugPrint(Get.parameters["storeName"]);
-    debugPrint(Get.parameters["productId"]);
-    debugPrint(Get.parameters["categoryName"]);
-    debugPrint(Get.parameters["storeId"]);
+
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
-      apiGetProductDetails();
+      await apiGetProductDetails();
     }
     if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
@@ -127,12 +138,8 @@ class ManageStoreController extends GetxController {
     if (Get.parameters["storeLocation"] != "") {
       storeLocation.value = Get.parameters["storeLocation"] ?? "";
     }
-    apiGetCategoriesList();
-    apiGetQuantityList();
-    getPage();
-  }
-  getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    await apiGetCategoriesList();
+    await  apiGetQuantityList();
   }
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
     {"isSelected": false, "day": "Monday"},
@@ -205,10 +212,11 @@ class ManageStoreController extends GetxController {
         'POST',
         Uri.parse(ServerCommunicator().baseUrl +
             ServerCommunicator().fileUploadMultiple));
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     //if (imageFileList!.isNotEmpty) {
 
     for (var i = 0; i < imageFileList!.length; i++) {
@@ -249,10 +257,11 @@ class ManageStoreController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}",
@@ -284,10 +293,11 @@ class ManageStoreController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
@@ -320,10 +330,11 @@ class ManageStoreController extends GetxController {
     isLoading.value = true;
     debugPrint("GET PRODUCT LIST URL **********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",

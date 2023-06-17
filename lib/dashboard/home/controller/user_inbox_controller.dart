@@ -9,6 +9,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/constants.dart';
+
 class UserInboxController extends GetxController {
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
@@ -17,21 +19,32 @@ class UserInboxController extends GetxController {
   late UserInboxModel inboxModel = UserInboxModel();
   RxList<MessageHeads> inboxList = <MessageHeads>[].obs;
   RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxBool showPreviousMessages = false.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt pageId = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
     isInboxSelected.value = true;
     showPreviousMessages.value = false;
     apiGetInboxList();
+    getPage();
+
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
 
   //Get Inbox message heads List Api
   Future apiGetInboxList() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
     isLoading.value = true;
     debugPrint("GET INBOX URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}");

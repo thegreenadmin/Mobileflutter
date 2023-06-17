@@ -45,7 +45,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                   Get.back(id:notificationListController.pageId.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
@@ -129,7 +129,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                     builder: (_) => const OrdersScreen(),
                                   ))*/
                                 Get.to(const OrdersScreen(),
-                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                    id:notificationListController.pageId.value,
                                     arguments: {
                                         "isFromNotification": true,
                                         "storeId": notificationListController
@@ -144,7 +144,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         builder: (_) => const OrdersScreen(),
                                       ))*/
                                     Get.to(const OffersScreen(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),arguments: {
+                                        id:notificationListController.pageId.value,arguments: {
                                                 "isFromNotification": true,
                                               })
                                     : notificationListController
@@ -160,7 +160,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                     const OwnerInboxDetailScreen(),
                                               ))*/
                                             Get.to(const OwnerInboxDetailScreen(),
-                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                id:notificationListController.pageId.value,
                                                                 arguments: {
                                                                     "storeId":
                                                                         notificationListController
@@ -186,7 +186,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                               ))*/
                                         Get.to(
                                                             const UserInboxDetailScreen(),
-                                            id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                            id:notificationListController.pageId.value,
                                                             arguments: {
                                                                 "storeId":
                                                                     notificationListController

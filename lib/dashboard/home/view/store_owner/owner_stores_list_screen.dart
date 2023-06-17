@@ -45,7 +45,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                               Get.back(id:ownerStoresController.pageId.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -190,7 +190,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     // ));
                                     await Get.to(
                                         () => const ManageStoreMainScreen(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                                        id:ownerStoresController.pageId.value );
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -445,7 +445,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 //       builder: (_) => const AddNewStoreScreen(),
                 //     ))
                     Get.to(const AddNewStoreScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ))!
+                        id:ownerStoresController.pageId.value)!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

@@ -83,7 +83,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                           //   builder: (_) => const UserProductListScreen(),
                           // ));
                           await Get.to(const UserProductListScreen(),
-                              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              id:storeHomeMainController.pageId.value);
 
 
                         },

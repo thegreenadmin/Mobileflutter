@@ -49,7 +49,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:addNewStoreController.pageId.value);
                                   // Navigator.of(context).pop();
                               Get.delete<AddNewStoreController>();
                             },

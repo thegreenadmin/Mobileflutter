@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 //       const NotificationListScreen(),
                                 // ));
                                 Get.to(const NotificationListScreen(),
-                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                                    id:homeController.pageId.value );
                               },
                               child: const Icon(
                                 Icons.notifications_active,
@@ -185,12 +185,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               //         builder: (_) => const UserInboxScreen(),
                               //       ))
                                   Get.to(const UserInboxScreen(),
-                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) )
+                                      id:homeController.pageId.value )
                                   :/* Navigator.of(context)
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                              Get.to(const OwnerInboxScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              Get.to(const OwnerInboxScreen(),id:homeController.pageId.value);
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -229,8 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (SharedPreferenceStorage.getData(
-                                            Role.role.value) ==
+                                    if (homeController.role?.value ==
                                         Role.customerRoleText) {
                                       // SharedPreferenceStorage.setData(
                                       //     "context", context);
@@ -249,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               "";
                                       Get.to(
                                        const SearchStoreUserScreen(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                        id:homeController.pageId.value,
                                        arguments: {
                                          "firstName":
                                              homeController.firstName!.value,
@@ -276,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       Get.to(
                                        () => const OwnerStoresListScreen(),
-                                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                                        id:homeController.pageId.value,
                                        arguments: {
                                          "firstName":
                                              homeController.firstName!.value,
@@ -322,8 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (SharedPreferenceStorage.getData(
-                                            Role.role.value) ==
+                                    if (homeController.role?.value ==
                                         Role.customerRoleText) {
                                       Get.to(
                                         const SearchStoreUserScreen(),
@@ -377,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               elevation: 0,
                               onPressed: () {
                                 Get.to(const TransactionScreen(),
-                                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+                                    id:homeController.pageId.value );
                                 // SharedPreferenceStorage.setData(
                                 //     "context", context);
                                 // Navigator.of(context).push(MaterialPageRoute(
@@ -407,12 +405,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ))
                                     .then((value) {
                                   homeController.apiGetUserDetail();
-                                });
+                                });*/
                                 Get.parameters["isFromCart"] = "false";
-                                Get.arguments["isFromCart"]=false;*/
-
-                                Get.to(const AccountScreen(),id: 0,
-                                    arguments: {"isFromCart": false});
+                                Get.to(const AccountScreen(),id: homeController.pageId.value,
+                                    arguments: {"isFromCart": false})?.then((value) {
+                                  homeController.apiGetUserDetail();
+                                });
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -495,8 +493,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //   builder: (_) =>
                                               //       const StoreHomeMainScreen(),
                                               // ));
+
                                               await Get.to(const StoreHomeMainScreen(),
-                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                                  id:homeController.pageId.value);
                                               Get.parameters["storeId"] =
                                                   item.storeId ?? "";
 
@@ -632,7 +631,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Get.to(
                                                 () =>
                                                     const ManageStoreMainScreen(),
-                                                id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) ,
+                                                id:homeController.pageId.value ,
                                                 arguments: {
                                                   "isFromHome": true,
                                                   "storeId":
@@ -762,7 +761,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "";
 
                                   Get.to(() => const AddToOrderScreen(),
-                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                      id:homeController.pageId.value,
                                        arguments: {
                                          "isFromHome": true,
                                          "productId": homeController
@@ -864,8 +863,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (BuildContext context, int index) =>
                                   InkWell(
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
                                   Get.parameters["isFromHome"] = "true";
                                   Get.parameters["storeId"] = homeController
                                       .ownerFeatureProductList[index].storeId;
@@ -879,7 +878,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // ));
 
                                    Get.to(const EditProductScreen(),
-                                       id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                       id:homeController.pageId.value,
                                        arguments: {
                                         "isFromHome": true,
                                         'storeId': homeController

@@ -37,7 +37,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                              Get.back(id:storeHomeMainController.pageId.value);
 
                               // Navigator.of(context).pop(context);
                             },

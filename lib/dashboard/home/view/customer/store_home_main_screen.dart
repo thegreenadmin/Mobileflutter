@@ -275,7 +275,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                    Get.back(id:storeHomeMainController.pageId.value);
                                   // Navigator.of(ctx).pop();
                     // Get.back();
                     await storeHomeMainController.apiGetPreviousOrders();
@@ -284,7 +284,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     //   builder: (_) => const PreviousOrdersScreen(),
                     // ));
                     await Get.to(const PreviousOrdersScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,7 +310,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 130,
             child: GestureDetector(
               onTap: () {
-                Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                Get.back(id:storeHomeMainController.pageId.value);
                                   // Navigator.of(ctx).pop();
                 // Get.back();
                 contactAlertDialog(ctx);
@@ -335,7 +335,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 150,
             child: GestureDetector(
               onTap: () async{
-                Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                Get.back(id:storeHomeMainController.pageId.value);
                                   // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
@@ -373,7 +373,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                             .storePageContent!
                             .dynamicUrl
                             .toString()),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
                   }
                 }
               },
@@ -397,7 +397,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             width: 150,
             child: GestureDetector(
               onTap: () async{
-                Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                Get.back(id:storeHomeMainController.pageId.value);
                                   // Navigator.of(ctx).pop();
                 if (storeHomeMainController.storeDetailsResponse.value.data!
                     .store!.storePages!.isEmpty) {
@@ -436,7 +436,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                             .storePageContent!
                             .dynamicUrl
                             .toString()),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
                   }
                 }
               },

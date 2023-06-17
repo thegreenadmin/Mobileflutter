@@ -91,10 +91,6 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
     if ( Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
@@ -137,8 +133,13 @@ class OrdersController extends GetxController {
     super.onInit();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
+
   final scrollController = ScrollController();
   final scrollController1 = ScrollController();
 
@@ -664,7 +665,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -722,7 +723,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -737,10 +738,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .getWithHeadersApi(
@@ -958,10 +960,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -1037,10 +1040,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -1152,7 +1156,7 @@ class OrdersController extends GetxController {
         // BuildContext rContext = SharedPreferenceStorage.getData(
         //   "context",
         // );
-        Get.until((route) => route.isFirst,id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+        Get.until((route) => route.isFirst,id:pageId.value);
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());
@@ -1161,7 +1165,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1210,12 +1214,12 @@ class OrdersController extends GetxController {
         //   "context",
         // );
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
-        Get.until((route) => route.isFirst,id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ) );
+        Get.until((route) => route.isFirst,id:pageId.value );
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1262,7 +1266,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              id:pageId.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);

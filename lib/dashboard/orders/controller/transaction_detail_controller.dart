@@ -26,15 +26,25 @@ class TransactionDetailController extends GetxController {
   RxString? customerName = "".obs;
   RxString? orderDate = "".obs;
   RxString? orderAmount = "".obs;
-
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   @override
   void onInit() {
     super.onInit();
+
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";
     storeId!.value = Get.parameters['store_id'] ?? "";
     isCurrentMonthSelected.value = true;
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
+    if (roleVal ==
         Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       // apiGetUserOrderTransactionHistory();
@@ -42,10 +52,6 @@ class TransactionDetailController extends GetxController {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerTransactionDetail();
     }
-    getPage();
-  }
-  getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
   }
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
@@ -75,10 +81,11 @@ class TransactionDetailController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Content/Type': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     String currentMonth =
         "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";

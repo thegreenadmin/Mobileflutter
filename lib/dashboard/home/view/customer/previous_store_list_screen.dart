@@ -82,7 +82,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                           .previousStore[index].storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  id:searchStoreUserController.pageId.value);
 
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),

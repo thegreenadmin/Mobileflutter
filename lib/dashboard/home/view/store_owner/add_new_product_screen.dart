@@ -42,7 +42,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                             Get.back(id:manageStoreController.pageId.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(

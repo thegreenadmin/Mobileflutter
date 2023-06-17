@@ -20,6 +20,8 @@ class UserTransactionDetailController extends GetxController {
   RxString? orderAmount = "".obs;
   RxString? storeName = "".obs;
   RxString? storeImage = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -30,7 +32,11 @@ class UserTransactionDetailController extends GetxController {
     getPage();
   }
   getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
   }
   RxList horizontalTabList = [
     StringConstants.janText,

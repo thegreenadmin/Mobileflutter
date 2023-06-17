@@ -315,7 +315,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     //   builder: (_) => const PreviousOrdersScreen(),
                     // ));
                     await Get.to(const PreviousOrdersScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -404,7 +404,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                             .storePageContent!
                             .dynamicUrl
                             .toString()),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
 
                   }
                 }
@@ -467,7 +467,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                             .storePageContent!
                             .dynamicUrl
                             .toString()),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id:storeHomeMainController.pageId.value);
 
                   }
                 }
@@ -622,7 +622,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                   //       const AddToOrderScreen(),
                                                   // ));
                                                   await Get.to(const AddToOrderScreen(),
-                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                                      id:storeHomeMainController.pageId.value);
                                                 },
                                                 child: Column(
                                                   crossAxisAlignment:
@@ -834,7 +834,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         orderBy: "2",
                         orderType: "2");
                     // Navigator.of(contx).pop();
-                    Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                    Get.back(id:storeHomeMainController.pageId.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -866,7 +866,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 orderBy: "2",
               );
               // Navigator.of(contx).pop();
-              Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+              Get.back(id:storeHomeMainController.pageId.value);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -57,14 +57,17 @@ class OffersController extends GetxController {
   }
 
   getCurrentLocation() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+      role?.value = roleVal;
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
 
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
-        Role.customerRoleText) {
+    if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetUserOffersList(Get.context!);
     } else {
@@ -124,16 +127,7 @@ class OffersController extends GetxController {
   Future apiGetUserOffersList(BuildContext context) async {
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL********** " +
-          ServerCommunicator().baseUrl +
-          ServerCommunicator().shopOffersList +
-          "?longitude=" +
-          lng.toString() +
-          "&latitude=" +
-          lat.toString() +
-          "&mileage=" +
-          "1000" +
-          "&page=1&page_size=20",
+      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
     );
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
@@ -144,15 +138,7 @@ class OffersController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().shopOffersList +
-                "?longitude=" +
-                lng.toString() +
-                "&latitude=" +
-                lat.toString() +
-                "&mileage=" +
-                "1000" +
-                "&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
             headers,
             showLoading: true)
         .then((value) async {

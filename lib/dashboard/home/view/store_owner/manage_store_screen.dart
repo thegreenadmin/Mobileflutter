@@ -39,7 +39,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const EditStoreDetailScreen(),
                 // ));
-                Get.to(const EditStoreDetailScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                Get.to(const EditStoreDetailScreen(),id:ownerStoresController.pageId.value);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -113,7 +113,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const MangeProductScreen(),
                 // ));
                 Get.to(const MangeProductScreen(),
-                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    id:ownerStoresController.pageId.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,
@@ -189,7 +189,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const RoleAndPermissionScreen(),
                 // ));
                 Get.to(const RoleAndPermissionScreen(),
-                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    id:ownerStoresController.pageId.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,
@@ -265,7 +265,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const WorkerListScreen(),
                 // ));
                 Get.to(const WorkerListScreen(),
-                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ),
+                    id:ownerStoresController.pageId.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,

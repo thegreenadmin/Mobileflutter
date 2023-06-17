@@ -47,7 +47,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () async {
-                                            Get.until((route) => route.isFirst,id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                            Get.until((route) => route.isFirst,id:offersController.pageId.value);
                                             // Navigator.of(Get.context!).popUntil(
                                             //     (route) => route.isFirst);
                                           },
@@ -128,7 +128,7 @@ class _OffersScreenState extends State<OffersScreen> {
                               //   builder: (_) => const AddOfferScreen(),
                               // ))
                                   Get.to(const AddOfferScreen(),
-                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                      id:offersController.pageId.value,
                                       arguments: {
                                     "isFrom": StringConstants.addOfferText,
                                   })!
@@ -472,7 +472,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                       AlertStringConstants.areYouSureText,
                                       okay: StringConstants.deleteText,
                                       okayTap: () async {
-                                        Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                        Get.back(id:offersController.pageId.value);
                                     // Navigator.pop(Get.context!);
                                     offersController.storeId!.value =
                                         offersController
@@ -638,7 +638,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //       const EditOfferScreen(),
                                                   // ))
                                                       Get.to(const EditOfferScreen(),
-                                                      id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
+                                                      id:offersController.pageId.value,
                                                               arguments: {
                                                             "isFrom":StringConstants.editOfferText,
                                                             "storeId": offersController.getOwnerOfferlist[

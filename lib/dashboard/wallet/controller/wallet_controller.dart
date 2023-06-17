@@ -120,27 +120,29 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+   getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    role?.value = roleVal;
     autoChargeType.value = "threshold";
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
-    role?.value = SharedPreferenceStorage.getData(Role.role.value).toString();
-    if (SharedPreferenceStorage.getData(Role.role.value).toString() == Role.customerRoleText) {
+    if (role?.value== Role.customerRoleText) {
       if ( Get.parameters['isFromCartScreen'] != "false") {
         isFromCartScreen.value = Get.parameters["isFromCartScreen"] == "true" ? true : false;
       }
       getApiData();
     } else {
-      apiGetBankAccountList();
-      apiGetStoreList();
-      apiGetCountries();
-      apiGetAccountDetails();
+      await apiGetBankAccountList();
+      await apiGetStoreList();
+      await apiGetCountries();
+      await apiGetAccountDetails();
     }
   }
-
   getApiData() async {
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+
     await apiGetCardList(Get.context!);
     await apiGetUserWalletBalance();
     await apiGetAutoRechargeDetail();
@@ -271,10 +273,11 @@ class WalletController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -310,10 +313,11 @@ class WalletController extends GetxController {
     countryList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
