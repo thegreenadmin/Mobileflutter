@@ -89,7 +89,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           // ));
                           await Get.to(const AddToOrderScreen(),
                               id:storeHomeMainController.pageId.value)
-                              .then((value) => {
+                              ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
                                   });
