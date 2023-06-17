@@ -76,7 +76,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                // Get.back();
+                                Get.delete<StoreHomeMainController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
