@@ -88,7 +88,11 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           //   builder: (_) => const AddToOrderScreen(),
                           // ));
                           await Get.to(const AddToOrderScreen(),
-                              id:storeHomeMainController.pageId.value);
+                              id:storeHomeMainController.pageId.value)
+                              .then((value) => {
+                                    storeHomeMainController
+                                        .apiFeatureProductListApi()
+                                  });
                           // Get.to(const AddToOrderScreen());
                           await storeHomeMainController
                               .apiGetCartListApi();
@@ -132,7 +136,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                             ImageConstants.nopicfound,
                                             fit: BoxFit.fill,
                                             height: 148,
-                                            width: 148,   color: AppColors.grey.withOpacity(0.4),
+                                            width: 148,
+                                            color:
+                                                AppColors.grey.withOpacity(0.4),
                                           ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),

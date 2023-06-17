@@ -132,7 +132,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,7 +156,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +180,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,7 +204,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,7 +230,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 Text(
                   StringConstants.addressText,
@@ -264,7 +264,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,7 +290,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,7 +316,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -342,7 +342,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -368,7 +368,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 // ),
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -395,9 +395,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 height4SizedBox,
                 const Divider(
                   thickness: 1,
-                  height: 50,
+                  height: 40,
                 ),
-               
               ],
             ),
           ),

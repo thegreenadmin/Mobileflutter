@@ -326,9 +326,11 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                     ),
                     height4SizedBox,
                     TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.newline,
+                        keyboardType: TextInputType.multiline,
                         autofocus: false,
+                        maxLines: null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
                         ],
@@ -338,7 +340,6 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             fontWeight: FontWeight.w500),
                         controller: addNewWorkerController
                             .shortDescriptionTextController,
-                        keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants
@@ -454,8 +455,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     TimeOfDay date = TimeOfDay.now();
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
-                                    date = (await showTimePicker(    initialEntryMode:
-                                                    TimePickerEntryMode.input,
+                                    date = (await showTimePicker(
+                                      initialEntryMode:
+                                          TimePickerEntryMode.input,
                                       helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,
@@ -563,8 +565,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     TimeOfDay date = TimeOfDay.now();
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
-                                    date = (await showTimePicker(    initialEntryMode:
-                                                    TimePickerEntryMode.input,
+                                    date = (await showTimePicker(
+                                      initialEntryMode:
+                                          TimePickerEntryMode.input,
                                       helpText: StringConstants.selectTimeText,
                                       initialTime: TimeOfDay.now(),
                                       context: context,

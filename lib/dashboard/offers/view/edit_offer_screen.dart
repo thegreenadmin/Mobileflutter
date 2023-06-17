@@ -198,7 +198,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterNameText,
+                          hintText: StringConstants.enterOfferNameText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,
@@ -297,8 +297,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     Obx(() => addOffersController.storeList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<String>(
-                            value: addOffersController.storeIdValue.value !=
-                                        ""
+                            value: addOffersController.storeIdValue.value != ""
                                 ? addOffersController.storeList
                                     .firstWhere((element) =>
                                         element.storeId ==
@@ -487,12 +486,12 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: Obx(() =>
-                                  addOffersController.discountType.value.isEmpty
+                          child: Obx(() => addOffersController
+                                  .discountType.value.isEmpty
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
-                                  value:addOffersController
-                                              .discountType.value.isNotEmpty
+                                  value: addOffersController
+                                          .discountType.value.isNotEmpty
                                       ? addOffersController.discountType.value
                                       : "",
                                   decoration: InputDecoration(
@@ -578,7 +577,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                               },
                               decoration: InputDecoration(
                                 errorMaxLines: 3,
-                                hintText: StringConstants.discountsOrOffersText,
+                                hintText: StringConstants.enterValueText,
                                 hintStyle: const TextStyle(
                                     color: AppColors.grey, fontSize: 14),
                                 fillColor: Colors.white,

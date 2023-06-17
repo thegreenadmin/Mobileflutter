@@ -426,7 +426,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             fontWeight: FontWeight.w400),
                         controller: signupController.dateTextController,
                         decoration: InputDecoration(
-                          labelText: StringConstants.ageText,
+                          labelText: StringConstants.dobText,
                           labelStyle: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,

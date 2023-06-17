@@ -105,7 +105,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
 
   @override
   Widget build(BuildContext context) {
-    return  GestureDetector(
+    return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: PreferredSize(
@@ -262,22 +262,22 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 children: [
                                   addCardController.paymentType!.value == "card"
                                       ? Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.circleunfill,
-                                        scale: 4,
-                                      ),
-                                      Image.asset(
-                                        ImageConstants.circle,
-                                        scale: 7,
-                                      ),
-                                    ],
-                                  )
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Image.asset(
+                                              ImageConstants.circleunfill,
+                                              scale: 4,
+                                            ),
+                                            Image.asset(
+                                              ImageConstants.circle,
+                                              scale: 7,
+                                            ),
+                                          ],
+                                        )
                                       : Image.asset(
-                                    ImageConstants.circleBlackUnFill,
-                                    scale: 2.8,
-                                  ),
+                                          ImageConstants.circleBlackUnFill,
+                                          scale: 2.8,
+                                        ),
                                   width8SizedBox,
                                   Text(
                                     StringConstants.cardText,
@@ -291,209 +291,209 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         width20SizedBox,
                         Platform.isAndroid
                             ? Flexible(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () {
-                              addCardController.paymentType!.value =
-                              "G-Pay";
-                              addCardController.selectPaymentType.value =
-                              "G-Pay";
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.white,
-                                  border: Border.all(
-                                    color: addCardController
-                                        .paymentType!.value ==
-                                        "G-Pay"
-                                        ? AppColors.primary
-                                        : AppColors.blacklight,
-                                  )),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  addCardController.paymentType!.value ==
-                                      "G-Pay"
-                                      ? Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.circleunfill,
-                                        scale: 4,
-                                      ),
-                                      Image.asset(
-                                        ImageConstants.circle,
-                                        scale: 7,
-                                      ),
-                                    ],
-                                  )
-                                      : Image.asset(
-                                    ImageConstants
-                                        .circleBlackUnFill,
-                                    scale: 2.8,
+                                flex: 2,
+                                child: InkWell(
+                                  onTap: () {
+                                    addCardController.paymentType!.value =
+                                        "G-Pay";
+                                    addCardController.selectPaymentType.value =
+                                        "G-Pay";
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: AppColors.white,
+                                        border: Border.all(
+                                          color: addCardController
+                                                      .paymentType!.value ==
+                                                  "G-Pay"
+                                              ? AppColors.primary
+                                              : AppColors.blacklight,
+                                        )),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        addCardController.paymentType!.value ==
+                                                "G-Pay"
+                                            ? Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    ImageConstants.circleunfill,
+                                                    scale: 4,
+                                                  ),
+                                                  Image.asset(
+                                                    ImageConstants.circle,
+                                                    scale: 7,
+                                                  ),
+                                                ],
+                                              )
+                                            : Image.asset(
+                                                ImageConstants
+                                                    .circleBlackUnFill,
+                                                scale: 2.8,
+                                              ),
+                                        width8SizedBox,
+                                        Text(
+                                          StringConstants.gPayText,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  width8SizedBox,
-                                  Text(
-                                    StringConstants.gPayText,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                                ),
+                              )
                             : Flexible(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () {
-                              addCardController.paymentType!.value =
-                              "applePay";
-                              addCardController.selectPaymentType.value =
-                              "applePay";
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.white,
-                                  border: Border.all(
-                                    color: addCardController
-                                        .paymentType!.value ==
-                                        "applePay"
-                                        ? AppColors.primary
-                                        : AppColors.blacklight,
-                                  )),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  addCardController.paymentType!.value ==
-                                      "applePay"
-                                      ? Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.circleunfill,
-                                        scale: 4,
-                                      ),
-                                      Image.asset(
-                                        ImageConstants.circle,
-                                        scale: 7,
-                                      ),
-                                    ],
-                                  )
-                                      : Image.asset(
-                                    ImageConstants
-                                        .circleBlackUnFill,
-                                    scale: 2.8,
+                                flex: 2,
+                                child: InkWell(
+                                  onTap: () {
+                                    addCardController.paymentType!.value =
+                                        "applePay";
+                                    addCardController.selectPaymentType.value =
+                                        "applePay";
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: AppColors.white,
+                                        border: Border.all(
+                                          color: addCardController
+                                                      .paymentType!.value ==
+                                                  "applePay"
+                                              ? AppColors.primary
+                                              : AppColors.blacklight,
+                                        )),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        addCardController.paymentType!.value ==
+                                                "applePay"
+                                            ? Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    ImageConstants.circleunfill,
+                                                    scale: 4,
+                                                  ),
+                                                  Image.asset(
+                                                    ImageConstants.circle,
+                                                    scale: 7,
+                                                  ),
+                                                ],
+                                              )
+                                            : Image.asset(
+                                                ImageConstants
+                                                    .circleBlackUnFill,
+                                                scale: 2.8,
+                                              ),
+                                        width8SizedBox,
+                                        Text(
+                                          StringConstants.applePayText,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  width8SizedBox,
-                                  Text(
-                                    StringConstants.applePayText,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
                   height30SizedBox,
                   Obx(
-                        () => addCardController.selectPaymentType.value == "G-Pay"
+                    () => addCardController.selectPaymentType.value == "G-Pay"
                         ? GooglePayButton(
-                      onError: (Object? error) {
-                        debugPrint('error');
-                      },
-                      paymentConfiguration:
-                      PaymentConfiguration.fromJsonString(
-                          payment_configurations.defaultGooglePay),
-                      paymentItems: _paymentItems,
-                      type: GooglePayButtonType.pay,
-                      margin: const EdgeInsets.only(top: 15.0),
-                      onPaymentResult: onGooglePayResult,
-                      loadingIndicator: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                        : addCardController.selectPaymentType.value ==
-                        "applePay"
-                        ? ApplePayButton(
-                      width: WidgetConstants.screenWidth,
-                      height: 45,
-                      paymentConfiguration:
-                      PaymentConfiguration.fromJsonString(
-                          payment_configurations.defaultApplePay),
-                      paymentItems: _paymentItems,
-                      style: ApplePayButtonStyle.black,
-                      type: ApplePayButtonType.buy,
-                      margin: const EdgeInsets.only(top: 0.0),
-                      onPaymentResult: onApplePayResult,
-                      loadingIndicator: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                        : addCardController.selectPaymentType.value ==
-                        "card"
-                        ? Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 30),
-                      child: addCardController.cardList.isEmpty
-                          ? addCardController.isLoading.value ==
-                          true
-                          ? height0SizedBox
-                          : Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              ImageConstants.nodata,
-                              scale: 8,
-                              color: AppColors.primary,
+                            onError: (Object? error) {
+                              debugPrint('error');
+                            },
+                            paymentConfiguration:
+                                PaymentConfiguration.fromJsonString(
+                                    payment_configurations.defaultGooglePay),
+                            paymentItems: _paymentItems,
+                            type: GooglePayButtonType.pay,
+                            margin: const EdgeInsets.only(top: 15.0),
+                            onPaymentResult: onGooglePayResult,
+                            loadingIndicator: const Center(
+                              child: CircularProgressIndicator(),
                             ),
-                          ),
-                          height4SizedBox,
-                          Center(
-                            child: Text(
-                              "${StringConstants.noCardsFoundText}\n${StringConstants.pleaseAddCardFirstText}!",
-                              style: const TextStyle(
-                                  fontStyle:
-                                  FontStyle.italic,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          height20SizedBox,
-                          Align(
-                            alignment:
-                            Alignment.bottomRight,
-                            child: CustomButton(
-                              gradient:
-                              const LinearGradient(
-                                begin:
-                                Alignment.topCenter,
-                                end: Alignment
-                                    .bottomCenter,
-                                colors: [
-                                  AppColors.primary,
-                                  AppColors.primary
-                                ],
-                              ),
-                              onTap: () async{
-                                // SharedPreferenceStorage
+                          )
+                        : addCardController.selectPaymentType.value ==
+                                "applePay"
+                            ? ApplePayButton(
+                                width: WidgetConstants.screenWidth,
+                                height: 45,
+                                paymentConfiguration:
+                                    PaymentConfiguration.fromJsonString(
+                                        payment_configurations.defaultApplePay),
+                                paymentItems: _paymentItems,
+                                style: ApplePayButtonStyle.black,
+                                type: ApplePayButtonType.buy,
+                                margin: const EdgeInsets.only(top: 0.0),
+                                onPaymentResult: onApplePayResult,
+                                loadingIndicator: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : addCardController.selectPaymentType.value ==
+                                    "card"
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 30),
+                                    child: addCardController.cardList.isEmpty
+                                        ? addCardController.isLoading.value ==
+                                                true
+                                            ? height0SizedBox
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Center(
+                                                    child: Image.asset(
+                                                      ImageConstants.nodata,
+                                                      scale: 8,
+                                                      color: AppColors.primary,
+                                                    ),
+                                                  ),
+                                                  height4SizedBox,
+                                                  Center(
+                                                    child: Text(
+                                                      "${StringConstants.noCardsFoundText}\n${StringConstants.pleaseAddCardFirstText}!",
+                                                      style: const TextStyle(
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                  height20SizedBox,
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: CustomButton(
+                                                      gradient:
+                                                          const LinearGradient(
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                        colors: [
+                                                          AppColors.primary,
+                                                          AppColors.primary
+                                                        ],
+                                                      ),
+                                                      onTap: () async{
+                                                        // SharedPreferenceStorage
                                 //     .setData("context",
                                 //     context);
                                 // Navigator.of(context)
@@ -510,167 +510,167 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                       context);
                                 });
 
-                              },
-                              height: 50,
-                              width: WidgetConstants
-                                  .screenWidth *
-                                  0.3,
-                              text: StringConstants
-                                  .addCardText,
-                              borderRadius: 12,
-                              fontWeight:
-                              FontWeight.w500,
-                              iconL: false,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      )
-                          : ListView.separated(
-                          separatorBuilder:
-                              (BuildContext context,
-                              int index) {
-                            return height15SizedBox;
-                          },
-                          itemCount: addCardController
-                              .cardList.length,
-                          shrinkWrap: true,
-                          physics:
-                          const NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context,
-                              int index) {
-                            debugPrint(
-                                "userStripeCardId:--------------->>>>>>");
-                            debugPrint(addCardController
-                                .userStripeCardId!.value);
+                                                      },
+                                                      height: 50,
+                                                      width: WidgetConstants
+                                                              .screenWidth *
+                                                          0.3,
+                                                      text: StringConstants
+                                                          .addCardText,
+                                                      borderRadius: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      iconL: false,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                        : ListView.separated(
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return height15SizedBox;
+                                            },
+                                            itemCount: addCardController
+                                                .cardList.length,
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              debugPrint(
+                                                  "userStripeCardId:--------------->>>>>>");
+                                              debugPrint(addCardController
+                                                  .userStripeCardId!.value);
 
-                            if (addCardController
-                                .userStripeCardId!
-                                .value
-                                .isEmpty) {
-                              addCardController
-                                  .userStripeCardId
-                                  ?.value =
-                                  addCardController
-                                      .cardList[0]
-                                      .userStripeCardId
-                                      .toString();
-                              debugPrint(
-                                  "userStripeCardId:--------------->>>>>>");
-                              debugPrint(addCardController
-                                  .userStripeCardId!.value);
-                            }
-                            return Container(
-                              padding: const EdgeInsets.only(
-                                  left: 20,
-                                  right: 10,
-                                  top: 15,
-                                  bottom: 15),
-                              color: addCardController
-                                  .selectedIndex!
-                                  .value ==
-                                  index
-                                  ? AppColors.primary
-                                  : AppColors.primarylight,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    addCardController
-                                        .selectedIndex!
-                                        .value = index;
-
-                                    addCardController
-                                        .userStripeCardId!
-                                        .value =
-                                        addCardController
-                                            .cardList[index]
-                                            .userStripeCardId
-                                            .toString();
-                                    debugPrint(
-                                        addCardController
-                                            .userStripeCardId!
-                                            .value);
-                                  });
-                                },
-                                child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment
-                                        .spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .start,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets
-                                                .only(
-                                                top: 8.0),
-                                            child: Image.asset(
-                                                ImageConstants
-                                                    .mastercard,
-                                                fit: BoxFit
-                                                    .cover,
-                                                scale: 5),
-                                          ),
-                                          width15SizedBox,
-                                          Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment
-                                                .start,
-                                            children: [
-                                              Text(
+                                              if (addCardController
+                                                  .userStripeCardId!
+                                                  .value
+                                                  .isEmpty) {
                                                 addCardController
-                                                    .cardList[
-                                                index]
-                                                    .card!
-                                                    .funding
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: addCardController
-                                                        .selectedIndex!.value ==
+                                                        .userStripeCardId
+                                                        ?.value =
+                                                    addCardController
+                                                        .cardList[0]
+                                                        .userStripeCardId
+                                                        .toString();
+                                                debugPrint(
+                                                    "userStripeCardId:--------------->>>>>>");
+                                                debugPrint(addCardController
+                                                    .userStripeCardId!.value);
+                                              }
+                                              return Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20,
+                                                    right: 10,
+                                                    top: 15,
+                                                    bottom: 15),
+                                                color: addCardController
+                                                            .selectedIndex!
+                                                            .value ==
                                                         index
-                                                        ? AppColors
-                                                        .white
-                                                        : AppColors
-                                                        .blacklight,
-                                                    fontSize:
-                                                    15,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w500),
-                                              ),
-                                              height10SizedBox,
-                                              Text(
-                                                "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
-                                                style: TextStyle(
-                                                    color: addCardController
-                                                        .selectedIndex!.value ==
-                                                        index
-                                                        ? AppColors
-                                                        .white
-                                                        : AppColors
-                                                        .blacklight,
-                                                    fontSize:
-                                                    15,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ]),
-                              ),
-                            );
-                          }),
-                    )
-                        : height20SizedBox,
+                                                    ? AppColors.primary
+                                                    : AppColors.primarylight,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      addCardController
+                                                          .selectedIndex!
+                                                          .value = index;
+
+                                                      addCardController
+                                                              .userStripeCardId!
+                                                              .value =
+                                                          addCardController
+                                                              .cardList[index]
+                                                              .userStripeCardId
+                                                              .toString();
+                                                      debugPrint(
+                                                          addCardController
+                                                              .userStripeCardId!
+                                                              .value);
+                                                    });
+                                                  },
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 8.0),
+                                                              child: Image.asset(
+                                                                  ImageConstants
+                                                                      .mastercard,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  scale: 5),
+                                                            ),
+                                                            width15SizedBox,
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  addCardController
+                                                                      .cardList[
+                                                                          index]
+                                                                      .card!
+                                                                      .funding
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: addCardController
+                                                                                  .selectedIndex!.value ==
+                                                                              index
+                                                                          ? AppColors
+                                                                              .white
+                                                                          : AppColors
+                                                                              .blacklight,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                                height10SizedBox,
+                                                                Text(
+                                                                  "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
+                                                                  style: TextStyle(
+                                                                      color: addCardController
+                                                                                  .selectedIndex!.value ==
+                                                                              index
+                                                                          ? AppColors
+                                                                              .white
+                                                                          : AppColors
+                                                                              .blacklight,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ]),
+                                                ),
+                                              );
+                                            }),
+                                  )
+                                : height20SizedBox,
                   ),
                   height20SizedBox,
                   CustomButton(
@@ -685,7 +685,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                           .validateAndSubmitFunction(context);
                     },
                     height: 50,
-                    text: StringConstants.okText,
+                    text: StringConstants.addText,
                     borderRadius: 12,
                     fontWeight: FontWeight.w500,
                     iconL: false,
