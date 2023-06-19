@@ -169,7 +169,9 @@ class OwnerStoresController extends GetxController {
     lng = currentLocation.longitude;
     await apiGetDeliveryServices();
     storeId.value = Get.parameters['storeId'] ?? "";
-
+    // if (Get.parameters['isFromHome'] == "true") {
+      await  apiGetParticularStore();
+    // }
     await apiGetStoreList();
     await apiGetOwnerOffersList();
     await apiGetFeaturedProducts();
@@ -558,9 +560,7 @@ class OwnerStoresController extends GetxController {
         deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (Get.parameters['isFromHome'] == "true") {
           await  apiGetParticularStore();
-        }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

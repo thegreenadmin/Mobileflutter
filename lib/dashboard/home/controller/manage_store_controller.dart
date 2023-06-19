@@ -479,13 +479,7 @@ class ManageStoreController extends GetxController {
       "order_by": "product_id",
       "order_type": "ASC",
       "category_id": categoryId.value,
-      "filters": [
-        // {
-        //   "filter_by": "is_featured_product",
-        //   "filter_value": false,
-        //   "operation": "eq"
-        // }
-      ]
+      "filters": []
     };
     UserProvider()
         .postWithHeadersApi(
@@ -576,30 +570,28 @@ class ManageStoreController extends GetxController {
         } else {
           selectedFeaturedType.value = "No";
         }
-        daysTextController.text =
-            value.body["data"]['product']["return_days_count"].toString();
-        isProductReturnable.value =
-            value.body["data"]['product']["is_product_returnable"];
+        daysTextController.text = value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value = value.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {
           selectedProductReturnableType.value = "No";
         }
-        lengthTextController.text =
-            value.body["data"]['product']["length"].toString();
-        breadthTextController.text =
-            value.body["data"]['product']["width"].toString();
-        heightTextController.text =
-            value.body["data"]['product']["height"].toString();
-        weightTextController.text =
-            value.body["data"]['product']["weight"].toString();
-        selectedCategories.value =
-            value.body["data"]['product']['product_categories'] ?? [];
+        lengthTextController.text = value.body["data"]['product']["length"].toString();
+        breadthTextController.text = value.body["data"]['product']["width"].toString();
+        heightTextController.text = value.body["data"]['product']["height"].toString();
+        weightTextController.text = value.body["data"]['product']["weight"].toString();
+        selectedCategories.value = value.body["data"]['product']['product_categories'] ?? [];
+        debugPrint("selectedCategories Length******${selectedCategories.length}");
+
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
-            if (categoriesList[i].categoryId ==
-                selectedCategories[j]['category']['category_id']) {
+            if (categoriesList[i].categoryId.toString() == selectedCategories[j]['category']['category_id'].toString()) {
+              debugPrint("categoriesList name*******${categoriesList[i].categoryName}");
               categoriesList[i].isSelected = true;
+              debugPrint("categoriesList name*******${categoriesList[i].isSelected}");
+            }else{
+              categoriesList[i].isSelected = false;
             }
           }
         }
@@ -621,6 +613,7 @@ class ManageStoreController extends GetxController {
           }
         }
         isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -225,9 +225,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               child: InkWell(
                                 onTap: () async {
                                   manageStoreController.productId.value =
-                                      manageStoreController
-                                              .storeProductList[index]
-                                              .productId ?? "";
+                                      manageStoreController.storeProductList[index].productId ?? "";
                                   await manageStoreController.apiGetProductDetails();
                                   SharedPreferenceStorage.setData(
                                       "context", context);

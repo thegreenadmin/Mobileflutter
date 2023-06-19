@@ -21,13 +21,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 
-  @override
-  void initState() {
-    for (int i = 0; i < manageStoreController.categoriesList.length; i++) {
-      manageStoreController.categoriesList[i].isSelected = true;
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +42,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
+                                for (var element in manageStoreController.categoriesList) {
+                                  element.isSelected= false;
+                                }
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
