@@ -1219,19 +1219,14 @@ class _CartScreenState extends State<CartScreen> {
                                     : [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
-                                if (storeHomeMainController
-                                    .storeDeliveryServiceId.value !=
-                                    "0") {
-                                  if (storeHomeMainController
-                                      .walletBalance.value >=
-                                      storeHomeMainController
-                                          .cartTotalPrice.value ) {
+                                if (storeHomeMainController.storeDeliveryServiceId.value != "0") {
+                                  if (storeHomeMainController.walletBalance.value >=
+                                      storeHomeMainController.cartTotalPrice.value
+                                      && storeHomeMainController.isLoading.value==false ) {
                                     storeHomeMainController
                                         .moneydeductFromCartDailogue(context,
                                         amount: storeHomeMainController
-                                            .cartData.value.cartTotalPrice
-                                            ?.toStringAsFixed(2) ??
-                                            "0");
+                                            .cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0");
                                   } else {
                                     Utility.showConfirmAlertMessage(
                                         StringConstants.inSufficientFundText,

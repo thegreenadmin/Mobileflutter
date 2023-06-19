@@ -306,12 +306,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                     true
                                                 ? InkWell(
                                                     onTap: () {
-                                                      storeHomeMainController
-                                                          .apiRemoveFavouriteProduct(
-                                                              storeHomeMainController
-                                                                  .featureProductList[
-                                                                      index]
-                                                                  .productId);
+                                                      if(storeHomeMainController.isLoading.value == false){
+                                                        storeHomeMainController
+                                                            .apiRemoveFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                            index]
+                                                                .productId);
+                                                      }
+
                                                     },
                                                     child: Image.asset(
                                                       ImageConstants.liked,
@@ -320,12 +323,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   )
                                                 : InkWell(
                                                     onTap: () {
-                                                      storeHomeMainController
-                                                          .apiCreateFavouriteProduct(
-                                                              storeHomeMainController
-                                                                  .featureProductList[
-                                                                      index]
-                                                                  .productId);
+                                                      if(storeHomeMainController.isLoading.value == false){
+                                                        storeHomeMainController
+                                                            .apiCreateFavouriteProduct(
+                                                            storeHomeMainController
+                                                                .featureProductList[
+                                                            index]
+                                                                .productId);
+                                                      }
+
                                                     },
                                                     child: Image.asset(
                                                       ImageConstants.fav,

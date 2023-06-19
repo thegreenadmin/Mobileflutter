@@ -252,12 +252,15 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                 true
                                             ? InkWell(
                                                 onTap: () {
+                                                if(searchStoreUserController.isLoading.value == false){
                                                   searchStoreUserController
                                                       .apiRemoveFavouriteStore(
                                                     searchStoreUserController
                                                         .favouriteStore[index]
                                                         .storeId,
                                                   );
+                                                }
+
                                                 },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
@@ -266,12 +269,15 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
+                                                if(searchStoreUserController.isLoading.value == false){
                                                   searchStoreUserController
                                                       .apiCreateFavouriteStore(
                                                     searchStoreUserController
                                                         .favouriteStore[index]
                                                         .storeId,
                                                   );
+                                                }
+
                                                 },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,

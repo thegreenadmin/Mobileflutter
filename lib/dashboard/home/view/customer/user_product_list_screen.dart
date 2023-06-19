@@ -656,9 +656,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                                   ? InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
-                                                                            .featureProductList[i]
-                                                                            .productId);
+                                                                            if(storeHomeMainController.isLoading.value == false){
+                                                                              storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
+                                                                                  .featureProductList[i]
+                                                                                  .productId);
+                                                                            }
                                                                       },
                                                                       child: Image
                                                                           .asset(
@@ -671,9 +673,12 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                                   : InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
-                                                                            .featureProductList[i]
-                                                                            .productId);
+                                                                            if(storeHomeMainController.isLoading.value == false){
+                                                                              storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
+                                                                                  .featureProductList[i]
+                                                                                  .productId);
+                                                                            }
+
                                                                       },
                                                                       child: Image
                                                                           .asset(

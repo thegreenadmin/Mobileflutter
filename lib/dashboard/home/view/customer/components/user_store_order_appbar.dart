@@ -190,14 +190,17 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         true
                                     ? InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiRemoveFavouriteStore(
-                                                  storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data
-                                                      ?.store
-                                                      ?.storeId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiRemoveFavouriteStore(
+                                                storeHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data
+                                                    ?.store
+                                                    ?.storeId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
@@ -206,14 +209,17 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiCreateFavouriteStore(
-                                                  storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data
-                                                      ?.store
-                                                      ?.storeId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiCreateFavouriteStore(
+                                                storeHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data
+                                                    ?.store
+                                                    ?.storeId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.favoutline,

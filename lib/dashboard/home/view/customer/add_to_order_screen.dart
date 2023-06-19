@@ -701,14 +701,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         true
                                     ? InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiRemoveFavouriteProduct(
-                                                  storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data
-                                                      ?.product
-                                                      ?.productId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiRemoveFavouriteProduct(
+                                                storeHomeMainController
+                                                    .productDetailResponse
+                                                    .value
+                                                    .data
+                                                    ?.product
+                                                    ?.productId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
@@ -717,14 +720,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiCreateFavouriteProduct(
-                                                  storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data
-                                                      ?.product
-                                                      ?.productId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiCreateFavouriteProduct(
+                                                storeHomeMainController
+                                                    .productDetailResponse
+                                                    .value
+                                                    .data
+                                                    ?.product
+                                                    ?.productId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.fav,

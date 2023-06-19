@@ -640,7 +640,7 @@ class SearchStoreUserController extends GetxController {
 
   //Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
-    isLoading.value = favouriteStore.isNotEmpty ? true : false;
+    isLoading.value =  true ;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
     Map<String, String> headers = {
@@ -714,7 +714,7 @@ class SearchStoreUserController extends GetxController {
 
   //Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
-    isLoading.value = favouriteStore.isNotEmpty ? true : false;
+    isLoading.value =  true ;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
     Map<String, String> headers = {

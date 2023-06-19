@@ -151,14 +151,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             true
                                         ? InkWell(
                                             onTap: () {
-                                              ordersController
-                                                  .apiRemoveFavouriteStore(
-                                                      ordersController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeId);
+                                              if(ordersController.isLoading.value == false){
+                                                ordersController
+                                                    .apiRemoveFavouriteStore(
+                                                    ordersController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
+                                              }
+
                                             },
                                             child: Image.asset(
                                               ImageConstants.liked,
@@ -167,14 +170,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           )
                                         : InkWell(
                                             onTap: () {
-                                              ordersController
-                                                  .apiCreateFavouriteStore(
-                                                      ordersController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeId);
+                                              if(ordersController.isLoading.value == false){
+                                                ordersController
+                                                    .apiCreateFavouriteStore(
+                                                    ordersController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
+                                              }
+
                                             },
                                             child: Image.asset(
                                               ImageConstants.favoutline,

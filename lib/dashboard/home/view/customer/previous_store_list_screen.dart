@@ -254,18 +254,19 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .previousStore[index]
-                                                    .isFavouriteStore ==
+                                        searchStoreUserController.previousStore[index].isFavouriteStore ==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
-                                                  searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
+                                                  if(searchStoreUserController.isLoading.value == false){
                                                     searchStoreUserController
-                                                        .previousStore[index]
-                                                        .storeId,
-                                                  );
+                                                        .apiRemoveFavouriteStore(
+                                                      searchStoreUserController
+                                                          .previousStore[index]
+                                                          .storeId,
+                                                    );
+                                                  }
+
                                                 },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
@@ -274,12 +275,15 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
+                                                if(searchStoreUserController.isLoading.value == false){
                                                   searchStoreUserController
                                                       .apiCreateFavouriteStore(
                                                     searchStoreUserController
                                                         .previousStore[index]
                                                         .storeId,
                                                   );
+                                                }
+
                                                 },radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
