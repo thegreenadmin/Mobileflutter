@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -494,7 +495,7 @@ class ManageStoreController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
