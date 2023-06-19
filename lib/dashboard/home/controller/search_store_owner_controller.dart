@@ -169,9 +169,9 @@ class OwnerStoresController extends GetxController {
     lng = currentLocation.longitude;
     await apiGetDeliveryServices();
     storeId.value = Get.parameters['storeId'] ?? "";
-    // if (Get.parameters['isFromHome'] == "true") {
+    if (Get.parameters['isFromHome'] == "true") {
       await apiGetParticularStore();
-    // }
+    }
     await apiGetStoreList();
     await apiGetOwnerOffersList();
     await apiGetFeaturedProducts();
