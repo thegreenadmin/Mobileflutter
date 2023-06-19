@@ -32,7 +32,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
               SizedBox(
                   height: 200,
                   child: Obx(
-                    () => ownerStoresController.getOwnerOfferlist.isEmpty
+                    () => ownerStoresController.getOwnerOfferList.isEmpty
                         ? ownerStoresController.isLoading.value == true
                             ? height0SizedBox
                             : Column(
@@ -78,7 +78,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           //   "isFrom": StringConstants.addOfferText,
                                           // })?
                                           .then((v) {
-                                        ownerStoresController.getApiData();
+                                        ownerStoresController.getCurrentLocation();
                                       });
                                     },
                                     height: 50,
@@ -98,17 +98,17 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                             },
                             scrollDirection: Axis.horizontal,
                             itemCount:
-                                ownerStoresController.getOwnerOfferlist.length,
+                                ownerStoresController.getOwnerOfferList.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
                               return Stack(
                                 alignment: Alignment.bottomCenter,
                                 children: [
-                                  ownerStoresController.getOwnerOfferlist[index]
+                                  ownerStoresController.getOwnerOfferList[index]
                                                   .image?.dynamicUrl !=
                                               null &&
                                           ownerStoresController
-                                                  .getOwnerOfferlist[index]
+                                                  .getOwnerOfferList[index]
                                                   .image
                                                   ?.dynamicUrl !=
                                               ""
@@ -123,7 +123,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                                 BorderRadius.circular(8.0),
                                             child: Image.network(
                                                 ownerStoresController
-                                                        .getOwnerOfferlist[
+                                                        .getOwnerOfferList[
                                                             index]
                                                         .image
                                                         ?.dynamicUrl ??
@@ -157,7 +157,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           children: [
                                             Text(
                                               ownerStoresController
-                                                      .getOwnerOfferlist[index]
+                                                      .getOwnerOfferList[index]
                                                       .offerName ??
                                                   "",
                                               style: const TextStyle(

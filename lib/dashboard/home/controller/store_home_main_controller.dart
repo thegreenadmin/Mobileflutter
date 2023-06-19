@@ -128,6 +128,8 @@ class StoreHomeMainController extends GetxController {
       if (isFromHome.value) {
         selectedIndex.value = 0;
         apiGetShopProductDetailApi();
+        apiGetStoreOffersApi();
+        apiFeatureProductListApi(isFeaturedProduct: true);
       } else {
         onIndexChange(0);
       }

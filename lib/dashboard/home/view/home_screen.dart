@@ -477,9 +477,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               /// USER CAROUSEL
                               CarouselSlider(
-                                  items: homeController.userCarouselImgList
+                                  items: homeController.userCarouselImgList.take(5)
                                       .map((item) => InkWell(
                                             onTap: () {
+                                              Get.parameters["storeId"] =
+                                                  item.storeId ?? "";
+
+                                              Get.parameters["offerId"] =
+                                                  item.offerId ?? "";
                                               SharedPreferenceStorage.setData(
                                                   "context", context);
                                               Navigator.of(context)
@@ -487,11 +492,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 builder: (_) =>
                                                     const StoreHomeMainScreen(),
                                               ));
-                                              Get.parameters["storeId"] =
-                                                  item.storeId ?? "";
 
-                                              Get.parameters["offerId"] =
-                                                  item.offerId ?? "";
                                             },
                                             child: Center(
                                                 child: ClipRRect(
@@ -535,8 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: homeController.userCarouselImgList
-                                        .asMap()
+                                    children: homeController.userCarouselImgList.take(5).toList().asMap()
                                         .entries
                                         .map((entry) {
                                       return GestureDetector(
@@ -601,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ///OWNER CAROUSEL
                             : CarouselSlider(
-                                items: homeController.getOwnerOfferList
+                                items: homeController.getOwnerOfferList.take(5)
                                     .map((item) => InkWell(
                                           onTap: () {
                                             // Get.parameters["offerId"] =
@@ -666,8 +666,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? height0SizedBox
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.getOwnerOfferList
-                                    .asMap()
+                                children: homeController.getOwnerOfferList.take(5).toList().asMap()
                                     .entries
                                     .map((entry) {
                                   return GestureDetector(

@@ -107,21 +107,21 @@ class OwnerStoresController extends GetxController {
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
-  RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
+  RxList<OffersList> getOwnerOfferList = <OffersList>[].obs;
 
   RxList<StoreAddresses> address = <StoreAddresses>[].obs;
 
   RxList<dynamic> storeAddresses = <dynamic>[].obs;
   RxList<dynamic> storeTimings = <dynamic>[].obs;
   RxList<dynamic> storeDeliveryServices = <dynamic>[].obs;
-  RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+  RxList<dynamic> storeTimingList = <dynamic>[].obs;
   RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
 
-  RxString editStoreImageOrigionalLinkfromServer = "".obs;
-  RxString editStoreImageDynamicLinkfromServer = "".obs;
+  RxString editStoreImageOriginalLinkFromServer = "".obs;
+  RxString editStoreImageDynamicLinkFromServer = "".obs;
 
-  RxString editStoreLogoOrigionalLinkfromServer = "".obs;
-  RxString editStoreLogoDynamicLinkfromServer = "".obs;
+  RxString editStoreLogoOriginalLinkFromServer = "".obs;
+  RxString editStoreLogoDynamicLinkFromServer = "".obs;
 
   Rx<XFile> editStoreImage = XFile("").obs;
   Rx<XFile> editStoreLogo = XFile("").obs;
@@ -155,8 +155,26 @@ class OwnerStoresController extends GetxController {
         SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
     getCurrentLocation();
     getGkey();
-
   }
+
+  getGkey() async {
+    secureData =
+    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+  }
+
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    await apiGetDeliveryServices();
+    storeId.value = Get.parameters['storeId'] ?? "";
+
+    await apiGetStoreList();
+    await apiGetOwnerOffersList();
+    await apiGetFeaturedProducts();
+  }
+
 
   filePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -166,11 +184,11 @@ class OwnerStoresController extends GetxController {
     if (result != null) {
       if (isTermsSelected.value) {
         termsFile.value = XFile(result.files.single.path!);
-        debugPrint("TERMS FILEE *********** $termsFile");
+        debugPrint("TERMS FILE *********** $termsFile");
         uploadPdfToServer();
       } else {
         privacyFile.value = XFile(result.files.single.path!);
-        debugPrint("PRIVACY FILEE *********** $termsFile");
+        debugPrint("PRIVACY FILE *********** $termsFile");
         uploadPdfToServer();
       }
     } else {
@@ -246,28 +264,7 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  getGkey() async {
-    secureData =
-        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-  }
 
-  getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-    getApiData();
-  }
-
-  getApiData() async {
-    await apiGetStoreList();
-    await apiGetDeliveryServices();
-    await apiGetOwnerOffersList();
-    if (Get.parameters['isFromHome'] == "true") {
-      storeId.value = Get.parameters['storeId'] ?? "";
-      await  apiGetParticularStore();
-    }
-  }
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -354,6 +351,7 @@ class OwnerStoresController extends GetxController {
       "order_type": "DESC",
       "filters": []
     };
+    debugPrint("GET OWNER OFFERS BODY ********** $body");
     UserProvider()
         .postWithHeadersApi(
             body,
@@ -367,7 +365,7 @@ class OwnerStoresController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
-        getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
+        getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
 
           Utility.showAlertMessage(value?.body['message']);
@@ -469,15 +467,15 @@ class OwnerStoresController extends GetxController {
       if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
-          editStoreLogoOrigionalLinkfromServer.value =
+          editStoreLogoOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
-          editStoreLogoDynamicLinkfromServer.value =
+          editStoreLogoDynamicLinkFromServer.value =
               responseData['data']['urls']['dynamic_url'];
           isStoreLogoSelected.value = false;
         } else {
-          editStoreImageOrigionalLinkfromServer.value =
+          editStoreImageOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
-          editStoreImageDynamicLinkfromServer.value =
+          editStoreImageDynamicLinkFromServer.value =
               responseData['data']['urls']['dynamic_url'];
         }
         return responseData;
@@ -540,7 +538,6 @@ class OwnerStoresController extends GetxController {
 
   //Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
-    deliveryServices.clear();
     debugPrint(
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     Map<String, String> headers = {
@@ -558,11 +555,12 @@ class OwnerStoresController extends GetxController {
       debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        deliveryServicesResponse =
-            DeliveryServicesResponse.fromJson(value.body);
+        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        debugPrint("GET DELIVERY LIST  isNotEmpty *******${deliveryServices.isNotEmpty}");
+        if (Get.parameters['isFromHome'] == "true") {
+          await  apiGetParticularStore();
+        }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -596,13 +594,13 @@ class OwnerStoresController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";
-        editStoreImageDynamicLinkfromServer.value =
+        editStoreImageDynamicLinkFromServer.value =
             value?.body["data"]['store']['image']["dynamic_url"] ?? "";
-        editStoreLogoDynamicLinkfromServer.value =
+        editStoreLogoDynamicLinkFromServer.value =
             value?.body["data"]['store']['logo']["dynamic_url"] ?? "";
-        editStoreImageOrigionalLinkfromServer.value =
+        editStoreImageOriginalLinkFromServer.value =
             value?.body["data"]['store']['image']["orignal_url"] ?? "";
-        editStoreLogoOrigionalLinkfromServer.value =
+        editStoreLogoOriginalLinkFromServer.value =
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
         storeNameTextController.text =
             storeName.value = value?.body["data"]['store']['store_name'] ?? "";
@@ -627,8 +625,7 @@ class OwnerStoresController extends GetxController {
 
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
-        storeDeliveryServices.value =
-            value?.body["data"]['store']['store_delivery_services'] ?? [];
+        storeDeliveryServices.value = value?.body["data"]['store']['store_delivery_services'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
@@ -690,6 +687,9 @@ class OwnerStoresController extends GetxController {
         }
 
         debugPrint("deliveryServices : ===== ${deliveryServices.isNotEmpty}");
+        debugPrint("storeDeliveryServices  value : ===== ${value?.body["data"]['store']['store_delivery_services']}");
+        debugPrint("storeDeliveryServices : ===== ${storeDeliveryServices.isNotEmpty}");
+        debugPrint("storeDeliveryServices length : ===== ${storeDeliveryServices.length}");
         debugPrint(
             "deliveryServices isNotEmpty: ===== ${jsonEncode(deliveryServices.toString())}");
         var concatenate = StringBuffer();
@@ -705,6 +705,8 @@ class OwnerStoresController extends GetxController {
           }
         }
         deliveryServicesTextController.text = concatenate.toString();
+        debugPrint("deliveryServicesTextController : ===== ${deliveryServicesTextController.text}");
+
         // deliveryServices.value = deliveryServicesData;
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 
@@ -764,8 +766,8 @@ class OwnerStoresController extends GetxController {
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
-        "image_url": editStoreImageOrigionalLinkfromServer.value,
-        "logo_url": editStoreLogoOrigionalLinkfromServer.value,
+        "image_url": editStoreImageOriginalLinkFromServer.value,
+        "logo_url": editStoreLogoOriginalLinkFromServer.value,
         "store_nick_name": nickNameTextController.text.trim(),
         "store_email": emailTextController.text.trim(),
         "store_phone": phoneNumber.value,
@@ -789,8 +791,8 @@ class OwnerStoresController extends GetxController {
       "is_24_hours_active": is247Time.value,
       "store_timings": is247Time.value == true
           ? []
-          : storeTimmingList.isNotEmpty
-              ? storeTimmingList
+          : storeTimingList.isNotEmpty
+              ? storeTimingList
               : storeTimings,
       "store_delivery_services": deliveryServicesList,
       "store_pages": [

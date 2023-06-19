@@ -114,12 +114,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                       colorFilter: const ColorFilter.mode(
                           Colors.black45, BlendMode.darken),
                       image: ownerStoresController
-                              .editStoreImageDynamicLinkfromServer.value.isEmpty
+                              .editStoreImageDynamicLinkFromServer.value.isEmpty
                           ? const AssetImage(
                               ImageConstants.nopicfound,
                             ) as ImageProvider
                           : NetworkImage(ownerStoresController
-                              .editStoreImageDynamicLinkfromServer.value),
+                              .editStoreImageDynamicLinkFromServer.value),
                     ),
                   ),
                   child: Padding(
@@ -136,7 +136,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                    // Get.back();
+                                    Get.delete<OwnerStoresController>();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -156,14 +156,14 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                 child: CircleAvatar(
                                   radius: 28.0,
                                   backgroundImage: ownerStoresController
-                                          .editStoreLogoDynamicLinkfromServer
+                                          .editStoreLogoDynamicLinkFromServer
                                           .value
                                           .isEmpty
                                       ? const AssetImage(
                                           ImageConstants.nopicfound,
                                         ) as ImageProvider
                                       : NetworkImage(ownerStoresController
-                                          .editStoreLogoDynamicLinkfromServer
+                                          .editStoreLogoDynamicLinkFromServer
                                           .value),
                                   backgroundColor: Colors.transparent,
                                 ),

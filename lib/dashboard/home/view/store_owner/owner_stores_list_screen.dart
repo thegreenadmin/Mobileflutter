@@ -170,17 +170,9 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     ownerStoresController.storeId.value =
                                         ownerStoresController
                                                 .storeList[index].storeId ?? "";
-
-                                    await ownerStoresController
-                                        .apiGetDeliveryServices();
                                     Get.parameters['storeId'] =  ownerStoresController
                                         .storeList[index].storeId ??
                                         "";
-                                    await ownerStoresController
-                                        .apiGetParticularStore();
-
-                                    await ownerStoresController
-                                        .apiGetFeaturedProducts();
                                     SharedPreferenceStorage.setData(
                                         "context", context);
                                     await Navigator.of(context)
