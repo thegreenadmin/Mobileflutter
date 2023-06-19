@@ -150,16 +150,16 @@ class OwnerStoresController extends GetxController {
     super.onInit();
     selectedIndex.value = 0;
     firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText)??"";
+        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText)??"";
+        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     getCurrentLocation();
     getGkey();
   }
 
   getGkey() async {
     secureData =
-    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
   }
 
@@ -169,14 +169,13 @@ class OwnerStoresController extends GetxController {
     lng = currentLocation.longitude;
     await apiGetDeliveryServices();
     storeId.value = Get.parameters['storeId'] ?? "";
-    // if (Get.parameters['isFromHome'] == "true") {
-      await  apiGetParticularStore();
-    // }
+    if (Get.parameters['isFromHome'] == "true") {
+      await apiGetParticularStore();
+    }
     await apiGetStoreList();
     await apiGetOwnerOffersList();
     await apiGetFeaturedProducts();
   }
-
 
   filePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -265,8 +264,6 @@ class OwnerStoresController extends GetxController {
       throw Exception('Failed to load data ! $e');
     }
   }
-
-
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -369,8 +366,7 @@ class OwnerStoresController extends GetxController {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
@@ -378,7 +374,7 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -434,10 +430,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -531,10 +527,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -557,10 +553,13 @@ class OwnerStoresController extends GetxController {
       debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        deliveryServicesResponse = DeliveryServicesResponse.fromJson(value.body);
+        deliveryServicesResponse =
+            DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-          await  apiGetParticularStore();
+        if (storeId.value != null && storeId.value.isNotEmpty) {
+          await apiGetParticularStore();
+        }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -569,10 +568,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -625,7 +624,8 @@ class OwnerStoresController extends GetxController {
 
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];
-        storeDeliveryServices.value = value?.body["data"]['store']['store_delivery_services'] ?? [];
+        storeDeliveryServices.value =
+            value?.body["data"]['store']['store_delivery_services'] ?? [];
         isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
@@ -687,9 +687,12 @@ class OwnerStoresController extends GetxController {
         }
 
         debugPrint("deliveryServices : ===== ${deliveryServices.isNotEmpty}");
-        debugPrint("storeDeliveryServices  value : ===== ${value?.body["data"]['store']['store_delivery_services']}");
-        debugPrint("storeDeliveryServices : ===== ${storeDeliveryServices.isNotEmpty}");
-        debugPrint("storeDeliveryServices length : ===== ${storeDeliveryServices.length}");
+        debugPrint(
+            "storeDeliveryServices  value : ===== ${value?.body["data"]['store']['store_delivery_services']}");
+        debugPrint(
+            "storeDeliveryServices : ===== ${storeDeliveryServices.isNotEmpty}");
+        debugPrint(
+            "storeDeliveryServices length : ===== ${storeDeliveryServices.length}");
         debugPrint(
             "deliveryServices isNotEmpty: ===== ${jsonEncode(deliveryServices.toString())}");
         var concatenate = StringBuffer();
@@ -705,7 +708,8 @@ class OwnerStoresController extends GetxController {
           }
         }
         deliveryServicesTextController.text = concatenate.toString();
-        debugPrint("deliveryServicesTextController : ===== ${deliveryServicesTextController.text}");
+        debugPrint(
+            "deliveryServicesTextController : ===== ${deliveryServicesTextController.text}");
 
         // deliveryServices.value = deliveryServicesData;
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
@@ -745,7 +749,7 @@ class OwnerStoresController extends GetxController {
         }
         update();
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -840,15 +844,14 @@ class OwnerStoresController extends GetxController {
           countryCode.value = "";
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(ctx).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -890,10 +893,10 @@ class OwnerStoresController extends GetxController {
         }
         apiGetState();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -930,10 +933,10 @@ class OwnerStoresController extends GetxController {
           stateId.value = statesList[0].stateId.toString();
         }
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -972,10 +975,10 @@ class OwnerStoresController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

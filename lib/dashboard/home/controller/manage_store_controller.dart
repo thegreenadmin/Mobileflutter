@@ -48,6 +48,7 @@ class ManageStoreController extends GetxController {
   RxBool isFeatured = false.obs;
   RxBool isEnabled = false.obs;
   RxBool isProductReturnable = false.obs;
+  RxBool isSelectedCategory = false.obs;
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
@@ -109,11 +110,7 @@ class ManageStoreController extends GetxController {
     debugPrint(Get.parameters["productId"]);
     debugPrint(Get.parameters["categoryName"]);
     debugPrint(Get.parameters["storeId"]);
-    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      productId.value = Get.parameters["productId"] ?? "";
-      apiGetProductDetails();
-    }
+
     if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
     }
@@ -126,7 +123,14 @@ class ManageStoreController extends GetxController {
     if (Get.parameters["storeLocation"] != "") {
       storeLocation.value = Get.parameters["storeLocation"] ?? "";
     }
-    apiGetCategoriesList();
+
+    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
+      storeId.value = Get.parameters["storeId"] ?? "";
+      productId.value = Get.parameters["productId"] ?? "";
+      apiGetCategoriesList();
+      apiGetProductDetails();
+    }
+
     apiGetQuantityList();
   }
 
@@ -570,31 +574,43 @@ class ManageStoreController extends GetxController {
         } else {
           selectedFeaturedType.value = "No";
         }
-        daysTextController.text = value.body["data"]['product']["return_days_count"].toString();
-        isProductReturnable.value = value.body["data"]['product']["is_product_returnable"];
+        daysTextController.text =
+            value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value =
+            value.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {
           selectedProductReturnableType.value = "No";
         }
-        lengthTextController.text = value.body["data"]['product']["length"].toString();
-        breadthTextController.text = value.body["data"]['product']["width"].toString();
-        heightTextController.text = value.body["data"]['product']["height"].toString();
-        weightTextController.text = value.body["data"]['product']["weight"].toString();
-        selectedCategories.value = value.body["data"]['product']['product_categories'] ?? [];
-        debugPrint("selectedCategories Length******${selectedCategories.length}");
-
+        lengthTextController.text =
+            value.body["data"]['product']["length"].toString();
+        breadthTextController.text =
+            value.body["data"]['product']["width"].toString();
+        heightTextController.text =
+            value.body["data"]['product']["height"].toString();
+        weightTextController.text =
+            value.body["data"]['product']["weight"].toString();
+        selectedCategories.value =
+            value.body["data"]['product']['product_categories'] ?? [];
+        debugPrint(
+            "selectedCategories Length******${selectedCategories.length}");
+        isSelectedCategory.value = false;
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
-            if (categoriesList[i].categoryId.toString() == selectedCategories[j]['category']['category_id'].toString()) {
-              debugPrint("categoriesList name*******${categoriesList[i].categoryName}");
+            if (categoriesList[i].categoryId.toString() ==
+                selectedCategories[j]['category']['category_id'].toString()) {
+              debugPrint(
+                  "category name *******${categoriesList[i].categoryName}");
+              debugPrint("categoriesList Index*******" + i.toString());
+              print(categoriesList[i].isSelected ?? false);
               categoriesList[i].isSelected = true;
-              debugPrint("categoriesList name*******${categoriesList[i].isSelected}");
-            }else{
-              categoriesList[i].isSelected = false;
+              debugPrint(
+                  "categoriesList ID*******${categoriesList[i].isSelected}");
             }
           }
         }
+        isSelectedCategory.value = true;
         productContent.value =
             value.body["data"]['product']["product_contents"] ?? [];
         productLinks.value =
@@ -754,7 +770,7 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
-        if(Get.parameters['isFromHome']=="true"){
+        if (Get.parameters['isFromHome'] == "true") {
           Get.delete<ManageStoreController>();
         }
         Navigator.of(ctxx).pop();
