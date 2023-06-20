@@ -734,22 +734,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
+                                  Get.parameters["isFromHome"] = "false";
+                                  Get.parameters["isFromFav"] = "false";
+                                  Get.parameters["isFromMenu"] = "true";
+                                  Get.parameters["productId"] = homeController
+                                      .featuredUserProductList[index]
+                                      .productId ??
+                                      "";
+                                  Get.parameters["storeId"] = homeController
+                                      .featuredUserProductList[index]
+                                      .storeId ??
+                                      "";
+                                  SharedPreferenceStorage.setData("context", context);
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => const AddToOrderScreen(),
                                   ));
-                                  Get.parameters["isFromHome"] = "true";
-                                  Get.parameters["isFromFav"] = "false";
-                                  Get.parameters["isFromMenu"] = "false";
-                                  Get.parameters["productId"] = homeController
-                                          .featuredUserProductList[index]
-                                          .productId ??
-                                      "";
-                                  Get.parameters["storeId"] = homeController
-                                          .featuredUserProductList[index]
-                                          .storeId ??
-                                      "";
+
 
                                   // Get.to(() => const AddToOrderScreen(),
                                   //      arguments: {

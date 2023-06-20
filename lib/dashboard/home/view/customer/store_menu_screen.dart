@@ -25,7 +25,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
       body: Container(
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: [
           height5SizedBox,
           Text(
             StringConstants.categoriesText,
@@ -76,6 +77,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const UserProductListScreen(),
                           ));
+                          Get.parameters["categoryId"] = storeHomeMainController
+                              .categoriesList[index].categoryId;
                           // Get.to(const UserProductListScreen());
                           storeHomeMainController.apiFeatureProductListApi(
                               categoryId: storeHomeMainController

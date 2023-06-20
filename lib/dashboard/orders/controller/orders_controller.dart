@@ -1099,8 +1099,8 @@ class OrdersController extends GetxController {
           }
         }
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
+      }
+      else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(

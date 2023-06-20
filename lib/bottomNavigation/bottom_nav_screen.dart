@@ -40,6 +40,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> tab7 = GlobalKey<NavigatorState>();
   RxString roleInApp = "".obs;
   @override
   void initState() {
@@ -267,10 +269,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
                   ? TabItem(tab3, const OrderStoresListScreen())
-                      : TabItem(tab3, const OrdersHomeMainScreen())
-                  : TabItem(tab3, const OrdersScreen()),
-              TabItem(tab4, const OffersScreen()),
-              TabItem(tab5, const MoreScreen()),
+                      : TabItem(tab4, const OrdersHomeMainScreen())
+                  : TabItem(tab5, const OrdersScreen()),
+              TabItem(tab6, const OffersScreen()),
+              TabItem(tab7, const MoreScreen()),
             ],
             selectedIndex: bottomNavigationPageController.selectedIndex.value,
             popStack: true,

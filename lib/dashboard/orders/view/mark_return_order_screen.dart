@@ -453,10 +453,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                       Text(
                                                           ordersHomeMainController
                                                               .getOrderItems[
-                                                                  index]
-                                                              .product!
-                                                              .productPrice
-                                                              .toString(),
+                                                                  index].offerPrice.toStringAsFixed(2) ?? "0.00",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,

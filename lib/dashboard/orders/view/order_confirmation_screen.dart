@@ -634,7 +634,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         onTap: () {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
-
+                          SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const StoreHomeMainScreen(),
                           ));
@@ -846,7 +846,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                         fontSize: 14)),
                                                 TextSpan(
                                                   text:
-                                                  "\$${ordersController.orderItems[i].product?.productPrice.toString() ?? ""}",
+                                                  "\$${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                       FontWeight.w600,

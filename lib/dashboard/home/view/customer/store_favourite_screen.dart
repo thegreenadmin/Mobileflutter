@@ -78,23 +78,26 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               storeHomeMainController
                                   .featureProductList[i].productId
                                   .toString();
-                          await storeHomeMainController
+                          storeHomeMainController
                               .apiGetShopProductDetailApi();
-                          SharedPreferenceStorage.setData("context", context);
+                          storeHomeMainController
+                              .apiGetCartListApi(
+                              context);
+                          SharedPreferenceStorage
+                              .setData("context", context);
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";
-                          Get.parameters["isFromMenu"] = "false";
-                          await Navigator.of(context)
+                          Get.parameters['isFromMenu'] = "false";
+                          Navigator.of(context)
                               .push(MaterialPageRoute(
-                                builder: (_) => const AddToOrderScreen(),
-                              ))
-                              .then((value) => {
+                            builder: (_) =>
+                            const AddToOrderScreen(),
+                          )).then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
                                   });
                           // Get.to(const AddToOrderScreen());
-                          await storeHomeMainController
-                              .apiGetCartListApi(context);
+
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -545,6 +545,8 @@ class OrderItem {
     this.deliveredAt,
     this.returedAt,
     this.enableReturnButton,
+    this.offerPrice,
+
   });
 
 
@@ -569,6 +571,7 @@ class OrderItem {
   dynamic deliveredAt;
   dynamic returedAt;
   bool? enableReturnButton;
+  dynamic offerPrice;
 
 
 
@@ -592,7 +595,8 @@ class OrderItem {
     dynamic shippedAt,
     dynamic deliveredAt,
     dynamic returedAt,
-    bool? enableReturnButton
+    bool? enableReturnButton,
+    dynamic offerPrice,
   }) =>
       OrderItem(
         orderId: orderId ?? this.orderId,
@@ -615,6 +619,7 @@ class OrderItem {
         deliveredAt: deliveredAt ?? this.deliveredAt,
         returedAt: returedAt ?? this.returedAt,
         enableReturnButton: enableReturnButton ?? this.enableReturnButton,
+        offerPrice: offerPrice ?? this.offerPrice,
       );
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -638,6 +643,7 @@ class OrderItem {
     deliveredAt: json["deliveredAt"],
     returedAt: json["returedAt"],
     enableReturnButton: json["enable_return_button"],
+    offerPrice: json["offer_price"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -661,6 +667,7 @@ class OrderItem {
     "deliveredAt": deliveredAt,
     "returedAt": returedAt,
     "enable_return_button": enableReturnButton,
+    "offer_price": offerPrice,
   };
 }
 
