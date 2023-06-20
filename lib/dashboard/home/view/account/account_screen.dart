@@ -866,7 +866,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ],
                         ),
                         onTap: () async {
-                          accountController.clearData();
+                          Utility.showConfirmAlertMessage(
+                              AlertStringConstants.areYouSureDeleteAccountText,
+                              okay: StringConstants.deleteText, okayTap: () {
+                            accountController.apiLogOutUser();
+                          });
                         },
                         height: 50,
                         textColor: AppColors.primary,
