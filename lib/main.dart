@@ -11,7 +11,6 @@ import 'package:thegreenmall/push_notifications/push_notifications.dart';
 
 import 'bottomNavigation/bottom_nav_screen.dart';
 
-
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,8 +50,8 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   initialRemoteMessage = (await checkForInitialFirebaseMessage());
-  final PendingDynamicLinkData? initialLink =
-      await FirebaseDynamicLinks.instance.getInitialLink();
+  // final PendingDynamicLinkData? initialLink =
+  //     await FirebaseDynamicLinks.instance.getInitialLink();
 
   runApp(const MyApp());
 

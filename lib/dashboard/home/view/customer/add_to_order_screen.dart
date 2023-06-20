@@ -298,7 +298,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
-          value: StringConstants.previousText,
+          value: StringConstants.previousOrdersText,
           child: Column(
             children: [
               SizedBox(
@@ -642,8 +642,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               .data
                                               ?.product
                                               ?.productId);
-                                    }
 
+                                          }
                                   },
                                   child: Image.asset(
                                     ImageConstants.liked,
@@ -661,8 +661,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               .data
                                               ?.product
                                               ?.productId);
-                                    }
 
+                                          }
                                   },
                                   child: Image.asset(
                                     ImageConstants.fav,
@@ -1088,7 +1088,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       title: StringConstants.featuredProductText,
                       textData: storeHomeMainController.productDetailResponse
                                   .value.data?.product?.isFeaturedProduct ==
-                              true ? "Yes" : "No"),
+                              true
+                          ? "Yes"
+                          : "No"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.lengthText,
@@ -1114,7 +1116,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       title: StringConstants.returnAvailableText,
                       textData: storeHomeMainController.productDetailResponse
                                   .value.data?.product?.isProductReturnable ==
-                              true ? "Yes" : "No"),
+                              true
+                          ? "Yes"
+                          : "No"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.returnDaysText,

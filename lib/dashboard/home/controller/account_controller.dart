@@ -1059,10 +1059,12 @@ class AccountController extends GetxController {
       debugPrint("DELETE USER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        clearData();
+        await Get.offAll(const StartJourneyScreen());
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
+        clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {

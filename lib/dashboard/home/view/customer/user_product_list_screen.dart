@@ -300,7 +300,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
-          value: StringConstants.previousText,
+          value: StringConstants.previousOrdersText,
           child: Column(
             children: [
               SizedBox(
@@ -309,7 +309,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.previousText,
+                      StringConstants.previousOrdersText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontFamily: "",

@@ -59,6 +59,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  
     apiGetUserDetail();
   }
 
@@ -114,8 +115,7 @@ class HomeController extends GetxController {
             ],
           ),
         );
-      }
-      else {
+      } else {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
@@ -144,7 +144,6 @@ class HomeController extends GetxController {
           ),
         );
       }
-
     });
   }
 
@@ -174,8 +173,8 @@ class HomeController extends GetxController {
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
         hasStoreAccess!.value =
             getUserDetailModel.data?.user?.hasStoreAccess ?? false;
-        SharedPreferenceStorage.setData(
-            StringConstants.firstNameText, getUserDetailModel.data?.user?.firstName ?? "");
+        SharedPreferenceStorage.setData(StringConstants.firstNameText,
+            getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
             StringConstants.lastNameText, lastName!.value);
         SharedPreferenceStorage.setData(
@@ -184,7 +183,7 @@ class HomeController extends GetxController {
             StringConstants.currentUserIdText, currentUserId!.value);
         await getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
@@ -227,14 +226,14 @@ class HomeController extends GetxController {
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -288,14 +287,14 @@ class HomeController extends GetxController {
         featuredUserProductList.value =
             userFeaturedProductModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -352,7 +351,7 @@ class HomeController extends GetxController {
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value.body['message']!=null){
+        if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -404,17 +403,19 @@ class HomeController extends GetxController {
         ownerFeatureProductList.value =
             ownerFeaturedProductModel.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
           builder: (_) => const StartJourneyScreen(),
         ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
   }
+
+
 }
