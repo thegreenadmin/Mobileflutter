@@ -452,6 +452,7 @@ class AddNewStoreController extends GetxController {
         for (var element in deliveryServices) {
           element.isSelected = false;
         }
+        deliveryServices.firstWhere((element) =>  element.name!.toLowerCase().contains("in")).isSelected = true;
         for (var element in weekDaysList) {
           element.isSelected = false;
         }
