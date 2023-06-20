@@ -298,7 +298,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
-          value: StringConstants.previousText,
+          value: StringConstants.previousOrdersText,
           child: Column(
             children: [
               SizedBox(
@@ -318,7 +318,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        StringConstants.previousText,
+                        StringConstants.previousOrdersText,
                         style: const TextStyle(
                             color: AppColors.black,
                             fontFamily: "",

@@ -154,7 +154,7 @@ class StringConstants {
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
-   static String dobText = "Date of Birth";
+  static String dobText = "Date of Birth";
   static String detailText = "Detail";
   static String debitMoneyFromWalletText = "Debit money from my wallet";
   static String descriptionOftheIssueText = "Description of the issue/question";
@@ -584,7 +584,11 @@ class BottomNavStringConstants {
 //Alert Messages
 class AlertStringConstants {
   //A
-  static String areYouSureText = "Are you sure you want to delete this item?";
+  static String areYouSureText = "Are you sure, you want to delete this item?";
+  static String areYouSureDeleteAccountText =
+      "Are you sure, you want to delete this Account?";
+  static String areYouSureLogoutAccountText =
+      "Are you sure you want to Log out?";
   static String areYouSureToConfirmReturnText =
       "Are you sure you want to accept return request?";
   //C

@@ -312,7 +312,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
-          value: StringConstants.previousText,
+          value: StringConstants.previousOrdersText,
           child: Column(
             children: [
               SizedBox(
@@ -701,17 +701,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         true
                                     ? InkWell(
                                         onTap: () {
-                                          if(storeHomeMainController.isLoading.value == false){
+                                          if (storeHomeMainController
+                                                  .isLoading.value ==
+                                              false) {
                                             storeHomeMainController
                                                 .apiRemoveFavouriteProduct(
-                                                storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data
-                                                    ?.product
-                                                    ?.productId);
+                                                    storeHomeMainController
+                                                        .productDetailResponse
+                                                        .value
+                                                        .data
+                                                        ?.product
+                                                        ?.productId);
                                           }
-
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
@@ -720,17 +721,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          if(storeHomeMainController.isLoading.value == false){
+                                          if (storeHomeMainController
+                                                  .isLoading.value ==
+                                              false) {
                                             storeHomeMainController
                                                 .apiCreateFavouriteProduct(
-                                                storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data
-                                                    ?.product
-                                                    ?.productId);
+                                                    storeHomeMainController
+                                                        .productDetailResponse
+                                                        .value
+                                                        .data
+                                                        ?.product
+                                                        ?.productId);
                                           }
-
                                         },
                                         child: Image.asset(
                                           ImageConstants.fav,
@@ -1094,9 +1096,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     ],
                   ),
                   //height10SizedBox,
-                  storeHomeMainController.productDetailResponse.value.data != null
+                  storeHomeMainController.productDetailResponse.value.data !=
+                          null
                       ? storeHomeMainController.productDetailResponse.value
-                                      .data!.product!.description == null ||
+                                      .data!.product!.description ==
+                                  null ||
                               storeHomeMainController.productDetailResponse
                                   .value.data!.product!.description!.isEmpty
                           ? height0SizedBox
@@ -1110,20 +1114,23 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       : height0SizedBox,
                   height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data
-                                  ?.product?.description == null ||
+                                  ?.product?.description ==
+                              null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
                       ? height0SizedBox
                       : Text(
                           storeHomeMainController.productDetailResponse.value
-                                  .data?.product?.description ?? "",
+                                  .data?.product?.description ??
+                              "",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: AppColors.blacklight),
                         ),
                   storeHomeMainController.productDetailResponse.value.data
-                                  ?.product?.description == null ||
+                                  ?.product?.description ==
+                              null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
                       ? height0SizedBox
@@ -1139,13 +1146,26 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   _buildRowOtherDetail(
                       title: StringConstants.categoryNameText,
                       textData: storeHomeMainController.productDetailResponse
-                          .value.data?.product
-                          ?.productCategories!=null && storeHomeMainController
-                          .productDetailResponse.value
-                          .data!.product!.productCategories!.isNotEmpty ? storeHomeMainController
-                              .productDetailResponse.value.data?.product
-                              ?.productCategories?.first.category?.categoryName ??
-                          "":"NA"),
+                                      .value.data?.product?.productCategories !=
+                                  null &&
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productCategories!
+                                  .isNotEmpty
+                          ? storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data
+                                  ?.product
+                                  ?.productCategories
+                                  ?.first
+                                  .category
+                                  ?.categoryName ??
+                              ""
+                          : "NA"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.quantityUnitText,
@@ -1156,7 +1176,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       title: StringConstants.featuredProductText,
                       textData: storeHomeMainController.productDetailResponse
                                   .value.data?.product?.isFeaturedProduct ==
-                              true ? "Yes" : "No"),
+                              true
+                          ? "Yes"
+                          : "No"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.lengthText,
@@ -1182,13 +1204,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       title: StringConstants.returnAvailableText,
                       textData: storeHomeMainController.productDetailResponse
                                   .value.data?.product?.isProductReturnable ==
-                              true ? "Yes" : "No"),
+                              true
+                          ? "Yes"
+                          : "No"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.returnDaysText,
                       textData: storeHomeMainController.productDetailResponse
                               .value.data?.product?.returnDaysCount
-                              .toString() ?? "0"),
+                              .toString() ??
+                          "0"),
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
@@ -1202,9 +1227,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     children: [
                       Text(
                         double.parse(storeHomeMainController
-                                    .productDetailResponse.value.data
-                                    ?.product?.averageRating
-                                    ?.toString() ?? "0.0")
+                                    .productDetailResponse
+                                    .value
+                                    .data
+                                    ?.product
+                                    ?.averageRating
+                                    ?.toString() ??
+                                "0.0")
                             .toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.w600,
@@ -1218,9 +1247,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         children: [
                           RatingBar.builder(
                             initialRating: storeHomeMainController
-                                    .productDetailResponse.value.data
-                                    ?.product?.averageRating
-                                    ?.toDouble() ?? 0.0,
+                                    .productDetailResponse
+                                    .value
+                                    .data
+                                    ?.product
+                                    ?.averageRating
+                                    ?.toDouble() ??
+                                0.0,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
@@ -1258,7 +1291,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         return height12SizedBox;
                       },
                       itemCount: storeHomeMainController.productDetailResponse
-                              .value.data?.product?.productReviews?.length ?? 0,
+                              .value.data?.product?.productReviews?.length ??
+                          0,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int i) {
@@ -1302,10 +1336,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             initialRating:
                                                 storeHomeMainController
                                                         .productDetailResponse
-                                                        .value.data?.product
+                                                        .value
+                                                        .data
+                                                        ?.product
                                                         ?.productReviews?[i]
                                                         .rating
-                                                        ?.toDouble() ?? 0.0,
+                                                        ?.toDouble() ??
+                                                    0.0,
                                             minRating: 1,
                                             direction: Axis.horizontal,
                                             allowHalfRating: false,
