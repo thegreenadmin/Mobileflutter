@@ -54,9 +54,7 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromNotification'] != "false") {
+    if (Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }

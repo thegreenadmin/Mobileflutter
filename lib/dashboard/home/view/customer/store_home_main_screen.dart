@@ -32,7 +32,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.optionsText,
   ].obs;
 
-  /*@override
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,12 +49,12 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.apiGetShopProductDetailApi();
-      }
+      }else
       if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
         storeHomeMainController.apiFeatureProductListApi(isFeaturedProduct: true);
         storeHomeMainController.apiGetShopProductDetailApi();
-      }
+      }else
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetStoreOffersApi();
@@ -69,7 +69,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.apiGetCartListApi(Get.context);
       storeHomeMainController.apiActiveCartApi(Get.context);
     });
-  }*/
+  }
 
   void contactAlertDialog(
     context,

@@ -113,7 +113,12 @@ class StoreHomeMainController extends GetxController {
       apiGetUserDetailsApi();
       if (isFromMenu.value) {
         selectedIndex.value = 1;
+        apiGetStoreCategoriesApi();
         apiGetShopProductDetailApi();
+        if(Get.parameters["categoryId"] !=""){
+          apiFeatureProductListApi(
+              categoryId: Get.parameters["categoryId"] ?? "0");
+        }
       }
       if (isFromFav.value) {
         selectedIndex.value = 2;
@@ -130,8 +135,6 @@ class StoreHomeMainController extends GetxController {
       } else {
         onIndexChange(0);
       }
-
-
       apiGetUserWalletBalance();
       apiGetCartListApi(Get.context);
       apiActiveCartApi(Get.context);

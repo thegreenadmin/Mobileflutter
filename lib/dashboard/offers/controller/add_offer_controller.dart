@@ -160,9 +160,9 @@ class AddOffersController extends GetxController {
     if (validateAndSave()) {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseUploadImageText);
+          Utility.showAlertMessage(AlertStringConstants.pleaseUploadImageText);
         } else if (discountType.value.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectDiscountType);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectDiscountType);
         } else {
           isValidateFromAddOffer
               ? await apiAddOffer(context)

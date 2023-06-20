@@ -634,6 +634,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         onTap: () {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
+                          Get.parameters["isFromMenu"] = "true";
+                          Get.parameters["isFromHome"] = "false";
+                          Get.parameters["isFromFav"] = "false";
                           SharedPreferenceStorage.setData("context", context);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const StoreHomeMainScreen(),
