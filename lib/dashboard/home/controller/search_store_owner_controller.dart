@@ -148,6 +148,7 @@ class OwnerStoresController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    storeId.value = Get.parameters['storeId'] ?? "";
     selectedIndex.value = 0;
     firstName?.value =
         SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
@@ -168,11 +169,12 @@ class OwnerStoresController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     await apiGetDeliveryServices();
-    storeId.value = Get.parameters['storeId'] ?? "";
+
     // if (Get.parameters['isFromHome'] == "true") {
     if (Get.parameters['storeId'] != "") {
       await apiGetParticularStore();
     }
+    // }
     await apiGetStoreList();
     await apiGetOwnerOffersList();
     await apiGetFeaturedProducts();
@@ -579,14 +581,14 @@ class OwnerStoresController extends GetxController {
   //Get particular store api
   Future apiGetParticularStore() async {
     debugPrint(
-        "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
+        "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=${storeId.value}");
     Map<String, String> headers = {
       'Authorization':
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=${storeId.value}",
             headers,
             showLoading: false)
         .then((value) async {
