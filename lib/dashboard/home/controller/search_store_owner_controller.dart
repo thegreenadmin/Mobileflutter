@@ -169,12 +169,9 @@ class OwnerStoresController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     await apiGetDeliveryServices();
-
-    // if (Get.parameters['isFromHome'] == "true") {
-    if (Get.parameters['storeId'] != "") {
+    if (storeId.value != "") {
       await apiGetParticularStore();
     }
-    // }
     await apiGetStoreList();
     await apiGetOwnerOffersList();
     await apiGetFeaturedProducts();
@@ -560,7 +557,7 @@ class OwnerStoresController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value != null && storeId.value.isNotEmpty) {
+        if (storeId.value != null && storeId.value.isNotEmpty && storeId.value!="") {
           await apiGetParticularStore();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
