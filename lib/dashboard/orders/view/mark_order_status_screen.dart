@@ -714,7 +714,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               FontWeight.w500,
                                                               fontSize: 14)),
                                                       Text(
-                                                          "\$${ordersHomeMainController.getOrderItems[index].product!.productPrice}",
+                                                          "\$${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
                                                           style: const TextStyle(
                                                               color:
                                                               AppColors.black,

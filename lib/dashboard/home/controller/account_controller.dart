@@ -1048,10 +1048,46 @@ class AccountController extends GetxController {
       debugPrint("DELETE USER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        clearData();
+        await Get.offAll(const StartJourneyScreen());
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
+        clearData();
+        await Get.offAll(const StartJourneyScreen());
+      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
+
+  //logout user account
+  Future apiLogOutUser() async {
+    debugPrint(
+        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("LOGGED OUT RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        clearData();
+        await Get.offAll(const StartJourneyScreen());
+        Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        clearData();
         await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {

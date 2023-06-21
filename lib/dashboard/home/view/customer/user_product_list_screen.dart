@@ -246,8 +246,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               ),
                             )
                           : PopupMenuButton(
-                              onOpened: () {
+                              onOpened: () async{
                                 storeHomeMainController.selectedIndex.value = 3;
+                                await storeHomeMainController.apiGetPreviousOrders();
                               },
                               offset: const Offset(0, 25),
                               shape: const TooltipShape(),
@@ -299,191 +300,89 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     return List.generate(4, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
-          value: StringConstants.previousText,
+          value: StringConstants.previousOrdersText,
           child: Column(
             children: [
               SizedBox(
                 width: 130,
-                child: GestureDetector(
-                  onTap: () async {
-                    Get.back( );
-                                  // Navigator.of(ctx).pop();
-                    // Get.back();
-                    await storeHomeMainController.apiGetPreviousOrders();
-                    // SharedPreferenceStorage.setData("context", ctx);
-                    // Navigator.of(ctx).push(MaterialPageRoute(
-                    //   builder: (_) => const PreviousOrdersScreen(),
-                    // ));
-                    await Get.to(const PreviousOrdersScreen(),
-                        id:storeHomeMainController.pageId.value);
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        StringConstants.previousText,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontFamily: "",
-                            fontSize: 14),
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      StringConstants.previousOrdersText,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontFamily: "",
+                          fontSize: 14),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+          onTap: () async {
+            storeHomeMainController.popUpMenuChange(index);
+          },
         );
       } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
             width: 130,
-            child: GestureDetector(
-              onTap: () {
-                Get.back( );
-                                  // Navigator.of(ctx).pop();
-                // Get.back();
-                contactAlertDailogue(ctx);
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.contactText,
-                    style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 14),
-                  ),
-                ],
-              ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.contactText,
+                  style: const TextStyle(
+                      color: AppColors.black, fontFamily: "", fontSize: 14),
+                ),
+              ],
             ),
           ),
+          onTap: () {
+            contactAlertDailogue(ctx);
+          },
         );
       } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
             width: 150,
-            child: GestureDetector(
-              onTap: () async{
-                Get.back( );
-                                  // Navigator.of(ctx).pop();
-                if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages!.isEmpty) {
-                  Utility.showToast(StringConstants.noPrivacyFoundText);
-                } else {
-                  if (storeHomeMainController.storeDetailsResponse.value.data!
-                              .store!.storePages![0].storePageType ==
-                          "privacy" ||
-                      storeHomeMainController.storeDetailsResponse.value.data!
-                              .store!.storePages![1].storePageType ==
-                          "privacy") {
-                    // SharedPreferenceStorage.setData("context", context);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (_) => PdfViewScreen(
-                    //         isShowPrivacy: true,
-                    //         url: storeHomeMainController
-                    //             .storeDetailsResponse
-                    //             .value
-                    //             .data!
-                    //             .store!
-                    //             .storePages!
-                    //             .first
-                    //             .storePageContent!
-                    //             .dynamicUrl
-                    //             .toString())));
-                    await Get.to(PdfViewScreen(
-                        isShowPrivacy: true,
-                        url: storeHomeMainController
-                            .storeDetailsResponse
-                            .value
-                            .data!
-                            .store!
-                            .storePages!
-                            .first
-                            .storePageContent!
-                            .dynamicUrl
-                            .toString()),
-                        id:storeHomeMainController.pageId.value);
-
-                  }
-                }
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.storePolicyText,
-                    style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 14),
-                  ),
-                ],
-              ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.storePolicyText,
+                  style: const TextStyle(
+                      color: AppColors.black, fontFamily: "", fontSize: 14),
+                ),
+              ],
             ),
           ),
+          onTap: () {
+            storeHomeMainController.popUpMenuChange(index);
+          },
         );
       } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
             width: 150,
-            child: GestureDetector(
-              onTap: () async{
-                Get.back( );
-                                  // Navigator.of(ctx).pop();
-                if (storeHomeMainController.storeDetailsResponse.value.data!
-                    .store!.storePages!.isEmpty) {
-                  Utility.showToast(StringConstants.noTermsFoundText);
-                } else {
-                  if (storeHomeMainController.storeDetailsResponse.value.data!
-                              .store!.storePages![0].storePageType ==
-                          "terms" ||
-                      storeHomeMainController.storeDetailsResponse.value.data!
-                              .store!.storePages![1].storePageType ==
-                          "terms") {
-                    // SharedPreferenceStorage.setData("context", context);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (_) => PdfViewScreen(
-                    //         isShowPrivacy: false,
-                    //         url: storeHomeMainController
-                    //             .storeDetailsResponse
-                    //             .value
-                    //             .data!
-                    //             .store!
-                    //             .storePages!
-                    //             .first
-                    //             .storePageContent!
-                    //             .dynamicUrl
-                    //             .toString())));
-                    await Get.to(PdfViewScreen(
-                        isShowPrivacy: false,
-                        url: storeHomeMainController
-                            .storeDetailsResponse
-                            .value
-                            .data!
-                            .store!
-                            .storePages!
-                            .first
-                            .storePageContent!
-                            .dynamicUrl
-                            .toString()),
-                        id:storeHomeMainController.pageId.value);
-
-                  }
-                }
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.termsAndConditionsText,
-                    style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 14),
-                  ),
-                ],
-              ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.termsAndConditionsText,
+                  style: const TextStyle(
+                      color: AppColors.black, fontFamily: "", fontSize: 14),
+                ),
+              ],
             ),
           ),
+          onTap: () {
+            storeHomeMainController.popUpMenuChange(index);
+          },
         );
       }
     });
@@ -603,7 +502,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                           .featureProductList[i]
                                                           .productId
                                                           .toString();
-                                                  await storeHomeMainController
+                                                   storeHomeMainController
                                                       .apiGetShopProductDetailApi();
                                                   await storeHomeMainController
                                                       .apiGetCartListApi();
@@ -689,9 +588,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                                   ? InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
-                                                                            .featureProductList[i]
-                                                                            .productId);
+                                                                            if(storeHomeMainController.isLoading.value == false){
+                                                                              storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
+                                                                                  .featureProductList[i]
+                                                                                  .productId);
+                                                                            }
                                                                       },
                                                                       child: Image
                                                                           .asset(
@@ -704,9 +605,12 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                                   : InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
-                                                                            .featureProductList[i]
-                                                                            .productId);
+                                                                            if(storeHomeMainController.isLoading.value == false){
+                                                                              storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
+                                                                                  .featureProductList[i]
+                                                                                  .productId);
+                                                                            }
+
                                                                       },
                                                                       child: Image
                                                                           .asset(
@@ -808,8 +712,23 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                       : storeHomeMainController.selectedIndex.value == 2
                           ? const Expanded(child: StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
-                              ? const Expanded(child: StoreFavouriteScreen())
-                              : const Expanded(child: StoreHomeScreen()),
+                              ? storeHomeMainController.popUpIndex.value == 0
+                              ? const Expanded(child: PreviousOrdersScreen())
+                              : storeHomeMainController.popUpIndex.value == 2
+                              ? Expanded(child: PdfViewScreen(
+                              isShowPrivacy: true,
+                              url: storeHomeMainController.storeDetailsResponse.value
+                                  .data!.store!.storePages!
+                                  .first.storePageContent!.dynamicUrl.toString()))
+                              : storeHomeMainController.popUpIndex.value == 3
+                              ? Expanded(child: PdfViewScreen(
+                              isShowPrivacy: false,
+                              url: storeHomeMainController
+                                  .storeDetailsResponse.value
+                                  .data!.store!.storePages!.first
+                                  .storePageContent!.dynamicUrl.toString()))
+                              : const Expanded(child: PreviousOrdersScreen())
+                              : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));

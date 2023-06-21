@@ -35,16 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _pullRefresh() async {
-    if (homeController.role!.value == Role.customerRoleText) {
-      homeController.apiGetUserOffersList();
-      homeController.apiGetUserFeaturedProducts();
-      homeController.apiGetUserDetail();
-    } else {
-      homeController.apiGetOwnerFeaturedProducts();
-      homeController.apiGetOwnerOffersList();
-      homeController.apiGetUserDetail();
-    }
-    // why use freshNumbers var? https://stackoverflow.com/a/52992836/2301224
+    homeController.apiGetUserDetail();
+    homeController.getCurrentLocation();
   }
 
   @override
@@ -142,15 +134,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                // SharedPreferenceStorage.setData(
-                                //     "context", context);
-                                //
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (_) =>
-                                //       const NotificationListScreen(),
-                                // ));
-                                Get.to(const NotificationListScreen(),
-                                    id:homeController.pageId.value );
+                                if(homeController.isLoading?.value == false) {
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  //
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) =>
+                                  //       const NotificationListScreen(),
+                                  // ));
+                                  Get.to(const NotificationListScreen(),
+                                      id:homeController.pageId.value );
+                                }
+
+
                               },
                               child: const Icon(
                                 Icons.notifications_active,
@@ -404,12 +400,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (_) => const AccountScreen(),
                                 ))
                                     .then((value) {
-                                  homeController.apiGetUserDetail();
+                                  homeController.isLoading?.value =true;
+                                  homeController.onInit();
+                                  homeController.update();
                                 });*/
                                 Get.parameters["isFromCart"] = "false";
                                 Get.to(const AccountScreen(),id: homeController.pageId.value,
                                     arguments: {"isFromCart": false})?.then((value) {
-                                  homeController.apiGetUserDetail();
+                                  homeController.isLoading?.value =true;
+                                  homeController.onInit();
+                                  homeController.update();
                                 });
                               },
                               constraints: const BoxConstraints(),
@@ -483,24 +483,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               /// USER CAROUSEL
                               CarouselSlider(
-                                  items: homeController.userCarouselImgList
+                                  items: homeController.userCarouselImgList.take(5)
                                       .map((item) => InkWell(
-                                            onTap: () async{
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context)
-                                              //     .push(MaterialPageRoute(
-                                              //   builder: (_) =>
-                                              //       const StoreHomeMainScreen(),
-                                              // ));
+                                            onTap: () {
+                                              if(homeController.isLoading?.value == false){
+                                            // SharedPreferenceStorage.setData(
+                                            //     "context", context);
+                                            // Navigator.of(context)
+                                            //     .push(MaterialPageRoute(
+                                            //   builder: (_) =>
+                                            //       const StoreHomeMainScreen(),
+                                            // ));
 
-                                              await Get.to(const StoreHomeMainScreen(),
-                                                  id:homeController.pageId.value);
-                                              Get.parameters["storeId"] =
-                                                  item.storeId ?? "";
+                                            await Get.to(const StoreHomeMainScreen(),
+                                            id:homeController.pageId.value);
+                                            Get.parameters["storeId"] =
+                                            item.storeId ?? "";
 
-                                              Get.parameters["offerId"] =
-                                                  item.offerId ?? "";
+                                            }
                                             },
                                             child: Center(
                                                 child: ClipRRect(
@@ -544,13 +544,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: homeController.userCarouselImgList
-                                        .asMap()
+                                    children: homeController.userCarouselImgList.take(5).toList().asMap()
                                         .entries
                                         .map((entry) {
                                       return GestureDetector(
-                                        onTap: () => _controller
-                                            .animateToPage(entry.key),
+                                        onTap: (){
+                                          if(homeController.isLoading?.value == false){
+                                            _controller
+                                                .animateToPage(entry.key);
+                                          }
+                                        } ,
                                         child: Container(
                                           width:
                                               _current == entry.key ? 25 : 10,
@@ -610,14 +613,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ///OWNER CAROUSEL
                             : CarouselSlider(
-                                items: homeController.getOwnerOfferList
+                                items: homeController.getOwnerOfferList.take(5)
                                     .map((item) => InkWell(
                                           onTap: () {
-                                            // Get.parameters["offerId"] =
-                                            //     item.offerId ?? "";
-                                            // Get.parameters["storeId"] =
-                                            //     item.store!.storeId ?? "";
-                                            // SharedPreferenceStorage.setData(
+                                            if(homeController.isLoading?.value == false){
+                                              // SharedPreferenceStorage.setData(
                                             //     "context", context);
                                             // Navigator.of(context)
                                             //     .push(MaterialPageRoute(
@@ -632,11 +632,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 () =>
                                                     const ManageStoreMainScreen(),
                                                 id:homeController.pageId.value ,
-                                                arguments: {
+                                                  arguments: {
                                                   "isFromHome": true,
                                                   "storeId":
                                                       item.store?.storeId ?? "",
-                                                });
+                                                });}
+                                            // Get.parameters["offerId"] =
+                                            //     item.offerId ?? "";
+                                            // Get.parameters["storeId"] =
+                                            //     item.store!.storeId ?? "";
                                           },
                                           child: Center(
                                               child: ClipRRect(
@@ -674,13 +678,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? height0SizedBox
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.getOwnerOfferList
-                                    .asMap()
+                                children: homeController.getOwnerOfferList.take(5).toList().asMap()
                                     .entries
                                     .map((entry) {
                                   return GestureDetector(
-                                    onTap: () =>
-                                        _controller.animateToPage(entry.key),
+                                    onTap: () {
+
+                                      if(homeController.isLoading?.value == false){
+                                        _controller.animateToPage(entry.key);
+                                      }
+                                    },
+
                                     child: Container(
                                       width: _current == entry.key ? 25 : 10,
                                       height: 5.0,
@@ -743,24 +751,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  if(homeController.isLoading?.value == false){
+                                    Get.parameters["isFromHome"] = "false";
+                                    Get.parameters["isFromFav"] = "false";
+                                    Get.parameters["isFromMenu"] = "true";
+                                    Get.parameters["productId"] = homeController
+                                        .featuredUserProductList[index]
+                                        .productId ??
+                                        "";
+                                    Get.parameters["storeId"] = homeController
+                                        .featuredUserProductList[index]
+                                        .storeId ??
+                                        "";
                                   // SharedPreferenceStorage.setData(
                                   //     "context", context);
                                   // Navigator.of(context).push(MaterialPageRoute(
                                   //   builder: (_) => const AddToOrderScreen(),
                                   // ));
-                                  Get.parameters["isFromHome"] = "true";
-                                  Get.parameters["isFromFav"] = "false";
-                                  Get.parameters["isFromMenu"] = "false";
-                                  Get.parameters["productId"] = homeController
-                                          .featuredUserProductList[index]
-                                          .productId ??
-                                      "";
-                                  Get.parameters["storeId"] = homeController
-                                          .featuredUserProductList[index]
-                                          .storeId ??
-                                      "";
 
-                                  Get.to(() => const AddToOrderScreen(),
+                                    Get.to(() => const AddToOrderScreen(),
                                       id:homeController.pageId.value,
                                        arguments: {
                                          "isFromHome": true,
@@ -772,7 +781,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                  .featuredUserProductList[index]
                                                  .storeId ??
                                              "",
-                                       });
+                                       });}
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -863,21 +872,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (BuildContext context, int index) =>
                                   InkWell(
                                 onTap: () {
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  Get.parameters["isFromHome"] = "true";
-                                  Get.parameters["storeId"] = homeController
-                                      .ownerFeatureProductList[index].storeId;
-                                  Get.parameters["productId"] = homeController
-                                      .ownerFeatureProductList[index].productId;
-                                  Get.parameters["categoryName"] = homeController
-                                      .ownerFeatureProductList[index].productCategories?.first.category?.categoryName??"";
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (_) =>
-                                  //       const EditProductScreen(),
-                                  // ));
+                                  if(homeController.isLoading?.value == false){
+                                    // SharedPreferenceStorage.setData(
+                                    //     "context", context);
+                                    Get.parameters["isFromHome"] = "true";
+                                    Get.parameters["storeId"] = homeController
+                                        .ownerFeatureProductList[index].storeId;
+                                    Get.parameters["productId"] = homeController
+                                        .ownerFeatureProductList[index].productId;
+                                    Get.parameters["categoryName"] = homeController
+                                        .ownerFeatureProductList[index].productCategories?.first.category?.categoryName??"";
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //   builder: (_) =>
+                                    //   const EditProductScreen(),
+                                    // ));
 
-                                   Get.to(const EditProductScreen(),
+                                     Get.to(const EditProductScreen(),
                                        id:homeController.pageId.value,
                                        arguments: {
                                         "isFromHome": true,
@@ -885,6 +895,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .ownerFeatureProductList[index]
                                             .storeId
                                       });
+                                  }
+
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

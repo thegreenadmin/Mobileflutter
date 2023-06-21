@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
+import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/delete_offer_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
@@ -36,6 +38,15 @@ class OffersController extends GetxController {
   RxList<Stores> getUserOfferlist = <Stores>[].obs;
   late DeleteOfferRequestModel deleteOfferRequestModel =
       DeleteOfferRequestModel();
+
+  late OwnerFeaturedProductModel ownerFeaturedProductModel =
+      OwnerFeaturedProductModel();
+  RxList<ProductsList> ownerFeatureProductList = <ProductsList>[].obs;
+
+  UserFeaturedProductModel userFeaturedProductModel =
+      UserFeaturedProductModel();
+  RxList<DataList> featuredUserProductList = <DataList>[].obs;
+
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   RxBool isFromNotification = false.obs;
@@ -43,9 +54,7 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (Get.parameters == null
-        ? false
-        : Get.parameters['isFromNotification'] != "false") {
+    if (Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
     }
@@ -201,6 +210,63 @@ class OffersController extends GetxController {
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
+
+  //Api Get offers products
+  Future apiGetOffersProducts(
+      {String storeId = "", String offerId = ""}) async {
+    isLoading!.value = true;
+    debugPrint("GET OFFERS PRODUCT URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+    };
+    Map data = {
+      "q": "",
+      "store_id": storeId,
+      "page": 1,
+      "page_size": 5,
+      "order_by": "product_id",
+      "order_type": "DESC",
+      "category_id": null,
+      "is_favourite_products": null,
+      "is_previous_products": null,
+      "offer_id": offerId,
+      "filters": []
+    };
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("GET OFFERS PRODUCT BODY ********** ${data.toString()}");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeFeatureProductList,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading!.value = false;
+      debugPrint("GET OFFERS PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        userFeaturedProductModel =
+            UserFeaturedProductModel.fromJson(value?.body);
+        featuredUserProductList.value =
+            userFeaturedProductModel.data!.products!;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
+          builder: (_) => const StartJourneyScreen(),
+        ));
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

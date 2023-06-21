@@ -227,8 +227,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   manageStoreController.productId.value =
                                       manageStoreController
                                               .storeProductList[index]
-                                              .productId ?? "";
-                                  await manageStoreController.apiGetProductDetails();
+                                              .productId ??
+                                          "";
+                                  await manageStoreController
+                                      .apiGetProductDetails();
                                   // SharedPreferenceStorage.setData(
                                   //     "context", context);
                                   // await Navigator.of(context)
@@ -254,7 +256,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                 .productImages!
                                                 .isEmpty
                                             ? Image.asset(
-                                                ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
+                                                ImageConstants.nopicfound,
+                                                color: AppColors.grey
+                                                    .withOpacity(0.4),
                                                 fit: BoxFit.fill,
                                                 height: 100,
                                                 width: WidgetConstants

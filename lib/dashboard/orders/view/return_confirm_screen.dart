@@ -406,8 +406,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                         fontSize: 14)),
                                                 Text(
                                                     ordersHomeMainController
-                                                        .getOrderItems[
-                                                    index]
+                                                        .getOrderItems[index]
                                                         .product!
                                                         .quantity
                                                         .toString(),
@@ -431,11 +430,8 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                         fontSize: 14)),
                                                 Text(
                                                     ordersHomeMainController
-                                                        .getOrderItems[
-                                                    index]
-                                                        .product!
-                                                        .productPrice
-                                                        .toString(),
+                                                        .getOrderItems[index].offerPrice
+                                                        .toStringAsFixed(2) ?? "0.00",
                                                     style: TextStyle(
                                                         color: AppColors
                                                             .blacklight,

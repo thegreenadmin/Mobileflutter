@@ -21,7 +21,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+     /* appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
             color: AppColors.primarylight,
@@ -62,11 +62,20 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                         scale: 4,
                       )
                     ])),
-          )),
+          )),*/
       body: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
-          child: Column(
-            children: [
+          height: WidgetConstants.screenHeight,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              height5SizedBox,
+              Text(
+                StringConstants.previousOrdersText,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+              ),
+              height20SizedBox,
               Obx(
                 () => storeHomeMainController.previousOrderList.isEmpty
                     ? storeHomeMainController.isLoading.value == true

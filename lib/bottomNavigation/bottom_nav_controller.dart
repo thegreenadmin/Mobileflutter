@@ -90,6 +90,12 @@ class BottomNavController extends GetxController {
       }
     });
   }
+  HomeController homeController = Get.put(HomeController());
+  WalletController walletController = Get.put(WalletController());
+  OrdersController ordersController = Get.put(OrdersController());
+  OffersController offersController = Get.put(OffersController());
+  MoreController moreController = Get.put(MoreController());
+
 
   late int getCurrentNavKey;
 
@@ -111,6 +117,13 @@ class BottomNavController extends GetxController {
       try {
         HomeController controller = Get.put(HomeController());
         controller.onInit();
+        // HomeController controller = Get.put(HomeController());
+        Get.delete<WalletController>();
+        Get.delete<OrdersController>();
+        Get.delete<OffersController>();
+        Get.delete<MoreController>();
+        homeController.onInit();
+
       } catch (e) {
         //Pass
       }
@@ -118,7 +131,13 @@ class BottomNavController extends GetxController {
     else if (selectedIndex.value == 1) {
       try {
         WalletController controller = Get.put(WalletController());
-        controller.onInit();
+        // controller.onInit();
+        Get.delete<HomeController>();
+        Get.delete<OrdersController>();
+        Get.delete<OffersController>();
+        Get.delete<MoreController>();
+        walletController.onInit();
+
       } catch (e) {
         //Pass
       }
@@ -131,7 +150,13 @@ class BottomNavController extends GetxController {
           await apiGetStoreList();
         }
         OrdersController controller = Get.put(OrdersController());
-        controller.onInit();
+        // controller.onInit();
+
+        Get.delete<HomeController>();
+        Get.delete<WalletController>();
+        Get.delete<OffersController>();
+        Get.delete<MoreController>();
+        ordersController.onInit();
       } catch (e) {
         //Pass
       }
@@ -139,7 +164,12 @@ class BottomNavController extends GetxController {
     else if (selectedIndex.value == 3) {
       try {
         OffersController controller = Get.put(OffersController());
-        controller.onInit();
+        Get.delete<HomeController>();
+        Get.delete<WalletController>();
+        Get.delete<OrdersController>();
+        Get.delete<MoreController>();
+        offersController.onInit();
+        // controller.onInit();
       } catch (e) {
         //Pass
       }
@@ -147,7 +177,12 @@ class BottomNavController extends GetxController {
     else if (selectedIndex.value == 4) {
       try {
         MoreController controller = Get.put(MoreController());
-        controller.onInit();
+        Get.delete<HomeController>();
+        Get.delete<WalletController>();
+        Get.delete<OrdersController>();
+        Get.delete<OffersController>();
+        moreController.onInit();
+        // controller.onInit();
       } catch (e) {
         //Pass
       }

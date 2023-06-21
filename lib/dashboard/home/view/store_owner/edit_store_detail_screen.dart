@@ -107,7 +107,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         Flexible(
                             flex: 4,
                             child: Obx(() => ownerStoreController
-                                    .editStoreLogoDynamicLinkfromServer
+                                    .editStoreLogoDynamicLinkFromServer
                                     .value
                                     .isEmpty
                                 ? InkWell(
@@ -172,7 +172,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                 children: [
                                                   Image.network(
                                                       ownerStoreController
-                                                          .editStoreLogoDynamicLinkfromServer
+                                                          .editStoreLogoDynamicLinkFromServer
                                                           .value,
                                                       fit: BoxFit.cover)
                                                 ]),
@@ -225,7 +225,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height15SizedBox,
                     Obx(
                       () => ownerStoreController
-                              .editStoreImageDynamicLinkfromServer.value.isEmpty
+                              .editStoreImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 ownerStoreController
@@ -282,7 +282,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             ownerStoreController
-                                                .editStoreImageDynamicLinkfromServer
+                                                .editStoreImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),
@@ -1306,7 +1306,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     ownerStoreController.radioGroupValue.value =
                                         value?.toInt() ?? 0;
                                     ownerStoreController.is247Time.value = true;
-                                    ownerStoreController.storeTimmingList
+                                    ownerStoreController.storeTimingList
                                         .clear();
                                     ownerStoreController.storeTimings.clear();
                                     ownerStoreController
@@ -1609,7 +1609,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                       () => ownerStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                ownerStoreController.storeTimmingList.clear();
+                                ownerStoreController.storeTimingList.clear();
                                 if (ownerStoreController
                                     .storeTimings.isNotEmpty) {
                                   for (int i = 0;
@@ -1622,7 +1622,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       if (element["day_of_week"] ==
                                           ownerStoreController
                                               .weekDaysList[i].id) {
-                                        ownerStoreController.storeTimmingList
+                                        ownerStoreController.storeTimingList
                                             .add({
                                           "store_timing_id":
                                               element["store_timing_id"],
@@ -1657,12 +1657,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     if (ownerStoreController
                                             .weekDaysList[i].isSelected ==
                                         true) {
-                                      if (!ownerStoreController.storeTimmingList
+                                      if (!ownerStoreController.storeTimingList
                                           .any((element) =>
                                               element["day_of_week"] ==
                                               ownerStoreController
                                                   .weekDaysList[i].id)) {
-                                        ownerStoreController.storeTimmingList
+                                        ownerStoreController.storeTimingList
                                             .add({
                                           "store_timing_id": null,
                                           "is_24_hours_active": false,
@@ -1688,7 +1688,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     if (ownerStoreController
                                             .weekDaysList[i].isSelected ==
                                         true) {
-                                      ownerStoreController.storeTimmingList
+                                      ownerStoreController.storeTimingList
                                           .add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
@@ -1803,8 +1803,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           return null;
                         },
-                        controller:
-                            ownerStoreController.deliveryServicesTextController,
+                        controller: ownerStoreController.deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: ownerStoreController.deliveryServices),

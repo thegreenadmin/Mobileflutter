@@ -25,7 +25,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
       body: Container(
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: [
           height5SizedBox,
           Text(
             StringConstants.categoriesText,
@@ -76,6 +77,9 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                               categoryId: storeHomeMainController
                                   .categoriesList[index].categoryId ??
                                   "0");
+                          Get.parameters["categoryId"] = storeHomeMainController
+                              .categoriesList[index].categoryId;
+
                           storeHomeMainController.category.value =
                           storeHomeMainController.categoriesList[index];
                           // SharedPreferenceStorage.setData("context", context);

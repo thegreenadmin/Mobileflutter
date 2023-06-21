@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -169,9 +170,9 @@ class AddOffersController extends GetxController {
     if (validateAndSave()) {
       try {
         if (offerImageDynamicLinkfromServer.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseUploadImageText);
+          Utility.showAlertMessage(AlertStringConstants.pleaseUploadImageText);
         } else if (discountType.value.isEmpty) {
-          Utility.showToast(AlertStringConstants.pleaseSelectDiscountType);
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectDiscountType);
         } else {
           isValidateFromAddOffer
               ? await apiAddOffer(context)
@@ -319,7 +320,7 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);

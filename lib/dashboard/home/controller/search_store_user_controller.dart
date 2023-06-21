@@ -644,7 +644,7 @@ class SearchStoreUserController extends GetxController {
 
   //Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
-    isLoading.value = favouriteStore.isNotEmpty ? true : false;
+    isLoading.value =  true ;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
     var token = await SharedPreferenceStorage.getData('token');
@@ -717,7 +717,7 @@ class SearchStoreUserController extends GetxController {
 
   //Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
-    isLoading.value = favouriteStore.isNotEmpty ? true : false;
+    isLoading.value =  true ;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
     var token = await SharedPreferenceStorage.getData('token');

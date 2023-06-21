@@ -41,16 +41,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                   fit: BoxFit.cover,
                   colorFilter: const ColorFilter.mode(
                       Colors.black45, BlendMode.darken),
-                  image: storeHomeMainController
-                                  .storeDetailsResponse.value.data ==
-                              null ||
+                  image: storeHomeMainController.storeDetailsResponse.value.data == null ||
                           storeHomeMainController.storeDetailsResponse.value
-                                  .data!.store!.image!.dynamicUrl ==
-                              null ||
+                              .data!.store!.image!.dynamicUrl == null ||
                           storeHomeMainController.storeDetailsResponse.value
                               .data!.store!.image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.storeicon)
-                          as ImageProvider
+                      ? const AssetImage(ImageConstants.storeicon) as ImageProvider
                       : NetworkImage(storeHomeMainController
                           .storeDetailsResponse
                           .value
@@ -195,14 +191,17 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         true
                                     ? InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiRemoveFavouriteStore(
-                                                  storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data
-                                                      ?.store
-                                                      ?.storeId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiRemoveFavouriteStore(
+                                                storeHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data
+                                                    ?.store
+                                                    ?.storeId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
@@ -211,14 +210,17 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          storeHomeMainController
-                                              .apiCreateFavouriteStore(
-                                                  storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data
-                                                      ?.store
-                                                      ?.storeId);
+                                          if(storeHomeMainController.isLoading.value == false){
+                                            storeHomeMainController
+                                                .apiCreateFavouriteStore(
+                                                storeHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data
+                                                    ?.store
+                                                    ?.storeId);
+                                          }
+
                                         },
                                         child: Image.asset(
                                           ImageConstants.favoutline,

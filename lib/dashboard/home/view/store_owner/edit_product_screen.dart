@@ -22,14 +22,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       Get.put(ManageStoreController());
 
   @override
-  void initState() {
-    for (int i = 0; i < manageStoreController.categoriesList.length; i++) {
-      manageStoreController.categoriesList[i].isSelected = true;
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
@@ -49,6 +41,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
+                                for (var element
+                                    in manageStoreController.categoriesList) {
+                                  element.isSelected = false;
+                                }
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
@@ -358,7 +354,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       //       manageStoreController.categoryName.value,
                       //       style: const TextStyle(color: AppColors.white),
                       //     )),
-                      Obx(() => manageStoreController.categoriesList.isEmpty
+                      Obx(() => manageStoreController
+                                      .isSelectedCategory.value ==
+                                  false &&
+                              manageStoreController.categoriesList.isEmpty
                           ? height0SizedBox
                           : SizedBox(
                               width: Get.width,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
@@ -57,6 +58,9 @@ class AddCardController extends GetxController {
   RxString? ownerWalletBalance = "0.00".obs;
   RxString stateId = "".obs;
   RxString role = "".obs;
+  var kGoogleApiKey = "";
+  dynamic lat = 0.0;
+  dynamic lng = 0.0;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> formKey1 = GlobalKey<FormState>();
@@ -89,11 +93,17 @@ class AddCardController extends GetxController {
   RxString capability = "".obs;
   RxBool payouts = false.obs;
   RxString accountLink = "".obs;
-
+  late GlobalConfigs secureData;
   @override
   void onInit() {
     super.onInit();
     getApiData();
+  }
+
+  getGKey() async {
+    secureData =
+        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
   }
 
   getApiData() async {
@@ -102,6 +112,7 @@ class AddCardController extends GetxController {
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
     role?.value = roleVal;
+    getGKey();
     await apiGetUserWalletBalance();
     await apiGetCardList(Get.context!);
     await apiGetBankAccountList();

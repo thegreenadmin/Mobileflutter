@@ -155,14 +155,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             true
                                         ? InkWell(
                                             onTap: () {
-                                              ordersController
-                                                  .apiRemoveFavouriteStore(
-                                                      ordersController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeId);
+                                              if(ordersController.isLoading.value == false){
+                                                ordersController
+                                                    .apiRemoveFavouriteStore(
+                                                    ordersController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
+                                              }
+
                                             },
                                             child: Image.asset(
                                               ImageConstants.liked,
@@ -171,14 +174,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           )
                                         : InkWell(
                                             onTap: () {
-                                              ordersController
-                                                  .apiCreateFavouriteStore(
-                                                      ordersController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeId);
+                                              if(ordersController.isLoading.value == false){
+                                                ordersController
+                                                    .apiCreateFavouriteStore(
+                                                    ordersController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
+                                              }
+
                                             },
                                             child: Image.asset(
                                               ImageConstants.favoutline,
@@ -632,6 +638,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         onTap: ()async {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
+                          Get.parameters["isFromMenu"] = "true";
+                          Get.parameters["isFromHome"] = "false";
+                          Get.parameters["isFromFav"] = "false";
                           await Get.to(const StoreHomeMainScreen(),
                               id:ordersController.pageId.value);
                           // Navigator.of(context).push(MaterialPageRoute(
@@ -843,7 +852,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                         fontSize: 14)),
                                                 TextSpan(
                                                   text:
-                                                  "\$${ordersController.orderItems[i].product?.productPrice.toString() ?? ""}",
+                                                  "\$${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                       FontWeight.w600,

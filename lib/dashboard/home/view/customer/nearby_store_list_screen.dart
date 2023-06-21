@@ -269,13 +269,16 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 true
                                             ? InkWell(
                                                 onTap: () {
-                                                  searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
+                                                  if(searchStoreUserController.isLoading.value == false){
                                                     searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .store
-                                                        ?.storeId,
-                                                  );
+                                                        .apiRemoveFavouriteStore(
+                                                      searchStoreUserController
+                                                          .storeAddresses[index]
+                                                          .store
+                                                          ?.storeId,
+                                                    );
+                                                  }
+
                                                 },
                                           radius: 20,
                                                 child: Image.asset(
@@ -285,6 +288,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
+                                                if(searchStoreUserController.isLoading.value == false){
                                                   searchStoreUserController
                                                       .apiCreateFavouriteStore(
                                                     searchStoreUserController
@@ -292,6 +296,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                         .store
                                                         ?.storeId,
                                                   );
+                                                }
+
                                                 }, radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,

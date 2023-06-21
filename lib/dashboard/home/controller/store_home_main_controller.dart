@@ -65,6 +65,7 @@ class StoreHomeMainController extends GetxController {
   RxList<Products> previousOrderList = <Products>[].obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
+  RxInt popUpIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt pageId = 0.obs;
   RxInt itemsCount = 1.obs;
@@ -84,6 +85,7 @@ class StoreHomeMainController extends GetxController {
   RxBool isOrderDeliverable = false.obs;
   RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
+  RxBool showLoading = true.obs;
   RxBool isPlaceOrder = true.obs;
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
@@ -107,6 +109,8 @@ class StoreHomeMainController extends GetxController {
   }
 
   getApiData()async{
+    productId.value =  Get.parameters["productId"] ?? "";
+
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
@@ -136,17 +140,29 @@ class StoreHomeMainController extends GetxController {
     await  apiGetUserDetailsApi();
     if (isFromMenu.value) {
       selectedIndex.value = 1;
+      await apiGetStoreCategoriesApi();
+      await apiGetShopProductDetailApi();
+      if(Get.parameters["categoryId"] !=""){
+        await  apiFeatureProductListApi(
+            categoryId: Get.parameters["categoryId"] ?? "0");
+      }
     }
     if (isFromFav.value) {
       selectedIndex.value = 2;
+      showLoading.value = false;
+      await  apiFeatureProductListApi(isFeaturedProduct: true);
+      await apiGetShopProductDetailApi();
     }
     if (isFromHome.value) {
       selectedIndex.value = 0;
+      showLoading.value = false;
+      await apiGetStoreOffersApi();
+      await apiFeatureProductListApi(isFeaturedProduct: true);
       await apiGetShopProductDetailApi();
     } else {
       onIndexChange(0);
     }
-
+    await apiGetUserWalletBalance();
     await apiGetStoreDetailsApi();
     await  apiGetUserWalletBalance();
     await  apiActiveCartApi();
@@ -154,14 +170,60 @@ class StoreHomeMainController extends GetxController {
 
   void onIndexChange(int i) async {
     selectedIndex.value = i;
+    print("onIndexChange : -------- $i");
     if (i == 0) {
       await apiGetStoreOffersApi();
       await apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
+      if(Get.parameters["categoryId"] !=""){
+        apiFeatureProductListApi(
+            categoryId: Get.parameters["categoryId"] ?? "0");
+      }
     } else if (i == 2) {
       await apiFeatureProductListApi(isFavouriteProducts: true);
-    } else if (i == 3) {}
+    } else if (i == 3) {
+      await apiGetPreviousOrders();
+    }
+  }
+
+  void popUpMenuChange(int i) async {
+    popUpIndex.value = i;
+    if (i == 0) {
+      await apiGetPreviousOrders();
+    } else if (i == 1) {
+      await apiGetStoreCategoriesApi();
+      if(Get.parameters["categoryId"] !=""){
+        apiFeatureProductListApi(
+            categoryId: Get.parameters["categoryId"] ?? "0");
+      }
+    } else if (i == 2) {
+      if (storeDetailsResponse.value.data!
+          .store!.storePages!.isEmpty) {
+        Utility.showToast(StringConstants.noPrivacyFoundText);
+      } else {
+        if (storeDetailsResponse.value.data!
+            .store!.storePages![0].storePageType ==
+            "privacy" ||
+            storeDetailsResponse.value.data!
+                .store!.storePages![1].storePageType ==
+                "privacy") {
+        }
+      }
+    } else if (i == 3) {
+      if (storeDetailsResponse.value.data!
+          .store!.storePages!.isEmpty) {
+        Utility.showToast(StringConstants.noTermsFoundText);
+      } else {
+        if (storeDetailsResponse.value.data!
+            .store!.storePages![0].storePageType ==
+            "terms" ||
+            storeDetailsResponse.value.data!
+                .store!.storePages![1].storePageType ==
+                "terms") {
+        }
+      }
+    }
   }
 
   void termsAndPrivacyDailogue(BuildContext context,
@@ -242,9 +304,9 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
-  void moneydeductFromCartDailogue(BuildContext context, {String amount = ""}) {
+  void moneydeductFromCartDailogue(BuildContext ctx, {String amount = ""}) {
     showDialog(
-      context: context,
+      context: ctx,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -310,7 +372,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     if (isPlaceOrder.value == true) {
-                      await apiPlaceOrder(context);
+                      await apiPlaceOrder(ctx);
                     }
                   },
                   child: Container(
@@ -762,10 +824,11 @@ class StoreHomeMainController extends GetxController {
       debugPrint("API PLACE ORDER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        itemsCount.value = 1;
         orderStatus.value = value?.body["data"]["order_id"];
         isPlaceOrder.value = true;
         debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
-        SharedPreferenceStorage.setData("context", context);
+        SharedPreferenceStorage.setData("context", ctx);
         Get.parameters["storeId"] = storeId.value.toString();
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";
@@ -842,7 +905,7 @@ class StoreHomeMainController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        itemsCount.value = 1;
+
         addToCartDialog(context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1071,7 +1134,7 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Offers *******${value?.body}");
@@ -1299,7 +1362,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: true) //orderBy == "2" ? true : false)
+            showLoading: showLoading.value) //orderBy == "2" ? true : false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");

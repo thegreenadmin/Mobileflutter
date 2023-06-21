@@ -9,7 +9,6 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
@@ -170,9 +169,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     ownerStoresController.storeId.value =
                                         ownerStoresController
                                                 .storeList[index].storeId ?? "";
-
-                                    await ownerStoresController
-                                        .apiGetDeliveryServices();
                                     Get.parameters['storeId'] =  ownerStoresController
                                         .storeList[index].storeId ??
                                         "";
@@ -181,15 +177,15 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
-                                    // SharedPreferenceStorage.setData(
-                                    //     "context", context);
-                                    // await Navigator.of(context)
-                                    //     .push(MaterialPageRoute(
-                                    //   builder: (_) =>
-                                    //       const ManageStoreMainScreen(),
-                                    // ));
+                                   /* SharedPreferenceStorage.setData(
+                                        "context", context);
+                                    await Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (_) =>
+                                          const ManageStoreMainScreen(),
+                                    ));*/
                                     await Get.to(
-                                        () => const ManageStoreMainScreen(),
+                                            () => const ManageStoreMainScreen(),
                                         id:ownerStoresController.pageId.value );
                                   },
                                   child: Container(

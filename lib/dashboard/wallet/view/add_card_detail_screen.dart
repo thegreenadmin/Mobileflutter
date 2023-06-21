@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_webservice/geocoding.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -190,8 +193,65 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                             ),
                             height20SizedBox,
                             TextFormField(
+                                onTap: () async {
+                                  Prediction? p = await PlacesAutocomplete.show(
+                                      offset: 0,
+                                      radius: 1000,
+                                      types: [],
+                                      strictbounds: false,
+                                      context: context,
+                                      apiKey: addCardController.kGoogleApiKey,
+                                      mode: Mode.overlay,
+                                      language: "en",
+                                      components: []);
+
+                                  int idx = p?.description?.indexOf(",") ?? 0;
+                                  List parts = [
+                                    p?.description?.substring(0, idx).trim(),
+                                    p?.description?.substring(idx + 1).trim()
+                                  ];
+                                  addCardController.addressLine1TextController
+                                      .text = parts[0].toString();
+
+                                  ///ADDRESSES BY GoogleMapsGeocoding
+
+                                  final geocoding = GoogleMapsGeocoding(
+                                      apiKey: addCardController.kGoogleApiKey);
+
+                                  GeocodingResponse response =
+                                      await geocoding.searchByAddress(
+                                          p?.description.toString() ?? "");
+
+                                  final result = response.results.isNotEmpty
+                                      ? response.results.first
+                                      : null;
+                                  if (result != null) {
+                                    addCardController.cityTextController.text =
+                                        Utility.extractLocality(
+                                            result, "locality");
+                                    addCardController
+                                            .countryTextController.text =
+                                        Utility.extractLocality(
+                                            result, "country");
+                                    addCardController
+                                            .zipCodeTextController.text =
+                                        Utility.extractLocality(
+                                            result, "postal_code");
+                                    addCardController.stateTextController.text =
+                                        Utility.extractLocality(result,
+                                            "administrative_area_level_1");
+
+                                    addCardController.lng = response
+                                        .results.first.geometry.location.lng;
+                                    addCardController.lat = response
+                                        .results.first.geometry.location.lat;
+                                  }
+                                },
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
+                                minLines: 1,
+                                maxLines: 5,
+                                // enabled: false,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -211,36 +271,38 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                   }
                                   return null;
                                 },
+                                readOnly: true,
+                                textCapitalization: TextCapitalization.words,
                                 decoration: InputDecoration(
-                                  labelText: StringConstants.addressLine1Text,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
+                                  hintText: StringConstants.addressLine1Text,
+                                  hintStyle: const TextStyle(
+                                      color: AppColors.grey, fontSize: 14),
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(
-                                      color: AppColors.primary,
+                                      color: AppColors.grey,
                                       width: 1.0,
                                     ),
                                   ),

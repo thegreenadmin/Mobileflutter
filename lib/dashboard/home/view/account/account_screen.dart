@@ -18,6 +18,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 enum _SupportState {
   unknown,
@@ -851,10 +852,38 @@ class _AccountScreenState extends State<AccountScreen> {
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
+                          colors: [
+                            AppColors.primarylight,
+                            AppColors.primarylight
+                          ],
+                        ),
+                        onTap: () async {
+                          Utility.showConfirmAlertMessage(
+                              AlertStringConstants.areYouSureLogoutAccountText,
+                              cancelText: StringConstants.noText,
+                              okay: StringConstants.yesText, okayTap: () {
+                            accountController.apiLogOutUser();
+                          });
+                        },
+                        height: 50,
+                        textColor: AppColors.primary,
+                        text: StringConstants.logoutText,
+                        borderRadius: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      height12SizedBox,
+                      CustomButton(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                           colors: [AppColors.redlight, AppColors.redlight],
                         ),
                         onTap: () async {
-                          accountController.clearData();
+                          Utility.showConfirmAlertMessage(
+                              AlertStringConstants.areYouSureDeleteAccountText,
+                              okay: StringConstants.deleteText, okayTap: () {
+                            accountController.apiDeleteUserAccount();
+                          });
                         },
                         height: 50,
                         textColor: AppColors.red,

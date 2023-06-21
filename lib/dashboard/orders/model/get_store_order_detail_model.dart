@@ -527,6 +527,7 @@ class OrderItems {
   dynamic shippedAt;
   dynamic deliveredAt;
   dynamic returedAt;
+  dynamic offerPrice;
 
   OrderItems({
     this.orderId,
@@ -552,6 +553,7 @@ class OrderItems {
     this.shippedAt,
     this.deliveredAt,
     this.returedAt,
+    this.offerPrice,
   });
 
   OrderItems.fromJson(Map<String, dynamic> json) {
@@ -581,6 +583,7 @@ class OrderItems {
     shippedAt = json["shippedAt"];
     deliveredAt = json["deliveredAt"];
     returedAt = json["returedAt"];
+    offerPrice = json["offer_price"];
   }
 
   Map<String, dynamic> toJson() {
@@ -613,6 +616,7 @@ class OrderItems {
     data['shippedAt'] = shippedAt;
     data['deliveredAt'] = deliveredAt;
     data['returedAt'] = returedAt;
+    data['offer_price'] = offerPrice;
     return data;
   }
 }

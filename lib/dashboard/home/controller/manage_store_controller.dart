@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -48,6 +49,7 @@ class ManageStoreController extends GetxController {
   RxBool isFeatured = false.obs;
   RxBool isEnabled = false.obs;
   RxBool isProductReturnable = false.obs;
+  RxBool isSelectedCategory = false.obs;
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString storeLocation = "".obs;
@@ -140,7 +142,17 @@ class ManageStoreController extends GetxController {
     }
     await apiGetCategoriesList();
     await  apiGetQuantityList();
+
+    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
+      storeId.value = Get.parameters["storeId"] ?? "";
+      productId.value = Get.parameters["productId"] ?? "";
+      apiGetCategoriesList();
+      apiGetProductDetails();
+    }
+
+    apiGetQuantityList();
   }
+
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
     {"isSelected": false, "day": "Monday"},
     {"isSelected": false, "day": "Tuesday"},
@@ -490,13 +502,7 @@ class ManageStoreController extends GetxController {
       "order_by": "product_id",
       "order_type": "ASC",
       "category_id": categoryId.value,
-      "filters": [
-        // {
-        //   "filter_by": "is_featured_product",
-        //   "filter_value": false,
-        //   "operation": "eq"
-        // }
-      ]
+      "filters": []
     };
     UserProvider()
         .postWithHeadersApi(
@@ -507,7 +513,7 @@ class ManageStoreController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
@@ -605,14 +611,24 @@ class ManageStoreController extends GetxController {
             value.body["data"]['product']["weight"].toString();
         selectedCategories.value =
             value.body["data"]['product']['product_categories'] ?? [];
+        debugPrint(
+            "selectedCategories Length******${selectedCategories.length}");
+        isSelectedCategory.value = false;
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
-            if (categoriesList[i].categoryId ==
-                selectedCategories[j]['category']['category_id']) {
+            if (categoriesList[i].categoryId.toString() ==
+                selectedCategories[j]['category']['category_id'].toString()) {
+              debugPrint(
+                  "category name *******${categoriesList[i].categoryName}");
+              debugPrint("categoriesList Index*******" + i.toString());
+              print(categoriesList[i].isSelected ?? false);
               categoriesList[i].isSelected = true;
+              debugPrint(
+                  "categoriesList ID*******${categoriesList[i].isSelected}");
             }
           }
         }
+        isSelectedCategory.value = true;
         productContent.value =
             value.body["data"]['product']["product_contents"] ?? [];
         productLinks.value =
@@ -631,6 +647,7 @@ class ManageStoreController extends GetxController {
           }
         }
         isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -770,7 +787,7 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
-        if(Get.parameters['isFromHome']=="true"){
+        if (Get.parameters['isFromHome'] == "true") {
           Get.delete<ManageStoreController>();
         }
          Get.back(id:pageId.value );
