@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //   builder: (_) =>
                                   //       const NotificationListScreen(),
                                   // ));
-                                  Get.to(const NotificationListScreen(),
+                                  Get.to(() =>const NotificationListScreen(),
                                       id:homeController.pageId.value );
                                 }
 
@@ -171,22 +171,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              homeController.role!.value ==
-                                      Role.customerRoleText
-                                  ?
-                              // Navigator.of(context)
-                              //         .push(MaterialPageRoute(
-                              //         builder: (_) => const UserInboxScreen(),
-                              //       ))
-                                  Get.to(const UserInboxScreen(),
-                                      id:homeController.pageId.value )
-                                  :/* Navigator.of(context)
+
+                                // SharedPreferenceStorage.setData(
+                                //     "context", context);
+                                homeController.role!.value ==
+                                    Role.customerRoleText
+                                    ?
+                                // Navigator.of(context)
+                                //         .push(MaterialPageRoute(
+                                //         builder: (_) => const UserInboxScreen(),
+                                //       ))
+                                Get.to(() =>const UserInboxScreen(),
+                                    id:homeController.pageId.value )
+                                    :/* Navigator.of(context)
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                              Get.to(const OwnerInboxScreen(),id:homeController.pageId.value);
+                                Get.to(() =>const OwnerInboxScreen(),id:homeController.pageId.value);
+
+
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -225,61 +228,61 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (homeController.role?.value ==
-                                        Role.customerRoleText) {
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) =>
-                                      //       const SearchStoreUserScreen(),
-                                      // ));
-                                      Get.parameters["firstName"] =
-                                          homeController.firstName?.value
-                                                  .toString() ??
-                                              "";
-                                      Get.parameters["lastName"] =
-                                          homeController.lastName?.value
-                                                  .toString() ??
-                                              "";
-                                      Get.to(
-                                       const SearchStoreUserScreen(),
-                                        id:homeController.pageId.value,
-                                       arguments: {
-                                         "firstName":
-                                             homeController.firstName!.value,
-                                         "lastName":
-                                              homeController.lastName!.value,
-                                       },
-                                      );
-                                    } else {
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) =>
-                                      //       const OwnerStoresListScreen(),
-                                      // ));
-                                      Get.parameters["firstName"] =
-                                          homeController.firstName?.value
-                                                  .toString() ??
-                                              "";
-                                      Get.parameters["lastName"] =
-                                          homeController.lastName?.value
-                                                  .toString() ??
-                                              "";
+                                      if (homeController.role?.value ==
+                                          Role.customerRoleText ) {
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const SearchStoreUserScreen(),
+                                        // ));
+                                        Get.parameters["firstName"] =
+                                            homeController.firstName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.parameters["lastName"] =
+                                            homeController.lastName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.to(() =>
+                                          const SearchStoreUserScreen(),
+                                          id:homeController.pageId.value,
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      } else {
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const OwnerStoresListScreen(),
+                                        // ));
+                                        Get.parameters["firstName"] =
+                                            homeController.firstName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.parameters["lastName"] =
+                                            homeController.lastName?.value
+                                                .toString() ??
+                                                "";
 
-                                      Get.to(
-                                       () => const OwnerStoresListScreen(),
-                                        id:homeController.pageId.value,
-                                       arguments: {
-                                         "firstName":
-                                             homeController.firstName!.value,
-                                         "lastName":
-                                              homeController.lastName!.value,
-                                       },
-                                      );
-                                    }
+                                        Get.to(() => const OwnerStoresListScreen(),
+                                          id:homeController.pageId.value,
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      }
+
                                   },
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.fromLTRB(
@@ -317,18 +320,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               : RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (homeController.role?.value ==
-                                        Role.customerRoleText) {
-                                      Get.to(
-                                        const SearchStoreUserScreen(),
-                                        arguments: {
-                                          "firstName":
-                                              homeController.firstName!.value,
-                                          "lastName":
-                                              homeController.lastName!.value,
-                                        },
-                                      );
-                                    }
+
+                                      if (homeController.role?.value ==
+                                          Role.customerRoleText) {
+                                        Get.to(() =>
+                                          const SearchStoreUserScreen(),
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      }
+
+
                                   },
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.fromLTRB(
@@ -370,13 +376,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                Get.to(const TransactionScreen(),
-                                    id:homeController.pageId.value );
-                                // SharedPreferenceStorage.setData(
-                                //     "context", context);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (_) => const TransactionScreen(),
-                                // ));
+
+                                  Get.to(() =>const TransactionScreen(),
+                                      id:homeController.pageId.value );
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) => const TransactionScreen(),
+                                  // ));
+
+
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -393,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                               /* SharedPreferenceStorage.setData(
+                                  /* SharedPreferenceStorage.setData(
                                     "context", context);
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(
@@ -404,13 +413,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   homeController.onInit();
                                   homeController.update();
                                 });*/
-                                Get.parameters["isFromCart"] = "false";
-                                Get.to(const AccountScreen(),id: homeController.pageId.value,
-                                    arguments: {"isFromCart": false})?.then((value) {
-                                  homeController.isLoading?.value =true;
-                                  homeController.onInit();
-                                  homeController.update();
-                                });
+                                  Get.parameters["isFromCart"] = "false";
+                                  Get.to(() => const AccountScreen(),id:
+                                  homeController.pageId.value,
+                                      arguments: {"isFromCart": false})?.then((value) {
+                                    homeController.isLoading?.value =true;
+                                    homeController.apiGetUserDetail();
+                                    homeController.getCurrentLocation();
+                                    homeController.getPage();
+                                  });
+
+
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -485,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               CarouselSlider(
                                   items: homeController.userCarouselImgList.take(5)
                                       .map((item) => InkWell(
-                                            onTap: () {
+                                            onTap: () async{
                                               if(homeController.isLoading?.value == false){
                                             // SharedPreferenceStorage.setData(
                                             //     "context", context);
@@ -495,7 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             //       const StoreHomeMainScreen(),
                                             // ));
 
-                                            await Get.to(const StoreHomeMainScreen(),
+                                            await Get.to(() =>const StoreHomeMainScreen(),
                                             id:homeController.pageId.value);
                                             Get.parameters["storeId"] =
                                             item.storeId ?? "";
@@ -628,7 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 "true";
                                             Get.parameters["storeId"] =
                                                 item.store!.storeId ?? "";
-                                            Get.to(
+                                            Get.to(() =>
                                                 () =>
                                                     const ManageStoreMainScreen(),
                                                 id:homeController.pageId.value ,
@@ -769,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //   builder: (_) => const AddToOrderScreen(),
                                   // ));
 
-                                    Get.to(() => const AddToOrderScreen(),
+                                    Get.to(() =>() => const AddToOrderScreen(),
                                       id:homeController.pageId.value,
                                        arguments: {
                                          "isFromHome": true,
@@ -887,7 +900,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     //   const EditProductScreen(),
                                     // ));
 
-                                     Get.to(const EditProductScreen(),
+                                     Get.to(() =>const EditProductScreen(),
                                        id:homeController.pageId.value,
                                        arguments: {
                                         "isFromHome": true,

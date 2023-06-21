@@ -251,10 +251,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 bottomNavigationPageController.storeList.length > 1 ||
                     bottomNavigationPageController.storeList.isEmpty
                     ? _TabNav(2, const OrderStoresListScreen())
-                    : _TabNav(2, const OrdersHomeMainScreen())
-                    : _TabNav(2, const OrdersScreen()),
-                  _TabNav(3, const OffersScreen()),
-                  _TabNav(4, const MoreScreen()),],
+                    : _TabNav(3, const OrdersHomeMainScreen())
+                    : _TabNav(4, const OrdersScreen()),
+                  _TabNav(5, const OffersScreen()),
+                  _TabNav(6, const MoreScreen()),],
             ),
 
 

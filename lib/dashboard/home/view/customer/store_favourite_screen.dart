@@ -82,10 +82,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               .apiGetShopProductDetailApi();
                           // SharedPreferenceStorage.setData("context", context);
                           storeHomeMainController
-                              .apiGetCartListApi(
-                              context);
-                          SharedPreferenceStorage
-                              .setData("context", context);
+                              .apiGetCartListApi();
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";

@@ -90,11 +90,11 @@ class BottomNavController extends GetxController {
       }
     });
   }
-  HomeController homeController = Get.put(HomeController());
-  WalletController walletController = Get.put(WalletController());
-  OrdersController ordersController = Get.put(OrdersController());
-  OffersController offersController = Get.put(OffersController());
-  MoreController moreController = Get.put(MoreController());
+
+
+
+
+
 
 
   late int getCurrentNavKey;
@@ -108,20 +108,18 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
-
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
+    var pageId = await SharedPreferenceStorage.getData("pageId");
+
     selectedIndex.value = index;
-    SharedPreferenceStorage.setData("pageId", index);
-    Get.until((route) => route.isFirst,id:selectedIndex.value);
+
+    Get.until((route) => route.isFirst,id:pageId);
     if (selectedIndex.value == 0) {
       try {
-        HomeController controller = Get.put(HomeController());
-        controller.onInit();
-        // HomeController controller = Get.put(HomeController());
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
+        SharedPreferenceStorage.removeData("pageId");
+        HomeController homeController = Get.put(HomeController());
+        // HomeController homeController = Get.find<HomeController>();
+        SharedPreferenceStorage.setData("pageId", 0);
         homeController.onInit();
 
       } catch (e) {
@@ -130,12 +128,10 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 1) {
       try {
-        WalletController controller = Get.put(WalletController());
-        // controller.onInit();
-        Get.delete<HomeController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
+        // WalletController walletController = Get.find<WalletController>();
+        WalletController walletController = Get.put(WalletController());
+        SharedPreferenceStorage.removeData("pageId");
+        SharedPreferenceStorage.setData("pageId", 1);
         walletController.onInit();
 
       } catch (e) {
@@ -144,18 +140,20 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 2) {
       try {
+        SharedPreferenceStorage.removeData("pageId");
+        // OrdersController ordersController =  Get.find<OrdersController>();
+        OrdersController ordersController = Get.put(OrdersController());
         if (roleInApp.value == Role.customerRoleText) {
           storeList.clear();
         } else {
           await apiGetStoreList();
         }
-        OrdersController controller = Get.put(OrdersController());
-        // controller.onInit();
-
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
+        roleInApp.value == Role.storeOwnerRoleText ?
+        storeList.length > 1 ||
+            storeList.isEmpty
+            ? SharedPreferenceStorage.setData("pageId", 2)
+            : SharedPreferenceStorage.setData("pageId", 3)
+            : SharedPreferenceStorage.setData("pageId", 4);
         ordersController.onInit();
       } catch (e) {
         //Pass
@@ -163,11 +161,10 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 3) {
       try {
-        OffersController controller = Get.put(OffersController());
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<MoreController>();
+        SharedPreferenceStorage.removeData("pageId");
+        // OffersController offersController =  Get.find<OffersController>();
+        OffersController offersController = Get.put(OffersController());
+        SharedPreferenceStorage.setData("pageId", 5);
         offersController.onInit();
         // controller.onInit();
       } catch (e) {
@@ -176,13 +173,11 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 4) {
       try {
-        MoreController controller = Get.put(MoreController());
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
+        SharedPreferenceStorage.removeData("pageId");
+        // MoreController moreController = Get.find<MoreController>();
+        MoreController moreController = Get.put(MoreController());
+        SharedPreferenceStorage.setData("pageId", 6);
         moreController.onInit();
-        // controller.onInit();
       } catch (e) {
         //Pass
       }

@@ -59,7 +59,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiActiveCartApi(Get.context);
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -941,10 +941,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             ),
                       height20SizedBox,
                       storeHomeMainController.productDetailResponse.value.data
-                                      ?.product?.productLinks==null &&   storeHomeMainController.productDetailResponse.value.data
-                                      !.product!.productLinks!.isEmpty && storeHomeMainController.productDetailResponse.value.data
-                                      ?.product!.productLinks!.first.link == null &&
-                              storeHomeMainController
+                                      ?.product?.productLinks==null
+                          || storeHomeMainController.productDetailResponse.value.data
+                                      !.product!.productLinks!.isEmpty || storeHomeMainController.productDetailResponse.value.data
+                                      ?.product!.productLinks!.first.link == null || storeHomeMainController
                                   .productDetailResponse.value.data!.product!.productLinks!
                                   .first.link!.isEmpty
                           ? height0SizedBox
@@ -956,8 +956,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   color: AppColors.blacklight),
                             ),
                       storeHomeMainController.productDetailResponse.value.data
-                          ?.product?.productLinks==null &&   storeHomeMainController.productDetailResponse.value.data
-                      !.product!.productLinks!.isEmpty && storeHomeMainController.productDetailResponse.value.data
+                          ?.product?.productLinks==null ||
+                          storeHomeMainController.productDetailResponse.value.data
+                      !.product!.productLinks!.isEmpty ||
+                          storeHomeMainController.productDetailResponse.value.data
                                       ?.product!.productLinks!.first.link ==
                                   null &&
                               storeHomeMainController

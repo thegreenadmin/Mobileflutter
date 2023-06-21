@@ -828,7 +828,6 @@ class StoreHomeMainController extends GetxController {
         orderStatus.value = value?.body["data"]["order_id"];
         isPlaceOrder.value = true;
         debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
-        SharedPreferenceStorage.setData("context", ctx);
         Get.parameters["storeId"] = storeId.value.toString();
         Get.parameters["orderStatus"] = orderStatus.value;
         Get.parameters["isFromTransaction"] = "false";

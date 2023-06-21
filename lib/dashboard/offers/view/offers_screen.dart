@@ -21,6 +21,7 @@ class OffersScreen extends StatefulWidget {
 class _OffersScreenState extends State<OffersScreen> {
   final OffersController offersController = Get.put(OffersController());
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,8 +100,7 @@ class _OffersScreenState extends State<OffersScreen> {
           child: Column(
             children: [
               Obx(
-                () => offersController.role?.value.toString() ==
-                        Role.customerRoleText
+                () => offersController.role.value == Role.customerRoleText
                     ? height0SizedBox
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,12 +134,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                     "isFrom": StringConstants.addOfferText,
                                   })!
                                   .then((value) {
-                                offersController.role!.value ==
-                                        Role.customerRoleText
-                                    ? offersController
-                                        .apiGetUserOffersList(context)
-                                    : offersController
-                                        .apiGetOwnerOffersList(context);
+                                    offersController
+                                        .apiGetUserOffersList();
                               });
                             },
                             child: Text(StringConstants.addOfferText,
@@ -154,7 +150,7 @@ class _OffersScreenState extends State<OffersScreen> {
               ),
               height20SizedBox,
               Expanded(
-                child: Obx(() => offersController.role!.value ==
+                child: Obx(() => offersController.role.value ==
                         Role.customerRoleText
                     ? offersController.getUserOfferlist.isEmpty
                         ? offersController.isLoading!.value == true
@@ -508,7 +504,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                             "";
 
                                     await offersController
-                                        .apiDeleteOffer(context);
+                                        .apiDeleteOffer();
                                   });
                                   return null;
                                 },
@@ -658,6 +654,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //   builder: (_) =>
                                                   //       const EditOfferScreen(),
                                                   // ))
+
                                                       Get.to(const EditOfferScreen(),
                                                       id:offersController.pageId.value,
                                                               arguments: {
@@ -668,15 +665,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           })!
                                                       .then((value) {
                                                     offersController
-                                                                .role!.value ==
+                                                                .role.value ==
                                                             Role
                                                                 .customerRoleText
                                                         ? offersController
-                                                            .apiGetUserOffersList(
-                                                                context)
+                                                            .apiGetUserOffersList()
                                                         : offersController
-                                                            .apiGetOwnerOffersList(
-                                                                context);
+                                                            .apiGetOwnerOffersList();
                                                   });
                                                 },
                                                 child: Image.asset(

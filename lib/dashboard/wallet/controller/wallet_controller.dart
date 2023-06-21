@@ -123,13 +123,21 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-   getPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getPage();
+    });
+
   }
   getPage()async{
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
     pageId.value = await SharedPreferenceStorage.getData("pageId");
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    print( "WalletCont:-----  ----------------------------");
+    print(pageId.value);
+    print(roleVal);
     role?.value = roleVal;
     autoChargeType.value = "threshold";
     if (role?.value== Role.customerRoleText) {

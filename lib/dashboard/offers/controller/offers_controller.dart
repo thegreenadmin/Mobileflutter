@@ -26,7 +26,7 @@ class OffersController extends GetxController {
   RxString? offerId = "".obs;
 
   RxBool? isLoading = false.obs;
-  RxString? role = "".obs;
+  RxString role = "".obs;
   RxInt pageId = 0.obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
@@ -54,39 +54,40 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (Get.parameters['isFromNotification'] != "false") {
-      isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
-    }
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
-    getCurrentLocation();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Get.parameters['isFromNotification'] != "false") {
+        isFromNotification.value =
+        Get.parameters["isFromNotification"] == "true" ? true : false;
+      }
+      getCurrentLocation();
+    });
+
   }
 
   getCurrentLocation() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
-      role?.value = roleVal;
+    role.value = await SharedPreferenceStorage.getData(Role.role.value);
+
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
 
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    if (roleVal == Role.customerRoleText) {
-      role!.value = Role.customerRoleText;
-      apiGetUserOffersList(Get.context!);
+    debugPrint("CURRENT roleVal************${role.value}");
+
+    print(role.value == Role.customerRoleText);
+    print(role.value);
+    print(Role.customerRoleText);
+    if ( role.value == Role.customerRoleText) {
+      apiGetUserOffersList();
     } else {
-      role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOffersList(Get.context!);
+      apiGetOwnerOffersList();
     }
   }
 
   //Get Offers List Api [OWNER]
-  Future apiGetOwnerOffersList(BuildContext context) async {
+  Future apiGetOwnerOffersList() async {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
@@ -133,7 +134,7 @@ class OffersController extends GetxController {
   }
 
   //Get Offers List Api [USER]
-  Future apiGetUserOffersList(BuildContext context) async {
+  Future apiGetUserOffersList() async {
     isLoading!.value = true;
     debugPrint(
       "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
@@ -171,7 +172,7 @@ class OffersController extends GetxController {
   }
 
 //Delete Offer
-  Future apiDeleteOffer(BuildContext context) async {
+  Future apiDeleteOffer() async {
     debugPrint(
         "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
     var token = await SharedPreferenceStorage.getData('token');
@@ -195,9 +196,9 @@ class OffersController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         if (role!.value == Role.customerRoleText) {
-          apiGetUserOffersList(context);
+          apiGetUserOffersList();
         } else {
-          apiGetOwnerOffersList(context);
+          apiGetOwnerOffersList();
         }
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode409) {
