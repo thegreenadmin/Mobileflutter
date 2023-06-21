@@ -568,7 +568,7 @@ class OwnerStoresController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value != null && storeId.value.isNotEmpty) {
+        if (storeId.value != null && storeId.value.isNotEmpty && storeId.value!="") {
           await apiGetParticularStore();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
