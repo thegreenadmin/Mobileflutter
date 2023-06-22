@@ -492,7 +492,10 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
                                   value: addOffersController
-                                          .discountType.value.isNotEmpty
+                                                  .discountType.value !=
+                                              null &&
+                                          addOffersController
+                                              .discountType.value.isNotEmpty
                                       ? addOffersController.discountType.value
                                       : "",
                                   decoration: InputDecoration(
