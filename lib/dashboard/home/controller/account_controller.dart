@@ -52,6 +52,11 @@ class AccountController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool hasStoreAccess = false.obs;
 
+  RxBool plan30 = false.obs;
+  RxBool plan90 = false.obs;
+  RxBool plan180 = false.obs;
+  RxBool plan365 = false.obs;
+
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
@@ -111,6 +116,10 @@ class AccountController extends GetxController {
     debugPrint(isFromCart.value.toString());
     apiGetUserDetailApi(Get.context!);
     getGkey(Get.context!);
+  }
+
+  updatePlan(index, String plan) {
+    if (index == 0) {}
   }
 
   getGkey(context) async {
@@ -324,7 +333,7 @@ class AccountController extends GetxController {
                         Utility.showAlertMessage("Please enter days");
                       } else {
                         Get.back();
-                        apiCreateMembershipPlan();
+                        apiCreateMembershipPlan(context);
                       }
                     },
                     child: Container(
@@ -954,7 +963,9 @@ class AccountController extends GetxController {
     });
   }
 
-  apiCreateMembershipPlan() {
+//Create membership plan
+  apiCreateMembershipPlan(BuildContext ctx,
+      {int index = 0, String membershipPlanId = "", String planDays = ""}) {
     debugPrint(
         "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
     Map<String, String> headers = {
@@ -963,8 +974,14 @@ class AccountController extends GetxController {
           "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
     };
     Map data = {
-      "membership_plan_id": selectedMembershipPlanId.value,
-      "count": noOfDaysTextController.text.trim()
+      "membership_plan_id": membershipPlanId,
+      "plan_days": planDays == "plan30"
+          ? "30"
+          : planDays == "plan90"
+              ? "90"
+              : planDays == "plan180"
+                  ? "180"
+                  : "365"
     };
     debugPrint("CREATE MEMBERSHIP BODY**********$data");
     UserProvider()
@@ -978,7 +995,7 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        Navigator.of(ctx).pop();
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

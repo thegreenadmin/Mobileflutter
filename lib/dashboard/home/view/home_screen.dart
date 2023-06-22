@@ -473,11 +473,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     ),
                                   ),
-                                ) :
+                                )
+                              :
 
                               /// USER CAROUSEL
                               CarouselSlider(
-                                  items: homeController.userCarouselImgList.take(5)
+                                  items: homeController.userCarouselImgList
+                                      .take(5)
                                       .map((item) => InkWell(
                                             onTap: () {
                                               Get.parameters["storeId"] =
@@ -485,6 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               Get.parameters["offerId"] =
                                                   item.offerId ?? "";
+
                                               SharedPreferenceStorage.setData(
                                                   "context", context);
                                               Navigator.of(context)
@@ -492,7 +495,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 builder: (_) =>
                                                     const StoreHomeMainScreen(),
                                               ));
-
                                             },
                                             child: Center(
                                                 child: ClipRRect(
@@ -536,7 +538,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: homeController.userCarouselImgList.take(5).toList().asMap()
+                                    children: homeController.userCarouselImgList
+                                        .take(5)
+                                        .toList()
+                                        .asMap()
                                         .entries
                                         .map((entry) {
                                       return GestureDetector(
@@ -601,7 +606,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ///OWNER CAROUSEL
                             : CarouselSlider(
-                                items: homeController.getOwnerOfferList.take(5)
+                                items: homeController.getOwnerOfferList
+                                    .take(5)
                                     .map((item) => InkWell(
                                           onTap: () {
                                             // Get.parameters["offerId"] =
@@ -666,7 +672,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? height0SizedBox
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.getOwnerOfferList.take(5).toList().asMap()
+                                children: homeController.getOwnerOfferList
+                                    .take(5)
+                                    .toList()
+                                    .asMap()
                                     .entries
                                     .map((entry) {
                                   return GestureDetector(
@@ -738,18 +747,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Get.parameters["isFromFav"] = "false";
                                   Get.parameters["isFromMenu"] = "true";
                                   Get.parameters["productId"] = homeController
-                                      .featuredUserProductList[index]
-                                      .productId ??
+                                          .featuredUserProductList[index]
+                                          .productId ??
                                       "";
                                   Get.parameters["storeId"] = homeController
-                                      .featuredUserProductList[index]
-                                      .storeId ??
+                                          .featuredUserProductList[index]
+                                          .storeId ??
                                       "";
-                                  SharedPreferenceStorage.setData("context", context);
+                                  SharedPreferenceStorage.setData(
+                                      "context", context);
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => const AddToOrderScreen(),
                                   ));
-
 
                                   // Get.to(() => const AddToOrderScreen(),
                                   //      arguments: {
@@ -860,11 +869,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .ownerFeatureProductList[index].storeId;
                                   Get.parameters["productId"] = homeController
                                       .ownerFeatureProductList[index].productId;
-                                  Get.parameters["categoryName"] = homeController
-                                      .ownerFeatureProductList[index].productCategories?.first.category?.categoryName??"";
+                                  Get.parameters["categoryName"] =
+                                      homeController
+                                              .ownerFeatureProductList[index]
+                                              .productCategories
+                                              ?.first
+                                              .category
+                                              ?.categoryName ??
+                                          "";
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        const EditProductScreen(),
+                                    builder: (_) => const EditProductScreen(),
                                   ));
 
                                   /* Get.to(const EditStoreDetailScreen(),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/membership_plan_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/custom_button.dart';
 
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class SelectMembershipPlan extends StatefulWidget {
   const SelectMembershipPlan({
@@ -23,217 +26,406 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100.0),
-          child: Container(
-            color: AppColors.primarylight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              // Get.back();
-                              Navigator.of(context).pop();
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                              size: 24.0,
-                            ),
-                          ),
-                          width10SizedBox,
-                          Text(
-                            StringConstants.selectMembershipPlanText,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
-                    ])),
-          ),
-        ),
-        body: Obx(
-          () => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Container(
+          color: AppColors.primarylight,
+          child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    accountController.membershipList.isEmpty
-                        ? accountController.isLoading.value == true
-                            ? height0SizedBox
-                            : Expanded(
+                    Row(
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            // Get.back();
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.black,
+                            size: 24.0,
+                          ),
+                        ),
+                        width10SizedBox,
+                        Text(
+                          StringConstants.selectMembershipPlanText,
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    Image.asset(
+                      ImageConstants.homeMall,
+                      scale: 4,
+                    )
+                  ])),
+        ),
+      ),
+      body: Obx(
+        () => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              accountController.membershipList.isEmpty
+                  ? accountController.isLoading.value == true
+                      ? height0SizedBox
+                      : Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Image.asset(
+                                  ImageConstants.nodata,
+                                  scale: 8,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              height4SizedBox,
+                              Center(
+                                child: Text(
+                                  StringConstants.noPlansYetText,
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                  : Expanded(
+                      child: ListView.separated(
+                          padding: const EdgeInsets.only(bottom: 50),
+                          separatorBuilder: (BuildContext context, int index) {
+                            return height15SizedBox;
+                          },
+                          itemCount: accountController.membershipList.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (BuildContext context, int index) {
+                            accountController.selectedMembershipPlanId.value =
+                                accountController
+                                    .membershipList[index].membershipPlanId!;
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  accountController.selectedIndex = index;
+                                  print(accountController.selectedIndex);
+                                });
+                                accountController
+                                        .selectedMembershipPlanId.value =
+                                    accountController.membershipList[index]
+                                        .membershipPlanId!;
+                                debugPrint(accountController
+                                    .selectedMembershipPlanId.value);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 4,
+                                  right: 4,
+                                ),
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 15, bottom: 15),
+                                color: AppColors.primarylight,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Center(
-                                      child: Image.asset(
-                                        ImageConstants.nodata,
-                                        scale: 8,
-                                        color: AppColors.primary,
-                                      ),
+                                    Text(
+                                      "${accountController.membershipList[index].planName!.toUpperCase()} PLAN",
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                    height4SizedBox,
+                                    height8SizedBox,
+                                    Text(
+                                      accountController.membershipList[index]
+                                          .planDescription!,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    height15SizedBox,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Obx(
+                                          () => InkWell(
+                                            onTap: () {
+                                              accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan = "plan30";
+                                              print(index);
+                                              print(accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan);
+                                              setState(() {});
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      accountController
+                                                                  .membershipList[
+                                                                      index]
+                                                                  .selectedPlan ==
+                                                              "plan30"
+                                                          ? ImageConstants.radio
+                                                          : ImageConstants
+                                                              .radioUnfill,
+                                                      scale: 30,
+                                                    ),
+                                                    width10SizedBox,
+                                                    const Text("Monthly Plan",
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Text(
+                                                    "\$${accountController.membershipList[index].plan30Charge!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Obx(
+                                          () => InkWell(
+                                            onTap: () {
+                                              accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan = "plan90";
+                                              print(index);
+                                              print(accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan);
+                                              setState(() {});
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      accountController
+                                                                  .membershipList[
+                                                                      index]
+                                                                  .selectedPlan ==
+                                                              "plan90"
+                                                          ? ImageConstants.radio
+                                                          : ImageConstants
+                                                              .radioUnfill,
+                                                      scale: 30,
+                                                    ),
+                                                    width10SizedBox,
+                                                    const Text("Quaterly Plan",
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Text(
+                                                    "\$${accountController.membershipList[index].plan90Charge!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    height20SizedBox,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Obx(
+                                          () => InkWell(
+                                            onTap: () {
+                                              accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan = "plan180";
+                                              print(index);
+                                              print(accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan);
+                                              setState(() {});
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      accountController
+                                                                  .membershipList[
+                                                                      index]
+                                                                  .selectedPlan ==
+                                                              "plan180"
+                                                          ? ImageConstants.radio
+                                                          : ImageConstants
+                                                              .radioUnfill,
+                                                      scale: 30,
+                                                    ),
+                                                    width10SizedBox,
+                                                    const Text("Half Yearly",
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Text(
+                                                    "\$${accountController.membershipList[index].plan180Charge!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Obx(
+                                          () => InkWell(
+                                            onTap: () {
+                                              accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan = "plan365";
+                                              print(index);
+                                              print(accountController
+                                                  .membershipList[index]
+                                                  .selectedPlan);
+                                              setState(() {});
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      accountController
+                                                                  .membershipList[
+                                                                      index]
+                                                                  .selectedPlan ==
+                                                              "plan365"
+                                                          ? ImageConstants.radio
+                                                          : ImageConstants
+                                                              .radioUnfill,
+                                                      scale: 30,
+                                                    ),
+                                                    width10SizedBox,
+                                                    const Text("Yearly Plan   ",
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Text(
+                                                    "\$${accountController.membershipList[index].plan365Charge!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    height10SizedBox,
                                     Center(
-                                      child: Text(
-                                        StringConstants.noPlansYetText,
-                                        style: const TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 16),
+                                      child: CustomButton(
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            AppColors.primary,
+                                            AppColors.primary
+                                          ],
+                                        ),
+                                        onTap: () async {
+                                          Utility.showConfirmAlertMessage(
+                                              AlertStringConstants
+                                                  .areYouSurePlanText,
+                                              cancelText:
+                                                  StringConstants.noText,
+                                              okay: StringConstants.yesText,
+                                              okayTap: () {
+                                            accountController
+                                                .apiCreateMembershipPlan(
+                                                    context,
+                                                    index: index,
+                                                    membershipPlanId:
+                                                        accountController
+                                                            .membershipList[
+                                                                index]
+                                                            .membershipPlanId!,
+                                                    planDays: accountController
+                                                        .membershipList[index]
+                                                        .selectedPlan!);
+                                          });
+                                        },
+                                        height: 50,
+                                        width: 170,
+                                        fontSize: 16,
+                                        textColor: AppColors.white,
+                                        text: StringConstants
+                                            .confirmSelectionText,
+                                        borderRadius: 12,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ],
                                 ),
-                              )
-                        : Expanded(
-                            child: ListView.separated(
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return height15SizedBox;
-                                },
-                                itemCount:
-                                    accountController.membershipList.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (BuildContext context, int index) {
-                                  accountController
-                                          .selectedMembershipPlanId.value =
-                                      accountController.membershipList[index]
-                                          .membershipPlanId!;
-                                  return InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        accountController.selectedIndex = index;
-                                      });
-                                      accountController
-                                              .selectedMembershipPlanId.value =
-                                          accountController
-                                              .membershipList[index]
-                                              .membershipPlanId!;
-                                      debugPrint(accountController
-                                          .selectedMembershipPlanId.value);
-
-                                      accountController
-                                          .noOfDaysForMembershipDailogue(
-                                              context,
-                                              days: accountController
-                                                  .membershipList[index]
-                                                  .planDays
-                                                  .toString());
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                        left: 4,
-                                        right: 4,
-                                      ),
-                                      padding: const EdgeInsets.only(
-                                          left: 15,
-                                          right: 15,
-                                          top: 15,
-                                          bottom: 15),
-                                      color: accountController.selectedIndex ==
-                                              index
-                                          ? AppColors.primary
-                                          : AppColors.primarylight,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Plan Type: ${accountController.membershipList[index].planType!.toUpperCase()}",
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                          height20SizedBox,
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 6.0,
-                                                width: 6.0,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                              width10SizedBox,
-                                              const Text("Plan Days",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ],
-                                          ),
-                                          height4SizedBox,
-                                          Text(
-                                              accountController
-                                                          .membershipList[index]
-                                                          .planDays! >
-                                                      1
-                                                  ? "${accountController.membershipList[index].planDays} Days"
-                                                  : "${accountController.membershipList[index].planDays} Day",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500)),
-                                          height20SizedBox,
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 6.0,
-                                                width: 6.0,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                              width10SizedBox,
-                                              const Text("Plan Charges",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ],
-                                          ),
-                                          height4SizedBox,
-                                          Text(
-                                              "\$${accountController.membershipList[index].planCharge}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500)),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                  ])),
-        ));
+                              ),
+                            );
+                          }),
+                    ),
+            ])),
+      ),
+    );
   }
 }

@@ -36,34 +36,35 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-      storeHomeMainController.productId.value =  Get.parameters["productId"] ?? "";
+      storeHomeMainController.productId.value =
+          Get.parameters["productId"] ?? "";
       storeHomeMainController.isFromHome.value =
-      Get.parameters["isFromHome"] == "true" ? true : false;
-      storeHomeMainController.isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
-      storeHomeMainController.isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
+          Get.parameters["isFromHome"] == "true" ? true : false;
+      storeHomeMainController.isFromFav.value =
+          Get.parameters["isFromFav"] == "true" ? true : false;
+      storeHomeMainController.isFromMenu.value =
+          Get.parameters["isFromMenu"] == "true" ? true : false;
       storeHomeMainController.apiGetUserDetailsApi();
-      storeHomeMainController.storeId.value = Get.parameters["storeId"] ??"";
+      storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
 
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.apiGetShopProductDetailApi();
-      }else
-      if (storeHomeMainController.isFromFav.value) {
+      } else if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
-        storeHomeMainController.apiFeatureProductListApi(isFeaturedProduct: true);
+        storeHomeMainController.apiFeatureProductListApi(
+            isFeaturedProduct: true);
         storeHomeMainController.apiGetShopProductDetailApi();
-      }else
-      if (storeHomeMainController.isFromHome.value) {
+      } else if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetStoreOffersApi();
-        storeHomeMainController.apiFeatureProductListApi(isFeaturedProduct: true);
+        storeHomeMainController.apiFeatureProductListApi(
+            isFeaturedProduct: true);
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
         storeHomeMainController.onIndexChange(0);
       }
-
 
       storeHomeMainController.apiGetUserWalletBalance();
       storeHomeMainController.apiGetCartListApi(Get.context);
@@ -246,9 +247,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               ),
                             )
                           : PopupMenuButton(
-                              onOpened: () async{
+                              onOpened: () async {
                                 storeHomeMainController.selectedIndex.value = 3;
-                                await storeHomeMainController.apiGetPreviousOrders();
+                                await storeHomeMainController
+                                    .apiGetPreviousOrders();
                               },
                               offset: const Offset(0, 25),
                               shape: const TooltipShape(),
@@ -311,9 +313,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                     Text(
                       StringConstants.previousOrdersText,
                       style: const TextStyle(
-                          color: AppColors.black,
-                          fontFamily: "",
-                          fontSize: 14),
+                          color: AppColors.black, fontFamily: "", fontSize: 14),
                     ),
                   ],
                 ),
@@ -410,21 +410,41 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                           ? const Expanded(child: StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
                               ? storeHomeMainController.popUpIndex.value == 0
-                                ? const Expanded(child: PreviousOrdersScreen())
-                                : storeHomeMainController.popUpIndex.value == 2
-                                ? Expanded(child: PdfViewScreen(
-                                  isShowPrivacy: true,
-                                  url: storeHomeMainController.storeDetailsResponse.value
-                                      .data!.store!.storePages!
-                                      .first.storePageContent!.dynamicUrl.toString()))
-                                : storeHomeMainController.popUpIndex.value == 3
-                                ? Expanded(child: PdfViewScreen(
-                                  isShowPrivacy: false,
-                                  url: storeHomeMainController
-                                      .storeDetailsResponse.value
-                                      .data!.store!.storePages!.first
-                                      .storePageContent!.dynamicUrl.toString()))
-                                : const Expanded(child: PreviousOrdersScreen())
+                                  ? const Expanded(
+                                      child: PreviousOrdersScreen())
+                                  : storeHomeMainController.popUpIndex.value ==
+                                          2
+                                      ? Expanded(
+                                          child: PdfViewScreen(
+                                              isShowPrivacy: true,
+                                              url: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data!
+                                                  .store!
+                                                  .storePages!
+                                                  .first
+                                                  .storePageContent!
+                                                  .dynamicUrl
+                                                  .toString()))
+                                      : storeHomeMainController
+                                                  .popUpIndex.value ==
+                                              3
+                                          ? Expanded(
+                                              child: PdfViewScreen(
+                                                  isShowPrivacy: false,
+                                                  url: storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storePages!
+                                                      .first
+                                                      .storePageContent!
+                                                      .dynamicUrl
+                                                      .toString()))
+                                          : const Expanded(
+                                              child: PreviousOrdersScreen())
                               : const Expanded(child: StoreHomeScreen())
             ],
           ),

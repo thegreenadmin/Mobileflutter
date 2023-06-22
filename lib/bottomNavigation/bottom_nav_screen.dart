@@ -43,10 +43,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
   GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState> tab7 = GlobalKey<NavigatorState>();
   RxString roleInApp = "".obs;
+
   @override
   void initState() {
     super.initState();
     roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
+
+    print("HALLLOOOO" +
+        SharedPreferenceStorage.getData(Role.role.value).toString());
   }
 
   @override
@@ -265,10 +269,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
               TabItem(tab1, const HomeScreen()),
               TabItem(tab2, const WalletScreen()),
               SharedPreferenceStorage.getData(Role.role.value) ==
-                          Role.storeOwnerRoleText ?
-                      bottomNavigationPageController.storeList.length > 1 ||
+                      Role.storeOwnerRoleText
+                  ? bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
-                  ? TabItem(tab3, const OrderStoresListScreen())
+                      ? TabItem(tab3, const OrderStoresListScreen())
                       : TabItem(tab4, const OrdersHomeMainScreen())
                   : TabItem(tab5, const OrdersScreen()),
               TabItem(tab6, const OffersScreen()),

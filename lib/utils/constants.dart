@@ -85,6 +85,7 @@ class StringConstants {
   static String customerInStoreForPickupText =
       "Customer is in the store for pickup";
   static String connectAccountText = "Connect Account";
+  static String confirmSelectionText = "Confirm Selection";
   static String cardNumberText = "Card Number";
   static String createYourAccountText = "Create your Account";
   static String createStripeAccountText = "Create Stripe Account";
@@ -587,6 +588,8 @@ class AlertStringConstants {
   static String areYouSureText = "Are you sure, you want to delete this item?";
   static String areYouSureDeleteAccountText =
       "Are you sure, you want to delete this Account?";
+  static String areYouSurePlanText =
+      "Are you sure, you want to purchase this plan?";
   static String areYouSureLogoutAccountText =
       "Are you sure you want to Log out?";
   static String areYouSureToConfirmReturnText =

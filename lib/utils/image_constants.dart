@@ -87,7 +87,7 @@ class ImageConstants {
   static const String more = '$assetsIcon/more.png';
   static const String morefill = '$assetsIcon/morefill.png';
   static const String mastercard = '$assetsIcon/mastercard.png';
-
+  static const String membership = '$assetsIcon/membership.png';
   //N
   static const String nodata = '$assetsIcon/nodata.png';
   //static const String nopicfound = '$assetsIcon/nopicfound.png';
@@ -117,6 +117,8 @@ class ImageConstants {
   static const String productFilter = '$assetsIcon/productFilter.png';
   //R
   static const String role = '$assetsIcon/role.png';
+  static const String radio = '$assetsIcon/radio.png';
+  static const String radioUnfill = '$assetsIcon/unfill.png';
   static const String rounddownload = '$assetsIcon/rounddownload.png';
   static const String roundshare = '$assetsIcon/roundshare.png';
   //S

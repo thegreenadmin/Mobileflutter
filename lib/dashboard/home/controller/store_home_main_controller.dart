@@ -101,13 +101,11 @@ class StoreHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-      productId.value =  Get.parameters["productId"] ?? "";
-      isFromHome.value =
-      Get.parameters["isFromHome"] == "true" ? true : false;
+      productId.value = Get.parameters["productId"] ?? "";
+      isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-      storeId.value = Get.parameters["storeId"] ??"";
+      storeId.value = Get.parameters["storeId"] ?? "";
 
       getCurrentLocation();
       apiGetUserDetailsApi();
@@ -115,7 +113,7 @@ class StoreHomeMainController extends GetxController {
         selectedIndex.value = 1;
         apiGetStoreCategoriesApi();
         apiGetShopProductDetailApi();
-        if(Get.parameters["categoryId"] !=""){
+        if (Get.parameters["categoryId"] != "") {
           apiFeatureProductListApi(
               categoryId: Get.parameters["categoryId"] ?? "0");
         }
@@ -149,7 +147,7 @@ class StoreHomeMainController extends GetxController {
       await apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
-      if(Get.parameters["categoryId"] !=""){
+      if (Get.parameters["categoryId"] != "") {
         apiFeatureProductListApi(
             categoryId: Get.parameters["categoryId"] ?? "0");
       }
@@ -166,35 +164,31 @@ class StoreHomeMainController extends GetxController {
       await apiGetPreviousOrders();
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
-      if(Get.parameters["categoryId"] !=""){
+      if (Get.parameters["categoryId"] != "") {
         apiFeatureProductListApi(
             categoryId: Get.parameters["categoryId"] ?? "0");
       }
     } else if (i == 2) {
-      if (storeDetailsResponse.value.data!
-          .store!.storePages!.isEmpty) {
+      if (storeDetailsResponse.value.data!.store!.storePages!.isEmpty) {
         Utility.showToast(StringConstants.noPrivacyFoundText);
       } else {
-        if (storeDetailsResponse.value.data!
-            .store!.storePages![0].storePageType ==
-            "privacy" ||
-            storeDetailsResponse.value.data!
-                .store!.storePages![1].storePageType ==
-                "privacy") {
-        }
+        if (storeDetailsResponse
+                    .value.data!.store!.storePages![0].storePageType ==
+                "privacy" ||
+            storeDetailsResponse
+                    .value.data!.store!.storePages![1].storePageType ==
+                "privacy") {}
       }
     } else if (i == 3) {
-      if (storeDetailsResponse.value.data!
-          .store!.storePages!.isEmpty) {
+      if (storeDetailsResponse.value.data!.store!.storePages!.isEmpty) {
         Utility.showToast(StringConstants.noTermsFoundText);
       } else {
-        if (storeDetailsResponse.value.data!
-            .store!.storePages![0].storePageType ==
-            "terms" ||
-            storeDetailsResponse.value.data!
-                .store!.storePages![1].storePageType ==
-                "terms") {
-        }
+        if (storeDetailsResponse
+                    .value.data!.store!.storePages![0].storePageType ==
+                "terms" ||
+            storeDetailsResponse
+                    .value.data!.store!.storePages![1].storePageType ==
+                "terms") {}
       }
     }
   }
@@ -866,7 +860,6 @@ class StoreHomeMainController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-
         addToCartDialog(context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

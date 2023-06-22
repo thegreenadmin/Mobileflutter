@@ -1,88 +1,167 @@
+// To parse this JSON data, do
+//
+//     final membershipPlanModel = membershipPlanModelFromJson(jsonString);
+
+import 'dart:convert';
+
+MembershipPlanModel membershipPlanModelFromJson(String str) =>
+    MembershipPlanModel.fromJson(json.decode(str));
+
+String membershipPlanModelToJson(MembershipPlanModel data) =>
+    json.encode(data.toJson());
+
 class MembershipPlanModel {
   int? status;
   String? message;
   Data? data;
 
-  MembershipPlanModel({this.status, this.message, this.data});
+  MembershipPlanModel({
+    this.status,
+    this.message,
+    this.data,
+  });
 
-  MembershipPlanModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-  }
+  MembershipPlanModel copyWith({
+    int? status,
+    String? message,
+    Data? data,
+  }) =>
+      MembershipPlanModel(
+        status: status ?? this.status,
+        message: message ?? this.message,
+        data: data ?? this.data,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
+  factory MembershipPlanModel.fromJson(Map<String, dynamic> json) =>
+      MembershipPlanModel(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
   List<MembershipPlans>? membershipPlans;
 
-  Data({this.membershipPlans});
+  Data({
+    this.membershipPlans,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['membership_plans'] != null) {
-      membershipPlans = <MembershipPlans>[];
-      json['membership_plans'].forEach((v) {
-        membershipPlans!.add(new MembershipPlans.fromJson(v));
-      });
-    }
-  }
+  Data copyWith({
+    List<MembershipPlans>? membershipPlans,
+  }) =>
+      Data(
+        membershipPlans: membershipPlans ?? this.membershipPlans,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.membershipPlans != null) {
-      data['membership_plans'] =
-          this.membershipPlans!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        membershipPlans: json["membership_plans"] == null
+            ? []
+            : List<MembershipPlans>.from(json["membership_plans"]!
+                .map((x) => MembershipPlans.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "membership_plans": membershipPlans == null
+            ? []
+            : List<dynamic>.from(membershipPlans!.map((x) => x.toJson())),
+      };
 }
 
 class MembershipPlans {
+  String? planName;
   String? planType;
-  int? planDays;
-  int? planCharge;
+  String? selectedPlan;
+  int? plan30Charge;
+  int? plan90Charge;
+  int? plan180Charge;
+  int? plan365Charge;
+  String? planDescription;
   String? status;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   String? membershipPlanId;
 
-  MembershipPlans(
-      {this.planType,
-      this.planDays,
-      this.planCharge,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.membershipPlanId});
+  MembershipPlans({
+    this.planName,
+    this.planType,
+    this.selectedPlan = "",
+    this.plan30Charge,
+    this.plan90Charge,
+    this.plan180Charge,
+    this.plan365Charge,
+    this.planDescription,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.membershipPlanId,
+  });
 
-  MembershipPlans.fromJson(Map<String, dynamic> json) {
-    planType = json['plan_type'];
-    planDays = json['plan_days'];
-    planCharge = json['plan_charge'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    membershipPlanId = json['membership_plan_id'];
-  }
+  MembershipPlans copyWith({
+    String? planName,
+    String? planType,
+    String? selectedPlan,
+    int? plan30Charge,
+    int? plan90Charge,
+    int? plan180Charge,
+    int? plan365Charge,
+    String? planDescription,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? membershipPlanId,
+  }) =>
+      MembershipPlans(
+        planName: planName ?? this.planName,
+        planType: planType ?? this.planType,
+        selectedPlan: selectedPlan ?? this.selectedPlan,
+        plan30Charge: plan30Charge ?? this.plan30Charge,
+        plan90Charge: plan90Charge ?? this.plan90Charge,
+        plan180Charge: plan180Charge ?? this.plan180Charge,
+        plan365Charge: plan365Charge ?? this.plan365Charge,
+        planDescription: planDescription ?? this.planDescription,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        membershipPlanId: membershipPlanId ?? this.membershipPlanId,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['plan_type'] = this.planType;
-    data['plan_days'] = this.planDays;
-    data['plan_charge'] = this.planCharge;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['membership_plan_id'] = this.membershipPlanId;
-    return data;
-  }
+  factory MembershipPlans.fromJson(Map<String, dynamic> json) =>
+      MembershipPlans(
+        planName: json["plan_name"],
+        planType: json["plan_type"],
+        plan30Charge: json["plan_30_charge"],
+        plan90Charge: json["plan_90_charge"],
+        plan180Charge: json["plan_180_charge"],
+        plan365Charge: json["plan_365_charge"],
+        planDescription: json["plan_description"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        membershipPlanId: json["membership_plan_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "plan_name": planName,
+        "plan_type": planType,
+        "plan_30_charge": plan30Charge,
+        "plan_90_charge": plan90Charge,
+        "plan_180_charge": plan180Charge,
+        "plan_365_charge": plan365Charge,
+        "plan_description": planDescription,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "membership_plan_id": membershipPlanId,
+      };
 }

@@ -61,6 +61,7 @@ class WalletController extends GetxController {
   RxBool isCvvFocused = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isStoresLoading = false.obs;
   RxBool isautoRechargeEnable = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? type = 0.obs;
@@ -348,7 +349,7 @@ class WalletController extends GetxController {
   //Get Store List Api
   Future apiGetStoreList() async {
     storeList.clear();
-    isLoading.value = true;
+    isStoresLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
     Map<String, String> headers = {
@@ -363,7 +364,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value = false;
+      isStoresLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {

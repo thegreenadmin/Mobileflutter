@@ -224,6 +224,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                   final result = response.results.isNotEmpty
                                       ? response.results.first
                                       : null;
+
                                   if (result != null) {
                                     addCardController.cityTextController.text =
                                         Utility.extractLocality(
