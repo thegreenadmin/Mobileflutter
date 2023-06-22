@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_category_scree
 import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -154,7 +155,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
-                                   Get.back(id:manageStoreController.pageId.value);
+                                   Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
@@ -218,7 +219,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       // ))
 
                           Get.to(() => const AddNewCategoryScreen(),
-                              id:manageStoreController.pageId.value,
+                              id:pageIdApp.value,
                               arguments: {
                             "storeId": manageStoreController.storeId.value,
                             "isFeaturedSelectedType":
@@ -330,7 +331,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const ProductListScreen(),
                               // ));
-                              Get.to(const ProductListScreen(),id:manageStoreController.pageId.value);
+                              Get.to(const ProductListScreen(),id:pageIdApp.value);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -432,7 +433,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //       const EditCategoryScreen(),
                                         // ))
                                             Get.to(const EditCategoryScreen(),
-                                                id:manageStoreController.pageId.value ,
+                                                id:pageIdApp.value ,
                                                    arguments: {
                                                  "storeId": manageStoreController
                                                      .storeId.value,
@@ -479,7 +480,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //       const ProductListScreen(),
                                         // ));
                                         Get.to(const ProductListScreen(),
-                                            id:manageStoreController.pageId.value );
+                                            id:pageIdApp.value );
                                       },
                                       icon: Icon(
                                         Icons.arrow_forward_ios_rounded,

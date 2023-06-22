@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_contro
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -40,7 +41,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:ordersHomeMainController.pageId.value);
+                                 Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

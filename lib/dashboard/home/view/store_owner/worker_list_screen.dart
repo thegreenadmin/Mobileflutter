@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_scre
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_worker_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -55,7 +56,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:addNewWorkerController.pageId.value);
+                               Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -116,7 +117,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       //   builder: (_) => const AddNewWorkerScreen(),
                       // ));
                       Get.to(const AddNewWorkerScreen(),
-                          id:addNewWorkerController.pageId.value );
+                          id:pageIdApp.value );
                     },
                     child: Row(
                       children: [
@@ -229,7 +230,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 Get.to(() => const EditWorkerScreen(),
-                                    id:addNewWorkerController.pageId.value );
+                                    id:pageIdApp.value );
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

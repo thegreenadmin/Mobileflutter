@@ -13,6 +13,8 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class OtpVerificationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController otpTextController = TextEditingController();
@@ -95,9 +97,11 @@ class OtpVerificationController extends GetxController {
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(
               Role.role, Role.storeOwnerRoleText);
+          roleApp.value =Role.storeOwnerRoleText;
         } else {
           SharedPreferenceStorage.setData(
               Role.role, Role.customerRoleText);
+          roleApp.value =Role.customerRoleText;
         }
 
         Get.offAll(() => const BottomNavigation());

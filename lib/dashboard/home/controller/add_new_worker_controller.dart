@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart
 import 'package:thegreenmall/dashboard/home/model/role_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -187,7 +188,7 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
@@ -314,7 +315,7 @@ class AddNewWorkerController extends GetxController {
         resetForm();
         await apiGetWorkerList();
         // Get.back();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -376,7 +377,7 @@ class AddNewWorkerController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back();
-      // Get.back(id:pageId.value );
+      // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,

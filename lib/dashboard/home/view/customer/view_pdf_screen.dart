@@ -18,16 +18,7 @@ class PdfViewScreen extends StatefulWidget {
 }
 
 class _PdfViewScreenState extends State<PdfViewScreen> {
-  var pageId = 0;
-  @override
-  void initState() {
 
-    super.initState();
-    getData();
-  }
-  getData()async{
-    pageId = await SharedPreferenceStorage.getData("pageId");
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

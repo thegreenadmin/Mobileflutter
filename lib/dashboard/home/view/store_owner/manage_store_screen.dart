@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/role_and_permission
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -39,7 +40,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const EditStoreDetailScreen(),
                 // ));
-                Get.to(const EditStoreDetailScreen(),id:ownerStoresController.pageId.value);
+                Get.to(const EditStoreDetailScreen(),id:pageIdApp.value);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -113,7 +114,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const MangeProductScreen(),
                 // ));
                 Get.to(const MangeProductScreen(),
-                    id:ownerStoresController.pageId.value,
+                    id:pageIdApp.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,
@@ -189,7 +190,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const RoleAndPermissionScreen(),
                 // ));
                 Get.to(const RoleAndPermissionScreen(),
-                    id:ownerStoresController.pageId.value,
+                    id:pageIdApp.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,
@@ -265,7 +266,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 //   builder: (_) => const WorkerListScreen(),
                 // ));
                 Get.to(const WorkerListScreen(),
-                    id:ownerStoresController.pageId.value,
+                    id:pageIdApp.value,
                     arguments: {
                   "storeId": ownerStoresController.storeId.value,
                   "storeName": ownerStoresController.storeName.value,

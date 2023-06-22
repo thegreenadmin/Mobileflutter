@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -90,7 +91,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           //   builder: (_) => const AddToOrderScreen(),
                           // ));
                           await Get.to(const AddToOrderScreen(),
-                              id:storeHomeMainController.pageId.value)
+                              id:pageIdApp.value)
                               ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()

@@ -11,6 +11,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});
 
@@ -49,7 +51,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () async {
-                                            Get.until((route) => route.isFirst,id:offersController.pageId.value);
+                                            Get.until((route) => route.isFirst,id:pageIdApp.value);
                                             // Navigator.of(Get.context!).popUntil(
                                             //     (route) => route.isFirst);
                                           },
@@ -100,7 +102,7 @@ class _OffersScreenState extends State<OffersScreen> {
           child: Column(
             children: [
               Obx(
-                () => offersController.role.value == Role.customerRoleText
+                () => roleApp.value == Role.customerRoleText
                     ? height0SizedBox
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +131,7 @@ class _OffersScreenState extends State<OffersScreen> {
                               //   builder: (_) => const AddOfferScreen(),
                               // ))
                                   Get.to(() =>const AddOfferScreen(),
-                                      id:offersController.pageId.value,
+                                      id:pageIdApp.value,
                                       arguments: {
                                     "isFrom": StringConstants.addOfferText,
                                   })!
@@ -150,7 +152,7 @@ class _OffersScreenState extends State<OffersScreen> {
               ),
               height20SizedBox,
               Expanded(
-                child: Obx(() => offersController.role.value ==
+                child: Obx(() => roleApp.value ==
                         Role.customerRoleText
                     ? offersController.getUserOfferlist.isEmpty
                         ? offersController.isLoading!.value == true
@@ -489,7 +491,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                       AlertStringConstants.areYouSureText,
                                       okay: StringConstants.deleteText,
                                       okayTap: () async {
-                                        Get.back(id:offersController.pageId.value);
+                                        Get.back(id:pageIdApp.value);
                                     // Navigator.pop(Get.context!);
                                     offersController.storeId!.value =
                                         offersController
@@ -656,7 +658,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   // ))
 
                                                       Get.to(() =>const EditOfferScreen(),
-                                                      id:offersController.pageId.value,
+                                                      id:pageIdApp.value,
                                                               arguments: {
                                                             "isFrom":StringConstants.editOfferText,
                                                             "storeId": offersController.getOwnerOfferlist[
@@ -664,8 +666,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             "offerId": offersController.getOwnerOfferlist[index].offerId ??""
                                                           })!
                                                       .then((value) {
-                                                    offersController
-                                                                .role.value ==
+                                                   roleApp.value ==
                                                             Role
                                                                 .customerRoleText
                                                         ? offersController

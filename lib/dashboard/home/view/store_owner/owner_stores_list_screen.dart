@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_s
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -44,7 +45,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:ownerStoresController.pageId.value);
+                               Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -186,7 +187,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     ));*/
                                     await Get.to(
                                             () => const ManageStoreMainScreen(),
-                                        id:ownerStoresController.pageId.value );
+                                        id:pageIdApp.value );
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -441,7 +442,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 //       builder: (_) => const AddNewStoreScreen(),
                 //     ))
                     Get.to(const AddNewStoreScreen(),
-                        id:ownerStoresController.pageId.value)!
+                        id:pageIdApp.value)!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

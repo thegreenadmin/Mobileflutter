@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -44,7 +45,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:addNewWorkerController.pageId.value);
+                                 Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

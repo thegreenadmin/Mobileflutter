@@ -23,6 +23,7 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import '../../../utils/global_share_data.dart';
 import '../model/categories_model.dart';
 
 class OwnerStoresController extends GetxController {
@@ -836,12 +837,12 @@ class OwnerStoresController extends GetxController {
         Utility.showToast(value?.body['message']);
         // Get.back();
         if (Get.parameters['isFromHome'] == "true") {
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         } else {
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
           await apiGetStoreList();
           storeNameTextController.clear();

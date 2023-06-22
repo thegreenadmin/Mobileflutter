@@ -13,6 +13,7 @@ import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -497,7 +498,7 @@ class AddCardController extends GetxController {
           countryId.value = "";
           stateId.value = "";
           // Get.back();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
@@ -581,7 +582,7 @@ class AddCardController extends GetxController {
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           // Navigator.pop(ctx);
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
@@ -760,7 +761,7 @@ class AddCardController extends GetxController {
           payoutAmountTextController.clear();
           ownerWalletBalance!.value = "";
           storeId!.value = "";
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
           // Navigator.of(ctxxx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.body["status"] == ApiConstants.statusCode401) {

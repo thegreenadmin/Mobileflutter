@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dar
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -64,7 +65,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:addCardController.pageId.value);
+                           Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                           },
                           icon: const Icon(

@@ -41,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigationPage() async {
     var token = await SharedPreferenceStorage.getData('token');
+
     if ( token!= null) {
       Get.offAll(() => const BottomNavigation());
     } else {

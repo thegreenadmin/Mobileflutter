@@ -21,6 +21,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/global_share_data.dart';
 import '../model/categories_model.dart';
 
 class AddNewStoreController extends GetxController {
@@ -205,7 +206,7 @@ class AddNewStoreController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back();
-      // Get.back(id:pageId.value );
+      // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -227,7 +228,7 @@ class AddNewStoreController extends GetxController {
       }
     }, onCameraClick: () async {
       // Get.back();
-      // Get.back(id:pageId.value );
+      // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -477,7 +478,7 @@ class AddNewStoreController extends GetxController {
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         await createDynamicLink();
         await apiDynamicLink();
         // await apiGetDeliveryServices();
@@ -524,7 +525,7 @@ class AddNewStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
         //   builder: (_) => const StartJourneyScreen(),
         // ));

@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -74,7 +75,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                           .favouriteStore[index].storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:searchStoreUserController.pageId.value);
+                                  id:pageIdApp.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),
                               // ));

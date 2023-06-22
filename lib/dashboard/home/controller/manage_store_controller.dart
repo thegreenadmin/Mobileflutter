@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.d
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -446,8 +447,8 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-         Get.back(id:pageId.value );
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
+         Get.back(id:pageIdApp.value );
         // Navigator.of(cntx).pop();
         // Navigator.of(cntx).pop();
         await apiGetCategoriesList();
@@ -790,7 +791,7 @@ class ManageStoreController extends GetxController {
         if (Get.parameters['isFromHome'] == "true") {
           Get.delete<ManageStoreController>();
         }
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

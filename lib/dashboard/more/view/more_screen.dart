@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -89,7 +90,7 @@ class _MoreScreenState extends State<MoreScreen> {
               url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                       ServerCommunicator().pageAbout)
                   .toString()),
-                  id:moreController.pageId.value);
+                  id:pageIdApp.value);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -140,7 +141,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageFaq)
                       .toString()),
-                  id:moreController.pageId.value );
+                  id:pageIdApp.value );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +181,7 @@ class _MoreScreenState extends State<MoreScreen> {
               // Navigator.of(context).push(MaterialPageRoute(
               //   builder: (_) => const ContactUsScreen(),
               // ));
-              Get.to(const ContactUsScreen(),id:moreController.pageId.value);
+              Get.to(const ContactUsScreen(),id:pageIdApp.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,7 +228,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   isFrom: "terms",
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pageTerms)
-                      .toString()),id:moreController.pageId.value);
+                      .toString()),id:pageIdApp.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,7 +276,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
                           ServerCommunicator().pagePolicy)
                       .toString()),
-                  id:moreController.pageId.value);
+                  id:pageIdApp.value);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

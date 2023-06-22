@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -424,7 +425,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                 .dynamicUrl
                                                 .toString(),
                                           ),
-                                              id:ownerInboxDetailController.pageId.value);
+                                              id:pageIdApp.value);
 
                                         },
                                         child: Container(
@@ -567,7 +568,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               .dynamicUrl
                                               .toString(),
                                         ),
-                                            id:ownerInboxDetailController.pageId.value);
+                                            id:pageIdApp.value);
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -739,7 +740,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:ownerInboxDetailController.pageId.value);
+                                 Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   // Get.back();
                                 },

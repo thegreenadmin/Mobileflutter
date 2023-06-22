@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/user_transaction_detail_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -49,7 +50,7 @@ class _UserTransactionDetailScreenState
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:userTransactionDetailController.pageId.value);
+                                 Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

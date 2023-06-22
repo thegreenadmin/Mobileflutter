@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_role_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_role_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -40,7 +41,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:addNewRoleController.pageId.value);
+                             Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(
@@ -103,7 +104,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         //       builder: (_) => const AddNewRoleScreen(),
                         //     ))
                             Get.to(const AddNewRoleScreen(),
-                                id:addNewRoleController.pageId.value )!
+                                id:pageIdApp.value )!
                             .then((value) =>
                                 addNewRoleController.apiGetStoreRole());
                       },
@@ -226,7 +227,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         //           const EditRoleScreen(),
                                         //     ))
                                             Get.to(const EditRoleScreen(),
-                                                id:addNewRoleController.pageId.value )!
+                                                id:pageIdApp.value )!
                                             .then((value) =>
                                                 addNewRoleController
                                                     .apiGetStoreRole());

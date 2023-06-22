@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/offers/model/get_store_non_offer_product_
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -226,7 +227,7 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         // Get.back();
-        Get.back(id:pageId.value );
+        Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
         offerNameTextController.clear();
         storeIdValue.value = "";
@@ -472,7 +473,7 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         // Get.back();
-        Get.back(id:pageId.value );
+        Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

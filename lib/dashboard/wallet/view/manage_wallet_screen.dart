@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/create_owner_bankaccount_screen.dart';
@@ -81,7 +82,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:walletController.pageId.value);
+                           Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                           },
                           icon: const Icon(
@@ -113,7 +114,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
                       ? Row(
@@ -255,7 +256,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() => walletController.role!.value ==
+                    Obx(() => roleApp.value ==
                             Role.customerRoleText
                         ? Column(
                             children: [
@@ -275,8 +276,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               height12SizedBox,
                               InkWell(
                                   onTap: () {
-                                    SharedPreferenceStorage.getData(
-                                                Role.role) ==
+                                    roleApp.value ==
                                             Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()
@@ -318,8 +318,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               height12SizedBox,
                               InkWell(
                                   onTap: () {
-                                    SharedPreferenceStorage.getData(
-                                                Role.role) ==
+                                    roleApp.value ==
                                             Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()
@@ -349,7 +348,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
             ),
             height30SizedBox,
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -444,7 +443,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                   : height0SizedBox,
             ),
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? const Divider(
                       color: AppColors.grey,
                       height: 35,
@@ -458,13 +457,13 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                     onTap: () async {
                       SharedPreferenceStorage.setData("context", context);
 
-                      walletController.role!.value == Role.customerRoleText
+                      roleApp.value == Role.customerRoleText
                           ? /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const AddCardScreen(),
                               ))*/
                               Get.to(const AddCardScreen(),
-                               id:walletController.pageId.value,)!
+                               id:pageIdApp.value,)!
                               .then((value) =>
                                   walletController.apiGetCardList(context))
                           : /*Navigator.of(context)
@@ -472,11 +471,11 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 builder: (_) => const CreateOwnerBankAccount(),
                               ))*/
                               Get.to(const CreateOwnerBankAccount(),
-                               id:walletController.pageId.value,)!
+                               id:pageIdApp.value,)!
                               .then((value) =>
                                   walletController.apiGetBankAccountList());
                     },
-                    child: walletController.role!.value == Role.customerRoleText
+                    child: roleApp.value == Role.customerRoleText
                         ? Row(children: [
                             Image.asset(ImageConstants.addcard, scale: 3.2),
                             width15SizedBox,
@@ -525,7 +524,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       url: Uri.parse(walletController
                                           .accountLink.value)
                                           .toString()),
-                                     id:walletController.pageId.value)
+                                     id:pageIdApp.value)
                                       ?.then((value) {
                                     walletController.apiGetAccountDetails();
                                     walletController.apiGetBankAccountList();
@@ -552,7 +551,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               ),
             ),
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.capability.value == "active" &&
                           walletController.payouts.value == true
@@ -563,7 +562,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                         ),
             ),
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : InkWell(
                       onTap: () {
@@ -573,7 +572,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                         //   builder: (_) => const PayOutScreen(),
                         // ))
                         Get.to(const PayOutScreen(),
-                           id:walletController.pageId.value)
+                           id:pageIdApp.value)
                             ?.then((value) {
                           walletController.apiGetBankAccountList();
                           walletController.apiGetAccountDetails();
@@ -611,7 +610,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               height: 25,
             ),
             Obx(
-              () => walletController.role!.value == Role.customerRoleText
+              () => roleApp.value == Role.customerRoleText
                   ? walletController.cardList.isEmpty
                       ? height0SizedBox
                       : Text(
@@ -631,7 +630,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               fontWeight: FontWeight.w600),
                         ),
             ),
-            Obx(() => walletController.role!.value == Role.customerRoleText
+            Obx(() => roleApp.value == Role.customerRoleText
                 ? Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 20),
@@ -706,7 +705,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okay:
                                                     StringConstants.deleteText,
                                                 okayTap: () async {
-                                                  Get.back(id:walletController.pageId.value);
+                                                  Get.back(id:pageIdApp.value);
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:

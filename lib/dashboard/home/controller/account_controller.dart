@@ -24,6 +24,7 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+import '../../../../utils/global_share_data.dart';
 
 class AccountController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -500,7 +501,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(),id:pageId.value);
+        await Get.offAll(const StartJourneyScreen(),id:pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
@@ -660,12 +661,12 @@ class AccountController extends GetxController {
         stateTextController.clear();
         countryTextController.clear();
         if (isFromCart.value) {
-         Get.back(id:pageId.value);
+         Get.back(id:pageIdApp.value);
          // Navigator.of(context).pop();
 
         } else {
 
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
          // Navigator.of(context).pop();
 
           await apiGetUserDetailApi();
@@ -807,7 +808,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(),id:pageId.value);
+        await Get.offAll(const StartJourneyScreen(),id:pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -894,7 +895,7 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.until((route) => route.isFirst,id:pageId.value);
+        Get.until((route) => route.isFirst,id:pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

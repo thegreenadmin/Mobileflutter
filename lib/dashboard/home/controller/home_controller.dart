@@ -19,6 +19,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -60,9 +62,8 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetUserDetail();
-    getCurrentLocation();
     getPage();
-
+    getCurrentLocation();
   }
   getPage()async{
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
@@ -70,6 +71,8 @@ class HomeController extends GetxController {
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
+
+    debugPrint("HomeCController pageId ************${pageId.value} $roleVal");
   }
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
@@ -103,7 +106,7 @@ class HomeController extends GetxController {
                     /*Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const AccountScreen(),
                     ));*/
-                     Get.back(id:pageId.value );
+                     Get.back(id:pageIdApp.value );
                     await Get.to(const AccountScreen(),
                         id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                   },
@@ -129,7 +132,7 @@ class HomeController extends GetxController {
             width: 130,
             child: GestureDetector(
               onTap: () async{
-                 Get.back(id:pageId.value );
+                 Get.back(id:pageIdApp.value );
                 await Get.to(const AccountScreen(),
                     id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
               },

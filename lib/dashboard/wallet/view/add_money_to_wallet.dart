@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'payment_configurations.dart' as payment_configurations;
@@ -124,7 +125,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:addCardController.pageId.value);
+                             Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                             },
                             icon: const Icon(
@@ -503,7 +504,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 //       const AddCardDetailScreen(),
                                 //     ))
                                 await Get.to(const AddCardDetailScreen(),
-                                    id:addCardController.pageId.value)
+                                    id:pageIdApp.value)
                                      ?.then((value) {
                                   addCardController
                                       .apiGetCardList(

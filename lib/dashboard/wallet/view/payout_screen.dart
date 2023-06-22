@@ -11,6 +11,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class PayOutScreen extends StatefulWidget {
   const PayOutScreen({
     Key? key,
@@ -43,7 +45,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:addCardController.pageId.value);
+                           Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                           },
                           icon: const Icon(
@@ -406,7 +408,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                         .accountLink
                                                         .value)
                                                     .toString()),
-                                                id:addCardController.pageId.value)
+                                                id:pageIdApp.value)
                                                 ?.then((value) {
                                               addCardController
                                                   .apiGetAccountDetails();

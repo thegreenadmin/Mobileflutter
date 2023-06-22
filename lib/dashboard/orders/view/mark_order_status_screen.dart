@@ -9,6 +9,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+
+import '../../../utils/global_share_data.dart';
 class MarkOrderStatusScreen extends StatefulWidget {
   const MarkOrderStatusScreen({super.key});
 
@@ -79,7 +81,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                     Get.back(id:ordersHomeMainController.pageId.value);
+                                     Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(

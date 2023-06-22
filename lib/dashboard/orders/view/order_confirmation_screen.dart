@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import '../../../utils/global_share_data.dart';
 import '../view/component/order_status_enum.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
@@ -80,12 +81,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     return WillPopScope(
       onWillPop: () {
         if( ordersController.isHome.value){
-         Get.back(id:ordersController.pageId.value);
+         Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
-         Get.back(id:ordersController.pageId.value);
+         Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
         }else{
-         Get.back(id:ordersController.pageId.value);
+         Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
         }
 
@@ -142,7 +143,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                         Get.back(id:ordersController.pageId.value);
+                                         Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
@@ -642,7 +643,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromFav"] = "false";
                           await Get.to(const StoreHomeMainScreen(),
-                              id:ordersController.pageId.value);
+                              id:pageIdApp.value);
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const StoreHomeMainScreen(),
                           // ));

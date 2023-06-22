@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -50,7 +51,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            Get.back(id:addCardController.pageId.value);
+                            Get.back(id:pageIdApp.value);
                             // Navigator.of(context).pop();
                           },
                           icon: const Icon(
@@ -164,7 +165,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
                                           okayTap: () async {
-                                            Get.back(id:addCardController.pageId.value);
+                                            Get.back(id:pageIdApp.value);
                                         // Navigator.pop(Get.context!);
                                         addCardController.apiDeleteCard(
                                             userStripeCardId: addCardController
@@ -202,7 +203,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddCardDetailScreen(),
                 //     ))
-                    Get.to(const AddCardDetailScreen(),id:addCardController.pageId.value)!
+                    Get.to(const AddCardDetailScreen(),id:pageIdApp.value)!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

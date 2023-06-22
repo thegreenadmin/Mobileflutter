@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
 import '../../../utils/shared_prefrences.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
@@ -115,7 +116,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
                               await Get.to(const OrdersHomeMainScreen(),
-                                  id:ordersController.pageId.value);
+                                  id:pageIdApp.value);
 
                             },
                             child: Container(

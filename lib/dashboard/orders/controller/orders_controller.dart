@@ -19,6 +19,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -210,7 +211,7 @@ class OrdersController extends GetxController {
                               onTap: () {
                                 reviewController.clear();
                                 ratingValue.value = 0.0;
-                                 Get.back(id:pageId.value );
+                                 Get.back(id:pageIdApp.value );
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -323,7 +324,7 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                           Get.back(id:pageId.value );
+                           Get.back(id:pageIdApp.value );
                           // Navigator.pop(ctxX);
                           apiCreateReview();
                         },
@@ -382,7 +383,7 @@ class OrdersController extends GetxController {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                 Get.back(id:pageId.value );
+                                 Get.back(id:pageIdApp.value );
                                 // Navigator.of(ctxx).pop();
                               },
                               child: Image.asset(
@@ -660,7 +661,7 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
-        //  Get.back(id:pageId.value );
+        //  Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         // Get.back();
         // Get.offAll(BottomNavigation());
@@ -668,7 +669,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -717,16 +718,16 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
         apiGetOrderDetailsApi();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -1154,12 +1155,12 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        // Get.back(id:pageId.value );
+        // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
         // BuildContext rContext = SharedPreferenceStorage.getData(
         //   "context",
         // );
-        Get.until((route) => route.isFirst,id:pageId.value);
+        Get.until((route) => route.isFirst,id:pageIdApp.value);
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());
@@ -1168,7 +1169,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1217,12 +1218,12 @@ class OrdersController extends GetxController {
         //   "context",
         // );
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
-        Get.until((route) => route.isFirst,id:pageId.value );
+        Get.until((route) => route.isFirst,id:pageIdApp.value );
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1269,7 +1270,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
           await Get.offAll(const StartJourneyScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);

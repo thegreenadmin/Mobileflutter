@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -45,7 +46,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:notificationListController.pageId.value);
+                                   Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
@@ -129,7 +130,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                     builder: (_) => const OrdersScreen(),
                                   ))*/
                                 Get.to(const OrdersScreen(),
-                                    id:notificationListController.pageId.value,
+                                    id:pageIdApp.value,
                                     arguments: {
                                         "isFromNotification": true,
                                         "storeId": notificationListController
@@ -144,15 +145,14 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         builder: (_) => const OrdersScreen(),
                                       ))*/
                                     Get.to(const OffersScreen(),
-                                        id:notificationListController.pageId.value,arguments: {
+                                        id:pageIdApp.value,arguments: {
                                                 "isFromNotification": true,
                                               })
                                     : notificationListController
                                                 .notificationList[index]
                                                 .messageHeadId !=
                                             null
-                                        ? notificationListController
-                                                    .role!.value ==
+                                        ? roleApp.value ==
                                                 Role.customerRoleText
                                             ? /*Navigator.of(context)
                                                 .push(MaterialPageRoute(
@@ -160,7 +160,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                     const OwnerInboxDetailScreen(),
                                               ))*/
                                             Get.to(const OwnerInboxDetailScreen(),
-                                                id:notificationListController.pageId.value,
+                                                id:pageIdApp.value,
                                                                 arguments: {
                                                                     "storeId":
                                                                         notificationListController
@@ -186,7 +186,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                               ))*/
                                         Get.to(
                                                             const UserInboxDetailScreen(),
-                                            id:notificationListController.pageId.value,
+                                            id:pageIdApp.value,
                                                             arguments: {
                                                                 "storeId":
                                                                     notificationListController

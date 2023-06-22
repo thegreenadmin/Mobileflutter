@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/orders/model/get_store_order_detail_model
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
@@ -361,7 +362,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         // Get.back();
         update();
@@ -416,7 +417,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         // Get.back();
         update();
@@ -460,7 +461,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         // Get.back();
         update();
@@ -514,7 +515,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         update();
       } else {
@@ -569,7 +570,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -624,7 +625,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -679,7 +680,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         update();
       } else {
         if (value.body['message'] != null) {
@@ -736,7 +737,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         await apiGetOwnerOrderHistory();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         update();
       } else {
         if (value.body['message'] != null) {

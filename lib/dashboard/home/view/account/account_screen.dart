@@ -20,6 +20,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../../utils/global_share_data.dart';
+
 enum _SupportState {
   unknown,
   supported,
@@ -94,7 +96,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.back(id:accountController.pageId.value);
+        Get.back(id:pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -117,7 +119,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(id:accountController.pageId.value);
+                                    Get.back(id:pageIdApp.value);
                                     //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                   // Navigator.of(context).pop();
                                   },
@@ -201,20 +203,21 @@ class _AccountScreenState extends State<AccountScreen> {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () async {
-                            if (accountController.roleId?.value.toString() == Role.customerRoleText) {
+                            if (roleApp.value == Role.customerRoleText) {
                                SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
                                accountController.roleId?.value = Role.storeOwnerRoleText;
                               Get.parameters[Role.role] = Role.storeOwnerRoleText;
-
-                              Get.until((route) => route.isFirst,id:accountController.pageId.value);
+                               roleApp.value = Role.storeOwnerRoleText;
+                              Get.until((route) => route.isFirst,id:pageIdApp.value);
 
                             } else {
                                SharedPreferenceStorage.setData(
                                   Role.role, Role.customerRoleText);
+                               roleApp.value = Role.customerRoleText;
                                accountController.roleId?.value = Role.customerRoleText;
                               Get.parameters[Role.role] =  Role.customerRoleText;
 
-                              Get.until((route) => route.isFirst,id:accountController.pageId.value);
+                              Get.until((route) => route.isFirst,id:pageIdApp.value);
 
                             }
                             },
@@ -225,7 +228,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Obx(() => Text(
-                                  accountController.roleId?.value.toString() ==
+                                  roleApp.value ==
                                       Role.customerRoleText
                                       ? StringConstants.switchToStoreText
                                       : StringConstants.switchToCustomerText,
@@ -273,7 +276,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const PersonalInfoScreen(),
                           // ));
-                          Get.to(const PersonalInfoScreen(),id:accountController.pageId.value);
+                          Get.to(const PersonalInfoScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -305,7 +308,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         height: 40,
                         thickness: 1,
                       ),
-                      Obx(() =>  accountController.roleId?.value.toString() ==
+                      Obx(() =>  roleApp.value ==
                           Role.customerRoleText
                           ? InkWell(
                         highlightColor: Colors.transparent,
@@ -363,7 +366,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const TransactionScreen(),
                           // ));
-                          Get.to(const TransactionScreen(),id:accountController.pageId.value);
+                          Get.to(const TransactionScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -403,7 +406,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const AccountIdScreen(),
                           // ));
-                          Get.to(const AccountIdScreen(),id:accountController.pageId.value);
+                          Get.to(const AccountIdScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -457,7 +460,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   //       const ActiveMembershipScreen(),
                                   // ));
 
-                                  Get.to(const ActiveMembershipScreen(),id:accountController.pageId.value);
+                                  Get.to(const ActiveMembershipScreen(),id:pageIdApp.value);
                                 },
                                 child: Row(
                                   mainAxisAlignment:

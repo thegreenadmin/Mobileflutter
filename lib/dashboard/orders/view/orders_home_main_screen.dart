@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_contro
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -149,7 +150,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                       Get.back(id:ordersHomeMainController.pageId.value);
+                                       Get.back(id:pageIdApp.value);
                                         Get.delete<OrdersHomeMainController>();
                                       },
                                       icon: const Icon(
@@ -378,7 +379,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       .returnRequest.statusName
                                   ?
                               Get.to(const MarkReturnOrderScreen(),
-                                  id:ordersHomeMainController.pageId.value)
+                                  id:pageIdApp.value)
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const MarkReturnOrderScreen(),
                               // )).then((value) {
@@ -408,7 +409,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                               //   builder: (_) => const MarkOrderStatusScreen(),
                               // ));
                                Get.to(const MarkOrderStatusScreen(),
-                                  id:ordersHomeMainController.pageId.value);
+                                  id:pageIdApp.value);
 
 
                               /// ====================================

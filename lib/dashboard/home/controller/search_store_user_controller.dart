@@ -12,6 +12,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -489,7 +490,7 @@ class SearchStoreUserController extends GetxController {
             element.isSelected= false;
           }
 
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
         }
         if (isSearch) {

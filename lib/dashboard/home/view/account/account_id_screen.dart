@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -20,7 +21,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.back(id:accountController.pageId.value);
+        Get.back(id:pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -42,7 +43,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(id:accountController.pageId.value);
+                                    Get.back(id:pageIdApp.value);
                                     //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
                                   // Navigator.of(context).pop();
                                   },

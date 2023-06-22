@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -521,7 +522,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                   //       const AddToOrderScreen(),
                                                   // ));
                                                   await Get.to(const AddToOrderScreen(),
-                                                      id:storeHomeMainController.pageId.value);
+                                                      id:pageIdApp.value);
                                                 },
                                                 child: Column(
                                                   crossAxisAlignment:
@@ -753,7 +754,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         orderBy: "2",
                         orderType: "2");
                     // Navigator.of(contx).pop();
-                    Get.back(id:storeHomeMainController.pageId.value);
+                    Get.back(id:pageIdApp.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -785,7 +786,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 orderBy: "2",
               );
               // Navigator.of(contx).pop();
-              Get.back(id:storeHomeMainController.pageId.value);
+              Get.back(id:pageIdApp.value);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

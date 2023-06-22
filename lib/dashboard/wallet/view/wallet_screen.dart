@@ -12,6 +12,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
 
@@ -78,7 +80,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           ? InkWell(
                                               onTap: () {
                                                 // Get.back();
-                                               Get.back(id:walletController.pageId.value);
+                                               Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                               },
                                               child: const Icon(
@@ -129,7 +131,7 @@ class _WalletScreenState extends State<WalletScreen> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Obx(() =>
-                walletController.role!.value == Role.customerRoleText
+                roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
                       ? Row(
@@ -270,7 +272,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() => walletController.role!.value ==
+                    Obx(() => roleApp.value ==
                             Role.customerRoleText
                         ? Column(
                             children: [
@@ -306,8 +308,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                         builder: (_) =>
                                             const AddMoneyToWallet(),
                                       ))*/
-                                      Get.to(const AddMoneyToWallet(),
-                                        id:walletController.pageId.value ,)!
+                                  debugPrint("AddMoneyToWallet .pageId.value :------ ${walletController.pageId.value }");
+                                      Get.to(() => const AddMoneyToWallet(),
+                                        id:pageIdApp.value ,)!
                                       .then((value) => walletController
                                           .apiGetUserWalletBalance());
                                 },
@@ -361,8 +364,10 @@ class _WalletScreenState extends State<WalletScreen> {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const ManageWalletScreen(),
                       ));*/
-                      Get.to(const ManageWalletScreen(),
-                        id:walletController.pageId.value,);
+                      debugPrint("ManageWalletScreen .pageId.value :------ ${walletController.pageId.value }");
+
+                      Get.to(() => const ManageWalletScreen(),
+                        id:pageIdApp.value,);
                     },
                     child: Column(
                       children: [
@@ -413,11 +418,11 @@ class _WalletScreenState extends State<WalletScreen> {
               ],
             ),
             height30SizedBox,
-            Obx(() => walletController.role!.value == Role.customerRoleText
+            Obx(() => roleApp.value == Role.customerRoleText
                 ? height0SizedBox
                 : Column(
                     children: [
-                      Row(
+                      const Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

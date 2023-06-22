@@ -17,6 +17,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.d
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -84,7 +85,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:searchStoreUserController.pageId.value);
+                               Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 Get.delete<SearchStoreUserController>();
                               },
@@ -152,7 +153,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                               //           const CartScreen(),
                                               //     ))
                                               await Get.to(const CartScreen(),
-                                                  id:searchStoreUserController.pageId.value)
+                                                  id:pageIdApp.value)
                                                   ?.then((value) =>
                                                       searchStoreUserController
                                                           .apiActiveCartApi());
@@ -263,7 +264,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             //   builder: (_) => const FilterOptionScreen(),
                             // ));
                             await Get.to(const FilterOptionScreen(),
-                                id:searchStoreUserController.pageId.value);
+                                id:pageIdApp.value);
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,

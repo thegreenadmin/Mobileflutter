@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/orders/view/return_confirm_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -370,7 +371,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           onTap: () {
                                             // Navigator.of(Get.context!).popUntil(
                                             //     (route) => route.isFirst);
-                                            Get.until((route) => route.isFirst,id:ordersController.pageId.value );
+                                            Get.until((route) => route.isFirst,id:pageIdApp.value );
                                           },
                                           child: const Icon(
                                             Icons.arrow_back,
@@ -404,7 +405,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   fontWeight: FontWeight.w600),
                             ),
                             // Obx(() => Text(
-                            //   ordersController.role!.value,
+                            //   roleApp.value,
                             //   style: const TextStyle(
                             //       fontSize: 22,
                             //       color: AppColors.black,
@@ -426,7 +427,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           child: Column(
             children: [
               Obx(
-                () => ordersController.role!.value == Role.customerRoleText
+                () => roleApp.value == Role.customerRoleText
                     ? Center(
                         child: userOrdersTab(),
                       )
@@ -435,7 +436,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ),
               ),
               height25SizedBox,
-              Obx(() => ordersController.role!.value == Role.customerRoleText
+              Obx(() => roleApp.value == Role.customerRoleText
                   ? ordersController.orderList.isEmpty
                       ? ordersController.isDataLoading.value == true
                           ? height0SizedBox
@@ -509,7 +510,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       //       const OrderConfirmationScreen(),
                                       // ))
                                       Get.to(const OrderConfirmationScreen(),
-                                          id:ordersController.pageId.value)?.then((value) {
+                                          id:pageIdApp.value)?.then((value) {
                                         ordersController.apiGetOrderListApi();
                                       });
                                     },
@@ -871,7 +872,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               Get.to(
                                     () =>
                                 const MarkReturnOrderScreen(),
-                                                  id:ordersController.pageId.value ,
+                                                  id:pageIdApp.value ,
                                 arguments: {
                                   "storeId": ordersController
                                       .storeOrderList[i]
@@ -932,7 +933,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                           const OrdersHomeMainScreen(),
                                                     ));*/
                                       Get.to(() => const OrdersHomeMainScreen(),
-                                          id:ordersController.pageId.value,
+                                          id:pageIdApp.value,
                                           arguments: {
                                         "storeId": ordersController
                                             .storeOrderList[i].store?.storeId.toString() ?? "",

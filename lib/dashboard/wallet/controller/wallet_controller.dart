@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/home/model/user_store_details_response.da
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -464,7 +465,7 @@ class WalletController extends GetxController {
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
           // Get.back();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
           await apiGetCardList(context);
         } else if (value.statusCode == ApiConstants.statusCode401) {
@@ -550,7 +551,7 @@ class WalletController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Get.back(id:pageId.value );
+          Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
@@ -762,7 +763,7 @@ class WalletController extends GetxController {
         accountHolderTypeText.value = "";
         rountingTextController.clear();
         accountNumberTextController.clear();
-        Get.back(id:pageId.value );
+        Get.back(id:pageIdApp.value );
         // Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -913,7 +914,7 @@ class WalletController extends GetxController {
         rountingTextController.clear();
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
-        Get.back(id:pageId.value );
+        Get.back(id:pageIdApp.value );
         // Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -1088,7 +1089,7 @@ class WalletController extends GetxController {
         accountNumberTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
-        Get.back(id:pageId.value );
+        Get.back(id:pageIdApp.value );
         // Navigator.of(ctxx).pop(ctxx);
         await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {

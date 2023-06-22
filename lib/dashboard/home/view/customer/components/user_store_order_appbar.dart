@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -71,7 +72,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:storeHomeMainController.pageId.value);
+                               Get.back(id:pageIdApp.value);
                                Get.delete<StoreHomeMainController>();
                               },
                               icon: const Icon(
@@ -101,7 +102,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
+                                          const Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
@@ -123,7 +124,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                   //       const CartScreen(),
                                                   // ))
                                                   await Get.to(const CartScreen(),
-                                                      id:storeHomeMainController.pageId.value)?.then((value) =>
+                                                      id:pageIdApp.value)?.then((value) =>
                                                       storeHomeMainController
                                                           .apiActiveCartApi());
                                                 },

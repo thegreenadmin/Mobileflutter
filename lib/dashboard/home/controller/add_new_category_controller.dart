@@ -13,6 +13,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class AddNewCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
@@ -110,7 +112,7 @@ class AddNewCategoryController extends GetxController {
   Future<void> showSelectionDialog(BuildContext ncontext) {
     return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
       // Get.back();
-      // Get.back(id:pageId.value );
+      // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -126,7 +128,7 @@ class AddNewCategoryController extends GetxController {
       }
     }, onCameraClick: () async {
       // Get.back();
-      // Get.back(id:pageId.value );
+      // Get.back(id:pageIdApp.value );
                                   // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -221,8 +223,7 @@ class AddNewCategoryController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-            body,
-            ServerCommunicator().baseUrl +
+            body, ServerCommunicator().baseUrl +
                 ServerCommunicator().createStoreCategory,
             headers, showLoading: true).then((value) async {
       debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
@@ -235,7 +236,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageDynamicLinkfromServer.value = "";
         // Get.back();
         // Navigator.of(nContext).pop();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         // Navigator.of(Get.context!).pop();
       } else {
         if (value.body['message'] != null) {
@@ -317,7 +318,7 @@ class AddNewCategoryController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
         // Navigator.of(contextt).pop();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";

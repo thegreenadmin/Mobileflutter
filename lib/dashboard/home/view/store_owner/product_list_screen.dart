@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_product_scr
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -42,7 +43,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:manageStoreController.pageId.value);
+                               Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                               },
                               icon: const Icon(
@@ -105,7 +106,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewProductScreen(),
                       // ));
-                      Get.to(const AddNewProductScreen(),id:manageStoreController.pageId.value);
+                      Get.to(const AddNewProductScreen(),id:pageIdApp.value);
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -238,7 +239,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
                                       Get.to(() => const EditProductScreen(),
-                                          id:manageStoreController.pageId.value)!
+                                          id:pageIdApp.value)!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();

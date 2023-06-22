@@ -25,6 +25,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -595,7 +596,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("CONTACT STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-         Get.back(id:pageId.value );
+         Get.back(id:pageIdApp.value );
                                   // Navigator.of(ctx).pop();
         Get.parameters["storeName"] = value!.body["data"]["store_name"] ?? "";
         Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
@@ -603,7 +604,7 @@ class StoreHomeMainController extends GetxController {
             value.body["data"]["message_head_id"] ?? "";
         SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() =>const UserInboxDetailScreen(),
-            id:pageId.value);
+            id:pageIdApp.value);
         // Navigator.of(ctx).push(MaterialPageRoute(
         //   builder: (_) => const UserInboxDetailScreen(),
         // ));
@@ -756,7 +757,7 @@ class StoreHomeMainController extends GetxController {
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
           isDeleteCartItem.value = false;
-          Get.until((route) => route.isFirst,id:pageId.value);
+          Get.until((route) => route.isFirst,id:pageIdApp.value);
           // Navigator.of(context).popUntil((route) => route.isFirst);
 
         } else if (isDeleteCartItem.value == true &&
@@ -765,7 +766,7 @@ class StoreHomeMainController extends GetxController {
           Get.parameters["storeId"] = storeId.value;
           isDeleteCartItem.value = false;
           await Get.to(() =>const StoreHomeMainScreen(),
-              id:pageId.value);
+              id:pageIdApp.value);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -834,7 +835,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
         await Get.to(() =>const OrderConfirmationScreen(),
-            id:pageId.value);
+            id:pageIdApp.value);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (_) => const OrderConfirmationScreen(),
         // ));
@@ -1057,7 +1058,7 @@ class StoreHomeMainController extends GetxController {
                     Get.parameters["storeId"] = storeId.value;
 
                     await Get.to(() =>const StoreHomeMainScreen(),
-                        id:pageId.value);
+                        id:pageIdApp.value);
                   },
                   child: Container(
                     height: 50.0,
@@ -1084,7 +1085,7 @@ class StoreHomeMainController extends GetxController {
                     apiGetCartListApi();
                     apiGetUserWalletBalance();
                     await Get.to(() =>const CartScreen(),
-                        id:pageId.value);
+                        id:pageIdApp.value);
                     // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                     //   builder: (_) => const CartScreen(),
                     // ));

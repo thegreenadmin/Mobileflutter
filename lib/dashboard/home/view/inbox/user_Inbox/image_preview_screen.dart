@@ -6,6 +6,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 
+import '../../../../../utils/global_share_data.dart';
+
 class ImagePreviewScreen extends StatefulWidget {
   final String image;
 
@@ -49,7 +51,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:pageId.value);
+                                   Get.back(id:pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(

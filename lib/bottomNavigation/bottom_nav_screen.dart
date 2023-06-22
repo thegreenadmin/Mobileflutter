@@ -13,6 +13,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import '../dashboard/orders/view/order_store_list_screen.dart';
 import '../utils/shared_prefrences.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -364,6 +365,7 @@ class _TabNav extends GetView<BottomNavController> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
+      // key: navigatorKey,
       key: Get.nestedKey(navKey),
       onGenerateRoute: (settings) =>
           MaterialPageRoute(builder: (_) => tab),
