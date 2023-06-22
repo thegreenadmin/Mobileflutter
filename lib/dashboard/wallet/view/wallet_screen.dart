@@ -134,21 +134,27 @@ class _WalletScreenState extends State<WalletScreen> {
                 roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.warning_amber,
-                              color: AppColors.grey,
-                              size: 24.0,
-                            ),
-                            width4SizedBox,
-                            Flexible(
-                                child: Text(StringConstants
-                                    .toKnowBalanceYouDontHaveText)),
-                          ],
-                        )
+                      ? walletController.isStoresLoading.value
+                          ? height0SizedBox
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.warning_amber,
+                                  color: AppColors.grey,
+                                  size: 24.0,
+                                ),
+                                width4SizedBox,
+                                Flexible(
+                                    child: Text(
+                                        StringConstants
+                                            .toKnowBalanceYouDontHaveText,
+                                        style: TextStyle(
+                                            color: AppColors.blacklight,
+                                            fontSize: 18))),
+                              ],
+                            )
                       : Row(
                           children: [
                             Expanded(
@@ -172,7 +178,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500))
                                   : DropdownButtonFormField<String>(
-                                      value:  walletController
+                                      value: walletController
                                                       .storeNameValue!.value !=
                                                   "" &&
                                               walletController
@@ -359,6 +365,8 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   flex: 3,
                   child: InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
                     onTap: () {
                       /*SharedPreferenceStorage.setData("context", context);
                       Navigator.of(context).push(MaterialPageRoute(

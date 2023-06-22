@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/select_membership_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class ActiveMembershipScreen extends StatefulWidget {
   const ActiveMembershipScreen({
@@ -54,7 +56,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                         ),
                         width10SizedBox,
                         Text(
-                          StringConstants.activeMembershipText,
+                          StringConstants.activeMembershipsText,
                           style: const TextStyle(
                               fontSize: 20,
                               color: AppColors.black,
@@ -133,50 +135,95 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  "Membership Plan Type: ${accountController.activeMembershipList[index].membershipPlan!.planType!.toUpperCase()}",
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Image.asset(
+                                                      ImageConstants.membership,
+                                                      color: AppColors.primary,
+                                                      scale: 20,
+                                                    ),
+                                                    width12SizedBox,
+                                                    Text(
+                                                      "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} PLAN",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ],
                                                 ),
                                                 height10SizedBox,
-                                                Text(
-                                                  "Plan charges: \$${accountController.activeMembershipList[index].membershipPlan!.planCharge}",
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                SizedBox(
+                                                  width: WidgetConstants
+                                                          .screenWidth *
+                                                      0.7,
+                                                  child: Text(
+                                                    accountController
+                                                        .activeMembershipList[
+                                                            index]
+                                                        .membershipPlan!
+                                                        .planDescription
+                                                        .toString(),
+                                                    maxLines: 5,
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                                 ),
                                                 height10SizedBox,
-                                                accountController
-                                                            .activeMembershipList[
-                                                                index]
-                                                            .membershipPlan!
-                                                            .planDays! >
-                                                        1
-                                                    ? Text(
-                                                        "Plan days: ${accountController.activeMembershipList[index].membershipPlan!.planDays}",
-                                                        style: const TextStyle(
-                                                            color:
-                                                                AppColors.black,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      )
-                                                    : Text(
-                                                        "Plan day: ${accountController.activeMembershipList[index].membershipPlan!.planDays}",
-                                                        style: const TextStyle(
-                                                            color:
-                                                                AppColors.black,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      )
+                                                Row(
+                                                  children: [
+                                                    const Text(
+                                                      "Amount: ",
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Text(
+                                                      "\$${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Row(
+                                                  children: [
+                                                    const Text(
+                                                      "Status: ",
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Text(
+                                                      "${accountController.activeMembershipList[index].status!.capitalizeFirst} till ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
                                               ],
                                             ),
                                           ],

@@ -52,6 +52,11 @@ class AccountController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool hasStoreAccess = false.obs;
 
+  RxBool plan30 = false.obs;
+  RxBool plan90 = false.obs;
+  RxBool plan180 = false.obs;
+  RxBool plan365 = false.obs;
+
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;
@@ -118,6 +123,10 @@ class AccountController extends GetxController {
 
   }
 
+  updatePlan(index, String plan) {
+    if (index == 0) {}
+  }
+
   getGkey() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
@@ -142,7 +151,7 @@ class AccountController extends GetxController {
     isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
         ? isScreenLockNotify.value = true
         : isScreenLockNotify.value = false;
-    
+
   }
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
@@ -566,7 +575,7 @@ class AccountController extends GetxController {
       'Authorization':
       "Bearer ${token.toString()}",
     };
-  
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -734,7 +743,7 @@ class AccountController extends GetxController {
       'Authorization':
       "Bearer ${token.toString()}",
     };
-   
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -945,7 +954,9 @@ class AccountController extends GetxController {
     });
   }
 
-  apiCreateMembershipPlan() async{
+//Create membership plan
+  apiCreateMembershipPlan(
+      {int index = 0, String membershipPlanId = "", String planDays = ""}) async{
     debugPrint(
         "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
     var token = await SharedPreferenceStorage.getData('token');
@@ -955,8 +966,14 @@ class AccountController extends GetxController {
           "Bearer ${token.toString()}",
     };
     Map data = {
-      "membership_plan_id": selectedMembershipPlanId.value,
-      "count": noOfDaysTextController.text.trim()
+      "membership_plan_id": membershipPlanId,
+      "plan_days": planDays == "plan30"
+          ? "30"
+          : planDays == "plan90"
+              ? "90"
+              : planDays == "plan180"
+                  ? "180"
+                  : "365"
     };
     debugPrint("CREATE MEMBERSHIP BODY**********$data");
     UserProvider()

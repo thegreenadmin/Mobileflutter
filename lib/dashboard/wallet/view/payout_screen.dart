@@ -95,9 +95,13 @@ class PayOutScreenState extends State<PayOutScreen> {
                                   size: 24.0,
                                 ),
                                 width4SizedBox,
-                                Flexible(
-                                    child: Text(StringConstants
-                                        .toKnowBalanceYouDontHaveText)),
+                                  Flexible(
+                                    child: Text(
+                                        StringConstants
+                                            .toKnowBalanceYouDontHaveText,
+                                        style: TextStyle(
+                                            color: AppColors.blacklight,
+                                            fontSize: 18))),
                               ],
                             )
                           ],

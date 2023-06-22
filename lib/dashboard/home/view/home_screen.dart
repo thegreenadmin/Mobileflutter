@@ -493,11 +493,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     ),
                                   ),
-                                ) :
+                                )
+                              :
 
                               /// USER CAROUSEL
                               CarouselSlider(
-                                  items: homeController.userCarouselImgList.take(5)
+                                  items: homeController.userCarouselImgList
+                                      .take(5)
                                       .map((item) => InkWell(
                                             onTap: () async{
                                               if(homeController.isLoading?.value == false){
@@ -558,7 +560,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: homeController.userCarouselImgList.take(5).toList().asMap()
+                                    children: homeController.userCarouselImgList
+                                        .take(5)
+                                        .toList()
+                                        .asMap()
                                         .entries
                                         .map((entry) {
                                       return GestureDetector(
@@ -627,7 +632,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ///OWNER CAROUSEL
                             : CarouselSlider(
-                                items: homeController.getOwnerOfferList.take(5)
+                                items: homeController.getOwnerOfferList
+                                    .take(5)
                                     .map((item) => InkWell(
                                           onTap: () {
                                             if(homeController.isLoading?.value == false){
@@ -692,7 +698,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? height0SizedBox
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: homeController.getOwnerOfferList.take(5).toList().asMap()
+                                children: homeController.getOwnerOfferList
+                                    .take(5)
+                                    .toList()
+                                    .asMap()
                                     .entries
                                     .map((entry) {
                                   return GestureDetector(

@@ -529,7 +529,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     index]
                                                                 .orderTransaction !=
                                                             null
-                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.storeReceivedAmount!.toStringAsFixed(2)}"
+                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
                                                         : transactionController
                                                                     .userTransactionList![
                                                                         index]
