@@ -38,7 +38,7 @@ class TransactionDetailController extends GetxController {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";

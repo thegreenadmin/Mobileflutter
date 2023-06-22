@@ -28,7 +28,7 @@ class _OwnerTransactionDetailScreenState
         Get.parameters['store_wallet_transaction_id'] ?? "";
     transactionDetailController.storeId!.value = Get.parameters['store_id'] ?? "";
     transactionDetailController.isCurrentMonthSelected.value = true;
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
+    if (SharedPreferenceStorage.getData(Role.role) ==
         Role.customerRoleText) {
       transactionDetailController.role!.value = Role.customerRoleText;
       // apiGetUserOrderTransactionHistory();

@@ -153,7 +153,36 @@ class OwnerStoresController extends GetxController {
     getCurrentLocation();
     getGkey();
   }
+  getGkey() async {
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
+    secureData =
+    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+  }
+  getCurrentLocation() async {
+    Position currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+    getApiData();
+  }
 
+  getApiData() async {
+    await apiGetDeliveryServices();
+
+    // if (Get.parameters['isFromHome'] == "true") {
+    if (storeId.value != "") {
+      await apiGetParticularStore();
+    }
+    // }
+    await apiGetStoreList();
+    await apiGetOwnerOffersList();
+    await apiGetFeaturedProducts();
+
+  }
 
   filePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -244,37 +273,8 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  getGkey() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
-    role?.value = roleVal;
-    secureData =
-        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-  }
 
-  getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-    getApiData();
-  }
 
-  getApiData() async {
-    await apiGetDeliveryServices();
-
-    // if (Get.parameters['isFromHome'] == "true") {
-    if (Get.parameters['storeId'] != "") {
-      await apiGetParticularStore();
-    }
-    // }
-    await apiGetStoreList();
-    await apiGetOwnerOffersList();
-    await apiGetFeaturedProducts();
-
-  }
 
   bool validateAndSave() {
     final form = formKey.currentState;

@@ -56,8 +56,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ordersController.orderStatusId.value = 2;
       // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
       // print("SharedPreferenceStorage:--Order Screen---------------");
-      // print(SharedPreferenceStorage.getData(Role.role.value));
-      if (SharedPreferenceStorage.getData(Role.role.value) ==
+      // print(SharedPreferenceStorage.getData(Role.role));
+      if (SharedPreferenceStorage.getData(Role.role) ==
           Role.customerRoleText) {
         ordersController.role!.value = Role.customerRoleText;
         // ordersController.apiGetOrderListApi();

@@ -111,17 +111,17 @@ class AccountController extends GetxController {
     // isFromCart.value = Get.arguments["isFromCart"] ?? false;
     isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
     debugPrint(isFromCart.value.toString());
-    apiGetUserDetailApi(Get.context!);
-    getGkey(Get.context!);
+    apiGetUserDetailApi();
+    getGkey();
 
 
   }
 
-  getGkey(context) async {
+  getGkey() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
@@ -130,12 +130,12 @@ class AccountController extends GetxController {
     StringConstants.authenticatedText.toLowerCase());
     BioMetricAuthentication.isBioMetricAuthenticated.value =
         val ?? false;
-    roleId?.value = await SharedPreferenceStorage.getData(Role.role.value);
+    roleId?.value = await SharedPreferenceStorage.getData(Role.role);
     if ( roleId?.value ==
         Role.customerRoleText) {
-      await apiGetNotificationStatus(false, context);
+      await apiGetNotificationStatus(false);
     } else {
-      await apiGetNotificationStatus(true, context);
+      await apiGetNotificationStatus(true);
     }
 
     isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
@@ -433,7 +433,7 @@ class AccountController extends GetxController {
   }
 
   //Get User Detail Info Api
-  Future apiGetUserDetailApi(context) async {
+  Future apiGetUserDetailApi() async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
      var token = await SharedPreferenceStorage.getData('token');
@@ -492,11 +492,11 @@ class AccountController extends GetxController {
                 getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
-        await apiGetCountries(Get.context!);
+        await apiGetCountries();
         await apiGetMembershipList();
         await apiGetActiveMembershipList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        await apiGetCountries(context);
+        await apiGetCountries();
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -509,7 +509,7 @@ class AccountController extends GetxController {
   }
 
   //Get Countries Api
-  Future apiGetCountries(context) async {
+  Future apiGetCountries() async {
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
      var token = await SharedPreferenceStorage.getData('token');
@@ -541,7 +541,7 @@ class AccountController extends GetxController {
             }
           }
         }
-        apiGetStates(context);
+        apiGetStates();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -556,7 +556,7 @@ class AccountController extends GetxController {
   }
 
   //Get States Api
-  Future apiGetStates(context) async {
+  Future apiGetStates() async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
 
@@ -668,7 +668,7 @@ class AccountController extends GetxController {
          Get.back(id:pageId.value );
          // Navigator.of(context).pop();
 
-          await apiGetUserDetailApi(context);
+          await apiGetUserDetailApi();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -724,7 +724,7 @@ class AccountController extends GetxController {
   }
 
   //Get Notification Status Api
-  Future apiGetNotificationStatus(bool isOwner, BuildContext context) async {
+  Future apiGetNotificationStatus(bool isOwner ) async {
     debugPrint(
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
 
@@ -849,16 +849,14 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        if (SharedPreferenceStorage.getData(Role.role.value).toString() ==
+        if (SharedPreferenceStorage.getData(Role.role).toString() ==
             Role.customerRoleText) {
           await apiGetNotificationStatus(
-            false,
-            context,
+            false
           );
         } else {
           await apiGetNotificationStatus(
-            true,
-            context,
+            true
           );
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -1105,7 +1103,7 @@ class AccountController extends GetxController {
     SharedPreferenceStorage.removeData(StringConstants.emailText);
     SharedPreferenceStorage.removeData(StringConstants.authenticatedText);
     SharedPreferenceStorage.removeData(StringConstants.currentUserIdText);
-    SharedPreferenceStorage.removeData(Role.role.value);
+    SharedPreferenceStorage.removeData(Role.role);
     SharedPreferenceStorage.removeData("lastName");
     SharedPreferenceStorage.removeData("email");
     SharedPreferenceStorage.removeData("token");

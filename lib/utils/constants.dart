@@ -729,7 +729,7 @@ class AlertStringConstants {
 
 //Roles in app
 class Role {
-  static RxString role = "".obs;
+  static String role = "role";
   static String storeOwnerRoleText = "StoreOwnerRole";
   static String customerRoleText = "CustomerRole";
 }

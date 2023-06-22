@@ -202,17 +202,17 @@ class _AccountScreenState extends State<AccountScreen> {
                           splashColor: Colors.transparent,
                           onTap: () async {
                             if (accountController.roleId?.value.toString() == Role.customerRoleText) {
-                               SharedPreferenceStorage.setData(Role.role.value, Role.storeOwnerRoleText);
+                               SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
                                accountController.roleId?.value = Role.storeOwnerRoleText;
-                              Get.parameters[Role.role.value] = Role.storeOwnerRoleText;
+                              Get.parameters[Role.role] = Role.storeOwnerRoleText;
 
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
 
                             } else {
                                SharedPreferenceStorage.setData(
-                                  Role.role.value, Role.customerRoleText);
+                                  Role.role, Role.customerRoleText);
                                accountController.roleId?.value = Role.customerRoleText;
-                              Get.parameters[Role.role.value] =  Role.customerRoleText;
+                              Get.parameters[Role.role] =  Role.customerRoleText;
 
                               Get.until((route) => route.isFirst,id:accountController.pageId.value);
 

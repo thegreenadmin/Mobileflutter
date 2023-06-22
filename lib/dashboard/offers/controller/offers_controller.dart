@@ -60,6 +60,7 @@ class OffersController extends GetxController {
         Get.parameters["isFromNotification"] == "true" ? true : false;
       }
       getCurrentLocation();
+      update();
     });
 
   }
@@ -68,22 +69,25 @@ class OffersController extends GetxController {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    role.value = await SharedPreferenceStorage.getData(Role.role.value);
+    role.value = await SharedPreferenceStorage.getData(Role.role);
 
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
 
-    debugPrint("CURRENT roleVal************${role.value}");
+    debugPrint("CURRENT roleVal************${role.value} ${pageId.value}");
 
     print(role.value == Role.customerRoleText);
     print(role.value);
     print(Role.customerRoleText);
     if ( role.value == Role.customerRoleText) {
       apiGetUserOffersList();
+      update();
     } else {
       apiGetOwnerOffersList();
+      update();
     }
+
   }
 
   //Get Offers List Api [OWNER]

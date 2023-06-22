@@ -114,7 +114,7 @@ class OrdersController extends GetxController {
     isActiveOrders.value = true;
     orderStatusId.value = 2;
     orderStatusName.value = OrderStatus.receivedOrder.statusName;
-    role!.value = SharedPreferenceStorage.getData(Role.role.value).toString();
+    role!.value = SharedPreferenceStorage.getData(Role.role).toString();
     if (role!.value == Role.customerRoleText) {
       page.value = 1;
       apiGetOrderListApi();
@@ -136,7 +136,7 @@ class OrdersController extends GetxController {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
 

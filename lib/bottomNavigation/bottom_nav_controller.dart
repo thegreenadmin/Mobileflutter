@@ -33,24 +33,32 @@ class BottomNavController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    if (initialRemoteMessage != null) {
-      selectNotification(NotificationResponse(
-        notificationResponseType:
-            NotificationResponseType.selectedNotificationAction,
-        payload: json.encode(initialRemoteMessage!.data),
-      ));
-      initialRemoteMessage = null;
-    }
-    selectedIndex.value = Get.parameters["currentIndex"] != null
-        ? int.parse(Get.parameters["currentIndex"].toString())
-        : 0;
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
-    getRole();
+      if (initialRemoteMessage != null) {
+        selectNotification(NotificationResponse(
+          notificationResponseType:
+          NotificationResponseType.selectedNotificationAction,
+          payload: json.encode(initialRemoteMessage!.data),
+        ));
+        initialRemoteMessage = null;
+      }
+
+      selectedIndex.value = Get.parameters["currentIndex"] != null
+          ? int.parse(Get.parameters["currentIndex"].toString())
+          : 0;
+      SharedPreferenceStorage.setData("pageId", 0);
+      Future.delayed(Duration.zero, () {
+        getRole();
+      });
+      onItemTapped(0);
+    });
   }
 
   getRole() async {
-    SharedPreferenceStorage.setData("pageId", 0);
-    roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
+    roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
+    print("Bottom nav cont roleInApp:--------${roleInApp.value}");
+    print(roleInApp.value);
   }
 
   //Get Store List Api
@@ -91,12 +99,6 @@ class BottomNavController extends GetxController {
     });
   }
 
-
-
-
-
-
-
   late int getCurrentNavKey;
 
   List<Widget> tabs = [
@@ -108,19 +110,22 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
-    roleInApp.value = await SharedPreferenceStorage.getData(Role.role.value);
+    getRole();
     var pageId = await SharedPreferenceStorage.getData("pageId");
+      selectedIndex.value = index;
+      if(pageId!=null){
+        Get.until((route) => route.isFirst,id:pageId);
+      }
+      SharedPreferenceStorage.removeData("pageId");
 
-    selectedIndex.value = index;
-
-    Get.until((route) => route.isFirst,id:pageId);
     if (selectedIndex.value == 0) {
       try {
-        SharedPreferenceStorage.removeData("pageId");
-        HomeController homeController = Get.put(HomeController());
-        // HomeController homeController = Get.find<HomeController>();
-        SharedPreferenceStorage.setData("pageId", 0);
-        homeController.onInit();
+        // Get.delete<HomeController>();
+        Future.delayed(Duration.zero, () {
+          SharedPreferenceStorage.setData("pageId", 0);
+          HomeController homeController = Get.put(HomeController());
+          homeController.onInit();
+        });
 
       } catch (e) {
         //Pass
@@ -128,11 +133,17 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 1) {
       try {
-        // WalletController walletController = Get.find<WalletController>();
-        WalletController walletController = Get.put(WalletController());
-        SharedPreferenceStorage.removeData("pageId");
-        SharedPreferenceStorage.setData("pageId", 1);
-        walletController.onInit();
+
+        // Get.delete<WalletController>();
+        Future.delayed(Duration.zero, () async{
+          SharedPreferenceStorage.setData("pageId", 1);
+          WalletController walletController = Get.put(WalletController());
+
+          var pageId = await SharedPreferenceStorage.getData("pageId");
+          debugPrint("Bottom WalletController pageId:---------$pageId---");
+          walletController.onInit();
+        });
+
 
       } catch (e) {
         //Pass
@@ -140,32 +151,37 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 2) {
       try {
-        SharedPreferenceStorage.removeData("pageId");
-        // OrdersController ordersController =  Get.find<OrdersController>();
-        OrdersController ordersController = Get.put(OrdersController());
-        if (roleInApp.value == Role.customerRoleText) {
-          storeList.clear();
-        } else {
-          await apiGetStoreList();
-        }
-        roleInApp.value == Role.storeOwnerRoleText ?
-        storeList.length > 1 ||
-            storeList.isEmpty
-            ? SharedPreferenceStorage.setData("pageId", 2)
-            : SharedPreferenceStorage.setData("pageId", 3)
-            : SharedPreferenceStorage.setData("pageId", 4);
-        ordersController.onInit();
+        // Get.delete<OrdersController>();
+        Future.delayed(Duration.zero, ()async {
+          if (roleInApp.value == Role.customerRoleText) {
+            storeList.clear();
+          } else {
+            await apiGetStoreList();
+          }
+          roleInApp.value == Role.storeOwnerRoleText ?
+          storeList.length > 1 ||
+              storeList.isEmpty
+              ? SharedPreferenceStorage.setData("pageId", 2)
+              : SharedPreferenceStorage.setData("pageId", 3)
+              : SharedPreferenceStorage.setData("pageId", 4);
+          OrdersController ordersController = Get.put(OrdersController());
+          ordersController.onInit();
+        });
+
       } catch (e) {
         //Pass
       }
     }
     else if (selectedIndex.value == 3) {
       try {
-        SharedPreferenceStorage.removeData("pageId");
-        // OffersController offersController =  Get.find<OffersController>();
-        OffersController offersController = Get.put(OffersController());
-        SharedPreferenceStorage.setData("pageId", 5);
-        offersController.onInit();
+        Future.delayed(Duration.zero, () async{
+          SharedPreferenceStorage.setData("pageId", 5);
+          // Get.delete<OffersController>();
+          OffersController offersController = Get.put(OffersController());
+
+          offersController.onInit();
+        });
+
         // controller.onInit();
       } catch (e) {
         //Pass
@@ -173,11 +189,14 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 4) {
       try {
-        SharedPreferenceStorage.removeData("pageId");
-        // MoreController moreController = Get.find<MoreController>();
-        MoreController moreController = Get.put(MoreController());
-        SharedPreferenceStorage.setData("pageId", 6);
-        moreController.onInit();
+        Future.delayed(Duration.zero, () async{
+          SharedPreferenceStorage.setData("pageId", 6);
+          // Get.delete<MoreController>();
+          MoreController moreController = Get.put(MoreController());
+
+          moreController.onInit();
+        });
+
       } catch (e) {
         //Pass
       }

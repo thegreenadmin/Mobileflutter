@@ -61,7 +61,7 @@ class AddNewRoleController extends GetxController {
     firstName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(strings.Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(strings.Role.role);
     role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";

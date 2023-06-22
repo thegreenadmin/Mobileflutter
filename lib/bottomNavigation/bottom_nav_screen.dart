@@ -25,12 +25,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
 
- /* GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
-  GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();*/
+  // GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
+  final GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +80,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       backgroundColor: AppColors.white,
                       currentIndex:
                       bottomNavigationPageController.selectedIndex.value,
-                      onTap: (i) async {
-                        await bottomNavigationPageController.onItemTapped(i);
+                      onTap: (i) { bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
                         BottomNavigationBarItem(
@@ -244,17 +244,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
               IndexedStack(
               index: bottomNavigationPageController.selectedIndex.value,
               children: [
-                  _TabNav(0, const HomeScreen()),
-                  _TabNav(1, const WalletScreen()),
+                  _TabNav(tab1, const HomeScreen()),
+                  _TabNav(tab2, const WalletScreen()),
                 bottomNavigationPageController.roleInApp.value ==
                 Role.storeOwnerRoleText ?
                 bottomNavigationPageController.storeList.length > 1 ||
                     bottomNavigationPageController.storeList.isEmpty
-                    ? _TabNav(2, const OrderStoresListScreen())
-                    : _TabNav(3, const OrdersHomeMainScreen())
-                    : _TabNav(4, const OrdersScreen()),
-                  _TabNav(5, const OffersScreen()),
-                  _TabNav(6, const MoreScreen()),],
+                    ? _TabNav(tab2, const OrderStoresListScreen())
+                    : _TabNav(tab3, const OrdersHomeMainScreen())
+                    : _TabNav(tab4, const OrdersScreen()),
+                  _TabNav(tab5, const OffersScreen()),
+                  _TabNav(tab6, const MoreScreen()),],
             ),
 
 
@@ -264,7 +264,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             tabs: <TabItem>[
               TabItem(tab1, const HomeScreen()),
               TabItem(tab2, const WalletScreen()),
-              SharedPreferenceStorage.getData(Role.role.value) ==
+              SharedPreferenceStorage.getData(Role.role) ==
                           Role.storeOwnerRoleText ?
                       bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
@@ -289,15 +289,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
       ),
     );
   }
-
-   /* Widget  buildNavigator() {
-      return Navigator(
-        key: navigatorKeysAll[bottomNavigationPageController.selectedIndex.value],
-        onGenerateRoute: (RouteSettings settings){
-          return MaterialPageRoute(builder: (_) => bottomNavigationPageController.tabs.elementAt(bottomNavigationPageController.selectedIndex.value));
-        },
-      );
-    }*/
 }
 
 /*class TabItem {
@@ -367,9 +358,11 @@ class TabNavigatorState extends State<TabNavigator> {
 
 /// sub navigators.
 class _TabNav extends GetView<BottomNavController> {
-  final int navKey;
+  final GlobalKey<NavigatorState> navKey;
+  // final int navKey;
   final Widget tab;
-  _TabNav(this.navKey,this.tab);
+  const _TabNav(this.navKey,this.tab);
+
   @override
   Widget build(BuildContext context) {
     return Navigator(

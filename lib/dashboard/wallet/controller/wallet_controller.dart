@@ -123,21 +123,21 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
       getPage();
-    });
+    // });
 
   }
-  getPage()async{
+  getPage() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
 
     pageId.value = await SharedPreferenceStorage.getData("pageId");
 
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
-    print( "WalletCont:-----  ----------------------------");
-    print(pageId.value);
-    print(roleVal);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    debugPrint( "WalletController:----- ${firstName?.value} ---${pageId.value} --$roleVal --------");
+    debugPrint( "WalletController:----- ${firstName?.value} ---${pageId.value} --$roleVal --------");
+
     role?.value = roleVal;
     autoChargeType.value = "threshold";
     if (role?.value== Role.customerRoleText) {
@@ -152,9 +152,9 @@ class WalletController extends GetxController {
       await apiGetCountries();
       await apiGetAccountDetails();
     }
+    update();
   }
   getApiData() async {
-
     await apiGetCardList(Get.context!);
     await apiGetUserWalletBalance();
     await apiGetAutoRechargeDetail();

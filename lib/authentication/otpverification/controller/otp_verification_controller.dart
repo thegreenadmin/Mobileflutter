@@ -94,10 +94,10 @@ class OtpVerificationController extends GetxController {
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(
-              Role.role.value, Role.storeOwnerRoleText);
+              Role.role, Role.storeOwnerRoleText);
         } else {
           SharedPreferenceStorage.setData(
-              Role.role.value, Role.customerRoleText);
+              Role.role, Role.customerRoleText);
         }
 
         Get.offAll(() => const BottomNavigation());

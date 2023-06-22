@@ -276,7 +276,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               InkWell(
                                   onTap: () {
                                     SharedPreferenceStorage.getData(
-                                                Role.role.value) ==
+                                                Role.role) ==
                                             Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()
@@ -319,7 +319,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               InkWell(
                                   onTap: () {
                                     SharedPreferenceStorage.getData(
-                                                Role.role.value) ==
+                                                Role.role) ==
                                             Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()

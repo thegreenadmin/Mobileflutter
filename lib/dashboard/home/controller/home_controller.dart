@@ -59,7 +59,6 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     apiGetUserDetail();
     getCurrentLocation();
     getPage();
@@ -69,7 +68,7 @@ class HomeController extends GetxController {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
   getCurrentLocation() async {
@@ -78,7 +77,7 @@ class HomeController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role.value);
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
     if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       await apiGetUserOffersList();

@@ -19,7 +19,7 @@ class OffersScreen extends StatefulWidget {
 }
 
 class _OffersScreenState extends State<OffersScreen> {
-  final OffersController offersController = Get.put(OffersController());
+  OffersController offersController = Get.put(OffersController());
 
 
   @override
@@ -128,7 +128,7 @@ class _OffersScreenState extends State<OffersScreen> {
                               //     .push(MaterialPageRoute(
                               //   builder: (_) => const AddOfferScreen(),
                               // ))
-                                  Get.to(const AddOfferScreen(),
+                                  Get.to(() =>const AddOfferScreen(),
                                       id:offersController.pageId.value,
                                       arguments: {
                                     "isFrom": StringConstants.addOfferText,
@@ -312,8 +312,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 index]
                                                             .storeId
                                                             .toString());
-                                                SharedPreferenceStorage.setData(
-                                                    "context", context);
+                                                // SharedPreferenceStorage.setData(
+                                                //     "context", context);
 
                                                 Navigator.of(context)
                                                     .push(MaterialPageRoute(
@@ -655,7 +655,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //       const EditOfferScreen(),
                                                   // ))
 
-                                                      Get.to(const EditOfferScreen(),
+                                                      Get.to(() =>const EditOfferScreen(),
                                                       id:offersController.pageId.value,
                                                               arguments: {
                                                             "isFrom":StringConstants.editOfferText,

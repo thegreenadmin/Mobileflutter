@@ -31,12 +31,12 @@ class _WalletScreenState extends State<WalletScreen> {
     walletController.lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     walletController.role?.value =
-        SharedPreferenceStorage.getData(Role.role.value);
+        SharedPreferenceStorage.getData(Role.role);
     debugPrint("SharedPreferenceStorage");
     debugPrint(SharedPreferenceStorage.getData(StringConstants.firstNameText));
     debugPrint(SharedPreferenceStorage.getData(StringConstants.lastNameText));
-    debugPrint(SharedPreferenceStorage.getData(Role.role.value));
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
+    debugPrint(SharedPreferenceStorage.getData(Role.role));
+    if (SharedPreferenceStorage.getData(Role.role) ==
         Role.customerRoleText) {
       walletController.isFromCartScreen.value =
           Get.parameters["isFromCartScreen"] == "true" ? true : false;
@@ -380,7 +380,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     ),
                   ),
                 ),
-                // SharedPreferenceStorage.getData(Role.role.value) ==
+                // SharedPreferenceStorage.getData(Role.role) ==
                 //         Role.customerRoleText
                 //     ? Container(
                 //         color: AppColors.grey,
@@ -388,7 +388,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 //         height: 40,
                 //       )
                 //     : height0SizedBox,
-                // SharedPreferenceStorage.getData(Role.role.value) ==
+                // SharedPreferenceStorage.getData(Role.role) ==
                 //         Role.customerRoleText
                 //     ? Expanded(
                 //         flex: 4,
