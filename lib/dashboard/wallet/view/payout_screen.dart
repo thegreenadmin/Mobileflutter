@@ -25,6 +25,11 @@ class PayOutScreenState extends State<PayOutScreen> {
   final AddCardController addCardController = Get.put(AddCardController());
 
   @override
+  initState() {
+    addCardController.apiGetBankAccountList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -93,7 +98,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                   size: 24.0,
                                 ),
                                 width4SizedBox,
-                                  Flexible(
+                                Flexible(
                                     child: Text(
                                         StringConstants
                                             .toKnowBalanceYouDontHaveText,
@@ -432,7 +437,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                       ),
                                     ],
                                   )
-                            : ListView.separated(
+                            : Obx(() => ListView.separated(
                                 separatorBuilder:
                                     (BuildContext context, int index) {
                                   return height15SizedBox;
@@ -537,7 +542,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                           ]),
                                     ),
                                   );
-                                }),
+                                })),
                       )),
                   height20SizedBox,
                   CustomButton(

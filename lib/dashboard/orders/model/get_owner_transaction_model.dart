@@ -1126,13 +1126,13 @@ class OrderItem {
   dynamic orderItemPrice;
   String? discountName;
   String? discountType;
-  int? discountValue;
-  int? totalDiscount;
+  dynamic discountValue;
+  dynamic totalDiscount;
   String? orderItemStatus;
-  Null? cancelledAt;
-  Null? shippedAt;
-  Null? deliveredAt;
-  Null? returedAt;
+  dynamic cancelledAt;
+  dynamic shippedAt;
+  dynamic deliveredAt;
+  dynamic returedAt;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -1244,12 +1244,12 @@ class Transactionn {
 class StorePayout {
   String? transactionId;
   String? userStripeBankId;
-  int? transferedAmount;
-  int? totalTransactionAmount;
-  int? reversedAmount;
-  int? totalReversedAmount;
+  dynamic transferedAmount;
+  dynamic totalTransactionAmount;
+  dynamic reversedAmount;
+  dynamic totalReversedAmount;
   String? payoutType;
-  Null? isReversed;
+  dynamic isReversed;
   String? stripeTransferId;
   String? stripePayoutId;
   String? status;

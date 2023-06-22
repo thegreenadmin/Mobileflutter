@@ -126,13 +126,13 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               size: 24.0,
                             ),
                             width4SizedBox,
-                          Flexible(
-                                    child: Text(
-                                        StringConstants
-                                            .toKnowBalanceYouDontHaveText,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 18))),
+                            Flexible(
+                                child: Text(
+                                    StringConstants
+                                        .toKnowBalanceYouDontHaveText,
+                                    style: TextStyle(
+                                        color: AppColors.blacklight,
+                                        fontSize: 18))),
                           ],
                         )
                       : Row(
@@ -158,8 +158,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500))
                                   : DropdownButtonFormField<String>(
-                                      value:
-                                              walletController
+                                      value: walletController
                                                       .storeNameValue!.value !=
                                                   "" &&
                                               walletController
@@ -421,7 +420,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 ),
                                 activeColor: AppColors.greymediumlight,
                                 inactiveColor: AppColors.greymediumlight,
-                                onToggle: (val) async{
+                                onToggle: (val) async {
                                   walletController.isautoRechargeEnable.value =
                                       val;
                                   if (walletController
@@ -563,6 +562,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                   ? height0SizedBox
                   : InkWell(
                       onTap: () {
+                   
                         SharedPreferenceStorage.setData("context", context);
                         Navigator.of(context)
                             .push(MaterialPageRoute(
