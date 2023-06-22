@@ -243,17 +243,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
           body: IndexedStack(
               index: bottomNavigationPageController.selectedIndex.value,
               children: [
-                  _TabNav(0, const HomeScreen()),
-                  _TabNav(1, const WalletScreen()),
+                  const _TabNav(0, HomeScreen()),
+                  const _TabNav(1, WalletScreen()),
                 bottomNavigationPageController.roleInApp.value ==
                 Role.storeOwnerRoleText ?
                 bottomNavigationPageController.storeList.length > 1 ||
                     bottomNavigationPageController.storeList.isEmpty
-                    ? _TabNav(2, const OrderStoresListScreen())
-                    : _TabNav(3, const OrdersHomeMainScreen())
-                    : _TabNav(4, const OrdersScreen()),
-                  _TabNav(5, const OffersScreen()),
-                  _TabNav(6, const MoreScreen()),],
+                    ? const _TabNav(2, OrderStoresListScreen())
+                    : const _TabNav(3, OrdersHomeMainScreen())
+                    : const _TabNav(4, OrdersScreen()),
+                  const _TabNav(5, OffersScreen()),
+                  const _TabNav(6, MoreScreen()),],
             ),
 
 
@@ -357,11 +357,10 @@ class TabNavigatorState extends State<TabNavigator> {
 
 /// sub navigators.
 class _TabNav extends GetView<BottomNavController> {
-  // final GlobalKey<NavigatorState> navKey;
   final int navKey;
   final Widget tab;
-   _TabNav(this.navKey,this.tab);
-  // final GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
+   const _TabNav(this.navKey,this.tab);
+
   @override
   Widget build(BuildContext context) {
     return Navigator(

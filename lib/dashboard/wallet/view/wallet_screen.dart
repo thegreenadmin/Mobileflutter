@@ -21,6 +21,7 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
+  var roleVal ="";
 
   /*@override
   initState() {
@@ -127,8 +128,8 @@ class _WalletScreenState extends State<WalletScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Obx(
-              () => walletController.role!.value == Role.customerRoleText
+                Obx(() =>
+                walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
                       ? Row(

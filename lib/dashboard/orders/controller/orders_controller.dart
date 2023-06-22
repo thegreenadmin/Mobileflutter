@@ -91,45 +91,48 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    if ( Get.parameters['isFromNotification'] != "false") {
-      isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
-    }
-    if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if ( Get.parameters['isFromNotification'] != "false") {
+        isFromNotification.value =
+        Get.parameters["isFromNotification"] == "true" ? true : false;
+      }
+      if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
         storeId.value = Get.parameters["storeId"] ?? "";
+        if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+          storeId.value = Get.parameters["storeId"] ?? "";
+          apiGetStoreDetailsApi();
+        }
         apiGetStoreDetailsApi();
       }
-      apiGetStoreDetailsApi();
-    }
 
-    if (Get.parameters["orderStatus"] != null) {
-      orderStatus.value = Get.parameters["orderStatus"] ?? "";
-    }
-    if (Get.parameters["isHome"] != null) {
-      isHome.value = Get.parameters["isHome"] == "true" ? true : false;
-    }
-
-    isActiveOrders.value = true;
-    orderStatusId.value = 2;
-    orderStatusName.value = OrderStatus.receivedOrder.statusName;
-    role!.value = SharedPreferenceStorage.getData(Role.role).toString();
-    if (role!.value == Role.customerRoleText) {
-      page.value = 1;
-      apiGetOrderListApi();
-      if (orderStatus.value != "") {
-        apiGetOrderDetailsApi();
+      if (Get.parameters["orderStatus"] != null) {
+        orderStatus.value = Get.parameters["orderStatus"] ?? "";
       }
-    } else {
-      apiGetStoreList();
-      page.value = 1;
-      apiGetStoreOrderListApi();
-    }
+      if (Get.parameters["isHome"] != null) {
+        isHome.value = Get.parameters["isHome"] == "true" ? true : false;
+      }
 
-    apiGetOrderStatusListApi();
-    getPage();
-    setupScrollController();
+      isActiveOrders.value = true;
+      orderStatusId.value = 2;
+      orderStatusName.value = OrderStatus.receivedOrder.statusName;
+      role!.value = SharedPreferenceStorage.getData(Role.role).toString();
+      if (role!.value == Role.customerRoleText) {
+        page.value = 1;
+        apiGetOrderListApi();
+        if (orderStatus.value != "") {
+          apiGetOrderDetailsApi();
+        }
+      } else {
+        apiGetStoreList();
+        page.value = 1;
+        apiGetStoreOrderListApi();
+      }
+
+      apiGetOrderStatusListApi();
+      getPage();
+      setupScrollController();
+    });
+
     super.onInit();
   }
   getPage()async{

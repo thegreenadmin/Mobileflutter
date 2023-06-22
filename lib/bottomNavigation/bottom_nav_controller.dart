@@ -113,7 +113,7 @@ class BottomNavController extends GetxController {
     getRole();
     var pageId = await SharedPreferenceStorage.getData("pageId");
       selectedIndex.value = index;
-      if(pageId!=null){
+      if(pageId!=null && pageId!=""){
         Get.until((route) => route.isFirst,id:pageId);
       }
       SharedPreferenceStorage.removeData("pageId");
@@ -126,7 +126,6 @@ class BottomNavController extends GetxController {
           HomeController homeController = Get.put(HomeController());
           homeController.onInit();
         });
-
       } catch (e) {
         //Pass
       }
@@ -143,8 +142,6 @@ class BottomNavController extends GetxController {
           debugPrint("Bottom WalletController pageId:---------$pageId---");
           walletController.onInit();
         });
-
-
       } catch (e) {
         //Pass
       }
@@ -181,8 +178,6 @@ class BottomNavController extends GetxController {
 
           offersController.onInit();
         });
-
-        // controller.onInit();
       } catch (e) {
         //Pass
       }

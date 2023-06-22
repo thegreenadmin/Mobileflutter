@@ -123,9 +123,9 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       getPage();
-    // });
+    });
 
   }
   getPage() async {
