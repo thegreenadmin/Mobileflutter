@@ -60,6 +60,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetUserDetail();
+    getCurrentLocation();
   }
 
   getCurrentLocation() async {
@@ -180,7 +181,7 @@ class HomeController extends GetxController {
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
-        await getCurrentLocation();
+
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
