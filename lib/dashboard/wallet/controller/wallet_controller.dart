@@ -107,7 +107,7 @@ class WalletController extends GetxController {
   late GetOwnerStoresResponse getStoreListModel = GetOwnerStoresResponse();
   late GetAutoRechargeModel getAutoRechargeModel = GetAutoRechargeModel();
 
-  RxList<Stores> storeList = <Stores>[].obs;
+  RxList<Datum> storeList = <Datum>[].obs;
   RxList<String> monthDayList = <String>[].obs;
   RxList<Categories> weekDaysList = [
     Categories(id: 1, name: "Monday", isSelected: false),
@@ -385,7 +385,7 @@ class WalletController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
         storeList.clear();
-        storeList.addAll(getStoreListModel.data as Iterable<Stores>);
+        storeList.addAll(getStoreListModel.data as Iterable<Datum>);
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {
           ownerSelectedStore.value = storeList[0].storeId.toString();
@@ -665,7 +665,6 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
-
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
