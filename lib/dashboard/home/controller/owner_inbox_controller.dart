@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_inbox_model.dart';
@@ -42,23 +45,31 @@ class OwnerInboxController extends GetxController {
   //Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
-    debugPrint("GET OWNER INBOX URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}");
+    RxString url ="".obs;
+    if(showPreviousMessages.value){
+      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
+    }else{
+      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10";
+    }
+    debugPrint("GET OWNER INBOX URL********** ${url.value}");
+
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${token.toString()}",
     };
+
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
+            url.value,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET OWNER INBOX RESPONSE *******${value!.body}");
+      log("GET OWNER INBOX RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         inboxModel = OwnerInboxModel.fromJson(value.body);

@@ -248,8 +248,8 @@ class HomeController extends GetxController {
     });
   }
 
-  //Feature ProductList Store Api [USER]
-  Future apiGetUserFeaturedProducts() async {
+  //Feature ProductList Store Api [USER OLD]
+  Future apiGetUserFeaturedProductsOLD() async {
     isLoading!.value = true;
     debugPrint("USER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
@@ -283,6 +283,64 @@ class HomeController extends GetxController {
             data,
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading!.value = false;
+      debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        userFeaturedProductModel =
+            UserFeaturedProductModel.fromJson(value?.body);
+        featuredUserProductList.value =
+            userFeaturedProductModel.data!.products!;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        await Get.offAll(const StartJourneyScreen());
+        // await Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  //Feature ProductList Store Api [USER NEW]
+  Future apiGetUserFeaturedProducts() async {
+    isLoading!.value = true;
+    String url = "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
+    debugPrint("USER FEATURED PRODUCT URL**********$url");
+    var token = await SharedPreferenceStorage.getData('token');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer ${token.toString()}",
+    };
+    Map data = {
+      "q": "",
+      "store_id": null,
+      "page": 1,
+      "page_size": 5,
+      "order_by": "product_id",
+      "order_type": "DESC",
+      "category_id": null,
+      "is_favourite_products": false,
+      "filters": [
+        {
+          "filter_by": "is_featured_product",
+          "filter_value": true,
+          "operation": "eq"
+        }
+      ]
+    };
+
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("USER FEATURED PRODUCT BODY ********** ${data.toString()}");
+    UserProvider()
+        .getWithHeadersApi(
+            // data,
+            url,
             headers,
             showLoading: false)
         .then((value) async {

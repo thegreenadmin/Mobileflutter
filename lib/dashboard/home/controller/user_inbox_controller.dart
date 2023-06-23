@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/user_inbox_model.dart';
@@ -17,7 +20,7 @@ class UserInboxController extends GetxController {
   RxBool isLoading = false.obs;
   TextEditingController messageTextController = TextEditingController();
   late UserInboxModel inboxModel = UserInboxModel();
-  RxList<MessageHeads> inboxList = <MessageHeads>[].obs;
+  RxList<MessageHead> inboxList = <MessageHead>[].obs;
   RxString? role = "".obs;
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -46,14 +49,23 @@ class UserInboxController extends GetxController {
   //Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
-    debugPrint("GET INBOX URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}");
+
+    RxString url ="".obs;
+    if(showPreviousMessages.value){
+      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
+    }else{
+      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10";
+    }
+
+    debugPrint("GET OWNER INBOX URL**********${url.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
           "Bearer ${token.toString()}",
     };
+
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -62,7 +74,7 @@ class UserInboxController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET INBOX RESPONSE *******${value!.body}");
+      log("GET INBOX RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         inboxModel = UserInboxModel.fromJson(value.body);

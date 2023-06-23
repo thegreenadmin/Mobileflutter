@@ -133,6 +133,7 @@ class ServerCommunicator {
   String storeOrderList = 'store/order/list';
   String storeDelete = 'store/delete';
   String shopStoreHomeOffers = 'shop/home/offers/list';
+  String shopStoreHomeProducts = 'shop/home/products/list';
   String storeOrderDetail = 'store/order/details';
   String storeOrderConfirm = 'store/order/confirm/create';
   String storeOrderShipped = 'store/order/shipped/create';

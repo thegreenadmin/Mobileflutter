@@ -27,7 +27,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
   final UserInboxDetailController userInboxDetailController =
       Get.put(UserInboxDetailController());
 
-  @override
+  /*@override
   void initState() {
     userInboxDetailController.storeId.value = Get.parameters["storeId"] ?? "";
     userInboxDetailController.storeName.value =
@@ -35,7 +35,7 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
     userInboxDetailController.messageHeadId.value =
         Get.parameters["messageHeadId"] ?? "";
     userInboxDetailController.apiGetMessagesList();
-  }
+  }*/
 
   Container buildPhotoLibraryGridView() {
     return Container(

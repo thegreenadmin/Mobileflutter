@@ -248,22 +248,98 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                 ),
                                 width8SizedBox,
                                 Flexible(
-                                  flex: 8,
+                                  flex: 10,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        userInboxController.inboxList[index]
-                                                .store!.storeName ??
-                                            "",
-                                        textAlign: TextAlign.justify,
-                                        style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                      text:
+                                                      userInboxController
+                                                          .inboxList[index]
+                                                          .offer?.offerName !=null &&
+                                                          userInboxController
+                                                              .inboxList[index]
+                                                              .offer?.offerName !=""?userInboxController
+                                                          .inboxList[index]
+                                                          .offer!
+                                                          .offerName ??
+                                                          "":
+                                                      // "${userInboxController.inboxList[index].user?.firstName?? ""} ${userInboxController.inboxList[index].user?.lastName?? ""}",
+                                                      userInboxController.inboxList[index].store?.storeName?? "",
+
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight: FontWeight.w600),),
+                                                  TextSpan(
+                                                    text:
+                                                    /*userInboxController.inboxList[index]
+                                                  .orderId ==
+                                                  null &&
+                                                  userInboxController
+                                                      .inboxList[index]
+                                                      .offerId !=
+                                                      null
+                                                  ? userInboxController
+                                                  .inboxList[index]
+                                                  .offer!
+                                                  .offerName ??
+                                                  ""
+                                                  :*/ userInboxController
+                                                        .inboxList[index]
+                                                        .orderId !=
+                                                        null /*&&
+                                                  userInboxController
+                                                      .inboxList[index]
+                                                      .offerId ==
+                                                      null*/
+                                                        ? " - Order: "
+                                                        "#${userInboxController.inboxList[index].orderId}"
+                                                        : userInboxController
+                                                        .inboxList[
+                                                    index]
+                                                        .orderId ==
+                                                        null &&
+                                                        userInboxController
+                                                            .inboxList[
+                                                        index]
+                                                            .offerId ==
+                                                            null
+                                                        ? " - Contact us Request"
+                                                        : "",
+
+                                                    // : userInboxController
+                                                    //             .inboxList[index]
+                                                    //             .orderId ==
+                                                    //         null
+                                                    //     ? userInboxController
+                                                    //             .inboxList[index]
+                                                    //             .offer!
+                                                    //             .offerName ??
+                                                    //         ""
+                                                    //     : "Order: "
+                                                    //         "#${userInboxController.inboxList[index].orderId}",
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight: FontWeight.w600),
+                                                  ),
+                                                ],
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      height4SizedBox,
+                                      /*height4SizedBox,
                                       Text(
                                         userInboxController.inboxList[index]
                                                         .orderId ==
@@ -317,7 +393,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                             fontSize: 16.0,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w500),
-                                      ),
+                                      ),*/
                                       height4SizedBox,
                                       Row(
                                         mainAxisAlignment:
@@ -396,42 +472,45 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                             ),
                                           ),
                                           width10SizedBox,
-                                          RawMaterialButton(
-                                            elevation: 0,
-                                            onPressed: () async {
-                                              Utility.showConfirmAlertMessage(
-                                                  AlertStringConstants
-                                                      .areYouSureText,
-                                                  okay: StringConstants
-                                                      .deleteText, okayTap: () {
-                                                // Navigator.pop(Get.context!);
-                                                userInboxController
-                                                    .apiDeleteUserMessages(
-                                                        messageHeadId:
-                                                            userInboxController
-                                                                    .inboxList[
-                                                                        index]
-                                                                    .messageHeadId ??
-                                                                "");
-                                              });
-                                            },
-                                            constraints: const BoxConstraints(),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                18.0, 8.0, 18.0, 8.0),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 1.0,
-                                                  color: AppColors.primary),
-                                              borderRadius:
-                                                  BorderRadius.circular(28.0),
-                                            ),
-                                            fillColor: AppColors.white,
-                                            child: Text(
-                                              StringConstants.removeText,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14.0,
-                                                  color: AppColors.black),
+                                          Visibility(
+                                            visible: userInboxController.showPreviousMessages.value == false,
+                                            child: RawMaterialButton(
+                                              elevation: 0,
+                                              onPressed: () async {
+                                                Utility.showConfirmAlertMessage(
+                                                    AlertStringConstants
+                                                        .areYouSureText,
+                                                    okay: StringConstants
+                                                        .deleteText, okayTap: () {
+                                                  // Navigator.pop(Get.context!);
+                                                  userInboxController
+                                                      .apiDeleteUserMessages(
+                                                          messageHeadId:
+                                                              userInboxController
+                                                                      .inboxList[
+                                                                          index]
+                                                                      .messageHeadId ??
+                                                                  "");
+                                                });
+                                              },
+                                              constraints: const BoxConstraints(),
+                                              padding: const EdgeInsets.fromLTRB(
+                                                  18.0, 8.0, 18.0, 8.0),
+                                              shape: RoundedRectangleBorder(
+                                                side: const BorderSide(
+                                                    width: 1.0,
+                                                    color: AppColors.primary),
+                                                borderRadius:
+                                                    BorderRadius.circular(28.0),
+                                              ),
+                                              fillColor: AppColors.white,
+                                              child: Text(
+                                                StringConstants.completeText,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.0,
+                                                    color: AppColors.black),
+                                              ),
                                             ),
                                           ),
                                         ],

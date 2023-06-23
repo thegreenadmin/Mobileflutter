@@ -254,27 +254,55 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        ownerInboxController.inboxList[index]
-                                                .store!.storeName ??
-                                            "",
-                                        textAlign: TextAlign.justify,
-                                        style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                    ownerInboxController.inboxList[index].offer?.offerName!= null && ownerInboxController.inboxList[index].offer?.offerName!=""?
+                                                    ownerInboxController.inboxList[index].offer?.offerName ??"":
+                                                    "${ownerInboxController.inboxList[index].user?.firstName?? ""} ${ownerInboxController.inboxList[index].user?.lastName?? ""}",
+                                                    /* ownerInboxController.inboxList[index]
+                                                    .store!.storeName ??
+                                                "",*/
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight: FontWeight.w600),),
+                                                  TextSpan(
+                                                    text:
+                                                    ownerInboxController
+                                                        .inboxList[index].orderId ==
+                                                        null
+                                                        ?/*" ${ownerInboxController.inboxList[index].offer?.offerName ??""}"
+                                                             :*/ " - Order: "
+                                                        "#${ownerInboxController.inboxList[index].orderId}" :
+                                                    "- Contact us Request",
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: AppColors.black,
+                                                        fontWeight: FontWeight.w600),
+                                                  ),
+                                                ],
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      height4SizedBox,
+                                     /* height4SizedBox,
                                       Text(
                                         ownerInboxController
                                                     .inboxList[index].orderId ==
                                                 null
                                             ? ownerInboxController
                                                     .inboxList[index]
-                                                    .offer!
-                                                    .offerName ??
+                                                    .offer?.offerName ??
                                                 ""
-                                                    ""
                                             : "Order: "
                                                 "#${ownerInboxController.inboxList[index].orderId}",
                                         textAlign: TextAlign.justify,
@@ -282,7 +310,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                             fontSize: 16.0,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w500),
-                                      ),
+                                      ),*/
                                       height4SizedBox,
                                       Row(
                                         mainAxisAlignment:
@@ -360,48 +388,51 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                             ),
                                           ),
                                           width10SizedBox,
-                                          RawMaterialButton(
-                                            elevation: 0,
-                                            onPressed: () async {
-                                              Utility.showConfirmAlertMessage(
-                                                  AlertStringConstants
-                                                      .areYouSureText,
-                                                  okay: StringConstants
-                                                      .deleteText, okayTap: () {
-                                                // Navigator.pop(Get.context!);
-                                                ownerInboxController
-                                                    .apiDeleteStoreMessages(
-                                                        messageHeadId:
-                                                            ownerInboxController
-                                                                    .inboxList[
-                                                                        index]
-                                                                    .messageHeadId ??
-                                                                "",
-                                                        storeId:
-                                                            ownerInboxController
-                                                                    .inboxList[
-                                                                        index]
-                                                                    .storeId ??
-                                                                "");
-                                              });
-                                            },
-                                            constraints: const BoxConstraints(),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                18.0, 8.0, 18.0, 8.0),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 1.0,
-                                                  color: AppColors.primary),
-                                              borderRadius:
-                                                  BorderRadius.circular(28.0),
-                                            ),
-                                            fillColor: AppColors.white,
-                                            child: Text(
-                                              StringConstants.removeText,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14.0,
-                                                  color: AppColors.black),
+                                          Visibility(
+                                            visible: ownerInboxController.showPreviousMessages.value == false,
+                                            child: RawMaterialButton(
+                                              elevation: 0,
+                                              onPressed: () async {
+                                                Utility.showConfirmAlertMessage(
+                                                    AlertStringConstants
+                                                        .areYouSureText,
+                                                    okay: StringConstants
+                                                        .deleteText, okayTap: () {
+                                                  // Navigator.pop(Get.context!);
+                                                  ownerInboxController
+                                                      .apiDeleteStoreMessages(
+                                                          messageHeadId:
+                                                              ownerInboxController
+                                                                      .inboxList[
+                                                                          index]
+                                                                      .messageHeadId ??
+                                                                  "",
+                                                          storeId:
+                                                              ownerInboxController
+                                                                      .inboxList[
+                                                                          index]
+                                                                      .storeId ??
+                                                                  "");
+                                                });
+                                              },
+                                              constraints: const BoxConstraints(),
+                                              padding: const EdgeInsets.fromLTRB(
+                                                  18.0, 8.0, 18.0, 8.0),
+                                              shape: RoundedRectangleBorder(
+                                                side: const BorderSide(
+                                                    width: 1.0,
+                                                    color: AppColors.primary),
+                                                borderRadius:
+                                                    BorderRadius.circular(28.0),
+                                              ),
+                                              fillColor: AppColors.white,
+                                              child: Text(
+                                                StringConstants.completeText,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.0,
+                                                    color: AppColors.black),
+                                              ),
                                             ),
                                           ),
                                         ],

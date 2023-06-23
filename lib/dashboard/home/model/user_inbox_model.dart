@@ -1,123 +1,430 @@
+// To parse this JSON data, do
+//
+//     final userInboxModel = userInboxModelFromJson(jsonString);
+
+import 'dart:convert';
+
+UserInboxModel userInboxModelFromJson(String str) => UserInboxModel.fromJson(json.decode(str));
+
+String userInboxModelToJson(UserInboxModel data) => json.encode(data.toJson());
+
 class UserInboxModel {
-  int? status;
+  dynamic status;
   String? message;
   Data? data;
 
-  UserInboxModel({this.status, this.message, this.data});
+  UserInboxModel({
+    this.status,
+    this.message,
+    this.data,
+  });
 
-  UserInboxModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-  }
+  UserInboxModel copyWith({
+    dynamic status,
+    String? message,
+    Data? data,
+  }) =>
+      UserInboxModel(
+        status: status ?? this.status,
+        message: message ?? this.message,
+        data: data ?? this.data,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
+  factory UserInboxModel.fromJson(Map<String, dynamic> json) => UserInboxModel(
+    status: json["status"],
+    message: json["message"],
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "data": data?.toJson(),
+  };
 }
 
 class Data {
-  int? totalCount;
-  List<MessageHeads>? messageHeads;
+  dynamic totalCount;
+  List<MessageHead>? messageHeads;
 
-  Data({this.totalCount, this.messageHeads});
+  Data({
+    this.totalCount,
+    this.messageHeads,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    totalCount = json['total_count'];
-    if (json['message_heads'] != null) {
-      messageHeads = <MessageHeads>[];
-      json['message_heads'].forEach((v) {
-        messageHeads!.add(MessageHeads.fromJson(v));
-      });
-    }
-  }
+  Data copyWith({
+    dynamic totalCount,
+    List<MessageHead>? messageHeads,
+  }) =>
+      Data(
+        totalCount: totalCount ?? this.totalCount,
+        messageHeads: messageHeads ?? this.messageHeads,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['total_count'] = totalCount;
-    if (messageHeads != null) {
-      data['message_heads'] = messageHeads!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    totalCount: json["total_count"],
+    messageHeads: json["message_heads"] == null ? [] : List<MessageHead>.from(json["message_heads"]!.map((x) => MessageHead.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "total_count": totalCount,
+    "message_heads": messageHeads == null ? [] : List<dynamic>.from(messageHeads!.map((x) => x.toJson())),
+  };
 }
 
-class MessageHeads {
+class MessageHead {
   String? storeId;
-  String? offerId;
+  dynamic offerId;
   String? orderId;
   String? userId;
   bool? isAvailableForStore;
   bool? isAvailableForUser;
-  bool? isCompleted;
+  bool? isStoreCompleted;
+  bool? isUserCompleted;
   String? status;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   String? messageHeadId;
   Store? store;
   Offer? offer;
+  Order? order;
+  User? user;
 
-  MessageHeads(
-      {this.storeId,
-      this.offerId,
-      this.orderId,
-      this.userId,
-      this.isAvailableForStore,
-      this.isAvailableForUser,
-      this.isCompleted,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.messageHeadId,
-      this.store,
-      this.offer});
+  MessageHead({
+    this.storeId,
+    this.offerId,
+    this.orderId,
+    this.userId,
+    this.isAvailableForStore,
+    this.isAvailableForUser,
+    this.isStoreCompleted,
+    this.isUserCompleted,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.messageHeadId,
+    this.store,
+    this.offer,
+    this.order,
+    this.user,
+  });
 
-  MessageHeads.fromJson(Map<String, dynamic> json) {
-    storeId = json['store_id'];
-    offerId = json['offer_id'];
-    orderId = json['order_id'];
-    userId = json['user_id'];
-    isAvailableForStore = json['is_available_for_store'];
-    isAvailableForUser = json['is_available_for_user'];
-    isCompleted = json['is_completed'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    messageHeadId = json['message_head_id'];
-    store = json['store'] != null ? Store.fromJson(json['store']) : null;
-    offer = json['offer'] != null ? Offer.fromJson(json['offer']) : null;
-  }
+  MessageHead copyWith({
+    String? storeId,
+    dynamic offerId,
+    String? orderId,
+    String? userId,
+    bool? isAvailableForStore,
+    bool? isAvailableForUser,
+    bool? isStoreCompleted,
+    bool? isUserCompleted,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? messageHeadId,
+    Store? store,
+    Offer? offer,
+    Order? order,
+    User? user,
+  }) =>
+      MessageHead(
+        storeId: storeId ?? this.storeId,
+        offerId: offerId ?? this.offerId,
+        orderId: orderId ?? this.orderId,
+        userId: userId ?? this.userId,
+        isAvailableForStore: isAvailableForStore ?? this.isAvailableForStore,
+        isAvailableForUser: isAvailableForUser ?? this.isAvailableForUser,
+        isStoreCompleted: isStoreCompleted ?? this.isStoreCompleted,
+        isUserCompleted: isUserCompleted ?? this.isUserCompleted,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        messageHeadId: messageHeadId ?? this.messageHeadId,
+        store: store ?? this.store,
+        offer: offer ?? this.offer,
+        order: order ?? this.order,
+        user: user ?? this.user,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_id'] = storeId;
-    data['offer_id'] = offerId;
-    data['order_id'] = orderId;
-    data['user_id'] = userId;
-    data['is_available_for_store'] = isAvailableForStore;
-    data['is_available_for_user'] = isAvailableForUser;
-    data['is_completed'] = isCompleted;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['message_head_id'] = messageHeadId;
-    if (store != null) {
-      data['store'] = store!.toJson();
-    }
-    if (offer != null) {
-      data['offer'] = offer!.toJson();
-    }
-    return data;
-  }
+  factory MessageHead.fromJson(Map<String, dynamic> json) => MessageHead(
+    storeId: json["store_id"],
+    offerId: json["offer_id"],
+    orderId: json["order_id"],
+    userId: json["user_id"],
+    isAvailableForStore: json["is_available_for_store"],
+    isAvailableForUser: json["is_available_for_user"],
+    isStoreCompleted: json["is_store_completed"],
+    isUserCompleted: json["is_user_completed"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    messageHeadId: json["message_head_id"],
+    store: json["store"] == null ? null : Store.fromJson(json["store"]),
+    offer: json["offer"] == null ? null : Offer.fromJson(json["offer"]),
+    order: json["order"] == null ? null : Order.fromJson(json["order"]),
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_id": storeId,
+    "offer_id": offerId,
+    "order_id": orderId,
+    "user_id": userId,
+    "is_available_for_store": isAvailableForStore,
+    "is_available_for_user": isAvailableForUser,
+    "is_store_completed": isStoreCompleted,
+    "is_user_completed": isUserCompleted,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "message_head_id": messageHeadId,
+    "store": store?.toJson(),
+    "offer": offer?.toJson(),
+    "order": order?.toJson(),
+    "user": user?.toJson(),
+  };
+}
+
+class Offer {
+  String? storeId;
+  bool? autoCreated;
+  bool? isOfferForStore;
+  String? offerName;
+  String? imageUrl;
+  String? offerType;
+  dynamic offerValue;
+  bool? isExpired;
+  dynamic expiredAt;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? offerId;
+
+  Offer({
+    this.storeId,
+    this.autoCreated,
+    this.isOfferForStore,
+    this.offerName,
+    this.imageUrl,
+    this.offerType,
+    this.offerValue,
+    this.isExpired,
+    this.expiredAt,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.offerId,
+  });
+
+  Offer copyWith({
+    String? storeId,
+    bool? autoCreated,
+    bool? isOfferForStore,
+    String? offerName,
+    String? imageUrl,
+    String? offerType,
+    dynamic offerValue,
+    bool? isExpired,
+    dynamic expiredAt,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? offerId,
+  }) =>
+      Offer(
+        storeId: storeId ?? this.storeId,
+        autoCreated: autoCreated ?? this.autoCreated,
+        isOfferForStore: isOfferForStore ?? this.isOfferForStore,
+        offerName: offerName ?? this.offerName,
+        imageUrl: imageUrl ?? this.imageUrl,
+        offerType: offerType ?? this.offerType,
+        offerValue: offerValue ?? this.offerValue,
+        isExpired: isExpired ?? this.isExpired,
+        expiredAt: expiredAt ?? this.expiredAt,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        offerId: offerId ?? this.offerId,
+      );
+
+  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
+    storeId: json["store_id"],
+    autoCreated: json["auto_created"],
+    isOfferForStore: json["is_offer_for_store"],
+    offerName: json["offer_name"],
+    imageUrl: json["image_url"],
+    offerType: json["offer_type"],
+    offerValue: json["offer_value"],
+    isExpired: json["is_expired"],
+    expiredAt: json["expiredAt"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    offerId: json["offer_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_id": storeId,
+    "auto_created": autoCreated,
+    "is_offer_for_store": isOfferForStore,
+    "offer_name": offerName,
+    "image_url": imageUrl,
+    "offer_type": offerType,
+    "offer_value": offerValue,
+    "is_expired": isExpired,
+    "expiredAt": expiredAt,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "offer_id": offerId,
+  };
+}
+class Order {
+  String? userId;
+  String? storeId;
+  String? deliveryServiceId;
+  dynamic deliveryCharge;
+  String? taxType;
+  double? taxValue;
+  double? totalTaxCharged;
+  String? serviceChargeType;
+  double? serviceChargeValue;
+  double? totalServiceCharged;
+  double? totalAmount;
+  String? customerName;
+  String? customerEmail;
+  String? customerPhone;
+  String? customerPhoneCode;
+  DateTime? estimateDeliveryDate;
+  DateTime? orderDate;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? orderId;
+
+  Order({
+    this.userId,
+    this.storeId,
+    this.deliveryServiceId,
+    this.deliveryCharge,
+    this.taxType,
+    this.taxValue,
+    this.totalTaxCharged,
+    this.serviceChargeType,
+    this.serviceChargeValue,
+    this.totalServiceCharged,
+    this.totalAmount,
+    this.customerName,
+    this.customerEmail,
+    this.customerPhone,
+    this.customerPhoneCode,
+    this.estimateDeliveryDate,
+    this.orderDate,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.orderId,
+  });
+
+  Order copyWith({
+    String? userId,
+    String? storeId,
+    String? deliveryServiceId,
+    dynamic deliveryCharge,
+    String? taxType,
+    double? taxValue,
+    double? totalTaxCharged,
+    String? serviceChargeType,
+    double? serviceChargeValue,
+    double? totalServiceCharged,
+    double? totalAmount,
+    String? customerName,
+    String? customerEmail,
+    String? customerPhone,
+    String? customerPhoneCode,
+    DateTime? estimateDeliveryDate,
+    DateTime? orderDate,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? orderId,
+  }) =>
+      Order(
+        userId: userId ?? this.userId,
+        storeId: storeId ?? this.storeId,
+        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
+        deliveryCharge: deliveryCharge ?? this.deliveryCharge,
+        taxType: taxType ?? this.taxType,
+        taxValue: taxValue ?? this.taxValue,
+        totalTaxCharged: totalTaxCharged ?? this.totalTaxCharged,
+        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
+        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
+        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
+        totalAmount: totalAmount ?? this.totalAmount,
+        customerName: customerName ?? this.customerName,
+        customerEmail: customerEmail ?? this.customerEmail,
+        customerPhone: customerPhone ?? this.customerPhone,
+        customerPhoneCode: customerPhoneCode ?? this.customerPhoneCode,
+        estimateDeliveryDate: estimateDeliveryDate ?? this.estimateDeliveryDate,
+        orderDate: orderDate ?? this.orderDate,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        orderId: orderId ?? this.orderId,
+      );
+
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+    userId: json["user_id"],
+    storeId: json["store_id"],
+    deliveryServiceId: json["delivery_service_id"],
+    deliveryCharge: json["delivery_charge"],
+    taxType: json["tax_type"],
+    taxValue: json["tax_value"]?.toDouble(),
+    totalTaxCharged: json["total_tax_charged"]?.toDouble(),
+    serviceChargeType: json["service_charge_type"],
+    serviceChargeValue: json["service_charge_value"]?.toDouble(),
+    totalServiceCharged: json["total_service_charged"]?.toDouble(),
+    totalAmount: json["total_amount"]?.toDouble(),
+    customerName: json["customer_name"],
+    customerEmail: json["customer_email"],
+    customerPhone: json["customer_phone"],
+    customerPhoneCode: json["customer_phone_code"],
+    estimateDeliveryDate: json["estimate_delivery_date"] == null ? null : DateTime.parse(json["estimate_delivery_date"]),
+    orderDate: json["order_date"] == null ? null : DateTime.parse(json["order_date"]),
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    orderId: json["order_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_id": userId,
+    "store_id": storeId,
+    "delivery_service_id": deliveryServiceId,
+    "delivery_charge": deliveryCharge,
+    "tax_type": taxType,
+    "tax_value": taxValue,
+    "total_tax_charged": totalTaxCharged,
+    "service_charge_type": serviceChargeType,
+    "service_charge_value": serviceChargeValue,
+    "total_service_charged": totalServiceCharged,
+    "total_amount": totalAmount,
+    "customer_name": customerName,
+    "customer_email": customerEmail,
+    "customer_phone": customerPhone,
+    "customer_phone_code": customerPhoneCode,
+    "estimate_delivery_date": estimateDeliveryDate?.toIso8601String(),
+    "order_date": orderDate?.toIso8601String(),
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "order_id": orderId,
+  };
 }
 
 class Store {
+  dynamic storeBalance;
+  dynamic dynamicLink;
   String? storeName;
   String? storeEin;
   String? storeNickName;
@@ -128,142 +435,238 @@ class Store {
   String? verifiedBy;
   bool? isEnabled;
   String? status;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   String? storeId;
   Logo? logo;
 
-  Store(
-      {this.storeName,
-      this.storeEin,
-      this.storeNickName,
-      this.storeEmail,
-      this.storePhone,
-      this.storePhoneCode,
-      this.isVerified,
-      this.verifiedBy,
-      this.isEnabled,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.storeId,
-      this.logo});
+  Store({
+    this.storeBalance,
+    this.dynamicLink,
+    this.storeName,
+    this.storeEin,
+    this.storeNickName,
+    this.storeEmail,
+    this.storePhone,
+    this.storePhoneCode,
+    this.isVerified,
+    this.verifiedBy,
+    this.isEnabled,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.storeId,
+    this.logo,
+  });
 
-  Store.fromJson(Map<String, dynamic> json) {
-    storeName = json['store_name'];
-    storeEin = json['store_ein'];
-    storeNickName = json['store_nick_name'];
-    storeEmail = json['store_email'];
-    storePhone = json['store_phone'];
-    storePhoneCode = json['store_phone_code'];
-    isVerified = json['is_verified'];
-    verifiedBy = json['verified_by'];
-    isEnabled = json['is_enabled'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    storeId = json['store_id'];
-    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
-  }
+  Store copyWith({
+    dynamic storeBalance,
+    dynamic dynamicLink,
+    String? storeName,
+    String? storeEin,
+    String? storeNickName,
+    String? storeEmail,
+    String? storePhone,
+    String? storePhoneCode,
+    bool? isVerified,
+    String? verifiedBy,
+    bool? isEnabled,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? storeId,
+    Logo? logo,
+  }) =>
+      Store(
+        storeBalance: storeBalance ?? this.storeBalance,
+        dynamicLink: dynamicLink ?? this.dynamicLink,
+        storeName: storeName ?? this.storeName,
+        storeEin: storeEin ?? this.storeEin,
+        storeNickName: storeNickName ?? this.storeNickName,
+        storeEmail: storeEmail ?? this.storeEmail,
+        storePhone: storePhone ?? this.storePhone,
+        storePhoneCode: storePhoneCode ?? this.storePhoneCode,
+        isVerified: isVerified ?? this.isVerified,
+        verifiedBy: verifiedBy ?? this.verifiedBy,
+        isEnabled: isEnabled ?? this.isEnabled,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        storeId: storeId ?? this.storeId,
+        logo: logo ?? this.logo,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_name'] = storeName;
-    data['store_ein'] = storeEin;
-    data['store_nick_name'] = storeNickName;
-    data['store_email'] = storeEmail;
-    data['store_phone'] = storePhone;
-    data['store_phone_code'] = storePhoneCode;
-    data['is_verified'] = isVerified;
-    data['verified_by'] = verifiedBy;
-    data['is_enabled'] = isEnabled;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['store_id'] = storeId;
-    if (logo != null) {
-      data['logo'] = logo!.toJson();
-    }
-    return data;
-  }
+  factory Store.fromJson(Map<String, dynamic> json) => Store(
+    storeBalance: json["store_balance"],
+    dynamicLink: json["dynamic_link"],
+    storeName: json["store_name"],
+    storeEin: json["store_ein"],
+    storeNickName: json["store_nick_name"],
+    storeEmail: json["store_email"],
+    storePhone: json["store_phone"],
+    storePhoneCode: json["store_phone_code"],
+    isVerified: json["is_verified"],
+    verifiedBy: json["verified_by"],
+    isEnabled: json["is_enabled"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    storeId: json["store_id"],
+    logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "store_balance": storeBalance,
+    "dynamic_link": dynamicLink,
+    "store_name": storeName,
+    "store_ein": storeEin,
+    "store_nick_name": storeNickName,
+    "store_email": storeEmail,
+    "store_phone": storePhone,
+    "store_phone_code": storePhoneCode,
+    "is_verified": isVerified,
+    "verified_by": verifiedBy,
+    "is_enabled": isEnabled,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "store_id": storeId,
+    "logo": logo?.toJson(),
+  };
 }
 
 class Logo {
   String? orignalUrl;
   String? dynamicUrl;
 
-  Logo({this.orignalUrl, this.dynamicUrl});
+  Logo({
+    this.orignalUrl,
+    this.dynamicUrl,
+  });
 
-  Logo.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
+  Logo copyWith({
+    String? orignalUrl,
+    String? dynamicUrl,
+  }) =>
+      Logo(
+        orignalUrl: orignalUrl ?? this.orignalUrl,
+        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
-    return data;
-  }
+  factory Logo.fromJson(Map<String, dynamic> json) => Logo(
+    orignalUrl: json["orignal_url"],
+    dynamicUrl: json["dynamic_url"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "orignal_url": orignalUrl,
+    "dynamic_url": dynamicUrl,
+  };
 }
 
-class Offer {
-  String? storeId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? imageUrl;
-  String? offerType;
-  int? offerValue;
-  bool? isExpired;
-  String? expiredAt;
+class User {
+  dynamic userBalance;
+  String? email;
+  String? phone;
+  String? phoneCode;
+  String? firstName;
+  String? lastName;
+  String? nickName;
+  DateTime? dob;
+  bool? hasStoreAccess;
+  bool? isAccountDeleted;
   String? status;
-  String? createdAt;
-  String? updatedAt;
-  String? offerId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? userId;
+  Logo? image;
 
-  Offer(
-      {this.storeId,
-      this.isOfferForStore,
-      this.offerName,
-      this.imageUrl,
-      this.offerType,
-      this.offerValue,
-      this.isExpired,
-      this.expiredAt,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.offerId});
+  User({
+    this.userBalance,
+    this.email,
+    this.phone,
+    this.phoneCode,
+    this.firstName,
+    this.lastName,
+    this.nickName,
+    this.dob,
+    this.hasStoreAccess,
+    this.isAccountDeleted,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.userId,
+    this.image,
+  });
 
-  Offer.fromJson(Map<String, dynamic> json) {
-    storeId = json['store_id'];
-    isOfferForStore = json['is_offer_for_store'];
-    offerName = json['offer_name'];
-    imageUrl = json['image_url'];
-    offerType = json['offer_type'];
-    offerValue = json['offer_value'];
-    isExpired = json['is_expired'];
-    expiredAt = json['expiredAt'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    offerId = json['offer_id'];
-  }
+  User copyWith({
+    dynamic userBalance,
+    String? email,
+    String? phone,
+    String? phoneCode,
+    String? firstName,
+    String? lastName,
+    String? nickName,
+    DateTime? dob,
+    bool? hasStoreAccess,
+    bool? isAccountDeleted,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? userId,
+    Logo? image,
+  }) =>
+      User(
+        userBalance: userBalance ?? this.userBalance,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        phoneCode: phoneCode ?? this.phoneCode,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        nickName: nickName ?? this.nickName,
+        dob: dob ?? this.dob,
+        hasStoreAccess: hasStoreAccess ?? this.hasStoreAccess,
+        isAccountDeleted: isAccountDeleted ?? this.isAccountDeleted,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        userId: userId ?? this.userId,
+        image: image ?? this.image,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_id'] = storeId;
-    data['is_offer_for_store'] = isOfferForStore;
-    data['offer_name'] = offerName;
-    data['image_url'] = imageUrl;
-    data['offer_type'] = offerType;
-    data['offer_value'] = offerValue;
-    data['is_expired'] = isExpired;
-    data['expiredAt'] = expiredAt;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['offer_id'] = offerId;
-    return data;
-  }
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    userBalance: json["user_balance"],
+    email: json["email"],
+    phone: json["phone"],
+    phoneCode: json["phone_code"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    nickName: json["nick_name"],
+    dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+    hasStoreAccess: json["has_store_access"],
+    isAccountDeleted: json["is_account_deleted"],
+    status: json["status"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    userId: json["user_id"],
+    image: json["image"] == null ? null : Logo.fromJson(json["image"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_balance": userBalance,
+    "email": email,
+    "phone": phone,
+    "phone_code": phoneCode,
+    "first_name": firstName,
+    "last_name": lastName,
+    "nick_name": nickName,
+    "dob": dob?.toIso8601String(),
+    "has_store_access": hasStoreAccess,
+    "is_account_deleted": isAccountDeleted,
+    "status": status,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "user_id": userId,
+    "image": image?.toJson(),
+  };
 }

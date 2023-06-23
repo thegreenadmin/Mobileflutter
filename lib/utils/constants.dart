@@ -32,6 +32,7 @@ class StringConstants {
   static String addNewOfferText = "Add New Offer";
   static String activeOrderText = "Active Orders";
   static String activeText = "Active";
+  static String archiveText = "Archive";
   static String addANewStoreText = "Add a new store";
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";

@@ -326,6 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Role.customerRoleText) {
                                         Get.to(() =>
                                           const SearchStoreUserScreen(),
+                                          id:pageIdApp.value,
                                           arguments: {
                                             "firstName":
                                             homeController.firstName!.value,
@@ -415,8 +416,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   homeController.update();
                                 });*/
                                   Get.parameters["isFromCart"] = "false";
-                                  Get.to(() => const AccountScreen(),id:
-                                  homeController.pageId.value,
+                                  Get.to(() => const AccountScreen(),
+                                      id:pageIdApp.value,
                                       arguments: {"isFromCart": false})?.then((value) {
                                     homeController.isLoading?.value =true;
                                     homeController.apiGetUserDetail();

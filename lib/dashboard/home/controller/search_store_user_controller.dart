@@ -110,7 +110,6 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     getPage();
   }
   getPage() async {
