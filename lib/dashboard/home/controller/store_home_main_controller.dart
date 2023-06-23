@@ -34,7 +34,6 @@ import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class StoreHomeMainController extends GetxController {
-
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
   late offers.StoreOffersListResponse offersListResponse =
@@ -111,7 +110,6 @@ class StoreHomeMainController extends GetxController {
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
       storeId.value = Get.parameters["storeId"] ?? "";
-
       getCurrentLocation();
       apiGetUserDetailsApi();
       apiGetShopProductDetailApi();
@@ -407,9 +405,8 @@ class StoreHomeMainController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-
                     Get.back();
-                                  // Navigator.of(ctx).pop();
+                    // Navigator.of(ctx).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -432,10 +429,9 @@ class StoreHomeMainController extends GetxController {
                 height40SizedBox,
                 InkWell(
                   onTap: () {
-
                     if (itemsCount.value != 0) {
                       Get.back();
-                                  // Navigator.of(ctx).pop();
+                      // Navigator.of(ctx).pop();
                       apiAddToCart(context);
                     } else {
                       Utility.showToast(
@@ -474,7 +470,7 @@ class StoreHomeMainController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    await apiGetStoreDetailsApi();
+    await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
   }
 
   //Get Active Cart Api
@@ -485,8 +481,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -550,8 +545,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -571,8 +565,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["messageHeadId"] =
             value.body["data"]["message_head_id"] ?? "";
         SharedPreferenceStorage.setData("context", ctx);
-        await Get.to(() =>const UserInboxDetailScreen(),
-            id:pageIdApp.value);
+        await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
         // Navigator.of(ctx).push(MaterialPageRoute(
         //   builder: (_) => const UserInboxDetailScreen(),
         // ));
@@ -677,8 +670,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -718,23 +710,22 @@ class StoreHomeMainController extends GetxController {
         }
         debugPrint("CART TOTAL VALUE ${cartTotalPrice.value}");
         debugPrint("CART isDeleteCartItem.value${isDeleteCartItem.value}");
-        debugPrint("CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
+        debugPrint(
+            "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
         debugPrint("CART isFromHome.value ${isFromHome.value}");
         cartData.value = cartListResponse.data ?? cart.Data();
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
           isDeleteCartItem.value = false;
-          Get.until((route) => route.isFirst,id:pageIdApp.value);
+          Get.until((route) => route.isFirst, id: pageIdApp.value);
           // Navigator.of(context).popUntil((route) => route.isFirst);
-
         } else if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == false) {
           Get.parameters["storeId"] = storeId.value;
           isDeleteCartItem.value = false;
-          await Get.to(() =>const StoreHomeMainScreen(),
-              id:pageIdApp.value);
+          await Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -757,8 +748,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     List selectedItems = [];
@@ -802,8 +792,8 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
-        await Get.to(() =>const OrderConfirmationScreen(),
-            id:pageIdApp.value);
+        await Get.to(() => const OrderConfirmationScreen(),
+            id: pageIdApp.value);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (_) => const OrderConfirmationScreen(),
         // ));
@@ -849,8 +839,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -895,8 +884,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -939,8 +927,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1024,8 +1011,8 @@ class StoreHomeMainController extends GetxController {
                     Get.back();
                     Get.parameters["storeId"] = storeId.value;
 
-                    await Get.to(() =>const StoreHomeMainScreen(),
-                        id:pageIdApp.value);
+                    await Get.to(() => const StoreHomeMainScreen(),
+                        id: pageIdApp.value);
                   },
                   child: Container(
                     height: 50.0,
@@ -1047,12 +1034,11 @@ class StoreHomeMainController extends GetxController {
                 ),
                 width8SizedBox,
                 InkWell(
-                  onTap: () async{
+                  onTap: () async {
                     Get.back();
                     apiGetCartListApi();
                     apiGetUserWalletBalance();
-                    await Get.to(() =>const CartScreen(),
-                        id:pageIdApp.value);
+                    await Get.to(() => const CartScreen(), id: pageIdApp.value);
                     // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                     //   builder: (_) => const CartScreen(),
                     // ));
@@ -1091,10 +1077,9 @@ class StoreHomeMainController extends GetxController {
     debugPrint("Store Offers URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1128,10 +1113,9 @@ class StoreHomeMainController extends GetxController {
     debugPrint("User Wallet Balance URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1167,19 +1151,19 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Get Store Details Api
-  Future apiGetStoreDetailsApi() async {
+  Future apiGetStoreDetailsApi(
+      {dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$lat&longitude=$lng");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$lat&longitude=$lng",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1222,10 +1206,9 @@ class StoreHomeMainController extends GetxController {
     debugPrint("Product Shop Detail  URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1295,8 +1278,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {
@@ -1490,8 +1472,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1534,8 +1515,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1579,8 +1559,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -1624,8 +1603,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -1670,8 +1648,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     Map data = {
@@ -1714,7 +1691,7 @@ class StoreHomeMainController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
         }
         SharedPreferenceStorage.clearData();
-        await Get.offAll( const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

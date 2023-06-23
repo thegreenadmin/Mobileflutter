@@ -45,8 +45,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                Get.back(id: pageIdApp.value);
+                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -113,7 +113,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                   height4SizedBox,
                                   Center(
                                     child: Text(
-                                      StringConstants.noStoresFoundText,
+                                      ownerStoresController
+                                                  .isDataComming.value ==
+                                              true
+                                          ? ""
+                                          : StringConstants.noStoresFoundText,
                                       style: const TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontSize: 16),
@@ -132,11 +136,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               return Dismissible(
                                 background: Container(
                                   color: AppColors.redlight,
-                                  child: Align(
+                                  child: const Align(
                                     alignment: Alignment.centerRight,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const <Widget>[
+                                      children: <Widget>[
                                         Icon(
                                           Icons.delete,
                                           color: AppColors.red,
@@ -169,16 +173,18 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                   onTap: () async {
                                     ownerStoresController.storeId.value =
                                         ownerStoresController
-                                                .storeList[index].storeId ?? "";
-                                    Get.parameters['storeId'] =  ownerStoresController
-                                        .storeList[index].storeId ??
-                                        "";
+                                                .storeList[index].storeId ??
+                                            "";
+                                    Get.parameters['storeId'] =
+                                        ownerStoresController
+                                                .storeList[index].storeId ??
+                                            "";
                                     await ownerStoresController
                                         .apiGetParticularStore();
 
                                     await ownerStoresController
                                         .apiGetFeaturedProducts();
-                                   /* SharedPreferenceStorage.setData(
+                                    /* SharedPreferenceStorage.setData(
                                         "context", context);
                                     await Navigator.of(context)
                                         .push(MaterialPageRoute(
@@ -186,8 +192,8 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                           const ManageStoreMainScreen(),
                                     ));*/
                                     await Get.to(
-                                            () => const ManageStoreMainScreen(),
-                                        id:pageIdApp.value );
+                                        () => const ManageStoreMainScreen(),
+                                        id: pageIdApp.value);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -441,8 +447,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddNewStoreScreen(),
                 //     ))
-                    Get.to(const AddNewStoreScreen(),
-                        id:pageIdApp.value)!
+                Get.to(const AddNewStoreScreen(), id: pageIdApp.value)!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

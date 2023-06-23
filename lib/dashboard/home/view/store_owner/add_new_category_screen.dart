@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 import '../../../../utils/global_share_data.dart';
+
 class AddNewCategoryScreen extends StatefulWidget {
   const AddNewCategoryScreen({super.key});
 
@@ -25,19 +26,15 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   @override
   initState() {
     super.initState();
-
-    addNewCategoryController.categoryNameTextController.clear();
     addNewCategoryController.categoryNameTextController.clear();
     addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
     addNewCategoryController.isFeaturedTypeSelected.value = false;
     addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
-
     addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
     addNewCategoryController.categoryId.value =
         Get.parameters["categoryId"] ?? "";
     addNewCategoryController.isFeaturedTypeSelected.value =
         Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-
     if (addNewCategoryController.categoryId.value.isNotEmpty) {
       addNewCategoryController.apiGetCategoryDetail();
     }
@@ -62,8 +59,8 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                              Get.back(id: pageIdApp.value);
+                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

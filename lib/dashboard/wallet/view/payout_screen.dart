@@ -50,8 +50,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                            Get.back(id: pageIdApp.value);
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -280,7 +280,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                               prefixStyle:
                                   const TextStyle(color: AppColors.black),
                               isDense: true,
-                              hintText: StringConstants.amountText,
+                              hintText: "eg \$100",
                               hintStyle: const TextStyle(color: AppColors.grey),
                               fillColor: Colors.white,
                               border: UnderlineInputBorder(
@@ -397,7 +397,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                             ],
                                           ),
                                           onTap: () {
-                                           /* SharedPreferenceStorage.setData(
+                                            /* SharedPreferenceStorage.setData(
                                                 "context", context);
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
@@ -409,15 +409,16 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                                     .accountLink
                                                                     .value)
                                                             .toString())))*/
-                                            Get.to(WebviewPageScreen(
-                                                isFrom:
-                                                "connectAccount",
-                                                url: Uri.parse(
-                                                    addCardController
-                                                        .accountLink
-                                                        .value)
-                                                    .toString()),
-                                                id:pageIdApp.value)
+                                            Get.to(
+                                                    WebviewPageScreen(
+                                                        isFrom:
+                                                            "connectAccount",
+                                                        url: Uri.parse(
+                                                                addCardController
+                                                                    .accountLink
+                                                                    .value)
+                                                            .toString()),
+                                                    id: pageIdApp.value)
                                                 ?.then((value) {
                                               addCardController
                                                   .apiGetAccountDetails();

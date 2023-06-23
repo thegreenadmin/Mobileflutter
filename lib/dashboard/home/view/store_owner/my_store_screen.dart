@@ -7,7 +7,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MyStoreScreen extends StatefulWidget {
@@ -75,13 +74,15 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                       //     .push(MaterialPageRoute(
                                       //   builder: (_) => const AddOfferScreen(),
                                       // ))
-                                          Get.to(const AddOfferScreen(),
-                                              id:pageIdApp.value,
-                                              arguments: {
-                                            "isFrom": StringConstants.addOfferText,
+                                      Get.to(const AddOfferScreen(),
+                                          id: pageIdApp.value,
+                                          arguments: {
+                                            "isFrom":
+                                                StringConstants.addOfferText,
                                           })?.then((v) {
-                                            ownerStoresController.getApiData();
-                                        ownerStoresController.getCurrentLocation();
+                                        ownerStoresController.getApiData();
+                                        ownerStoresController
+                                            .getCurrentLocation();
                                       });
                                     },
                                     height: 50,
@@ -135,7 +136,9 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           ),
                                         )
                                       : Image.asset(
-                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
+                                          ImageConstants.nopicfound,
+                                          color:
+                                              AppColors.grey.withOpacity(0.4),
                                         ),
                                   SizedBox(
                                     height: 55,
@@ -219,7 +222,9 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           .productImages!
                                           .isEmpty
                                       ? Image.asset(
-                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
+                                          ImageConstants.nopicfound,
+                                          color:
+                                              AppColors.grey.withOpacity(0.4),
                                           fit: BoxFit.fill,
                                         )
                                       : Image.network(

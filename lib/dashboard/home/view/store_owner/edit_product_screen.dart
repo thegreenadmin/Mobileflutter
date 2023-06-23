@@ -10,7 +10,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import '../../../../utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({super.key});
 
@@ -49,8 +49,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
-                               Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                Get.back(id: pageIdApp.value);
+                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -59,13 +59,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               ),
                             ),
                             width10SizedBox,
-                            Text(
-                              manageStoreController.categoryName.value,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                            Obx(() => SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    manageStoreController.categoryName.value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 22,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                )),
                           ],
                         ),
                         Image.asset(

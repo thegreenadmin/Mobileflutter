@@ -23,7 +23,6 @@ class OffersScreen extends StatefulWidget {
 class _OffersScreenState extends State<OffersScreen> {
   OffersController offersController = Get.put(OffersController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +50,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () async {
-                                            Get.until((route) => route.isFirst,id:pageIdApp.value);
+                                            Get.until((route) => route.isFirst,
+                                                id: pageIdApp.value);
                                             // Navigator.of(Get.context!).popUntil(
                                             //     (route) => route.isFirst);
                                           },
@@ -130,17 +130,16 @@ class _OffersScreenState extends State<OffersScreen> {
                               //     .push(MaterialPageRoute(
                               //   builder: (_) => const AddOfferScreen(),
                               // ))
-                                  Get.to(() =>const AddOfferScreen(),
-                                      id:pageIdApp.value,
+                              Get.to(() => const AddOfferScreen(),
+                                      id: pageIdApp.value,
                                       arguments: {
                                     "isFrom": StringConstants.addOfferText,
                                   })!
                                   .then((value) {
-                                    offersController
-                                        .apiGetUserOffersList();
+                                offersController.apiGetUserOffersList();
                               });
                             },
-                            child: Text(StringConstants.addOfferText,
+                            child: Text(StringConstants.addNewOfferText,
                                 style: const TextStyle(
                                     decoration: TextDecoration.underline,
                                     fontWeight: FontWeight.w500,
@@ -152,8 +151,7 @@ class _OffersScreenState extends State<OffersScreen> {
               ),
               height20SizedBox,
               Expanded(
-                child: Obx(() => roleApp.value ==
-                        Role.customerRoleText
+                child: Obx(() => roleApp.value == Role.customerRoleText
                     ? offersController.getUserOfferlist.isEmpty
                         ? offersController.isLoading!.value == true
                             ? height0SizedBox
@@ -491,7 +489,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                       AlertStringConstants.areYouSureText,
                                       okay: StringConstants.deleteText,
                                       okayTap: () async {
-                                        Get.back(id:pageIdApp.value);
+                                    Get.back(id: pageIdApp.value);
                                     // Navigator.pop(Get.context!);
                                     offersController.storeId!.value =
                                         offersController
@@ -505,8 +503,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                 .offerId ??
                                             "";
 
-                                    await offersController
-                                        .apiDeleteOffer();
+                                    await offersController.apiDeleteOffer();
                                   });
                                   return null;
                                 },
@@ -657,16 +654,28 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //       const EditOfferScreen(),
                                                   // ))
 
-                                                      Get.to(() =>const EditOfferScreen(),
-                                                      id:pageIdApp.value,
-                                                              arguments: {
-                                                            "isFrom":StringConstants.editOfferText,
-                                                            "storeId": offersController.getOwnerOfferlist[
-                                                                        index].store!.storeId ??"",
-                                                            "offerId": offersController.getOwnerOfferlist[index].offerId ??""
-                                                          })!
+                                                  Get.to(
+                                                          () =>
+                                                              const EditOfferScreen(),
+                                                          id: pageIdApp.value,
+                                                          arguments: {
+                                                        "isFrom":
+                                                            StringConstants
+                                                                .editOfferText,
+                                                        "storeId": offersController
+                                                                .getOwnerOfferlist[
+                                                                    index]
+                                                                .store!
+                                                                .storeId ??
+                                                            "",
+                                                        "offerId": offersController
+                                                                .getOwnerOfferlist[
+                                                                    index]
+                                                                .offerId ??
+                                                            ""
+                                                      })!
                                                       .then((value) {
-                                                   roleApp.value ==
+                                                    roleApp.value ==
                                                             Role
                                                                 .customerRoleText
                                                         ? offersController

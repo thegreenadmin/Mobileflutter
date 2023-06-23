@@ -19,7 +19,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 // import 'package:geocoding/geocoding.dart' as geocoding;
@@ -85,8 +84,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                Get.back(id: pageIdApp.value);
+                                // Navigator.of(context).pop();
                                 Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(
@@ -144,7 +143,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       Row(
                                         children: [
                                           InkWell(
-                                            onTap: () async{
+                                            onTap: () async {
                                               // SharedPreferenceStorage.setData(
                                               //     "context", context);
                                               // Navigator.of(context)
@@ -153,7 +152,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                               //           const CartScreen(),
                                               //     ))
                                               await Get.to(const CartScreen(),
-                                                  id:pageIdApp.value)
+                                                      id: pageIdApp.value)
                                                   ?.then((value) =>
                                                       searchStoreUserController
                                                           .apiActiveCartApi());
@@ -257,14 +256,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         top: 170,
                         right: 10,
                         child: InkWell(
-                          onTap: () async{
+                          onTap: () async {
                             searchStoreUserController.searchController.clear();
                             // SharedPreferenceStorage.setData("context", context);
                             // Navigator.of(context).push(MaterialPageRoute(
                             //   builder: (_) => const FilterOptionScreen(),
                             // ));
                             await Get.to(const FilterOptionScreen(),
-                                id:pageIdApp.value);
+                                id: pageIdApp.value);
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,
@@ -419,18 +418,21 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
             unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
             labelStyle: const TextStyle(fontWeight: FontWeight.w600),
             isScrollable: false,
-            onTap: (i) async{
+            onTap: (i) async {
               searchStoreUserController.storeAddresses.clear();
               searchStoreUserController.previousStore.clear();
               searchStoreUserController.favouriteStore.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
-              if (i == 0 && searchStoreUserController.isClicked.value ==false) {
+              if (i == 0 &&
+                  searchStoreUserController.isClicked.value == false) {
                 await searchStoreUserController.apiGetNearByStores();
-              } else if (i == 1 && searchStoreUserController.isClicked.value ==false) {
+              } else if (i == 1 &&
+                  searchStoreUserController.isClicked.value == false) {
                 await searchStoreUserController.apiGetPreviousStores(context);
-              } else if (i == 2 && searchStoreUserController.isClicked.value ==false) {
-                await  searchStoreUserController.apiGetFavoriteStores(context);
+              } else if (i == 2 &&
+                  searchStoreUserController.isClicked.value == false) {
+                await searchStoreUserController.apiGetFavoriteStores(context);
               }
             },
             tabs: [
@@ -484,7 +486,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // WidgetsBinding.instance.addPostFrameCallback((_)async{
-    await searchStoreUserController.apiGetNearByStores( isSearch: true);
+    await searchStoreUserController.apiGetNearByStores(isSearch: true);
     updateMarker(lat, lng);
     // });
   }

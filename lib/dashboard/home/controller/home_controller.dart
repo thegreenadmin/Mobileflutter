@@ -65,18 +65,23 @@ class HomeController extends GetxController {
     getPage();
     getCurrentLocation();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
 
     debugPrint("HomeCController pageId ************${pageId.value} $roleVal");
   }
+
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
-
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ************$lat $lng");
@@ -106,9 +111,10 @@ class HomeController extends GetxController {
                     /*Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const AccountScreen(),
                     ));*/
-                     Get.back(id:pageIdApp.value );
+                    Get.back(id: pageIdApp.value);
                     await Get.to(const AccountScreen(),
-                        id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                        id: int.parse(SharedPreferenceStorage.getData("pageId")
+                            .toString()));
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,10 +137,11 @@ class HomeController extends GetxController {
           child: SizedBox(
             width: 130,
             child: GestureDetector(
-              onTap: () async{
-                 Get.back(id:pageIdApp.value );
+              onTap: () async {
+                Get.back(id: pageIdApp.value);
                 await Get.to(const AccountScreen(),
-                    id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                    id: int.parse(
+                        SharedPreferenceStorage.getData("pageId").toString()));
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,8 +167,7 @@ class HomeController extends GetxController {
 
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -188,7 +194,6 @@ class HomeController extends GetxController {
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
-
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -207,8 +212,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -237,7 +241,7 @@ class HomeController extends GetxController {
         await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -252,8 +256,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     Map data = {
       "q": "",
@@ -313,8 +316,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -368,8 +370,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
 

@@ -7,7 +7,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ManageStoreMainScreen extends StatefulWidget {
@@ -47,11 +46,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                     onTap: () {
                       setState(() {
                         ownerStoresController.selectedIndex.value = i;
-                        if (i == 0) {
-                          ownerStoresController.apiGetFeaturedProducts();
-                        } else {
-                          ownerStoresController.selectedIndex.value = i;
-                        }
+                        // if (i == 0) {
+                        //   ownerStoresController.apiGetFeaturedProducts();
+
+                        // } else {
+                        ownerStoresController.selectedIndex.value = i;
+                        // }
                       });
                     },
                     child: SizedBox(
@@ -137,8 +137,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.delete<OwnerStoresController>();
-                                   Get.back(id:pageIdApp.value);
-                                   // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
