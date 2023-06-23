@@ -128,7 +128,7 @@ class Store {
   String? storePhone;
   String? storePhoneCode;
   bool? isVerified;
-  Null? verifiedBy;
+  dynamic verifiedBy;
   bool? isEnabled;
   String? status;
   String? createdAt;

@@ -1677,7 +1677,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().shopStoreProductList,
             headers,
-            showLoading: true) //orderBy == "2" ? true : false)
+            showLoading: false) //orderBy == "2" ? true : false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("PREVIOUS ORDERS BODY *******${value?.body}");

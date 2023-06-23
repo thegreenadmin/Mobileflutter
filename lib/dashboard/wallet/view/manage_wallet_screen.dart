@@ -489,80 +489,79 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                   fontWeight: FontWeight.w500),
                             )
                           ])
-                        : walletController.capability.value == "active" &&
-                                walletController.payouts.value == true
-                            ? height0SizedBox
-                            //  Row(
-                            //     children: [
-                            //       Image.asset(
-                            //         ImageConstants.addBank,
-                            //         scale: 20,
-                            //         color: AppColors.blacklight,
-                            //       ),
-                            //       width15SizedBox,
-                            //       Text(
-                            //         StringConstants
-                            //             .addBankAccountDebitMethodsText,
-                            //         style: const TextStyle(
-                            //             color: AppColors.black,
-                            //             fontSize: 16,
-                            //             fontWeight: FontWeight.w500),
-                            //       ),
-                            //     ],
-                            //   )
-                            : InkWell(
-                                onTap: () {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                          builder: (_) => WebviewPageScreen(
-                                              isFrom: "connectAccount",
-                                              url: Uri.parse(walletController
-                                                      .accountLink.value)
-                                                  .toString())))
-                                      .then((value) {
-                                    walletController.apiGetAccountDetails();
-                                    walletController.apiGetBankAccountList();
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      ImageConstants.addBank,
-                                      scale: 20,
-                                      color: AppColors.blacklight,
-                                    ),
-                                    width15SizedBox,
-                                    const Text(
-                                      "Connect Bank Account",
-                                      style: TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
+                        :
+                        //  walletController.capability.value == "active" &&
+                        //         walletController.payouts.value == true
+                        //     ? height0SizedBox
+                        //  Row(
+                        //     children: [
+                        //       Image.asset(
+                        //         ImageConstants.addBank,
+                        //         scale: 20,
+                        //         color: AppColors.blacklight,
+                        //       ),
+                        //       width15SizedBox,
+                        //       Text(
+                        //         StringConstants
+                        //             .addBankAccountDebitMethodsText,
+                        //         style: const TextStyle(
+                        //             color: AppColors.black,
+                        //             fontSize: 16,
+                        //             fontWeight: FontWeight.w500),
+                        //       ),
+                        //     ],
+                        //   )
+                        // :
+
+                        InkWell(
+                            onTap: () {
+                              SharedPreferenceStorage.setData(
+                                  "context", context);
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (_) => WebviewPageScreen(
+                                          isFrom: "connectAccount",
+                                          url: Uri.parse(walletController
+                                                  .accountLink.value)
+                                              .toString())))
+                                  .then((value) {
+                                walletController.apiGetAccountDetails();
+                                walletController.apiGetBankAccountList();
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.addBank,
+                                  scale: 20,
+                                  color: AppColors.blacklight,
                                 ),
-                              )),
+                                width15SizedBox,
+                                const Text(
+                                  "Connect Bank Account",
+                                  style: TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          )),
               ),
             ),
             Obx(
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
-                  : walletController.capability.value == "active" &&
-                          walletController.payouts.value == true
-                      ? height0SizedBox
-                      : const Divider(
-                          color: AppColors.grey,
-                          height: 25,
-                        ),
+                  : const Divider(
+                      color: AppColors.grey,
+                      height: 25,
+                    ),
             ),
             Obx(
               () => walletController.role!.value == Role.customerRoleText
                   ? height0SizedBox
                   : InkWell(
                       onTap: () {
-                   
                         SharedPreferenceStorage.setData("context", context);
                         Navigator.of(context)
                             .push(MaterialPageRoute(
